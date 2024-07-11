@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-
-import { Folder, RafterRight, RafterDown } from "@edifice-ui/icons";
+import { useDroppable } from "@dnd-kit/core";
+import { Folder, RafterDown, RafterRight } from "@edifice-ui/icons";
+import clsx from "clsx";
+import { useId } from "react";
 import { useTranslation } from "react-i18next";
-
-import useTreeItemEvents from "./hooks/useTreeItemEvents";
 
 export interface TreeItemProps {
   /**
@@ -32,109 +31,119 @@ export interface TreeItemProps {
   selected: boolean;
 
   /**
-   * Node ID used for navigation folders
+   * Is node expanded
    */
-  selectedNodesIds?: string[];
+  expanded: boolean;
+
+  /**
+   * Is node over
+   */
+  focused: boolean;
 
   /**
    * Callback function to provide selected item to parent component (TreeView)
    */
-  onItemSelect?: Function;
-
-  /**
-   * Callback function to provide folded item to parent component (TreeView)
-   */
-  onItemFold?: Function;
+  onItemClick?: (nodeId: string) => void;
 
   /**
    * Callback function to provide unfolded item to parent component (TreeView)
    */
-  onItemUnfold?: Function;
+  onItemUnfold?: (nodeId: string) => void;
 
   /**
-   * Callback function to provide focused item to parent component (TreeView)
+   * Callback function to provide unfolded item to parent component (TreeView)
    */
-  onItemFocus?: Function;
-
-  /**
-   * Callback function to provide blured item to parent component (TreeView)
-   */
-  onItemBlur?: Function;
+  onToggleNode?: (nodeId: string) => void;
 }
 
-const TreeItem = (props: TreeItemProps) => {
+export const TreeItem = (props: TreeItemProps) => {
   const {
     nodeId,
     label,
     children,
     section,
     selected,
-    onItemSelect,
-    onItemFold,
-    onItemUnfold,
-    onItemFocus,
-    onItemBlur,
-    selectedNodesIds,
+    expanded,
+    focused,
+    onItemClick,
+    onToggleNode,
   } = props;
 
   const { t } = useTranslation();
-  const [expanded, setExpanded] = useState<boolean>(false);
 
-  const {
-    handleItemClick,
-    handleItemKeyDown,
-    handleItemFoldUnfoldClick,
-    handleItemFoldUnfoldKeyDown,
-    handleItemFocus,
-    handleItemBlur,
-  } = useTreeItemEvents(
-    nodeId,
-    label,
-    expanded,
-    setExpanded,
-    onItemSelect,
-    onItemFold,
-    onItemUnfold,
-    onItemFocus,
-    onItemBlur,
-  );
-
-  useEffect(() => {
-    if (selectedNodesIds?.length && selectedNodesIds?.length >= 1) {
-      const lastNodeId = selectedNodesIds[
-        selectedNodesIds.length - 1
-      ] as string;
-      selectedNodesIds.some((node: string) => {
-        if (node === nodeId && nodeId !== lastNodeId) {
-          setExpanded(true);
-          return node === nodeId;
-        }
-        setExpanded(false);
-        return false;
-      });
-    } else {
-      setExpanded(false);
-    }
-  }, [nodeId, selectedNodesIds]);
+  const { setNodeRef } = useDroppable({
+    id: useId(),
+    data: {
+      id: nodeId,
+      name: label,
+      isTreeview: true,
+      accepts: ["folder", "resource"],
+    },
+  });
 
   const rafterSize = section ? 16 : 12;
 
+  const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.code === "Enter" || event.code === "Space") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      onItemClick?.(nodeId);
+    }
+  };
+
+  const handleItemToggleKeyDown = (
+    event: React.KeyboardEvent<HTMLDivElement>,
+  ) => {
+    if (event.code === "Enter" || event.code === "Space") {
+      event.preventDefault();
+      event.stopPropagation();
+
+      onToggleNode?.(nodeId);
+    }
+  };
+
+  const handleItemClick = () => onItemClick?.(nodeId);
+  const handleToggleNode = () => onToggleNode?.(nodeId);
+
+  const treeItemClasses = {
+    action: clsx("action-container d-flex align-items-center gap-8 px-2", {
+      "drag-focus": focused,
+    }),
+    arrow: clsx("py-8", {
+      invisible: !Array.isArray(children),
+    }),
+    button: clsx(
+      "flex-fill d-flex align-items-center text-truncate gap-8 py-8",
+    ),
+  };
+
+  const showIfHasChildren =
+    Array.isArray(children) && !!children.length && expanded;
+
+  const renderSection = () => (
+    <ul role="tree" className="m-0 p-0">
+      {renderItem()}
+    </ul>
+  );
+
   const renderItem = () => (
     <li
-      id={`listitem_${nodeId}`}
       key={nodeId}
+      ref={setNodeRef}
+      id={`treeitem-${nodeId}`}
       role="treeitem"
-      aria-selected={selected}
-      aria-expanded={expanded}
+      aria-selected={selected && selected}
+      aria-expanded={expanded && expanded}
     >
       <div>
-        <div className="action-container d-flex align-items-center gap-8 px-2">
+        <div className={treeItemClasses.action}>
           <div
-            className={`py-8 ${!Array.isArray(children) ? "invisible" : null}`}
+            className={treeItemClasses.arrow}
             tabIndex={0}
             role="button"
-            onClick={handleItemFoldUnfoldClick}
-            onKeyDown={handleItemFoldUnfoldKeyDown}
+            onClick={handleToggleNode}
+            onKeyDown={handleItemToggleKeyDown}
             aria-label={t("foldUnfold")}
           >
             {Array.isArray(children) && !!children.length && !expanded && (
@@ -145,7 +154,7 @@ const TreeItem = (props: TreeItemProps) => {
               />
             )}
 
-            {Array.isArray(children) && !!children.length && expanded && (
+            {showIfHasChildren && (
               <RafterDown
                 title={t("foldUnfold")}
                 width={rafterSize}
@@ -166,31 +175,19 @@ const TreeItem = (props: TreeItemProps) => {
           <div
             tabIndex={0}
             role="button"
-            className="flex-fill d-flex align-items-center text-truncate gap-8 py-8"
+            className={treeItemClasses.button}
             onClick={handleItemClick}
             onKeyDown={handleItemKeyDown}
-            onFocus={handleItemFocus}
-            onBlur={handleItemBlur}
           >
             {section && <Folder title={t("folder")} width={20} height={20} />}
             <span className="text-truncate">{label}</span>
           </div>
         </div>
 
-        {Array.isArray(children) && <ul role="group">{children}</ul>}
+        {showIfHasChildren && <ul role="group">{children}</ul>}
       </div>
     </li>
   );
 
-  return section ? (
-    <ul role="tree" className="m-0 p-0">
-      {renderItem()}
-    </ul>
-  ) : (
-    renderItem()
-  );
+  return section ? renderSection() : renderItem();
 };
-
-TreeItem.displayName = "TreeItem";
-
-export default TreeItem;

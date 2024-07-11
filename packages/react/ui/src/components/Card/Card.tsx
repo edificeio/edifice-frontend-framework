@@ -31,6 +31,10 @@ export interface CardProps {
    */
   isSelected?: boolean;
   /**
+   * Card is Focus
+   */
+  isFocused?: boolean;
+  /**
    * Click on card
    */
   onClick?: (item?: any) => void;
@@ -53,6 +57,7 @@ const Root = forwardRef(
       isSelectable = true,
       isClickable = true,
       isSelected = false,
+      isFocused = false,
       onClick,
       onSelect,
       children,
@@ -81,6 +86,7 @@ const Root = forwardRef(
           className={clsx(
             "card",
             {
+              "drag-focus": isFocused,
               "is-selected": isSelected,
               "c-pointer": isClickable,
             },
