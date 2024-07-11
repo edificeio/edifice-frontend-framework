@@ -1,13 +1,8 @@
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useState,
-} from "react";
+import { Ref, forwardRef } from "react";
 
-import TreeItem from "./TreeItem";
+import { TreeData } from "../../types";
 import { TreeNode } from "./TreeNode";
+import { useTreeView } from "./hooks/useTreeView";
 
 export interface TreeViewHandlers {
   unselectAll: () => void;
@@ -18,17 +13,25 @@ export interface TreeViewProps {
   /**
    * TreeNode data
    */
-  data: TreeNode;
+  data: TreeData;
 
   /**
    * Node ID used for navigation folders
    */
-  selectedNodesIds?: string[];
+  selectedNodeId?: string;
+
+  /**
+   * Pass draggeNode when you drag an element from another context (resource / folder)
+   */
+  draggedNode?: {
+    isOver: boolean;
+    overId: string | undefined;
+  };
 
   /**
    * Callback function to provide selected item to parent component
    */
-  onTreeItemSelect?: (nodeId: string) => void;
+  onTreeItemClick?: (nodeId: string) => void;
 
   /**
    * Callback function to provide folded item to parent component
@@ -39,96 +42,51 @@ export interface TreeViewProps {
    * Callback function to provide unfolded item to parent component
    */
   onTreeItemUnfold?: (nodeId: string) => void;
-
-  /**
-   * Callback function to provide focused item to parent component
-   */
-  onTreeItemFocus?: (nodeId: string) => void;
-
-  /**
-   * Callback function to provide blured item to parent component
-   */
-  onTreeItemBlur?: (nodeId: string) => void;
 }
 
 /**
  * UI TreeView Component
  */
 
-const TreeView = forwardRef<TreeViewHandlers, TreeViewProps>(
-  (props: TreeViewProps, ref) => {
+const TreeView = forwardRef(
+  (props: TreeViewProps, ref: Ref<TreeViewHandlers>) => {
     const {
       data,
-      onTreeItemSelect,
-      onTreeItemFold,
+      onTreeItemClick,
       onTreeItemUnfold,
-      onTreeItemFocus,
-      onTreeItemBlur,
-      selectedNodesIds,
+      onTreeItemFold,
+      draggedNode,
+      selectedNodeId: externalSelectedNodeId,
     } = props;
 
-    const [selectedItem, setSelectedItem] = useState<string | null>(null);
+    const {
+      selectedNodeId,
+      expandedNodes,
+      draggedNodeId,
+      handleItemClick,
+      handleFoldUnfold,
+    } = useTreeView({
+      data,
+      ref,
+      externalSelectedNodeId,
+      draggedNode,
+      onTreeItemClick,
+      onTreeItemFold,
+      onTreeItemUnfold,
+    });
 
-    useEffect(() => {
-      if (selectedNodesIds?.length && selectedNodesIds?.length >= 1) {
-        setSelectedItem(selectedNodesIds[selectedNodesIds.length - 1]);
-      } else {
-        setSelectedItem(null);
-      }
-    }, [selectedNodesIds]);
-
-    const handlers: TreeViewHandlers = useMemo(
-      () => ({
-        unselectAll() {
-          setSelectedItem(null);
-        },
-        select(nodeId: string) {
-          setSelectedItem(nodeId);
-          onTreeItemSelect?.(nodeId);
-        },
-      }),
-      [onTreeItemSelect],
+    return (
+      <div className="treeview">
+        <TreeNode
+          node={data}
+          selectedNodeId={selectedNodeId}
+          expandedNodes={expandedNodes}
+          draggedNodeId={draggedNodeId}
+          handleItemClick={handleItemClick}
+          handleToggleNode={handleFoldUnfold}
+        />
+      </div>
     );
-
-    useImperativeHandle(ref, () => handlers, [handlers]);
-
-    const handleItemFold = (nodeId: string) => {
-      onTreeItemFold?.(nodeId);
-    };
-
-    const handleItemUnfold = (nodeId: string) => {
-      onTreeItemUnfold?.(nodeId);
-    };
-
-    const handleItemFocus = (nodeId: string) => {
-      onTreeItemFocus?.(nodeId);
-    };
-
-    const handleItemBlur = (nodeId: string) => {
-      onTreeItemBlur?.(nodeId);
-    };
-
-    const renderTree = (node: TreeNode) => (
-      <TreeItem
-        key={node.id}
-        nodeId={node.id}
-        label={node.name}
-        section={node.section}
-        selectedNodesIds={selectedNodesIds}
-        selected={selectedItem === node.id}
-        onItemSelect={handlers.select}
-        onItemFold={handleItemFold}
-        onItemUnfold={handleItemUnfold}
-        onItemFocus={handleItemFocus}
-        onItemBlur={handleItemBlur}
-      >
-        {Array.isArray(node.children)
-          ? node.children.map((item) => renderTree(item))
-          : null}
-      </TreeItem>
-    );
-
-    return <div className="treeview">{renderTree(data)}</div>;
   },
 );
 
