@@ -38,7 +38,7 @@ export interface TreeItemProps {
   /**
    * Is node over
    */
-  focused: boolean;
+  focused?: boolean;
 
   /**
    * Callback function to provide selected item to parent component (TreeView)

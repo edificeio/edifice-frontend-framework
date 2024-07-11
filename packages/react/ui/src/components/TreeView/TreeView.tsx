@@ -26,6 +26,7 @@ export interface TreeViewProps {
   draggedNode?: {
     isOver: boolean;
     overId: string | undefined;
+    isTreeview: boolean;
   };
 
   /**
