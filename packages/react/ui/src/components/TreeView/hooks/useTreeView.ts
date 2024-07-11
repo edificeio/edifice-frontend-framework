@@ -18,6 +18,7 @@ export const useTreeView = ({
   draggedNode?: {
     isOver: boolean;
     overId: string | undefined;
+    isTreeview: boolean;
   };
   /**
    * Callback function to provide unfolded item to parent component
@@ -35,12 +36,19 @@ export const useTreeView = ({
   const [internalSelectedNodeId, setInternalSelectedNodeId] = useState<
     string | undefined
   >(undefined);
-  const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
 
+  const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
+  const [draggedNodeId, setDraggedNodeId] = useState<string | undefined>(
+    undefined,
+  );
+
   useEffect(() => {
-    if (draggedNode?.isOver) {
+    if (draggedNode?.isOver && draggedNode.isTreeview) {
       draggedNode.overId ? handleItemDrag(draggedNode.overId) : undefined;
+      setDraggedNodeId(draggedNode.overId);
+    } else {
+      setDraggedNodeId(undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draggedNode]);
@@ -174,7 +182,7 @@ export const useTreeView = ({
   return {
     selectedNodeId,
     expandedNodes,
-    draggedNodeId: draggedNode?.overId,
+    draggedNodeId,
     handleItemClick,
     handleFoldUnfold,
   };
