@@ -12,7 +12,7 @@ export const useTreeView = ({
   onTreeItemFold,
   onTreeItemClick,
 }: {
-  data: TreeData;
+  data: TreeData | TreeData[];
   ref: Ref<TreeViewHandlers>;
   externalSelectedNodeId: string | undefined;
   draggedNode?: {
@@ -110,7 +110,18 @@ export const useTreeView = ({
     const updatedExpandedNodes = new Set(expandedNodes);
 
     const parents = findPathById(data, nodeId);
-    parents.forEach((parent) => updatedExpandedNodes.add(parent));
+    const arrayOrder = Array.from(updatedExpandedNodes);
+
+    parents.forEach((parent) => {
+      const index = arrayOrder.indexOf(parent);
+      if (index > -1) {
+        arrayOrder.splice(index, 1);
+      }
+      arrayOrder.push(parent);
+    });
+
+    updatedExpandedNodes.clear();
+    arrayOrder.forEach((node) => updatedExpandedNodes.add(node));
     updatedExpandedNodes.forEach((node) => onTreeItemUnfold?.(node));
     setExpandedNodes(updatedExpandedNodes);
   };

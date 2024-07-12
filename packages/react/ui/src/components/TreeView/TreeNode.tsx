@@ -50,6 +50,7 @@ export const TreeNode = ({
       nodeId={node.id}
       label={node.name}
       section={node.section}
+      showIconSection={node.showIconSection}
       selected={selected}
       expanded={expanded}
       focused={focused}
