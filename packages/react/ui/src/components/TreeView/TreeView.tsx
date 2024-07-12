@@ -13,7 +13,7 @@ export interface TreeViewProps {
   /**
    * TreeNode data
    */
-  data: TreeData;
+  data: TreeData | TreeData[];
 
   /**
    * Node ID used for navigation folders
@@ -78,14 +78,27 @@ const TreeView = forwardRef(
 
     return (
       <div className="treeview">
-        <TreeNode
-          node={data}
-          selectedNodeId={selectedNodeId}
-          expandedNodes={expandedNodes}
-          draggedNodeId={draggedNodeId}
-          handleItemClick={handleItemClick}
-          handleToggleNode={handleFoldUnfold}
-        />
+        {Array.isArray(data) ? (
+          data.map((page) => (
+            <TreeNode
+              node={page}
+              selectedNodeId={selectedNodeId}
+              expandedNodes={expandedNodes}
+              draggedNodeId={draggedNodeId}
+              handleItemClick={handleItemClick}
+              handleToggleNode={handleFoldUnfold}
+            />
+          ))
+        ) : (
+          <TreeNode
+            node={data}
+            selectedNodeId={selectedNodeId}
+            expandedNodes={expandedNodes}
+            draggedNodeId={draggedNodeId}
+            handleItemClick={handleItemClick}
+            handleToggleNode={handleFoldUnfold}
+          />
+        )}
       </div>
     );
   },

@@ -26,6 +26,11 @@ export interface TreeItemProps {
   section?: boolean;
 
   /**
+   * Is current node needed icon folder
+   */
+  showIconSection?: boolean;
+
+  /**
    * Is node selected
    */
   selected: boolean;
@@ -62,6 +67,7 @@ export const TreeItem = (props: TreeItemProps) => {
     label,
     children,
     section,
+    showIconSection,
     selected,
     expanded,
     focused,
@@ -179,7 +185,9 @@ export const TreeItem = (props: TreeItemProps) => {
             onClick={handleItemClick}
             onKeyDown={handleItemKeyDown}
           >
-            {section && <Folder title={t("folder")} width={20} height={20} />}
+            {section && showIconSection && (
+              <Folder title={t("folder")} width={20} height={20} />
+            )}
             <span className="text-truncate">{label}</span>
           </div>
         </div>

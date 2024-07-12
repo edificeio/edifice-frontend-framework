@@ -1,18 +1,31 @@
 import { FOLDER, IFolder } from "edifice-ts-client";
 import { TreeData } from "../types";
 
-export function findNodeById(data: TreeData, id: string): TreeData | undefined {
-  let res: TreeData | undefined;
-  if (data?.id === id) {
-    return data;
+export function findNodeById(
+  data: TreeData | TreeData[],
+  id: string,
+): TreeData | undefined {
+  if (Array.isArray(data)) {
+    for (const node of data) {
+      const result = findNodeById(node, id);
+      if (result) {
+        return result;
+      }
+    }
+  } else {
+    if (data.id === id) {
+      return data;
+    }
+    if (data.children) {
+      for (const child of data.children) {
+        const result = findNodeById(child, id);
+        if (result) {
+          return result;
+        }
+      }
+    }
   }
-  if (data?.children?.length) {
-    data?.children?.every((childNode: TreeData) => {
-      res = findNodeById(childNode, id);
-      return res === undefined; // break loop if res is found
-    });
-  }
-  return res;
+  return undefined;
 }
 
 export function addNode(
@@ -196,10 +209,13 @@ export function updateNode(
   });
 }
 
-export function findPathById(tree: TreeData, nodeId: string) {
+export function findPathById(
+  tree: TreeData | TreeData[],
+  nodeId: string,
+): string[] {
   let path: string[] = [];
 
-  function traverse(node: TreeData, currentPath: string[]) {
+  function traverse(node: TreeData, currentPath: string[]): boolean {
     if (node.id === nodeId) {
       path = currentPath.concat(node.id);
       return true;
@@ -214,7 +230,19 @@ export function findPathById(tree: TreeData, nodeId: string) {
     return false;
   }
 
-  traverse(tree, []);
+  function startTraverse(nodes: TreeData | TreeData[]) {
+    if (Array.isArray(nodes)) {
+      for (const node of nodes) {
+        if (traverse(node, [])) {
+          break;
+        }
+      }
+    } else {
+      traverse(nodes, []);
+    }
+  }
+
+  startTraverse(tree);
   return path;
 }
 

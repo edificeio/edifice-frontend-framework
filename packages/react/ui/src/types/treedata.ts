@@ -13,6 +13,12 @@ export interface TreeData {
    * @param section: indicate if node is a top section (useful for specific icon)
    */
   section?: boolean;
+
+  /**
+   * @param showIconSection: indicate if need icon folder
+   */
+  showIconSection?: boolean;
+
   /**
    * @param selected: if first node is a section, it is selected by default
    */
