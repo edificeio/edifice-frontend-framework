@@ -21,6 +21,11 @@ export interface TreeViewProps {
   selectedNodeId?: string;
 
   /**
+   * Show Section Icon Folder
+   */
+  showIcon?: boolean;
+
+  /**
    * Pass draggeNode when you drag an element from another context (resource / folder)
    */
   draggedNode?: {
@@ -57,6 +62,7 @@ const TreeView = forwardRef(
       onTreeItemUnfold,
       onTreeItemFold,
       draggedNode,
+      showIcon = true,
       selectedNodeId: externalSelectedNodeId,
     } = props;
 
@@ -78,27 +84,33 @@ const TreeView = forwardRef(
 
     return (
       <div className="treeview">
-        {Array.isArray(data) ? (
-          data.map((page) => (
+        <ul role="tree" className="m-0 p-0">
+          {Array.isArray(data) ? (
+            data.map((node) => {
+              return (
+                <TreeNode
+                  node={node}
+                  key={node.id}
+                  showIcon={showIcon}
+                  selectedNodeId={selectedNodeId}
+                  expandedNodes={expandedNodes}
+                  draggedNodeId={draggedNodeId}
+                  handleItemClick={handleItemClick}
+                  handleToggleNode={handleFoldUnfold}
+                />
+              );
+            })
+          ) : (
             <TreeNode
-              node={page}
+              node={data}
               selectedNodeId={selectedNodeId}
               expandedNodes={expandedNodes}
               draggedNodeId={draggedNodeId}
               handleItemClick={handleItemClick}
               handleToggleNode={handleFoldUnfold}
             />
-          ))
-        ) : (
-          <TreeNode
-            node={data}
-            selectedNodeId={selectedNodeId}
-            expandedNodes={expandedNodes}
-            draggedNodeId={draggedNodeId}
-            handleItemClick={handleItemClick}
-            handleToggleNode={handleFoldUnfold}
-          />
-        )}
+          )}
+        </ul>
       </div>
     );
   },
