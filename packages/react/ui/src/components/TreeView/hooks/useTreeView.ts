@@ -73,6 +73,12 @@ export const useTreeView = ({
 
   useImperativeHandle(ref, () => handlers, [handlers]);
 
+  useEffect(() => {
+    if (data && !Array.isArray(data)) {
+      setInternalSelectedNodeId(data.id);
+    }
+  }, [data]);
+
   /**
    * Effect runs only when controlling treeview with selectedNodeId props
    */
