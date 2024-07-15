@@ -4,8 +4,13 @@ import clsx from "clsx";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { TreeData } from "../../types";
+import { hasChildren } from "../../utils";
 
 export interface TreeNodeProps {
+  /**
+   * TreeData[]
+   */
+  data?: TreeData[];
   /**
    * Data
    */
@@ -42,6 +47,7 @@ export interface TreeNodeProps {
 
 export const TreeNode = ({
   node,
+  data,
   showIcon,
   selectedNodeId,
   expandedNodes,
@@ -52,6 +58,27 @@ export const TreeNode = ({
   const expanded = expandedNodes.has(node.id);
   const selected = selectedNodeId === node.id;
   const focused = draggedNodeId === node.id;
+  const getSections = data?.filter((node) => node.section);
+  const sectionsChildren = getSections?.map((section) =>
+    hasChildren(section.id, section),
+  );
+
+  const treeItemClasses = {
+    action: clsx("action-container d-flex align-items-center gap-8 px-2", {
+      "drag-focus": focused,
+      "py-4": !node.section,
+    }),
+    arrow: clsx({
+      "py-4": !node.section,
+      "py-8": node.section,
+      invisible: !Array.isArray(node.children),
+    }),
+    button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
+      "py-8": node.section,
+    }),
+  };
+
+  const iconSize = node.section ? 16 : 12;
 
   const { t } = useTranslation();
 
@@ -65,43 +92,43 @@ export const TreeNode = ({
     },
   });
 
-  const handleItemKeyDown = (
-    event: React.KeyboardEvent<HTMLDivElement>,
-    nodeId: string,
-  ) => {
+  const handleOnItemClick = (nodeId: string) => handleItemClick?.(nodeId);
+  const handleOnToggleNode = (nodeId: string) => handleToggleNode?.(nodeId);
+
+  const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.code === "Enter" || event.code === "Space") {
       event.preventDefault();
       event.stopPropagation();
 
-      handleItemClick?.(nodeId);
+      handleItemClick?.(node.id);
     }
   };
 
   const handleItemToggleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
-    nodeId: string,
   ) => {
     if (event.code === "Enter" || event.code === "Space") {
       event.preventDefault();
       event.stopPropagation();
 
-      handleToggleNode?.(nodeId);
+      handleToggleNode?.(node.id);
     }
   };
 
-  const treeItemClasses = {
-    action: clsx("action-container d-flex align-items-center gap-8 px-2", {
-      "drag-focus": focused,
-    }),
-    arrow: clsx("py-8", {
-      invisible: !Array.isArray(node.children),
-    }),
-    button: clsx(
-      "flex-fill d-flex align-items-center text-truncate gap-8 py-8",
-    ),
+  const renderRafterIcon = (expanded: boolean) => {
+    const RafterComponent = expanded ? RafterDown : RafterRight;
+    return (
+      <RafterComponent
+        title={t("foldUnfold")}
+        width={iconSize}
+        height={iconSize}
+      />
+    );
   };
 
-  const iconSize = node.section ? 16 : 12;
+  const shouldRenderIcon = node.section
+    ? sectionsChildren?.some((value) => value === true)
+    : Array.isArray(node.children) && node.children.length;
 
   return (
     <li
@@ -118,42 +145,18 @@ export const TreeNode = ({
             className={treeItemClasses.arrow}
             tabIndex={0}
             role="button"
-            onClick={() => handleToggleNode?.(node.id)}
-            onKeyDown={(event) => handleItemToggleKeyDown(event, node.id)}
+            onClick={() => handleOnToggleNode(node.id)}
+            onKeyDown={handleItemToggleKeyDown}
             aria-label={t("foldUnfold")}
           >
-            {Array.isArray(node.children) &&
-              !!node.children.length &&
-              (expanded ? (
-                <RafterDown
-                  title={t("foldUnfold")}
-                  width={iconSize}
-                  height={iconSize}
-                />
-              ) : (
-                <RafterRight
-                  title={t("foldUnfold")}
-                  width={iconSize}
-                  height={iconSize}
-                />
-              ))}
-
-            {/* Hide rafter when no children to keep alignment */}
-            {!Array.isArray(node.children) && !node.section && (
-              <RafterRight
-                title={t("foldUnfold")}
-                width={iconSize}
-                height={iconSize}
-                aria-hidden="true"
-              />
-            )}
+            {shouldRenderIcon && renderRafterIcon(expanded)}
           </div>
           <div
             tabIndex={0}
             role="button"
             className={treeItemClasses.button}
-            onClick={() => handleItemClick?.(node.id)}
-            onKeyDown={(event) => handleItemKeyDown(event, node.id)}
+            onClick={() => handleOnItemClick(node.id)}
+            onKeyDown={handleItemKeyDown}
           >
             {node.section && showIcon && (
               <Folder title={t("folder")} width={20} height={20} />
