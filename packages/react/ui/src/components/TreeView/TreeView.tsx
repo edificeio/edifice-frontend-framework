@@ -89,6 +89,7 @@ const TreeView = forwardRef(
             data.map((node) => {
               return (
                 <TreeNode
+                  data={data}
                   node={node}
                   key={node.id}
                   showIcon={showIcon}
