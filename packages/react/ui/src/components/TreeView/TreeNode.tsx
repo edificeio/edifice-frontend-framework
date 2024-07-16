@@ -4,13 +4,8 @@ import clsx from "clsx";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { TreeData } from "../../types";
-import { hasChildren } from "../../utils";
 
 export interface TreeNodeProps {
-  /**
-   * TreeData[]
-   */
-  data?: TreeData[];
   /**
    * Data
    */
@@ -23,6 +18,10 @@ export interface TreeNodeProps {
    * Nodes expanded (opened)
    */
   expandedNodes: Set<string>;
+  /**
+   * Siblings nodes
+   */
+  siblingsNodes?: Set<string>;
   /**
    * External node selected to sync Treeview
    */
@@ -47,21 +46,18 @@ export interface TreeNodeProps {
 
 export const TreeNode = ({
   node,
-  data,
   showIcon,
   selectedNodeId,
   expandedNodes,
+  siblingsNodes,
   draggedNodeId,
   handleItemClick,
   handleToggleNode,
 }: TreeNodeProps) => {
   const expanded = expandedNodes.has(node.id);
+  const sibling = siblingsNodes?.has(node.id);
   const selected = selectedNodeId === node.id;
   const focused = draggedNodeId === node.id;
-  const getSections = data?.filter((node) => node.section);
-  const sectionsChildren = getSections?.map((section) =>
-    hasChildren(section.id, section),
-  );
 
   const treeItemClasses = {
     action: clsx("action-container d-flex align-items-center gap-8 px-2", {
@@ -71,7 +67,7 @@ export const TreeNode = ({
     arrow: clsx({
       "py-4": !node.section,
       "py-8": node.section,
-      invisible: !Array.isArray(node.children),
+      "invisible": !Array.isArray(node.children) || node.children.length === 0,
     }),
     button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
       "py-8": node.section,
@@ -126,10 +122,6 @@ export const TreeNode = ({
     );
   };
 
-  const shouldRenderIcon = node.section
-    ? sectionsChildren?.some((value) => value === true)
-    : Array.isArray(node.children) && node.children.length;
-
   return (
     <li
       key={node.id}
@@ -149,7 +141,11 @@ export const TreeNode = ({
             onKeyDown={handleItemToggleKeyDown}
             aria-label={t("foldUnfold")}
           >
-            {shouldRenderIcon && renderRafterIcon(expanded)}
+            {sibling && renderRafterIcon(expanded)}
+
+            {Array.isArray(node.children) &&
+              !!node.children.length &&
+              renderRafterIcon(expanded)}
           </div>
           <div
             tabIndex={0}
@@ -174,6 +170,7 @@ export const TreeNode = ({
                   node={child}
                   selectedNodeId={selectedNodeId}
                   expandedNodes={expandedNodes}
+                  siblingsNodes={siblingsNodes}
                   draggedNodeId={draggedNodeId}
                   handleItemClick={handleItemClick}
                   handleToggleNode={handleToggleNode}

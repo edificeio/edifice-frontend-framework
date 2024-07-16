@@ -8,7 +8,7 @@ const FormText = ({ children }: { children: ReactNode }) => {
   const { status } = useFormControl();
   const classes = clsx("form-text", {
     "is-invalid": status === "invalid",
-    valid: status === "valid",
+    "valid": status === "valid",
   });
 
   return (

@@ -9,9 +9,9 @@ const meta: Meta<typeof SearchButton> = {
   component: SearchButton,
   args: {
     "aria-label": "search",
-    type: "button",
-    disabled: false,
-    icon: <Search />,
+    "type": "button",
+    "disabled": false,
+    "icon": <Search />,
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };

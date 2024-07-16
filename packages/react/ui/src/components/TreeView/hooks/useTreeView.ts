@@ -37,11 +37,72 @@ export const useTreeView = ({
     string | undefined
   >(undefined);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-
-  const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
+  const [siblingsNodes, setSiblingsNodes] = useState<Set<string>>(new Set());
   const [draggedNodeId, setDraggedNodeId] = useState<string | undefined>(
     undefined,
   );
+
+  const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
+
+  function addNodesWithSiblingHavingChildren(data: TreeData | TreeData[]) {
+    const resultSet = new Set(siblingsNodes);
+
+    if (Array.isArray(data)) {
+      data.forEach((node) => {
+        const siblings = data.filter(({ id }) => id !== node.id);
+        const hasSiblingWithChildren = siblings.some(
+          (sibling) => sibling.children && sibling.children.length > 0,
+        );
+
+        if (hasSiblingWithChildren) {
+          resultSet.add(node.id);
+          setSiblingsNodes(resultSet);
+        }
+
+        if (node.children && node.children.length > 0) {
+          node.children.forEach((child) => {
+            const childSiblings = node.children?.filter(
+              ({ id }) => id !== child.id,
+            );
+            const hasChildSiblingWithChildren = childSiblings?.some(
+              (sibling) => sibling.children && sibling.children.length > 0,
+            );
+
+            if (hasChildSiblingWithChildren) {
+              resultSet.add(child.id);
+              setSiblingsNodes(resultSet);
+            }
+
+            addNodesWithSiblingHavingChildren(
+              child.children as TreeData | TreeData[],
+            );
+          });
+        }
+      });
+    } else {
+      data.children?.forEach((child) => {
+        const siblings = data.children?.filter((c) => c.id !== child.id);
+
+        const hasSiblingWithChildren = siblings?.some(
+          (sibling) => sibling.children && sibling.children.length > 0,
+        );
+
+        if (hasSiblingWithChildren) {
+          resultSet.add(child.id);
+          setSiblingsNodes(resultSet);
+        }
+
+        addNodesWithSiblingHavingChildren(child);
+      });
+    }
+  }
+
+  useEffect(() => {
+    if (data) {
+      addNodesWithSiblingHavingChildren(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     if (draggedNode?.isOver && draggedNode.isTreeview) {
@@ -73,11 +134,11 @@ export const useTreeView = ({
 
   useImperativeHandle(ref, () => handlers, [handlers]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (data && !Array.isArray(data)) {
       setInternalSelectedNodeId(data.id);
     }
-  }, [data]);
+  }, [data]); */
 
   /**
    * Effect runs only when controlling treeview with selectedNodeId props
@@ -199,6 +260,7 @@ export const useTreeView = ({
   return {
     selectedNodeId,
     expandedNodes,
+    siblingsNodes,
     draggedNodeId,
     handleItemClick,
     handleFoldUnfold,
