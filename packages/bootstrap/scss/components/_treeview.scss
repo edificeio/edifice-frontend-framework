@@ -27,7 +27,6 @@ $selected-background-color: var(--#{$prefix}blue-200);
   }
 
   [role="tree"] {
-    max-width: 400px;
     overflow-y: auto;
     list-style: none;
 
@@ -49,12 +48,15 @@ $selected-background-color: var(--#{$prefix}blue-200);
     }
   }
 
+  .border-left {
+    border-left: 1px solid var(--#{$prefix}gray-400);
+  }
+
   [role="group"] {
     padding-left: $spacer-0;
     margin-top: $spacer-8;
     margin-left: $spacer-8;
     font-size: 1.4rem;
-    border-left: 1px solid var(--#{$prefix}gray-400);
 
     & > [role="treeitem"] {
       margin-left: $spacer-8;
