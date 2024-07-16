@@ -227,7 +227,7 @@ const MediaLibrary = forwardRef(
     const availableTabs: {
       [tabname in AvailableTab]: TabsItemProps & MediaLibraryTabProps;
     } = {
-      workspace: {
+      "workspace": {
         id: "workspace",
         icon: <Folder />,
         label: t("bbm.workspace"),
@@ -235,7 +235,7 @@ const MediaLibrary = forwardRef(
         availableFor: ["audio", "video", "image", "attachment"],
         isEnable: null,
       },
-      upload: {
+      "upload": {
         id: "upload",
         icon: <Smartphone />,
         label: t("bbm.device"),
@@ -283,7 +283,7 @@ const MediaLibrary = forwardRef(
         availableFor: ["hyperlink"],
         isEnable: null,
       },
-      iframe: {
+      "iframe": {
         id: "iframe",
         icon: <Code />,
         label: t("bbm.embed"),

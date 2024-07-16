@@ -51,12 +51,12 @@ const BubbleMenuEditImage = ({
         type: "button",
         name: "edit",
         props: {
-          size: "lg",
-          color: "secondary",
-          leftIcon: <Wand />,
+          "size": "lg",
+          "color": "secondary",
+          "leftIcon": <Wand />,
           "aria-label": t("tiptap.tooltip.bubblemenu.image.edit"),
-          children: t("tiptap.bubblemenu.edit"),
-          onClick: onEditImage,
+          "children": t("tiptap.bubblemenu.edit"),
+          "onClick": onEditImage,
         },
         tooltip: {
           message: t("tiptap.tooltip.bubblemenu.image.edit"),
@@ -71,15 +71,15 @@ const BubbleMenuEditImage = ({
         type: "icon",
         name: "small",
         props: {
-          icon: <ImageSizeSmall />,
+          "icon": <ImageSizeSmall />,
           "aria-label": t("tiptap.tooltip.bubblemenu.image.small"),
-          color: "tertiary",
-          className:
+          "color": "tertiary",
+          "className":
             selectedNode?.attrs?.size === "small" &&
             selectedNode?.attrs?.width === 250
               ? "is-selected"
               : "",
-          onClick: () =>
+          "onClick": () =>
             handleButtonClick({
               size: "small",
               width: 250,
@@ -95,15 +95,15 @@ const BubbleMenuEditImage = ({
         type: "icon",
         name: "medium",
         props: {
-          icon: <ImageSizeMedium />,
+          "icon": <ImageSizeMedium />,
           "aria-label": t("tiptap.tooltip.bubblemenu.image.medium"),
-          color: "tertiary",
-          className:
+          "color": "tertiary",
+          "className":
             selectedNode?.attrs?.size === "medium" &&
             selectedNode?.attrs?.width === 350
               ? "is-selected"
               : "",
-          onClick: () =>
+          "onClick": () =>
             handleButtonClick({
               size: "medium",
               width: 350,
@@ -119,15 +119,15 @@ const BubbleMenuEditImage = ({
         type: "icon",
         name: "large",
         props: {
-          icon: <ImageSizeLarge />,
+          "icon": <ImageSizeLarge />,
           "aria-label": t("tiptap.tooltip.bubblemenu.image.big"),
-          color: "tertiary",
-          className:
+          "color": "tertiary",
+          "className":
             selectedNode?.attrs?.size === "large" &&
             selectedNode?.attrs?.width === 500
               ? "is-selected"
               : "",
-          onClick: () =>
+          "onClick": () =>
             handleButtonClick({
               size: "large",
               width: 500,

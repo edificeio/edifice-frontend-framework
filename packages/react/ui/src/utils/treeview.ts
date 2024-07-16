@@ -13,9 +13,8 @@ export function findNodeById(
       }
     }
   } else {
-    if (data.id === id) {
-      return data;
-    }
+    if (data.id === id) return data;
+
     if (data.children) {
       for (const child of data.children) {
         const result = findNodeById(child, id);

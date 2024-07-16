@@ -69,6 +69,7 @@ const TreeView = forwardRef(
     const {
       selectedNodeId,
       expandedNodes,
+      siblingsNodes,
       draggedNodeId,
       handleItemClick,
       handleFoldUnfold,
@@ -89,12 +90,12 @@ const TreeView = forwardRef(
             data.map((node) => {
               return (
                 <TreeNode
-                  data={data}
                   node={node}
                   key={node.id}
                   showIcon={showIcon}
                   selectedNodeId={selectedNodeId}
                   expandedNodes={expandedNodes}
+                  siblingsNodes={siblingsNodes}
                   draggedNodeId={draggedNodeId}
                   handleItemClick={handleItemClick}
                   handleToggleNode={handleFoldUnfold}
@@ -106,6 +107,8 @@ const TreeView = forwardRef(
               node={data}
               selectedNodeId={selectedNodeId}
               expandedNodes={expandedNodes}
+              siblingsNodes={siblingsNodes}
+              showIcon={showIcon}
               draggedNodeId={draggedNodeId}
               handleItemClick={handleItemClick}
               handleToggleNode={handleFoldUnfold}

@@ -15,7 +15,7 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   const { getIconCode } = useOdeIcons();
   const { editor, node } = props;
   const {
-    class: className,
+    "class": className,
     title,
     "data-app-prefix": appPrefix,
     href,
