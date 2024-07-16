@@ -146,9 +146,9 @@ export const useTreeView = ({
     const initExpandedNodes = new Set("");
     if (data && Array.isArray(data) && allExpandedNodes) {
       data.forEach((node) => {
-        initExpandedNodes.add(node.id)
+        initExpandedNodes.add(node.id);
       });
-      setExpandedNodes(initExpandedNodes)
+      setExpandedNodes(initExpandedNodes);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
