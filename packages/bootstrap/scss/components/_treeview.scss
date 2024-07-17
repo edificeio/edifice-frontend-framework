@@ -37,7 +37,7 @@ $selected-background-color: var(--#{$prefix}blue-200);
       cursor: pointer;
 
       + li {
-        margin-top: $spacer-4;
+        padding-top: $spacer-4;
       }
     }
 
@@ -60,7 +60,7 @@ $selected-background-color: var(--#{$prefix}blue-200);
 
   [role="group"] {
     padding-left: $spacer-0;
-    margin-top: $spacer-8;
+    padding-top: $spacer-8;
     margin-left: $spacer-8;
     font-size: 1.4rem;
     border-left: 1px solid var(--#{$prefix}gray-400);
@@ -69,7 +69,7 @@ $selected-background-color: var(--#{$prefix}blue-200);
       margin-left: $spacer-8;
 
       + [role="treeitem"] {
-        margin-top: $spacer-8;
+        padding-top: $spacer-8;
       }
 
       &[aria-selected="true"] > div > .action-container {

@@ -21,7 +21,8 @@ export interface TreeNodeProps {
   /**
    * Siblings nodes
    */
-  siblingsNodes?: Set<string>;
+  siblingsNodes?: React.MutableRefObject<Set<string>>;
+  // siblingsNodes?: Set<string>;
   /**
    * External node selected to sync Treeview
    */
@@ -55,7 +56,7 @@ export const TreeNode = ({
   handleToggleNode,
 }: TreeNodeProps) => {
   const expanded = expandedNodes.has(node.id);
-  const sibling = siblingsNodes?.has(node.id);
+  const sibling = siblingsNodes?.current.has(node.id);
   const selected = selectedNodeId === node.id;
   const focused = draggedNodeId === node.id;
 
@@ -122,6 +123,14 @@ export const TreeNode = ({
     );
   };
 
+  const shouldRenderRafterIcon = () => {
+    const hasNoSiblings = !siblingsNodes?.current?.has(node.id);
+    const hasChildren =
+      Array.isArray(node.children) && node.children.length > 0;
+
+    return sibling || (hasNoSiblings && hasChildren);
+  };
+
   return (
     <li
       key={node.id}
@@ -141,11 +150,7 @@ export const TreeNode = ({
             onKeyDown={handleItemToggleKeyDown}
             aria-label={t("foldUnfold")}
           >
-            {sibling && renderRafterIcon(expanded)}
-
-            {Array.isArray(node.children) &&
-              !!node.children.length &&
-              renderRafterIcon(expanded)}
+            {shouldRenderRafterIcon() && renderRafterIcon(expanded)}
           </div>
           <div
             tabIndex={0}
@@ -157,7 +162,9 @@ export const TreeNode = ({
             {node.section && showIcon && (
               <Folder title={t("folder")} width={20} height={20} />
             )}
-            <span className="text-truncate">{node.name}</span>
+            <span className="text-truncate">
+              {node.id} - {node.name}
+            </span>
           </div>
         </div>
 
