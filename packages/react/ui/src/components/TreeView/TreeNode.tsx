@@ -162,9 +162,7 @@ export const TreeNode = ({
             {node.section && showIcon && (
               <Folder title={t("folder")} width={20} height={20} />
             )}
-            <span className="text-truncate">
-              {node.id} - {node.name}
-            </span>
+            <span className="text-truncate">{node.name}</span>
           </div>
         </div>
 
