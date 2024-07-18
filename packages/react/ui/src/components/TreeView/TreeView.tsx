@@ -100,7 +100,6 @@ const TreeView = forwardRef(
                   node={node}
                   key={node.id}
                   showIcon={showIcon}
-                  allExpandedNodes={allExpandedNodes}
                   selectedNodeId={selectedNodeId}
                   expandedNodes={expandedNodes}
                   siblingsNodes={siblingsNodes}
