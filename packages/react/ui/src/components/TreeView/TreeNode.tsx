@@ -15,10 +15,6 @@ export interface TreeNodeProps {
    */
   showIcon?: boolean;
   /**
-   * Open all treeview nodes
-   */
-  allExpandedNodes?: boolean;
-  /**
    * Nodes expanded (opened)
    */
   expandedNodes: Set<string>;
@@ -52,7 +48,6 @@ export interface TreeNodeProps {
 export const TreeNode = ({
   node,
   showIcon,
-  allExpandedNodes,
   selectedNodeId,
   expandedNodes,
   siblingsNodes,
@@ -172,7 +167,7 @@ export const TreeNode = ({
         </div>
 
         {Array.isArray(node.children) && !!node.children.length && expanded && (
-          <ul role="group" className={allExpandedNodes ? "" : "border-left"}>
+          <ul role="group">
             {node.children.map((child) => {
               return (
                 <TreeNode
