@@ -1,5 +1,4 @@
-// TODO should be loaded from app in future
-import "../resources/services/BlogResourceService";
+// TODO should be loaded from React app in future
 import "../resources/services/ScrapbookResourceService";
 
 import { IOdeServices, OdeServices } from "./OdeServices";
