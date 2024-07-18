@@ -22,13 +22,13 @@ export class BlogResourceService extends ResourceService {
     const apiPath = parameters.public ? "/blog/pub" : "/blog";
 
     const res = await this.http.post<CreateResult>(apiPath, {
-      title: parameters.name,
-      description: parameters.description,
-      visibility: parameters.public ? "PUBLIC" : "OWNER",
+      "title": parameters.name,
+      "description": parameters.description,
+      "visibility": parameters.public ? "PUBLIC" : "OWNER",
       thumbnail,
-      trashed: false,
-      folder: parameters.folder,
-      slug: parameters.public ? parameters.slug : "",
+      "trashed": false,
+      "folder": parameters.folder,
+      "slug": parameters.public ? parameters.slug : "",
       "publish-type": parameters.publishType || "RESTRAINT",
       "comment-type": "IMMEDIATE",
     });
@@ -43,13 +43,13 @@ export class BlogResourceService extends ResourceService {
       ? await this.getThumbnailPath(parameters.thumbnail)
       : "";
     const res = await this.http.put<IResource>(`/blog/${parameters.entId}`, {
-      trashed: parameters.trashed,
-      _id: parameters.entId,
-      title: parameters.name,
+      "trashed": parameters.trashed,
+      "_id": parameters.entId,
+      "title": parameters.name,
       thumbnail,
-      description: parameters.description,
-      visibility: parameters.public ? "PUBLIC" : "OWNER",
-      slug: parameters.public ? parameters.slug : "",
+      "description": parameters.description,
+      "visibility": parameters.public ? "PUBLIC" : "OWNER",
+      "slug": parameters.public ? parameters.slug : "",
       "publish-type": parameters["publish-type"] || "RESTRAINT",
       "comment-type": "IMMEDIATE",
     });
