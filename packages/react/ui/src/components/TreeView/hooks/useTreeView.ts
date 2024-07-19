@@ -99,6 +99,16 @@ export const useTreeView = ({
     }
   }
 
+  const expandedAllNodes = (allExpandedNodes: boolean | undefined) => {
+    const initExpandedNodes = new Set("");
+    if (data && Array.isArray(data) && allExpandedNodes) {
+      data.forEach((node) => {
+        initExpandedNodes.add(node.id);
+      });
+      setExpandedNodes(initExpandedNodes);
+    }
+  }
+
   useEffect(() => {
     if (data) {
       addNodesWithSiblingHavingChildren(data);
@@ -127,8 +137,12 @@ export const useTreeView = ({
         setInternalSelectedNodeId(undefined);
       },
       select(nodeId: string) {
-        handleItemClick(nodeId);
+        
+        (nodeId);
       },
+      allExpandedNodes(){
+        expandedAllNodes(allExpandedNodes);
+      }
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
@@ -143,14 +157,8 @@ export const useTreeView = ({
   }, [data]); */
 
   useEffect(() => {
-    const initExpandedNodes = new Set("");
-    if (data && Array.isArray(data) && allExpandedNodes) {
-      data.forEach((node) => {
-        initExpandedNodes.add(node.id);
-      });
-      setExpandedNodes(initExpandedNodes);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    expandedAllNodes(allExpandedNodes);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**
