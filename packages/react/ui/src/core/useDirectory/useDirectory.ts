@@ -1,15 +1,4 @@
-import {
-  ID,
-  IUserDescription,
-  IUserInfo,
-  odeServices,
-} from "edifice-ts-client";
-
-export interface useUserProps {
-  user: IUserInfo | undefined;
-  avatar: string;
-  userDescription: Partial<IUserDescription> | undefined;
-}
+import { ID, odeServices } from "edifice-ts-client";
 
 export const useDirectory = () => {
   function getAvatarURL(userId: ID, type: "user" | "group"): string {

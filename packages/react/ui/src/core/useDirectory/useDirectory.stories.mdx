@@ -1,0 +1,53 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Core/useDirectory" />
+
+# useDirectory Hook
+
+This hook provides access to the `directory` service, allowing for the retrieval of user and group directory information.
+
+## Methods
+
+### getAvatarURL
+
+Fetches the URL for a user's or group's avatar image.
+
+**Parameters:**
+
+- `userId` (ID): The unique identifier for the user or group.
+- `type` ("user" | "group"): Specifies whether the ID belongs to a user or a group.
+
+**Returns:**
+
+- `string`: The URL for the avatar image.
+
+**Usage Example:**
+
+```jsx
+const avatarURL = getAvatarURL("12345", "user");
+console.log(avatarURL); // Output: /userbook/avatar/12345?thumbnail=100x100
+```
+
+### getUserbookURL
+
+Fetches the URL for a user's or group's profile in the userbook.
+
+**Parameters:**
+
+- `userId` (ID): The unique identifier for the user or group.
+- `type` ("user" | "group"): Specifies whether the ID belongs to a user or a group.
+
+**Returns:**
+
+`string`: The URL for the user's or group's userbook profile.
+
+**Usage Example:**
+
+```jsx
+const userbookURL = getUserbookURL("12345", "user");
+console.log(userbookURL); // Output: /userbook/annuaire#/12345
+```
+
+```
+
+```
