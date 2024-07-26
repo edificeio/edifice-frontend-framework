@@ -164,6 +164,8 @@ export const useTreeView = ({
     if (externalSelectedNodeId && !allExpandedNodes) {
       handleExternalSelectedNodeId(externalSelectedNodeId);
       setInternalSelectedNodeId(externalSelectedNodeId);
+    } else {
+      setInternalSelectedNodeId(undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalSelectedNodeId]);
@@ -176,7 +178,10 @@ export const useTreeView = ({
   const handleExternalSelectedNodeId = (nodeId: string) => {
     const isNodeExist = findNodeById(data, selectedNodeId as string);
 
-    if (!isNodeExist) return;
+    if (!isNodeExist) {
+      setInternalSelectedNodeId(undefined);
+      return;
+    }
 
     if (externalSelectedNodeId === "default") {
       expandedNodes.forEach((node) => onTreeItemUnfold?.(node));
