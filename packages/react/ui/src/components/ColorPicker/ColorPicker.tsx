@@ -1,11 +1,10 @@
-import { forwardRef } from "react";
-import { Ref } from "react";
-import { ComponentPropsWithRef } from "react";
+import { ComponentPropsWithRef, forwardRef, Ref } from "react";
 
 import { DeleteColor, InfoCircle } from "@edifice-ui/icons";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
+import { Tooltip } from "../Tooltip";
 import {
   AccessiblePalette,
   ColorPalette,
@@ -14,7 +13,6 @@ import {
   DefaultPalette,
 } from "./ColorPalette";
 import ColorPickerItem from "./ColorPickerItem";
-import { Tooltip } from "../Tooltip";
 
 export interface ColorPickerProps extends ComponentPropsWithRef<"div"> {
   /**
@@ -73,6 +71,7 @@ const ColorPicker = forwardRef(
               // Show/hide the reset option
               palette.reset && (
                 <button
+                  type="button"
                   className="color-picker-reset small my-8 gap-4"
                   onClick={() => handleClick(palette.reset)}
                 >
@@ -90,6 +89,7 @@ const ColorPicker = forwardRef(
                 >
                   {hues.map((color) => (
                     <button
+                      type="button"
                       key={color.value}
                       aria-label={color.description}
                       className="color-picker-hue-color"
