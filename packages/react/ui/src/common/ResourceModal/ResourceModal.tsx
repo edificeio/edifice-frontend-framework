@@ -143,6 +143,7 @@ const ResourceModal = ({
         const createParams = {
           ...data,
           folder:
+            props.currentFolder === null ||
             props.currentFolder?.id === "default"
               ? undefined
               : parseInt(props.currentFolder?.id || ""),
