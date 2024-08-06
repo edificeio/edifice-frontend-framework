@@ -1,5 +1,5 @@
 import { useDroppable } from "@dnd-kit/core";
-import { Folder, RafterDown, RafterRight } from "@edifice-ui/icons";
+import { Folder, Plus, RafterDown, RafterRight } from "@edifice-ui/icons";
 import clsx from "clsx";
 import { useId } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,6 +28,10 @@ export interface TreeNodeProps {
    */
   selectedNodeId?: string;
   /**
+   * Is treeview is an array
+   */
+  isTreeviewArray?: boolean;
+  /**
    * Is node over
    */
   focused?: boolean;
@@ -43,17 +47,23 @@ export interface TreeNodeProps {
    * Function to fold / unfold node
    */
   handleToggleNode?: (nodeId: string) => void;
+  /**
+   * Function to create children page
+   */
+  handleCreateChildrenPage?: (nodeId: string) => void;
 }
 
 export const TreeNode = ({
   node,
   showIcon,
   selectedNodeId,
+  isTreeviewArray,
   expandedNodes,
   siblingsNodes,
   draggedNodeId,
   handleItemClick,
   handleToggleNode,
+  handleCreateChildrenPage,
 }: TreeNodeProps) => {
   const expanded = expandedNodes.has(node.id);
   const sibling = siblingsNodes?.current.has(node.id);
@@ -91,6 +101,8 @@ export const TreeNode = ({
 
   const handleOnItemClick = (nodeId: string) => handleItemClick?.(nodeId);
   const handleOnToggleNode = (nodeId: string) => handleToggleNode?.(nodeId);
+  const handleOnCreateChildrenPage = (nodeId: string) =>
+    handleCreateChildrenPage?.(nodeId);
 
   const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.code === "Enter" || event.code === "Space") {
@@ -164,6 +176,14 @@ export const TreeNode = ({
             )}
             <span className="text-truncate">{node.name}</span>
           </div>
+          {node.section && isTreeviewArray && (
+            <button
+              className="tree-btn mx-8"
+              onClick={() => handleOnCreateChildrenPage(node.id)}
+            >
+              <Plus height={16} width={16} />
+            </button>
+          )}
         </div>
 
         {Array.isArray(node.children) && !!node.children.length && expanded && (

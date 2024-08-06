@@ -53,6 +53,10 @@ export interface TreeViewProps {
    * Callback function to provide unfolded item to parent component
    */
   onTreeItemUnfold?: (nodeId: string) => void;
+  /**
+   * Callback function to provide clicked button to create children page
+   */
+  onTreeItemCreate?: (nodeId: string) => void;
 }
 
 /**
@@ -66,6 +70,7 @@ const TreeView = forwardRef(
       onTreeItemClick,
       onTreeItemUnfold,
       onTreeItemFold,
+      onTreeItemCreate,
       draggedNode,
       showIcon = true,
       allExpandedNodes = false,
@@ -100,12 +105,14 @@ const TreeView = forwardRef(
                   node={node}
                   key={node.id}
                   showIcon={showIcon}
+                  isTreeviewArray={true}
                   selectedNodeId={selectedNodeId}
                   expandedNodes={expandedNodes}
                   siblingsNodes={siblingsNodes}
                   draggedNodeId={draggedNodeId}
                   handleItemClick={handleItemClick}
                   handleToggleNode={handleFoldUnfold}
+                  handleCreateChildrenPage={onTreeItemCreate}
                 />
               );
             })
