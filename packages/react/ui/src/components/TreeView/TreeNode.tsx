@@ -48,22 +48,21 @@ export interface TreeNodeProps {
    */
   handleToggleNode?: (nodeId: string) => void;
   /**
-   * Function to create children page
+   * Function to handle secondary action
    */
-  handleCreateChildrenPage?: (nodeId: string) => void;
+  handleItemAction?: (nodeId: string) => void;
 }
 
 export const TreeNode = ({
   node,
   showIcon,
   selectedNodeId,
-  isTreeviewArray,
   expandedNodes,
   siblingsNodes,
   draggedNodeId,
   handleItemClick,
   handleToggleNode,
-  handleCreateChildrenPage,
+  handleItemAction,
 }: TreeNodeProps) => {
   const expanded = expandedNodes.has(node.id);
   const sibling = siblingsNodes?.current.has(node.id);
@@ -102,7 +101,7 @@ export const TreeNode = ({
   const handleOnItemClick = (nodeId: string) => handleItemClick?.(nodeId);
   const handleOnToggleNode = (nodeId: string) => handleToggleNode?.(nodeId);
   const handleOnCreateChildrenPage = (nodeId: string) =>
-    handleCreateChildrenPage?.(nodeId);
+    handleItemAction?.(nodeId);
 
   const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.code === "Enter" || event.code === "Space") {
@@ -176,7 +175,7 @@ export const TreeNode = ({
             )}
             <span className="text-truncate">{node.name}</span>
           </div>
-          {node.section && isTreeviewArray && (
+          {node.section && handleItemAction && (
             <button
               className="tree-btn mx-8"
               onClick={() => handleOnCreateChildrenPage(node.id)}
