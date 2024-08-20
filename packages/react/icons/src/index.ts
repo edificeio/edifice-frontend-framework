@@ -44,6 +44,7 @@ export { default as ExternalLink } from "./ExternalLink";
 export { default as Files } from "./Files";
 export { default as Filter } from "./Filter";
 export { default as Flag } from "./Flag";
+export { default as FolderMove } from "./FolderMove";
 export { default as Folder } from "./Folder";
 export { default as FullScreen } from "./FullScreen";
 export { default as Globe } from "./Globe";
