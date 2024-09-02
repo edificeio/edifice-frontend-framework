@@ -18,7 +18,7 @@ export interface TableProps {
   children?: Array<React.ReactElement<HTMLTableSectionElement>> | any;
 }
 
-export const Root = forwardRef(
+const Root = forwardRef(
   ({ children }: { children: ReactNode }, ref: Ref<TableRef>) => {
     return (
       <div className="table-responsive">
