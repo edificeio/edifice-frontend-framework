@@ -26,8 +26,10 @@ export type MongoDate = {
 };
 export type IsoDate = string; // "2021-03-24T16:36:05.398" or "1980-01-13"
 
+export type NumberDate = number;
+
 /** Date formats we are going to deal with. */
-export type CoreDate = IsoDate | MongoDate;
+export type CoreDate = IsoDate | MongoDate | NumberDate;
 
 /**
  * Hook to compute user-friendly dates from various format.
@@ -62,7 +64,7 @@ export default function useDate() {
 
   /** Compute a user-friendly elapsed duration, between now and a date. */
   const fromNow = useCallback(
-    (date: CoreDate): string => {
+    (date: CoreDate | NumberDate): string => {
       let computedDate: Dayjs = dayjs();
       try {
         if ("undefined" === typeof date) {
@@ -96,6 +98,8 @@ export default function useDate() {
           return "";
         } else if ("string" === typeof date) {
           computedDate = parseDate(date);
+        } else if ("number" === typeof date) {
+          computedDate = dayjs(date).locale(currentLanguage as string);
         } else if ("number" === typeof date.$date) {
           computedDate = dayjs(new Date(date.$date)).locale(
             currentLanguage as string,

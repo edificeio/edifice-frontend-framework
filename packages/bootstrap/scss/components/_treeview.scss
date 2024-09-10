@@ -52,12 +52,6 @@ $selected-background-color: var(--#{$prefix}blue-200);
     border-left: 1px solid var(--#{$prefix}gray-400);
   }
 
-  .dropdown & {
-    [role="group"] {
-      border-left: none;
-    }
-  }
-
   .tree-btn {
     height: 24px;
     border: 1px solid var(--#{$prefix}gray-200);
@@ -86,6 +80,12 @@ $selected-background-color: var(--#{$prefix}blue-200);
         color: var(--#{$prefix}secondary);
         background-color: initial;
       }
+    }
+  }
+
+  .dropdown & {
+    [role="group"] {
+      border-left: none;
     }
   }
 
