@@ -16,8 +16,8 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   const { editor, node } = props;
   const {
     "class": className,
-    title,
     "data-app-prefix": appPrefix,
+    title,
     href,
     target,
   } = node.attrs;
@@ -33,7 +33,7 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   const handleBadgeClick: MouseEventHandler<HTMLSpanElement> = (event) => {
     // Clicking a linker badge in read mode opens the link
     if (editor && !editor.isEditable) {
-      event.preventDefault;
+      event.preventDefault();
       window.open(href ?? "about:blank", target ?? "_self");
     }
   };
@@ -41,7 +41,7 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   return (
     <NodeViewWrapper as="span" contentEditable={false}>
       <Badge
-        variant={{ type: "link" }}
+        variant={{ type: "chip", background: true }}
         className={classes}
         onClick={handleBadgeClick}
         data-drag-handle
