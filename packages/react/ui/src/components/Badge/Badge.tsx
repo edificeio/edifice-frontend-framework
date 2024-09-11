@@ -90,8 +90,6 @@ const Badge = forwardRef(
       className,
     );
 
-    console.log("background" in variant);
-
     return (
       <span ref={ref} className={classes} {...restProps}>
         {variant.type === "chip" ? (
