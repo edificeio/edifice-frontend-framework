@@ -22,6 +22,10 @@ export interface EmptyScreenProps {
    * Text to display
    */
   text?: string;
+  /**
+   * Size of the EmptyScreen image. Must be square
+   */
+  size?: number;
 
   /**
    * Optional class for styling purpose
@@ -34,6 +38,7 @@ const EmptyScreen = ({
   imageAlt = "",
   title,
   text,
+  size = 250,
   className,
 }: EmptyScreenProps) => {
   const textClass = clsx("text", className);
@@ -45,8 +50,8 @@ const EmptyScreen = ({
             className="mx-auto"
             src={imageSrc}
             alt={imageAlt}
-            width="250"
-            height="250"
+            width={size}
+            height={size}
           />
         </div>
       )}

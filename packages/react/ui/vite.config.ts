@@ -17,6 +17,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: resolve(__dirname, "src/index.ts"),
+        comments: resolve(__dirname, "src/modules/comments/index.ts"),
       },
       formats: ["es"],
     },
