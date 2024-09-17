@@ -1,6 +1,6 @@
 import { ID, odeServices } from "edifice-ts-client";
 
-export const useDirectory = () => {
+const useDirectory = () => {
   function getAvatarURL(userId: ID, type: "user" | "group"): string {
     return odeServices.directory().getAvatarUrl(userId, type);
   }
@@ -14,3 +14,5 @@ export const useDirectory = () => {
     getUserbookURL,
   };
 };
+
+export default useDirectory;

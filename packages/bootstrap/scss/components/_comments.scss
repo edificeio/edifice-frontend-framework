@@ -1,0 +1,21 @@
+@use "../abstracts/" as *;
+
+.comments {
+  &-emptyscreen {
+    background-color: var(--#{$prefix}secondary-200);
+    border-radius: $spacer-16;
+    margin-block: $spacer-64;
+    margin-inline: auto;
+    max-width: 62rem;
+    display: flex;
+    align-items: center;
+
+    .emptyscreen-image {
+      margin-bottom: 0;
+    }
+
+    &-wrapper {
+      margin-block: -50px;
+    }
+  }
+}
