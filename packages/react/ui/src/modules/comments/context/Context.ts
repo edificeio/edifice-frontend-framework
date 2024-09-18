@@ -1,9 +1,5 @@
 import { createContext } from "react";
-import {
-  CommentOptions,
-  CommentProps,
-  UserProfileResult,
-} from "./Comments.types";
+import { CommentOptions, CommentProps, UserProfileResult } from "../types";
 
 export const CommentContext = createContext<{
   comments: CommentProps[] | undefined;
