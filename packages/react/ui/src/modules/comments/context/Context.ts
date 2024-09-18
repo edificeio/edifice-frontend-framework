@@ -1,5 +1,10 @@
 import { createContext } from "react";
-import { CommentOptions, CommentProps, UserProfileResult } from "../types";
+import {
+  CommentOptions,
+  CommentProps,
+  CommentType,
+  UserProfileResult,
+} from "../types";
 
 export const CommentContext = createContext<{
   comments: CommentProps[] | undefined;
@@ -7,6 +12,7 @@ export const CommentContext = createContext<{
   editCommentId: string | null;
   profiles: (UserProfileResult | undefined)[];
   options: Partial<CommentOptions>;
+  type: CommentType;
   setEditCommentId: (value: string | null) => void;
   handleModifyComment: (commentId: string) => void;
   handleChangeContent: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;

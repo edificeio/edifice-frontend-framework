@@ -17,8 +17,8 @@ import { RootProps } from "../types";
 
 const CommentProvider = ({
   comments: defaultComments,
-  callbacks,
   options: commentOptions,
+  ...props
 }: RootProps) => {
   const options = {
     maxCommentLength: DEFAULT_MAX_COMMENT_LENGTH,
@@ -36,6 +36,7 @@ const CommentProvider = ({
 
   const { t } = useTranslation();
   const { user } = useOdeClient();
+  const { type } = props;
 
   const usersIds = Array.from(
     new Set(defaultComments?.map((comment) => comment.authorId)),
@@ -52,10 +53,18 @@ const CommentProvider = ({
       : t("comment.little", { number: commentsCount });
 
   const comments = useMemo(
-    () =>
-      defaultComments
-        ?.sort((a, b) => b.createdAt - a.createdAt)
-        .slice(0, commentLimit) ?? [],
+    () => {
+      if (type === "edit") {
+        return (
+          defaultComments
+            ?.sort((a, b) => b.createdAt - a.createdAt)
+            .slice(0, commentLimit) ?? []
+        );
+      } else {
+        return defaultComments?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [commentLimit, defaultComments],
   );
 
@@ -74,25 +83,34 @@ const CommentProvider = ({
   };
 
   const handleReset = () => {
-    callbacks.reset?.();
+    if (type === "edit") {
+      props.callbacks.reset?.();
+    }
     setContent("");
 
     if (editCommentId) setEditCommentId(null);
   };
 
   const handleDeleteComment = (id: string) => {
-    callbacks.delete(id);
+    if (type === "edit") {
+      props.callbacks.delete(id);
+    }
   };
 
   const handleUpdateComment = (comment: string) => {
     if (editCommentId) {
-      callbacks.put({ comment, commentId: editCommentId });
+      if (type === "edit") {
+        props.callbacks.put({ comment, commentId: editCommentId });
+      }
+
       setEditCommentId(null);
     }
   };
 
   const handleCreateComment = (content: string) => {
-    callbacks.post(content);
+    if (type === "edit") {
+      props.callbacks.post(content);
+    }
     setContent("");
   };
 
@@ -107,6 +125,7 @@ const CommentProvider = ({
       profiles: profilesQueries.data,
       editCommentId,
       options,
+      type,
       setEditCommentId,
       handleCreateComment,
       handleModifyComment,
@@ -122,7 +141,7 @@ const CommentProvider = ({
   return (
     <CommentContext.Provider value={values}>
       <div className="my-24">
-        <CommentHeader title={title} />
+        {type === "edit" && <CommentHeader title={title} />}
 
         <div className="my-24">
           {user && <CommentForm userId={user.userId} />}
@@ -130,7 +149,7 @@ const CommentProvider = ({
             <>
               <CommentList />
 
-              {commentsCount !== defaultCommentsCount && (
+              {commentsCount !== defaultCommentsCount && type === "edit" && (
                 <Button
                   variant="ghost"
                   color="tertiary"
@@ -144,7 +163,7 @@ const CommentProvider = ({
           ) : null}
         </div>
 
-        {!commentsCount && (
+        {!commentsCount && type === "edit" && (
           <div className="comments-emptyscreen">
             <div className="comments-emptyscreen-wrapper">
               <EmptyScreen
