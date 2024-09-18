@@ -39,6 +39,7 @@ export const Comment = ({
   const {
     editCommentId,
     options,
+    type,
     handleDeleteComment: onDeleteComment,
     handleModifyComment,
     handleReset,
@@ -118,7 +119,7 @@ export const Comment = ({
           <>
             <div className="mt-8 mb-4">{content}</div>
 
-            {userId === authorId && (
+            {userId === authorId && type === "edit" && (
               <div className="ms-n8">
                 <Button
                   variant="ghost"
