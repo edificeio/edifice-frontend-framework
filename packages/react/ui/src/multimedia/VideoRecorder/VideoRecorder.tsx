@@ -306,6 +306,8 @@ const VideoRecorder = forwardRef(
     };
 
     const handleSave = async () => {
+      // WB-3012, stop any playing video before saving it.
+      videoRef?.current?.pause();
       setSaving(true);
       if (!recordedVideo) {
         console.error("Error while saving video: recorded video is undefined.");
