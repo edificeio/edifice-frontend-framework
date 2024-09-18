@@ -1,1 +1,1 @@
-export { default as CommentProvider } from "./Comments";
+export { default as CommentProvider } from "./provider/CommentProvider";

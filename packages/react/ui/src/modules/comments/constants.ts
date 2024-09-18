@@ -1,0 +1,5 @@
+export const DEFAULT_MAX_COMMENT_LENGTH = 200;
+export const DEFAULT_MAX_REPLY_LENGTH = 200;
+export const DEFAULT_MAX_COMMENTS = 4;
+export const DEFAULT_ADD_COMMENTS = 5;
+export const DEFAULT_MAX_REPLIES = 5;

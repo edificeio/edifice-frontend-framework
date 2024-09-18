@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CommentContext } from "./Comments.context";
+import { CommentContext } from "../context/Context";
 
 export const useCommentsContext = () => {
   const context = useContext(CommentContext);
