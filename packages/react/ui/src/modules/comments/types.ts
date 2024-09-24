@@ -37,7 +37,6 @@ interface ReadRootProps extends BaseProps {
 
 export type RootProps = EditRootProps | ReadRootProps;
 
-
 export type CommentOptions = {
   /**
    * Set new comment limit
