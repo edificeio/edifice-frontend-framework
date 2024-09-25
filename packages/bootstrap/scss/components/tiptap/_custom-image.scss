@@ -9,4 +9,12 @@ p:has(.node-custom-image) {
   gap: $spacer-16;
   flex-wrap: wrap;
   overflow-wrap: anywhere;
+
+  &[style="text-align: center"] {
+    justify-content: center;
+  }
+
+  &[style="text-align: right"] {
+    justify-content: end;
+  }
 }
