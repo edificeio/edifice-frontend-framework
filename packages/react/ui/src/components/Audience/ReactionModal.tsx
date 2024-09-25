@@ -145,7 +145,7 @@ const ReactionModal = ({
       scrollable
     >
       <Modal.Header onModalClose={onModalClose}>
-        <h2>{t("audience.reaction.modal.header")}</h2>
+        {t("audience.reaction.modal.header")}
       </Modal.Header>
 
       <Modal.Body>
