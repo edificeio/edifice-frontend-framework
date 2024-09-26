@@ -44,14 +44,6 @@ const CommentProvider = ({
 
   const profilesQueries = useProfileQueries(usersIds);
 
-  const commentsCount = defaultComments?.length ?? 0;
-  const defaultCommentsCount = defaultComments?.length ?? 0;
-
-  const title =
-    commentsCount && commentsCount > 1
-      ? t("comment.several", { number: commentsCount })
-      : t("comment.little", { number: commentsCount });
-
   const comments = useMemo(
     () => {
       if (type === "edit") {
@@ -67,6 +59,14 @@ const CommentProvider = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [commentLimit, defaultComments],
   );
+
+  const commentsCount = comments?.length ?? 0;
+  const defaultCommentsCount = defaultComments?.length ?? 0;
+
+  const title =
+    commentsCount && commentsCount > 1
+      ? t("comment.several", { number: commentsCount })
+      : t("comment.little", { number: commentsCount });
 
   const handleMoreComments = () => {
     const newLimit = comments?.length + (options.additionalComments ?? 5);
@@ -149,14 +149,14 @@ const CommentProvider = ({
             <>
               <CommentList />
 
-              {commentsCount !== defaultCommentsCount && type === "edit" && (
+              {commentsCount !== defaultCommentsCount && (
                 <Button
                   variant="ghost"
                   color="tertiary"
                   onClick={handleMoreComments}
                   className="my-16"
                 >
-                  Lire plus de commentaires
+                  {t("comment.more")}
                 </Button>
               )}
             </>
