@@ -1,0 +1,90 @@
+{/* List.mdx */}
+
+import { Canvas, Controls, Meta } from "@storybook/blocks";
+import * as listStories from "./List.stories";
+
+<Meta of={listStories} />
+
+# List
+
+The List component is used to render data in a list format and internally uses the `useCheckable` hook (refer to the story of this hook)
+
+<Canvas of={listStories.Base} />
+<Controls />
+
+## renderNode
+
+Use the `renderNode` prop to render your data as a `ReactNode`. This prop gives you access to a single `node` from your data.
+
+<Canvas of={listStories.Base} sourceState="none" />
+
+```jsx
+renderNode={(node) => (
+  <div
+    className={clsx("grid gap-24 py-8 px-12 mb-2", {
+      "bg-secondary-200 rounded": node.id === "2",
+    })}
+    style={{ "--edifice-columns": 8 } as React.CSSProperties}
+  >
+    <div className="d-flex align-items-center gap-8 g-col-3">
+      <p className="text-truncate text-truncate-2">{node.title}</p>
+    </div>
+  </div>
+)}
+```
+
+## List with Toolbar
+
+Display the Toolbar component by passing the `items` prop (`ToolbarItems[]`) to the List component. Refer to the dedicated story for the Toolbar component to learn how to customize it.
+
+<Canvas of={listStories.ListWithToolbar} />
+
+```jsx
+const items: ToolbarItem[] = [
+  {
+    type: "icon",
+    name: "read",
+    props: {
+      icon: <See />,
+      ...otherProps
+    }
+  }
+  ...
+]
+```
+
+## renderNode with checkboxes
+
+By passing `items` to the List component, you provide actions to your component and make the list checkable. A checkbox will appear to the left of the Toolbar and will give you access to two new props in the `renderNode` prop: `checkbox` and `checked`.
+
+- `checkbox` is the Checkbox component that you can use to render anywhere in your JSX within the `renderNode` prop.
+- `checked` is the state of the currently selected checkbox, allowing you to style your code accordingly.
+
+<Canvas of={listStories.ListWithCheckboxes} sourceState="none" />
+
+```jsx
+renderNode={(node, checkbox, checked) => (
+  <div
+    className={clsx("grid gap-24 px-12 py-8 mb-2", {
+      "bg-secondary-200 rounded": checked,
+    })}
+    style={{ "--edifice-columns": 8 } as React.CSSProperties}
+  >
+    <div className="d-flex align-items-center gap-8 g-col-3">
+      {checkbox}
+      <p className="text-truncate text-truncate-2">{node.title}</p>
+    </div>
+  </div>
+)}
+```
+
+## onSelectedItems
+
+The `onSelectedItems` callback provides access to the selected ids when checkboxes are selected.
+Use it to manage state outside the List component. For example, to control disabled state in your `ToolbarItem[]`
+
+<Canvas of={listStories.ListWithOnSelectedItems} sourceState="none" />
+
+```jsx
+onSelectedItems={(selectedIds) => console.log(selectedIds)}
+```

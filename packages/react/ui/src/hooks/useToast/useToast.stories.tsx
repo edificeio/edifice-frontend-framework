@@ -1,14 +1,10 @@
-import useToast from "./useToast";
-import { Toaster } from "react-hot-toast";
-import docs from "./useToast.mdx";
 import { Meta, StoryObj } from "@storybook/react";
+import { Toaster } from "react-hot-toast";
 import Button from "../../components/Button/Button";
+import useToast from "./useToast";
 
 const meta: Meta<typeof useToast> = {
   title: "Hooks/useToast",
-  parameters: {
-    docs: { page: docs },
-  },
 };
 
 export default meta;
