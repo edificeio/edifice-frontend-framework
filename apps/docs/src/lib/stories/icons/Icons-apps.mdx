@@ -1,0 +1,40 @@
+import { Meta, Story } from "@storybook/blocks";
+import { SvgIcon } from "../../components/SvgIcon";
+import * as IconsAppsStories from "./Icons-apps.stories";
+
+<Meta title="Design System/Icons/Apps and Connectors" />
+
+# Apps and Connectors Icons
+
+This set of icons uses a SVG Sprite and should already be included with `bootstrap` package.
+
+## Usage
+
+Use this set of icons with the `AppIcon` Component.
+
+```jsx
+import { AppIcon } from "@edifice-ui/react";
+
+export default function App() {
+  return (
+    <AppIcon
+      app={{
+        address: "/blog",
+        icon: "blog-large",
+        name: "Blog",
+        scope: [],
+        display: false,
+        displayName: "",
+        isExternal: false,
+      }}
+      size="48"
+    ></AppIcon>
+  );
+}
+```
+
+## Apps and Connectors Icons Set
+
+This set includes 116 icons.
+
+<SvgIcon />

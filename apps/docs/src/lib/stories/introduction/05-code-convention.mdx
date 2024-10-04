@@ -1,0 +1,249 @@
+import { Meta, Story } from "@storybook/blocks";
+
+<Meta title="Introduction/Code Convention" />
+
+# Code Convention
+
+Some best practices coming from React documentation and Experience:
+
+You will find here all the rules to follow to write a React App
+
+## Naming Convention
+
+> Component name and his file will be written in Pascal Case
+
+```jsx
+// AppContainer.tsx
+const AppContainer = () => {
+  return (
+    <div className="App">
+      <h1>I Pascal Case Naming</h1>
+      <p>And I'm also proud of it!</p>
+    </div>
+  );
+};
+
+export default AppContainer;
+```
+
+> Custom hook is written with prefix use, file and hook are written in camelCase
+
+`useCustomHook`
+
+```jsx
+// useCounter.tsx
+const useCounter = (score: number) => {
+  const [count, setcount] = useState(score || 0);
+  const increment = useCallback(() => setcount(count + 1), [count]);
+  const decrement = useCallback(() => setcount(count - 1), [count]);
+  return { count, increment, decrement };
+};
+```
+
+## Lifting State Up
+
+Lift State Up as often as possible
+
+- The logic is contained in a parent component
+- Logic is reusable and moved to a custom Hook
+- Logic is more complex and will be handled by a reducer
+- Logic and Custom Hooks
+- Export all reusable logic inside a custom hook
+
+```jsx
+import { useCallback, useState } from "react";
+
+export const useToggle = (initialState: boolean = false): [boolean, any] => {
+  // Initialize the state
+  const [state, setState] = useState < boolean > initialState;
+  // Define and memorize toggler function in case we pass down the component,
+  // This function change the boolean value to it's opposite value
+  const toggle = useCallback((): void => setState((state) => !state), []);
+  return [state, toggle];
+};
+```
+
+## How Custom Hooks are written and returned
+
+```jsx
+// Custom Hook return an Array
+const [state, setState] = useCustomHook();
+
+// Custom Hook return an Object
+const { state, setState } = useCustomHook();
+```
+
+### Examples
+
+> With Array : [Example](https://stackblitz.com/edit/vitejs-vite-1tvais?file=src%2FApp.tsx)
+
+- Destructured values ​​in same order as returned values
+- Easy to rename values
+
+> With Object : [Example](https://stackblitz.com/edit/vitejs-vite-yt5ear?file=src%2FApp.tsx)
+
+- Destructured values ​​in different order is possible
+
+- Not as easy to rename values as Array option
+
+- How to write functions
+
+- Will write normal functions
+
+- Always with prefix handle then subjectEvent
+
+- Pass functions as Props with prefix on and onSubjectEvent
+
+```jsx
+// handleActionSubject
+function handleAddTask {
+// ...
+}
+
+// onActionSubject
+
+<Component onAddTask={handleAddTask} />;
+
+```
+
+## When to use arrow functions
+
+> Will use arrow functions in specific cases
+
+- useCallback
+- useMemo
+- forwardRef
+- React.memo
+
+```jsx
+const visibleTodos = useMemo(() => {
+  return getFilteredTodos(todos, filter);
+}, [todos, filter]);
+
+// or implicit return
+const visibleTodos = useMemo(
+  () => getFilteredTodos(todos, filter),
+  [todos, filter],
+);
+```
+
+## Naming Events Handlers
+
+> Named your Events Functions with handleSubjectEvent
+
+```jsx
+function handleBuyClick() {
+  addToCart(product);
+}
+```
+
+```jsx
+function handleCheckoutClick() {
+  addToCart(product);
+  navigateTo("/checkout");
+}
+```
+
+> Pass your Events Functions as Props
+
+```jsx
+function handleStoreOpen() {...}
+function handleItemClick() {...}
+
+return <Component onStoreOpen={handleStoreOpen} onItemClick={handleItemClick} />
+```
+
+## Clean your effects!
+
+- DOM
+
+```jsx
+window.addEventListener("online", callback);
+window.addEventListener("offline", callback);
+
+return () => {
+  window.removeEventListener("online", callback);
+  window.removeEventListener("offline", callback);
+};
+```
+
+- useEffect + fetch
+
+```jsx
+function SearchResults({ query }) {
+  const [results, setResults] = useState([]);
+  const [page, setPage] = useState(1);
+  useEffect(() => {
+    let ignore = false;
+    fetchResults(query, page).then((json) => {
+      if (!ignore) {
+        setResults(json);
+      }
+    });
+    return () => {
+      ignore = true;
+    };
+  }, [query, page]);
+
+  function handleNextPageClick() {
+    setPage(page + 1);
+  }
+  // ...
+}
+```
+
+## Manage your state
+
+- Avoid duplication in state
+- Use computed properties depending on one state
+
+```jsx
+DONT ❌
+
+// 3 useState to handle todos
+// 2 useEffect
+const [todos, setTodos] = useState(initialTodos);
+const [activeTodos, setActiveTodos] = useState([]);
+const [visibleTodos, setVisibleTodos] = useState([]);
+const [showActive, setShowActive] = useState(false);
+
+useEffect(() => {
+setActiveTodos(todos.filter(todo => !todo.completed));
+}, [todos]);
+
+useEffect(() => {
+setVisibleTodos(showActive ? activeTodos : todos);
+}, [showActive, todos, activeTodos]);
+```
+
+```jsx
+DO ✅
+// Only one state to handle todos
+const [todos, setTodos] = useState(initialTodos);
+const [showActive, setShowActive] = useState(false);
+
+// Computed properties depending on todos' state
+// No useEffect
+const activeTodos = todos.filter(todo => !todo.completed);
+const visibleTodos = showActive ? activeTodos : todos;
+```
+
+## Performance and Optimisation
+
+If my app is slow, buggy or crashes, maybe it needs optimisation. <br />
+
+First, inspect your app with React Profiler :
+
+[React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi)
+
+Then apply necessary optimisations :
+
+- Use Composition instead of Props/Component Drilling
+- Move your state inside the right component
+- React Memo to memoize a component
+- useMemo to memoize a value
+- useCallback to memoize a function
+
+## More on the workshop doc
+
+[Workshop](https://ode-workshop-react.vercel.app/)
