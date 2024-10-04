@@ -1,0 +1,81 @@
+import { Meta, Story } from "@storybook/blocks";
+
+<Meta title="Introduction/Welcome" />
+
+<style>
+  {`
+    * {box-sizing: border-box;}
+    .card {
+        background-color: rgb(255, 255, 255);
+        border-radius: 16px;
+        border: 2px solid rgb(230, 230, 230);
+        display: flex;
+        flex-direction: column;
+        -webkit-box-pack: justify;
+        justify-content: space-between;
+        padding: 16px 24px;
+        flex: 1 1 40%;
+    }
+  `}
+</style>
+
+![edifice](logo.svg)
+
+[Edifice Frontend Framework](https://github.com/edificeio/edifice-frontend-framework) is the React implementation of the Edifice Design System.
+Our goal is to provide a consistent, accessible, and performant user experience to our users.
+
+Edifice Frontend Framework uses [bootstrap package](?path=/docs/introduction-theming--docs) for theming implementation.
+
+## What is Edifice Frontend Framework ?
+
+Edifice Frontend Framework is a monorepo with:
+
+- Multiple packages: components, icons, editor, ...
+- Storybook to visualize components, icons and interact with them
+
+Many tools are already configured:
+
+- [ReactJS](https://beta.reactjs.org/)
+- [ViteJS](https://v3.vitejs.dev/guide/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Eslint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+- [Husky](https://github.com/typicode/husky)
+- [Turborepo](https://turbo.build/repo)
+- [Storybook](https://storybook.js.org/)
+
+For development, please install these Visual Code Studio extensions:
+
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+Recommended Extensions:
+
+- Auto Rename Tag : [Link](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
+- Better Comments : [Link](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+- ES7+ React : [Link](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
+- Import Cost : [Link](https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost)
+
+<div className="d-flex gap-16 flex-wrap">
+  <div className="card">
+    <h3>Getting Started</h3>
+    How to set up Edifice Frontend Framework.
+  [Read](?path=/docs/introduction-getting-started--docs)
+  </div>
+
+<div className="card">
+  <h3>Contributing</h3>
+  Learn how to contribute to Edifice Frontend Framework. [Read](?path=/docs/introduction-contributing-overview--docs)
+</div>
+
+<div className="card">
+  <h3>Theming</h3>
+  Learn how to theme Edifice Frontend Framework. [Read](?path=/docs/introduction-theming--docs)
+</div>
+
+  <div className="card">
+    <h3>Design System</h3>
+    Check our Design System
+    [Tokens](?path=/docs/design-system-colors-common--docs)
+  </div>
+</div>

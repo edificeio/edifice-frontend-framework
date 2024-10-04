@@ -1,0 +1,32 @@
+import { Meta, Story } from "@storybook/blocks";
+import { Icons } from "../../components/Icons";
+import * as IconsStories from "./Icons.Audience.stories";
+
+import * as icons from "@edifice-ui/icons/audience";
+
+<Meta title="Design System/Icons/Audience Icons" />
+
+# Reactions Icons
+
+To use this set of icons, import `@edifice-ui/icons/audience` into your code:
+
+- `import { Great, GreatCounter } from "@edifice-ui/icons/audience;"`
+
+## Usage
+
+Then you can use any icon as follows:
+
+```jsx
+function MyComponent() {
+  return (
+    <div>
+      <Great />
+      <GreatCounter />
+    </div>
+  );
+}
+```
+
+## Icons
+
+<Icons icons={icons} />
