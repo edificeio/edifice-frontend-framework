@@ -1,0 +1,303 @@
+import { Meta } from "@storybook/blocks";
+import { Colors } from "../../components/Colors";
+import * as OneStories from "./One.stories";
+
+<Meta title="Design System/Colors/One" />
+
+<style>
+  {`
+      * {box-sizing: border-box;}
+      .h2, .h3 {margin-top: 50px;border-bottom: 0;}
+      .flex {display: flex;gap: 24px;flex-wrap: wrap;justify-content: flex-start;}
+      .ctn-card {width:240px; box-shadow: 0px 2px 6px 0px #00000026;border-radius: 8px;}
+      .name-color {font-weight: bold;}
+      .name-color, .hexa-color, .variable {margin: 0;line-height: 24px;font-size: 14px;}
+      .background-color {height: 100px;border-radius: 8px 8px 0 0;}
+      .description-color {padding: 16px;border-radius: 0 0 8px 8px;background: #FFFFFF;}
+  `}
+</style>
+
+# ONE Primary colors
+
+<div className="flex">
+  <Colors
+    color="Blue"
+    hexa="#2A9CC8"
+    nameVar="$primary"
+    cssVar="--edifice-primary"
+  />
+  <Colors
+    color="Blue"
+    hexa="#2F7EA7"
+    nameVar="$primary-800"
+    cssVar="--edifice-primary-800"
+  />
+  <Colors
+    color="Blue"
+    hexa="#B9E3F8"
+    nameVar="$primary-300"
+    cssVar="--edifice-primary-300"
+  />
+  <Colors
+    color="Blue"
+    hexa="#E5F5FF"
+    nameVar="$primary-200"
+    cssVar="--edifice-primary-200"
+  />
+  <Colors
+    color="orange"
+    hexa="#FF8D2E"
+    nameVar="$secondary"
+    cssVar="--edifice-secondary"
+  />
+  <Colors
+    color="orange"
+    hexa="#DA6A0B"
+    nameVar="$secondary-800"
+    cssVar="--edifice-secondary-800"
+  />
+  <Colors
+    color="orange"
+    hexa="#FFCBA0"
+    nameVar="$secondary-300"
+    cssVar="--edifice-secondary-300"
+  />
+  <Colors
+    color="orange"
+    hexa="#FFEFE3"
+    nameVar="$secondary-200"
+    cssVar="--edifice-secondary-200"
+  />
+</div>
+
+# ONE Complementary colors
+
+## Default
+
+Complementary colors are use for graphic elements, illustrations, days of the week representation elements, calendar and some specifique titles
+
+<div className="flex">
+  <Colors color="Purple" hexa="#A348C0" nameVar="$purple" 
+    cssVar="--edifice-purple" />
+
+{" "}
+
+<Colors color="Blue" hexa="#46AFE6" nameVar="$blue" cssVar="--edifice-blue" />
+
+{" "}
+
+<Colors
+  color="Green"
+  hexa="#5AC235"
+  nameVar="$green"
+  cssVar="--edifice-green"
+/>
+
+{" "}
+
+<Colors
+  color="Yellow"
+  hexa="#F1CA00"
+  nameVar="$yellow"
+  cssVar="--edifice-yellow"
+/>
+
+{" "}
+
+<Colors color="Red" hexa="#FF3A55" nameVar="$red" cssVar="--edifice-primary" />
+
+  <Colors color="Orange" hexa="#FF8D2E" nameVar="$orange" 
+    cssVar="--edifice-orange" />
+</div>
+
+## Absolute
+
+Can be used for hover effects, graphic elements and illustrations.
+
+<div className="flex">
+  <Colors color="Purple" hexa="#550070" nameVar="$purple-900" 
+    cssVar="--edifice-purple-900" />
+
+{" "}
+
+<Colors
+  color="Blue"
+  hexa="#005A8A"
+  nameVar="$blue-900"
+  cssVar="--edifice-blue-900"
+/>
+
+{" "}
+
+<Colors
+  color="Green"
+  hexa="#2E6105"
+  nameVar="$green-900"
+  cssVar="--edifice-green-900"
+/>
+
+{" "}
+
+<Colors
+  color="Yellow"
+  hexa="#A89400"
+  nameVar="$yellow-900"
+  cssVar="--edifice-yellow-900"
+/>
+
+{" "}
+
+<Colors
+  color="Red"
+  hexa="#9E0016"
+  nameVar="$red-900"
+  cssVar="--edifice-red-900"
+/>
+
+  <Colors color="Orange" hexa="#9E4800" nameVar="$orange-900" 
+    cssVar="--edifice-orange-900" />
+</div>
+
+## Dark
+
+Can be used for hover effects, graphic elements and illustrations.
+
+<div className="flex">
+  <Colors color="Purple" hexa="#7C2C96" nameVar="$purple-800" 
+    cssVar="--edifice-primary" />
+
+{" "}
+
+<Colors
+  color="Blue"
+  hexa="#2F7EA7"
+  nameVar="$blue-800"
+  cssVar="--edifice-blue-800"
+/>
+
+{" "}
+
+<Colors
+  color="Green"
+  hexa="#4E9019"
+  nameVar="$green-800"
+  cssVar="--edifice-green-800"
+/>
+
+{" "}
+
+<Colors
+  color="Yellow"
+  hexa="#D1AF00"
+  nameVar="$yellow-800"
+  cssVar="--edifice-yellow-800"
+/>
+
+{" "}
+
+<Colors
+  color="Red"
+  hexa="#C6253B"
+  nameVar="$red-800"
+  cssVar="--edifice-red-800"
+/>
+
+  <Colors color="Orange" hexa="#DA6A0B" nameVar="$orange-800" 
+    cssVar="--edifice-orange-800" />
+</div>
+
+## Light
+
+Can be used for hover effects, graphic elements and illustrations.
+
+<div className="flex">
+  <Colors color="Purple" hexa="#D7B5E2" nameVar="$purple-300" 
+    cssVar="--edifice-purple-300" />
+
+{" "}
+
+<Colors
+  color="Blue"
+  hexa="#B9E3F8"
+  nameVar="$blue-300"
+  cssVar="--edifice-blue-300"
+/>
+
+{" "}
+
+<Colors
+  color="Green"
+  hexa="#C8E4AF"
+  nameVar="$green-300"
+  cssVar="--edifice-green-300"
+/>
+
+{" "}
+
+<Colors
+  color="Yellow"
+  hexa="#FAEA9C"
+  nameVar="$yellow-300"
+  cssVar="--edifice-yellow-300"
+/>
+
+{" "}
+
+<Colors
+  color="Red"
+  hexa="#FFB6C0"
+  nameVar="$red-300"
+  cssVar="--edifice-red-300"
+/>
+
+  <Colors color="Orange" hexa="#FFCBA0" nameVar="$orange-300" 
+    cssVar="--edifice-orange-300" />
+</div>
+
+## Pale
+
+Can be used for hover effects, graphic elements and illustrations.
+
+<div className="flex">
+  <Colors color="Purple" hexa="#F6ECF9" nameVar="$purple-200" 
+    cssVar="--edifice-purple-200" />
+
+{" "}
+
+<Colors
+  color="Blue"
+  hexa="#E5F5FF"
+  nameVar="$blue-200"
+  cssVar="--edifice-blue-200"
+/>
+
+{" "}
+
+<Colors
+  color="Green"
+  hexa="#EAF7E4"
+  nameVar="$green-200"
+  cssVar="--edifice-green-200"
+/>
+
+{" "}
+
+<Colors
+  color="Yellow"
+  hexa="#FBF4D5"
+  nameVar="$yellow-200"
+  cssVar="--edifice-yellow-200"
+/>
+
+{" "}
+
+<Colors
+  color="Red"
+  hexa="#FFECEE"
+  nameVar="$red-200"
+  cssVar="--edifice-red-200"
+/>
+
+  <Colors color="Orange" hexa="#FFEFE3 " nameVar="$orange-200" 
+    cssVar="--edifice-orange-200" />
+</div>

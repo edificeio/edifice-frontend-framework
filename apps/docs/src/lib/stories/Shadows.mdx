@@ -1,0 +1,193 @@
+import { Meta } from "@storybook/blocks";
+import { Card } from "../components/Card";
+import * as ShadowsStories from "./Shadows.stories";
+
+<Meta title="Design System/Tokens/Shadows" />
+
+<style>
+  {`
+  .card {
+    border: 0 !important;
+  }
+  `}
+</style>
+
+# Shadows
+
+## SCSS
+
+- Variables can be used in your SCSS code
+- Utility classes can be used directly on your components
+
+<table>
+  <thead>
+    <tr>
+      <th>SCSS Var</th>
+      <th>CSS Values</th>
+      <th>Utilities Classes</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>none</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>.shadow-none</pre>
+        </code>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>
+          <pre>$box-shadow</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>0 0.2rem 0.6em 0 rgba($black, 0.15)</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>.shadow</pre>
+        </code>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>
+          <pre>$box-shadow-hover</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>0 0.4rem 1rem 0 rgba($black, 0.12)</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>.shadow-hover</pre>
+        </code>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <code>
+          <pre>$box-shadow-bottom</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>0 -0.6rem 3rem -1rem rgba($black, 0.15)</pre>
+        </code>
+      </td>
+
+      <td>
+        <code>
+          <pre>.shadow-bottom</pre>
+        </code>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+## Examples
+
+<div class="card flex-row align-items-center gap-64">
+  <Card
+    style={{
+     width: "16rem",
+     height: "20rem",
+     display: "flex",
+     alignItems: "center",
+     justifyContent: "center",
+     textAlign: "center",
+    }}
+    noShadow={true}
+    className="shadow-none"
+  >
+    <div style={{ fontSize: "1.6rem" }} className="d-block">
+      <h3>None</h3>
+      <p>.shadow-none</p>
+    </div>
+  </Card>
+
+{" "}
+
+<Card
+  style={{
+    width: "16rem",
+    height: "20rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  }}
+  noShadow={true}
+  className="shadow"
+>
+  <div style={{ fontSize: "1.6rem" }} className="d-block">
+    <h3>Default</h3>
+    <p>.shadow</p>
+  </div>
+</Card>
+
+{" "}
+
+<Card
+  style={{
+    width: "16rem",
+    height: "20rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  }}
+  noShadow={true}
+  className="shadow-hover"
+>
+  <div style={{ fontSize: "1.6rem" }} className="d-block">
+    <h3>Hover</h3>
+    <p>.shadow-hover</p>
+  </div>
+</Card>
+
+  <Card
+    style={{
+     width: "16rem",
+     height: "20rem",
+     display: "flex",
+     alignItems: "center",
+     justifyContent: "center",
+     textAlign: "center",
+    }}
+    noShadow={true}
+    className="shadow-bottom"
+  >
+    <div style={{ fontSize: "1.6rem" }} className="d-block">
+      <h3>Bottom</h3>
+      <p>.shadow-bottom</p>
+    </div>
+  </Card>
+</div>
