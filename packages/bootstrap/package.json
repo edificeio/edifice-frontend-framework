@@ -32,9 +32,9 @@
     "format:check": "npx prettier --check scss/**/*.scss",
     "format:write": "npx prettier --write scss/**/*.scss",
     "generate-commit-version": "node scripts/version.cjs",
-    "build": "rm -rf dist && cp -r assets dist && pnpm run compile && cp dist/index.css ../../public/assets/themes/edifice-bootstrap/index.css",
+    "build": "rm -rf dist && cp -r assets dist && pnpm run compile && cp dist/index.css ../../apps/docs/public/assets/themes/edifice-bootstrap/index.css",
     "watch": "sass --watch --load-path=node_modules/ --style=compressed scss/index.scss dist/index.css",
-    "watch:react": "sass --watch --style compressed --load-path=node_modules/ --no-source-map scss/index.scss ../../public/assets/themes/edifice-bootstrap/index.css",
+    "watch:react": "sass --watch --style compressed --load-path=node_modules/ --no-source-map scss/index.scss ../../apps/docs/public/assets/themes/edifice-bootstrap/index.css",
     "watch:sb": "sass --watch --style compressed --load-path=node_modules/ --no-source-map scss/index.scss ../../../recette/assets/themes/edifice-bootstrap/index.css"
   },
   "dependencies": {

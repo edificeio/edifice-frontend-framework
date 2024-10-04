@@ -59,11 +59,13 @@ export function OdeClientProvider({ children, params }: OdeClientProps) {
 
   const init = confQuery?.isSuccess && sessionQuery?.isSuccess;
 
+  const currentLanguage = sessionQuery?.data?.currentLanguage ?? "fr";
+
   useEffect(() => {
     const attributes = [
       {
         data: "html",
-        value: sessionQuery?.data?.currentLanguage || "fr",
+        value: currentLanguage,
       },
       // #WB-3137 Disable the translation of the content of the page which provoced issues
       {
@@ -77,7 +79,7 @@ export function OdeClientProvider({ children, params }: OdeClientProps) {
         .querySelector("html")
         ?.setAttribute(attribute.data, attribute.value as string);
     });
-  }, [sessionQuery?.data]);
+  }, [currentLanguage, sessionQuery.data]);
 
   useEffect(() => {
     document.title = `${translatedAppCode}`;
@@ -89,14 +91,14 @@ export function OdeClientProvider({ children, params }: OdeClientProps) {
       applications: confQuery?.data?.applications,
       confQuery,
       currentApp: confQuery?.data?.currentApp,
-      currentLanguage: sessionQuery?.data?.currentLanguage,
+      currentLanguage,
       init,
       sessionQuery,
       user: sessionQuery?.data?.user,
       userDescription: sessionQuery?.data?.userDescription,
       userProfile: sessionQuery?.data?.userProfile,
     }),
-    [appCode, confQuery, init, sessionQuery],
+    [appCode, confQuery, currentLanguage, init, sessionQuery],
   );
 
   return (
