@@ -25,8 +25,13 @@
     "clean:storybook": "rm -rf dist",
     "clean:turbo": "rm -rf packages/**/.turbo",
     "docs": "turbo run docs --filter=./apps/docs",
+<<<<<<< HEAD
     "docs:build": "turbo run build --filter=./apps/docs",
     "docs:preview": "turbo run preview --filter=./apps/docs",
+=======
+    "docs:build": "turbo run docs:build --filter=./apps/docs",
+    "docs:preview": "turbo run docs:preview --filter=./apps/docs",
+>>>>>>> 5106bbc2 (feat: #WB2-1923, add comments storybook and fix somme issues (#254))
     "fix": "turbo run fix",
     "format": "turbo run format",
     "preinstall": "npx only-allow pnpm",
@@ -36,6 +41,8 @@
     "publish-packages": "changeset version && changeset publish"
   },
   "devDependencies": {
+    "msw": "2.0.11",
+    "msw-storybook-addon": "2.0.0-beta.1",
     "@babel/plugin-transform-react-pure-annotations": "7.23.3",
     "@chromatic-com/storybook": "^1",
     "@edifice-ui/icons": "workspace:*",
