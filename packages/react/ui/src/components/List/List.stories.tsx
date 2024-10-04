@@ -72,17 +72,17 @@ const items: ToolbarItem[] = [
 ];
 
 interface Data {
-  id: string;
+  _id: string;
   title: string;
 }
 
 const data: Data[] = [
   {
-    id: "ab60dbdb-f3f0-4c99-a239-64c8a2f50c77",
+    _id: "ab60dbdb-f3f0-4c99-a239-64c8a2f50c77",
     title: "Title 1",
   },
   {
-    id: "a0d86fe6-909e-4c4a-8ceb-c15daee525a9",
+    _id: "a0d86fe6-909e-4c4a-8ceb-c15daee525a9",
     title: "Title 2",
   },
 ];
@@ -95,7 +95,7 @@ export const Base: Story = {
         renderNode={(node) => (
           <div
             className={clsx("grid gap-24 py-8 px-12 mb-2", {
-              "bg-secondary-200 rounded": node.id === data[1].id,
+              "bg-secondary-200 rounded": node._id === data[1]._id,
             })}
             style={{ "--edifice-columns": 8 } as React.CSSProperties}
           >

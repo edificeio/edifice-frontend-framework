@@ -24,9 +24,9 @@
     "clean:modules": "rm -rf */**/node_modules",
     "clean:storybook": "rm -rf dist",
     "clean:turbo": "rm -rf packages/**/.turbo",
-    "docs": "storybook dev -p 6006",
-    "docs:build": "storybook build --docs -o dist/ && cp -R packages/react/icons/assets/ dist/icons/",
-    "docs:preview": "npx http-server ./dist",
+    "docs": "turbo run docs --filter=./apps/docs",
+    "docs:build": "turbo run docs:build --filter=./apps/docs",
+    "docs:preview": "turbo run docs:preview --filter=./apps/docs",
     "fix": "turbo run fix",
     "format": "turbo run format",
     "preinstall": "npx only-allow pnpm",
@@ -36,6 +36,8 @@
     "publish-packages": "changeset version && changeset publish"
   },
   "devDependencies": {
+    "msw": "2.0.11",
+    "msw-storybook-addon": "2.0.0-beta.1",
     "@babel/plugin-transform-react-pure-annotations": "7.23.3",
     "@edifice-ui/icons": "workspace:*",
     "@skypack/package-check": "0.2.2",
@@ -77,5 +79,10 @@
   "packageManager": "pnpm@9.4.0",
   "engines": {
     "node": "18 || 20"
+  },
+  "msw": {
+    "workerDirectory": [
+      "apps/docs/public"
+    ]
   }
 }
