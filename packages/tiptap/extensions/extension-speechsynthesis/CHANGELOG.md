@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([68aeac7](https://github.com/edificeio/edifice-ui/commit/68aeac717f4659e11db23882d22f7a75cf590ff3)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-speechsynthesis
