@@ -22,6 +22,15 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.5.22-develop.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop.0) (2024-10-22)
 
 **Note:** Version bump only for package @edifice-ui/editor
+## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
+
+### Bug Fixes
+
+- **treeview:** #WB2-76, align node with invisible icon ([dd603f6](https://github.com/edificeio/edifice-ui/commit/dd603f6f1cef30806f42240295f05cde24ac097a)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
 
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 
