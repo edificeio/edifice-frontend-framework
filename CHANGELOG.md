@@ -133,6 +133,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/opendigitaleducation/edifice-ui/issues/263)) ([e014c4a](https://github.com/opendigitaleducation/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+## [1.5.22-develop-pedago.3](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.2...v1.5.22-develop-pedago.3) (2024-10-08)
+
+### Features
+
+- **hook:** #WB2-1943, add new useBreakpoint hook to handle responsive display ([79c60f1](https://github.com/opendigitaleducation/edifice-ui/commit/79c60f10c3de273e8313736e6825e52f272117db)), closes [#WB2-1943](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1943)
+
 ## [1.5.22-develop-pedago.2](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.1...v1.5.22-develop-pedago.2) (2024-10-08)
 
 ### Features
