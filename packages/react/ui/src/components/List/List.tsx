@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@uidotdev/usehooks";
 import clsx from "clsx";
 import { Fragment, ReactNode, useEffect } from "react";
 import { Checkbox, Toolbar, ToolbarItem } from "..";
@@ -36,20 +37,22 @@ export const List = <T extends { _id: string }>({
     handleOnSelectItem,
   } = useCheckable<T>(data);
 
+  const isDesktopDevice = useMediaQuery("only screen and (min-width: 1024px)");
+
   useEffect(() => {
     if (selectedItems) onSelectedItems?.(selectedItems);
   }, [onSelectedItems, selectedItems]);
 
   return (
-    <div>
+    <>
       {items && (
         <>
           <div
-            className={clsx("d-flex align-items-center", {
+            className={clsx("d-flex align-items-center gap-8", {
               "px-12": items,
             })}
           >
-            {items && (
+            <>
               <div className="d-flex align-items-center gap-8">
                 <Checkbox
                   checked={allItemsSelected}
@@ -58,17 +61,14 @@ export const List = <T extends { _id: string }>({
                 />
                 <span>({selectedItems.length})</span>
               </div>
-            )}
-            {items && (
               <Toolbar
                 items={items}
-                isBlock
                 variant="no-shadow"
-                className={clsx({
-                  "py-4": items,
+                className={clsx("gap-4 py-4", {
+                  "px-0 ms-auto": !isDesktopDevice,
                 })}
               />
-            )}
+            </>
           </div>
           <div className="border-top"></div>
         </>
@@ -90,6 +90,6 @@ export const List = <T extends { _id: string }>({
           );
         })}
       </div>
-    </div>
+    </>
   );
 };
