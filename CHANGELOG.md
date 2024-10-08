@@ -12,6 +12,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/opendigitaleducation/edifice-ui/issues/263)) ([e014c4a](https://github.com/opendigitaleducation/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+## [1.5.22-develop-pedago.2](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.1...v1.5.22-develop-pedago.2) (2024-10-08)
+
+### Features
+
+- **ui:** #WB2-1636, adapt List component with actions Toolbar ([645cae7](https://github.com/opendigitaleducation/edifice-ui/commit/645cae7427b4a26fa170fc4b18f06fb9d0512e27)), closes [#WB2-1636](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1636)
+
 ## [1.5.22-develop-pedago.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
 
 ### Bug Fixes
