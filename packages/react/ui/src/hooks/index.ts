@@ -1,3 +1,4 @@
+export * from "./useBreakpoint";
 export * from "./useBrowserInfo";
 export * from "./useCheckable";
 export * from "./useClickOutside";
