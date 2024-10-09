@@ -24,3 +24,4 @@ export * from "./useWorkspaceSearch";
 export * from "./useXitiTrackPageLoad";
 export * from "./useZendeskGuide";
 export * from "./useCantoo";
+export * from "./useUpload";
