@@ -867,9 +867,6 @@ importers:
 
   packages/tiptap/extensions/extension-image:
     dependencies:
-      "@tiptap-pro/extension-file-handler":
-        specifier: ^2.11.9
-        version: 2.11.9(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))(@tiptap/pm@2.3.0)
       "@tiptap/extension-image":
         specifier: 2.3.0
         version: 2.3.0(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))
