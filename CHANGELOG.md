@@ -188,6 +188,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/opendigitaleducation/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1874)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/opendigitaleducation/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1532)
 - **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/opendigitaleducation/edifice-ui/issues/252)) ([fd11cad](https://github.com/opendigitaleducation/edifice-ui/commit/fd11cad6195eede2105a51146232e79ab9087041)), closes [#WB2-1537](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1537)
+## [1.5.22-develop-b2school.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-b2school.0...v1.5.22-develop-b2school.1) (2024-10-09)
+
+### Bug Fixes
+
+- **editor:** #WB-3308 enable copy paste images files ([#256](https://github.com/opendigitaleducation/edifice-ui/issues/256)) ([370004f](https://github.com/opendigitaleducation/edifice-ui/commit/370004f03c67a344b948b542b71bee9570e34666)), closes [#WB-3308](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3308)
+
 ## [1.5.22-develop-b2school.0](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.21...v1.5.22-develop-b2school.0) (2024-10-09)
 
 ### Bug Fixes
