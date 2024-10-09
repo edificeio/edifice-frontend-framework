@@ -14,7 +14,7 @@ import { Iframe } from "@edifice-tiptap-extensions/extension-iframe";
 import { SpeechRecognition } from "@edifice-tiptap-extensions/extension-speechrecognition";
 import { SpeechSynthesis } from "@edifice-tiptap-extensions/extension-speechsynthesis";
 import { TableCell } from "@edifice-tiptap-extensions/extension-table-cell";
-import { useOdeClient } from "@edifice-ui/react";
+import { useOdeClient, useImageResizer, useUpload } from "@edifice-ui/react";
 import Color from "@tiptap/extension-color";
 import Focus from "@tiptap/extension-focus";
 import FontFamily from "@tiptap/extension-font-family";
@@ -31,6 +31,7 @@ import Underline from "@tiptap/extension-underline";
 import { Content, FocusPosition, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Mathematics } from "@tiptap-pro/extension-mathematics";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -38,12 +39,15 @@ import {
   AttachmentRenderer,
   AudioNodeView,
   AudioRenderer,
+  FileHandlerConfig,
   ImageNodeView,
   LinkerNodeView,
   LinkerRenderer,
   MediaRenderer,
   VideoNodeView,
 } from "../components";
+import FileHandler from "@tiptap-pro/extension-file-handler";
+import { WorkspaceVisibility } from "edifice-ts-client";
 
 /**
  * Hook that creates a tiptap editor instance.
@@ -59,9 +63,13 @@ export const useTipTapEditor = (
   focus?: FocusPosition,
   placeholder?: string,
   onContentChange?: ({ editor }: { editor: any }) => void,
+  visibility: WorkspaceVisibility = "protected",
 ) => {
   const { currentLanguage } = useOdeClient();
   const { t } = useTranslation();
+
+  const { resizeImageFile } = useImageResizer();
+  const { uploadFile } = useUpload(visibility);
 
   const editor = useEditor({
     // fix WB-2534
@@ -116,6 +124,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer),
       AttachmentNodeView(AttachmentRenderer),
+      FileHandler.configure(FileHandlerConfig(resizeImageFile, uploadFile)),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
