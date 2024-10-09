@@ -93,6 +93,13 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+## [1.5.22-develop-b2school.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-b2school.0) (2024-10-09)
+
+### Bug Fixes
+
+- **editeur:** #WB-3227 cast controls attribut to boolean ([#250](https://github.com/edificeio/edifice-ui/issues/250)) ([ab8afdd](https://github.com/edificeio/edifice-ui/commit/ab8afdd05f3fc208a05259c66dd8b4336236f0b7)), closes [#WB-3227](https://github.com/edificeio/edifice-ui/issues/WB-3227)
+- **editor:** #WB-3226 remove editor image attribute textAlign ([#245](https://github.com/edificeio/edifice-ui/issues/245)) ([c435b11](https://github.com/edificeio/edifice-ui/commit/c435b110c883eed319394c6fa282bdae7aeeaf69)), closes [#WB-3226](https://github.com/edificeio/edifice-ui/issues/WB-3226)
+- **editor:** WB-3020, do not trigger an update content event when only editor's mode changes ([#255](https://github.com/edificeio/edifice-ui/issues/255)) ([c9191c7](https://github.com/edificeio/edifice-ui/commit/c9191c79c9bbb794727b297a980f916fc28c3ee2))
 
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 

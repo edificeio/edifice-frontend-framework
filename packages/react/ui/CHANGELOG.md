@@ -181,6 +181,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/edificeio/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/edificeio/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
 - **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/edificeio/edifice-ui/issues/252)) ([fd11cad](https://github.com/edificeio/edifice-ui/commit/fd11cad6195eede2105a51146232e79ab9087041)), closes [#WB2-1537](https://github.com/edificeio/edifice-ui/issues/WB2-1537)
+## [1.5.22-develop-b2school.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-b2school.0) (2024-10-09)
+
+### Bug Fixes
+
+- #MOZO-283 remove dupplicate h2 ([c12b2fa](https://github.com/edificeio/edifice-ui/commit/c12b2fa84e4441478130454003cdc93dc7e63146)), closes [#MOZO-283](https://github.com/edificeio/edifice-ui/issues/MOZO-283)
+- **multimedia:** #WB-3012, stop any playing video before save ([#236](https://github.com/edificeio/edifice-ui/issues/236)) ([c2cd350](https://github.com/edificeio/edifice-ui/commit/c2cd3501ec6919fe8545c22d72a5f4a13b579f2f)), closes [#WB-3012](https://github.com/edificeio/edifice-ui/issues/WB-3012)
 
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 
