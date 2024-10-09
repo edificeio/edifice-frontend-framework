@@ -93,6 +93,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+## [1.5.22-develop-b2school.1](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.0...v1.5.22-develop-b2school.1) (2024-10-09)
+
+### Bug Fixes
+
+- **editor:** #WB-3308 enable copy paste images files ([#256](https://github.com/edificeio/edifice-ui/issues/256)) ([370004f](https://github.com/edificeio/edifice-ui/commit/370004f03c67a344b948b542b71bee9570e34666)), closes [#WB-3308](https://github.com/edificeio/edifice-ui/issues/WB-3308)
+
 ## [1.5.22-develop-b2school.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-b2school.0) (2024-10-09)
 
 ### Bug Fixes
