@@ -103,6 +103,7 @@ const Editor = forwardRef(
       focus,
       placeholder,
       onContentChange,
+      visibility,
     );
     const { ref: mediaLibraryModalRef, ...mediaLibraryModalHandlers } =
       useMediaLibraryEditor(editor);
