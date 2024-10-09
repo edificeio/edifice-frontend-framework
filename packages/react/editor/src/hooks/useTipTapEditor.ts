@@ -127,7 +127,7 @@ export const useTipTapEditor = (
   });
 
   useEffect(() => {
-    editor?.setEditable(editable);
+    editor?.setEditable(editable, false); // Don't emit the update event, since content did not change.
   }, [editor, editable]);
 
   useEffect(() => {
