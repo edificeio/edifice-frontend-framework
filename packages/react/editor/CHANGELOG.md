@@ -10,6 +10,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.5.22-develop.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop.0) (2024-10-22)
 
 **Note:** Version bump only for package @edifice-ui/editor
+## [1.5.22-develop-pedago.4](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.3...v1.5.22-develop-pedago.4) (2024-10-14)
+
+### Features
+
+- **ui:** #WB2-1651, add tooltip component to attachment component ([f4cf4b4](https://github.com/edificeio/edifice-ui/commit/f4cf4b4df63f0e2e85d210a1336705a8ece40fbb)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
 ## [1.5.22-develop-pedago.3](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.2...v1.5.22-develop-pedago.3) (2024-10-08)
 
 **Note:** Version bump only for package @edifice-ui/editor
