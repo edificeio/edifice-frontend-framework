@@ -87,8 +87,6 @@
     "emoji-picker-react": "4.5.2"
   },
   "devDependencies": {
-    "@edifice-ui/icons": "workspace:*",
-    "@edifice-ui/react": "workspace:*",
     "@types/node": "^20.4.9",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
