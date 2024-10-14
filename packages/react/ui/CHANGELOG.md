@@ -12,6 +12,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/edificeio/edifice-ui/issues/263)) ([e014c4a](https://github.com/edificeio/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+## [1.5.22-develop-pedago.4](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.3...v1.5.22-develop-pedago.4) (2024-10-14)
+
+### Features
+
+- **ui:** #WB2-1651, add tooltip component to attachment component ([f4cf4b4](https://github.com/edificeio/edifice-ui/commit/f4cf4b4df63f0e2e85d210a1336705a8ece40fbb)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
 ## [1.5.22-develop-pedago.3](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.2...v1.5.22-develop-pedago.3) (2024-10-08)
 
 ### Features
