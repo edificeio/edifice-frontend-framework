@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ComponentPropsWithRef, ReactNode, useState } from "react";
 
 import clsx from "clsx";
 import { usePopper } from "react-popper";
@@ -20,7 +20,7 @@ export type Placement =
   | "left-start"
   | "left-end";
 
-export interface TooltipProps {
+export interface TooltipProps extends ComponentPropsWithRef<"div"> {
   /**
    * Text to display inside tooltip
    */
@@ -44,6 +44,7 @@ const Tooltip = ({
   message,
   icon = null,
   placement = "auto",
+  ...restProps
 }: TooltipProps) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
     null,
@@ -78,6 +79,7 @@ const Tooltip = ({
         onMouseLeave={() => {
           setVisible(false);
         }}
+        {...restProps}
       >
         {children}
       </div>
