@@ -4,7 +4,7 @@ import { TreeData } from "../../types";
 import { TreeNode } from "./TreeNode";
 import { useTreeView } from "./hooks/useTreeView";
 
-export interface TreeViewHandlers {
+export interface TreeViewHandlers_V1 {
   unselectAll: () => void;
   select: (nodeId: string) => void;
 }
@@ -64,7 +64,7 @@ export interface TreeViewProps {
  */
 
 const TreeView = forwardRef(
-  (props: TreeViewProps, ref: Ref<TreeViewHandlers>) => {
+  (props: TreeViewProps, ref: Ref<TreeViewHandlers_V1>) => {
     const {
       data,
       onTreeItemClick,
