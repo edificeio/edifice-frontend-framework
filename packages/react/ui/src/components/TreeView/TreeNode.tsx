@@ -5,7 +5,7 @@ import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import { TreeData } from "../../types";
 
-export interface TreeNodeProps {
+export interface TreeNodeProps_V1 {
   /**
    * Data
    */
@@ -63,7 +63,7 @@ export const TreeNode = ({
   handleItemClick,
   handleToggleNode,
   handleItemAction,
-}: TreeNodeProps) => {
+}: TreeNodeProps_V1) => {
   const expanded = expandedNodes.has(node.id);
   const sibling = siblingsNodes?.current.has(node.id);
   const selected = selectedNodeId === node.id;
