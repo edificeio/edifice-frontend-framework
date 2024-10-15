@@ -38,6 +38,7 @@ export * from "./Tabs";
 export * from "./TextArea";
 export * from "./Toolbar";
 export * from "./Tooltip";
+export * from "./Tree";
 export * from "./TreeView";
 export * from "./UploadCard";
 export * from "./VisuallyHidden";
