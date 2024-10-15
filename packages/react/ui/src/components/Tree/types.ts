@@ -127,6 +127,10 @@ export interface TreeNodeProps
    */
   siblingsNodes?: React.MutableRefObject<Set<string>>;
   /**
+   * Node is a child
+   */
+  isChildren?: boolean;
+  /**
    * Function to fold / unfold node
    */
   onToggleNode?: (nodeId: string) => void;
