@@ -73,13 +73,11 @@ export const useImageModal = (
      * src path
      * }
      */
-    if (typeof res === "object") {
-      setAttributes({
-        url: res.src,
-        alt,
-        title: legend,
-      });
-    }
+    setAttributes({
+      url: typeof res === "object" ? res.src : res,
+      alt,
+      title: legend,
+    });
   };
 
   return {
