@@ -76,16 +76,24 @@ const MediaRenderer = (props: MediaResizeProps) => {
       <div className="media-node-view">
         <div data-drag-handle>
           {node.type.name === "custom-image" ? (
-            <Image
-              src={node.attrs.src}
-              title={node.attrs.title}
-              alt={node.attrs.alt}
-              width={node.attrs.width}
-              style={node.attrs.style}
-              height={node.attrs.height}
-              className={`custom-image`}
-              ref={resizableMedia as React.RefObject<HTMLImageElement>}
-            />
+            <>
+              <Image
+                src={node.attrs.src}
+                alt={node.attrs.alt}
+                title={node.attrs.title}
+                width={node.attrs.width}
+                style={node.attrs.style}
+                height={node.attrs.height}
+                className={`custom-image`}
+                ref={resizableMedia as React.RefObject<HTMLImageElement>}
+              />
+              {node.attrs.title && (
+                // Display legend (set in title attribute) if it exists
+                <em className="custom-image-legend caption text-align-left">
+                  {node.attrs.title}
+                </em>
+              )}
+            </>
           ) : (
             // eslint-disable-next-line jsx-a11y/media-has-caption
             <video

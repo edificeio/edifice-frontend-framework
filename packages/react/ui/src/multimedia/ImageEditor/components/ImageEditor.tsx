@@ -91,7 +91,7 @@ const ImageEditor = ({
       stopAll();
       const blob = await toBlob();
       if (blob) {
-        await onSave({ blob, altText, legend });
+        await onSave({ blob, legend, altText });
       }
     } catch (e) {
       onError?.(`${e}`);
