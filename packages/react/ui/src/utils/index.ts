@@ -10,5 +10,6 @@ export * from "./noop";
 export * from "./ref";
 export * from "./thumbnail";
 export * from "./time";
+export * from "./tree-sortable";
 export * from "./treeview";
 export * from "./video";
