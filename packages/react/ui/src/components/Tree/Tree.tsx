@@ -11,50 +11,57 @@ const Tree = ({
   showIcon = false,
   shouldExpandAllNodes = false,
   draggedNode,
+  renderNode,
   onTreeItemFold,
   onTreeItemUnfold,
   onTreeItemClick,
 }: TreeProps) => {
-  const { selectedNodeId, expandedNodes, siblingsNodes,  handleItemClick, handleFoldUnfold } =
-    useTreeView({
-      data: nodes,
-      externalSelectedNodeId,
-      draggedNode,
-      shouldExpandAllNodes,
-      onTreeItemClick,
-      onTreeItemFold,
-      onTreeItemUnfold,
-    });
+  const {
+    selectedNodeId,
+    expandedNodes,
+    siblingsNodes,
+    handleItemClick,
+    handleFoldUnfold,
+  } = useTreeView({
+    data: nodes,
+    externalSelectedNodeId,
+    draggedNode,
+    shouldExpandAllNodes,
+    onTreeItemClick,
+    onTreeItemFold,
+    onTreeItemUnfold,
+  });
 
   return (
     <div className="treeview">
       <ul role="tree" className="m-0 p-0">
-      {Array.isArray(nodes) ? (
-            nodes.map((node) => {
-              return (
-                <TreeNode
-                  node={node}
-                  key={node.id}
-                  showIcon={showIcon}
-                  selectedNodeId={selectedNodeId}
-                  expandedNodes={expandedNodes}
-                  siblingsNodes={siblingsNodes}
-                  onTreeItemClick={handleItemClick}
-                  onToggleNode={handleFoldUnfold}
-                />
-              );
-            })
-          ) : (
-            <TreeNode
-              node={nodes}
-              selectedNodeId={selectedNodeId}
-              expandedNodes={expandedNodes}
-              siblingsNodes={siblingsNodes}
-              showIcon={showIcon}
-              onTreeItemClick={handleItemClick}
-              onToggleNode={handleFoldUnfold}
-            />
-          )}
+        {Array.isArray(nodes) ? (
+          nodes.map((node) => {
+            return (
+              <TreeNode
+                node={node}
+                key={node.id}
+                showIcon={showIcon}
+                selectedNodeId={selectedNodeId}
+                expandedNodes={expandedNodes}
+                siblingsNodes={siblingsNodes}
+                onTreeItemClick={handleItemClick}
+                onToggleNode={handleFoldUnfold}
+                renderNode={renderNode}
+              />
+            );
+          })
+        ) : (
+          <TreeNode
+            node={nodes}
+            selectedNodeId={selectedNodeId}
+            expandedNodes={expandedNodes}
+            siblingsNodes={siblingsNodes}
+            showIcon={showIcon}
+            onTreeItemClick={handleItemClick}
+            onToggleNode={handleFoldUnfold}
+          />
+        )}
       </ul>
     </div>
   );
@@ -68,6 +75,7 @@ export const TreeNode = forwardRef(
       showIcon = false,
       expandedNodes,
       focused,
+      isChildren,
       renderNode,
       onTreeItemClick,
       onToggleNode,
@@ -159,7 +167,7 @@ export const TreeNode = forwardRef(
               onClick={() => onTreeItemClick(node.id)}
               onKeyDown={handleItemKeyDown}
             >
-              {renderNode ? (
+              {renderNode && !isChildren ? (
                 renderNode({
                   nodeId: node.id,
                   nodeName: node.name,
@@ -186,6 +194,7 @@ export const TreeNode = forwardRef(
                   onTreeItemClick={onTreeItemClick}
                   onToggleNode={onToggleNode}
                   renderNode={renderNode}
+                  isChildren={true}
                 />
               ))}
             </ul>

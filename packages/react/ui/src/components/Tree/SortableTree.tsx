@@ -15,6 +15,7 @@ import {
   FlattenedItem,
   SortableTreeNodeProps,
   SortableTreeProps,
+  TreeItem,
 } from "./types";
 import { useTreeView } from "./hooks/useTreeView";
 import { useTreeSortable } from "./hooks/useTreeSortable";
@@ -59,7 +60,11 @@ const SortableTree = ({
     measuring,
     sensors,
     items,
-  } = useTreeSortable({ nodes, onSortable, handleCollapseNode });
+  } = useTreeSortable({
+    nodes: nodes as TreeItem[],
+    onSortable,
+    handleCollapseNode,
+  });
 
   return (
     <div className="treeview">
