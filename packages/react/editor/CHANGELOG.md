@@ -93,6 +93,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+## [1.5.22-develop-b2school.3](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.2...v1.5.22-develop-b2school.3) (2024-10-15)
+
+### Bug Fixes
+
+- #WB-2538 update legend refresh image attribut ([636bea1](https://github.com/edificeio/edifice-ui/commit/636bea1657df5e33fafbcb696d61115e5ba82103)), closes [#WB-2538](https://github.com/edificeio/edifice-ui/issues/WB-2538)
+
 ## [1.5.22-develop-b2school.2](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.1...v1.5.22-develop-b2school.2) (2024-10-15)
 
 ### Bug Fixes
