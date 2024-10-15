@@ -411,8 +411,22 @@ importers:
   packages/react/ui:
     dependencies:
       "@dnd-kit/core":
+<<<<<<< HEAD
         specifier: ^6.1.0
         version: 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+=======
+        specifier: 6.1.0
+        version: 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      "@dnd-kit/modifiers":
+        specifier: ^7.0.0
+        version: 7.0.0(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      "@dnd-kit/sortable":
+        specifier: ^8.0.0
+        version: 8.0.0(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      "@dnd-kit/utilities":
+        specifier: ^3.2.2
+        version: 3.2.2(react@18.3.1)
+>>>>>>> a3f57045 (chore: version & publish v1.5.22-develop-pedago.5)
       "@edifice-ui/icons":
         specifier: workspace:*
         version: link:../icons
@@ -2263,6 +2277,7 @@ packages:
       react: ">=16.8.0"
       react-dom: ">=16.8.0"
 
+<<<<<<< HEAD
   "@dnd-kit/utilities@3.2.2":
     resolution:
       {
@@ -2279,6 +2294,42 @@ packages:
     peerDependencies:
       react: ">=16.8.0"
 
+=======
+  "@dnd-kit/modifiers@7.0.0":
+    resolution:
+      {
+        integrity: sha512-BG/ETy3eBjFap7+zIti53f0PCLGDzNXyTmn6fSdrudORf+OH04MxrW4p5+mPu4mgMk9kM41iYONjc3DOUWTcfg==,
+      }
+    peerDependencies:
+      "@dnd-kit/core": ^6.1.0
+      react: ">=16.8.0"
+
+  "@dnd-kit/sortable@8.0.0":
+    resolution:
+      {
+        integrity: sha512-U3jk5ebVXe1Lr7c2wU7SBZjcWdQP+j7peHJfCspnA81enlu88Mgd7CC8Q+pub9ubP7eKVETzJW+IBAhsqbSu/g==,
+      }
+    peerDependencies:
+      "@dnd-kit/core": ^6.1.0
+      react: ">=16.8.0"
+
+  "@dnd-kit/utilities@3.2.2":
+    resolution:
+      {
+        integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==,
+      }
+    peerDependencies:
+      react: ">=16.8.0"
+
+  "@emotion/use-insertion-effect-with-fallbacks@1.1.0":
+    resolution:
+      {
+        integrity: sha512-+wBOcIV5snwGgI2ya3u99D7/FJquOIniQT1IKyDsBmEgwvpxMNeS65Oib7OnE2d2aY+3BU4OiH+0Wchf8yk3Hw==,
+      }
+    peerDependencies:
+      react: ">=16.8.0"
+
+>>>>>>> a3f57045 (chore: version & publish v1.5.22-develop-pedago.5)
   "@esbuild/aix-ppc64@0.19.12":
     resolution:
       {
@@ -16609,6 +16660,23 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       tslib: 2.6.3
 
+<<<<<<< HEAD
+=======
+  "@dnd-kit/modifiers@7.0.0(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)":
+    dependencies:
+      "@dnd-kit/core": 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      "@dnd-kit/utilities": 3.2.2(react@18.3.1)
+      react: 18.3.1
+      tslib: 2.6.3
+
+  "@dnd-kit/sortable@8.0.0(@dnd-kit/core@6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)":
+    dependencies:
+      "@dnd-kit/core": 6.1.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      "@dnd-kit/utilities": 3.2.2(react@18.3.1)
+      react: 18.3.1
+      tslib: 2.6.3
+
+>>>>>>> a3f57045 (chore: version & publish v1.5.22-develop-pedago.5)
   "@dnd-kit/utilities@3.2.2(react@18.3.1)":
     dependencies:
       react: 18.3.1
