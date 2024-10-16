@@ -8,7 +8,7 @@ import {
 } from "react";
 import { TreeData } from "../../../types";
 import { findNodeById, findPathById } from "../../../utils/treeview";
-import { TreeViewHandlers } from "../TreeView";
+import { TreeViewHandlers_V1 } from "../TreeView";
 
 export const useTreeView = ({
   data,
@@ -21,7 +21,7 @@ export const useTreeView = ({
   onTreeItemClick,
 }: {
   data: TreeData | TreeData[];
-  ref: Ref<TreeViewHandlers>;
+  ref: Ref<TreeViewHandlers_V1>;
   externalSelectedNodeId: string | undefined;
   draggedNode?: {
     isOver: boolean;
@@ -134,7 +134,7 @@ export const useTreeView = ({
    * If children are fetched, prefer to use selectedNodeId props
    * And callback props (e.g: onTreeItemClick, onTreeItemUnfold, ...)
    */
-  const handlers: TreeViewHandlers = useMemo(
+  const handlers: TreeViewHandlers_V1 = useMemo(
     () => ({
       unselectAll() {
         setInternalSelectedNodeId(undefined);
