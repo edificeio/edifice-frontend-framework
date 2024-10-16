@@ -140,6 +140,7 @@ export const useTreeSortable = ({
       activeNodeIndex,
       overNodeIndex,
     );
+
     const { updateArray, updatedTreeData } =
       generateUpdateData(updatedFlattenedTree);
 
@@ -193,7 +194,11 @@ export const useTreeSortable = ({
 
       if (!previousItem) {
         const nextItem = sortedItems[overIndex + 1];
-        announcement = `${activeId} was ${movedVerb} before ${nextItem.id}.`;
+        if (nextItem) {
+          announcement = `${activeId} was ${movedVerb} before ${nextItem.id}.`;
+        } else {
+          announcement = `${activeId} was ${movedVerb} as the only item in the list.`;
+        }
       } else {
         if (projected.depth > previousItem.depth) {
           announcement = `${activeId} was ${nestedVerb} under ${previousItem.id}.`;
