@@ -26,6 +26,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/edificeio/edifice-ui/issues/263)) ([e014c4a](https://github.com/edificeio/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+## [1.5.22-develop-pedago.9](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.8...v1.5.22-develop-pedago.9) (2024-10-16)
+
+### Bug Fixes
+
+- #WB2-1514, fix probleme treeview with one node + fix disappears nodes ([d0d9aa9](https://github.com/edificeio/edifice-ui/commit/d0d9aa92140552155b97834a28419114a619e22d))
+
 ## [1.5.22-develop-pedago.8](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.7...v1.5.22-develop-pedago.8) (2024-10-16)
 
 ### Bug Fixes
