@@ -35,7 +35,7 @@ const SortableTree = ({
     expandedNodes,
     handleItemClick,
     handleFoldUnfold,
-    handleCollapseNode,
+    collapseAllNodes,
   } = useTreeView({
     data: nodes,
     externalSelectedNodeId,
@@ -63,7 +63,7 @@ const SortableTree = ({
   } = useTreeSortable({
     nodes: nodes as TreeItem[],
     onSortable,
-    handleCollapseNode,
+    collapseAllNodes,
   });
 
   return (
