@@ -12,6 +12,12 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/edificeio/edifice-ui/issues/263)) ([e014c4a](https://github.com/edificeio/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+## [1.5.22-develop-pedago.8](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.7...v1.5.22-develop-pedago.8) (2024-10-16)
+
+### Bug Fixes
+
+- WB2-1514, add collapse node when drag parent is drag + update types ([917f24d](https://github.com/edificeio/edifice-ui/commit/917f24db9311cc7b83a70e99a53ffc6dec4e0b98))
+
 ## [1.5.22-develop-pedago.7](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.6...v1.5.22-develop-pedago.7) (2024-10-15)
 
 ### Bug Fixes
