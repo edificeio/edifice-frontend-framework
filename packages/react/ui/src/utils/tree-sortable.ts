@@ -159,7 +159,7 @@ export const buildTree = (flatNodes: FlattenedItem[]): TreeItem[] => {
   // Parcourir les nœuds et assigner les enfants à leur parent
   flatNodes.forEach((node) => {
     const treeNode = nodeMap.get(node.id)!; // Récupère le nœud correspondant
-    if (node.parentId === null) {
+    if (node.parentId === null || node.parentId === undefined) {
       tree.push(treeNode); // Pas de parent, c'est un nœud racine
     } else {
       const parentNode = nodeMap.get(node.parentId);
