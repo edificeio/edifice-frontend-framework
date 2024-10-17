@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 
+import ImageResizer from "@edifice.io/image-resizer";
 import { WorkspaceElement, WorkspaceVisibility } from "edifice-ts-client";
 
 import { useDropzoneContext } from "../../components/Dropzone/DropzoneContext";
 import { addTimestampToImageUrl } from "../../utils";
 import { useUpload } from "../useUpload";
 import { useWorkspaceFile } from "../useWorkspaceFile";
-import { useImageResizer } from "../../hooks/useImageResizer";
 
 const useUploadFiles = ({
   handleOnChange,
@@ -32,8 +32,6 @@ const useUploadFiles = ({
     uploadAlternateFile,
   } = useUpload(visibility, application);
 
-  const { resizeImageFile } = useImageResizer();
-
   const tryUploading = useCallback(
     (files: Array<File | null>) => {
       files.forEach(async (file, index) => {
@@ -41,7 +39,7 @@ const useUploadFiles = ({
         let resource;
         if (file.type.startsWith("image")) {
           try {
-            const replacement = await resizeImageFile(file);
+            const replacement = await ImageResizer.resizeImageFile(file);
             resource = await uploadAlternateFile(file, replacement);
             replaceFileAt(index, replacement);
           } catch (err) {
@@ -59,7 +57,7 @@ const useUploadFiles = ({
         }
       });
     },
-    [resizeImageFile, uploadAlternateFile, uploadFile, replaceFileAt],
+    [uploadAlternateFile, uploadFile, replaceFileAt],
   );
 
   /* Try to upload more files when 
