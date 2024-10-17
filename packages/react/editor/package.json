@@ -43,6 +43,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@edifice.io/image-resizer": "workspace:*",
     "@edifice-tiptap-extensions/extension-alert": "workspace:*",
     "@edifice-tiptap-extensions/extension-attachment": "workspace:*",
     "@edifice-tiptap-extensions/extension-audio": "workspace:*",
