@@ -1,0 +1,43 @@
+{
+  "name": "@edifice.io/image-resizer",
+  "version": "1.0.0",
+  "description": "Edifice Image Resizer",
+  "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/image-resizer#readme",
+  "bugs": {
+    "url": "https://github.com/edificeio/edifice-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edificeio/edifice-ui.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "format": "pnpm run format:write && pnpm run format:check",
+    "format:check": "npx prettier --check \"src/**/*.ts\"",
+    "format:write": "npx prettier --write \"src/**/*.ts\""
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "20.11.6",
+    "prettier": "3.2.4",
+    "typescript": "5.3.3",
+    "vite": "5.0.12",
+    "vite-plugin-dts": "3.7.2"
+  }
+}

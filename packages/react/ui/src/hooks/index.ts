@@ -13,4 +13,3 @@ export * from "./useTitle";
 export * from "./useToast";
 export * from "./useToggle";
 export * from "./useTrapFocus";
-export * from "./useImageResizer";
