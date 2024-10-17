@@ -229,6 +229,24 @@ importers:
         specifier: 3.7.2
         version: 3.7.2(@types/node@20.11.6)(rollup@4.24.0)(typescript@5.3.3)(vite@5.0.12(@types/node@20.11.6)(sass@1.70.0)(terser@5.27.0))
 
+  packages/image-resizer:
+    devDependencies:
+      "@types/node":
+        specifier: 20.11.6
+        version: 20.11.6
+      prettier:
+        specifier: 3.2.4
+        version: 3.2.4
+      typescript:
+        specifier: 5.3.3
+        version: 5.3.3
+      vite:
+        specifier: 5.0.12
+        version: 5.0.12(@types/node@20.11.6)(sass@1.70.0)(terser@5.27.0)
+      vite-plugin-dts:
+        specifier: 3.7.2
+        version: 3.7.2(@types/node@20.11.6)(rollup@4.21.0)(typescript@5.3.3)(vite@5.0.12(@types/node@20.11.6)(sass@1.70.0)(terser@5.27.0))
+
   packages/react/editor:
     dependencies:
       "@edifice-tiptap-extensions/extension-alert":
@@ -279,6 +297,9 @@ importers:
       "@edifice-ui/react":
         specifier: workspace:*
         version: link:../ui
+      "@edifice.io/image-resizer":
+        specifier: workspace:*
+        version: link:../../image-resizer
       "@react-spring/web":
         specifier: ^9.7.3
         version: 9.7.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -451,6 +472,9 @@ importers:
 >>>>>>> 67d50526 (chore: version & publish v1.5.22-develop-pedago.13)
         specifier: workspace:*
         version: link:../icons
+      "@edifice.io/image-resizer":
+        specifier: workspace:*
+        version: link:../../image-resizer
       "@floating-ui/react":
         specifier: 0.26.0
         version: 0.26.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

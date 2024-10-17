@@ -1,9 +1,9 @@
 import { addTimestampToImageUrl } from "@edifice-ui/react";
+import ImageResizer from "@edifice.io/image-resizer";
 import { Editor } from "@tiptap/core";
 import { WorkspaceElement } from "edifice-ts-client";
 
 export const FileHandlerConfig = (
-  resizeImageFile: (file: File) => Promise<File>,
   uploadFile: (file: File) => Promise<WorkspaceElement | null>,
 ) => {
   const getUrl = (document: WorkspaceElement) => {
@@ -19,7 +19,7 @@ export const FileHandlerConfig = (
   ) => {
     files.forEach(async (file) => {
       if (file.type.startsWith("image")) {
-        const resizedImage = await resizeImageFile(file);
+        const resizedImage = await ImageResizer.resizeImageFile(file);
         const image = await uploadFile(resizedImage);
         if (image) {
           editor
