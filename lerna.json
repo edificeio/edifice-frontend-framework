@@ -1,15 +1,10 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.21",
+  "version": "2.0.0-develop-rc.14",
   "npmClient": "pnpm",
   "command": {
     "version": {
-      "allowBranch": [
-        "main",
-        "develop",
-        "develop*",
-        "hotfix/*"
-      ],
+      "allowBranch": ["main", "develop", "develop*", "hotfix/*"],
       "conventionalCommits": true,
       "message": "chore: version & publish %s"
     }

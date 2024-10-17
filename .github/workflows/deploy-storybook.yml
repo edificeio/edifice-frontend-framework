@@ -5,7 +5,7 @@ on:
   # Event for the workflow to run on
   push:
     branches:
-      - "main"
+      - 'main'
 
 permissions:
   contents: read
@@ -43,7 +43,7 @@ jobs:
           key: npm-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
       - name: Generate .npmrc
         run: |
-          pnpm config set @edifice-ui:registry https://registry.npmjs.org
+          pnpm config set @edifice.io:registry https://registry.npmjs.org
           pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
           pnpm config set @tiptap-pro:registry https://registry.tiptap.dev
           pnpm config set //registry.tiptap.dev/:_authToken ${{ secrets.TIPTAP_PRO_TOKEN }}

@@ -1,14 +1,14 @@
 {
-  "name": "edifice-ts-client",
-  "version": "1.5.21",
+  "name": "@edifice.io/ts-client",
+  "version": "2.0.0-develop-rc.14",
   "description": "Edifice TypeScript Client",
-  "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/client#readme",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/shared/client#readme",
   "bugs": {
-    "url": "https://github.com/edificeio/edifice-ui/issues"
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/edificeio/edifice-ui.git"
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",
@@ -27,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "pnpm run docs && vite build",
     "docs": "npx rimraf ./docs/ && npx typedoc src/ts/index.ts --excludePrivate --disableSources --plugin typedoc-plugin-markdown",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check \"src/ts/**/*.ts\"",
@@ -40,16 +40,10 @@
   "devDependencies": {
     "@types/jasmine": "5.1.4",
     "@types/node": "20.11.6",
-    "husky": "8.0.3",
     "jasmine": "5.1.0",
     "prettier": "3.2.4",
     "rimraf": "5.0.5",
-    "semantic-release": "23.0.0",
-    "terser": "5.27.0",
     "typedoc": "0.25.7",
-    "typedoc-plugin-markdown": "3.17.1",
-    "typescript": "5.3.3",
-    "vite": "5.0.12",
-    "vite-plugin-dts": "3.7.2"
+    "typedoc-plugin-markdown": "3.17.1"
   }
 }

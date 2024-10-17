@@ -2,13 +2,13 @@
   "name": "root",
   "private": true,
   "description": "Edifice UI Frontend Library",
-  "homepage": "https://github.com/opendigitaleducation/edifice-ui#readme",
+  "homepage": "https://github.com/opendigitaleducation/edifice-frontend-framework#readme",
   "bugs": {
-    "url": "https://github.com/opendigitaleducation/edifice-ui/issues"
+    "url": "https://github.com/opendigitaleducation/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/opendigitaleducation/edifice-ui.git"
+    "url": "https://github.com/opendigitaleducation/edifice-frontend-framework.git"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "7.23.3",
-    "@edifice-ui/icons": "workspace:*",
+    "@edifice.io/icons": "workspace:*",
     "@skypack/package-check": "0.2.2",
     "@storybook/addon-a11y": "7.6.6",
     "@storybook/addon-essentials": "7.6.6",

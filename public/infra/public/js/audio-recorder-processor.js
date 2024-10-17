@@ -1,6 +1,6 @@
 /**
  * audio-recorder-processor.js
- * Processor for the Audio Recorder Component (see edifice-ui/packages/react/src/multimedia/AudioRecorder/AudioRecorder.tsx).
+ * Processor for the Audio Recorder Component (see edifice-frontend-framework/packages/react/src/multimedia/AudioRecorder/AudioRecorder.tsx).
  * This processor sends the recorded audio inputs to the AudioWorkletNode.
  *
  * For more information on Audio Processors, please see https://developer.mozilla.org/en-US/docs/Web/API/AudioWorkletProcessor
@@ -12,4 +12,4 @@ class AudioRecorderProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor("audio-recorder-processor", AudioRecorderProcessor);
+registerProcessor('audio-recorder-processor', AudioRecorderProcessor);

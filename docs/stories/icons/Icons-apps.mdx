@@ -1,6 +1,6 @@
-import { Meta, Story } from "@storybook/blocks";
-import { SvgIcon } from "../../components/SvgIcon";
-import * as IconsAppsStories from "./Icons-apps.stories";
+import { Meta, Story } from '@storybook/blocks';
+import { SvgIcon } from '../../components/SvgIcon';
+import * as IconsAppsStories from './Icons-apps.stories';
 
 <Meta title="Icons/Apps and Connectors" />
 
@@ -13,18 +13,18 @@ This set of icons uses a SVG Sprite and should already be included with `edifice
 Use this set of icons with the `AppIcon` Component.
 
 ```jsx
-import { AppIcon } from "@edifice-ui/components";
+import { AppIcon } from '@edifice.io/components';
 
 export default function App() {
   return (
     <AppIcon
       app={{
-        address: "/blog",
-        icon: "blog-large",
-        name: "Blog",
+        address: '/blog',
+        icon: 'blog-large',
+        name: 'Blog',
         scope: [],
         display: false,
-        displayName: "",
+        displayName: '',
         isExternal: false,
       }}
       size="48"
