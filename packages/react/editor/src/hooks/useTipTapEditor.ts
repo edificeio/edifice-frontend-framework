@@ -14,7 +14,7 @@ import { Iframe } from "@edifice-tiptap-extensions/extension-iframe";
 import { SpeechRecognition } from "@edifice-tiptap-extensions/extension-speechrecognition";
 import { SpeechSynthesis } from "@edifice-tiptap-extensions/extension-speechsynthesis";
 import { TableCell } from "@edifice-tiptap-extensions/extension-table-cell";
-import { useOdeClient, useImageResizer, useUpload } from "@edifice-ui/react";
+import { useOdeClient, useUpload } from "@edifice-ui/react";
 import Color from "@tiptap/extension-color";
 import Focus from "@tiptap/extension-focus";
 import FontFamily from "@tiptap/extension-font-family";
@@ -68,7 +68,6 @@ export const useTipTapEditor = (
   const { currentLanguage } = useOdeClient();
   const { t } = useTranslation();
 
-  const { resizeImageFile } = useImageResizer();
   const { uploadFile } = useUpload(visibility);
 
   const editor = useEditor({
@@ -124,7 +123,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer),
       AttachmentNodeView(AttachmentRenderer),
-      FileHandler.configure(FileHandlerConfig(resizeImageFile, uploadFile)),
+      FileHandler.configure(FileHandlerConfig(uploadFile)),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
