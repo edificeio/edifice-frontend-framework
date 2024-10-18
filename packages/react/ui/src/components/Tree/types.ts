@@ -7,6 +7,7 @@ export type TreeItem = {
   position?: number;
   section?: boolean;
   children?: TreeItem[];
+  [index: string]: any;
 };
 
 export type Projected = {
@@ -81,9 +82,9 @@ export interface SharedTreeProps {
    * Customize the JSX we render inside a node
    */
   renderNode?: (payload: {
-    nodeId: string;
-    nodeName: string;
-    hasChildren: boolean;
+    node: TreeItem;
+    hasChildren?: boolean;
+    isChild?: boolean;
   }) => React.ReactNode;
   /**
    * Show Section Icon
@@ -129,7 +130,7 @@ export interface TreeNodeProps
   /**
    * Node is a child
    */
-  isChildren?: boolean;
+  isChild?: boolean;
   /**
    * Function to fold / unfold node
    */
@@ -156,13 +157,13 @@ export interface SortableTreeNodeProps extends TreeNodeProps {
    */
   indentationWidth: number;
   /**
-   * Node identifier as parent or child
+   * Depth.
    */
   depth: number;
   /**
    * Node identifier as parent or child
    */
-  isChildren?: boolean;
+  isChild?: boolean;
   /**
    *  Projected node before dragging it
    */

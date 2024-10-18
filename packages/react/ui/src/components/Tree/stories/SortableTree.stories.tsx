@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import SortableTree from "../SortableTree";
 import { SortableTreeProps } from "../types";
+import { Hide } from "@edifice-ui/icons";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof SortableTree> = {
@@ -39,7 +40,9 @@ const meta: Meta<typeof SortableTree> = {
       },
     ],
     selectedNodeId: "1",
-    renderNode: (node) => <div>{node.nodeName}</div>,
+    renderNode: (payload) => (
+      <div className="d-flex align-items-center">{payload?.node?.name}</div>
+    ),
     onSortable: (nodes) => console.log(nodes),
     onTreeItemClick: (nodeId) => console.log(nodeId),
   },

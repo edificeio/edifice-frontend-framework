@@ -131,7 +131,7 @@ const TreeNode = forwardRef(
       disabled,
       indentationWidth,
       depth,
-      isChildren,
+      isChild,
       projected,
       renderNode,
       onTreeItemClick,
@@ -198,7 +198,7 @@ const TreeNode = forwardRef(
     const spaceGestion = () =>
       !isDragging
         ? null
-        : isChildren
+        : isChild
           ? depth === 1
             ? `${indentationWidth * depth}px`
             : "0px"
@@ -253,12 +253,12 @@ const TreeNode = forwardRef(
               onClick={() => onTreeItemClick(node.id)}
               onKeyDown={handleItemKeyDown}
             >
-              {renderNode && !isChildren ? (
+              {renderNode ? (
                 renderNode({
-                  nodeId: node.id,
-                  nodeName: node.name,
+                  node,
                   hasChildren:
                     Array.isArray(node.children) && !!node.children.length,
+                  isChild,
                 })
               ) : (
                 <div className="text-truncate">{node.name}</div>
@@ -285,7 +285,7 @@ const TreeNode = forwardRef(
                       ? projected.depth
                       : 0
                   }
-                  isChildren={true}
+                  isChild={true}
                   projected={projected}
                 />
               ))}
