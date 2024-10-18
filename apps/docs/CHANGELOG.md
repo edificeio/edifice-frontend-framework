@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.11](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-pedago.10...v1.5.22-develop-pedago.11) (2024-10-18)
+
+**Note:** Version bump only for package @edifice.io/storybook
+
 ## [1.5.22-develop-pedago.10](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-pedago.9...v1.5.22-develop-pedago.10) (2024-10-16)
 
 **Note:** Version bump only for package @edifice.io/storybook
