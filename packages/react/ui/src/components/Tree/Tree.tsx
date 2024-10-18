@@ -75,7 +75,7 @@ export const TreeNode = forwardRef(
       showIcon = false,
       expandedNodes,
       focused,
-      isChildren,
+      isChild,
       renderNode,
       onTreeItemClick,
       onToggleNode,
@@ -167,12 +167,12 @@ export const TreeNode = forwardRef(
               onClick={() => onTreeItemClick(node.id)}
               onKeyDown={handleItemKeyDown}
             >
-              {renderNode && !isChildren ? (
+              {renderNode ? (
                 renderNode({
-                  nodeId: node.id,
-                  nodeName: node.name,
+                  node,
                   hasChildren:
                     Array.isArray(node.children) && !!node.children.length,
+                  isChild,
                 })
               ) : (
                 <div className="text-truncate">{node.name}</div>
@@ -194,7 +194,7 @@ export const TreeNode = forwardRef(
                   onTreeItemClick={onTreeItemClick}
                   onToggleNode={onToggleNode}
                   renderNode={renderNode}
-                  isChildren={true}
+                  isChild={true}
                 />
               ))}
             </ul>
