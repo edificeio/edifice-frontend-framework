@@ -1,5 +1,8 @@
 import { mergeAttributes, nodeInputRule } from "@tiptap/core";
 import Image from "@tiptap/extension-image";
+import { Plugin } from "prosemirror-state";
+import { WorkspaceElement } from "edifice-ts-client";
+import ImageResizer from "@edifice.io/image-resizer";
 
 export const IMAGE_INPUT_REGEX =
   /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
@@ -7,6 +10,7 @@ export const IMAGE_INPUT_REGEX =
 export interface CustomImageOptions {
   HTMLAttributes: Record<string, string>;
   sizes: string[];
+  uploadFile?: (file: File) => Promise<WorkspaceElement | null>;
 }
 
 interface AttributesProps {
@@ -41,6 +45,9 @@ export const CustomImage = Image.extend<CustomImageOptions>({
       sizes: ["small", "medium", "large"],
       HTMLAttributes: {
         class: "custom-image",
+      },
+      uploadFile: () => {
+        return Promise.resolve(null);
       },
     };
   },
@@ -222,5 +229,72 @@ export const CustomImage = Image.extend<CustomImageOptions>({
           return true;
         },
     };
+  },
+
+  addProseMirrorPlugins() {
+    const uploadAndCreateImages = async (
+      files: File[],
+      editor,
+      position?: number,
+    ) => {
+      const images = files.filter((file) =>
+        /image\/(png|jpeg|jpg|gif|webp|heic|avif)/.test(file.type),
+      );
+      images.forEach(async (file) => {
+        const resizedImage = await ImageResizer.resizeImageFile(file);
+        const image = await this.options.uploadFile(resizedImage);
+
+        if (image) {
+          /**
+           * WB-3053: addTimestampToImageUrl to update correctly image in tiptap-image-extension
+           */
+          const imageUrl = `/workspace/${image.public ? "pub/" : ""}document/${
+            image._id
+          }?timestamp=${new Date().getTime()}`;
+          const node = this.type.create({
+            src: `${imageUrl}`,
+            alt: image.alt,
+            title: image.title,
+          }); // creates the image element
+
+          let transaction; // places it in the correct position
+          if (position) {
+            transaction = editor.state.tr.insert(position, node); // places it in the correct position
+          } else {
+            transaction = editor.state.tr.replaceSelectionWith(node); // places it in the correct position
+          }
+
+          editor.dispatch(transaction);
+        }
+      });
+    };
+
+    return [
+      new Plugin({
+        props: {
+          handlePaste: (editor, e) => {
+            const files = Array.from(e.clipboardData.files);
+
+            uploadAndCreateImages(files, editor);
+
+            return true;
+          },
+          handleDrop: (editor, e, _s, moved) => {
+            const files = Array.from(e.dataTransfer.files);
+            if (!moved && files.length > 0) {
+              const { pos: position } = editor.posAtCoords({
+                left: e.clientX,
+                top: e.clientY,
+              });
+
+              uploadAndCreateImages(files, editor, position);
+              return true;
+            }
+
+            return false;
+          },
+        },
+      }),
+    ];
   },
 });
