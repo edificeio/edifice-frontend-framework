@@ -188,6 +188,16 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/opendigitaleducation/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1874)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/opendigitaleducation/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1532)
 - **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/opendigitaleducation/edifice-ui/issues/252)) ([fd11cad](https://github.com/opendigitaleducation/edifice-ui/commit/fd11cad6195eede2105a51146232e79ab9087041)), closes [#WB2-1537](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1537)
+## [1.5.22-develop-b2school.4](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-b2school.3...v1.5.22-develop-b2school.4) (2024-10-21)
+
+### Bug Fixes
+
+- #WB-3377 paste image from url ([#260](https://github.com/opendigitaleducation/edifice-ui/issues/260)) ([90045c4](https://github.com/opendigitaleducation/edifice-ui/commit/90045c45da55f01a85feca2021fdc623d82f3905)), closes [#WB-3377](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3377)
+
+### Features
+
+- **ImageResizer:** add image-resizer package for resizing and compressing images ([#261](https://github.com/opendigitaleducation/edifice-ui/issues/261)) ([86e09cf](https://github.com/opendigitaleducation/edifice-ui/commit/86e09cff69e14f89a0cf793b3a193674e84700df))
+
 ## [1.5.22-develop-b2school.3](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-b2school.2...v1.5.22-develop-b2school.3) (2024-10-15)
 
 ### Bug Fixes
