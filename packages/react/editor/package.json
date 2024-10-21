@@ -43,7 +43,6 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@edifice.io/image-resizer": "workspace:*",
     "@edifice-tiptap-extensions/extension-alert": "workspace:*",
     "@edifice-tiptap-extensions/extension-attachment": "workspace:*",
     "@edifice-tiptap-extensions/extension-audio": "workspace:*",
@@ -58,6 +57,7 @@
     "@edifice-tiptap-extensions/extension-speechsynthesis": "workspace:*",
     "@edifice-tiptap-extensions/extension-table-cell": "workspace:*",
     "@edifice-tiptap-extensions/extension-video": "workspace:*",
+    "@edifice.io/image-resizer": "workspace:*",
     "@tiptap-pro/extension-mathematics": "2.2.1",
     "@tiptap/core": "2.3.0",
     "@tiptap/extension-character-count": "2.3.0",
