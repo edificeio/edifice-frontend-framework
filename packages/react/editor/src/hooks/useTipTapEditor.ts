@@ -39,14 +39,12 @@ import {
   AttachmentRenderer,
   AudioNodeView,
   AudioRenderer,
-  FileHandlerConfig,
   ImageNodeView,
   LinkerNodeView,
   LinkerRenderer,
   MediaRenderer,
   VideoNodeView,
 } from "../components";
-import FileHandler from "@tiptap-pro/extension-file-handler";
 import { WorkspaceVisibility } from "edifice-ts-client";
 
 /**
@@ -121,9 +119,8 @@ export const useTipTapEditor = (
       VideoNodeView(MediaRenderer),
       AudioNodeView(AudioRenderer),
       LinkerNodeView(LinkerRenderer),
-      ImageNodeView(MediaRenderer),
+      ImageNodeView(MediaRenderer, uploadFile),
       AttachmentNodeView(AttachmentRenderer),
-      FileHandler.configure(FileHandlerConfig(uploadFile)),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.

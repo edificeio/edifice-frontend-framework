@@ -267,9 +267,6 @@ importers:
       "@react-spring/web":
         specifier: ^9.7.3
         version: 9.7.3(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      "@tiptap-pro/extension-file-handler":
-        specifier: ^2.11.9
-        version: 2.11.9(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))(@tiptap/pm@2.3.0)
       "@tiptap-pro/extension-mathematics":
         specifier: 2.2.1
         version: 2.2.1(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))(@tiptap/pm@2.3.0)(katex@0.16.11)
@@ -834,9 +831,21 @@ importers:
 
   packages/tiptap/extensions/extension-image:
     dependencies:
+      "@edifice.io/image-resizer":
+        specifier: workspace:*
+        version: link:../../../image-resizer
       "@tiptap/extension-image":
         specifier: 2.3.0
         version: 2.3.0(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))
+      edifice-ts-client:
+        specifier: ^1.5.21
+        version: 1.5.21
+      prosemirror-state:
+        specifier: ^1.4.3
+        version: 1.4.3
+      tslib:
+        specifier: ^2.8.0
+        version: 2.8.0
     devDependencies:
       "@rollup/plugin-babel":
         specifier: ^6.0.3
@@ -5225,15 +5234,6 @@ packages:
     peerDependencies:
       "@testing-library/dom": ">=7.21.4"
 
-  "@tiptap-pro/extension-file-handler@2.11.9":
-    resolution:
-      {
-        integrity: sha512-/Aa420i0YfnPdlgS6I4RbWBBmEeFMqNqKnc9D4irklHCuD/SE6z+tdVTZiFFU/66Edza/2AM4IviUNy8tdZWfA==,
-      }
-    peerDependencies:
-      "@tiptap/core": ^2.0.0
-      "@tiptap/pm": ^2.0.0
-
   "@tiptap-pro/extension-mathematics@2.2.1":
     resolution:
       {
@@ -8170,6 +8170,12 @@ packages:
     resolution:
       {
         integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==,
+      }
+
+  edifice-ts-client@1.5.21:
+    resolution:
+      {
+        integrity: sha512-n4Bx9t8AOL8g0BJzK70wLQ3XDZiOotde1Kk6sVZNOSr0skR2d+GXp25DPtW0Ci0D5jVgvaOWD+rjvvfQskrXjQ==,
       }
 
   ee-first@1.1.1:
@@ -14518,10 +14524,10 @@ packages:
         integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==,
       }
 
-  tslib@2.6.3:
+  tslib@2.8.0:
     resolution:
       {
-        integrity: sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==,
+        integrity: sha512-jWVzBLplnCmoaTr13V9dYbiQ99wvZRd0vNWaDRg+aVYRcjDF3nDksxFDE/+fkXnKhpnUUkmx5pK/v8mCtLVqZA==,
       }
 
   tsutils@3.21.0:
@@ -16880,7 +16886,7 @@ snapshots:
   "@nrwl/tao@17.3.2(@swc/core@1.7.14)":
     dependencies:
       nx: 17.3.2(@swc/core@1.7.14)
-      tslib: 2.6.3
+      tslib: 2.8.0
     transitivePeerDependencies:
       - "@swc-node/register"
       - "@swc/core"
@@ -16895,7 +16901,7 @@ snapshots:
       nx: 17.3.2(@swc/core@1.7.14)
       semver: 7.6.3
       tmp: 0.2.3
-      tslib: 2.6.3
+      tslib: 2.8.0
       yargs-parser: 21.1.1
 
   "@nx/nx-darwin-arm64@17.3.2":
@@ -18743,11 +18749,6 @@ snapshots:
     dependencies:
       "@testing-library/dom": 9.3.4
 
-  "@tiptap-pro/extension-file-handler@2.11.9(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))(@tiptap/pm@2.3.0)":
-    dependencies:
-      "@tiptap/core": 2.3.0(@tiptap/pm@2.3.0)
-      "@tiptap/pm": 2.3.0
-
   "@tiptap-pro/extension-mathematics@2.2.1(@tiptap/core@2.3.0(@tiptap/pm@2.3.0))(@tiptap/pm@2.3.0)(katex@0.16.11)":
     dependencies:
       "@tiptap/core": 2.3.0(@tiptap/pm@2.3.0)
@@ -19473,7 +19474,7 @@ snapshots:
   "@yarnpkg/esbuild-plugin-pnp@3.0.0-rc.15(esbuild@0.18.20)":
     dependencies:
       esbuild: 0.18.20
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   "@yarnpkg/fslib@2.10.3":
     dependencies:
@@ -19490,7 +19491,7 @@ snapshots:
   "@yarnpkg/parsers@3.0.0-rc.46":
     dependencies:
       js-yaml: 3.14.1
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   "@zkochan/js-yaml@0.0.6":
     dependencies:
@@ -19626,7 +19627,7 @@ snapshots:
 
   aria-hidden@1.2.4:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   aria-query@5.1.3:
     dependencies:
@@ -19716,11 +19717,11 @@ snapshots:
 
   ast-types@0.13.4:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   ast-types@0.16.1:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   astral-regex@2.0.0: {}
 
@@ -20563,7 +20564,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   dot-prop@5.3.0:
     dependencies:
@@ -20591,6 +20592,13 @@ snapshots:
   earcut@2.2.4: {}
 
   eastasianwidth@0.2.0: {}
+
+  edifice-ts-client@1.5.21:
+    dependencies:
+      axios: 1.6.6
+      core-js: 3.35.1
+    transitivePeerDependencies:
+      - debug
 
   ee-first@1.1.1: {}
 
@@ -22456,7 +22464,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   lru-cache@10.4.3: {}
 
@@ -22778,7 +22786,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   node-dir@0.1.17:
     dependencies:
@@ -23008,7 +23016,7 @@ snapshots:
       tar-stream: 2.2.0
       tmp: 0.2.3
       tsconfig-paths: 4.2.0
-      tslib: 2.6.3
+      tslib: 2.8.0
       yargs: 17.7.2
       yargs-parser: 21.1.1
     optionalDependencies:
@@ -23807,7 +23815,7 @@ snapshots:
     dependencies:
       react: 18.2.0
       react-style-singleton: 2.2.1(@types/react@18.2.33)(react@18.2.0)
-      tslib: 2.6.3
+      tslib: 2.8.0
     optionalDependencies:
       "@types/react": 18.2.33
 
@@ -23816,7 +23824,7 @@ snapshots:
       react: 18.2.0
       react-remove-scroll-bar: 2.3.6(@types/react@18.2.33)(react@18.2.0)
       react-style-singleton: 2.2.1(@types/react@18.2.33)(react@18.2.0)
-      tslib: 2.6.3
+      tslib: 2.8.0
       use-callback-ref: 1.3.2(@types/react@18.2.33)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.2.33)(react@18.2.0)
     optionalDependencies:
@@ -23829,7 +23837,7 @@ snapshots:
       get-nonce: 1.0.1
       invariant: 2.2.4
       react: 18.2.0
-      tslib: 2.6.3
+      tslib: 2.8.0
     optionalDependencies:
       "@types/react": 18.2.33
 
@@ -23930,7 +23938,7 @@ snapshots:
       esprima: 4.0.1
       source-map: 0.6.1
       tiny-invariant: 1.3.3
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   redent@3.0.0:
     dependencies:
@@ -24100,7 +24108,7 @@ snapshots:
       fs-extra: 10.1.0
       rollup: 3.29.4
       semver: 7.6.3
-      tslib: 2.6.3
+      tslib: 2.8.0
       typescript: 5.3.3
 
   rollup-plugin-uglify@6.0.4(rollup@3.29.4):
@@ -24169,7 +24177,7 @@ snapshots:
 
   rxjs@7.8.1:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   safe-array-concat@1.1.2:
     dependencies:
@@ -24399,7 +24407,7 @@ snapshots:
   snake-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.0
 
   socks-proxy-agent@7.0.0:
     dependencies:
@@ -24916,7 +24924,7 @@ snapshots:
 
   tslib@1.14.1: {}
 
-  tslib@2.6.3: {}
+  tslib@2.8.0: {}
 
   tsutils@3.21.0(typescript@5.3.3):
     dependencies:
@@ -25157,7 +25165,7 @@ snapshots:
   use-callback-ref@1.3.2(@types/react@18.2.33)(react@18.2.0):
     dependencies:
       react: 18.2.0
-      tslib: 2.6.3
+      tslib: 2.8.0
     optionalDependencies:
       "@types/react": 18.2.33
 
@@ -25171,7 +25179,7 @@ snapshots:
     dependencies:
       detect-node-es: 1.1.0
       react: 18.2.0
-      tslib: 2.6.3
+      tslib: 2.8.0
     optionalDependencies:
       "@types/react": 18.2.33
 
