@@ -26,6 +26,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([68aeac7](https://github.com/edificeio/edifice-ui/commit/68aeac717f4659e11db23882d22f7a75cf590ff3)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+## [1.5.22-develop-b2school.5](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
+
+**Note:** Version bump only for package @edifice-tiptap-extensions/extension-image
+
 ## [1.5.22-develop-b2school.4](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-b2school.3...v1.5.22-develop-b2school.4) (2024-10-21)
 
 ### Bug Fixes
