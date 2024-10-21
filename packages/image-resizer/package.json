@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/image-resizer",
-  "version": "1.0.0",
+  "version": "1.5.22-develop-b2school.4",
   "description": "Edifice Image Resizer",
   "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/image-resizer#readme",
   "bugs": {
@@ -32,7 +32,6 @@
     "format:check": "npx prettier --check \"src/**/*.ts\"",
     "format:write": "npx prettier --write \"src/**/*.ts\""
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "20.11.6",
     "prettier": "3.2.4",
