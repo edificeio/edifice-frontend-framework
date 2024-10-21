@@ -93,6 +93,10 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+## [1.5.22-develop-b2school.5](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
+
+**Note:** Version bump only for package @edifice-ui/editor
+
 ## [1.5.22-develop-b2school.4](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.3...v1.5.22-develop-b2school.4) (2024-10-21)
 
 ### Bug Fixes
