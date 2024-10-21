@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.22-develop-b2school.3",
+  "version": "1.5.22-develop-b2school.4",
   "npmClient": "pnpm",
   "command": {
     "version": {

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-b2school.4](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.3...v1.5.22-develop-b2school.4) (2024-10-21)
+
+### Features
+
+- **ImageResizer:** add image-resizer package for resizing and compressing images ([#261](https://github.com/edificeio/edifice-ui/issues/261)) ([86e09cf](https://github.com/edificeio/edifice-ui/commit/86e09cff69e14f89a0cf793b3a193674e84700df))
+
 ## [1.5.22-develop-b2school.2](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.1...v1.5.22-develop-b2school.2) (2024-10-15)
 
 ### Bug Fixes
