@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop.0](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.21...v1.5.22-develop.0) (2024-10-22)
+
+### Bug Fixes
+
+- #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/opendigitaleducation/edifice-ui/issues/263)) ([e014c4a](https://github.com/opendigitaleducation/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+
 ## [1.5.21](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 
 **Note:** Version bump only for package root
