@@ -10,12 +10,16 @@ type MagnetoData = {
   modificationDate: string | number;
 };
 
+type MagnetoResponse = {
+  all: MagnetoData[];
+};
+
 export class MagnetoBehaviour extends AbstractBehaviourService {
   APP = "magneto";
   RESOURCE = "magneto";
 
   async loadResources() {
-    const magnetos = await this.httpGet<MagnetoData[]>(
+    const { all: magnetos } = await this.httpGet<MagnetoResponse>(
       `/magneto/boards/editable`,
     );
     return magnetos.map((data) => {
@@ -25,7 +29,7 @@ export class MagnetoBehaviour extends AbstractBehaviourService {
         icon: data.imageUrl,
         owner: data.ownerId,
         ownerName: data.ownerName,
-        path: `/magneto#/board/view/${data._id}`,
+        path: `/magneto#/board/${data._id}/view`,
         shared: data.shared && data.shared.length >= 0 ? true : false,
         modified: "" + data.modificationDate,
       });

@@ -191,7 +191,7 @@ const InternalLinker = ({
             return {
               application,
               displayName: t(webApps[index]?.displayName ?? application),
-              icon: <AppIcon app={webApps[index]}></AppIcon>,
+              icon: <AppIcon app={webApps[index]} size="24" />,
             } as ApplicationOption;
           })
           .sort((app1, app2) =>
@@ -246,8 +246,8 @@ const InternalLinker = ({
 
   return (
     <div className="d-flex flex-column flex-fill overflow-hidden">
-      <div className="search d-flex bg-light rounded-top border border-bottom-0">
-        <div className="flex-shrink-1 px-8 py-12 border-end">
+      <div className="search d-flex align-items-center bg-light rounded-top border border-bottom-0">
+        <div className="flex-shrink-1 px-8 border-end">
           <Dropdown overflow>
             <Dropdown.Trigger
               icon={

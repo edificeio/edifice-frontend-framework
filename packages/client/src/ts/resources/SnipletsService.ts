@@ -1,23 +1,23 @@
-import { TimelinegeneratorBehaviour } from "./behaviours/TimelinegeneratorBehaviour";
 import { App, ERROR_CODE, ResourceType } from "../globals";
 import { IOdeServices } from "../services/OdeServices";
+import { ServiceRegistry } from "./ServiceRegistry";
 import { AbstractBehaviourService } from "./behaviours/AbstractBehaviourService";
-import { WorkspaceBehaviour } from "./behaviours/WorkspaceBehaviour";
-import { BlogBehaviour } from "./behaviours/BlogBehaviour";
 import { ActualitesBehaviour } from "./behaviours/ActualitesBehaviour";
-import { WikiBehaviour } from "./behaviours/WikiBehaviour";
-import { PagesBehaviour } from "./behaviours/PagesBehaviour";
-import { CommunityBehaviour } from "./behaviours/CommunityBehaviour";
-import { MindmapBehaviour } from "./behaviours/MindmapBehaviour";
-import { ForumBehaviour } from "./behaviours/ForumBehaviour";
-import { HomeworksBehaviour } from "./behaviours/HomeworksBehaviour";
-import { ScrapbookBehaviour } from "./behaviours/ScrapbookBehaviour";
+import { BlogBehaviour } from "./behaviours/BlogBehaviour";
 import { CollaborativewallBehaviour } from "./behaviours/CollaborativewallBehaviour";
+import { CommunityBehaviour } from "./behaviours/CommunityBehaviour";
 import { ExercizerBehaviour } from "./behaviours/ExercizerBehaviour";
 import { FormulaireBehaviour } from "./behaviours/FormulaireBehaviour";
+import { ForumBehaviour } from "./behaviours/ForumBehaviour";
+import { HomeworksBehaviour } from "./behaviours/HomeworksBehaviour";
 import { MagnetoBehaviour } from "./behaviours/MagnetoBehaviour";
+import { MindmapBehaviour } from "./behaviours/MindmapBehaviour";
+import { PagesBehaviour } from "./behaviours/PagesBehaviour";
 import { PollBehaviour } from "./behaviours/PollBehaviour";
-import { ServiceRegistry } from "./ServiceRegistry";
+import { ScrapbookBehaviour } from "./behaviours/ScrapbookBehaviour";
+import { TimelinegeneratorBehaviour } from "./behaviours/TimelinegeneratorBehaviour";
+import { WikiBehaviour } from "./behaviours/WikiBehaviour";
+import { WorkspaceBehaviour } from "./behaviours/WorkspaceBehaviour";
 import { IBehaviourService } from "./interface";
 
 export class SnipletsService {
@@ -36,36 +36,32 @@ export class SnipletsService {
     currentApp: App,
   ): Promise<App[]> {
     const http = context.http();
-    return new Promise<App[]>(async (resolve, reject) => {
+    return new Promise<App[]>((resolve) => {
       if (!this.resourceProducingApps.length) {
         // Default to current app and workspace
         this.resourceProducingApps = [currentApp, "workspace"];
 
         // Dynamic load prefixes of resource-producing apps
-        try {
-          const [appList, me] = await Promise.all([
-            http.get<App[]>("/resources-applications"),
-            context.session().getUser(),
-          ]);
-          if (me && me.apps && appList?.length) {
-            // Sanitize list agains authorized apps for this user
-            this.resourceProducingApps = appList.filter((appPrefix) => {
-              return (
-                -1 <
-                me.apps.findIndex((webapp) => {
-                  return (
-                    webapp.address.indexOf(appPrefix) !== -1 &&
-                    webapp.icon.indexOf("/") === -1
-                  );
-                })
+        (async () => {
+          try {
+            const [appList, user] = await Promise.all([
+              http.get<App[]>("/resources-applications"),
+              context.session().getUser(),
+            ]);
+            if (user && user.apps && appList?.length) {
+              // Sanitize list against authorized apps for this user
+              this.resourceProducingApps = appList.filter((appPrefix) =>
+                user.apps.some((webapp) => webapp.address.includes(appPrefix)),
               );
-            });
+            }
+          } catch {
+            /* keep default */
           }
-        } catch {
-          /* keep default */
-        }
+          resolve(this.resourceProducingApps);
+        })();
+      } else {
+        resolve(this.resourceProducingApps);
       }
-      resolve(this.resourceProducingApps);
     });
   }
 
