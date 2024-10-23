@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.12](https://github.com/opendigitaleducation/edifice-tiptap-extensions/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/172)) ([d94bc7a](https://github.com/opendigitaleducation/edifice-tiptap-extensions/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/WB2-76)
+
 ## [1.5.22-develop-pedago.1](https://github.com/opendigitaleducation/edifice-tiptap-extensions/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
 
 ### Features
