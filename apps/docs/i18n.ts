@@ -1,12 +1,8 @@
-// src/i18n.js
-
 import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 
 i18n
   .use(Backend) // lazy loads translations from /public/locales
-  .use(LanguageDetector) // detect user language
   .init({
     backend: {
       parse: function (data: string) {

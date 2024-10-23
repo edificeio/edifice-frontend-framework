@@ -7,7 +7,7 @@ import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClient
 
 import "../../../packages/bootstrap/dist/index.css";
 
-import i18n from "../src/i18n";
+import i18n from "../i18n";
 
 // Initialize MSW
 initialize({
