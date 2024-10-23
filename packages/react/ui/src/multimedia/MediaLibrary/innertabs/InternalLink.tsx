@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { Checkbox } from "../../../components";
 import { useToggle } from "../../../hooks";
-import InternalLinker from "../../Linker/InternalLinker";
+import InternalLinker from "../../Linker/components/InternalLinker";
 import { useMediaLibraryContext } from "../MediaLibraryContext";
 
 export type InternalLinkTabProps = {

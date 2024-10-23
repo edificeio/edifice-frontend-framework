@@ -9,11 +9,11 @@ import { App, odeServices } from "edifice-ts-client";
 import { ILinkedResource } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 
-import { AppIcon, Dropdown, EmptyScreen } from "../../components";
-import { SearchBar } from "../../components/SearchBar";
-import { useOdeTheme, usePaths, useResourceSearch } from "../../core";
-import { useDebounce } from "../../hooks";
-import LinkerCard from "../LinkerCard/LinkerCard";
+import { AppIcon, Dropdown, EmptyScreen } from "../../../components";
+import { SearchBar } from "../../../components/SearchBar";
+import { useOdeTheme, usePaths, useResourceSearch } from "../../../core";
+import { useDebounce } from "../../../hooks";
+import LinkerCard from "../../LinkerCard/LinkerCard";
 
 /**
  * Definition of an internal link.
@@ -47,7 +47,6 @@ export interface InternalLinkerProps {
   showApplicationSelector?: boolean;
 }
 
-/** The InternalLinker component */
 const InternalLinker = ({
   appCode,
   defaultAppCode,

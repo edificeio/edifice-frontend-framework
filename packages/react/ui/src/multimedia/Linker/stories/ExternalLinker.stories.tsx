@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import ExternalLinker from "./ExternalLinker";
+import ExternalLinker from "../components/ExternalLinker";
 
 const meta: Meta<typeof ExternalLinker> = {
   title: "Multimedia/ExternalLinker",
@@ -42,7 +42,10 @@ export const UpdateLink: Story = {
 
 export const SelectedText: Story = {
   args: {
-    text: "Text sélectionné",
+    link: {
+      url: "www.edifice.io",
+      text: "Text sélectionné",
+    },
   },
   parameters: {
     docs: {

@@ -75,7 +75,9 @@
     "turbo": "2.2.3",
     "typescript": "5.3.3",
     "vite": "4.5.1",
-    "vite-plugin-dts": "3.7.0"
+    "vite-plugin-dts": "3.7.0",
+    "msw": "2.0.11",
+    "msw-storybook-addon": "2.0.0-beta.1"
   },
   "packageManager": "pnpm@9.4.0",
   "engines": {
