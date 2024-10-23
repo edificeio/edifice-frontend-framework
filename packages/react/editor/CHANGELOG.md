@@ -43,6 +43,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.5.22-develop.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop.0) (2024-10-22)
 
 **Note:** Version bump only for package @edifice-ui/editor
+
 ## [1.5.22-develop-pedago.11](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.10...v1.5.22-develop-pedago.11) (2024-10-18)
 
 **Note:** Version bump only for package @edifice-ui/editor
