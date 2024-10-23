@@ -17,6 +17,55 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 - **ui:** #EN-26, add additionalRoles to extend checkUserRight ([7d8d81c](https://github.com/opendigitaleducation/edifice-ui/commit/7d8d81c80049f4bdec792ae82422a80540f1f086)), closes [#EN-26](https://github.com/opendigitaleducation/edifice-ui/issues/EN-26)
 
+## [1.5.22-develop-pedago.12](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
+
+### Bug Fixes
+
+- #WB2-1294, fix group icon in share modal ([#259](https://github.com/opendigitaleducation/edifice-ui/issues/259)) ([2488105](https://github.com/opendigitaleducation/edifice-ui/commit/24881051984bb31a658f231e6cacc64a1b0d6f83))
+- #WB2-1296, fix resource creation when searching ([6622749](https://github.com/opendigitaleducation/edifice-ui/commit/6622749d5393160e896a422003ed64d66c796a9e))
+- #WB2-1296, fix resource creation, when searching currentFolder is undefined ([b3facdf](https://github.com/opendigitaleducation/edifice-ui/commit/b3facdf761bc36e0eaae49b6375546a6bc0abf60))
+- #WB2-1514, fix name type Treeview ([c7ca524](https://github.com/opendigitaleducation/edifice-ui/commit/c7ca5243eabfe37156a8ff8602ccd1b054603d05))
+- #WB2-1514, fix probleme treeview with one node + fix disappears nodes ([e3f219e](https://github.com/opendigitaleducation/edifice-ui/commit/e3f219ea293012799697bac904062d8ff5841264))
+- #WB2-1514, fix renderNode for Tree component ([2981153](https://github.com/opendigitaleducation/edifice-ui/commit/298115388f5616eef765d81b221ce84a3c42e7a7))
+- #WB2-1516, remove isTreeviewArray and createChild function in favor of proper naming ([1aab93a](https://github.com/opendigitaleducation/edifice-ui/commit/1aab93a0c19c69c9f5036372b62a838bf2da1988)), closes [#WB2-1516](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1516)
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([cc33016](https://github.com/opendigitaleducation/edifice-ui/commit/cc33016c5b53a19365f347c16a1baa94b9cc1a10))
+- #WB2-1768, add forget function ([c8e5fa8](https://github.com/opendigitaleducation/edifice-ui/commit/c8e5fa8bd7a3446568cc7ff45722882ca73d5ba8)), closes [#WB2-1768](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([36d1c05](https://github.com/opendigitaleducation/edifice-ui/commit/36d1c05435adde8e7b3d90ec1bb60abea2af492f)), closes [#WB2-1768](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([2c67b18](https://github.com/opendigitaleducation/edifice-ui/commit/2c67b18c36e80fc0f5aaad6d14527a7a00bec4fc)), closes [#WB2-1768](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1768)
+- #WB2-1768, fix feedback PR ([825bafe](https://github.com/opendigitaleducation/edifice-ui/commit/825bafe6ee693f857810b754b6b3386bdcaef2a6))
+- #WB2-1768, fix format eslint ([5068f96](https://github.com/opendigitaleducation/edifice-ui/commit/5068f96fa2e5ac512e37d6a6593aadb2575069dc))
+- #WB2-1917, add i18n comment.more and show button more ([ac24304](https://github.com/opendigitaleducation/edifice-ui/commit/ac24304d21f7586aac287116b6e2441f14272b0e)), closes [#WB2-1917](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1917)
+- **bootstrap:** add color text utilities ([451703a](https://github.com/opendigitaleducation/edifice-ui/commit/451703adb6427c986a4c543d1abaee555741c41c))
+- **treeview:** #WB2-76, align node with invisible icon ([4c99f1a](https://github.com/opendigitaleducation/edifice-ui/commit/4c99f1a841ab551b16dba3dd087ff394fe3c33ad)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, fix duplicate arrow and scss styles to avoid issue with d&d ([76e1b69](https://github.com/opendigitaleducation/edifice-ui/commit/76e1b6900e243c3fde871d6e5d652bd239ef2fb2))
+- **treeview:** #WB2-76, fix missing drag focus to item ([7795f58](https://github.com/opendigitaleducation/edifice-ui/commit/7795f584be702a4b66a40f2a013cf115bb2dab1e))
+- **treeview:** #WB2-76, remove debug node.name ([e92034f](https://github.com/opendigitaleducation/edifice-ui/commit/e92034f03848d7acf2a0e1f168d284c61e54498f)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, set externalNodeId to undefined if doesn't exist ([8b33a0f](https://github.com/opendigitaleducation/edifice-ui/commit/8b33a0fbffb0fd54064a5576d53f1825fe7ee31a)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-76)
+- **ui:** ##WB2-1822, add type button to natif buttons ([aa635bc](https://github.com/opendigitaleducation/edifice-ui/commit/aa635bc05e0556992b67441e80dfa2d2631657f7)), closes [#WB2-1822](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1822)
+- WB2-1514, add collapse node when drag parent is drag + update types ([f462186](https://github.com/opendigitaleducation/edifice-ui/commit/f46218666241cb0c5d8ca25892c1ad819b1595f1))
+
+### Features
+
+- #WB2-1513, adapt new function treeview with an array TreeData +… ([#216](https://github.com/opendigitaleducation/edifice-ui/issues/216)) ([76a496b](https://github.com/opendigitaleducation/edifice-ui/commit/76a496b44bfb286dee0cce20970c954e84abc557)), closes [#WB2-1513](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1513)
+- #WB2-1514, add new component Treeview Sortable ([#257](https://github.com/opendigitaleducation/edifice-ui/issues/257)) ([cf08b08](https://github.com/opendigitaleducation/edifice-ui/commit/cf08b089d87be22b900d6040bab1925fd4310e24)), closes [#WB2-1514](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1514)
+- #WB2-1516, add button to create children page ([#228](https://github.com/opendigitaleducation/edifice-ui/issues/228)) ([d4f570a](https://github.com/opendigitaleducation/edifice-ui/commit/d4f570a065136f8c3b021436f76cc88a0be6507c)), closes [#WB2-1516](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1516)
+- #WB2-1761, add props type if comment provider is in read or in … ([#237](https://github.com/opendigitaleducation/edifice-ui/issues/237)) ([134aaed](https://github.com/opendigitaleducation/edifice-ui/commit/134aaed50ee3a842d3bd820451cd1f7a4fffed65)), closes [#WB2-1761](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1761)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([a32c2e2](https://github.com/opendigitaleducation/edifice-ui/commit/a32c2e2428ae28cd4c6b199ae05353ef32820c1a)), closes [#WB2-1768](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1768)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([645a0ca](https://github.com/opendigitaleducation/edifice-ui/commit/645a0ca36fa0d473d5da50dc3284b6261d241e82)), closes [#WB2-1768](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1768)
+- #WB2-1868, pass full node to Tree renderNode function ([#262](https://github.com/opendigitaleducation/edifice-ui/issues/262)) ([5c41c84](https://github.com/opendigitaleducation/edifice-ui/commit/5c41c843284c2e251912d630b4b9fe2b8f7c8a94)), closes [#WB2-1868](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1868)
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/opendigitaleducation/edifice-ui/issues/254)) ([5106bbc](https://github.com/opendigitaleducation/edifice-ui/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/opendigitaleducation/edifice-ui/issues/172)) ([d94bc7a](https://github.com/opendigitaleducation/edifice-ui/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-76)
+- **bootstrap:** #WB2-1810, add emptyscreen wiki ([f3ab569](https://github.com/opendigitaleducation/edifice-ui/commit/f3ab569e398e3e8d67d61cd63767b925b4502d0f)), closes [#WB2-1810](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1810)
+- **client:** #WB2-1815, export ResourceService and remove WikiResourceService ([3b66499](https://github.com/opendigitaleducation/edifice-ui/commit/3b664993e694557760ed67277d6941fb3681ae62)), closes [#WB2-1815](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1815)
+- **core:** #WB2-1821, create useDirectory hook ([62bb20a](https://github.com/opendigitaleducation/edifice-ui/commit/62bb20ae512f82b546f8a2e28087cfa88a8f54ed)), closes [#WB2-1821](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1821)
+- **hook:** #WB2-1943, add new useBreakpoint hook to handle responsive display ([06cc484](https://github.com/opendigitaleducation/edifice-ui/commit/06cc4846d3340a83201cac6409fa21248f25465b)), closes [#WB2-1943](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1943)
+- **icons:** #WB2-1874, add icon forgoing ([ff0b717](https://github.com/opendigitaleducation/edifice-ui/commit/ff0b7177af8fec384b58211d96e4ab6d3d0c68dc)), closes [#WB2-1874](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1874)
+- **Linker:** #WB2-1698, new props to customize available applications and resources list ([fdf13cb](https://github.com/opendigitaleducation/edifice-ui/commit/fdf13cb040105206d2f0cbc55b68baec9bdd6001)), closes [#WB2-1698](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1698)
+- **react:** #WB2-1532, add module React Comments ([b4aa96a](https://github.com/opendigitaleducation/edifice-ui/commit/b4aa96aab9a7b366f3797cfca98a429d53c25879)), closes [#WB2-1532](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1532)
+- **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/opendigitaleducation/edifice-ui/issues/252)) ([3f92c8e](https://github.com/opendigitaleducation/edifice-ui/commit/3f92c8e99d732d5320f8a48092a6724cc5a30b57)), closes [#WB2-1537](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1537)
+- **ui:** #WB2-1636, adapt List component with actions Toolbar ([c4f2e20](https://github.com/opendigitaleducation/edifice-ui/commit/c4f2e2086c928ee69fcbb925e5d766b07c8aa3df)), closes [#WB2-1636](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1636)
+- **ui:** #WB2-1651, add tooltip component to attachment component ([48ac691](https://github.com/opendigitaleducation/edifice-ui/commit/48ac6915ccc5570a1f1682800874d8473e3ee6e1)), closes [#WB2-1651](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1651)
+
 ## [1.5.22](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop.0...v1.5.22) (2024-10-23)
 
 **Note:** Version bump only for package root
@@ -26,6 +75,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/opendigitaleducation/edifice-ui/issues/263)) ([e014c4a](https://github.com/opendigitaleducation/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+
 ## [1.5.22-develop-pedago.11](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.10...v1.5.22-develop-pedago.11) (2024-10-18)
 
 ### Features

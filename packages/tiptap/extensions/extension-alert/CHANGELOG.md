@@ -5,6 +5,14 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.5.23](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22...v1.5.23) (2024-10-31)
 
+## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-frontend-framework/issues/172)) ([d94bc7a](https://github.com/edificeio/edifice-frontend-framework/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/edificeio/edifice-frontend-framework/issues/WB2-76)
+
+## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
+
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-alert
 
 ## [1.5.23-hotfix-check-user-rights.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.23-hotfix-check-user-rights.0...v1.5.23-hotfix-check-user-rights.1) (2024-10-25)
