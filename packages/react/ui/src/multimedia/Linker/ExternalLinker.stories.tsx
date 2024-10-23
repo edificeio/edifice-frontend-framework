@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import ExternalLinker from "./ExternalLinker";
-import { useState } from "react";
 
 const meta: Meta<typeof ExternalLinker> = {
   title: "Multimedia/ExternalLinker",

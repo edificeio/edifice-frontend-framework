@@ -23,6 +23,7 @@ const queryClient = new QueryClient({
 });
 
 const preview = {
+  // tags: ["autodocs"],
   globalTypes: {
     /* locale: {
       name: "Locale",
@@ -50,7 +51,6 @@ const preview = {
   },
   parameters: {
     viewMode: "docs",
-    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
