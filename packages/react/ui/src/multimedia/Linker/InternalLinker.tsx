@@ -39,6 +39,12 @@ export interface InternalLinkerProps {
   /** Notify when resources selection changes */
   onSelect?: (resources: ILinkedResource[]) => void;
   multiple: boolean | undefined;
+  /** List of resources to display */
+  resourceList?: ILinkedResource[];
+  /** List of applications to display */
+  applicationList?: ApplicationOption[];
+  /** Whether to show the application selector */
+  showApplicationSelector?: boolean;
 }
 
 /** The InternalLinker component */
@@ -49,6 +55,9 @@ const InternalLinker = ({
   onChange,
   onSelect,
   multiple = true,
+  resourceList,
+  applicationList,
+  showApplicationSelector = true,
 }: InternalLinkerProps) => {
   const { t } = useTranslation();
   const { theme } = useOdeTheme();
@@ -69,13 +78,39 @@ const InternalLinker = ({
 
   // List of resources to display.
   const [resources, setResources] = useState<ILinkedResource[] | undefined>([]);
+  // Function to filter resources based on search terms.
+  const filterResources = useCallback(
+    (resource: ILinkedResource, search?: string) => {
+      if (!search) return true;
+      const searchParam = search?.toLowerCase() || "";
+      return (
+        resource.name?.toLowerCase().includes(searchParam) ||
+        resource.creatorName?.toLowerCase().includes(searchParam) ||
+        resource.description?.toLowerCase().includes(searchParam)
+      );
+    },
+    [],
+  );
+  // Function to sort resources by modified date.
+  const sortResources = useCallback((resources: ILinkedResource[]) => {
+    return resources.sort((a, b) => (a.modifiedAt < b.modifiedAt ? 1 : -1));
+  }, []);
   // Function to load and display resources of the currently selected application.
   const loadAndDisplayResources = useCallback(
     (search?: string) => {
       async function load() {
-        if (selectedApplication) {
+        // If resources are provided, use them directly.
+        if (resourceList) {
+          // Filter resources based on search terms.
+          const filteredResources = resourceList.filter((resource) =>
+            filterResources(resource, search),
+          );
+          setResources(sortResources(filteredResources));
+          return;
+        } else if (selectedApplication) {
+          // Otherwise, load resources from the currently selected application.
           try {
-            const searchLower = search?.toLowerCase();
+            // Load resources from the currently selected application.
             const resources = (
               await loadResources({
                 application: selectedApplication.application,
@@ -84,20 +119,8 @@ const InternalLinker = ({
                 filters: {},
                 pagination: { startIdx: 0, pageSize: 300 }, // ignored at the moment
               })
-            )
-              .filter((resource) => {
-                // Filter in lowercase only
-                if (!searchLower || searchLower.length === 0) return true;
-                const found =
-                  resource.name?.toLowerCase().includes(searchLower) ||
-                  resource.creatorName?.toLowerCase().includes(searchLower) ||
-                  resource.description?.toLowerCase().includes(searchLower) ||
-                  false;
-                return found;
-              })
-              .sort((a, b) => (a.modifiedAt < b.modifiedAt ? 1 : -1));
-
-            setResources(resources);
+            ).filter((resource) => filterResources(resource, search));
+            setResources(sortResources(resources));
             return; // end here
           } catch {
             // continue on error
@@ -107,7 +130,13 @@ const InternalLinker = ({
       }
       load();
     },
-    [loadResources, selectedApplication],
+    [
+      loadResources,
+      selectedApplication,
+      filterResources,
+      sortResources,
+      resourceList,
+    ],
   );
 
   // List of selected documents
@@ -181,10 +210,18 @@ const InternalLinker = ({
   // Update dropdown when available applications list is updated.
   useEffect(() => {
     (async () => {
+      // If applications are provided, use them directly.
+      if (applicationList) {
+        setOptions(applicationList);
+        return;
+      }
+      // Otherwise, load applications from the resource search.
       const appPromises = resourceApplications.map((application) =>
         odeServices.session().getWebApp(application),
       );
+      // Wait for all promises to resolve.
       const webApps = await Promise.all(appPromises);
+      // Set options to display.
       setOptions(
         resourceApplications
           .map((application, index) => {
@@ -199,7 +236,7 @@ const InternalLinker = ({
           ),
       );
     })();
-  }, [resourceApplications, t]);
+  }, [resourceApplications, t, applicationList]);
 
   // Load and display search results when debounce is over
   useEffect(() => {
@@ -214,9 +251,13 @@ const InternalLinker = ({
 
   // Preselect default option and load associated resources, if specified.
   useEffect(() => {
-    if (defaultAppCode) {
+    // If defaultAppCode is not provided, and there is only one application, use it.
+    const safeDefaultAppCode =
+      defaultAppCode ??
+      (applicationList?.length === 1 && applicationList?.[0]?.application);
+    if (safeDefaultAppCode) {
       const option = options?.find(
-        (option) => defaultAppCode === option.application,
+        (option) => safeDefaultAppCode === option.application,
       );
       setSelectedApplication(option);
       loadAndDisplayResources("");
@@ -226,7 +267,7 @@ const InternalLinker = ({
      * otherwise they will provoke side effects forbiding user from changing the selected app.
      */
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [options]);
+  }, [options, defaultAppCode]);
 
   // Preselect default resource, if specified.
   useEffect(() => {
@@ -247,33 +288,35 @@ const InternalLinker = ({
   return (
     <div className="d-flex flex-column flex-fill overflow-hidden">
       <div className="search d-flex bg-light rounded-top border border-bottom-0">
-        <div className="flex-shrink-1 px-8 py-12 border-end">
-          <Dropdown overflow>
-            <Dropdown.Trigger
-              icon={
-                <div className="pe-8">
-                  {selectedApplication?.icon || <Applications />}
-                </div>
-              }
-              label={t(
-                selectedApplication?.displayName || "bbm.linker.int.choose",
-              )}
-              variant="ghost"
-              size="md"
-            />
-            <Dropdown.Menu>
-              {options?.map((option) => (
-                <Dropdown.Item
-                  key={option.application}
-                  icon={option.icon}
-                  onClick={() => handleOptionClick(option)}
-                >
-                  {option.displayName}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
+        {showApplicationSelector && (
+          <div className="flex-shrink-1 px-8 py-12 border-end">
+            <Dropdown overflow>
+              <Dropdown.Trigger
+                icon={
+                  <div className="pe-8">
+                    {selectedApplication?.icon || <Applications />}
+                  </div>
+                }
+                label={t(
+                  selectedApplication?.displayName || "bbm.linker.int.choose",
+                )}
+                variant="ghost"
+                size="md"
+              />
+              <Dropdown.Menu>
+                {options?.map((option) => (
+                  <Dropdown.Item
+                    key={option.application}
+                    icon={option.icon}
+                    onClick={() => handleOptionClick(option)}
+                  >
+                    {option.displayName}
+                  </Dropdown.Item>
+                ))}
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        )}
         <div className="flex-grow-1 align-self-center">
           <form
             className="gap-16 d-flex w-100 align-items-center px-16 py-8"

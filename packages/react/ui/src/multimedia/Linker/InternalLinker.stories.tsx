@@ -1,14 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { MockedDataProvider } from "../../utils";
-import { APP, IResource, WorkspaceElement } from "edifice-ts-client";
+import { IResource, WorkspaceElement } from "edifice-ts-client";
 import InternalLinker from "./InternalLinker";
 import { OdeClientProvider } from "../../core";
-import {
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const mockedDocuments: WorkspaceElement[] = [];
 
@@ -73,6 +69,80 @@ export const Base: Story = {
         <QueryClientProvider client={null as unknown as QueryClient}>
           <OdeClientProvider params={{ app: "timelinegenerator" }}>
             <InternalLinker {...args}></InternalLinker>
+          </OdeClientProvider>
+        </QueryClientProvider>
+      </MockedDataProvider>
+    );
+  },
+};
+
+export const WikiExample: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Example of InternalLinker with wikis provided by the wiki app and applications list hidden",
+      },
+    },
+  },
+  render: (args: any) => {
+    const mockedWikis = [
+      {
+        application: "wiki",
+        modifiedAt: "2023-10-23T00:00:00.000Z",
+        name: "Wiki of the creator",
+        modifierId: "user1",
+        modifierName: "Alice",
+        thumbnail: "",
+        rights: ["creator:user1", "user:user2:read"],
+      } as IResource,
+      {
+        application: "wiki",
+        modifiedAt: "2023-10-23T01:00:00.000Z",
+        name: "Wiki with contribution rights",
+        modifierId: "user2",
+        modifierName: "Bob",
+        thumbnail: "",
+        rights: ["user:user1:contrib", "group:group1:read"],
+      } as IResource,
+      {
+        application: "wiki",
+        modifiedAt: "2023-10-23T02:00:00.000Z",
+        name: "Wiki with management rights",
+        modifierId: "user3",
+        modifierName: "Charlie",
+        thumbnail: "",
+        rights: ["user:user1:manager", "group:group2:contrib"],
+      } as IResource,
+      {
+        application: "wiki",
+        modifiedAt: "2023-10-23T03:00:00.000Z",
+        name: "Wiki with group rights",
+        modifierId: "user4",
+        modifierName: "David",
+        thumbnail: "",
+        rights: ["group:group1:manager", "user:user3:read"],
+      } as IResource,
+    ];
+
+    return (
+      <MockedDataProvider
+        mocks={{
+          workflows: [
+            "net.atos.wiki.controllers.WikiController|listWikis",
+            "net.atos.wiki.controllers.WikiController|createWiki",
+          ],
+        }}
+      >
+        <QueryClientProvider client={null as unknown as QueryClient}>
+          <OdeClientProvider params={{ app: "wiki" }}>
+            <InternalLinker
+              {...args}
+              resourceList={mockedWikis}
+              defaultAppCode="wiki"
+              showApplicationSelector={false}
+              applicationList={[{ application: "wiki", label: "Wiki" }]}
+            ></InternalLinker>
           </OdeClientProvider>
         </QueryClientProvider>
       </MockedDataProvider>
