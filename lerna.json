@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.22-develop-pedago.11",
+  "version": "1.5.22-develop-pedago.12",
   "npmClient": "pnpm",
   "command": {
     "version": {
