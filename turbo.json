@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": [
         "^build"
@@ -21,17 +21,10 @@
       "outputs": []
     },
     "docs": {
-      "outputs": [
-        "dist/**"
-      ]
+      "outputs": []
     },
-    "start-storybook": {
-      "cache": false
-    },
-    "build-storybook": {
-      "outputs": [
-        "dist/**"
-      ]
+    "preview": {
+      "outputs": []
     },
     "fix": {
       "outputs": []
