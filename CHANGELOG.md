@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.14](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.13...v1.5.22-develop-pedago.14) (2024-10-24)
+
+### Bug Fixes
+
+- #EN-11, add missing path to internal docs ([48f3645](https://github.com/opendigitaleducation/edifice-ui/commit/48f36451666fdacb21434f18d7483a4ac673d8af)), closes [#EN-11](https://github.com/opendigitaleducation/edifice-ui/issues/EN-11)
+- **ui:** #WB2-1996, add isBlock prop to List Toolbar ([c7f97ea](https://github.com/opendigitaleducation/edifice-ui/commit/c7f97ea6b91a9bb60f2eff7a58cbf082b44a1743)), closes [#WB2-1996](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1996)
+
 ## [1.5.22-develop-pedago.13](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.12...v1.5.22-develop-pedago.13) (2024-10-24)
 
 **Note:** Version bump only for package root
