@@ -128,11 +128,12 @@ export function findItemIndexInTree(
   return 0;
 }
 
-export function generateUpdateData(updatedFlattenedTree: FlattenedItem[]) {
-  // Reconstruire l'arbre à partir du flattenedTree
-  const tree = buildTree(updatedFlattenedTree);
-
-  const updateArray: { _id: string; position: number; parentId?: string }[] = [];
+export function generateUpdateData(
+  updatedFlattenedTree: FlattenedItem[],
+  tree: TreeItem[],
+) {
+  const updateArray: { _id: string; position: number; parentId?: string }[] =
+    [];
   let positionCounter = 0;
 
   // Créer une map pour accéder rapidement aux éléments du flattenedTree
