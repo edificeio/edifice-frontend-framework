@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-video",
-  "version": "1.5.22-develop-pedago.12",
+  "version": "1.5.22-develop-pedago.13",
   "description": "Rich Text Editor Video Extension",
   "type": "module",
   "exports": {
