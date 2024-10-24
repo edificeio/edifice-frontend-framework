@@ -141,10 +141,12 @@ export const useTreeSortable = ({
       overNodeIndex,
     );
 
-    const { updateArray, updatedTreeData } =
-      generateUpdateData(updatedFlattenedTree);
+    const updatedTree = buildTree(updatedFlattenedTree);
 
-    const updatedTree = buildTree(updatedTreeData);
+    const { updateArray } = generateUpdateData(
+      updatedFlattenedTree,
+      updatedTree,
+    );
 
     setItems(updatedTree);
     setActiveId(null);
