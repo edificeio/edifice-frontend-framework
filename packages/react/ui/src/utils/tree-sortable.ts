@@ -129,14 +129,46 @@ export function findItemIndexInTree(
 }
 
 export function generateUpdateData(updatedFlattenedTree: FlattenedItem[]) {
-  const updateArray = updatedFlattenedTree.map((item, index) => {
-    item.position = index;
-    return {
-      _id: item.id,
-      position: index,
-      parentId: item.parentId ?? undefined,
-    };
+  // Reconstruire l'arbre à partir du flattenedTree
+  const tree = buildTree(updatedFlattenedTree);
+
+  const updateArray: { _id: string; position: number; parentId?: string }[] = [];
+  let positionCounter = 0;
+
+  // Créer une map pour accéder rapidement aux éléments du flattenedTree
+  const itemMap = new Map<string, FlattenedItem>();
+  updatedFlattenedTree.forEach((item) => {
+    itemMap.set(item.id, item);
   });
+
+  // Fonction récursive pour parcourir l'arbre et assigner les positions
+  function traverse(items: TreeItem[], parentId: string | null) {
+    for (const item of items) {
+      // Créer l'objet de mise à jour pour cet élément
+      const updateItem = {
+        _id: item.id,
+        position: positionCounter,
+        parentId: parentId ?? undefined,
+      };
+      updateArray.push(updateItem);
+
+      // Mettre à jour la position dans le flattenedTree
+      const flattenedItem = itemMap.get(item.id);
+      if (flattenedItem) {
+        flattenedItem.position = positionCounter;
+      }
+
+      positionCounter++;
+
+      // Parcourir les enfants si présents
+      if (item.children && item.children.length > 0) {
+        traverse(item.children, item.id);
+      }
+    }
+  }
+
+  // Démarrer le parcours à partir des racines
+  traverse(tree, null);
 
   return { updateArray, updatedTreeData: updatedFlattenedTree };
 }
