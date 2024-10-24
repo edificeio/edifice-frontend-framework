@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MockedDataProvider } from "../../utils";
-import { IResource, WorkspaceElement } from "edifice-ts-client";
-import InternalLinker from "./InternalLinker";
-import { OdeClientProvider } from "../../core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { IResource, WorkspaceElement } from "edifice-ts-client";
+import { OdeClientProvider } from "../../core";
+import { MockedDataProvider } from "../../utils";
+import InternalLinker from "./InternalLinker";
 
 const mockedDocuments: WorkspaceElement[] = [];
 

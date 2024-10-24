@@ -4,7 +4,6 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
-// import { OdeClientProvider } from "@edifice-ui/react";
 
 import "../../../packages/bootstrap/dist/index.css";
 
@@ -23,6 +22,7 @@ const queryClient = new QueryClient({
 });
 
 const preview = {
+  tags: ["autodocs"],
   globalTypes: {
     /* locale: {
       name: "Locale",
@@ -50,7 +50,6 @@ const preview = {
   },
   parameters: {
     viewMode: "docs",
-    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,

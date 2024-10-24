@@ -1,30 +1,29 @@
 import type { StorybookConfig } from "@storybook/react-vite";
-
+import { dirname, join } from "path";
 const config: StorybookConfig = {
   stories: [
-    "../../../packages/react/**/src/**/*.stories.@(js|jsx|ts|tsx)",
-    "../../../packages/react/**/src/**/*.mdx",
+    "../../../packages/**/**/src/**/*.stories.@(js|jsx|ts|tsx)",
+    "../../../packages/**/**/src/**/*.mdx",
+    "../../../docs/**/*.mdx",
   ],
-  addons: ["@storybook/addon-essentials", "@storybook/addon-interactions"],
-  framework: {
-    name: "@storybook/react-vite",
-    options: {
-      builder: {
-        viteConfigPath: "vite.config.ts",
-      },
-    },
-  },
   staticDirs: ["../public"],
+  addons: [
+    getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
+    "@chromatic-com/storybook",
+  ],
   typescript: {
     reactDocgen: "react-docgen",
   },
-  docs: {
-    autodocs: true,
+  framework: {
+    name: getAbsolutePath("@storybook/react-vite"),
+    options: { strictMode: false },
   },
 };
-
 export default config;
 
-// To customize your Vite configuration you can use the viteFinal field.
-// Check https://storybook.js.org/docs/react/builders/vite#configuration
-// and https://nx.dev/recipes/storybook/custom-builder-configs
+function getAbsolutePath(value: string): any {
+  return dirname(require.resolve(join(value, "package.json")));
+}

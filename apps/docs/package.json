@@ -12,17 +12,15 @@
   },
   "dependencies": {
     "@edifice-ui/react": "workspace:*",
-    "@tanstack/react-query": "5.56.2"
-  },
-  "devDependencies": {
+    "@tanstack/react-query": "^5.59.13",
     "i18next": "^23.15.1",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.1",
-    "react-i18next": "14.1.0"
+    "react-i18next": "^14.1.0"
   },
   "scripts": {
     "docs": "storybook dev -p 6006",
-    "docs:build": "storybook build --docs -o ../../dist/",
-    "docs:preview": "npx http-server ./dist"
+    "build": "storybook build --docs -o dist/",
+    "preview": "npx http-server dist/"
   }
 }
