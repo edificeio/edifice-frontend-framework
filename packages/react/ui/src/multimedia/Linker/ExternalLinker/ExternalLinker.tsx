@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import { FormControl, Label, Input, Checkbox } from "../../components";
-import { useToggle } from "../../hooks";
-import { StringUtils } from "../../utils/StringUtils";
+import { Checkbox, FormControl, Input, Label } from "../../../components";
+import { useToggle } from "../../../hooks";
+import { StringUtils } from "../../../utils/StringUtils";
 
 /**
  * Properties for the ExternalLink.

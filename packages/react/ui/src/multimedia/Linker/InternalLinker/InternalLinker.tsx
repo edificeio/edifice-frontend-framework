@@ -9,18 +9,21 @@ import { App, odeServices } from "edifice-ts-client";
 import { ILinkedResource } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 
-import { AppIcon, Dropdown, EmptyScreen } from "../../components";
-import { SearchBar } from "../../components/SearchBar";
-import { useOdeTheme, usePaths, useResourceSearch } from "../../core";
-import { useDebounce } from "../../hooks";
-import LinkerCard from "../LinkerCard/LinkerCard";
+import { AppIcon, Dropdown, EmptyScreen } from "../../../components";
+import { SearchBar } from "../../../components/SearchBar";
+import { useOdeTheme, usePaths, useResourceSearch } from "../../../core";
+import { useDebounce } from "../../../hooks";
+import LinkerCard from "../../LinkerCard/LinkerCard";
 
 /**
  * Definition of an internal link.
  */
 type ApplicationOption = {
+  /** Icon to display */
   icon?: JSX.Element;
+  /** Application code */
   application: string;
+  /** Display name */
   displayName: string;
 };
 
@@ -38,6 +41,7 @@ export interface InternalLinkerProps {
   onChange?: (application?: ApplicationOption) => void;
   /** Notify when resources selection changes */
   onSelect?: (resources: ILinkedResource[]) => void;
+  /** Whether to allow multiple resources selection */
   multiple: boolean | undefined;
   /** List of resources to display */
   resourceList?: ILinkedResource[];
@@ -47,7 +51,6 @@ export interface InternalLinkerProps {
   showApplicationSelector?: boolean;
 }
 
-/** The InternalLinker component */
 const InternalLinker = ({
   appCode,
   defaultAppCode,
@@ -212,7 +215,11 @@ const InternalLinker = ({
     (async () => {
       // If applications are provided, use them directly.
       if (applicationList) {
-        setOptions(applicationList);
+        setOptions(
+          applicationList.sort((app1, app2) =>
+            app1.displayName.localeCompare(app2.displayName),
+          ),
+        );
         return;
       }
       // Otherwise, load applications from the resource search.

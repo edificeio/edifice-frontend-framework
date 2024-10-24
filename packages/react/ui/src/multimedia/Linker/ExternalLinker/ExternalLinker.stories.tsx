@@ -42,7 +42,10 @@ export const UpdateLink: Story = {
 
 export const SelectedText: Story = {
   args: {
-    text: "Text sélectionné",
+    link: {
+      url: "www.edifice.io",
+      text: "Text sélectionné",
+    },
   },
   parameters: {
     docs: {
