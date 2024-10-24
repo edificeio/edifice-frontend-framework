@@ -13,7 +13,7 @@ import { useConf } from "../useConf";
 
 export interface ThemeProps {
   children: ReactNode;
-  defaultTheme?: "one" | "neo";
+  defaultTheme?: "one" | "neo" | "none";
 }
 
 export interface ThemeContextProps {
@@ -50,7 +50,7 @@ export function ThemeProvider({ defaultTheme, children }: ThemeProps) {
       },
       {
         data: "data-product",
-        value: defaultTheme ?? dataProduct,
+        value: defaultTheme === "none" ? "" : defaultTheme ?? dataProduct,
       },
     ];
 

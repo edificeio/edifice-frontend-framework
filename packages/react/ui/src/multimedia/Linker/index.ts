@@ -1,5 +1,5 @@
-export * from "./components/InternalLinker";
-export { default as InternalLinker } from "./components/InternalLinker";
+export * from "./InternalLinker/InternalLinker";
+export { default as InternalLinker } from "./InternalLinker/InternalLinker";
 
-export * from "./components/ExternalLinker";
-export { default as ExternalLinker } from "./components/ExternalLinker";
+export * from "./ExternalLinker/ExternalLinker";
+export { default as ExternalLinker } from "./ExternalLinker/ExternalLinker";

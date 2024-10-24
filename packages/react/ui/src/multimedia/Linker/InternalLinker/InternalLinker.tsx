@@ -19,8 +19,11 @@ import LinkerCard from "../../LinkerCard/LinkerCard";
  * Definition of an internal link.
  */
 type ApplicationOption = {
+  /** Icon to display */
   icon?: JSX.Element;
+  /** Application code */
   application: string;
+  /** Display name */
   displayName: string;
 };
 
@@ -38,6 +41,7 @@ export interface InternalLinkerProps {
   onChange?: (application?: ApplicationOption) => void;
   /** Notify when resources selection changes */
   onSelect?: (resources: ILinkedResource[]) => void;
+  /** Whether to allow multiple resources selection */
   multiple: boolean | undefined;
   /** List of resources to display */
   resourceList?: ILinkedResource[];
@@ -211,7 +215,11 @@ const InternalLinker = ({
     (async () => {
       // If applications are provided, use them directly.
       if (applicationList) {
-        setOptions(applicationList);
+        setOptions(
+          applicationList.sort((app1, app2) =>
+            app1.displayName.localeCompare(app2.displayName),
+          ),
+        );
         return;
       }
       // Otherwise, load applications from the resource search.

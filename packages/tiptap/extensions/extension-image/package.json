@@ -2,9 +2,6 @@
   "name": "@edifice-tiptap-extensions/extension-image",
   "version": "1.5.22-develop-pedago.12",
   "description": "Rich Text Editor Attachment Extension",
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
@@ -12,6 +9,9 @@
       "require": "./dist/index.cjs"
     }
   },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "version.txt"
@@ -20,13 +20,16 @@
     "build": "pnpm run clean && rollup -c",
     "clean": "rm -rf dist",
     "dev": "pnpm run clean && rollup -c -w",
+    "fix": "eslint src --fix --ext ts --report-unused-disable-directives --max-warnings 0",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "prettier --check src/**/*.ts",
     "format:write": "prettier --write src/**/*.ts",
     "generate-commit-version": "node ../../scripts/version.cjs",
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
-    "fix": "eslint src --fix --ext ts --report-unused-disable-directives --max-warnings 0",
     "release": "pnpm run generate-commit-version && pnpm run build"
+  },
+  "dependencies": {
+    "@tiptap/extension-image": "2.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
@@ -38,9 +41,6 @@
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.34.1"
-  },
-  "dependencies": {
-    "@tiptap/extension-image": "2.3.0"
   },
   "peerDependencies": {
     "@tiptap/core": "2.3.0",
