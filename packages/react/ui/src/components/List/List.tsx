@@ -63,6 +63,8 @@ export const List = <T extends { _id: string }>({
               </div>
               <Toolbar
                 items={items}
+                isBlock
+                align="left"
                 variant="no-shadow"
                 className={clsx("gap-4 py-4", {
                   "px-0 ms-auto": !isDesktopDevice,
