@@ -3,6 +3,106 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.22-develop-pedago.13 (2024-10-24)
+
+## 1.5.22-develop-pedago.12 (2024-10-23)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/172)) ([d94bc7a](https://github.com/opendigitaleducation/edifice-tiptap-extensions/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/WB2-76)
+
+## 1.5.21 (2024-10-04)
+
+## 1.5.21-develop.0 (2024-10-04)
+
+## 1.5.19 (2024-09-19)
+
+## 1.5.19-develop.2 (2024-09-19)
+
+## 1.5.17 (2024-08-23)
+
+## 1.5.17-develop.1 (2024-08-23)
+
+## 1.5.16 (2024-08-02)
+
+## 1.5.16-develop.0 (2024-08-02)
+
+## 1.5.15 (2024-08-02)
+
+## 1.5.15-develop.2 (2024-07-26)
+
+## 1.5.15-develop-wl.1 (2024-07-26)
+
+## 1.5.15-develop.0 (2024-07-25)
+
+## 1.5.14 (2024-07-12)
+
+## 1.5.14-develop.0 (2024-07-12)
+
+## 1.5.13 (2024-07-12)
+
+## 1.5.13-develop.1 (2024-07-12)
+
+## 1.5.12 (2024-07-11)
+
+## 1.5.12-develop.1 (2024-07-10)
+
+## 1.5.12-develop-pedago.4 (2024-07-10)
+
+## 1.5.11 (2024-07-09)
+
+### Bug Fixes
+
+- #WB-3160, remove call from ResourceService in Share Service ([#212](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/212)) ([0eb69eb](https://github.com/opendigitaleducation/edifice-tiptap-extensions/commit/0eb69ebc4ed2e0b9d618d411acd4e399920ff85c)), closes [#WB-3160](https://github.com/opendigitaleducation/edifice-tiptap-extensions/issues/WB-3160)
+
+## 1.5.10 (2024-07-01)
+
+## 1.5.10-develop.5 (2024-06-25)
+
+## 1.5.10-develop.4 (2024-06-25)
+
+## 1.5.10-develop.3 (2024-06-24)
+
+## 1.5.10-develop.2 (2024-06-24)
+
+## 1.5.10-develop.1 (2024-06-21)
+
+## 1.5.10-develop-b2school.0 (2024-06-12)
+
+## 1.5.9 (2024-06-12)
+
+## 1.5.9-develop.1 (2024-06-05)
+
+## 1.5.9-develop-b2school.0 (2024-06-05)
+
+## 1.5.9-develop.0 (2024-06-05)
+
+## 1.5.8 (2024-06-04)
+
+## 1.5.8-develop.1 (2024-06-04)
+
+## 1.5.8-develop-b2school.1 (2024-06-04)
+
+## 1.5.8-develop.0 (2024-06-04)
+
+## 1.5.7 (2024-06-03)
+
+## 1.5.5 (2024-05-28)
+
+## 1.5.4-develop.18 (2024-05-24)
+
+## 1.5.4-develop-integration.17 (2024-05-24)
+
+## 1.5.4-develop.14 (2024-05-22)
+
+## 1.5.4 (2024-05-14)
+
+## 1.5.4-develop-b2school.0 (2024-04-30)
+
+## 1.5.4-develop.4 (2024-04-30)
+
+## 1.5.4-develop.3 (2024-04-30)
+
 ## [1.5.22-develop-pedago.12](https://github.com/opendigitaleducation/edifice-tiptap-extensions/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
 
 ### Features

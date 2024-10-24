@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.22-develop-pedago.13 (2024-10-24)
+
+## 1.5.22-develop-pedago.12 (2024-10-23)
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-frontend-framework/issues/254)) ([5106bbc](https://github.com/edificeio/edifice-frontend-framework/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
+
 ## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
 
 ### Features

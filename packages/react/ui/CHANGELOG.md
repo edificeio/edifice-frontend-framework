@@ -3,6 +3,506 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.22-develop-pedago.13 (2024-10-24)
+
+## 1.5.22-develop-pedago.12 (2024-10-23)
+
+### Bug Fixes
+
+- #WB2-1294, fix group icon in share modal ([#259](https://github.com/edificeio/edifice-ui/issues/259)) ([2488105](https://github.com/edificeio/edifice-ui/commit/24881051984bb31a658f231e6cacc64a1b0d6f83))
+- #WB2-1296, fix resource creation when searching ([6622749](https://github.com/edificeio/edifice-ui/commit/6622749d5393160e896a422003ed64d66c796a9e))
+- #WB2-1296, fix resource creation, when searching currentFolder is undefined ([b3facdf](https://github.com/edificeio/edifice-ui/commit/b3facdf761bc36e0eaae49b6375546a6bc0abf60))
+- #WB2-1514, fix name type Treeview ([c7ca524](https://github.com/edificeio/edifice-ui/commit/c7ca5243eabfe37156a8ff8602ccd1b054603d05))
+- #WB2-1514, fix probleme treeview with one node + fix disappears nodes ([e3f219e](https://github.com/edificeio/edifice-ui/commit/e3f219ea293012799697bac904062d8ff5841264))
+- #WB2-1514, fix renderNode for Tree component ([2981153](https://github.com/edificeio/edifice-ui/commit/298115388f5616eef765d81b221ce84a3c42e7a7))
+- #WB2-1516, remove isTreeviewArray and createChild function in favor of proper naming ([1aab93a](https://github.com/edificeio/edifice-ui/commit/1aab93a0c19c69c9f5036372b62a838bf2da1988)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([cc33016](https://github.com/edificeio/edifice-ui/commit/cc33016c5b53a19365f347c16a1baa94b9cc1a10))
+- #WB2-1768, add forget function ([c8e5fa8](https://github.com/edificeio/edifice-ui/commit/c8e5fa8bd7a3446568cc7ff45722882ca73d5ba8)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([36d1c05](https://github.com/edificeio/edifice-ui/commit/36d1c05435adde8e7b3d90ec1bb60abea2af492f)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([2c67b18](https://github.com/edificeio/edifice-ui/commit/2c67b18c36e80fc0f5aaad6d14527a7a00bec4fc)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, fix feedback PR ([825bafe](https://github.com/edificeio/edifice-ui/commit/825bafe6ee693f857810b754b6b3386bdcaef2a6))
+- #WB2-1768, fix format eslint ([5068f96](https://github.com/edificeio/edifice-ui/commit/5068f96fa2e5ac512e37d6a6593aadb2575069dc))
+- #WB2-1917, add i18n comment.more and show button more ([ac24304](https://github.com/edificeio/edifice-ui/commit/ac24304d21f7586aac287116b6e2441f14272b0e)), closes [#WB2-1917](https://github.com/edificeio/edifice-ui/issues/WB2-1917)
+- **treeview:** #WB2-76, align node with invisible icon ([4c99f1a](https://github.com/edificeio/edifice-ui/commit/4c99f1a841ab551b16dba3dd087ff394fe3c33ad)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, fix duplicate arrow and scss styles to avoid issue with d&d ([76e1b69](https://github.com/edificeio/edifice-ui/commit/76e1b6900e243c3fde871d6e5d652bd239ef2fb2))
+- **treeview:** #WB2-76, fix missing drag focus to item ([7795f58](https://github.com/edificeio/edifice-ui/commit/7795f584be702a4b66a40f2a013cf115bb2dab1e))
+- **treeview:** #WB2-76, remove debug node.name ([e92034f](https://github.com/edificeio/edifice-ui/commit/e92034f03848d7acf2a0e1f168d284c61e54498f)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, set externalNodeId to undefined if doesn't exist ([8b33a0f](https://github.com/edificeio/edifice-ui/commit/8b33a0fbffb0fd54064a5576d53f1825fe7ee31a)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **ui:** ##WB2-1822, add type button to natif buttons ([aa635bc](https://github.com/edificeio/edifice-ui/commit/aa635bc05e0556992b67441e80dfa2d2631657f7)), closes [#WB2-1822](https://github.com/edificeio/edifice-ui/issues/WB2-1822)
+- WB2-1514, add collapse node when drag parent is drag + update types ([f462186](https://github.com/edificeio/edifice-ui/commit/f46218666241cb0c5d8ca25892c1ad819b1595f1))
+
+### Features
+
+- #WB2-1513, adapt new function treeview with an array TreeData +… ([#216](https://github.com/edificeio/edifice-ui/issues/216)) ([76a496b](https://github.com/edificeio/edifice-ui/commit/76a496b44bfb286dee0cce20970c954e84abc557)), closes [#WB2-1513](https://github.com/edificeio/edifice-ui/issues/WB2-1513)
+- #WB2-1514, add new component Treeview Sortable ([#257](https://github.com/edificeio/edifice-ui/issues/257)) ([cf08b08](https://github.com/edificeio/edifice-ui/commit/cf08b089d87be22b900d6040bab1925fd4310e24)), closes [#WB2-1514](https://github.com/edificeio/edifice-ui/issues/WB2-1514)
+- #WB2-1516, add button to create children page ([#228](https://github.com/edificeio/edifice-ui/issues/228)) ([d4f570a](https://github.com/edificeio/edifice-ui/commit/d4f570a065136f8c3b021436f76cc88a0be6507c)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1761, add props type if comment provider is in read or in … ([#237](https://github.com/edificeio/edifice-ui/issues/237)) ([134aaed](https://github.com/edificeio/edifice-ui/commit/134aaed50ee3a842d3bd820451cd1f7a4fffed65)), closes [#WB2-1761](https://github.com/edificeio/edifice-ui/issues/WB2-1761)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([a32c2e2](https://github.com/edificeio/edifice-ui/commit/a32c2e2428ae28cd4c6b199ae05353ef32820c1a)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([645a0ca](https://github.com/edificeio/edifice-ui/commit/645a0ca36fa0d473d5da50dc3284b6261d241e82)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1868, pass full node to Tree renderNode function ([#262](https://github.com/edificeio/edifice-ui/issues/262)) ([5c41c84](https://github.com/edificeio/edifice-ui/commit/5c41c843284c2e251912d630b4b9fe2b8f7c8a94)), closes [#WB2-1868](https://github.com/edificeio/edifice-ui/issues/WB2-1868)
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([5106bbc](https://github.com/edificeio/edifice-ui/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([d94bc7a](https://github.com/edificeio/edifice-ui/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **core:** #WB2-1821, create useDirectory hook ([62bb20a](https://github.com/edificeio/edifice-ui/commit/62bb20ae512f82b546f8a2e28087cfa88a8f54ed)), closes [#WB2-1821](https://github.com/edificeio/edifice-ui/issues/WB2-1821)
+- **hook:** #WB2-1943, add new useBreakpoint hook to handle responsive display ([06cc484](https://github.com/edificeio/edifice-ui/commit/06cc4846d3340a83201cac6409fa21248f25465b)), closes [#WB2-1943](https://github.com/edificeio/edifice-ui/issues/WB2-1943)
+- **icons:** #WB2-1874, add icon forgoing ([ff0b717](https://github.com/edificeio/edifice-ui/commit/ff0b7177af8fec384b58211d96e4ab6d3d0c68dc)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
+- **Linker:** #WB2-1698, new props to customize available applications and resources list ([fdf13cb](https://github.com/edificeio/edifice-ui/commit/fdf13cb040105206d2f0cbc55b68baec9bdd6001)), closes [#WB2-1698](https://github.com/edificeio/edifice-ui/issues/WB2-1698)
+- **react:** #WB2-1532, add module React Comments ([b4aa96a](https://github.com/edificeio/edifice-ui/commit/b4aa96aab9a7b366f3797cfca98a429d53c25879)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
+- **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/edificeio/edifice-ui/issues/252)) ([3f92c8e](https://github.com/edificeio/edifice-ui/commit/3f92c8e99d732d5320f8a48092a6724cc5a30b57)), closes [#WB2-1537](https://github.com/edificeio/edifice-ui/issues/WB2-1537)
+- **ui:** #WB2-1636, adapt List component with actions Toolbar ([c4f2e20](https://github.com/edificeio/edifice-ui/commit/c4f2e2086c928ee69fcbb925e5d766b07c8aa3df)), closes [#WB2-1636](https://github.com/edificeio/edifice-ui/issues/WB2-1636)
+- **ui:** #WB2-1651, add tooltip component to attachment component ([48ac691](https://github.com/edificeio/edifice-ui/commit/48ac6915ccc5570a1f1682800874d8473e3ee6e1)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
+## 1.5.22 (2024-10-23)
+
+## 1.5.22-develop.0 (2024-10-22)
+
+### Bug Fixes
+
+- #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/edificeio/edifice-ui/issues/263)) ([e014c4a](https://github.com/edificeio/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+
+## 1.5.21 (2024-10-04)
+
+## 1.5.21-develop.0 (2024-10-04)
+
+## 1.5.20 (2024-10-02)
+
+## 1.5.19 (2024-09-19)
+
+## 1.5.19-develop.2 (2024-09-19)
+
+### Bug Fixes
+
+- #WB-3148 #WB-3159 embed code with p element + absolute position ([#220](https://github.com/edificeio/edifice-ui/issues/220)) ([a37b4ab](https://github.com/edificeio/edifice-ui/commit/a37b4ab9495a859c3fa7e586189df80fcbab00e2)), closes [#WB-3148](https://github.com/edificeio/edifice-ui/issues/WB-3148) [#WB-3159](https://github.com/edificeio/edifice-ui/issues/WB-3159)
+- #WB-3305 remove link to user profil ([c656901](https://github.com/edificeio/edifice-ui/commit/c65690126f9a7e7398ad7fa2bd4c6cf2bdae574c)), closes [#WB-3305](https://github.com/edificeio/edifice-ui/issues/WB-3305)
+- **share:** #WB2-1889, add useEffect to update blog publish-type ([#241](https://github.com/edificeio/edifice-ui/issues/241)) ([98871b6](https://github.com/edificeio/edifice-ui/commit/98871b6dd822ff78e922a8e3e2b91928e1834603)), closes [#WB2-1889](https://github.com/edificeio/edifice-ui/issues/WB2-1889)
+- **ui:** #WB-3205 remove hover reaction choice ([#222](https://github.com/edificeio/edifice-ui/issues/222)) ([70790b3](https://github.com/edificeio/edifice-ui/commit/70790b3d64748885698b39d24aae5ee7c05d6cc2)), closes [#WB-3205](https://github.com/edificeio/edifice-ui/issues/WB-3205)
+
+## 1.5.18 (2024-09-06)
+
+## 1.5.18-develop.4 (2024-09-05)
+
+### Bug Fixes
+
+- **ui:** add responsive table class ([135f5c4](https://github.com/edificeio/edifice-ui/commit/135f5c463032f5d25092582bba3fa6dbd19df89c))
+
+## 1.5.18-develop.2 (2024-09-02)
+
+### Bug Fixes
+
+- **ui:** remove TS error with Table components props ([d53b2f8](https://github.com/edificeio/edifice-ui/commit/d53b2f879496ff41fb7736df91e7be2ed8d4621c))
+
+## 1.5.18-develop.1 (2024-09-02)
+
+### Bug Fixes
+
+- **ui:** #WB2-1526, add classes to table component ([42d4656](https://github.com/edificeio/edifice-ui/commit/42d4656bd94a3bae65b25c62099a4cba8a8883ab)), closes [#WB2-1526](https://github.com/edificeio/edifice-ui/issues/WB2-1526)
+
+## 1.5.18-develop.0 (2024-09-02)
+
+### Bug Fixes
+
+- **ui:** #WB2-1526, rewrite Table component ([47c0b97](https://github.com/edificeio/edifice-ui/commit/47c0b97ad0c7f1641679e8eb710fa7093387d9d3)), closes [#WB2-1526](https://github.com/edificeio/edifice-ui/issues/WB2-1526)
+
+## 1.5.17 (2024-08-23)
+
+## 1.5.17-develop.1 (2024-08-23)
+
+### Bug Fixes
+
+- **core:** #IW-164, responsive ui toast rgpd ([4b3ff0c](https://github.com/edificeio/edifice-ui/commit/4b3ff0c051ef60c49bb668baf0ff6de9373ea52a)), closes [#IW-164](https://github.com/edificeio/edifice-ui/issues/IW-164)
+- IW-184 remove console.log ([80651b4](https://github.com/edificeio/edifice-ui/commit/80651b4cde69da653d154931c36a9cb1c180fb98))
+
+## 1.5.16 (2024-08-02)
+
+## 1.5.16-develop.0 (2024-08-02)
+
+### Bug Fixes
+
+- IW-184 fix logout location in header ([bf5ea88](https://github.com/edificeio/edifice-ui/commit/bf5ea88c764389003761d124f5dd0c91cfa9ad68))
+
+## 1.5.15 (2024-08-02)
+
+## 1.5.15-develop.2 (2024-07-26)
+
+## 1.5.15-develop-wl.1 (2024-07-26)
+
+## 1.5.15-develop.1 (2024-07-25)
+
+### Bug Fixes
+
+- **treeview:** import TreeNode type correctly ([4f46a2b](https://github.com/edificeio/edifice-ui/commit/4f46a2bd35699d4583e5b00d69fce44347e630a6))
+
+## 1.5.15-develop.0 (2024-07-25)
+
+### Features
+
+- **ui:** #WB2-1762, create new Menu Component and docs ([#223](https://github.com/edificeio/edifice-ui/issues/223)) ([b9842a1](https://github.com/edificeio/edifice-ui/commit/b9842a1542daefaf504fb3c757866dc4cfee8ccd)), closes [#WB2-1762](https://github.com/edificeio/edifice-ui/issues/WB2-1762)
+
+## 1.5.14 (2024-07-12)
+
+## 1.5.14-develop.0 (2024-07-12)
+
+## 1.5.13 (2024-07-12)
+
+## 1.5.13-develop.1 (2024-07-12)
+
+## 1.5.12 (2024-07-11)
+
+## 1.5.12-develop.1 (2024-07-10)
+
+## 1.5.12-develop-pedago.4 (2024-07-10)
+
+### Bug Fixes
+
+- #WB2-1455, add div to fix problem margin ([444ea23](https://github.com/edificeio/edifice-ui/commit/444ea235410b81fc6fac7f537a472829130234cf))
+- #WB2-1455, fix feedback PR ([7fe4ea5](https://github.com/edificeio/edifice-ui/commit/7fe4ea5c4453d8d946a95381b992341500c867cd))
+- #WB2-1455, fix update name export default ([b945a30](https://github.com/edificeio/edifice-ui/commit/b945a30d1cb3d0883a1134d04748171f8cbbb3f5))
+- #WB2-1602, fix double notify when share resource ([a7ca1df](https://github.com/edificeio/edifice-ui/commit/a7ca1dfb93dc22e3473d84d3e6177e3fe23bab91))
+- #WB2-1602, fix error condition to show toast ([dc54e06](https://github.com/edificeio/edifice-ui/commit/dc54e06d5140b5072db946c698366933f1f3c093))
+- #WB2-1602, fix toast error when share resource is in error ([ef1ca14](https://github.com/edificeio/edifice-ui/commit/ef1ca141836a5228e503786629fb3e9766ed8bbe))
+- #WB2-1603, fix toast error when share resource is in error ([3f632e1](https://github.com/edificeio/edifice-ui/commit/3f632e1c0ed1d9b0cc49b8ab8e3600b5ec784858))
+- #WB2-1747, handle Content Too Large error when publishing to the Library ([7b330a5](https://github.com/edificeio/edifice-ui/commit/7b330a531d635758408d66e9db0b6aaf0e6a5338)), closes [#WB2-1747](https://github.com/edificeio/edifice-ui/issues/WB2-1747)
+- #WB2-1748, fix close modal when click on scroll ([a996ff2](https://github.com/edificeio/edifice-ui/commit/a996ff25d6c146d3749d3ba8fc3e0c24e0d96a63))
+- #WB2-1748, fix scroll modal on click scroll ([83fb10b](https://github.com/edificeio/edifice-ui/commit/83fb10b0a9007257d4d60f3922de10ac5b7cd8a0))
+- #WB2-1748, remove scrollable modal ([fd6052e](https://github.com/edificeio/edifice-ui/commit/fd6052e122cd7e599d585c55357836d77d1ccafe)), closes [#WB2-1748](https://github.com/edificeio/edifice-ui/issues/WB2-1748)
+
+### Features
+
+- #WB2-1455, add new image picker with workspace ([0ba6d5a](https://github.com/edificeio/edifice-ui/commit/0ba6d5a9875332caf2e2ac7a4ed81ff587f7317c)), closes [#WB2-1455](https://github.com/edificeio/edifice-ui/issues/WB2-1455)
+- #WB2-1765, export and add all treeview methods into a TreeHelper util ([#210](https://github.com/edificeio/edifice-ui/issues/210)) ([507de15](https://github.com/edificeio/edifice-ui/commit/507de1582d1f67bfeb09eb059c3c0591d1175467)), closes [#WB2-1765](https://github.com/edificeio/edifice-ui/issues/WB2-1765)
+- WB2-1455, add story for imagePickerWorkspace ([6359298](https://github.com/edificeio/edifice-ui/commit/635929881841e554419bbd236991ef9ef43daf90))
+
+### Reverts
+
+- Revert "fix: #WB2-1603, fix toast error when share resource is in error" ([d25d96d](https://github.com/edificeio/edifice-ui/commit/d25d96ddc1aa87e8922dad6885530c61f88f282b))
+- Revert "fix: #WB2-1748, fix close modal when click on scroll" ([63af642](https://github.com/edificeio/edifice-ui/commit/63af64254ec2fe54918dbde2dfd5d127b6e96514))
+
+## 1.5.12-develop-b2school.0 (2024-07-09)
+
+### Bug Fixes
+
+- #WB-3003 hover scrollToTop ([fe0ecd1](https://github.com/edificeio/edifice-ui/commit/fe0ecd140dc8ac7481f001e7b422275ba24f3ead)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 issue with react key ([9330357](https://github.com/edificeio/edifice-ui/commit/93303578d9b4c64078a20935543d24c05c86817c)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 make initial summary optionnal ([2a25e4e](https://github.com/edificeio/edifice-ui/commit/2a25e4e1c054e13acfa4d24cb23a9f5b4cded7f1)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 make initial summary optionnal ([d3339de](https://github.com/edificeio/edifice-ui/commit/d3339defa5c7022b544a0c3c5df53774675c1e6f)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 missing key ([044547a](https://github.com/edificeio/edifice-ui/commit/044547a4d3b5edf1fd9cdf35f867a5371ee04a9d)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 stop propagation dropdown item click ([#209](https://github.com/edificeio/edifice-ui/issues/209)) ([ba8d20c](https://github.com/edificeio/edifice-ui/commit/ba8d20cccae1c8566fc4b7eb7f73ee34819feec8)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- #WB-3003 update ref for hover ([#208](https://github.com/edificeio/edifice-ui/issues/208)) ([4f6feef](https://github.com/edificeio/edifice-ui/commit/4f6feef4adb6fece1d7c522458903a9f4748b3c3)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+- **audience:** #WB-2999, paginate with a 1-based index ([68ac42f](https://github.com/edificeio/edifice-ui/commit/68ac42f626eb43260d0476079d4c2ae903db36f6)), closes [#WB-2999](https://github.com/edificeio/edifice-ui/issues/WB-2999)
+- **component:** add missing react key ([53c877f](https://github.com/edificeio/edifice-ui/commit/53c877fdca264eafef0cfe8c4de510fa36e4a25c))
+- **ui:** #WB-2546, reaction modal use case ([ff9632c](https://github.com/edificeio/edifice-ui/commit/ff9632c18ef0778aaf8c94a9ed0021a4c075a2af)), closes [#WB-2546](https://github.com/edificeio/edifice-ui/issues/WB-2546)
+- **ui:** #WB-2548, allow removing a reaction ([3bd8512](https://github.com/edificeio/edifice-ui/commit/3bd8512af66ab8a8b0cd129abf842431612e2f66)), closes [#WB-2548](https://github.com/edificeio/edifice-ui/issues/WB-2548)
+- **ui:** #WB-3158, audience fine tuning [#211](https://github.com/edificeio/edifice-ui/issues/211) ([74e9907](https://github.com/edificeio/edifice-ui/commit/74e99078f77f713077c79e3356a02a7547a75d1f)), closes [#WB-3158](https://github.com/edificeio/edifice-ui/issues/WB-3158)
+- **ui:** feedback from audience ([35f0329](https://github.com/edificeio/edifice-ui/commit/35f03293be516ac0e5aaa52d39d74eda68960036))
+
+### Features
+
+- **bootstrap,client,ui:** #WB-2999 views modal [#202](https://github.com/edificeio/edifice-ui/issues/202) ([12596af](https://github.com/edificeio/edifice-ui/commit/12596afd62cd38fe9c2368e9a52525ea71814ccd)), closes [#WB-2999](https://github.com/edificeio/edifice-ui/issues/WB-2999)
+- **client,ui,bootstrap:** #WB-3001, reactions summary component [#173](https://github.com/edificeio/edifice-ui/issues/173) ([3135dc2](https://github.com/edificeio/edifice-ui/commit/3135dc28c81395dc14fe5523c9bc5dee2243f930)), closes [#WB-3001](https://github.com/edificeio/edifice-ui/issues/WB-3001)
+- **client,ui:** #WB-2998 views counter [#201](https://github.com/edificeio/edifice-ui/issues/201) ([df6f0c2](https://github.com/edificeio/edifice-ui/commit/df6f0c2417958bedf28f1101dacd3fa1e537a74b)), closes [#WB-2998](https://github.com/edificeio/edifice-ui/issues/WB-2998)
+- **ui:** #WB-2998 audience prevent defaut on click ([#206](https://github.com/edificeio/edifice-ui/issues/206)) ([9c4a6f9](https://github.com/edificeio/edifice-ui/commit/9c4a6f93c7205b6a3215668adfdd7f38b90a38a7)), closes [#WB-2998](https://github.com/edificeio/edifice-ui/issues/WB-2998)
+- **ui:** #WB-3000, export views modal ([acf5744](https://github.com/edificeio/edifice-ui/commit/acf5744d35354920868fc7e3da15775831aa1fa4)), closes [#WB-3000](https://github.com/edificeio/edifice-ui/issues/WB-3000)
+- **ui:** #WB-3002, reactions details modal [#203](https://github.com/edificeio/edifice-ui/issues/203) ([2e4e7a4](https://github.com/edificeio/edifice-ui/commit/2e4e7a4453f23583a24cc46def094a0f23094e28)), closes [#WB-3002](https://github.com/edificeio/edifice-ui/issues/WB-3002)
+- **ui:** #WB-3003, reaction choice component [#205](https://github.com/edificeio/edifice-ui/issues/205) ([7cf0ef3](https://github.com/edificeio/edifice-ui/commit/7cf0ef3280b4e6b80d749203b5efe643caf32e74)), closes [#WB-3003](https://github.com/edificeio/edifice-ui/issues/WB-3003)
+
+## 1.5.11 (2024-07-09)
+
+### Bug Fixes
+
+- #WB-3160, remove call from ResourceService in Share Service ([#212](https://github.com/edificeio/edifice-ui/issues/212)) ([0eb69eb](https://github.com/edificeio/edifice-ui/commit/0eb69ebc4ed2e0b9d618d411acd4e399920ff85c)), closes [#WB-3160](https://github.com/edificeio/edifice-ui/issues/WB-3160)
+
+## 1.5.10 (2024-07-01)
+
+## 1.5.10-develop.7 (2024-06-25)
+
+## 1.5.10-develop.6 (2024-06-25)
+
+### Bug Fixes
+
+- **ui:** #WB-3137 disable translate on html ([#200](https://github.com/edificeio/edifice-ui/issues/200)) ([645433e](https://github.com/edificeio/edifice-ui/commit/645433edaa149c2e6188830ea5763139a33a32ac)), closes [#WB-3137](https://github.com/edificeio/edifice-ui/issues/WB-3137)
+
+## 1.5.10-develop.5 (2024-06-25)
+
+## 1.5.10-develop.4 (2024-06-25)
+
+### Bug Fixes
+
+- **zendesk:** get correct profile from userDescription ([e8eb3af](https://github.com/edificeio/edifice-ui/commit/e8eb3af884dbf4be778696a3959bbfc8167ae5cb))
+
+## 1.5.10-develop.3 (2024-06-24)
+
+## 1.5.10-develop.2 (2024-06-24)
+
+## 1.5.10-develop.1 (2024-06-21)
+
+## 1.5.10-develop-b2school.18 (2024-06-20)
+
+### Reverts
+
+- Revert "feature(ui): #WB-1596 support HEIC image format (#196)" ([a36a852](https://github.com/edificeio/edifice-ui/commit/a36a852b4de740061141813fc1f51ce5b2686f6e)), closes [#WB-1596](https://github.com/edificeio/edifice-ui/issues/WB-1596) [#196](https://github.com/edificeio/edifice-ui/issues/196)
+
+## 1.5.10-develop-b2school.17 (2024-06-20)
+
+### Bug Fixes
+
+- **zendeskGuide:** INTEG-438 change variable to get user currentLanguage and user type ([ee3b07c](https://github.com/edificeio/edifice-ui/commit/ee3b07ca70a81d1af7a3b8d5100fe2d50cfe9f59))
+
+## 1.5.10-develop-b2school.16 (2024-06-20)
+
+## 1.5.10-develop-b2school.15 (2024-06-19)
+
+### Bug Fixes
+
+- #WB-3020 allow all audio file types (no MP4) ([5faed0e](https://github.com/edificeio/edifice-ui/commit/5faed0ead7af1b7b548eb3604da18186f4cfee12)), closes [#WB-3020](https://github.com/edificeio/edifice-ui/issues/WB-3020)
+
+## 1.5.10-develop-b2school.13 (2024-06-19)
+
+### Bug Fixes
+
+- **ui:** #WB-3118 audio reset result for the modal ([d4dbce7](https://github.com/edificeio/edifice-ui/commit/d4dbce7fec837da3c1950131d0b6beec8ea5ccdb)), closes [#WB-3118](https://github.com/edificeio/edifice-ui/issues/WB-3118)
+
+## 1.5.10-develop-b2school.12 (2024-06-18)
+
+### Bug Fixes
+
+- #WB-3111 load wav audio in the "preview" and fix maxDuration for the captation ([3e5b21d](https://github.com/edificeio/edifice-ui/commit/3e5b21daf6c86f824ecd892a9de6eab0f4707c6f))
+
+## 1.5.10-develop-b2school.10 (2024-06-18)
+
+## 1.5.10-develop-b2school.9 (2024-06-17)
+
+### Bug Fixes
+
+- #WB-3014 rollback audio with preprocesseur for safari compatibility ([#192](https://github.com/edificeio/edifice-ui/issues/192)) ([a1ae4d3](https://github.com/edificeio/edifice-ui/commit/a1ae4d30a06779b76d0c96008ffed7a0f4f0a7d4)), closes [#WB-3014](https://github.com/edificeio/edifice-ui/issues/WB-3014)
+
+## 1.5.10-develop-b2school.8 (2024-06-14)
+
+### Features
+
+- **ui:** #WB-2036, compress to a valid format when resizing an image [#191](https://github.com/edificeio/edifice-ui/issues/191) ([3eddf95](https://github.com/edificeio/edifice-ui/commit/3eddf95aa209e9a29f7a7385f2e2d701c0439dd6)), closes [#WB-2036](https://github.com/edificeio/edifice-ui/issues/WB-2036)
+
+## 1.5.10-develop-b2school.7 (2024-06-14)
+
+## 1.5.10-develop-b2school.5 (2024-06-13)
+
+### Bug Fixes
+
+- #WB-3075, do not import files of wrong type [#189](https://github.com/edificeio/edifice-ui/issues/189) ([e00d6a4](https://github.com/edificeio/edifice-ui/commit/e00d6a4e836140e6e867551422ec36e468b6b566)), closes [#WB-3075](https://github.com/edificeio/edifice-ui/issues/WB-3075)
+
+## 1.5.10-develop-b2school.4 (2024-06-13)
+
+### Features
+
+- **ui:** #WB2-1742, add shareOptions to make ShareModal compatible with any apps ([#187](https://github.com/edificeio/edifice-ui/issues/187)) ([a573f01](https://github.com/edificeio/edifice-ui/commit/a573f01ebfd359f5a63c993b198e3b93972ab444)), closes [#WB2-1742](https://github.com/edificeio/edifice-ui/issues/WB2-1742)
+
+## 1.5.10-develop-b2school.3 (2024-06-13)
+
+### Bug Fixes
+
+- #WB-3106, cleaner handling of files upload [#188](https://github.com/edificeio/edifice-ui/issues/188) ([74b7b6b](https://github.com/edificeio/edifice-ui/commit/74b7b6b74d6d7b7b1353a5d9b17747018a45c69f)), closes [#WB-3106](https://github.com/edificeio/edifice-ui/issues/WB-3106)
+
+## 1.5.10-develop-b2school.2 (2024-06-13)
+
+### Bug Fixes
+
+- #WB-3107 add dynamic translate to fix error with google translate extension ([64e26c0](https://github.com/edificeio/edifice-ui/commit/64e26c072802ac5aeb5bf92dcbc305574514cb99))
+
+## 1.5.10-develop-b2school.1 (2024-06-12)
+
+### Bug Fixes
+
+- #WB-3082, do not try to delete uploaded files removed earlier [#185](https://github.com/edificeio/edifice-ui/issues/185) ([531f0f4](https://github.com/edificeio/edifice-ui/commit/531f0f4c02b73f2a5a46ddc3c9ddbd4a684ddf5e)), closes [#WB-3082](https://github.com/edificeio/edifice-ui/issues/WB-3082)
+
+## 1.5.10-develop-b2school.0 (2024-06-12)
+
+### Bug Fixes
+
+- #WB-3007, add sort function to keep order select image ([#183](https://github.com/edificeio/edifice-ui/issues/183)) ([aa31f32](https://github.com/edificeio/edifice-ui/commit/aa31f329b3b4c2665603ec6f2985680b18b03a93)), closes [#WB-3007](https://github.com/edificeio/edifice-ui/issues/WB-3007)
+- #WB-3015, allow adding more videos to upload, removing them... [#184](https://github.com/edificeio/edifice-ui/issues/184) ([5f02209](https://github.com/edificeio/edifice-ui/commit/5f022098af7e9b2144622a2e7e105fb9ef21b982)), closes [#WB-3015](https://github.com/edificeio/edifice-ui/issues/WB-3015)
+- #WB-3053, avoid canceled images requests when adding files ([44993cc](https://github.com/edificeio/edifice-ui/commit/44993cca1272a40cc6831aad5088cb47b0f73320)), closes [#WB-3053](https://github.com/edificeio/edifice-ui/issues/WB-3053)
+- **ui:** #WB-3011 audio record with media encoder and without websocket ([#176](https://github.com/edificeio/edifice-ui/issues/176)) ([78c87c9](https://github.com/edificeio/edifice-ui/commit/78c87c9fd8fb7da8e2a73ba93803143f2feb8260)), closes [#WB-3011](https://github.com/edificeio/edifice-ui/issues/WB-3011)
+- **ui:** #WB-3054, use blob as a thumbnail to avoid unnecessary requests ([#181](https://github.com/edificeio/edifice-ui/issues/181)) ([18bfb2b](https://github.com/edificeio/edifice-ui/commit/18bfb2b9ca0b04e9ca88e82b6b4a7a759374fc77)), closes [#WB-3054](https://github.com/edificeio/edifice-ui/issues/WB-3054)
+- **ui:** #WB-3085 stop recording too long ([163879c](https://github.com/edificeio/edifice-ui/commit/163879ca277103b7520ea3c8fb340dc4aa7a0e66)), closes [#WB-3085](https://github.com/edificeio/edifice-ui/issues/WB-3085)
+
+## 1.5.9 (2024-06-12)
+
+## 1.5.9-develop.5 (2024-06-11)
+
+### Bug Fixes
+
+- **ui:** user type and useLibraryUrl with optional chaining ([c762825](https://github.com/edificeio/edifice-ui/commit/c7628256f178d3df836aca5fde4521a8bed161c6))
+
+## 1.5.9-develop.4 (2024-06-10)
+
+### Bug Fixes
+
+- use 'key' in useOnboardingModal to be generic ([102fce2](https://github.com/edificeio/edifice-ui/commit/102fce245a56598b9a9d8808830bc385a146527b))
+
+## 1.5.9-develop.3 (2024-06-10)
+
+### Bug Fixes
+
+- **ui:** remove suspense from tanstack-query hook ([549ce8f](https://github.com/edificeio/edifice-ui/commit/549ce8f1bfe3e7f35a48793da96b635e4270c5f5))
+
+### Features
+
+- **ui:** add checkHasRights utils ([fd6712c](https://github.com/edificeio/edifice-ui/commit/fd6712c944d07bac18f3ea79ab771ed43ab22041))
+
+## 1.5.9-develop.2 (2024-06-10)
+
+### Features
+
+- **zendeskGuide:** INTEG-270, add zendeskGuide and remove help module ([b696846](https://github.com/edificeio/edifice-ui/commit/b696846494038b927811cf562456ebc0be10e093))
+
+## 1.5.9-develop.1 (2024-06-05)
+
+## 1.5.9-develop-b2school.1 (2024-06-05)
+
+### Bug Fixes
+
+- **multimedia:** tree node search algorithm [#178](https://github.com/edificeio/edifice-ui/issues/178) ([e8a379f](https://github.com/edificeio/edifice-ui/commit/e8a379f5c2727723c2033cae6af215f54579c56a))
+
+## 1.5.9-develop-b2school.0 (2024-06-05)
+
+## 1.5.9-develop.0 (2024-06-05)
+
+## 1.5.8 (2024-06-04)
+
+## 1.5.8-develop.1 (2024-06-04)
+
+## 1.5.8-develop-b2school.1 (2024-06-04)
+
+## 1.5.8-develop.0 (2024-06-04)
+
+## 1.5.7 (2024-06-03)
+
+### Bug Fixes
+
+- #WB-2445, fold/unfold tree when clicking on item with children ([ddba4cf](https://github.com/edificeio/edifice-ui/commit/ddba4cf2f00d0fa88dbf7090701acf2427dfea9b)), closes [#WB-2445](https://github.com/edificeio/edifice-ui/issues/WB-2445)
+- #WB-2445, hide rafterRight if tree children array is empty ([33ee6ce](https://github.com/edificeio/edifice-ui/commit/33ee6ce57c47ad84ad081a8eaab328eff4ade57c)), closes [#WB-2445](https://github.com/edificeio/edifice-ui/issues/WB-2445)
+- #WB-2846 responsive video recording width ([450213c](https://github.com/edificeio/edifice-ui/commit/450213cefa3ce30e60796be00fbd07f951360321)), closes [#WB-2846](https://github.com/edificeio/edifice-ui/issues/WB-2846)
+- #WB-2912 audio performance without websocket ([#165](https://github.com/edificeio/edifice-ui/issues/165)) ([32bfe1f](https://github.com/edificeio/edifice-ui/commit/32bfe1f049252c451599d74bea5eaf27327639b9)), closes [#WB-2912](https://github.com/edificeio/edifice-ui/issues/WB-2912)
+- #WB-2981 ([8e22737](https://github.com/edificeio/edifice-ui/commit/8e22737fd4ec5ae2cd69532cec3c4cdab8f15249)), closes [#WB-2981](https://github.com/edificeio/edifice-ui/issues/WB-2981)
+- **ui:** #WB-2690 format date with localized format ([#162](https://github.com/edificeio/edifice-ui/issues/162)) ([119f82b](https://github.com/edificeio/edifice-ui/commit/119f82bf102c91a4a9b5799fe3da9c4507e49e85)), closes [#WB-2690](https://github.com/edificeio/edifice-ui/issues/WB-2690)
+- **ui:** #WB-2862, improve loading of documents in workspace [#171](https://github.com/edificeio/edifice-ui/issues/171) ([700c0bc](https://github.com/edificeio/edifice-ui/commit/700c0bc011f5a7f99c3f670fd552066d2ce7d532)), closes [#WB-2862](https://github.com/edificeio/edifice-ui/issues/WB-2862)
+- **video:** #WB-1661, uploading a video file from BBM must encode it to mp4 [#167](https://github.com/edificeio/edifice-ui/issues/167) ([6c4f46d](https://github.com/edificeio/edifice-ui/commit/6c4f46de669e3caba994092433674b90b210ce06)), closes [#WB-1661](https://github.com/edificeio/edifice-ui/issues/WB-1661)
+
+### Reverts
+
+- Revert "feat: #INTEG-270, add zendeskGuide and remove help module" ([0604eee](https://github.com/edificeio/edifice-ui/commit/0604eee9cd3b52785052936864ea866d43e8422c)), closes [#INTEG-270](https://github.com/edificeio/edifice-ui/issues/INTEG-270)
+- Revert "fix(zendeskGuide): INTEG-270 change z index to mobile view and hide zendesk on collaborativewall view" ([849cde3](https://github.com/edificeio/edifice-ui/commit/849cde35a13576f08b6258d2df30cf34123e413c))
+- Revert "fix: #WB-2981" ([0c7bc6f](https://github.com/edificeio/edifice-ui/commit/0c7bc6f985abb48adab0ee02a89852aca02f0c8c)), closes [#WB-2981](https://github.com/edificeio/edifice-ui/issues/WB-2981)
+- Revert "fix: #WB-2912 audio performance without websocket (#165)" ([9830963](https://github.com/edificeio/edifice-ui/commit/98309638cd7be4541c2cbb9d498086649404f586)), closes [#WB-2912](https://github.com/edificeio/edifice-ui/issues/WB-2912) [#165](https://github.com/edificeio/edifice-ui/issues/165)
+
+## 1.5.5 (2024-05-28)
+
+## 1.5.4-develop.21 (2024-05-27)
+
+### Bug Fixes
+
+- **zendeskGuide:** INTEG-270 change z index to mobile view and hide zendesk on collaborativewall view ([0823025](https://github.com/edificeio/edifice-ui/commit/0823025c9a0e74fb731937e3864b1032eba141af))
+
+## 1.5.4-develop.20 (2024-05-27)
+
+## 1.5.4-develop.18 (2024-05-24)
+
+## 1.5.4-develop-integration.17 (2024-05-24)
+
+### Features
+
+- #INTEG-270, add zendeskGuide and remove help module ([7afac70](https://github.com/edificeio/edifice-ui/commit/7afac70950eb6ef6bef370b686df2e8f2ebe8bcf)), closes [#INTEG-270](https://github.com/edificeio/edifice-ui/issues/INTEG-270)
+
+## 1.5.4-develop.17 (2024-05-23)
+
+## 1.5.4-develop.16 (2024-05-22)
+
+## 1.5.4-develop.15 (2024-05-22)
+
+## 1.5.4-develop.14 (2024-05-22)
+
+### Bug Fixes
+
+- #WB-2984 revert + update "fix: #WB-2828 responsive toaster block scrollbar" ([0e95c71](https://github.com/edificeio/edifice-ui/commit/0e95c717a982f157f9891432de21575edfc0898c)), closes [#WB-2984](https://github.com/edificeio/edifice-ui/issues/WB-2984) [#WB-2828](https://github.com/edificeio/edifice-ui/issues/WB-2828)
+- #WB2-1659, fix toolbar a11y keyboard navigation with disabled elements ([9c114d4](https://github.com/edificeio/edifice-ui/commit/9c114d41b1b022e868860e54adaec2f1fde2b7d8))
+- #WB2-1695, add event to Dropdown.Item onClick function ([#164](https://github.com/edificeio/edifice-ui/issues/164)) ([f93ec3a](https://github.com/edificeio/edifice-ui/commit/f93ec3a735e37af8498296256f873a6bdbdd0eb4)), closes [#WB2-1695](https://github.com/edificeio/edifice-ui/issues/WB2-1695)
+- #WB2-1702, add number check to convert explorer date ([1100ce9](https://github.com/edificeio/edifice-ui/commit/1100ce93a400b88747ed23cb8d8d807876fffecf)), closes [#WB2-1702](https://github.com/edificeio/edifice-ui/issues/WB2-1702)
+- fix null error when resource is null in ResourceModal ([388798e](https://github.com/edificeio/edifice-ui/commit/388798efe861f545eef5cfaf2003811fa85543af))
+- fix ResourceModal description textarea defaultValue warning ([930e379](https://github.com/edificeio/edifice-ui/commit/930e37935623de0bee282346963389052eeca664))
+- **textarea:** #WB2-1649, change restProps order to override onChange attr ([69e2e3a](https://github.com/edificeio/edifice-ui/commit/69e2e3af9d763842f29f754f539b6562cb4c5514)), closes [#WB2-1649](https://github.com/edificeio/edifice-ui/issues/WB2-1649)
+- **textarea:** #WB2-1649, create TextareaCounter, add story MaxCount and fix ResourceModal to handle onChange description ([9777097](https://github.com/edificeio/edifice-ui/commit/9777097fd9ac481cd18cbc4fa2ae01a1802beac9))
+
+### Features
+
+- #WB2-1496, add resource title/description maxLength ([ff455e1](https://github.com/edificeio/edifice-ui/commit/ff455e1055f31683e2b32e6c707203c4f88b6a05)), closes [#WB2-1496](https://github.com/edificeio/edifice-ui/issues/WB2-1496)
+
+## 1.5.4 (2024-05-14)
+
+## 1.5.4-develop.7 (2024-05-13)
+
+## 1.5.4-develop-b2school.12 (2024-05-07)
+
+### Bug Fixes
+
+- #WB-2846 video record on iPhone ([9472edf](https://github.com/edificeio/edifice-ui/commit/9472edfb92b16012d642250247d55d63562b91d5)), closes [#WB-2846](https://github.com/edificeio/edifice-ui/issues/WB-2846)
+
+## 1.5.4-develop-b2school.11 (2024-05-07)
+
+### Bug Fixes
+
+- **multimedia:** upload files with application=media-library ([2caf9ef](https://github.com/edificeio/edifice-ui/commit/2caf9efbf8b3a55e3ca1236ab2cfe78fc8355a25))
+
+## 1.5.4-develop-b2school.10 (2024-05-07)
+
+### Bug Fixes
+
+- **ui:** #WB-2859 safari audio record ([8f7a84d](https://github.com/edificeio/edifice-ui/commit/8f7a84dd266abe2786e9f11df76268665a61f6c8)), closes [#WB-2859](https://github.com/edificeio/edifice-ui/issues/WB-2859)
+
+## 1.5.4-develop-b2school.9 (2024-05-07)
+
+### Bug Fixes
+
+- **multimedia:** #WB-2925, filtering of resources from workspace, in lowercase [#158](https://github.com/edificeio/edifice-ui/issues/158) ([988777e](https://github.com/edificeio/edifice-ui/commit/988777e7eefe57204503bafca8ba8f0bd67e81a7)), closes [#WB-2925](https://github.com/edificeio/edifice-ui/issues/WB-2925)
+
+## 1.5.4-develop-b2school.8 (2024-05-07)
+
+### Bug Fixes
+
+- **ui:** #WB-2912 add maximum duration to audio record ([#155](https://github.com/edificeio/edifice-ui/issues/155)) ([d40f0bd](https://github.com/edificeio/edifice-ui/commit/d40f0bd2e57c130d8581468e87f67eb408e15f20)), closes [#WB-2912](https://github.com/edificeio/edifice-ui/issues/WB-2912)
+
+## 1.5.4-develop-b2school.7 (2024-05-06)
+
+### Features
+
+- **ui:** #WB-2858, sticky searchbar for the internal linker [#157](https://github.com/edificeio/edifice-ui/issues/157) ([a014602](https://github.com/edificeio/edifice-ui/commit/a0146028e7a0f015731e582448ff409e567e2f61)), closes [#WB-2858](https://github.com/edificeio/edifice-ui/issues/WB-2858)
+
+## 1.5.4-develop-b2school.5 (2024-05-03)
+
+### Bug Fixes
+
+- **multimedia:** #WB-2903, wait for a ready stream before recording video ([e066050](https://github.com/edificeio/edifice-ui/commit/e0660504a7917e7a4b92f35c79b2399182192366)), closes [#WB-2903](https://github.com/edificeio/edifice-ui/issues/WB-2903)
+
+## 1.5.4-develop-b2school.4 (2024-05-03)
+
+### Bug Fixes
+
+- **ui:** #WB-2894, auto-stop recording when max duration is reached [#153](https://github.com/edificeio/edifice-ui/issues/153) ([40926f6](https://github.com/edificeio/edifice-ui/commit/40926f62c2935fd44c532b251a321c5e8464bc83)), closes [#WB-2894](https://github.com/edificeio/edifice-ui/issues/WB-2894)
+
+## 1.5.4-develop-b2school.3 (2024-05-02)
+
+### Bug Fixes
+
+- **ui:** #WB-2828 responsive toaster block scrollbar ([#152](https://github.com/edificeio/edifice-ui/issues/152)) ([eda29d0](https://github.com/edificeio/edifice-ui/commit/eda29d0626d3e0f3758e7a2774ef55778d9fa78b)), closes [#WB-2828](https://github.com/edificeio/edifice-ui/issues/WB-2828)
+
+## 1.5.4-develop-b2school.2 (2024-05-02)
+
+### Bug Fixes
+
+- **ui:** #WB-2841 focus on input trigger windows resize + focus ([#150](https://github.com/edificeio/edifice-ui/issues/150)) ([f9d0758](https://github.com/edificeio/edifice-ui/commit/f9d07587a4c4acabd45c9b0d5e52c88ef712e8c5)), closes [#WB-2841](https://github.com/edificeio/edifice-ui/issues/WB-2841)
+- **ui:** #WB-2860 audio record on firefox ([#149](https://github.com/edificeio/edifice-ui/issues/149)) ([7a7bf13](https://github.com/edificeio/edifice-ui/commit/7a7bf137c0627c60bdb61d8ba7a4375f56290378)), closes [#WB-2860](https://github.com/edificeio/edifice-ui/issues/WB-2860)
+
+## 1.5.4-develop-b2school.0 (2024-04-30)
+
+## 1.5.4-develop.4 (2024-04-30)
+
 ## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
 
 ### Bug Fixes

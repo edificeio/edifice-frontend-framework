@@ -3,6 +3,233 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.22-develop-pedago.13 (2024-10-24)
+
+## 1.5.22-develop-pedago.12 (2024-10-23)
+
+### Bug Fixes
+
+- **treeview:** #WB2-76, align node with invisible icon ([4c99f1a](https://github.com/edificeio/edifice-ui/commit/4c99f1a841ab551b16dba3dd087ff394fe3c33ad)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([5106bbc](https://github.com/edificeio/edifice-ui/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
+- **ui:** #WB2-1651, add tooltip component to attachment component ([48ac691](https://github.com/edificeio/edifice-ui/commit/48ac6915ccc5570a1f1682800874d8473e3ee6e1)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
+## 1.5.22 (2024-10-23)
+
+## 1.5.22-develop.0 (2024-10-22)
+
+## 1.5.21 (2024-10-04)
+
+## 1.5.21-develop.0 (2024-10-04)
+
+## 1.5.20 (2024-10-02)
+
+## 1.5.19 (2024-09-19)
+
+## 1.5.19-develop.2 (2024-09-19)
+
+## 1.5.18 (2024-09-06)
+
+## 1.5.18-develop.4 (2024-09-05)
+
+## 1.5.18-develop.2 (2024-09-02)
+
+## 1.5.18-develop.1 (2024-09-02)
+
+## 1.5.18-develop.0 (2024-09-02)
+
+## 1.5.17 (2024-08-23)
+
+## 1.5.17-develop.1 (2024-08-23)
+
+## 1.5.16 (2024-08-02)
+
+## 1.5.16-develop.0 (2024-08-02)
+
+## 1.5.15 (2024-08-02)
+
+## 1.5.15-develop.2 (2024-07-26)
+
+## 1.5.15-develop-wl.1 (2024-07-26)
+
+## 1.5.15-develop.1 (2024-07-25)
+
+## 1.5.15-develop.0 (2024-07-25)
+
+## 1.5.14 (2024-07-12)
+
+## 1.5.14-develop.0 (2024-07-12)
+
+## 1.5.13 (2024-07-12)
+
+## 1.5.13-develop.1 (2024-07-12)
+
+## 1.5.12 (2024-07-11)
+
+## 1.5.12-develop.1 (2024-07-10)
+
+## 1.5.12-develop-pedago.4 (2024-07-10)
+
+### Bug Fixes
+
+- #WB2-1455, fix feedback PR ([7fe4ea5](https://github.com/edificeio/edifice-ui/commit/7fe4ea5c4453d8d946a95381b992341500c867cd))
+
+### Features
+
+- #WB2-1455, add new image picker with workspace ([0ba6d5a](https://github.com/edificeio/edifice-ui/commit/0ba6d5a9875332caf2e2ac7a4ed81ff587f7317c)), closes [#WB2-1455](https://github.com/edificeio/edifice-ui/issues/WB2-1455)
+
+## 1.5.12-develop-b2school.0 (2024-07-09)
+
+## 1.5.11 (2024-07-09)
+
+### Bug Fixes
+
+- #WB-3160, remove call from ResourceService in Share Service ([#212](https://github.com/edificeio/edifice-ui/issues/212)) ([0eb69eb](https://github.com/edificeio/edifice-ui/commit/0eb69ebc4ed2e0b9d618d411acd4e399920ff85c)), closes [#WB-3160](https://github.com/edificeio/edifice-ui/issues/WB-3160)
+
+## 1.5.10 (2024-07-01)
+
+## 1.5.10-develop.7 (2024-06-25)
+
+## 1.5.10-develop.6 (2024-06-25)
+
+## 1.5.10-develop.5 (2024-06-25)
+
+## 1.5.10-develop.4 (2024-06-25)
+
+## 1.5.10-develop.3 (2024-06-24)
+
+## 1.5.10-develop.2 (2024-06-24)
+
+## 1.5.10-develop.1 (2024-06-21)
+
+## 1.5.10-develop-b2school.18 (2024-06-20)
+
+## 1.5.10-develop-b2school.17 (2024-06-20)
+
+## 1.5.10-develop-b2school.16 (2024-06-20)
+
+## 1.5.10-develop-b2school.15 (2024-06-19)
+
+## 1.5.10-develop-b2school.13 (2024-06-19)
+
+## 1.5.10-develop-b2school.12 (2024-06-18)
+
+## 1.5.10-develop-b2school.10 (2024-06-18)
+
+## 1.5.10-develop-b2school.9 (2024-06-17)
+
+## 1.5.10-develop-b2school.8 (2024-06-14)
+
+## 1.5.10-develop-b2school.7 (2024-06-14)
+
+## 1.5.10-develop-b2school.5 (2024-06-13)
+
+## 1.5.10-develop-b2school.4 (2024-06-13)
+
+## 1.5.10-develop-b2school.3 (2024-06-13)
+
+## 1.5.10-develop-b2school.2 (2024-06-13)
+
+## 1.5.10-develop-b2school.1 (2024-06-12)
+
+## 1.5.10-develop-b2school.0 (2024-06-12)
+
+### Bug Fixes
+
+- #WB-3015, allow adding more videos to upload, removing them... [#184](https://github.com/edificeio/edifice-ui/issues/184) ([5f02209](https://github.com/edificeio/edifice-ui/commit/5f022098af7e9b2144622a2e7e105fb9ef21b982)), closes [#WB-3015](https://github.com/edificeio/edifice-ui/issues/WB-3015)
+- #WB-3053, avoid canceled images requests when adding files ([44993cc](https://github.com/edificeio/edifice-ui/commit/44993cca1272a40cc6831aad5088cb47b0f73320)), closes [#WB-3053](https://github.com/edificeio/edifice-ui/issues/WB-3053)
+- **editor:** #WB-3074, set or generate an id for the editor HTML instance [#182](https://github.com/edificeio/edifice-ui/issues/182) ([6d00021](https://github.com/edificeio/edifice-ui/commit/6d000214205fe05576387c65112cce9048cba833)), closes [#WB-3074](https://github.com/edificeio/edifice-ui/issues/WB-3074)
+
+## 1.5.9 (2024-06-12)
+
+## 1.5.9-develop.5 (2024-06-11)
+
+## 1.5.9-develop.4 (2024-06-10)
+
+## 1.5.9-develop.3 (2024-06-10)
+
+## 1.5.9-develop.2 (2024-06-10)
+
+## 1.5.9-develop.1 (2024-06-05)
+
+## 1.5.9-develop-b2school.1 (2024-06-05)
+
+## 1.5.9-develop-b2school.0 (2024-06-05)
+
+## 1.5.9-develop.0 (2024-06-05)
+
+## 1.5.8 (2024-06-04)
+
+## 1.5.8-develop.1 (2024-06-04)
+
+## 1.5.8-develop-b2school.1 (2024-06-04)
+
+## 1.5.8-develop.0 (2024-06-04)
+
+## 1.5.7 (2024-06-03)
+
+### Bug Fixes
+
+- #WB-2484 responsive editor toolbar ([5564c7c](https://github.com/edificeio/edifice-ui/commit/5564c7c7b65d746314e1f5bc6201679ac33acc3f)), closes [#WB-2484](https://github.com/edificeio/edifice-ui/issues/WB-2484)
+- **editor:** #WB-2907 spacing linker badge ([6f45a89](https://github.com/edificeio/edifice-ui/commit/6f45a899dabdc8b0e44748ae3a2e70d1d19790e2)), closes [#WB-2907](https://github.com/edificeio/edifice-ui/issues/WB-2907)
+- **editor:** #WB-2980, set default editor focus to "start" ([45195b4](https://github.com/edificeio/edifice-ui/commit/45195b4667ce708191053a8d684e1888b6f9e9e7)), closes [#WB-2980](https://github.com/edificeio/edifice-ui/issues/WB-2980)
+
+## 1.5.5 (2024-05-28)
+
+## 1.5.4-develop.21 (2024-05-27)
+
+## 1.5.4-develop.20 (2024-05-27)
+
+## 1.5.4-develop.18 (2024-05-24)
+
+## 1.5.4-develop-integration.17 (2024-05-24)
+
+## 1.5.4-develop.17 (2024-05-23)
+
+## 1.5.4-develop.16 (2024-05-22)
+
+## 1.5.4-develop.15 (2024-05-22)
+
+## 1.5.4-develop.14 (2024-05-22)
+
+## 1.5.4 (2024-05-14)
+
+## 1.5.4-develop.7 (2024-05-13)
+
+## 1.5.4-develop-b2school.12 (2024-05-07)
+
+## 1.5.4-develop-b2school.11 (2024-05-07)
+
+## 1.5.4-develop-b2school.10 (2024-05-07)
+
+## 1.5.4-develop-b2school.9 (2024-05-07)
+
+## 1.5.4-develop-b2school.8 (2024-05-07)
+
+## 1.5.4-develop-b2school.7 (2024-05-06)
+
+## 1.5.4-develop-b2school.6 (2024-05-06)
+
+### Bug Fixes
+
+- **editor:** #WB-2870, Linker cards should always display content text [#156](https://github.com/edificeio/edifice-ui/issues/156) ([3580d39](https://github.com/edificeio/edifice-ui/commit/3580d39f394c6eadfe17971a7ac6ef993ca4064b)), closes [#WB-2870](https://github.com/edificeio/edifice-ui/issues/WB-2870)
+
+## 1.5.4-develop-b2school.5 (2024-05-03)
+
+## 1.5.4-develop-b2school.4 (2024-05-03)
+
+## 1.5.4-develop-b2school.3 (2024-05-02)
+
+## 1.5.4-develop-b2school.2 (2024-05-02)
+
+## 1.5.4-develop-b2school.1 (2024-05-02)
+
+## 1.5.4-develop-b2school.0 (2024-04-30)
+
+## 1.5.4-develop.4 (2024-04-30)
+
 ## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
 
 ### Bug Fixes

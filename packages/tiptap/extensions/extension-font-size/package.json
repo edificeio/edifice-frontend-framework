@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-font-size",
-  "version": "1.5.22-develop-pedago.12",
+  "version": "1.5.22-develop-pedago.13",
   "description": "Rich Text Editor FontSize Extension",
   "type": "module",
   "exports": {
