@@ -86,6 +86,7 @@ export function flattenTree(
       position: node.position ?? undefined,
       depth: depth ?? 0,
       children: node.children,
+      isVisible: node.isVisible,
     });
 
     if (node.children && node.children.length > 0) {
@@ -150,6 +151,7 @@ export function generateUpdateData(
         _id: item.id,
         position: positionCounter,
         parentId: parentId ?? undefined,
+        isVisible: item.isVisible,
       };
       updateArray.push(updateItem);
 
@@ -184,6 +186,7 @@ export const buildTree = (flatNodes: FlattenedItem[]): TreeItem[] => {
       name: node.name,
       children: [],
       position: node.position,
+      isVisible: node.isVisible,
     });
   });
 
