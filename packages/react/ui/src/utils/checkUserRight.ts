@@ -73,8 +73,19 @@ const checkHasRights = async ({ roles, rights }: UseHasRightsProps) => {
   }
 };
 
-export const checkUserRight = async (rights: UseHasRightsProps["rights"]) => {
-  const roles: Roles = ["contrib", "creator", "manager", "read"];
+export const checkUserRight = async (
+  rights: UseHasRightsProps["rights"],
+  additionalRoles?: RightRole | RightRole[],
+) => {
+  const defaultRoles: Roles = ["contrib", "creator", "manager", "read"];
+  let roles: Roles = defaultRoles;
+
+  if (Array.isArray(additionalRoles)) {
+    roles = [...roles, ...additionalRoles];
+  } else if (additionalRoles) {
+    roles = [...roles, additionalRoles];
+  }
+
   const userRights: Record<RightRole, boolean> = {
     creator: false,
     contrib: false,
