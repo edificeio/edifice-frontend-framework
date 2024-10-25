@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.23-hotfix-check-user-rights.0",
+  "version": "1.5.23-hotfix-check-user-rights.1",
   "npmClient": "pnpm",
   "command": {
     "version": {

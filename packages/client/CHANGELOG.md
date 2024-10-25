@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.23-hotfix-check-user-rights.1](https://github.com/edificeio/edifice-ui/compare/v1.5.23-hotfix-check-user-rights.0...v1.5.23-hotfix-check-user-rights.1) (2024-10-25)
+
+**Note:** Version bump only for package edifice-ts-client
+
 ## [1.5.23-hotfix-check-user-rights.0](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23-hotfix-check-user-rights.0) (2024-10-25)
 
 ### Bug Fixes
