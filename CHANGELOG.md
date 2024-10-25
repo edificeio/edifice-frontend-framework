@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.0](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.15...v1.6.0-develop.0) (2024-10-25)
+
+### Bug Fixes
+
+- #WB2-2017, add isVisible in data for visible page ([15fd5a5](https://github.com/opendigitaleducation/edifice-ui/commit/15fd5a59a05ac7c9c436a5efc39c71ac5f1cf6e2)), closes [#WB2-2017](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-2017)
+
 ## [1.5.22-develop-pedago.15](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.14...v1.5.22-develop-pedago.15) (2024-10-25)
 
 ### Bug Fixes
