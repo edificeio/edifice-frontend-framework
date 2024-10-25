@@ -290,22 +290,22 @@ const useDropdown = (
     menuRef,
     /* TriggerProps to spread to any Trigger component */
     triggerProps: {
-      ref: mergeRefs(triggerRef, refs.setReference),
-      id: `dropdown-toggle-${id}`,
+      "ref": mergeRefs(triggerRef, refs.setReference),
+      "id": `dropdown-toggle-${id}`,
       "aria-haspopup": "menu",
       "aria-controls": `dropdown-${id}`,
       "aria-expanded": visible ? true : false,
-      className: `${visible ? "selected" : ""}`,
-      onClick: onTriggerClick,
-      onKeyDown: onTriggerKeyDown,
+      "className": `${visible ? "selected" : ""}`,
+      "onClick": onTriggerClick,
+      "onKeyDown": onTriggerKeyDown,
       "aria-activedescendant": isFocused,
     },
     /* MenuProps to spread to any Menu Component */
     menuProps: {
-      ref: mergeRefs(menuRef, refs.setFloating),
-      className: "dropdown-menu",
+      "ref": mergeRefs(menuRef, refs.setFloating),
+      "className": "dropdown-menu",
       "aria-labelledby": `dropdown-toggle-${id}`,
-      style: { ...floatingStyles },
+      "style": { ...floatingStyles },
     },
     /* ItemProps to spread to any item Component */
     itemProps: {

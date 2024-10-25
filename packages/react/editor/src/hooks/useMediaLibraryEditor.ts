@@ -147,11 +147,11 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
             // One or more internal link(s) are rendered as a Badge.
             resourceTabResult.resources.forEach((link) => {
               editor?.commands.setLinker({
-                href: link.path,
+                "href": link.path,
                 "data-app-prefix": link.application,
                 "data-id": link.assetId,
-                target: resourceTabResult.target ?? null,
-                title: link.name,
+                "target": resourceTabResult.target ?? null,
+                "title": link.name,
               });
               // Add next links afterward.
               if (

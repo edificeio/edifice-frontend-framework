@@ -1,15 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import useImageResizer from "./useImageResizer";
-import docs from "./useImageResizer.mdx";
 import { useEffect, useState } from "react";
 import { FormControl, Image, Input, Label } from "../../components";
 import { customSize } from "../../utils/fileSize";
+import useImageResizer from "./useImageResizer";
 
 const meta: Meta<typeof useImageResizer> = {
   title: "Hooks/useImageResizer",
-  parameters: {
-    docs: { page: docs },
-  },
 };
 
 export default meta;

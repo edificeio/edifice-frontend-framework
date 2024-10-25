@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.13](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.12...v1.5.22-develop-pedago.13) (2024-10-24)
+
+**Note:** Version bump only for package edifice-ts-client
+
+## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
+
+### Bug Fixes
+
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([cc33016](https://github.com/edificeio/edifice-ui/commit/cc33016c5b53a19365f347c16a1baa94b9cc1a10))
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([5106bbc](https://github.com/edificeio/edifice-ui/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
+- **client:** #WB2-1815, export ResourceService and remove WikiResourceService ([3b66499](https://github.com/edificeio/edifice-ui/commit/3b664993e694557760ed67277d6941fb3681ae62)), closes [#WB2-1815](https://github.com/edificeio/edifice-ui/issues/WB2-1815)
+
 ## [1.5.22](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop.0...v1.5.22) (2024-10-23)
 
 **Note:** Version bump only for package edifice-ts-client
@@ -12,6 +27,17 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - #EN-15, fixes to show magneto app in internal linker ([#263](https://github.com/edificeio/edifice-ui/issues/263)) ([e014c4a](https://github.com/edificeio/edifice-ui/commit/e014c4aa591e4cc6143d8d2963ee2811d285cdad))
+
+## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
+
+### Bug Fixes
+
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([436d5be](https://github.com/edificeio/edifice-ui/commit/436d5be86f5733be0ffb311f26d5bbf80633f951))
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+- **client:** #WB2-1815, export ResourceService and remove WikiResourceService ([265c94c](https://github.com/edificeio/edifice-ui/commit/265c94c22859e609995ff4e98c8cbe0b19d516fb)), closes [#WB2-1815](https://github.com/edificeio/edifice-ui/issues/WB2-1815)
 
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 

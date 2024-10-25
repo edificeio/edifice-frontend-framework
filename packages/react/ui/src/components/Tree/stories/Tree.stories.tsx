@@ -1,0 +1,157 @@
+import { Meta, StoryObj } from "@storybook/react";
+import { useState } from "react";
+import Tree from "../Tree";
+import { Button } from "../../Button";
+import { TreeProps } from "../types";
+
+// More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
+const meta: Meta<typeof Tree> = {
+  title: "Components/Tree",
+  component: Tree,
+  args: {
+    nodes: {
+      id: "default",
+      name: "Section Element",
+      section: true,
+      children: [
+        {
+          id: "1",
+          name: "level 1 arborescence tree",
+          children: [
+            {
+              id: "4",
+              name: "level 2 arborescence tree",
+              children: [
+                {
+                  id: "8",
+                  name: "level 3 arborescence tree",
+                  children: [
+                    {
+                      id: "12",
+                      name: "level 4 arborescence tree",
+                    },
+                    {
+                      id: "13",
+                      name: "level 4 arborescence tree",
+                    },
+                  ],
+                },
+                {
+                  id: "9",
+                  name: "level 3 arborescence tree",
+                },
+              ],
+            },
+            {
+              id: "5",
+              name: "level 2 arborescence tree",
+              children: [
+                {
+                  id: "10",
+                  name: "level 3 arborescence tree",
+                },
+                {
+                  id: "11",
+                  name: "level 3 arborescence tree",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "2",
+          name: "level 1 arborescence tree",
+          children: [
+            {
+              id: "6",
+              name: "level 2 arborescence tree",
+            },
+            {
+              id: "7",
+              name: "level 2 arborescence tree",
+            },
+          ],
+        },
+        {
+          id: "3",
+          name: "level 1 arborescence tree",
+        },
+      ],
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Tree>;
+
+// More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
+const Template = (args: TreeProps) => {
+  return <Tree {...args} />;
+};
+
+export const Base: Story = {
+  render: Template,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Tree component works on its own and will open/close any node with children",
+      },
+    },
+  },
+};
+
+export const SyncTreeView: Story = {
+  render: (args) => {
+    const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(
+      undefined,
+    );
+
+    return (
+      <>
+        <div className="my-16">
+          <Button onClick={() => setSelectedNodeId("7")}>Open node 7</Button>
+          <Button onClick={() => setSelectedNodeId("2")}>Open node 2</Button>
+        </div>
+        <Tree {...args} selectedNodeId={selectedNodeId} />
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "If you need to open a specific node, you can do it with the `selectedNodeId` props. You will sync the treeview with an external source",
+      },
+    },
+  },
+};
+
+/* export const SyncTreeViewWithRef: Story = {
+  render: (args) => {
+    const treeViewRef = useRef<TreeViewHandlers>(null);
+
+    return (
+      <>
+        <div className="my-16">
+          <Button onClick={() => treeViewRef?.current.select("7")}>
+            Open node 7
+          </Button>
+          <Button onClick={() => treeViewRef?.current.select("2")}>
+            Open node 2
+          </Button>
+        </div>
+        <TreeView ref={treeViewRef} {...args} />
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "If you need to open a specific node, you can do it with a `ref`. TreeView exposes its own handlers `TreeViewHandlers` ",
+      },
+    },
+  },
+}; */

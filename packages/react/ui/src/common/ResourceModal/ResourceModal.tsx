@@ -143,6 +143,7 @@ const ResourceModal = ({
         const createParams = {
           ...data,
           folder:
+            props.currentFolder === undefined || // Fix #WB2-1296: when searching, currentFolder is undefined
             props.currentFolder?.id === "default"
               ? undefined
               : parseInt(props.currentFolder?.id || ""),

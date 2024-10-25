@@ -44,6 +44,11 @@ export interface ILoginModel {
   */
 }
 
+export interface GetUserProfileOptions {
+  options?: any;
+  params?: Record<string, any>;
+}
+
 //-------------------------------------
 export interface ISession {
   //-------------------------------------
@@ -71,7 +76,10 @@ export interface ISession {
   hasRight(resource: any, right: any): boolean;
 
   /** Get User Profile */
-  getUserProfile(): Promise<UserProfile>;
+  getUserProfile({
+    options,
+    params,
+  }: Partial<GetUserProfileOptions>): Promise<UserProfile>;
 
   /** Verify if the logged-in user has a valid email address. */
   getEmailValidationInfos(): Promise<IEmailValidationInfos>;

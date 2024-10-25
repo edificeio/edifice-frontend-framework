@@ -1,20 +1,35 @@
 import { forwardRef, ReactNode, Ref } from "react";
 
 import clsx from "clsx";
+import { UserProfile } from "edifice-ts-client";
 
 export type BadgeRef = HTMLSpanElement;
 
 /** Badge variant : notification */
 export type NotificationBadgeVariant = {
   type: "notification";
-  level: "warning" | "danger" | "info";
-  color?: "background" | "text";
+  level: "success" | "warning" | "danger" | "info";
 };
-/** Badge variant : profile = teacher, student, relative or personnel */
+
+/** Badge variant : content */
+export type ContentBadgeVariant = {
+  type: "content";
+  level: "success" | "warning" | "danger" | "info";
+  background?: boolean;
+};
+
+/** Badge variant : profile = teacher, student, relative or personnel, guest */
 export type ProfileBadgeVariant = {
-  type: "profile";
-  profile: "teacher" | "student" | "relative" | "personnel";
+  type: "user";
+  profile: UserProfile[number];
+  background?: boolean;
 };
+
+/** Badge variant : chip */
+export type ChipBadgeVariant = {
+  type: "chip";
+};
+
 /** Badge variant : link */
 export type LinkBadgeVariant = {
   type: "link";
@@ -22,7 +37,9 @@ export type LinkBadgeVariant = {
 
 export type BadgeVariants =
   | NotificationBadgeVariant
+  | ContentBadgeVariant
   | ProfileBadgeVariant
+  | ChipBadgeVariant
   | LinkBadgeVariant;
 
 export interface BadgeProps extends React.ComponentPropsWithRef<"span"> {
@@ -31,15 +48,6 @@ export interface BadgeProps extends React.ComponentPropsWithRef<"span"> {
    * Defaults to notification.
    */
   variant?: BadgeVariants;
-  /**
-   * Is badge always visible ?
-   * A badge with no children is hidden by default.
-   */
-  visibility?: "always";
-  /**
-   * If set, forces the radius of the rounded border.
-   */
-  rounded?: "pill" | "circle";
   /**
    * Text or icon (or whatever) to render as children elements.
    */
@@ -57,55 +65,34 @@ const Badge = forwardRef(
   (
     {
       className,
-      variant = { type: "notification", level: "danger", color: "background" },
-      visibility,
-      rounded,
+      variant = { type: "notification", level: "info" },
       children,
       ...restProps
     }: BadgeProps,
     ref: Ref<BadgeRef>,
   ) => {
-    function getRadiusClass() {
-      // If radius is not forced, set it to a default value when needed.
-      if (!rounded) {
-        if ("always" === visibility && !children) {
-          return "rounded-circle";
-        }
-
-        if ("notification" === variant.type) {
-          return "rounded-pill";
-        } else if ("link" === variant.type) {
-          return "rounded-2";
-        }
-      }
-    }
-
     const classes = clsx(
-      "badge",
-
-      getRadiusClass(),
-
-      "always" === visibility &&
-        `position-absolute translate-middle p-8 d-inline`,
-
-      "notification" === variant.type &&
-        (!variant.color || variant.color === "background") &&
-        `bg-${variant.level} text-light`,
-
-      "notification" === variant.type &&
-        variant.color === "text" &&
-        `text-${variant.level} bg-gray-200 border border-gray-400`,
-
-      "profile" === variant.type && `badge-profile-${variant.profile}`,
-
-      "link" === variant.type && `border border-secondary`,
-
+      "badge rounded-pill",
+      (variant.type === "content" || variant.type === "user") &&
+        "background" in variant
+        ? "bg-gray-200"
+        : (variant.type === "content" || variant.type === "user") &&
+            !("background" in variant)
+          ? "border border-0"
+          : "",
+      variant.type === "content" && `text-${variant.level}`,
+      variant.type === "notification" &&
+        `badge-notification bg-${variant.level} text-light border border-0`,
+      variant.type === "user" &&
+        `badge-profile-${variant.profile.toLowerCase()}`,
+      variant.type === "link" && "badge-link border border-0",
+      variant.type === "chip" && "bg-gray-200",
       className,
     );
 
     return (
       <span ref={ref} className={classes} {...restProps}>
-        {variant.type === "link" ? (
+        {variant.type === "chip" ? (
           <div className="d-flex fw-800 align-items-center">{children}</div>
         ) : (
           children
@@ -114,7 +101,5 @@ const Badge = forwardRef(
     );
   },
 );
-
-Badge.displayName = "Badge";
 
 export default Badge;

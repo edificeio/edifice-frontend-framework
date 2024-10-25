@@ -3,33 +3,54 @@
 
 .badge {
   --#{$prefix}badge-border-color: #{$gray-400};
-
-  // Reset some bootstrap variables
-
   --#{$prefix}badge-font-size: 1.4rem;
-  --#{$prefix}badge-padding-x: 0.8rem;
+  --#{$prefix}badge-padding-x: 1.2rem;
   --#{$prefix}badge-padding-y: 0.4rem;
   --#{$prefix}badge-color: inherit;
 
+  border: 1px solid var(--#{$prefix}badge-border-color);
+
+  &:not(.badge-notification) {
+    height: 3rem;
+    line-height: 1.5;
+  }
+
   &.badge-profile {
     &-student {
-      border: 1px solid var(--#{$prefix}badge-border-color);
       color: var(--#{$prefix}orange);
     }
 
     &-teacher {
-      border: 1px solid var(--#{$prefix}badge-border-color);
       color: var(--#{$prefix}green);
     }
 
     &-relative {
-      border: 1px solid var(--#{$prefix}badge-border-color);
       color: var(--#{$prefix}blue);
     }
 
     &-personnel {
-      border: 1px solid var(--#{$prefix}badge-border-color);
       color: var(--#{$prefix}purple);
+    }
+
+    &-guest {
+      color: var(--#{$prefix}pink);
+    }
+  }
+
+  &.badge-notification {
+    --#{$prefix}badge-padding-x: 0.8rem;
+  }
+
+  &.badge-link {
+    a {
+      color: var(--#{$prefix}info);
+      font-size: 1.6rem;
+      font-weight: 400;
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }

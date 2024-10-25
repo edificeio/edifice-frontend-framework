@@ -1,4 +1,4 @@
-import { TreeNode } from "../components";
+import { TreeData } from "../types";
 
 /**
  * Utility function to find a node in a subtree
@@ -8,9 +8,9 @@ import { TreeNode } from "../components";
  * @returns The found child node (may be the root), or undefined
  */
 export function findTreeNode(
-  root: TreeNode,
-  predicate: (node: TreeNode) => boolean,
-): TreeNode | undefined {
+  root: TreeData,
+  predicate: (node: TreeData) => boolean,
+): TreeData | undefined {
   if (predicate(root)) return root;
 
   if (Array.isArray(root.children)) {

@@ -1,12 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import useImage from "./useImage";
-import docs from "./useImage.mdx";
 
 const meta: Meta<typeof useImage> = {
   title: "Hooks/useImage",
-  parameters: {
-    docs: { page: docs },
-  },
 };
 
 export default meta;

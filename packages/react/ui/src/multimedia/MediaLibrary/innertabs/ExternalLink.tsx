@@ -1,4 +1,6 @@
-import ExternalLinker, { IExternalLink } from "../../Linker/ExternalLinker";
+import ExternalLinker, {
+  IExternalLink,
+} from "../../Linker/ExternalLinker/ExternalLinker";
 import { useMediaLibraryContext } from "../MediaLibraryContext";
 
 export type ExternalLinkTabProps = {

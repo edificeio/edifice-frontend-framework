@@ -83,8 +83,8 @@ const AppIcon = forwardRef(
     };
 
     const iconVariant = {
-      square: isSquare,
-      rounded: isRounded,
+      "square": isSquare,
+      "rounded": isRounded,
       "rounded-circle": isCircle,
     };
 
