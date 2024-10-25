@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.22-develop-pedago.15](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.14...v1.5.22-develop-pedago.15) (2024-10-25)
+
+### Bug Fixes
+
+- #WB2-1998, remove usless function in new function to reorder position element treeview ([7e3b330](https://github.com/opendigitaleducation/edifice-ui/commit/7e3b33028b43a3066a23c70df67de7ff7e4bf7fe)), closes [#WB2-1998](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1998)
+- #WB2-1998, update function to indicate positions and reorganize … ([#268](https://github.com/opendigitaleducation/edifice-ui/issues/268)) ([7fee405](https://github.com/opendigitaleducation/edifice-ui/commit/7fee405f1b2a35561bd775139a54ab2b153c26b8)), closes [#WB2-1998](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1998)
+- **ui:** add forwardRef to DndTree ([0a83417](https://github.com/opendigitaleducation/edifice-ui/commit/0a834170d06d72e1e9468d924d0086745a53b8f1))
+
 ## [1.5.22-develop-pedago.14](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-pedago.13...v1.5.22-develop-pedago.14) (2024-10-24)
 
 ### Bug Fixes
