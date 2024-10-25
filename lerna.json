@@ -1,11 +1,10 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.22-develop-pedago.15",
+  "version": "1.6.0-develop.0",
   "npmClient": "pnpm",
   "command": {
     "version": {
       "allowBranch": ["main", "develop", "develop*", "hotfix/*"],
-      "conventionalCommits": true,
       "message": "chore: version & publish %s"
     }
   }
