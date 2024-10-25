@@ -60,10 +60,10 @@ export class WorkspaceService {
       nameSplit.length > 1 ? nameSplit[nameSplit.length - 1] : "";
     const metadata = {
       "content-type": contentType,
-      "filename": tmpName,
-      "size": file.size,
+      filename: tmpName,
+      size: file.size,
       extension,
-      "role": DocumentHelper.role(contentType, false, extension),
+      role: DocumentHelper.role(contentType, false, extension),
     };
     const basename = tmpName.replace("." + metadata.extension, "");
     const fullname = metadata.extension

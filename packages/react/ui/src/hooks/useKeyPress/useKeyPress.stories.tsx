@@ -1,11 +1,15 @@
 import useKeyPress from "./useKeyPress";
 // @ts-ignore
-import { Meta, StoryObj } from "@storybook/react";
+import docs from "./useKeyPress.mdx";
 import { useState } from "react";
+import { Meta, StoryObj } from "@storybook/react";
 import Button from "../../components/Button/Button";
 
 const meta: Meta<typeof useKeyPress> = {
   title: "Hooks/useKeyPress",
+  parameters: {
+    docs: { page: docs },
+  },
 };
 
 export default meta;

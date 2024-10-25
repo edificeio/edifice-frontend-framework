@@ -317,13 +317,15 @@ const Workspace = ({
           <TreeView
             ref={ownerRef}
             data={ownerRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent("owner", nodeId)}
+            onTreeItemSelect={(nodeId) => selectAndLoadContent("owner", nodeId)}
             onTreeItemUnfold={(nodeId) => selectAndLoadContent("owner", nodeId)}
           />
           <TreeView
             ref={sharedRef}
             data={sharedRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent("shared", nodeId)}
+            onTreeItemSelect={(nodeId) =>
+              selectAndLoadContent("shared", nodeId)
+            }
             onTreeItemUnfold={(nodeId) =>
               selectAndLoadContent("shared", nodeId)
             }
@@ -331,7 +333,7 @@ const Workspace = ({
           <TreeView
             ref={protectRef}
             data={protectRoot}
-            onTreeItemClick={(nodeId) =>
+            onTreeItemSelect={(nodeId) =>
               selectAndLoadContent("protected", nodeId)
             }
             onTreeItemUnfold={(nodeId) =>
@@ -342,7 +344,7 @@ const Workspace = ({
             <TreeView
               ref={publicRef}
               data={publicRoot}
-              onTreeItemClick={(nodeId) =>
+              onTreeItemSelect={(nodeId) =>
                 selectAndLoadContent("public", nodeId)
               }
               onTreeItemUnfold={(nodeId) =>

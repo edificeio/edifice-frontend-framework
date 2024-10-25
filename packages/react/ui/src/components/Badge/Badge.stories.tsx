@@ -1,128 +1,56 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { Hourglass } from "@edifice-ui/icons";
 import Badge, { BadgeProps } from "./Badge";
+import { Hourglass } from "@edifice-ui/icons";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Badge> = {
-  title: "Components/Badge",
+  title: "Components/Badges/Badge",
   component: Badge,
   argTypes: {
     variant: {
-      control: { type: "select" },
+      control: { type: "radio" },
       options: [
-        "content / success / background",
-        "content / warning / background",
-        "content / danger / background",
-        "content / info / background",
-        "content / success",
-        "content / warning",
-        "content / danger",
-        "content / info",
-        "notification / success",
         "notification / warning",
         "notification / danger",
         "notification / info",
-        "user / student / background",
-        "user / teacher / background",
-        "user / relative / background",
-        "user / personnel / background",
-        "user / guest / background",
-        "user / student",
-        "user / teacher",
-        "user / relative",
-        "user / personnel",
-        "user / guest",
+        "notification / warning / text",
+        "notification / danger / text",
+        "notification / info / text",
+        "profile / student",
+        "profile / teacher",
+        "profile / relative",
+        "profile / personnel",
       ],
       mapping: {
-        "content / success / background": {
-          type: "content",
-          level: "success",
-          background: true,
-        },
-        "content / warning / background": {
-          type: "content",
-          level: "warning",
-          background: true,
-        },
-        "content / danger / background": {
-          type: "content",
-          level: "danger",
-          background: true,
-        },
-        "content / info / background": {
-          type: "content",
-          level: "info",
-          background: true,
-        },
-        "content / success": {
-          type: "content",
-          level: "success",
-        },
-        "content / warning": {
-          type: "content",
-          level: "warning",
-        },
-        "content / danger": {
-          type: "content",
-          level: "danger",
-        },
-        "content / info": {
-          type: "content",
-          level: "info",
-        },
-        "notification / success": {
-          type: "notification",
-          level: "success",
-        },
-        "notification / warning": {
+        "notification / warning": { type: "notification", level: "warning" },
+        "notification / danger": { type: "notification", level: "danger" },
+        "notification / info": { type: "notification", level: "info" },
+        "notification / warning / text": {
           type: "notification",
           level: "warning",
+          color: "text",
         },
-        "notification / danger": {
+        "notification / danger / text": {
           type: "notification",
           level: "danger",
+          color: "text",
         },
-        "notification / info": {
+        "notification / info / text": {
           type: "notification",
           level: "info",
+          color: "text",
         },
-        "user / student / background": {
-          type: "user",
-          profile: "student",
-          background: true,
-        },
-        "user / teacher / background": {
-          type: "user",
-          profile: "teacher",
-          background: true,
-        },
-        "user / relative / background": {
-          type: "user",
-          profile: "relative",
-          background: true,
-        },
-        "user / personnel / background": {
-          type: "user",
-          profile: "personnel",
-          background: true,
-        },
-        "user / guest / background": {
-          type: "user",
-          profile: "guest",
-          background: true,
-        },
-        "user / student": { type: "user", profile: "student" },
-        "user / teacher": { type: "user", profile: "teacher" },
-        "user / relative": { type: "user", profile: "relative" },
-        "user / personnel": { type: "user", profile: "personnel" },
-        "user / guest": { type: "user", profile: "guest" },
+        "profile / student": { type: "profile", profile: "student" },
+        "profile / teacher": { type: "profile", profile: "teacher" },
+        "profile / relative": { type: "profile", profile: "relative" },
+        "profile / personnel": { type: "profile", profile: "personnel" },
       },
     },
   },
   args: {
-    children: "Badge",
-    variant: { type: "content", level: "success", background: true },
+    children: "999+",
+    variant: { type: "notification", level: "warning" },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
@@ -132,52 +60,107 @@ type Story = StoryObj<typeof Badge>;
 
 export const Base: Story = {
   args: {
-    children: "Badge",
-    variant: { type: "content", level: "success", background: true },
+    children: "999+",
+    variant: { type: "notification", level: "danger" },
   },
 };
 
-export const BadgeContent: Story = {
+export const VisibilityOption: Story = {
   args: {
-    variant: { type: "content", level: "success", background: true },
+    variant: { type: "notification", level: "warning" },
+    visibility: "always",
+    children: undefined,
   },
-
   render: (args: BadgeProps) => {
-    return <Badge {...args}>Visible</Badge>;
+    return (
+      <p>
+        This badge is always visible. <Badge {...args}></Badge>
+      </p>
+    );
   },
-
   parameters: {
     docs: {
       description: {
         story:
-          "Badge of type `content` expects different levels: `success | info | warning | danger`. You can add `background` key to the variant object to set a backgroundColor",
+          'An empty badge is hidden by default. Set its `visibility` to `"always"` to show it anyway.',
       },
     },
   },
 };
 
-export const BadgeProfile: Story = {
+export const NotificationTextInfoBadge: Story = {
   args: {
-    variant: { type: "user", profile: "Student", background: true },
+    variant: { type: "notification", level: "info", color: "text" },
   },
 
   render: (args: BadgeProps) => {
-    return <Badge {...args}>Profil</Badge>;
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Badge of type `user` expects different levels: `Student | Teacher | Personnel | Relative | Guest`. You can add `background` key to the variant object to set a backgroundColor",
-      },
-    },
+    return (
+      <p>
+        Titre du billet <Badge {...args}>Brouillon</Badge>
+      </p>
+    );
   },
 };
 
-export const BadgeChip: Story = {
+export const StudentProfileBadge: Story = {
   args: {
-    variant: { type: "chip" },
+    variant: { type: "profile", profile: "student" },
+  },
+
+  render: (args: BadgeProps) => {
+    return (
+      <p>
+        Hello, i am a <Badge {...args}>student</Badge> badge.
+      </p>
+    );
+  },
+};
+
+export const TeacherProfileBadge: Story = {
+  args: {
+    variant: { type: "profile", profile: "teacher" },
+  },
+
+  render: (args: BadgeProps) => {
+    return (
+      <p>
+        Hello, i am a <Badge {...args}>teacher</Badge> badge.
+      </p>
+    );
+  },
+};
+
+export const RelativeProfileBadge: Story = {
+  args: {
+    variant: { type: "profile", profile: "relative" },
+  },
+
+  render: (args: BadgeProps) => {
+    return (
+      <p>
+        Hello, i am a <Badge {...args}>relative</Badge> badge.
+      </p>
+    );
+  },
+};
+
+export const PersonnelProfileBadge: Story = {
+  args: {
+    variant: { type: "profile", profile: "personnel" },
+  },
+
+  render: (args: BadgeProps) => {
+    return (
+      <p>
+        Hello, i am a <Badge {...args}>personnel</Badge> badge.
+      </p>
+    );
+  },
+};
+
+export const BadgeWithIcon: Story = {
+  args: {
+    variant: { type: "link" },
   },
 
   render: (args: BadgeProps) => {
@@ -187,56 +170,5 @@ export const BadgeChip: Story = {
         An history of time
       </Badge>
     );
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Badge of type `chip` present information, can filter content or can trigger actions. (E.g: used in `LinkerRenderer` in your Rich Editor)",
-      },
-    },
-  },
-};
-
-export const BadgeLink: Story = {
-  args: {
-    variant: { type: "link" },
-  },
-
-  render: (args: BadgeProps) => {
-    return (
-      <Badge {...args}>
-        <a href="/">An history of time</a>
-      </Badge>
-    );
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "When using Badge of type `link`, you have to add yourself a `<a>` or any routing component",
-      },
-    },
-  },
-};
-
-export const BadgeNotification: Story = {
-  args: {
-    variant: { type: "notification", level: "danger" },
-  },
-
-  render: (args: BadgeProps) => {
-    return <Badge {...args}>9</Badge>;
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Badge of type `notification` is useful to represent statuses, notifications or short messages",
-      },
-    },
   },
 };

@@ -1,4 +1,4 @@
-import { Bookmark, Close, RafterDown, Users } from "@edifice-ui/icons";
+import { Bookmark, Close, RafterDown } from "@edifice-ui/icons";
 import {
   ShareRight,
   ShareRightAction,
@@ -30,40 +30,28 @@ export const ShareBookmarkLine = ({
   onDeleteRow: (shareRight: ShareRight) => void;
 }) => {
   const { t } = useTranslation();
-
   return shareRights?.rights.map((shareRight: ShareRight) => {
-    const avatarMapping = {
-      user: (
-        <Avatar
-          alt={t("explorer.modal.share.avatar.shared.alt")}
-          size="xs"
-          src={shareRight.avatarUrl}
-          variant="circle"
-        />
-      ),
-      group: (
-        <div className="avatar-xs bg-primary-200 justify-content-center d-flex rounded-circle">
-          <Users width={16} />
-        </div>
-      ),
-      sharebookmark: <Bookmark />,
-    };
-
-    const selectedAvatar = avatarMapping[shareRight.type] || null;
-
-    const isTypeBookmark = shareRight.type === "sharebookmark";
-    const isTypeUser = shareRight.type === "user";
-
     return (
       showShareRightLine(shareRight, showBookmark) && (
         <tr
           key={shareRight.id}
           className={shareRight.isBookmarkMember ? "bg-light" : ""}
         >
-          <td>{selectedAvatar}</td>
+          <td>
+            {shareRight.type !== "sharebookmark" && (
+              <Avatar
+                alt={t("explorer.modal.share.avatar.shared.alt")}
+                size="xs"
+                src={shareRight.avatarUrl}
+                variant="circle"
+              />
+            )}
+
+            {shareRight.type === "sharebookmark" && <Bookmark />}
+          </td>
           <td>
             <div className="d-flex">
-              {isTypeBookmark && (
+              {shareRight.type === "sharebookmark" && (
                 <Button
                   color="tertiary"
                   rightIcon={
@@ -84,8 +72,9 @@ export const ShareBookmarkLine = ({
                   {shareRight.displayName}
                 </Button>
               )}
-              {!isTypeBookmark && shareRight.displayName}
-              {isTypeUser && ` (${t(shareRight.profile || "")})`}
+              {shareRight.type !== "sharebookmark" && shareRight.displayName}
+              {shareRight.type === "user" &&
+                ` (${t(shareRight.profile || "")})`}
             </div>
           </td>
           {shareRightActions.map((shareRightAction) => (

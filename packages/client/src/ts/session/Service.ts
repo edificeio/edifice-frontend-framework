@@ -1,6 +1,5 @@
 import { App, ERROR_CODE } from "../globals";
 import {
-  GetUserProfileOptions,
   IGetSession,
   IQuotaAndUsage,
   IUserDescription,
@@ -206,7 +205,7 @@ export class SessionService {
       const [data, userbook] = await Promise.all([
         // FIXME The full user's description should be obtainable from a single endpoint in the backend.
         this.getUserProfile({
-          options: { requestName: "refreshAvatar" },
+          requestName: "refreshAvatar",
         }),
         this.http.get<IUserDescription>("/directory/userbook/" + user?.userId),
       ]);
@@ -257,15 +256,11 @@ export class SessionService {
     return bookmarkedApps;
   }
 
-  async getUserProfile(
-    options: Partial<GetUserProfileOptions> = {},
-  ): Promise<UserProfile> {
-    const { options: httpOptions = {}, params = {} } = options;
-
-    const queryParams = new URLSearchParams(params).toString();
-    const url = `/userbook/api/person${queryParams ? `?${queryParams}` : ""}`;
-
-    const { response, value } = await this.cache.httpGet<any>(url, httpOptions);
+  async getUserProfile(options?: any): Promise<UserProfile> {
+    const { response, value } = await this.cache.httpGet<any>(
+      "/userbook/api/person",
+      options,
+    );
     if (
       response.status < 200 ||
       response.status >= 300 ||

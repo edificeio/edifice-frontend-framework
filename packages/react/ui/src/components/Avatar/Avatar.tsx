@@ -65,8 +65,8 @@ const Avatar = forwardRef(
     };
 
     const avatarVariants = {
-      "square": isSquare,
-      "rounded": isRounded,
+      square: isSquare,
+      rounded: isRounded,
       "rounded-circle": isCircle,
     };
 

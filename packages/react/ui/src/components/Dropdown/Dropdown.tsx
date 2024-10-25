@@ -133,7 +133,7 @@ const Root = ({
     <DropdownContext.Provider value={value}>
       <div ref={ref} className={dropdown}>
         {typeof children === "function"
-          ? children(triggerProps, itemRefs, setVisible)
+          ? children(triggerProps, itemRefs)
           : children}
       </div>
     </DropdownContext.Provider>

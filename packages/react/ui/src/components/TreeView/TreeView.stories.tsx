@@ -1,156 +1,157 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { useRef, useState } from "react";
-import { Button } from "../Button";
-import TreeView, { TreeViewHandlers } from "./TreeView";
+import TreeView from "./TreeView";
+import { TreeNode } from "./TreeNode";
+import { useState } from "react";
+import React from "react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof TreeView> = {
   title: "Components/TreeView",
   component: TreeView,
-  args: {
-    data: {
-      id: "default",
-      name: "Section Element",
-      section: true,
-      children: [
-        {
-          id: "1",
-          name: "level 1 arborescence tree",
-          children: [
-            {
-              id: "4",
-              name: "level 2 arborescence tree",
-              children: [
-                {
-                  id: "8",
-                  name: "level 3 arborescence tree",
-                  children: [
-                    {
-                      id: "12",
-                      name: "level 4 arborescence tree",
-                    },
-                    {
-                      id: "13",
-                      name: "level 4 arborescence tree",
-                    },
-                  ],
-                },
-                {
-                  id: "9",
-                  name: "level 3 arborescence tree",
-                },
-              ],
-            },
-            {
-              id: "5",
-              name: "level 2 arborescence tree",
-              children: [
-                {
-                  id: "10",
-                  name: "level 3 arborescence tree",
-                },
-                {
-                  id: "11",
-                  name: "level 3 arborescence tree",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: "2",
-          name: "level 1 arborescence tree",
-          children: [
-            {
-              id: "6",
-              name: "level 2 arborescence tree",
-            },
-            {
-              id: "7",
-              name: "level 2 arborescence tree",
-            },
-          ],
-        },
-        {
-          id: "3",
-          name: "level 1 arborescence tree",
-        },
-      ],
-    },
-  },
 };
 
 export default meta;
 
 type Story = StoryObj<typeof TreeView>;
 
+const data: TreeNode = {
+  id: "root",
+  name: "Section Element",
+  section: true,
+  children: [
+    {
+      id: "1",
+      name: "level 1 arborescence tree",
+      children: [
+        {
+          id: "4",
+          name: "level 2 arborescence tree",
+          children: [
+            {
+              id: "8",
+              name: "level 3 arborescence tree",
+              children: [
+                {
+                  id: "12",
+                  name: "level 4 arborescence tree",
+                },
+                {
+                  id: "13",
+                  name: "level 4 arborescence tree",
+                },
+              ],
+            },
+            {
+              id: "9",
+              name: "level 3 arborescence tree",
+            },
+          ],
+        },
+        {
+          id: "5",
+          name: "level 2 arborescence tree",
+          children: [
+            {
+              id: "10",
+              name: "level 3 arborescence tree",
+            },
+            {
+              id: "11",
+              name: "level 3 arborescence tree",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "2",
+      name: "level 1 arborescence tree",
+      children: [
+        {
+          id: "6",
+          name: "level 2 arborescence tree",
+        },
+        {
+          id: "7",
+          name: "level 2 arborescence tree",
+        },
+      ],
+    },
+    {
+      id: "3",
+      name: "level 1 arborescence tree",
+    },
+  ],
+};
+
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args) => {
-  return <TreeView {...args} />;
+  const [events, setEvents] = useState<Array<string>>([]);
+
+  const maxEventHistory = 20;
+
+  const setRotativeEvents = (event: string) => {
+    if (events.length >= maxEventHistory) {
+      setEvents([event]);
+      return;
+    }
+    setEvents([...events, event]);
+  };
+
+  const handleTreeItemSelect = (nodeId: string) => {
+    setRotativeEvents(`Select / Node = ${nodeId}`);
+  };
+
+  const handleTreeItemFold = (nodeId: string) => {
+    setRotativeEvents(`Fold / Node = ${nodeId}`);
+  };
+
+  const handleTreeItemUnfold = (nodeId: string) => {
+    setRotativeEvents(`Unfold / Node = ${nodeId}`);
+  };
+
+  const handleTreeItemFocus = (nodeId: string) => {
+    setRotativeEvents(`Focus / Node = ${nodeId}`);
+  };
+
+  const handleTreeItemBlur = (nodeId: string) => {
+    setRotativeEvents(`Blur / Node = ${nodeId}`);
+  };
+
+  const treeViewArgs = {
+    data,
+    onTreeItemSelect: handleTreeItemSelect,
+    onTreeItemFold: handleTreeItemFold,
+    onTreeItemUnfold: handleTreeItemUnfold,
+    onTreeItemFocus: handleTreeItemFocus,
+    onTreeItemBlur: handleTreeItemBlur,
+  };
+
+  return (
+    <>
+      <TreeView {...args} {...treeViewArgs} />
+      <div
+        className="bg-light position-absolute p-8"
+        style={{
+          top: "8px",
+          right: "8px",
+          fontSize: "1rem",
+        }}
+      >
+        <span>
+          Events history (for debug only/cleared after {maxEventHistory}{" "}
+          events):
+        </span>
+        <ul>
+          {events.map((event, index) => (
+            <li key={index}>{event}</li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
 };
 
 export const Base: Story = {
   render: Template,
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "TreeView component works on its own and will open/close any node with children",
-      },
-    },
-  },
-};
-
-export const SyncTreeView: Story = {
-  render: (args) => {
-    const [selectedNodeId, setSelectedNodeId] = useState<string | undefined>(
-      undefined,
-    );
-
-    return (
-      <>
-        <div className="my-16">
-          <Button onClick={() => setSelectedNodeId("7")}>Open node 7</Button>
-          <Button onClick={() => setSelectedNodeId("2")}>Open node 2</Button>
-        </div>
-        <TreeView {...args} selectedNodeId={selectedNodeId} />
-      </>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "If you need to open a specific node, you can do it with the `selectedNodeId` props. You will sync the treeview with an external source",
-      },
-    },
-  },
-};
-
-export const SyncTreeViewWithRef: Story = {
-  render: (args) => {
-    const treeViewRef = useRef<TreeViewHandlers>(null);
-
-    return (
-      <>
-        <div className="my-16">
-          <Button onClick={() => treeViewRef?.current.select("7")}>
-            Open node 7
-          </Button>
-          <Button onClick={() => treeViewRef?.current.select("2")}>
-            Open node 2
-          </Button>
-        </div>
-        <TreeView ref={treeViewRef} {...args} />
-      </>
-    );
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "If you need to open a specific node, you can do it with a `ref`. TreeView exposes its own handlers `TreeViewHandlers` ",
-      },
-    },
-  },
 };

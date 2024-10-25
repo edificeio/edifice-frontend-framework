@@ -21,12 +21,8 @@ $selected-background-color: var(--#{$prefix}blue-200);
     }
   }
 
-  .drag-focus {
-    border: 1px solid var(--#{$prefix}secondary);
-    border-radius: $border-radius;
-  }
-
   [role="tree"] {
+    max-width: 400px;
     overflow-y: auto;
     list-style: none;
 
@@ -35,10 +31,6 @@ $selected-background-color: var(--#{$prefix}blue-200);
       margin: $spacer-0;
       list-style: none;
       cursor: pointer;
-
-      + li {
-        padding-top: $spacer-4;
-      }
     }
 
     & > [role="treeitem"][aria-selected="true"] > div > .action-container {
@@ -48,22 +40,8 @@ $selected-background-color: var(--#{$prefix}blue-200);
     }
   }
 
-  .border-left {
-    border-left: 1px solid var(--#{$prefix}gray-400);
-  }
-
-  .tree-btn {
-    height: 24px;
-    border: 1px solid var(--#{$prefix}gray-200);
-    border-radius: $border-radius-sm;
-    background-color: var(--#{$prefix}gray-200);
-    color: var(--#{$prefix}gray-800);
-    padding-inline: $spacer-2;
-  }
-
   [role="group"] {
     padding-left: $spacer-0;
-    padding-top: $spacer-8;
     margin-left: $spacer-8;
     font-size: 1.4rem;
     border-left: 1px solid var(--#{$prefix}gray-400);
@@ -71,21 +49,11 @@ $selected-background-color: var(--#{$prefix}blue-200);
     & > [role="treeitem"] {
       margin-left: $spacer-8;
 
-      + [role="treeitem"] {
-        padding-top: $spacer-8;
-      }
-
       &[aria-selected="true"] > div > .action-container {
         font-weight: 700;
         color: var(--#{$prefix}secondary);
         background-color: initial;
       }
-    }
-  }
-
-  .dropdown & {
-    [role="group"] {
-      border-left: none;
     }
   }
 

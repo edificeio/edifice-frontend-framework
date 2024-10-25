@@ -138,8 +138,8 @@ export interface IDataTrackEvent extends ISubjectMessage {
   name: typeof EVENT_NAME.DATA_TRACKED;
   data: {
     "event-type": string;
-    "module"?: string;
-    "userId"?: string;
+    module?: string;
+    userId?: string;
     [key: string]: any;
   };
 }

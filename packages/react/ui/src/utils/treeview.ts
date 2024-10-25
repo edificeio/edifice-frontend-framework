@@ -1,43 +1,31 @@
 import { FOLDER, IFolder } from "edifice-ts-client";
-import { TreeData } from "../types";
+import { TreeNode } from "../components/TreeView/TreeNode";
 
-export function findNodeById(
-  data: TreeData | TreeData[],
-  id: string,
-): TreeData | undefined {
-  if (Array.isArray(data)) {
-    for (const node of data) {
-      const result = findNodeById(node, id);
-      if (result) {
-        return result;
-      }
-    }
-  } else {
-    if (data.id === id) return data;
-
-    if (data.children) {
-      for (const child of data.children) {
-        const result = findNodeById(child, id);
-        if (result) {
-          return result;
-        }
-      }
-    }
+export function findNodeById(data: TreeNode, id: string): TreeNode | undefined {
+  let res: TreeNode | undefined;
+  if (data?.id === id) {
+    return data;
   }
-  return undefined;
+  if (data?.children?.length) {
+    data?.children?.every((childNode: TreeNode) => {
+      res = findNodeById(childNode, id);
+      return res === undefined; // break loop if res is found
+    });
+  }
+  return res;
 }
 
 export function addNode(
-  node: TreeData,
+  node: TreeNode,
   { parentId, newFolder }: { parentId: string; newFolder: IFolder },
-): TreeData {
+): TreeNode {
   return modifyNode(node, (node) => {
     if (node.id === parentId) {
       const parentAncestors = [
         ...((node as TreeNodeFolderWrapper).folder?.ancestors || []),
       ];
       const ancestors = arrayUnique([...parentAncestors, node.id]);
-      const newNode: TreeData = {
+      const newNode: TreeNode = {
         ...node,
         children: [
           ...(node.children || []),
@@ -56,9 +44,9 @@ export function arrayUnique<T>(array: T[]): T[] {
 }
 
 export function deleteNode(
-  node: TreeData,
+  node: TreeNode,
   { folders }: { folders: string[] },
-): TreeData {
+): TreeNode {
   return modifyNode(node, (node) => {
     if (folders.includes(node.id)) {
       return undefined;
@@ -69,9 +57,9 @@ export function deleteNode(
 }
 
 export const findParentNode = (
-  parentNode: TreeData,
+  parentNode: TreeNode,
   childId: string,
-): TreeData | undefined => {
+): TreeNode | undefined => {
   if (parentNode.children) {
     for (const child of parentNode.children) {
       if (child.id === childId) {
@@ -86,7 +74,7 @@ export const findParentNode = (
   return undefined;
 };
 
-export function getAncestors(data: TreeData, folderId: string): string[] {
+export function getAncestors(data: TreeNode, folderId: string): string[] {
   const findItem = findNodeById(data, folderId);
   if (findItem?.folder?.ancestors) {
     const nodes = findItem?.folder.ancestors || [];
@@ -98,34 +86,34 @@ export function getAncestors(data: TreeData, folderId: string): string[] {
   }
 }
 
-export function hasChildren(folderId: string, data: TreeData): boolean {
+export function hasChildren(folderId: string, data: TreeNode): boolean {
   if (data.id === folderId && data.children) {
     return data.children.length > 0;
   }
 
   if (data.children) {
-    return data.children.some((child: TreeData) => hasChildren(data.id, child));
+    return data.children.some((child: TreeNode) => hasChildren(data.id, child));
   }
   return false;
 }
 
 export function modifyNode(
-  data: TreeData,
-  callback: (node: TreeData, parent?: TreeData) => TreeData | undefined,
-): TreeData {
+  data: TreeNode,
+  callback: (node: TreeNode, parent?: TreeNode) => TreeNode | undefined,
+): TreeNode {
   // root cannot be undefined
   const root = doModify(data, callback) || data;
   return root;
 }
 
 function doModify(
-  current: TreeData,
-  callback: (node: TreeData, parent?: TreeData) => TreeData | undefined,
-  parent?: TreeData,
-): TreeData | undefined {
+  current: TreeNode,
+  callback: (node: TreeNode, parent?: TreeNode) => TreeNode | undefined,
+  parent?: TreeNode,
+): TreeNode | undefined {
   const result = callback(current, parent);
   if (result?.children?.length) {
-    const children: TreeData[] = [];
+    const children: TreeNode[] = [];
     for (const child of result?.children || []) {
       const res = doModify(child, callback, result);
       if (res) {
@@ -138,9 +126,9 @@ function doModify(
 }
 
 export function moveNode(
-  node: TreeData,
+  node: TreeNode,
   { destinationId, folders }: { destinationId: string; folders: string[] },
-): TreeData {
+): TreeNode {
   return modifyNode(node, (node, parent) => {
     if (destinationId === node.id) {
       const parentAncestors = [
@@ -165,7 +153,7 @@ export function moveNode(
             });
         }
       }
-      const newNode: TreeData = {
+      const newNode: TreeNode = {
         ...node,
         children: newChildren,
       };
@@ -181,12 +169,12 @@ export function moveNode(
 }
 
 export const wrapTreeNode = (
-  node: TreeData,
+  treeNode: TreeNode,
   folders: IFolder[] | undefined,
   parentId: string,
 ) => {
   // const folderIds = folders.map((e) => e.id);
-  return modifyNode(node, (node) => {
+  return modifyNode(treeNode, (node) => {
     // add missing children if needed
     if (node.id === parentId) {
       node.children = folders?.map((e) => new TreeNodeFolderWrapper(e));
@@ -196,9 +184,9 @@ export const wrapTreeNode = (
 };
 
 export function updateNode(
-  node: TreeData,
+  node: TreeNode,
   { folderId, newFolder }: { folderId: string; newFolder: IFolder },
-): TreeData {
+): TreeNode {
   return modifyNode(node, (node) => {
     if (node.id === folderId) {
       return new TreeNodeFolderWrapper(newFolder);
@@ -208,44 +196,7 @@ export function updateNode(
   });
 }
 
-export function findPathById(
-  tree: TreeData | TreeData[],
-  nodeId: string,
-): string[] {
-  let path: string[] = [];
-
-  function traverse(node: TreeData, currentPath: string[]): boolean {
-    if (node.id === nodeId) {
-      path = currentPath.concat(node.id);
-      return true;
-    }
-    if (node.children) {
-      for (const child of node.children) {
-        if (traverse(child, currentPath.concat(node.id))) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  function startTraverse(nodes: TreeData | TreeData[]) {
-    if (Array.isArray(nodes)) {
-      for (const node of nodes) {
-        if (traverse(node, [])) {
-          break;
-        }
-      }
-    } else {
-      traverse(nodes, []);
-    }
-  }
-
-  startTraverse(tree);
-  return path;
-}
-
-export class TreeNodeFolderWrapper implements TreeData {
+export class TreeNodeFolderWrapper implements TreeNode {
   constructor(public readonly folder: IFolder) {
     this.id = folder.id;
     this.name = folder.name;
@@ -258,5 +209,5 @@ export class TreeNodeFolderWrapper implements TreeData {
 
   public section = false;
 
-  public readonly children: TreeData[] = [];
+  public readonly children: TreeNode[] = [];
 }

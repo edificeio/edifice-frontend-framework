@@ -192,11 +192,6 @@
     }
   }
 
-  &.drag-focus {
-    border: 1px solid var(--#{$prefix}secondary);
-    border-radius: $border-radius;
-  }
-
   &.is-selected {
     border-color: var(--#{$prefix}card-selected);
 

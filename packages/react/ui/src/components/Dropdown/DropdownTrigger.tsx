@@ -75,12 +75,7 @@ const DropdownTrigger = forwardRef(
     };
 
     return (
-      <button
-        ref={forwardRef}
-        type="button"
-        disabled={disabled}
-        {...mergedProps}
-      >
+      <button ref={forwardRef} disabled={disabled} {...mergedProps}>
         {icon}
         {label}
         {badgeContent ? (

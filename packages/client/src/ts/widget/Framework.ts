@@ -36,16 +36,16 @@ const secondLevelWidgets: Array<WidgetName> = [
 // Default position for widgets.
 const defaultWidgetPosition: { [name in WidgetName]: WidgetPosition } = {
   "last-infos-widget": WIDGET_POSITION.LEFT, // Actualités
-  "birthday": WIDGET_POSITION.LEFT,
+  birthday: WIDGET_POSITION.LEFT,
   "calendar-widget": WIDGET_POSITION.RIGHT, // Calendrier
   "carnet-de-bord": WIDGET_POSITION.LEFT,
   "record-me": WIDGET_POSITION.RIGHT, // Dictaphone
-  "mood": WIDGET_POSITION.LEFT,
+  mood: WIDGET_POSITION.LEFT,
   "my-apps": WIDGET_POSITION.RIGHT,
-  "notes": WIDGET_POSITION.RIGHT,
+  notes: WIDGET_POSITION.RIGHT,
   "rss-widget": WIDGET_POSITION.LEFT,
   "bookmark-widget": WIDGET_POSITION.RIGHT,
-  "qwant": WIDGET_POSITION.RIGHT,
+  qwant: WIDGET_POSITION.RIGHT,
   "qwant-junior": WIDGET_POSITION.LEFT,
   "agenda-widget": WIDGET_POSITION.LEFT, // Agenda
   "cursus-widget": WIDGET_POSITION.LEFT,
@@ -61,7 +61,7 @@ const defaultWidgetOrder: { [name in WidgetName]: number } = {
   "my-apps": 10,
   "record-me": 15,
   "last-infos-widget": 20, // Actualités
-  "qwant": 30,
+  qwant: 30,
   "qwant-junior": 30,
   "universalis-widget": 35,
   "agenda-widget": 40, // Agenda
@@ -71,10 +71,10 @@ const defaultWidgetOrder: { [name in WidgetName]: number } = {
   "cursus-widget": 80, // Dictaphone
   "briefme-widget": 90,
   "rss-widget": 100,
-  "mood": 110,
-  "birthday": 120,
+  mood: 110,
+  birthday: 120,
   "calendar-widget": 130, // Calendrier
-  "notes": 140,
+  notes: 140,
 };
 
 //-------------------------------------

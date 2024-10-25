@@ -3,9 +3,9 @@ import { NodeSelection } from "@tiptap/pm/state";
 
 /* Our own model of a link in a rich document. */
 export type LinkerAttributes = {
-  "href": string | null;
-  "target": "_blank" | null;
-  "title": string | null;
+  href: string | null;
+  target: "_blank" | null;
+  title: string | null;
   "data-id": string | null;
   "data-app-prefix": string | null;
 };
@@ -52,9 +52,9 @@ export const Linker = Node.create({
     return {
       openOnClick: true,
       HTMLAttributes: {
-        "target": null,
-        "title": null,
-        "class": null,
+        target: null,
+        title: null,
+        class: null,
         "data-id": null,
         "data-app-prefix": null,
       },
@@ -64,19 +64,19 @@ export const Linker = Node.create({
 
   addAttributes() {
     return {
-      "href": {
+      href: {
         default: null,
       },
-      "class": {
+      class: {
         default: this.options.HTMLAttributes.class,
       },
-      "target": {
+      target: {
         default: this.options.HTMLAttributes.target,
         // Sanitize target value
         parseHTML: (element) =>
           element.getAttribute("target") !== "_blank" ? null : "_blank",
       },
-      "title": {
+      title: {
         default: this.options.HTMLAttributes.title,
       },
       "data-id": {

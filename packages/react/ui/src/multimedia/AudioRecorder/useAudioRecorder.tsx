@@ -423,12 +423,12 @@ export default function useAudioRecorder(
       name: "record",
       visibility: recordState === "RECORDING" ? "hide" : "show",
       props: {
-        "icon": <Record />,
-        "color": "danger",
-        "disabled":
+        icon: <Record />,
+        color: "danger",
+        disabled:
           (recordState !== "IDLE" && recordState !== "PAUSED") ||
           recordTime >= maxDuration,
-        "onClick": handleRecord,
+        onClick: handleRecord,
         "aria-label": recordText,
       },
       tooltip: recordText,
@@ -438,10 +438,10 @@ export default function useAudioRecorder(
       name: "recordPause",
       visibility: recordState === "RECORDING" ? "show" : "hide",
       props: {
-        "icon": <RecordPause />,
-        "color": "danger",
-        "disabled": recordState !== "RECORDING",
-        "onClick": handleRecordPause,
+        icon: <RecordPause />,
+        color: "danger",
+        disabled: recordState !== "RECORDING",
+        onClick: handleRecordPause,
         "aria-label": t("bbm.audio.record.pause"),
       },
       tooltip: t("bbm.audio.record.pause"),
@@ -461,12 +461,12 @@ export default function useAudioRecorder(
       name: "play",
       visibility: isEncoding || playState === "PLAYING" ? "hide" : "show",
       props: {
-        "icon": <PlayFilled />,
-        "disabled":
+        icon: <PlayFilled />,
+        disabled:
           recordState !== "RECORDED" &&
           recordState !== "PAUSED" &&
           recordState !== "SAVED",
-        "onClick": handlePlay,
+        onClick: handlePlay,
         "aria-label": t("bbm.audio.play.start"),
       },
       tooltip: t("bbm.audio.play.start"),
@@ -476,8 +476,8 @@ export default function useAudioRecorder(
       name: "playPause",
       visibility: !isEncoding && playState === "PLAYING" ? "show" : "hide",
       props: {
-        "icon": <Pause />,
-        "onClick": handlePlayPause,
+        icon: <Pause />,
+        onClick: handlePlayPause,
         "aria-label": t("bbm.audio.play.pause"),
       },
       tooltip: t("bbm.audio.play.pause"),
@@ -486,9 +486,9 @@ export default function useAudioRecorder(
       type: "icon",
       name: "stop",
       props: {
-        "icon": <Restart />,
-        "disabled": playState !== "PLAYING" && playState !== "PAUSED",
-        "onClick": handlePlayStop,
+        icon: <Restart />,
+        disabled: playState !== "PLAYING" && playState !== "PAUSED",
+        onClick: handlePlayStop,
         "aria-label": t("bbm.audio.play.stop"),
       },
       tooltip: t("bbm.audio.play.stop"),
@@ -498,13 +498,13 @@ export default function useAudioRecorder(
       type: "icon",
       name: "reset",
       props: {
-        "icon": <Refresh />,
-        "disabled":
+        icon: <Refresh />,
+        disabled:
           recordState !== "RECORDED" &&
           recordState !== "PAUSED" &&
           playState !== "PLAYING" &&
           playState !== "PAUSED",
-        "onClick": handleReset,
+        onClick: handleReset,
         "aria-label": t("bbm.audio.record.reset"),
       },
       tooltip: t("bbm.audio.record.reset"),
@@ -514,15 +514,15 @@ export default function useAudioRecorder(
       name: "save",
       visibility: hideSaveAction ? "hide" : "show",
       props: {
-        "icon": <Save />,
-        "disabled":
+        icon: <Save />,
+        disabled:
           (recordState !== "RECORDED" &&
             recordState !== "PAUSED" &&
             playState !== "PLAYING" &&
             playState !== "PAUSED") ||
           recordState === "SAVED" ||
           !audioNameRef.current?.value,
-        "onClick": handleSave,
+        onClick: handleSave,
         "aria-label": t("bbm.audio.record.save"),
       },
       tooltip: t("bbm.audio.record.save"),

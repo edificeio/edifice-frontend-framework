@@ -85,10 +85,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Undo />,
+          icon: <Undo />,
           "aria-label": t("editor.option.undo"),
-          "onClick": () => editor?.chain().focus().undo().run(),
-          "disabled": !editor?.can().undo(),
+          onClick: () => editor?.chain().focus().undo().run(),
+          disabled: !editor?.can().undo(),
         },
         name: "undo",
         tooltip: t("editor.option.undo"),
@@ -98,10 +98,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Redo />,
+          icon: <Redo />,
           "aria-label": t("editor.option.redo"),
-          "onClick": () => editor?.chain().focus().redo().run(),
-          "disabled": !editor?.can().redo(),
+          onClick: () => editor?.chain().focus().redo().run(),
+          disabled: !editor?.can().redo(),
         },
         name: "redo",
         tooltip: t("editor.option.redo"),
@@ -116,10 +116,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Landscape />,
-          "className": "bg-green-200",
+          icon: <Landscape />,
+          className: "bg-green-200",
           "aria-label": t("tiptap.toolbar.picture"),
-          "onClick": () => mediaLibraryRef.current?.show("image"),
+          onClick: () => mediaLibraryRef.current?.show("image"),
         },
         name: "image",
         tooltip: t("tiptap.toolbar.picture"),
@@ -128,10 +128,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <RecordVideo />,
-          "className": "bg-purple-200",
+          icon: <RecordVideo />,
+          className: "bg-purple-200",
           "aria-label": t("tiptap.toolbar.video"),
-          "onClick": () => mediaLibraryRef.current?.show("video"),
+          onClick: () => mediaLibraryRef.current?.show("video"),
         },
         name: "video",
         tooltip: t("tiptap.toolbar.video"),
@@ -140,10 +140,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Mic />,
-          "className": "bg-red-200",
+          icon: <Mic />,
+          className: "bg-red-200",
           "aria-label": t("tiptap.toolbar.audio"),
-          "onClick": () => mediaLibraryRef.current?.show("audio"),
+          onClick: () => mediaLibraryRef.current?.show("audio"),
         },
         name: "audio",
         tooltip: t("tiptap.toolbar.audio"),
@@ -152,10 +152,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Paperclip />,
-          "className": "bg-yellow-200",
+          icon: <Paperclip />,
+          className: "bg-yellow-200",
           "aria-label": t("tiptap.toolbar.attachment"),
-          "onClick": () => mediaLibraryRef.current?.show("attachment"),
+          onClick: () => mediaLibraryRef.current?.show("attachment"),
         },
         name: "attachment",
         tooltip: t("tiptap.toolbar.attachment"),
@@ -168,10 +168,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <SpeechToText />,
+          icon: <SpeechToText />,
           "aria-label": t("tiptap.toolbar.stt"),
-          "className": speechRecognition ? "is-selected" : "",
-          "onClick": () => toggleSpeechRecognition(),
+          className: speechRecognition ? "is-selected" : "",
+          onClick: () => toggleSpeechRecognition(),
         },
         visibility: canRecognizeSpeech ? "show" : "hide",
         name: "speechtotext",
@@ -263,11 +263,11 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <TextBold />,
+          icon: <TextBold />,
           "aria-label": t("tiptap.toolbar.bold"),
-          "className": editor?.isActive("bold") ? "is-selected" : "",
-          "onClick": () => editor?.chain().focus().toggleBold().run(),
-          "disabled": editor?.isActive("heading"),
+          className: editor?.isActive("bold") ? "is-selected" : "",
+          onClick: () => editor?.chain().focus().toggleBold().run(),
+          disabled: editor?.isActive("heading"),
         },
         name: "bold",
         visibility: showIf(hasMark("bold", editor)),
@@ -277,10 +277,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <TextItalic />,
+          icon: <TextItalic />,
           "aria-label": t("tiptap.toolbar.italic"),
-          "className": editor?.isActive("italic") ? "is-selected" : "",
-          "onClick": () => editor?.chain().focus().toggleItalic().run(),
+          className: editor?.isActive("italic") ? "is-selected" : "",
+          onClick: () => editor?.chain().focus().toggleItalic().run(),
         },
         name: "italic",
         visibility: showIf(hasMark("italic", editor)),
@@ -290,10 +290,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <TextUnderline />,
+          icon: <TextUnderline />,
           "aria-label": t("tiptap.toolbar.underline"),
-          "className": editor?.isActive("underline") ? "is-selected" : "",
-          "onClick": () => editor?.chain().focus().toggleUnderline().run(),
+          className: editor?.isActive("underline") ? "is-selected" : "",
+          onClick: () => editor?.chain().focus().toggleUnderline().run(),
         },
         name: "underline",
         visibility: showIf(hasMark("underline", editor)),
@@ -327,10 +327,10 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
       {
         type: "icon",
         props: {
-          "icon": <Link />,
+          icon: <Link />,
           "aria-label": t("tiptap.toolbar.linker"),
-          "className": editor?.isActive("linker") ? "is-selected" : "",
-          "onClick": () => showLinkModal(),
+          className: editor?.isActive("linker") ? "is-selected" : "",
+          onClick: () => showLinkModal(),
         },
         name: "linker",
         tooltip: t("tiptap.toolbar.linker"),

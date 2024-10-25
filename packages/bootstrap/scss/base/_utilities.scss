@@ -9,12 +9,6 @@
 }
 
 @each $value, $color in $extra-colors {
-  .text-#{$value} {
-    color: var(--#{$prefix}#{$value}) !important;
-  }
-}
-
-@each $value, $color in $extra-colors {
   .bg-#{$value} {
     background-color: var(--#{$prefix}#{$value}) !important;
   }
@@ -24,12 +18,6 @@
   .text-bg-#{$value} {
     color: $white !important;
     background-color: var(--#{$prefix}#{$value}) !important;
-  }
-}
-
-@each $value, $color in $extend-theme-colors {
-  .text-#{$value} {
-    color: var(--#{$prefix}#{$value}) !important;
   }
 }
 

@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { Meta, StoryObj } from "@storybook/react";
 import useDropzone from "./useDropzone";
+import { Meta, StoryObj } from "@storybook/react";
+import docs from "./useDropzone.mdx";
 
 const meta: Meta<typeof useDropzone> = {
   title: "Hooks/useDropzone",
+  parameters: {
+    docs: { page: docs },
+  },
 };
 
 export default meta;

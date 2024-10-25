@@ -5,7 +5,6 @@ export * from "./useBookmark";
 export * from "./useConf";
 export * from "./useConversation";
 export * from "./useDate";
-export * from "./useDirectory";
 export * from "./useHasWorkflow";
 export * from "./useHeader";
 export * from "./useHttpErrorToast";

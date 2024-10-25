@@ -1,9 +1,13 @@
-import { Meta, StoryObj } from "@storybook/react";
-import Button from "../../components/Button/Button";
 import useScrollToTop from "./useScrollToTop";
+import { Meta, StoryObj } from "@storybook/react";
+import docs from "./useScrollToTop.mdx";
+import Button from "../../components/Button/Button";
 
 const meta: Meta<typeof useScrollToTop> = {
   title: "Hooks/useScrollToTop",
+  parameters: {
+    docs: { page: docs },
+  },
 };
 
 export default meta;

@@ -109,7 +109,7 @@ const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
   const modalClasses = clsx("modal fade", {
     "show d-block": isOpen,
     "modal-scrollable": scrollable,
-    "viewport": viewport,
+    viewport: viewport,
     [`modal-${size}`]: size,
   });
 

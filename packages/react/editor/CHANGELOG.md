@@ -3,29 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.5.22-develop-pedago.15](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.14...v1.5.22-develop-pedago.15) (2024-10-25)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.14](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.13...v1.5.22-develop-pedago.14) (2024-10-24)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.13](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.12...v1.5.22-develop-pedago.13) (2024-10-24)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
-
-### Bug Fixes
-
-- **treeview:** #WB2-76, align node with invisible icon ([4c99f1a](https://github.com/edificeio/edifice-ui/commit/4c99f1a841ab551b16dba3dd087ff394fe3c33ad)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
-
-### Features
-
-- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([5106bbc](https://github.com/edificeio/edifice-ui/commit/5106bbc22bfcefdae5b5400086e264aa28df1ddc))
-- **ui:** #WB2-1651, add tooltip component to attachment component ([48ac691](https://github.com/edificeio/edifice-ui/commit/48ac6915ccc5570a1f1682800874d8473e3ee6e1)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
-
 ## [1.5.22](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop.0...v1.5.22) (2024-10-23)
 
 **Note:** Version bump only for package @edifice-ui/editor
@@ -33,58 +10,6 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ## [1.5.22-develop.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop.0) (2024-10-22)
 
 **Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.11](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.10...v1.5.22-develop-pedago.11) (2024-10-18)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.10](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.9...v1.5.22-develop-pedago.10) (2024-10-16)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.9](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.8...v1.5.22-develop-pedago.9) (2024-10-16)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.8](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.7...v1.5.22-develop-pedago.8) (2024-10-16)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.7](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.6...v1.5.22-develop-pedago.7) (2024-10-15)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.6](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.5...v1.5.22-develop-pedago.6) (2024-10-15)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.5](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.4...v1.5.22-develop-pedago.5) (2024-10-15)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.4](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.3...v1.5.22-develop-pedago.4) (2024-10-14)
-
-### Features
-
-- **ui:** #WB2-1651, add tooltip component to attachment component ([f4cf4b4](https://github.com/edificeio/edifice-ui/commit/f4cf4b4df63f0e2e85d210a1336705a8ece40fbb)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
-
-## [1.5.22-develop-pedago.3](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.2...v1.5.22-develop-pedago.3) (2024-10-08)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.2](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.1...v1.5.22-develop-pedago.2) (2024-10-08)
-
-**Note:** Version bump only for package @edifice-ui/editor
-
-## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
-
-### Bug Fixes
-
-- **treeview:** #WB2-76, align node with invisible icon ([dd603f6](https://github.com/edificeio/edifice-ui/commit/dd603f6f1cef30806f42240295f05cde24ac097a)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
-
-### Features
-
-- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
 
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 

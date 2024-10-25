@@ -82,12 +82,12 @@ export class DataService implements IDataService {
   ) {
     const eventData = this.addUserInfos({
       "event-type": "VIDEO_SAVE",
-      "module": "video",
+      module: "video",
       video_id,
       browser,
-      "duration": Math.round(duration),
-      "weight": weight,
-      "source": isCaptation ? "CAPTURED" : "UPLOADED",
+      duration: Math.round(duration),
+      weight: weight,
+      source: isCaptation ? "CAPTURED" : "UPLOADED",
       url,
     });
     if (this.app) eventData["override-module"] = this.app;
@@ -105,10 +105,10 @@ export class DataService implements IDataService {
   ) {
     const eventData = this.addUserInfos({
       "event-type": "VIDEO_READ",
-      "module": "video",
+      module: "video",
       video_id,
       browser,
-      "source": isCaptation ? "CAPTURED" : "UPLOADED",
+      source: isCaptation ? "CAPTURED" : "UPLOADED",
       url,
     });
     if (this.app) eventData["override-module"] = this.app;
@@ -120,7 +120,7 @@ export class DataService implements IDataService {
   public trackSpeechAndText(direction: "STT" | "TTS") {
     const eventData = this.addUserInfos({
       "event-type": "SPEECH_AND_TEXT",
-      "function": direction,
+      function: direction,
     });
     if (this.app) eventData["module"] = this.app;
 

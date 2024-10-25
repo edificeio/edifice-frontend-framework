@@ -29,14 +29,14 @@ export interface WorkspaceElement {
   hiddenBlob?: Blob;
   metadata?: {
     "content-type"?: string;
-    "role"?: string;
-    "extension"?: string;
-    "filename"?: string;
-    "size"?: number;
-    "captation"?: boolean;
-    "duration"?: number;
-    "width"?: number;
-    "height"?: number;
+    role?: string;
+    extension?: string;
+    filename?: string;
+    size?: number;
+    captation?: boolean;
+    duration?: number;
+    width?: number;
+    height?: number;
   };
   link?: string;
   icon?: string;

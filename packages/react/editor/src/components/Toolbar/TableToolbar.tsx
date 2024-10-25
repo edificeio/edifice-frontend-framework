@@ -128,11 +128,11 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
                 name: "mergeorsplit",
                 // isEnable: typeof isSpan !== "undefined",
                 props: {
-                  "icon": isSpan ? <SplitCells /> : <MergeCells />,
+                  icon: isSpan ? <SplitCells /> : <MergeCells />,
                   "aria-label": isSpan
                     ? t("tiptap.table.toolbar.split")
                     : t("tiptap.table.toolbar.merge"),
-                  "onClick": () => editor?.chain().focus().mergeOrSplit().run(),
+                  onClick: () => editor?.chain().focus().mergeOrSplit().run(),
                 },
                 tooltip: isSpan
                   ? t("tiptap.table.toolbar.split")

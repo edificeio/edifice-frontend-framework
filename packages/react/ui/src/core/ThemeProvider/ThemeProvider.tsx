@@ -13,7 +13,6 @@ import { useConf } from "../useConf";
 
 export interface ThemeProps {
   children: ReactNode;
-  defaultTheme?: "one" | "neo" | "none";
 }
 
 export interface ThemeContextProps {
@@ -22,7 +21,7 @@ export interface ThemeContextProps {
 
 export const ThemeContext = createContext<ThemeContextProps | null>(null!);
 
-export function ThemeProvider({ defaultTheme, children }: ThemeProps) {
+export function ThemeProvider({ children }: ThemeProps) {
   const { appCode } = useOdeClient();
 
   const confQuery = useConf({ appCode });
@@ -50,7 +49,7 @@ export function ThemeProvider({ defaultTheme, children }: ThemeProps) {
       },
       {
         data: "data-product",
-        value: defaultTheme === "none" ? "" : defaultTheme ?? dataProduct,
+        value: dataProduct,
       },
     ];
 
@@ -59,7 +58,7 @@ export function ThemeProvider({ defaultTheme, children }: ThemeProps) {
         .querySelector("html")
         ?.setAttribute(attribute.data, attribute.value as string);
     });
-  }, [confQuery?.data, defaultTheme]);
+  }, [confQuery?.data]);
 
   const values = useMemo(
     () => ({

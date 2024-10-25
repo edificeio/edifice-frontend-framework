@@ -3,24 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.5.22-develop-pedago.13](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.12...v1.5.22-develop-pedago.13) (2024-10-24)
-
-**Note:** Version bump only for package @edifice-ui/icons
-
-## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
-
-### Features
-
-- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([d94bc7a](https://github.com/edificeio/edifice-ui/commit/d94bc7abbbd7950d53aa264b86a72b6fd170db8a)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
-- **icons:** #WB2-1874, add icon forgoing ([ff0b717](https://github.com/edificeio/edifice-ui/commit/ff0b7177af8fec384b58211d96e4ab6d3d0c68dc)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
-
-## [1.5.22-develop-pedago.1](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-pedago.1) (2024-10-07)
-
-### Features
-
-- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([68aeac7](https://github.com/edificeio/edifice-ui/commit/68aeac717f4659e11db23882d22f7a75cf590ff3)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
-- **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/edificeio/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
-
 ## [1.5.21](https://github.com/edificeio/edifice-ui/compare/v1.5.21-develop.0...v1.5.21) (2024-10-04)
 
 **Note:** Version bump only for package @edifice-ui/icons

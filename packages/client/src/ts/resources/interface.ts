@@ -285,20 +285,20 @@ export interface CreateParameters extends IActionParameters {
 }
 /** Response when creating resource */
 export interface CreateResult {
-  "entId": string;
-  "thumbnail": string | undefined;
+  entId: string;
+  thumbnail: string | undefined;
 
-  "_id"?: string;
-  "title"?: string;
-  "description"?: string;
-  "visibility"?: string;
-  "trashed"?: boolean;
+  _id?: string;
+  title?: string;
+  description?: string;
+  visibility?: string;
+  trashed?: boolean;
   "publish-type"?: string;
   "comment-type"?: string;
-  "created"?: { $date: string };
-  "modified"?: { $date: string };
-  "author"?: { userId: string; username: string; login: string };
-  "shared"?: Array<string>;
+  created?: { $date: string };
+  modified?: { $date: string };
+  author?: { userId: string; username: string; login: string };
+  shared?: Array<string>;
 }
 
 //--------------------------------------- COPY

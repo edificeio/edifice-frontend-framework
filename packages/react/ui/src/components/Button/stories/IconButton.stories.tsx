@@ -23,9 +23,9 @@ const meta: Meta<typeof IconButton> = {
   },
   args: {
     "aria-label": "",
-    "color": "primary",
-    "variant": "filled",
-    "disabled": false,
+    color: "primary",
+    variant: "filled",
+    disabled: false,
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
@@ -35,22 +35,22 @@ export default meta;
 export const Base = {
   args: {
     "aria-label": "Add User",
-    "color": "primary",
-    "variant": "filled",
-    "type": "button",
-    "disabled": false,
-    "icon": <AddUser />,
+    color: "primary",
+    variant: "filled",
+    type: "button",
+    disabled: false,
+    icon: <AddUser />,
   },
 };
 
 export const IconWithAriaLabel = {
   args: {
     "aria-label": "Add User",
-    "color": "primary",
-    "variant": "filled",
-    "type": "button",
-    "disabled": false,
-    "icon": <AddUser title="Add User" />,
+    color: "primary",
+    variant: "filled",
+    type: "button",
+    disabled: false,
+    icon: <AddUser title="Add User" />,
   },
 
   parameters: {
@@ -66,10 +66,10 @@ export const IconWithAriaLabel = {
 export const LoadingIconButton = {
   args: {
     "aria-label": "Loading",
-    "color": "primary",
-    "variant": "filled",
-    "type": "button",
-    "isLoading": true,
+    color: "primary",
+    variant: "filled",
+    type: "button",
+    isLoading: true,
   },
 
   parameters: {
@@ -85,11 +85,11 @@ export const LoadingIconButton = {
 export const LoadingIconButtonWithCustomIcon = {
   args: {
     "aria-label": "Loading",
-    "color": "primary",
-    "variant": "filled",
-    "type": "button",
-    "isLoading": true,
-    "loadingIcon": <Hourglass title="Loading" />,
+    color: "primary",
+    variant: "filled",
+    type: "button",
+    isLoading: true,
+    loadingIcon: <Hourglass title="Loading" />,
   },
 
   parameters: {
@@ -105,10 +105,10 @@ export const LoadingIconButtonWithCustomIcon = {
 export const DisabledIconButton = {
   args: {
     "aria-label": "Add User",
-    "color": "primary",
-    "variant": "filled",
-    "type": "button",
-    "disabled": true,
-    "icon": <Block title="Add User" />,
+    color: "primary",
+    variant: "filled",
+    type: "button",
+    disabled: true,
+    icon: <Block title="Add User" />,
   },
 };

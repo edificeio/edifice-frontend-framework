@@ -1,20 +1,13 @@
 import { useCallback, useReducer } from "react";
 
-import {
-  DocumentHelper,
-  ID,
-  Role,
-  WorkspaceElement,
-  WorkspaceSearchFilter,
-  odeServices,
-} from "edifice-ts-client";
+import { DocumentHelper, Role, odeServices } from "edifice-ts-client";
+import { ID, WorkspaceElement, WorkspaceSearchFilter } from "edifice-ts-client";
 
-import { TreeData } from "../../types";
-import { useMockedData } from "../../utils";
-import { findNodeById } from "../../utils/treeview";
+import { TreeNode } from "../../components";
+import { findTreeNode, useMockedData } from "../../utils";
 import { useHasWorkflow } from "../useHasWorkflow";
 
-export type FolderNode = TreeData & { files?: WorkspaceElement[] };
+export type FolderNode = TreeNode & { files?: WorkspaceElement[] };
 
 export default function useWorkspaceSearch(
   rootId: string,
@@ -48,7 +41,10 @@ export default function useWorkspaceSearch(
   ) {
     switch (action.type) {
       case "update": {
-        const node = findNodeById(state, action.folderId);
+        const node = findTreeNode(
+          state,
+          (child) => child.id === action.folderId,
+        );
         if (node) {
           node.children = action.subfolders.map((f) => ({
             id: f._id || "",

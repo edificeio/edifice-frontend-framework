@@ -16,7 +16,7 @@ import { Button, ButtonProps, IconButton, IconButtonProps } from "../Button";
 import { Dropdown, DropdownProps } from "../Dropdown";
 import { Placement, Tooltip } from "../Tooltip";
 
-export interface ToolbarCommonItem {
+interface Item {
   /** Object type */
   type: string;
   /** Items should be named, except for dividers */
@@ -25,7 +25,7 @@ export interface ToolbarCommonItem {
   visibility?: "show" | "hide";
 }
 
-export interface ToolbarTooltipProps {
+interface ToolbarTooltip {
   tooltip?:
     | string
     | {
@@ -34,36 +34,26 @@ export interface ToolbarTooltipProps {
       };
 }
 
-export interface ToolbarButtonItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+interface ButtonItem extends Item, ToolbarTooltip {
   type: "button";
   name: string;
   props: ButtonProps;
 }
-
-export interface ToolbarIconButtonItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+interface IconButtonItem extends Item, ToolbarTooltip {
   type: "icon";
   name: string;
   props: IconButtonProps;
 }
-
-export interface ToolbarDropdownItem extends ToolbarCommonItem {
+interface DropdownItem extends Item {
   type: "dropdown";
   props: DropdownProps;
   overflow?: boolean;
 }
-
-export interface ToolbarPrimaryItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+interface PrimaryItem extends Item, ToolbarTooltip {
   type: "primary";
   props: ButtonProps;
 }
-
-export interface ToolbarDividerItem extends ToolbarCommonItem {
+interface DividerItem extends Item {
   type: "divider";
 }
 
@@ -71,11 +61,11 @@ export type ToolbarRef = HTMLDivElement;
 export type ToolbarVariant = "default" | "no-shadow";
 export type ToolbarAlign = "left" | "center" | "space" | "right";
 export type ToolbarItem =
-  | ToolbarButtonItem
-  | ToolbarIconButtonItem
-  | ToolbarDropdownItem
-  | ToolbarPrimaryItem
-  | ToolbarDividerItem;
+  | ButtonItem
+  | IconButtonItem
+  | DropdownItem
+  | PrimaryItem
+  | DividerItem;
 
 export interface ToolbarProps extends React.ComponentPropsWithRef<"div"> {
   /**
@@ -108,7 +98,7 @@ export interface ToolbarProps extends React.ComponentPropsWithRef<"div"> {
   children?: ReactNode;
 }
 
-export const Toolbar = forwardRef(
+const Toolbar = forwardRef(
   (
     {
       items,
@@ -133,7 +123,7 @@ export const Toolbar = forwardRef(
     const divToolbarRef = useRef<HTMLDivElement>();
 
     const classes = clsx("toolbar z-1000 bg-white", className, {
-      "default": variant === "default",
+      default: variant === "default",
       "no-shadow": variant === "no-shadow",
       "d-flex": isBlock,
       "d-inline-flex": !isBlock,
@@ -212,7 +202,7 @@ export const Toolbar = forwardRef(
     };
 
     const renderTooltipMessage = (
-      item: Exclude<ToolbarItem, ToolbarDropdownItem | ToolbarDividerItem>,
+      item: Exclude<ToolbarItem, DropdownItem | DividerItem>,
     ) => {
       return typeof item.tooltip === "string"
         ? item.tooltip
@@ -220,7 +210,7 @@ export const Toolbar = forwardRef(
     };
 
     const renderTooltipPosition = (
-      item: Exclude<ToolbarItem, ToolbarDropdownItem | ToolbarDividerItem>,
+      item: Exclude<ToolbarItem, DropdownItem | DividerItem>,
     ) => {
       return typeof item.tooltip !== "string" ? item.tooltip?.position : "top";
     };

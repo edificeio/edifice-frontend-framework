@@ -13,7 +13,7 @@ type Data = {
   name: string;
   metadata: {
     "content-type"?: string;
-    "size": number;
+    size: number;
   };
   file: ID;
   thumbnails: {

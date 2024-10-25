@@ -1,7 +1,6 @@
 import { ComponentPropsWithRef, forwardRef, ReactNode, Ref } from "react";
 
 import { Paperclip } from "@edifice-ui/icons";
-import { Tooltip } from "..";
 
 export interface AttachmentProps extends ComponentPropsWithRef<"div"> {
   /**
@@ -23,13 +22,8 @@ const Attachment = forwardRef(
   ) => {
     return (
       <div ref={ref} className="attachment px-12 py-8" {...restProps}>
-        <Tooltip
-          message={name}
-          className="filename text-truncate d-flex align-items-center gap-8"
-        >
-          <Paperclip height={22} width={22} />
-          <div className="filename text-truncate">{name}</div>
-        </Tooltip>
+        <Paperclip height={22} width={22} />
+        <div className="filename text-truncate">{name}</div>
         {options && <div className="options ps-12">{options}</div>}
       </div>
     );

@@ -80,7 +80,7 @@ export const Menu = ({
   const childProps = useMemo(
     () => ({
       "data-menubar-menuitem": "",
-      "role": "menuitem",
+      role: "menuitem",
     }),
     [],
   );
