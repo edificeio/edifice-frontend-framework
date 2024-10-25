@@ -1,15 +1,10 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "version": "1.5.22",
+  "version": "1.5.23-hotfix-check-user-rights.0",
   "npmClient": "pnpm",
   "command": {
     "version": {
-      "allowBranch": [
-        "main",
-        "develop",
-        "develop*",
-        "hotfix/*"
-      ],
+      "allowBranch": ["main", "develop", "develop*", "hotfix/*"],
       "conventionalCommits": true,
       "message": "chore: version & publish %s"
     }
