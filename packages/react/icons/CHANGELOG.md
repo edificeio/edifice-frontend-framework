@@ -3,15 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-<<<<<<< HEAD
+# [1.6.0-develop.0](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.15...v1.6.0-develop.0) (2024-10-25)
+
 ## [1.5.23](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23) (2024-10-31)
-=======
+
+**Note:** Version bump only for package @edifice-ui/icons
+
 ## [1.5.22-develop-pedago.13](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-pedago.12...v1.5.22-develop-pedago.13) (2024-10-24)
 
 **Note:** Version bump only for package @edifice-ui/icons
 
 ## [1.5.22-develop-pedago.12](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.22-develop-pedago.12) (2024-10-23)
->>>>>>> 67d50526 (chore: version & publish v1.5.22-develop-pedago.13)
+
+> > > > > > > 67d50526 (chore: version & publish v1.5.22-develop-pedago.13)
 
 **Note:** Version bump only for package @edifice-ui/icons
 
