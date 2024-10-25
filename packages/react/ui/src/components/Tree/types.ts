@@ -7,6 +7,7 @@ export type TreeItem = {
   position?: number;
   section?: boolean;
   children?: TreeItem[];
+  isVisible?: boolean;
   [index: string]: any;
 };
 
