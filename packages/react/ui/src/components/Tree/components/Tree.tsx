@@ -1,9 +1,9 @@
 import { Folder, RafterRight } from "@edifice-ui/icons";
 import clsx from "clsx";
-import { forwardRef, Ref } from "react";
+import { Ref, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
-import { TreeNodeProps, TreeProps } from "./types";
-import { useTreeView } from "./hooks/useTreeView";
+import { useTreeView } from "../hooks/useTreeView";
+import { TreeNodeProps, TreeProps } from "../types";
 
 const Tree = ({
   nodes,

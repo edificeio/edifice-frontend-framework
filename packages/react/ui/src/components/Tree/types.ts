@@ -2,12 +2,29 @@ import { UniqueIdentifier } from "@dnd-kit/core";
 import { ComponentPropsWithRef } from "react";
 
 export type TreeItem = {
+  /**
+   * Node ID
+   */
   id: string;
+  /**
+   * The name of the tree item.
+   */
   name: string;
+  /**
+   * The position of the tree item. Optional.
+   */
   position?: number;
+  /**
+   * Indicates if the tree item is a section. Optional.
+   */
   section?: boolean;
+  /**
+   * An array of child tree items. Optional.
+   */
   children?: TreeItem[];
-  isVisible?: boolean;
+  /**
+   * Additional properties that can be added to the tree item.
+   */
   [index: string]: any;
 };
 
@@ -57,6 +74,7 @@ export interface DndTreeProps extends TreeProps {
     isOver: boolean;
     overId: string | undefined;
     isTreeview: boolean;
+    canMove?: boolean;
   };
 }
 

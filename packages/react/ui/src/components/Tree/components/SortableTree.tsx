@@ -8,17 +8,17 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Folder, RafterRight } from "@edifice-ui/icons";
 import clsx from "clsx";
-import { CSSProperties, forwardRef, Ref } from "react";
+import { CSSProperties, Ref, forwardRef } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { useTreeSortable } from "../hooks/useTreeSortable";
+import { useTreeView } from "../hooks/useTreeView";
 import {
   FlattenedItem,
   SortableTreeNodeProps,
   SortableTreeProps,
   TreeItem,
-} from "./types";
-import { useTreeView } from "./hooks/useTreeView";
-import { useTreeSortable } from "./hooks/useTreeSortable";
+} from "../types";
 
 const SortableTree = ({
   nodes,

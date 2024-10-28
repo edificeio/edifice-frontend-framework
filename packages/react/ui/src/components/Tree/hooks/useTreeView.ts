@@ -1,68 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { findNodeById, findPathById } from "../../../utils/tree";
 import { TreeItem } from "../types";
-
-export function findPathById(
-  tree: TreeItem | TreeItem[],
-  nodeId: string,
-): string[] {
-  let path: string[] = [];
-
-  function traverse(node: TreeItem, currentPath: string[]): boolean {
-    if (node.id === nodeId) {
-      path = currentPath.concat(node.id);
-      return true;
-    }
-    if (node.children) {
-      for (const child of node.children) {
-        if (traverse(child, currentPath.concat(node.id))) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  function startTraverse(nodes: TreeItem | TreeItem[]) {
-    if (Array.isArray(nodes)) {
-      for (const node of nodes) {
-        if (traverse(node, [])) {
-          break;
-        }
-      }
-    } else {
-      traverse(nodes, []);
-    }
-  }
-
-  startTraverse(tree);
-  return path;
-}
-
-export function findNodeById(
-  data: TreeItem | TreeItem[],
-  id: string,
-): TreeItem | undefined {
-  if (Array.isArray(data)) {
-    for (const node of data) {
-      const result = findNodeById(node, id);
-      if (result) {
-        return result;
-      }
-    }
-  } else {
-    if (data.id === id) return data;
-
-    if (data.children) {
-      for (const child of data.children) {
-        const result = findNodeById(child, id);
-        if (result) {
-          return result;
-        }
-      }
-    }
-  }
-  return undefined;
-}
 
 export const useTreeView = ({
   data,
@@ -155,7 +93,7 @@ export const useTreeView = ({
   } */
 
   const expandAllNodes = (shouldExpandAllNodes: boolean | undefined) => {
-    const initExpandedNodes = new Set("");
+    const initExpandedNodes: Set<string> = new Set();
     if (data && Array.isArray(data) && shouldExpandAllNodes) {
       data.forEach((node) => initExpandedNodes.add(node.id));
       setExpandedNodes(initExpandedNodes);
@@ -299,7 +237,9 @@ export const useTreeView = ({
    * @returns
    */
   const handleItemDrag = (nodeId: string) => {
+    console.log("handleItemDrag", { externalSelectedNodeId });
     const isNodeExist = findNodeById(data, externalSelectedNodeId as string);
+
     if (!isNodeExist) return;
     handleCollapseNode(nodeId);
   };

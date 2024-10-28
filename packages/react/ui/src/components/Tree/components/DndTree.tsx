@@ -1,9 +1,9 @@
 import { useDroppable } from "@dnd-kit/core";
 import { Ref, forwardRef, useId } from "react";
-import { mergeRefs } from "../../utils/ref";
+import { mergeRefs } from "../../../utils/ref";
+import { useTreeView } from "../hooks/useTreeView";
+import { DndTreeNodeProps, DndTreeProps } from "../types";
 import { TreeNode } from "./Tree";
-import { useTreeView } from "./hooks/useTreeView";
-import { DndTreeNodeProps, DndTreeProps } from "./types";
 
 export const DndTree = forwardRef(
   (
@@ -39,20 +39,33 @@ export const DndTree = forwardRef(
     return (
       <div className="treeview" ref={ref}>
         <ul role="tree" className="m-0 p-0">
-          {Array.isArray(nodes) &&
-            nodes.map((node) => (
-              <DndTreeNode
-                node={node}
-                key={node.id}
-                showIcon={showIcon}
-                draggedNodeId={draggedNodeId}
-                expandedNodes={expandedNodes}
-                selectedNodeId={selectedNodeId}
-                onTreeItemClick={handleItemClick}
-                onToggleNode={handleFoldUnfold}
-                renderNode={renderNode}
-              />
-            ))}
+          {Array.isArray(nodes) ? (
+            nodes.map((node) => {
+              return (
+                <DndTreeNode
+                  node={node}
+                  key={node.id}
+                  showIcon={showIcon}
+                  draggedNodeId={draggedNodeId}
+                  selectedNodeId={selectedNodeId}
+                  expandedNodes={expandedNodes}
+                  onTreeItemClick={handleItemClick}
+                  onToggleNode={handleFoldUnfold}
+                  renderNode={renderNode}
+                />
+              );
+            })
+          ) : (
+            <DndTreeNode
+              node={nodes}
+              selectedNodeId={selectedNodeId}
+              expandedNodes={expandedNodes}
+              draggedNodeId={draggedNodeId}
+              showIcon={showIcon}
+              onTreeItemClick={handleItemClick}
+              onToggleNode={handleFoldUnfold}
+            />
+          )}
         </ul>
       </div>
     );

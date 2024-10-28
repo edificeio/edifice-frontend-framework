@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import Tree from "../Tree";
 import { Button } from "../../Button";
+import Tree from "../components/Tree";
 import { TreeProps } from "../types";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
