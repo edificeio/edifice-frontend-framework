@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+### Bug Fixes
+
+- #MOZO-283 remove dupplicate h2 ([b7d4455](https://github.com/opendigitaleducation/edifice-ui/commit/b7d4455b94683c63597c0f69ee3d8519047ec53e)), closes [#MOZO-283](https://github.com/opendigitaleducation/edifice-ui/issues/MOZO-283)
+- #WB-2538 add legend under images ([#258](https://github.com/opendigitaleducation/edifice-ui/issues/258)) ([78aeec3](https://github.com/opendigitaleducation/edifice-ui/commit/78aeec380b8f2e7c779cde9da151128c789d78ab)), closes [#WB-2538](https://github.com/opendigitaleducation/edifice-ui/issues/WB-2538)
+- #WB-2538 update legend refresh image attribut ([4db1ce4](https://github.com/opendigitaleducation/edifice-ui/commit/4db1ce4a904758d30076010bba1bb049ae7e3254)), closes [#WB-2538](https://github.com/opendigitaleducation/edifice-ui/issues/WB-2538)
+- #WB-3377 paste image from url ([#260](https://github.com/opendigitaleducation/edifice-ui/issues/260)) ([81b31f6](https://github.com/opendigitaleducation/edifice-ui/commit/81b31f64901334da19851f0b965a2a4ca19a95cd)), closes [#WB-3377](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3377)
+- **bootstrap:** #WB-3275 align images in tiptap editor [#239](https://github.com/opendigitaleducation/edifice-ui/issues/239) ([#251](https://github.com/opendigitaleducation/edifice-ui/issues/251)) ([80c4f4c](https://github.com/opendigitaleducation/edifice-ui/commit/80c4f4c87f8723cb1eb9eeb53c65589dcaecb90d)), closes [#WB-3275](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3275)
+- build css for storybook ([9615423](https://github.com/opendigitaleducation/edifice-ui/commit/961542349a108d0b18f1fdd1d0c3df9041f84afd))
+- **editeur:** #WB-3227 cast controls attribut to boolean ([#250](https://github.com/opendigitaleducation/edifice-ui/issues/250)) ([23033cc](https://github.com/opendigitaleducation/edifice-ui/commit/23033ccac3f6eefc56bc7aba949455421cd85cc1)), closes [#WB-3227](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3227)
+- **editor:** #WB-3226 remove editor image attribute textAlign ([#245](https://github.com/opendigitaleducation/edifice-ui/issues/245)) ([bc954ae](https://github.com/opendigitaleducation/edifice-ui/commit/bc954aefb8bda0fd9ddf8ef9beff3e9aee0e77e8)), closes [#WB-3226](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3226)
+- **editor:** #WB-3308 enable copy paste images files ([#256](https://github.com/opendigitaleducation/edifice-ui/issues/256)) ([9fec314](https://github.com/opendigitaleducation/edifice-ui/commit/9fec314f24466e719db351d85a5d8239cc0c6537)), closes [#WB-3308](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3308)
+- **editor:** WB-3020, do not trigger an update content event when only editor's mode changes ([#255](https://github.com/opendigitaleducation/edifice-ui/issues/255)) ([d25e87f](https://github.com/opendigitaleducation/edifice-ui/commit/d25e87fcc52c65e21632d30ea7c8413342e5eaff))
+- **multimedia:** #WB-3012, stop any playing video before save ([#236](https://github.com/opendigitaleducation/edifice-ui/issues/236)) ([bed2044](https://github.com/opendigitaleducation/edifice-ui/commit/bed20449c5e19439507f05c10912107c99a6a0a2)), closes [#WB-3012](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3012)
+
+### Features
+
+- **ImageResizer:** add image-resizer package for resizing and compressing images ([#261](https://github.com/opendigitaleducation/edifice-ui/issues/261)) ([e2d714b](https://github.com/opendigitaleducation/edifice-ui/commit/e2d714bb183555cb4978460bf9cce4be7c124d9a))
+
 # [1.6.0-develop.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package root
@@ -188,6 +208,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/opendigitaleducation/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1874)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/opendigitaleducation/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1532)
 - **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/opendigitaleducation/edifice-ui/issues/252)) ([fd11cad](https://github.com/opendigitaleducation/edifice-ui/commit/fd11cad6195eede2105a51146232e79ab9087041)), closes [#WB2-1537](https://github.com/opendigitaleducation/edifice-ui/issues/WB2-1537)
+
 ## [1.5.22-develop-b2school.5](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
 
 **Note:** Version bump only for package root
