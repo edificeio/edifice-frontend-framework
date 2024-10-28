@@ -1,70 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { TreeItem } from "../types";
+import { findNodeById, findPathById } from "../utilities/tree";
 
-export function findPathById(
-  tree: TreeItem | TreeItem[],
-  nodeId: string,
-): string[] {
-  let path: string[] = [];
-
-  function traverse(node: TreeItem, currentPath: string[]): boolean {
-    if (node.id === nodeId) {
-      path = currentPath.concat(node.id);
-      return true;
-    }
-    if (node.children) {
-      for (const child of node.children) {
-        if (traverse(child, currentPath.concat(node.id))) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  function startTraverse(nodes: TreeItem | TreeItem[]) {
-    if (Array.isArray(nodes)) {
-      for (const node of nodes) {
-        if (traverse(node, [])) {
-          break;
-        }
-      }
-    } else {
-      traverse(nodes, []);
-    }
-  }
-
-  startTraverse(tree);
-  return path;
-}
-
-export function findNodeById(
-  data: TreeItem | TreeItem[],
-  id: string,
-): TreeItem | undefined {
-  if (Array.isArray(data)) {
-    for (const node of data) {
-      const result = findNodeById(node, id);
-      if (result) {
-        return result;
-      }
-    }
-  } else {
-    if (data.id === id) return data;
-
-    if (data.children) {
-      for (const child of data.children) {
-        const result = findNodeById(child, id);
-        if (result) {
-          return result;
-        }
-      }
-    }
-  }
-  return undefined;
-}
-
-export const useTreeView = ({
+export const useTree = ({
   data,
   externalSelectedNodeId,
   draggedNode,
@@ -105,13 +43,13 @@ export const useTreeView = ({
 
   const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
 
-  /* function addNodesWithSiblingHavingChildren(data: TreeItem | TreeItem[]) {
+  function addNodesWithSiblingHavingChildren(data: TreeItem | TreeItem[]) {
     if (Array.isArray(data)) {
       data.forEach((node) => {
         const resultSet = new Set(siblingsNodes.current);
         const siblings = data.filter(({ id }) => id !== node.id);
         const hasSiblingWithChildren = siblings.some(
-          (sibling) => sibling.children && sibling.children.length > 0
+          (sibling) => sibling.children && sibling.children.length > 0,
         );
 
         if (hasSiblingWithChildren) {
@@ -121,10 +59,10 @@ export const useTreeView = ({
         if (node.children && node.children.length > 0) {
           node.children.forEach((child) => {
             const childSiblings = node.children?.filter(
-              ({ id }) => id !== child.id
+              ({ id }) => id !== child.id,
             );
             const hasChildSiblingWithChildren = childSiblings?.some(
-              (sibling) => sibling.children && sibling.children.length > 0
+              (sibling) => sibling.children && sibling.children.length > 0,
             );
 
             if (hasChildSiblingWithChildren) {
@@ -141,7 +79,7 @@ export const useTreeView = ({
         const siblings = data.children?.filter((c) => c.id !== child.id);
 
         const hasSiblingWithChildren = siblings?.some(
-          (sibling) => sibling.children && sibling.children.length > 0
+          (sibling) => sibling.children && sibling.children.length > 0,
         );
 
         if (hasSiblingWithChildren) {
@@ -152,7 +90,7 @@ export const useTreeView = ({
         addNodesWithSiblingHavingChildren(child);
       });
     }
-  } */
+  }
 
   const expandAllNodes = (shouldExpandAllNodes: boolean | undefined) => {
     const initExpandedNodes = new Set("");
@@ -162,12 +100,12 @@ export const useTreeView = ({
     }
   };
 
-  //   useEffect(() => {
-  //     if (data) {
-  //       addNodesWithSiblingHavingChildren(data);
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [data]);
+  useEffect(() => {
+    if (data) {
+      addNodesWithSiblingHavingChildren(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     if (draggedNode?.isOver && draggedNode.isTreeview) {

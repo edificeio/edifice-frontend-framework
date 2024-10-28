@@ -9,9 +9,9 @@ import {
   odeServices,
 } from "edifice-ts-client";
 
+import { findNodeById } from "../../components/TreeView/utilities/treeview";
 import { TreeData } from "../../types";
 import { useMockedData } from "../../utils";
-import { findNodeById } from "../../utils/treeview";
 import { useHasWorkflow } from "../useHasWorkflow";
 
 export type FolderNode = TreeData & { files?: WorkspaceElement[] };

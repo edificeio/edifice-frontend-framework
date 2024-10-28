@@ -1,6 +1,6 @@
 import { Active, Over, UniqueIdentifier } from "@dnd-kit/core";
-import { FlattenedItem, Projected, TreeItem } from "../components/Tree/types";
 import { arrayMove } from "@dnd-kit/sortable";
+import { FlattenedItem, Projected, TreeItem } from "../types";
 
 export function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);

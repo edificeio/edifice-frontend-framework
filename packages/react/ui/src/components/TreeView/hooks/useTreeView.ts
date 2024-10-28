@@ -7,8 +7,8 @@ import {
   useState,
 } from "react";
 import { TreeData } from "../../../types";
-import { findNodeById, findPathById } from "../../../utils/treeview";
 import { TreeViewHandlers_V1 } from "../TreeView";
+import { findNodeById, findPathById } from "../utilities/treeview";
 
 export const useTreeView = ({
   data,

@@ -4,10 +4,8 @@ import { HttpResponse, http } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
-/* import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
-import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider"; */
-
-import { OdeClientProvider, ThemeProvider } from "@edifice-ui/react";
+import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
+import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
 
 import "../../../packages/bootstrap/dist/index.css";
 
