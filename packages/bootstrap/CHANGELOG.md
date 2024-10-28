@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+### Bug Fixes
+
+- **bootstrap:** #WB-3275 align images in tiptap editor [#239](https://github.com/edificeio/edifice-ui/issues/239) ([#251](https://github.com/edificeio/edifice-ui/issues/251)) ([80c4f4c](https://github.com/edificeio/edifice-ui/commit/80c4f4c87f8723cb1eb9eeb53c65589dcaecb90d)), closes [#WB-3275](https://github.com/edificeio/edifice-ui/issues/WB-3275)
+
 # [1.6.0-develop.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package edifice-bootstrap
@@ -54,6 +60,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([68aeac7](https://github.com/edificeio/edifice-ui/commit/68aeac717f4659e11db23882d22f7a75cf590ff3)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
 - **bootstrap:** #WB2-1810, add emptyscreen wiki ([e4c7b04](https://github.com/edificeio/edifice-ui/commit/e4c7b046de6bf147e707a91e435881f5ba892062)), closes [#WB2-1810](https://github.com/edificeio/edifice-ui/issues/WB2-1810)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/edificeio/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
+
 ## [1.5.22-develop-b2school.0](https://github.com/edificeio/edifice-ui/compare/v1.5.21...v1.5.22-develop-b2school.0) (2024-10-09)
 
 ### Bug Fixes

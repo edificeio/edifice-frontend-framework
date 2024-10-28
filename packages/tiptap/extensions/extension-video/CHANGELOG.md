@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+**Note:** Version bump only for package @edifice-tiptap-extensions/extension-video
+
 # [1.6.0-develop.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-video
