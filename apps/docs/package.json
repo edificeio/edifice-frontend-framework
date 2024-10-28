@@ -1,7 +1,7 @@
 {
   "name": "@edifice.io/storybook",
   "private": true,
-  "version": "1.6.0-develop.2",
+  "version": "1.6.0-develop-b2school.3",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
