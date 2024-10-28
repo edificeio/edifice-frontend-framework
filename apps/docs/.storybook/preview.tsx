@@ -1,3 +1,4 @@
+import { Preview } from "@storybook/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HttpResponse, http } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
@@ -10,11 +11,6 @@ import "../../../packages/bootstrap/dist/index.css";
 
 import i18n from "../i18n";
 
-// Initialize MSW
-initialize({
-  onUnhandledRequest: "bypass",
-});
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -24,7 +20,13 @@ const queryClient = new QueryClient({
   },
 });
 
-const preview = {
+const preview: Preview = {
+  beforeAll: async () => {
+    // Initialize MSW
+    initialize({
+      onUnhandledRequest: "bypass",
+    });
+  },
   tags: ["autodocs"],
   globalTypes: {
     theme: {
