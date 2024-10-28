@@ -222,25 +222,21 @@ const TreeNode = forwardRef(
       >
         <div>
           <div className={treeItemClasses.action}>
-            {node.children && node.children.length > 0 ? (
-              <div
-                className={treeItemClasses.arrow}
-                tabIndex={0}
-                role="button"
-                onClick={() => onToggleNode?.(node.id)}
-                onKeyDown={handleItemToggleKeyDown}
-                aria-label={t("foldUnfold")}
-              >
-                <RafterRight
-                  width={16}
-                  style={{
-                    transform: expanded ? "rotate(90deg)" : "",
-                  }}
-                />
-              </div>
-            ) : (
-              <div className="py-8 invisible"></div>
-            )}
+            <div
+              className={treeItemClasses.arrow}
+              tabIndex={0}
+              role="button"
+              onClick={() => onToggleNode?.(node.id)}
+              onKeyDown={handleItemToggleKeyDown}
+              aria-label={t("foldUnfold")}
+            >
+              <RafterRight
+                width={16}
+                style={{
+                  transform: expanded ? "rotate(90deg)" : "",
+                }}
+              />
+            </div>
 
             {node.children && showIcon ? (
               <Folder title="folder" width={20} height={20} />
