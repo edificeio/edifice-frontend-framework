@@ -60,6 +60,10 @@ export interface TreeViewProps {
 }
 
 /**
+ * @deprecated This component is deprecated and will be removed in future versions.
+ * Please use the Tree component instead.
+ */
+/**
  * UI TreeView Component
  */
 
