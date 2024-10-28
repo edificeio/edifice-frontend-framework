@@ -4,8 +4,10 @@ import { HttpResponse, http } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
-import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
-import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
+/* import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
+import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider"; */
+
+import { OdeClientProvider, ThemeProvider } from "@edifice-ui/react";
 
 import "../../../packages/bootstrap/dist/index.css";
 
@@ -716,7 +718,7 @@ const preview: Preview = {
        */
       const theme = context.globals.theme;
       /**
-       * App value default to "blog"
+       * App value default to "wiki"
        */
       const app = context.globals.app;
 
