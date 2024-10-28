@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+### Bug Fixes
+
+- #WB-2538 add legend under images ([#258](https://github.com/edificeio/edifice-ui/issues/258)) ([78aeec3](https://github.com/edificeio/edifice-ui/commit/78aeec380b8f2e7c779cde9da151128c789d78ab)), closes [#WB-2538](https://github.com/edificeio/edifice-ui/issues/WB-2538)
+- #WB-2538 update legend refresh image attribut ([4db1ce4](https://github.com/edificeio/edifice-ui/commit/4db1ce4a904758d30076010bba1bb049ae7e3254)), closes [#WB-2538](https://github.com/edificeio/edifice-ui/issues/WB-2538)
+- #WB-3377 paste image from url ([#260](https://github.com/edificeio/edifice-ui/issues/260)) ([81b31f6](https://github.com/edificeio/edifice-ui/commit/81b31f64901334da19851f0b965a2a4ca19a95cd)), closes [#WB-3377](https://github.com/edificeio/edifice-ui/issues/WB-3377)
+- **editeur:** #WB-3227 cast controls attribut to boolean ([#250](https://github.com/edificeio/edifice-ui/issues/250)) ([23033cc](https://github.com/edificeio/edifice-ui/commit/23033ccac3f6eefc56bc7aba949455421cd85cc1)), closes [#WB-3227](https://github.com/edificeio/edifice-ui/issues/WB-3227)
+- **editor:** #WB-3226 remove editor image attribute textAlign ([#245](https://github.com/edificeio/edifice-ui/issues/245)) ([bc954ae](https://github.com/edificeio/edifice-ui/commit/bc954aefb8bda0fd9ddf8ef9beff3e9aee0e77e8)), closes [#WB-3226](https://github.com/edificeio/edifice-ui/issues/WB-3226)
+- **editor:** #WB-3308 enable copy paste images files ([#256](https://github.com/edificeio/edifice-ui/issues/256)) ([9fec314](https://github.com/edificeio/edifice-ui/commit/9fec314f24466e719db351d85a5d8239cc0c6537)), closes [#WB-3308](https://github.com/edificeio/edifice-ui/issues/WB-3308)
+- **editor:** WB-3020, do not trigger an update content event when only editor's mode changes ([#255](https://github.com/edificeio/edifice-ui/issues/255)) ([d25e87f](https://github.com/edificeio/edifice-ui/commit/d25e87fcc52c65e21632d30ea7c8413342e5eaff))
+
+### Features
+
+- **ImageResizer:** add image-resizer package for resizing and compressing images ([#261](https://github.com/edificeio/edifice-ui/issues/261)) ([e2d714b](https://github.com/edificeio/edifice-ui/commit/e2d714bb183555cb4978460bf9cce4be7c124d9a))
+
 # [1.6.0-develop.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package @edifice-ui/editor
@@ -93,6 +109,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([0dc56f4](https://github.com/edificeio/edifice-ui/commit/0dc56f4194c41fe4ca6b86b73b5d0e09914a7343))
+
 ## [1.5.22-develop-b2school.5](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
 
 **Note:** Version bump only for package @edifice-ui/editor

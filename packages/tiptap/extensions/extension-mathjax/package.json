@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-mathjax",
-  "version": "1.6.0-develop-b2school.0",
+  "version": "1.6.0-develop-b2school.1",
   "description": "Rich Text Editor MathJax Extension",
   "type": "module",
   "exports": {
