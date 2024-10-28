@@ -1,9 +1,9 @@
 import { useDroppable } from "@dnd-kit/core";
 import { Ref, forwardRef, useId } from "react";
-import { mergeRefs } from "../../utils/ref";
+import { mergeRefs } from "../../../utils/ref";
+import { useTree } from "../hooks/useTree";
+import { DndTreeNodeProps, DndTreeProps } from "../types";
 import { TreeNode } from "./Tree";
-import { useTreeView } from "./hooks/useTreeView";
-import { DndTreeNodeProps, DndTreeProps } from "./types";
 
 export const DndTree = forwardRef(
   (
@@ -26,7 +26,7 @@ export const DndTree = forwardRef(
       draggedNodeId,
       handleItemClick,
       handleFoldUnfold,
-    } = useTreeView({
+    } = useTree({
       data: nodes,
       externalSelectedNodeId,
       draggedNode,

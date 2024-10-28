@@ -1,8 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { FlattenedItem, TreeItem, UpdateTreeData } from "../types";
 import {
   Announcements,
-  defaultDropAnimation,
   DragEndEvent,
   DragMoveEvent,
   DragOverEvent,
@@ -13,11 +10,14 @@ import {
   Modifier,
   PointerSensor,
   UniqueIdentifier,
+  defaultDropAnimation,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useEffect, useMemo, useState } from "react";
+import { FlattenedItem, TreeItem, UpdateTreeData } from "../types";
 import {
   buildTree,
   determineNewParentId,
@@ -27,7 +27,7 @@ import {
   getIndicesToUpdate,
   getProjection,
   updateParentIds,
-} from "../../../utils/tree-sortable";
+} from "../utilities/tree-sortable";
 
 export const useTreeSortable = ({
   nodes,

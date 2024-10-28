@@ -1,3 +1,5 @@
+export * from "../components/Tree/utilities/tree-sortable";
+export * from "../components/TreeView/utilities/treeview";
 export * from "./MockedDataProvider";
 export * from "./StringUtils";
 export * from "./addTimestampToUrl";
@@ -10,6 +12,4 @@ export * from "./noop";
 export * from "./ref";
 export * from "./thumbnail";
 export * from "./time";
-export * from "./tree-sortable";
-export * from "./treeview";
 export * from "./video";

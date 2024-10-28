@@ -8,17 +8,17 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import { Folder, RafterRight } from "@edifice-ui/icons";
 import clsx from "clsx";
-import { CSSProperties, forwardRef, Ref } from "react";
+import { CSSProperties, Ref, forwardRef } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
+import { useTree } from "../hooks/useTree";
+import { useTreeSortable } from "../hooks/useTreeSortable";
 import {
   FlattenedItem,
   SortableTreeNodeProps,
   SortableTreeProps,
   TreeItem,
-} from "./types";
-import { useTreeView } from "./hooks/useTreeView";
-import { useTreeSortable } from "./hooks/useTreeSortable";
+} from "../types";
 
 const SortableTree = ({
   nodes,
@@ -36,7 +36,7 @@ const SortableTree = ({
     handleItemClick,
     handleFoldUnfold,
     collapseAllNodes,
-  } = useTreeView({
+  } = useTree({
     data: nodes,
     externalSelectedNodeId,
     shouldExpandAllNodes,
@@ -71,7 +71,6 @@ const SortableTree = ({
       <ul role="tree" className="m-0 p-0">
         <DndContext
           accessibility={{ announcements }}
-          //modifiers={[restrictToWindowEdges]}
           sensors={sensors}
           measuring={measuring}
           onDragStart={handleDragStart}
