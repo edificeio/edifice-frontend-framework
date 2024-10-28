@@ -1,7 +1,7 @@
 {
   "name": "@edifice.io/storybook",
   "private": true,
-  "version": "1.5.22-develop-pedago.15",
+  "version": "1.6.0-develop.2",
   "main": "./index.js",
   "types": "./index.d.ts",
   "exports": {
