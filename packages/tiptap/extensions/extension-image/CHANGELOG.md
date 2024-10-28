@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+### Bug Fixes
+
+- #WB-3377 paste image from url ([#260](https://github.com/opendigitaleducation/edifice-ui/issues/260)) ([81b31f6](https://github.com/opendigitaleducation/edifice-ui/commit/81b31f64901334da19851f0b965a2a4ca19a95cd)), closes [#WB-3377](https://github.com/opendigitaleducation/edifice-ui/issues/WB-3377)
+
 # [1.6.0-develop.1](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-image
@@ -26,6 +32,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Features
 
 - #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([68aeac7](https://github.com/edificeio/edifice-ui/commit/68aeac717f4659e11db23882d22f7a75cf590ff3)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+
 ## [1.5.22-develop-b2school.5](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
 
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-image

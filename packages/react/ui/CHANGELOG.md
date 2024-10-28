@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop-b2school.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.2...v1.6.0-develop-b2school.1) (2024-10-28)
+
+### Bug Fixes
+
+- #MOZO-283 remove dupplicate h2 ([b7d4455](https://github.com/edificeio/edifice-ui/commit/b7d4455b94683c63597c0f69ee3d8519047ec53e)), closes [#MOZO-283](https://github.com/edificeio/edifice-ui/issues/MOZO-283)
+- #WB-2538 add legend under images ([#258](https://github.com/edificeio/edifice-ui/issues/258)) ([78aeec3](https://github.com/edificeio/edifice-ui/commit/78aeec380b8f2e7c779cde9da151128c789d78ab)), closes [#WB-2538](https://github.com/edificeio/edifice-ui/issues/WB-2538)
+- **editor:** #WB-3308 enable copy paste images files ([#256](https://github.com/edificeio/edifice-ui/issues/256)) ([9fec314](https://github.com/edificeio/edifice-ui/commit/9fec314f24466e719db351d85a5d8239cc0c6537)), closes [#WB-3308](https://github.com/edificeio/edifice-ui/issues/WB-3308)
+- **multimedia:** #WB-3012, stop any playing video before save ([#236](https://github.com/edificeio/edifice-ui/issues/236)) ([bed2044](https://github.com/edificeio/edifice-ui/commit/bed20449c5e19439507f05c10912107c99a6a0a2)), closes [#WB-3012](https://github.com/edificeio/edifice-ui/issues/WB-3012)
+
+### Features
+
+- **ImageResizer:** add image-resizer package for resizing and compressing images ([#261](https://github.com/edificeio/edifice-ui/issues/261)) ([e2d714b](https://github.com/edificeio/edifice-ui/commit/e2d714bb183555cb4978460bf9cce4be7c124d9a))
+
 # [1.6.0-develop.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package @edifice-ui/react
@@ -181,6 +194,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **icons:** #WB2-1874, add icon forgoing ([c264a17](https://github.com/edificeio/edifice-ui/commit/c264a17bcbe2b780edd6394109e2eda7dc86331a)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
 - **react:** #WB2-1532, add module React Comments ([1e40433](https://github.com/edificeio/edifice-ui/commit/1e4043330d03940df41a1edb2f149c7b7f7e8ee1)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
 - **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/edificeio/edifice-ui/issues/252)) ([fd11cad](https://github.com/edificeio/edifice-ui/commit/fd11cad6195eede2105a51146232e79ab9087041)), closes [#WB2-1537](https://github.com/edificeio/edifice-ui/issues/WB2-1537)
+
 ## [1.5.22-develop-b2school.5](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop-b2school.4...v1.5.22-develop-b2school.5) (2024-10-21)
 
 **Note:** Version bump only for package @edifice-ui/react
