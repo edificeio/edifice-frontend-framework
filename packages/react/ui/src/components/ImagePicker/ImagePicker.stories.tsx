@@ -10,7 +10,7 @@ const meta: Meta<typeof ImagePicker> = {
     docs: {
       description: {
         component:
-          "The ImagePicker allows users to upload images. Its default behavior shows the Avatar component. If the image should be read-only, please use the Avatar Component.",
+          "The `ImagePicker` component provides a user interface for uploading and managing images. It includes an upload button, preview area, and delete functionality. The component is commonly used in forms and content editors where image selection is needed. Features include:\n\n- Image upload button with customizable label\n- Image preview display\n- Delete button for removing selected images\n- Optional app-specific placeholder images\n- Built-in disabled states",
       },
     },
   },
@@ -29,18 +29,6 @@ const meta: Meta<typeof ImagePicker> = {
     deleteButtonLabel: "Delete image",
     onUploadImage: () => {},
     onDeleteImage: () => {},
-  },
-  argTypes: {
-    onUploadImage: {
-      control: {
-        type: null,
-      },
-    },
-    onDeleteImage: {
-      control: {
-        type: null,
-      },
-    },
   },
 };
 

@@ -1,8 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import useToggle from "../../hooks/useToggle/useToggle";
 import { Button } from "../Button";
 import Modal from "./Modal";
-import useToggle from "../../hooks/useToggle/useToggle";
+import ModalBody from "./ModalBody";
+import ModalFooter from "./ModalFooter";
+import ModalHeader from "./ModalHeader";
+import ModalSubtitle from "./ModalSubtitle";
 
 const meta: Meta<typeof Modal> = {
   title: "Components/Modal",
@@ -19,6 +23,20 @@ const meta: Meta<typeof Modal> = {
       options: ["md", "lg"],
       control: { type: "select" },
     },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Modal component for displaying content in an overlay dialog. Supports different sizes, scrollable content, and viewport mode. Includes header, subtitle, body, and footer sections with customizable content and close functionality.",
+      },
+    },
+  },
+  subcomponents: {
+    ModalHeader,
+    ModalSubtitle,
+    ModalBody,
+    ModalFooter,
   },
 };
 

@@ -4,27 +4,11 @@ import { HttpResponse, http } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
-import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
-=======
->>>>>>> bda09c85 (chore: #EN-11, migrate to storybook 8.x.x (#266))
-=======
-import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
->>>>>>> 5a874d8a (docs: #EN-22, documentation internal linker (#267))
-
 import "../../../packages/bootstrap/dist/index.css";
+import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
+import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
 
 import i18n from "../i18n";
-<<<<<<< HEAD
-=======
-
-// Initialize MSW
-initialize({
-  onUnhandledRequest: "bypass",
-});
->>>>>>> 5a874d8a (docs: #EN-22, documentation internal linker (#267))
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +19,6 @@ const queryClient = new QueryClient({
   },
 });
 
-<<<<<<< HEAD
 const preview: Preview = {
   beforeAll: async () => {
     // Initialize MSW
@@ -43,9 +26,6 @@ const preview: Preview = {
       onUnhandledRequest: "bypass",
     });
   },
-=======
-const preview = {
->>>>>>> bda09c85 (chore: #EN-11, migrate to storybook 8.x.x (#266))
   tags: ["autodocs"],
   globalTypes: {
     theme: {
@@ -74,8 +54,8 @@ const preview = {
         method: "alphabetical",
         order: [
           "Introduction",
-          ["Welcome", "*"],
-          "Design Tokens",
+          ["Welcome", "Getting Started", "*"],
+          "Design System",
           "Icons",
           "Components",
           "Modules",

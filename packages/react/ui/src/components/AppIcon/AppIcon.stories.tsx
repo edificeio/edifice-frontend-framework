@@ -8,7 +8,8 @@ const meta: Meta<typeof AppIcon> = {
   parameters: {
     docs: {
       description: {
-        component: "AppIcon is used as a placeholder for Application Icon",
+        component:
+          "AppIcon is a component that displays an application's icon image. It supports different sizes and variants (square, rounded, circle) and can control how the icon image fits within its container (contain or ratio). This component is commonly used throughout the application to provide consistent icon display.",
       },
     },
   },

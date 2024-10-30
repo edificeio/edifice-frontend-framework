@@ -37,6 +37,6 @@ export const Workspace = () => {
       className="border rounded overflow-y-auto"
       defaultFolder={visibility}
       showPublicFolder={visibility === "public"}
-    ></Component>
+    />
   );
 };

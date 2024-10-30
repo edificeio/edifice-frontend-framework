@@ -1,27 +1,20 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Toolbar from "./Toolbar";
 import {
+  Delete,
+  Plus,
+  Record,
   RecordVideo,
   Save,
   Write,
-  Plus,
-  Delete,
-  Record,
 } from "@edifice-ui/icons";
 import { Dropdown } from "../Dropdown";
+import Toolbar from "./Toolbar";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Toolbar> = {
   title: "Components/Toolbar",
   component: Toolbar,
-  parameters: {
-    docs: {
-      description: {
-        component: "",
-      },
-    },
-  },
   argTypes: {
     variant: {
       options: ["default", "no-shadow"],
@@ -73,6 +66,14 @@ const meta: Meta<typeof Toolbar> = {
         },
       },
     ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Toolbar component allows you to create a customizable toolbar with various items such as icons and dividers. Each item can have its own properties and actions, and the toolbar can be aligned in different ways.",
+      },
+    },
   },
 };
 
@@ -130,7 +131,7 @@ export const Hidden: Story = {
     docs: {
       description: {
         story:
-          "When data object has `visibility` set to `hide`, it will not be displayed",
+          "If an item's `visibility` property is set to `hide`, it will be hidden from view.",
       },
     },
   },
@@ -181,7 +182,7 @@ export const WithDivider: Story = {
     docs: {
       description: {
         story:
-          "Add a data object only with `type` to `divider` to show a divider element",
+          "To display a divider element, include a data object with only the `type` set to `divider`.",
       },
     },
   },
@@ -231,7 +232,7 @@ export const WithPrimaryAction: Story = {
     docs: {
       description: {
         story:
-          "A data object with `type` to `primary` will be considered as primary action and will be shown to the end of Toolbar. It will accept the same properties as a data object",
+          "A data object with `type` set to `primary` will be treated as a primary action and displayed at the end of the Toolbar. It will accept the same properties as other data objects.",
       },
     },
   },
@@ -301,7 +302,7 @@ export const WithDropdownAction: Story = {
     docs: {
       description: {
         story:
-          "Using an item of type `dropdown`, you have to provide its children through props",
+          "For items of type `dropdown`, you must provide their children via the `props` attribute.",
       },
     },
   },
@@ -312,7 +313,8 @@ export const WithoutShadow: Story = {
   parameters: {
     docs: {
       description: {
-        story: "By adding `variant` to `no-shadow`, box-shadow is disabled.",
+        story:
+          "Setting the `variant` prop to `no-shadow` removes the box-shadow from the toolbar.",
       },
     },
   },

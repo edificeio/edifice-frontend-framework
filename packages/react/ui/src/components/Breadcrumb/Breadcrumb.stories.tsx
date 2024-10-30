@@ -9,7 +9,7 @@ const meta: Meta<typeof Breadcrumb> = {
     docs: {
       description: {
         component:
-          "Breadcrumb is always composed of the app logo, a primary action button, and in some cases can have a secondary action. The app logo and the name of the app take the app color.",
+          "The Breadcrumb component provides navigation context by displaying the current location within an application's hierarchy. It consists of the app logo which serves as a home link, followed by the current page or resource name. The component inherits the app's theme color for visual consistency. Optional primary and secondary action buttons can be included for common operations. This helps users understand their location and enables quick navigation back to previous levels.",
       },
     },
   },
@@ -40,7 +40,7 @@ export const BreadcrumbStory: Story = {
     docs: {
       description: {
         story:
-          "If we navigate to a resource page, props `name` should pass the name of the target resource.",
+          "When navigating to a resource page, the `name` prop should be set to display the resource's name in the breadcrumb. This helps users understand their current location within the application hierarchy. For example, when viewing a blog post, the name would show the post's title.",
       },
     },
   },

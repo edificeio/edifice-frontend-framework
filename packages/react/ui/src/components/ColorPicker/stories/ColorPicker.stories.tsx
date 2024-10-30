@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { useState } from "react";
 import { ColorPaletteItem, DefaultPalette } from "../ColorPalette";
 import ColorPicker, { ColorPickerProps } from "../ColorPicker";
-import { useState } from "react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ColorPicker> = {
@@ -12,7 +12,7 @@ const meta: Meta<typeof ColorPicker> = {
     docs: {
       description: {
         component:
-          "The ColorPicker allows users to choose one color among a list of available colors. There are two predefined lists of available colors : standard and accessible",
+          "The ColorPicker allows users to choose one color among a list of available colors. There are two predefined lists of available colors : default and accessible",
       },
     },
   },

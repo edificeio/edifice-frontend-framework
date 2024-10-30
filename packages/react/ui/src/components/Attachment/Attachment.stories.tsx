@@ -1,15 +1,23 @@
 import { StoryObj } from "@storybook/react";
 
-import { IconButton } from "../Button";
-import Attachment, { AttachmentProps } from "./Attachment";
 import { Delete, Download } from "@edifice-ui/icons";
+import { IconButton } from "../Button";
 import { Grid } from "../Grid";
+import Attachment, { AttachmentProps } from "./Attachment";
 
 const meta = {
   title: "Components/Attachment",
   component: Attachment,
   args: {
     name: "Lorem ipsum",
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Attachment is a component that displays a file attachment with its name and action buttons. It provides a consistent way to show attachments with options like download and delete functionality. The component supports customizable action buttons through the options prop.",
+      },
+    },
   },
 };
 

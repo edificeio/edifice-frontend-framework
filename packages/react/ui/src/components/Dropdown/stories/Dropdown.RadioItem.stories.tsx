@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Dropdown from "../Dropdown";
-import { useState } from "react";
 import { Filter } from "@edifice-ui/icons";
+import { useState } from "react";
+import Dropdown from "../Dropdown";
 
 const meta: Meta<typeof Dropdown> = {
   title: "Components/Dropdown/Dropdown Radio Item",
@@ -16,7 +16,7 @@ const meta: Meta<typeof Dropdown> = {
     docs: {
       description: {
         component:
-          "Use `Dropdown.RadioItem` when only one choice can be selected at a time",
+          "The `Dropdown.RadioItem` component enables single-selection functionality within dropdowns. It's ideal for scenarios where users need to choose exactly one option from a list, such as selecting a filter value or changing a setting. Each radio item maintains its own checked state and triggers a change event when selected.",
       },
     },
   },

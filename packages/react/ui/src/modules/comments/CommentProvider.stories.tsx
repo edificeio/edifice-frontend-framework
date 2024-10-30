@@ -12,7 +12,7 @@ const meta: Meta<typeof CommentProvider> = {
     docs: {
       description: {
         component:
-          "`CommentProvider` component allows to add a comments section in your app",
+          "CommentProvider component allows you to manage and display comments in a structured way. It supports various options for comment length, reply length, and the number of comments and replies. You can also provide callbacks for posting, updating, and deleting comments.",
       },
     },
   },

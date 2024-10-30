@@ -32,6 +32,6 @@ export const Video = () => {
       onRecordUpdated={handleRecordUpdated}
       onError={handleError}
       hideSaveAction={true}
-    ></VideoRecorder>
+    />
   );
 };

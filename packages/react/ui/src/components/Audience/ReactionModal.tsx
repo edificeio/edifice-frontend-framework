@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { default as useReactionIcons } from "./hooks/useReactionIcons";
-import { Modal } from "../Modal";
-import { useTranslation } from "react-i18next";
-import { Button } from "../Button";
 import {
   ReactionDetailsData,
   ReactionType,
   ReactionTypes,
 } from "edifice-ts-client";
-import { Tabs, TabsItemProps } from "../Tabs";
-import { ReactionModalCard } from "./ReactionModal.Card";
-import { StringUtils } from "../../utils";
+import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
+import { StringUtils } from "../../utils";
+import { Button } from "../Button";
+import { Modal } from "../Modal";
+import { Tabs, TabsItemProps } from "../Tabs";
+import { default as useReactionIcons } from "./hooks/useReactionIcons";
+import { ReactionModalCard } from "./ReactionModal.Card";
 
 export interface ReactionModalProps {
   /** Id of resource. */
@@ -149,11 +149,7 @@ const ReactionModal = ({
       </Modal.Header>
 
       <Modal.Body>
-        <Tabs
-          items={tabs}
-          defaultId={ALL_TAB_ID}
-          onChange={handleTabChange}
-        ></Tabs>
+        <Tabs items={tabs} defaultId={ALL_TAB_ID} onChange={handleTabChange} />
       </Modal.Body>
 
       <Modal.Footer>

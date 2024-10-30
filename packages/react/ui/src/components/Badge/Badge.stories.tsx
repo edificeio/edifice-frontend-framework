@@ -124,6 +124,14 @@ const meta: Meta<typeof Badge> = {
     children: "Badge",
     variant: { type: "content", level: "success", background: true },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The Badge component is used to highlight and display status, user profiles, or notifications. It supports different types including content badges, user profile badges, and notification badges. Each type has specific variants and can optionally include background colors. Content badges can show success, info, warning or danger states. User badges reflect different user profiles like student, teacher, etc. Notification badges are used to display alert levels.",
+      },
+    },
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
 

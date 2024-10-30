@@ -4,15 +4,18 @@ import { Plus } from "@edifice-ui/icons";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
-import { useDropzoneContext } from "./DropzoneContext";
-import { useMediaLibraryContext } from "../../multimedia/MediaLibrary/MediaLibraryContext";
 import Button from "../Button/Button";
+import { useDropzoneContext } from "./DropzoneContext";
 
-const DropzoneFile = ({ children }: { children: ReactNode }) => {
+const DropzoneFile = ({
+  children,
+  multiple,
+}: {
+  children: ReactNode;
+  multiple?: boolean;
+}) => {
   const { t } = useTranslation();
   const { files, inputRef } = useDropzoneContext();
-
-  const { multiple } = useMediaLibraryContext();
 
   const hasFiles = files && files.length > 0;
 

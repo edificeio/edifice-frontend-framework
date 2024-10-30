@@ -1,0 +1,956 @@
+import { Meta, Story } from "@storybook/blocks";
+import { Card } from "../components/Card";
+import * as TypographyStories from "./Typography.stories";
+
+<Meta title="Design System/Tokens/Typography" />
+
+<style>
+  {`
+  @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;500;600;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap");
+
+  p {
+    margin: 0 !important;
+    font-size: 16px !important;
+  }
+  .comfortaa {
+    font-family: "Comfortaa", cursive;
+  }
+  .kgjune {
+    font-weight: 400;
+    font-family: "KGJune";
+  }
+  .arimo {
+    font-family: "Arimo", sans-serif;
+  }
+  .roboto {
+    font-family: "Roboto", sans-serif;
+  }
+  th:first-child {
+    width: 20rem;
+  }
+  th:nth-child(4) {
+    width: 15rem;
+  }
+  .h1 {
+    font-size: 32px;
+    line-height: 36px;
+  }
+  .h2 {
+    font-size: 26px;
+    line-height: 32px;
+    border-bottom: 0;
+  }
+  .h3 {
+    font-size: 22px;
+    line-height: 28px;
+  }
+  .h4 {
+    font-size: 18px;
+    line-height: 26px;
+  }
+  .small {
+    font-size: 14px!important;
+  }
+  .caption {
+    font-size: 12px !important;
+  }
+  `}
+</style>
+
+# Typography
+
+- Types have the same use in Responsive. Always design in Mobile First to ensure rendering on smaller screens.
+
+## One
+
+- KG June used as Heading and buttons
+- Arimo used as common text typography
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Style</th>
+      <th>Weight</th>
+      <th>CSS</th>
+      <th>Suggested Usage</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <h1 class="kgjune h1">Heading XL</h1>
+      </td>
+
+      <td>
+        <p>Size 32px</p>
+        <p>Line Height 36px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>h1, .h1</pre>
+        </code>
+      </td>
+
+      <td>
+        Oversized screen or section titles. Can be use to highlight data. Use
+        with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h2 class="kgjune h2">Heading L</h2>
+      </td>
+
+      <td>
+        <p>Size 26px</p>
+        <p>Line Height 32px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>h2, .h2</pre>
+        </code>
+      </td>
+
+      <td>
+        Oversized screen or section titles. Can be use to highlight data. Use
+        with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3 class="kgjune h3">Heading M</h3>
+      </td>
+
+      <td>
+        <p>Size 22px</p>
+        <p>Line Height 28px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>h3, .h3</pre>
+        </code>
+      </td>
+
+      <td>Section titles.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4 class="kgjune h4">Heading S</h4>
+      </td>
+
+      <td>
+        <p>Size 18px</p>
+        <p>Line Height 26px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>h4, .h4</pre>
+        </code>
+      </td>
+
+      <td>
+        Subsection or card tiltes, field group heading. Not used with Heading M
+        nor XS.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="arimo">Body</p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Common text, description field.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="arimo">
+          <strong>Body Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Common text, description field or deep heading.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="arimo">
+          <em>Body Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Place holder, description field</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="arimo">
+          <strong>
+            <em>Body Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>
+        Used to highlight place holders or description fields. Use with
+        moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small arimo">Small</p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>Secondary contents</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small arimo">
+          <strong>Small Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>
+        Can be use for small button, labels and to highlight secondary
+        informations.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small arimo">
+          <em>Small Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>Secondary or terciary informations.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small arimo">
+          <strong>
+            <em>Small Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>
+        Highlight secondary or terciary informations. Use with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption arimo">Caption</p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Use for content details. Use with moderation.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption arimo">
+          <strong>Caption Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Highlight Content details or labels.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption arimo">
+          <em>Caption Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Used for the lowest level of information. Use with moderation.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption arimo">
+          <strong>
+            <em>Caption Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>
+        Highlight content details or low informations. Use with moderation.
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+## Neo
+
+- Comfortaa used as Heading typography
+- Roboto used as common text typography
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Style</th>
+      <th>Weight</th>
+      <th>CSS</th>
+      <th>Suggested Usage</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td>
+        <h1 class="comfortaa h1">Heading XL</h1>
+      </td>
+
+      <td>
+        <p>Size 32px</p>
+        <p>Line Height 36px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>h1, .h1</pre>
+        </code>
+      </td>
+
+      <td>
+        Oversized screen or section titles. Can be use to highlight data. Use
+        with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h2 class="comfortaa h2">Heading L</h2>
+      </td>
+
+      <td>
+        <p>Size 26px</p>
+        <p>Line Height 32px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>h2, .h2</pre>
+        </code>
+      </td>
+
+      <td>
+        Oversized screen or section titles. Can be use to highlight data. Use
+        with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3 class="comfortaa h3">Heading M</h3>
+      </td>
+
+      <td>
+        <p>Size 22px</p>
+        <p>Line Height 28px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>h3, .h3</pre>
+        </code>
+      </td>
+
+      <td>Section titles.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <h4 class="comfortaa h4">Heading S</h4>
+      </td>
+
+      <td>
+        <p>Size 18px</p>
+        <p>Line Height 26px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>h4, .h4</pre>
+        </code>
+      </td>
+
+      <td>
+        Subsection or card tiltes, field group heading. Not used with Heading M
+        nor XS.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p>Body</p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Common text, description field.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="roboto">
+          <strong>Body Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Common text, description field or deep heading.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="roboto">
+          <em>Body Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>Place holder, description field</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="roboto">
+          <strong>
+            <em>Body Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 16px</p>
+        <p>Line Height 24px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>-</pre>
+        </code>
+      </td>
+
+      <td>
+        Used to highlight place holders or description fields. Use with
+        moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small roboto">Small</p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>Text button in semi bold weight and description field.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small roboto">Small</p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>Secondary contents</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small roboto">
+          <strong>Small Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>
+        Can be use for small button, labels and to highlight secondary
+        informations.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small roboto">
+          <em>Small Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>Secondary or terciary informations.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="small roboto">
+          <strong>
+            <em>Small Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 14px</p>
+        <p>Line Height 22px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.small</pre>
+        </code>
+      </td>
+
+      <td>
+        Highlight secondary or terciary informations. Use with moderation.
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption roboto">Caption</p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Use for content details. Use with moderation.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption roboto">
+          <strong>Caption Bold</strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Highlight Content details or labels.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption roboto">
+          <em>Caption Italic</em>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>400</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>Used for the lowest level of information. Use with moderation.</td>
+    </tr>
+
+    <tr>
+      <td>
+        <p class="caption roboto">
+          <strong>
+            <em>Caption Bold Italic</em>
+          </strong>
+        </p>
+      </td>
+
+      <td>
+        <p>Size 12px</p>
+        <p>Line Height 20px</p>
+      </td>
+
+      <td>700</td>
+
+      <td>
+        <code>
+          <pre>.caption</pre>
+        </code>
+      </td>
+
+      <td>
+        Highlight content details or low informations. Use with moderation.
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+
+## Common Text
+
+Body
+
+```
+<p>Body</p>
+```
+
+**Body Bold**
+
+```
+<p><strong>Body Bold</strong></p>
+```
+
+_Body Italic_
+
+```
+<p><em>Body Italic</em></p>
+```
+
+**_Body Bold Italic_**
+
+```
+<p><strong><em>Body Bold Italic</em></strong></p>
+```
+
+Small
+
+```
+<p className="small">Small</p>
+```
+
+**Small Bold**
+
+```
+<p className="small"><strong>Small Bold</strong></p>
+```
+
+_Small Italic_
+
+```
+<p className="small"><em>Small Italic</em></p>
+```
+
+**_Small Bold Italic_**
+
+```
+<p className="small"><strong><em>Small Bold Italic</em></strong></p>
+```
+
+Caption
+
+```
+<p className="caption">Caption</p>
+```
+
+**Caption Bold**
+
+```
+<p className="caption"><strong>Caption Bold</strong></p>
+```
+
+_Caption Italic_
+
+```
+<p className="caption"><em>Caption Italic</em></p>
+```
+
+**_Caption Bold Italic_**
+
+```
+<p className="caption"><strong><em>Caption Bold Italic</em></strong></p>
+```

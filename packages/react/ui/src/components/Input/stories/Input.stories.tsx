@@ -49,6 +49,14 @@ const meta: Meta<typeof Input> = {
     type: "text",
     placeholder: "Text Placeholder",
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Input` component is a foundational form element that allows users to enter and edit text or other data. It supports various input types (text, email, password, etc.), sizes, and states like disabled or readonly. The component can be combined with other form elements like labels and help text to create complete form controls.",
+      },
+    },
+  },
 };
 
 export default meta;

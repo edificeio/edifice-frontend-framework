@@ -2,21 +2,48 @@ import { ReactNode, useMemo } from "react";
 
 import clsx from "clsx";
 
+import { useDropzone } from "../../hooks";
 import { DropzoneContext } from "./DropzoneContext";
 import DropzoneDrag from "./DropzoneDrag";
 import DropzoneFile from "./DropzoneFile";
 import DropzoneImport from "./DropzoneImport";
-import { useDropzone } from "../../hooks";
 
+/**
+ * Props for the Dropzone component.
+ */
 interface DropzoneProps {
+  /**
+   * Optional additional class names to apply to the dropzone.
+   */
   className?: string;
-  /** See https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept#unique_file_type_specifiers */
+
+  /**
+   * Array of accepted file types.
+   * See {@link https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept#unique_file_type_specifiers | MDN Documentation}.
+   */
   accept?: string[];
+
+  /**
+   * Whether multiple files can be selected.
+   */
   multiple?: boolean;
+
+  /**
+   * Whether the dropzone should handle the file drop.
+   */
   handle?: boolean;
+
+  /**
+   * The content to be rendered inside the dropzone.
+   */
   children?: ReactNode;
 }
 
+/**
+ *
+ * The Dropzone component allows to add or remove files. A `useDropzoneContext` hook is available to manage a specific UI component for handling file uploads.
+ *
+ */
 const Dropzone = ({
   className,
   accept,
@@ -66,10 +93,10 @@ const Dropzone = ({
         onDragLeave={handleDragLeave}
         onDrop={files.length > 0 && !multiple ? undefined : handleDrop}
       >
-        <div className="align-center">
+        <div className="d-flex flex-fill">
           {!handle ? (
             <>
-              <Dropzone.File>{children}</Dropzone.File>
+              <Dropzone.File multiple={multiple}>{children}</Dropzone.File>
               <Dropzone.Import />
             </>
           ) : null}

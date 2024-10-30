@@ -1,3 +1,2 @@
-export { default as Tabs } from "./Tabs";
-export * from "./Tabs";
-export { type TabsItemProps } from "./TabsItem";
+export * from "./components/Tabs";
+export type { TabsItemProps } from "./components/TabsItem";

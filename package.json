@@ -14,7 +14,7 @@
   "author": "Edifice",
   "type": "module",
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run build --filter=./packages/**",
     "check:editor": "package-check --cwd=packages/editor",
     "check:icons": "package-check --cwd=packages/icons",
     "check:react": "package-check --cwd=packages/react",
@@ -25,18 +25,8 @@
     "clean:storybook": "rm -rf dist",
     "clean:turbo": "rm -rf packages/**/.turbo",
     "docs": "turbo run docs --filter=./apps/docs",
-<<<<<<< HEAD
-<<<<<<< HEAD
     "docs:build": "turbo run build --filter=./apps/docs",
     "docs:preview": "turbo run preview --filter=./apps/docs",
-=======
-    "docs:build": "turbo run docs:build --filter=./apps/docs",
-    "docs:preview": "turbo run docs:preview --filter=./apps/docs",
->>>>>>> 5106bbc2 (feat: #WB2-1923, add comments storybook and fix somme issues (#254))
-=======
-    "docs:build": "turbo run build --filter=./apps/docs",
-    "docs:preview": "turbo run preview --filter=./apps/docs",
->>>>>>> bda09c85 (chore: #EN-11, migrate to storybook 8.x.x (#266))
     "fix": "turbo run fix",
     "format": "turbo run format",
     "preinstall": "npx only-allow pnpm",
@@ -47,8 +37,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "7.23.3",
-    "@chromatic-com/storybook": "^1",
-    "@edifice-ui/icons": "workspace:*",
+    "@chromatic-com/storybook": "^3.2.0",
     "@skypack/package-check": "0.2.2",
     "@storybook/addon-a11y": "^8.3.6",
     "@storybook/addon-essentials": "^8.3.6",
@@ -60,11 +49,10 @@
     "@storybook/react-vite": "^8.3.6",
     "@storybook/test": "^8.3.6",
     "@storybook/theming": "^8.3.6",
-    "@turbo/gen": "1.11.2",
+    "@turbo/gen": "2.2.3",
     "@typescript-eslint/eslint-plugin": "6.15.0",
     "@typescript-eslint/parser": "6.15.0",
     "@vitejs/plugin-react": "4.2.1",
-    "@vitejs/plugin-react-swc": "3.5.0",
     "eslint": "8.56.0",
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-jsx-a11y": "6.8.0",
@@ -74,13 +62,11 @@
     "eslint-plugin-storybook": "^0.10.1",
     "husky": "8.0.3",
     "lerna": "8.0.1",
-    "msw": "2.3.1",
-    "msw-storybook-addon": "2.0.3",
     "prettier": "3.1.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
     "rollup-plugin-pure": "^0.2.1",
     "rollup-plugin-visualizer": "5.11.0",
+    "msw": "2.3.1",
+    "msw-storybook-addon": "2.0.3",
     "storybook": "^8.3.6",
     "turbo": "2.2.3",
     "typescript": "5.3.3",

@@ -13,7 +13,7 @@ const meta: Meta<typeof Alert> = {
     docs: {
       description: {
         component:
-          "Alert Component is contextual and used on the interface to guide users. Alert Component can be accompanied by a button to refer users to additional information available. The colors used in the Component come from the support palette.",
+          "The Alert component provides contextual feedback messages for typical user actions. It can be used to display success messages, warnings, error messages or general information. The component supports a dismissible option and can include action buttons for additional user interaction. The visual styling uses semantic colors from the support color palette to indicate different alert types - success (green), warning (yellow), info (blue), and danger (red).",
       },
     },
   },
