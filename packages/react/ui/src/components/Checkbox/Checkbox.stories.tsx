@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Meta, StoryObj } from "@storybook/react";
 
 import Checkbox from "./Checkbox";
-import React from "react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Checkbox> = {
@@ -14,6 +13,14 @@ const meta: Meta<typeof Checkbox> = {
     disabled: false,
     checked: true,
     indeterminate: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The Checkbox component is a form control that allows users to select one or more options from a set. It supports three states: checked, unchecked, and indeterminate. The component can be disabled to prevent user interaction and includes a label for accessibility. The indeterminate state is useful for parent checkboxes that control a group of child checkboxes when some, but not all, children are checked.",
+      },
+    },
   },
 };
 

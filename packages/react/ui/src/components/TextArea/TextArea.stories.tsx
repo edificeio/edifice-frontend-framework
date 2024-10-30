@@ -22,6 +22,14 @@ const meta = {
     size: "md",
     placeholder: "Text Placeholder",
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "TextArea component allows users to input multi-line text. It supports different sizes, placeholder text, and can be disabled. It also integrates with form controls for validation and other functionalities.",
+      },
+    },
+  },
 };
 
 export default meta;

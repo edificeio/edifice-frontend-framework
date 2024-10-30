@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Dropdown from "../Dropdown";
-import { useState } from "react";
 import { Filter } from "@edifice-ui/icons";
+import { useState } from "react";
+import Dropdown from "../Dropdown";
 
 const meta: Meta<typeof Dropdown> = {
   title: "Components/Dropdown/Dropdown Checkbox Item",
@@ -15,7 +15,7 @@ const meta: Meta<typeof Dropdown> = {
     docs: {
       description: {
         component:
-          "Use `Dropdown.CheckboxItem` when a multi-selection is needed. `Dropdown.Trigger` can receive a `badgeContent` prop to display the total of selected items.",
+          "The `Dropdown.CheckboxItem` component enables multi-selection functionality within dropdowns. When combined with `Dropdown.Trigger`, you can display a badge showing the count of selected items using the `badgeContent` prop. This pattern is useful for filters, bulk actions, or any scenario requiring users to select multiple options from a dropdown menu.",
       },
     },
   },

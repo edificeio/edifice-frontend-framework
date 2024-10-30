@@ -1,54 +1,97 @@
 import i18n from "i18next";
-import Backend from "i18next-http-backend";
+import { initReactI18next } from "react-i18next";
 
-i18n
-  .use(Backend) // lazy loads translations from /public/locales
-  .init({
-    backend: {
-      parse: function (data: string) {
-        return JSON.parse(data);
+i18n.use(initReactI18next).init({
+  resources: {
+    en: {
+      translation: {
+        "comment.author.avatar": "Author avatar",
+        "comment.publish.date": "Published [[date]]",
+        "comment.update.date": "Modified [[date]]",
+        "comment.placeholder": "Your comment",
+        "comment.post": "Send",
+        "comment.several": "[[number]] comments",
+        "comment.little": "[[number]] comment",
+        "comment.placeholder.textarea": "Your comment here",
+        "comment.cancel": "Cancel",
+        "comment.remove": "Delete",
+        "comment.edit": "Update",
+        "comment.save": "Save",
+        "comment.more": "Read more",
+        "comment.emptyscreen": "No comments yet, be the first to comment",
+        "Personnel": "Guest",
+        "Relative": "Relative",
+        "Student": "Student",
+        "Teacher": "Teacher",
+        "blog": "Blog",
+        "wiki": "Wiki",
+        "bbm.linker.int.choose": "Choose an application",
+        "search": "Search",
+        "bbm.linker.int.no.results": "No results found",
+        "bbm.linker.int.empty":
+          "Select, at the top left, the application in which the resource you want to add is located!",
+        "bbm.linker.int.notfound":
+          "The resource you are looking for does not exist.",
+        "tiptap.upload.retry": "Retry",
+        "tiptap.tooltip.upload.delete": "Delete",
+        "tiptap.tooltip.upload.loaded": "Loaded",
+        "tiptap.tooltip.upload.loading": "Loading",
+        "tiptap.upload.error": "Error",
+        "dropzone.text": "Upload files",
+        "dropzone.import": "Add from computer",
+        "dropzone.drop": "Move files here",
+        "dropzone.add.more": "Add more files",
+        "bbm.audio.recorder.defaultName": "Record ",
+        "bbm.audio.record.start": "Start",
+        "bbm.audio.record.reset": "Reset",
+        "bbm.audio.record.save": "Save",
+        "bbm.audio.play.start": "Play",
+        "bbm.audio.play.stop": "Stop",
+        "bbm.embed.description":
+          "To add external content, copy the 'embed' or 'iframe' sharing code and paste it below.",
+        "bbm.embed.title": "Embed or iframe",
+        "bbm.embed.placeholder": "Paste your code here",
+        "bbm.embed.preview": "Preview",
+        "bbm.linker.ext.text": "Link text",
+        "bbm.linker.ext.text.placeholder": "Enter the text to display",
+        "bbm.linker.ext.url": "External link URL",
+        "bbm.linker.ext.url.placeholder": "http://www.example.com",
+        "bbm.linker.open.tab": "Open link in a new tab",
+        "bbm.audio": "Recorder",
+        "bbm.device": "My device",
+        "bbm.workspace": "Workspace",
+        "bbm.embed": "External link",
+        "bbm.video.url.title": "Video URL",
+        "bbm.video.url.placeholder": "Insert a Youtube link, Dailymotion, ...",
+        "bbm.video.useEmbedCode": "Use embed or iframe code",
+        "bbm.video.modal.title": "Add a video",
+        "bbm.audio.modal.title": "Add an audio",
+        "bbm.image.modal.title": "Add an image",
+        "bbm.attachment.modal.title": "Add an attachment",
+        "bbm.embed.modal.title": "Add embed or iframe",
+        "bbm.link.modal.title": "Add a link",
+        "bbm.linker.int": "Internal link",
+        "bbm.linker.ext": "External link",
+        "cancel": "Cancel",
+        "workspace.tree.owner": "My folder",
+        "workspace.tree.shared": "Shared",
+        "workspace.tree.protected": "Private",
+        "workspace.search.order": "Filter",
+        "sort.order.modify.desc": "Last changes",
+        "sort.order.alpha.asc": "Asc order",
+        "sort.order.alpha.desc": "Desc order",
+        "defaultPalette": "Default palette",
+        "accessiblePalette": "Accessible palette",
       },
     },
-    resources: {
-      en: {
-        translation: {
-          "comment.author.avatar": "Author avatar",
-          "comment.publish.date": "Published [[date]]",
-          "comment.update.date": "Modified [[date]]",
-          "comment.placeholder": "Your comment",
-          "comment.post": "Send",
-          "comment.several": "[[number]] comments",
-          "comment.little": "[[number]] comment",
-          "comment.placeholder.textarea": "Your comment here",
-          "comment.cancel": "Cancel",
-          "comment.remove": "Delete",
-          "comment.edit": "Update",
-          "comment.save": "Save",
-          "comment.more": "Read more",
-          "comment.emptyscreen": "No comments yet, be the first to comment",
-          "Personnel": "Guest",
-          "Relative": "Relative",
-          "Student": "Student",
-          "Teacher": "Teacher",
-          "blog": "Blog",
-          "wiki": "Wiki",
-          "bbm.linker.int.choose": "Choose an application",
-          "search": "Search",
-          "bbm.linker.int.no.results": "No results found",
-          "bbm.linker.int.empty":
-            "Select, at the top left, the application in which the resource you want to add is located!",
-          "bbm.linker.int.notfound":
-            "The resource you are looking for does not exist.",
-        },
-      },
-    },
-    fallbackLng: "en",
-    debug: false,
-    interpolation: {
-      escapeValue: false,
-      prefix: "[[",
-      suffix: "]]",
-    },
-  });
+  },
+  fallbackLng: "en",
+  debug: false,
+  interpolation: {
+    escapeValue: false,
+    prefix: "[[",
+    suffix: "]]",
+  },
+});
 
 export default i18n;

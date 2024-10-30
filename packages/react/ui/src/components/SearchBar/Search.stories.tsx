@@ -1,8 +1,5 @@
-import { Search } from "@edifice-ui/icons";
 import { Meta, StoryObj } from "@storybook/react";
-import SearchButton from "../Button/SearchButton";
 import SearchBar, { SearchBarProps } from "./SearchBar";
-import FormControl from "../Form/FormControl";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof SearchBar> = {
@@ -12,7 +9,7 @@ const meta: Meta<typeof SearchBar> = {
     docs: {
       description: {
         component:
-          "The SearchBar is the composition of FormControl, Input and SearchButton components. All components have access to all their expected props.",
+          "SearchBar component for creating search input fields with optional search button. Supports dynamic searching, different sizes, and disabled states. Can be used as a standalone search input or with an integrated search button for form submissions.",
       },
     },
   },

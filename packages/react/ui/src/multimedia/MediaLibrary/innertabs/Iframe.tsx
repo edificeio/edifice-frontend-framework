@@ -9,5 +9,5 @@ export const Iframe = () => {
     setResult(ressource);
   };
 
-  return <Embed onSuccess={handleOnSuccess}></Embed>;
+  return <Embed onSuccess={handleOnSuccess} />;
 };

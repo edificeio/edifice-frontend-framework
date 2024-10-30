@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Meta, StoryObj } from "@storybook/react";
 
-import Radio, { RadioProps } from "./Radio";
 import { Applications, ViewList } from "@edifice-ui/icons";
+import Radio, { RadioProps } from "./Radio";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Radio> = {
@@ -14,6 +14,14 @@ const meta: Meta<typeof Radio> = {
     value: "",
     model: "",
     onChange: () => {},
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Radio component for creating radio button inputs. Supports customizable labels, values, and onChange handlers. Radio buttons are used when users need to select a single option from a list of mutually exclusive choices.",
+      },
+    },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };

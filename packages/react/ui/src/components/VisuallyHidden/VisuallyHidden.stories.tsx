@@ -1,30 +1,37 @@
-import { Meta } from "@storybook/react";
-import VisuallyHidden, { VisuallyHiddenProps } from "./VisuallyHidden";
-import { Button } from "../Button";
 import { AddUser } from "@edifice-ui/icons";
+import { Meta, StoryObj } from "@storybook/react";
+import { Button } from "../Button";
+import VisuallyHidden, { VisuallyHiddenProps } from "./VisuallyHidden";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-const meta: Meta<typeof VisuallyHidden> = {
+const meta = {
   title: "Components/VisuallyHidden",
   component: VisuallyHidden,
   parameters: {
     docs: {
       description: {
         component:
-          "It is used to visually hide an element but accessible for screen-readers. It renders html <span> as a wrapper of your content.",
+          "VisuallyHidden component is used to visually hide content while keeping it accessible to screen readers. This is useful for adding additional context or instructions for users who rely on assistive technologies.",
       },
     },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-};
+} satisfies Meta<typeof VisuallyHidden>;
 
 export default meta;
 
-export const Base = (args: VisuallyHiddenProps) => {
-  return (
-    <Button>
-      <AddUser />
-      <VisuallyHidden>Add User</VisuallyHidden>
-    </Button>
-  );
+type Story = StoryObj<typeof VisuallyHidden>;
+
+export const Base: Story = {
+  render: (args: VisuallyHiddenProps) => {
+    return (
+      <Button>
+        <AddUser />
+        <VisuallyHidden>{args.children}</VisuallyHidden>
+      </Button>
+    );
+  },
+  args: {
+    children: "Add User",
+  },
 };

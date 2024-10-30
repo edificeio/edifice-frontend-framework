@@ -19,6 +19,14 @@ const meta: Meta<typeof Loading> = {
     loadingPosition: "left",
     loadingIcon: undefined,
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Loading` component provides a visual indicator for loading states in the application. It can be customized with different positions, colors and icons. Features include:\n\n- Left or right positioning of the loading indicator\n- Custom loading icons\n- Color customization\n- Optional loading text\n- Flexible integration with buttons and other components",
+      },
+    },
+  },
 };
 
 export default meta;

@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Dropdown from "../Dropdown";
 import { Copy, Cut, Delete, Edit, Filter, Print } from "@edifice-ui/icons";
 import { RefAttributes, useState } from "react";
 import IconButton, { IconButtonProps } from "../../Button/IconButton";
 import { ColorPicker, DefaultPalette } from "../../ColorPicker";
+import Dropdown from "../Dropdown";
 
 const meta: Meta<typeof Dropdown> = {
   title: "Components/Dropdown/Base",
@@ -17,7 +17,7 @@ const meta: Meta<typeof Dropdown> = {
     docs: {
       description: {
         component:
-          "`Dropdown` Component with accessibility in mind (keyboard, mouse). It is fully customizable and accepts `Item`, `CheckboxItem`, `RadioItem`, `Separator` as compound components. A custom trigger can be used with a render prop. It comes with a custom hook `useDropdown` and can be use to create others dropdowns.",
+          "The `Dropdown` component is a flexible and accessible UI element that supports both keyboard and mouse interactions. It provides a comprehensive set of compound components including `Item`, `CheckboxItem`, `RadioItem`, and `Separator` for building dropdown menus. The component features a customizable trigger through render props and includes a `useDropdown` hook for creating custom dropdown implementations. Key features include:\n\n- Full keyboard navigation and ARIA support\n- Compound components for different menu item types\n- Customizable trigger via render props\n- Support for icons and badges\n- Flexible positioning\n- Multi-select capabilities with checkboxes\n- Single-select capabilities with radio buttons",
       },
     },
   },

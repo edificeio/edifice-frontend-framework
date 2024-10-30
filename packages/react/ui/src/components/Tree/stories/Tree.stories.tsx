@@ -8,6 +8,14 @@ import { TreeProps } from "../types";
 const meta: Meta<typeof Tree> = {
   title: "Components/Tree",
   component: Tree,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Tree component allows you to display hierarchical data in a tree structure. Each node can have its own properties and children, and the tree can be expanded or collapsed to show or hide its branches.",
+      },
+    },
+  },
   args: {
     nodes: {
       id: "default",

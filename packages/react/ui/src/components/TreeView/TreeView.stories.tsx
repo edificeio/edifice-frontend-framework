@@ -5,8 +5,16 @@ import TreeView, { TreeViewHandlers } from "./TreeView";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof TreeView> = {
-  title: "Components/TreeView",
+  title: "Components/TreeView (deprecated)",
   component: TreeView,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "TreeView component allows you to display hierarchical data in a tree structure. Each node can have its own properties and children, and the tree can be expanded or collapsed to show or hide its branches. This component is deprecated and will be removed in future versions.",
+      },
+    },
+  },
   args: {
     data: {
       id: "default",

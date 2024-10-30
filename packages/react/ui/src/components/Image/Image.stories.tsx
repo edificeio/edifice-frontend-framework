@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import Image, { ImageProps } from "./Image";
-import React from "react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Image> = {
@@ -10,7 +9,8 @@ const meta: Meta<typeof Image> = {
   parameters: {
     docs: {
       description: {
-        component: "Image Component",
+        component:
+          "The `Image` component provides a consistent way to display images with optional aspect ratio control. It supports various aspect ratios (1:1, 4:3, 16:9, 21:9) and ensures proper image scaling and positioning. This component is useful for maintaining consistent image layouts across your application while preserving aspect ratios.",
       },
     },
   },

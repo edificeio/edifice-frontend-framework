@@ -6,6 +6,14 @@ import { SortableTreeProps } from "../types";
 const meta: Meta<typeof SortableTree> = {
   title: "Components/Tree/SortableTree",
   component: SortableTree,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "SortableTree component allows you to display hierarchical data in a tree structure with drag-and-drop functionality. Each node can have its own properties and children, and the tree can be expanded or collapsed to show or hide its branches. Nodes can be reordered by dragging and dropping them to new positions.",
+      },
+    },
+  },
   args: {
     nodes: [
       {

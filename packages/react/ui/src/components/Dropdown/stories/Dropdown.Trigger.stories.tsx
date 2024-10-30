@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Dropdown from "../Dropdown";
 import { Edit, Filter } from "@edifice-ui/icons";
-import IconButton, { IconButtonProps } from "../../Button/IconButton";
 import { RefAttributes } from "react";
 import { JSX } from "react/jsx-runtime";
+import IconButton, { IconButtonProps } from "../../Button/IconButton";
+import Dropdown from "../Dropdown";
 import DropdownTrigger from "../DropdownTrigger";
 
 const meta: Meta<typeof DropdownTrigger> = {
@@ -15,6 +15,14 @@ const meta: Meta<typeof DropdownTrigger> = {
     icon: undefined,
     badgeContent: 0,
     disabled: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Dropdown.Trigger` component serves as the clickable element that toggles the dropdown menu. It can be customized with a label, icon, and badge content. The trigger supports both button and icon button variants, and can be disabled when needed. Key features include:\n\n- Optional label text\n- Optional icon support\n- Badge content display\n- Disabled state\n- Keyboard accessibility\n- ARIA attributes for screen readers",
+      },
+    },
   },
   decorators: [(Story) => <div style={{ height: "400px" }}>{Story()}</div>],
 };

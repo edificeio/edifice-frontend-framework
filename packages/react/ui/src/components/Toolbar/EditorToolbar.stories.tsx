@@ -1,15 +1,12 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { Toolbar, IconButtonProps, IconButton, Dropdown } from "..";
 import {
   AlignLeft,
-  Paperclip,
   BulletList,
   Landscape,
   Link,
   Mic,
+  Paperclip,
   RecordVideo,
   Smiley,
-  Table,
   TextBold,
   TextColor,
   TextHighlight,
@@ -18,7 +15,9 @@ import {
   TextTypo,
   TextUnderline,
 } from "@edifice-ui/icons";
+import { Meta, StoryObj } from "@storybook/react";
 import { RefAttributes } from "react";
+import { Dropdown, IconButton, IconButtonProps, Toolbar } from "..";
 
 const meta: Meta<typeof Toolbar> = {
   title: "Tiptap/EditorToolbar",
@@ -26,7 +25,8 @@ const meta: Meta<typeof Toolbar> = {
   parameters: {
     docs: {
       description: {
-        component: "EditorToolbar extends the Toolbar Component",
+        component:
+          "EditorToolbar component allows you to create a customizable toolbar for a text editor with various items such as icons and dropdowns. Each item can have its own properties and actions, and the toolbar can be aligned in different ways.",
       },
     },
   },

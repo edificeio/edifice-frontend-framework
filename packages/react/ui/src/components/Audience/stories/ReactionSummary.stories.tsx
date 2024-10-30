@@ -13,6 +13,14 @@ const meta: Meta<typeof ReactionSummary> = {
       totalReactionsCounter: 3,
     },
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "ReactionSummary is a component that displays a summary of reactions to content. It shows the total number of reactions and the reaction types used, along with an optional user's own reaction. The component can be clicked to show more detailed reaction information.",
+      },
+    },
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
 

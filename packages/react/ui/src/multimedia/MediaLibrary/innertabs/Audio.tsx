@@ -32,6 +32,6 @@ export const Audio = () => {
       onSaveSuccess={handleOnSaveSuccess}
       hideSaveAction={true}
       visibility={visibility}
-    ></AudioRecorder>
+    />
   );
 };

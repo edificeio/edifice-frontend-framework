@@ -12,6 +12,9 @@
     "dev": {
       "cache": false
     },
+    "docs": {
+      "cache": false
+    },
     "deploy": {
       "dependsOn": [
         "build",
@@ -20,11 +23,8 @@
       ],
       "outputs": []
     },
-    "docs": {
-      "outputs": []
-    },
     "preview": {
-      "outputs": []
+      "cache": false
     },
     "fix": {
       "outputs": []

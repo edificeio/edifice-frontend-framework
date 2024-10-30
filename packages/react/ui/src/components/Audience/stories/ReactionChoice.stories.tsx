@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { ReactionChoice, ReactionChoiceProps } from "..";
-import { useState } from "react";
 import { ReactionSummaryData, ReactionType } from "edifice-ts-client";
+import { useState } from "react";
+import { ReactionChoice, ReactionChoiceProps } from "..";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ReactionChoice> = {
@@ -24,6 +24,14 @@ const meta: Meta<typeof ReactionChoice> = {
       reactionTypes: ["REACTION_2", "REACTION_4"],
       userReaction: undefined,
       totalReactionsCounter: 3,
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "ReactionChoice is a component that allows users to react to content with predefined reaction types. It displays available reactions and tracks the user's current reaction along with a summary of all reactions. The component supports customizable reaction types and provides feedback when reactions are changed.",
+      },
     },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes

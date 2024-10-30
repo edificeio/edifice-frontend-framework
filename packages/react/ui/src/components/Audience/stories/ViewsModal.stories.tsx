@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { useToggle } from "../../../hooks";
-import ViewsModal from "../ViewsModal";
-import ViewsCounter from "../ViewsCounter";
 import { ViewsDetails } from "edifice-ts-client";
+import { useToggle } from "../../../hooks";
+import ViewsCounter from "../ViewsCounter";
+import ViewsModal from "../ViewsModal";
 
 const viewsDetailsMockedData: ViewsDetails = {
   viewsCounter: 20,
@@ -39,6 +39,14 @@ const meta: Meta<typeof ViewsModal> = {
   decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
   args: {
     viewsDetails: viewsDetailsMockedData,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "ViewsModal is a component that displays detailed view statistics for content. It shows the total views, unique views, and a breakdown of views by user profile. The modal provides comprehensive analytics about content engagement across different user types.",
+      },
+    },
   },
 };
 

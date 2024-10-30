@@ -13,15 +13,14 @@ import {
 } from "../../components";
 import { usePaths } from "../../core";
 import { useDebounce } from "../../hooks";
-import { useMediaLibraryContext } from "../MediaLibrary/MediaLibraryContext";
 
 export interface VideoEmbedProps {
+  switchType?: (type: "embedder") => void;
   onSuccess: (resource?: string) => void;
 }
 
-const VideoEmbed = ({ onSuccess }: VideoEmbedProps) => {
+const VideoEmbed = ({ switchType, onSuccess }: VideoEmbedProps) => {
   const { t } = useTranslation();
-  const { switchType } = useMediaLibraryContext();
 
   const [url, setUrl] = useState<string>();
   const [embedVideo, setEmbedVideo] = useState<string>();
@@ -71,7 +70,7 @@ const VideoEmbed = ({ onSuccess }: VideoEmbedProps) => {
   }
 
   function handleSwitchToEmbedderClick() {
-    switchType("embedder");
+    switchType?.("embedder");
   }
 
   const renderContent = () => {
@@ -105,29 +104,33 @@ const VideoEmbed = ({ onSuccess }: VideoEmbedProps) => {
               title={t("bbm.video.previewError.title")}
               text={t("bbm.video.previewError.text")}
             />
-            <Button
-              variant="ghost"
-              color="primary"
-              onClick={handleSwitchToEmbedderClick}
-              className="align-items-start mt-16"
-            >
-              {t("bbm.video.useEmbedCode")} <ArrowRight />
-            </Button>
+            {switchType && (
+              <Button
+                variant="ghost"
+                color="primary"
+                onClick={handleSwitchToEmbedderClick}
+                className="align-items-start mt-16"
+              >
+                {t("bbm.video.useEmbedCode")} <ArrowRight />
+              </Button>
+            )}
           </div>
         );
       }
     } else {
       return (
-        <div className="d-flex my-16 align-items-start">
-          <Button
-            variant="ghost"
-            color="primary"
-            onClick={handleSwitchToEmbedderClick}
-            className="align-items-start"
-          >
-            {t("bbm.video.useEmbedCode")} <ArrowRight />
-          </Button>
-        </div>
+        switchType && (
+          <div className="d-flex my-16 align-items-start">
+            <Button
+              variant="ghost"
+              color="primary"
+              onClick={handleSwitchToEmbedderClick}
+              className="align-items-start"
+            >
+              {t("bbm.video.useEmbedCode")} <ArrowRight />
+            </Button>
+          </div>
+        )
       );
     }
   };

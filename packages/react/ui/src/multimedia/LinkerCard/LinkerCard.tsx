@@ -14,6 +14,7 @@ export interface LinkerCardProps extends CardProps {
   doc: IResource;
 }
 
+// INFO: This component is for internal use only. It is not exported for external use.
 const LinkerCard = ({
   doc,
   isClickable = true,

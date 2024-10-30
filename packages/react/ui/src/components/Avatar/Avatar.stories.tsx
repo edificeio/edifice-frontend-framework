@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import Avatar from "./Avatar";
-import React from "react";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Avatar> = {
@@ -11,7 +10,7 @@ const meta: Meta<typeof Avatar> = {
     docs: {
       description: {
         component:
-          "Avatar used for Card Components or User image. Default image is a placeholder or when `src` isn't provided or on error.",
+          "The Avatar component displays user profile images or placeholder icons. It can be used within Card components or anywhere a user image is needed. A default placeholder image is shown when no image source is provided via the `src` prop or if the image fails to load. The component supports different sizes and shapes to fit various design needs.",
       },
     },
   },

@@ -1,13 +1,21 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Select, { OptionsType } from "./Select";
 import { ListOrder } from "@edifice-ui/icons";
+import Select, { OptionsType } from "./Select";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Select> = {
   title: "Forms/Select",
   component: Select,
   decorators: [(Story) => <div style={{ height: "400px" }}>{Story()}</div>],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Select component for creating dropdown selection menus. Supports single and multiple selections, custom options formatting, search functionality, and disabled states. Ideal for when users need to choose one or more options from a predefined list.",
+      },
+    },
+  },
 } as Meta<typeof Select>;
 
 export default meta;

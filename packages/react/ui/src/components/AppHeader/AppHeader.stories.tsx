@@ -1,9 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
-import AppHeader from "./AppHeader";
-import { Button } from "../Button";
 import Breadcrumb from "../Breadcrumb/Breadcrumb";
-import AppIcon from "../AppIcon/AppIcon";
-import { Image } from "../Image";
+import { Button } from "../Button";
+import AppHeader from "./AppHeader";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof AppHeader> = {
@@ -13,7 +11,7 @@ const meta: Meta<typeof AppHeader> = {
     docs: {
       description: {
         component:
-          "AppHeader is the composition of Breadcrumb Component and actions buttons.",
+          "AppHeader is a layout component that combines a Breadcrumb navigation with action buttons. It provides a consistent header structure for applications, displaying the current location in the navigation hierarchy along with relevant action buttons for that context.",
       },
     },
   },

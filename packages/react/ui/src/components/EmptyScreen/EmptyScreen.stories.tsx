@@ -1,4 +1,4 @@
-import { StoryObj, Meta } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import EmptyScreen, { EmptyScreenProps } from "./EmptyScreen";
 
@@ -28,7 +28,8 @@ const meta: Meta<typeof EmptyScreen> = {
   parameters: {
     docs: {
       description: {
-        component: "",
+        component:
+          "The `EmptyScreen` component is used to display a placeholder state when there is no content to show. It typically includes an illustration, a title, and descriptive text to provide context and guidance to users. This component is commonly used for empty states, zero results, or initial setup screens.",
       },
     },
   },

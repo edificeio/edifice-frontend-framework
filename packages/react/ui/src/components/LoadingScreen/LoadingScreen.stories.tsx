@@ -10,7 +10,7 @@ const meta: Meta<typeof LoadingScreen> = {
     docs: {
       description: {
         component:
-          "The LoadingScreen component is commonly used with Lazy Loaded Components (code splitting) to notify the user that components are loading.",
+          "The `LoadingScreen` component provides a full-screen or positioned loading indicator with optional caption text. Features include:\n\n- Full-screen overlay mode or positioned display\n- Customizable loading caption\n- Centered loading animation\n- Consistent styling with the application theme",
       },
     },
   },
