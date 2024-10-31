@@ -1,6 +1,6 @@
 {
   "name": "@edifice-ui/editor",
-  "version": "1.5.22",
+  "version": "1.5.23-hotfix-check-user-rights.1",
   "description": "Edifice Editor Library",
   "keywords": [
     "react",

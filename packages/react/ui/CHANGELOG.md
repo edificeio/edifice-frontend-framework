@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.23-hotfix-check-user-rights.1](https://github.com/edificeio/edifice-ui/compare/v1.5.23-hotfix-check-user-rights.0...v1.5.23-hotfix-check-user-rights.1) (2024-10-25)
+
+**Note:** Version bump only for package @edifice-ui/react
+
+## [1.5.23-hotfix-check-user-rights.0](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23-hotfix-check-user-rights.0) (2024-10-25)
+
+### Bug Fixes
+
+- **ui:** #EN-26, add additionalRoles to extend checkUserRight ([7d8d81c](https://github.com/edificeio/edifice-ui/commit/7d8d81c80049f4bdec792ae82422a80540f1f086)), closes [#EN-26](https://github.com/edificeio/edifice-ui/issues/EN-26)
+
 ## [1.5.22](https://github.com/edificeio/edifice-ui/compare/v1.5.22-develop.0...v1.5.22) (2024-10-23)
 
 **Note:** Version bump only for package @edifice-ui/react

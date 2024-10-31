@@ -6,7 +6,12 @@ export type RightSubject = "user" | "group" | "creator";
 /**
  * Identify the role of the right
  */
-export type RightRole = "read" | "contrib" | "manager" | "creator";
+export type RightRole =
+  | "read"
+  | "contrib"
+  | "manager"
+  | "creator"
+  | (string & {});
 
 /**
  * Right of a resource
