@@ -1,5 +1,6 @@
 import { RafterDown } from "@edifice-ui/icons";
 import {
+  OneAssistance as Assistance,
   Community,
   Disconnect,
   Home,
@@ -7,7 +8,6 @@ import {
   NeoAssistance,
   NeoMessaging,
   NewRelease,
-  OneAssistance as Assistance,
   OneMessaging,
   OneProfile,
   Userbook,
@@ -15,31 +15,31 @@ import {
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
-import { Badge } from "./Badge";
+import {
+  Avatar,
+  Badge,
+  Logo,
+  Popover,
+  PopoverBody,
+  PopoverFooter,
+  VisuallyHidden,
+} from "../../components";
+import {
+  useConversation,
+  useHasWorkflow,
+  useHeader,
+  useOdeClient,
+  useOdeTheme,
+  useUser,
+} from "../../core";
+import { Help } from "../Help";
+import { useHelp } from "../Help/hooks/useHelp";
+import SearchEngine from "../SearchEngine/SearchEngine";
 import { Navbar } from "./Navbar";
 import { NavBarNav } from "./NavbarNav";
 import { NavItem } from "./NavItem";
 import { NavLink } from "./NavLink";
 import { WidgetAppsBody, WidgetAppsFooter } from "./WidgetApps";
-import {
-  Avatar,
-  VisuallyHidden,
-  Logo,
-  Popover,
-  PopoverBody,
-  PopoverFooter,
-} from "../../components";
-import {
-  useConversation,
-  useUser,
-  useHeader,
-  useOdeClient,
-  useHasWorkflow,
-  useOdeTheme,
-} from "../../core";
-import { Help } from "../Help";
-import { useHelp } from "../Help/hooks/useHelp";
-import SearchEngine from "../SearchEngine/SearchEngine";
 
 export interface HeaderProps {
   is1d?: boolean;
@@ -122,7 +122,14 @@ const Header = ({ is1d = false, src = "" }: HeaderProps): JSX.Element => {
                   <NavItem>
                     <a href="/conversation/conversation" className="nav-link">
                       <OneMessaging className="icon notification" />
-                      {hasMessages && <Badge>{messages}</Badge>}
+                      {hasMessages && (
+                        <Badge
+                          variant={{ type: "notification", level: "danger" }}
+                          className="position-absolute"
+                        >
+                          {messages}
+                        </Badge>
+                      )}
                       <VisuallyHidden>{t("navbar.messages")}</VisuallyHidden>
                     </a>
                   </NavItem>
@@ -276,7 +283,14 @@ const Header = ({ is1d = false, src = "" }: HeaderProps): JSX.Element => {
                     translate={t("conversation")}
                   >
                     <NeoMessaging color="#fff" />
-                    {hasMessages && <Badge>{messages}</Badge>}
+                    {hasMessages && (
+                      <Badge
+                        variant={{ type: "notification", level: "warning" }}
+                        className="position-absolute"
+                      >
+                        {messages}
+                      </Badge>
+                    )}
                   </NavLink>
                 </NavItem>
               )}
@@ -288,7 +302,14 @@ const Header = ({ is1d = false, src = "" }: HeaderProps): JSX.Element => {
                     translate={t("conversation")}
                   >
                     <NeoMessaging color="#fff" />
-                    {hasMessages && <Badge>{messages}</Badge>}
+                    {hasMessages && (
+                      <Badge
+                        variant={{ type: "notification", level: "warning" }}
+                        className="position-absolute"
+                      >
+                        {messages}
+                      </Badge>
+                    )}
                   </NavLink>
                 </NavItem>
               )}
