@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-linker",
-  "version": "1.5.23-hotfix-check-user-rights.1",
+  "version": "1.5.23",
   "description": "Rich Text Editor Linker Extension",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

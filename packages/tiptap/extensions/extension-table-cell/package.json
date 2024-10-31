@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-table-cell",
-  "version": "1.5.23-hotfix-check-user-rights.1",
+  "version": "1.5.23",
   "description": "Rich Text Editor TypoSize Extension",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

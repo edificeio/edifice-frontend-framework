@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-heading",
-  "version": "1.5.23-hotfix-check-user-rights.1",
+  "version": "1.5.23",
   "description": "Rich Text Editor Heading Extension",
   "main": "dist/index.cjs",
   "module": "dist/index.js",

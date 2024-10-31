@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-speechsynthesis",
-  "version": "1.5.23-hotfix-check-user-rights.1",
+  "version": "1.5.23",
   "description": "Rich Text Editor Voice Transcription Extension",
   "type": "module",
   "exports": {
