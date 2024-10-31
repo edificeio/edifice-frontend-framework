@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Bug Fixes
+
+- #WB2-1516, remove isTreeviewArray and createChild function in favor of proper naming ([1f7f6c6](https://github.com/edificeio/edifice-ui/commit/1f7f6c6a1d4caf73cbc7679e3ca1ec38bcf0f411)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([ae94ded](https://github.com/edificeio/edifice-ui/commit/ae94ded5751e4ad846f11d8a76cb6043f673109d)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([36ba44c](https://github.com/edificeio/edifice-ui/commit/36ba44c9eeeeab1b4c4d6f36c6043c1e6eac9e1f)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- **bootstrap:** add color text utilities ([3aea8dd](https://github.com/edificeio/edifice-ui/commit/3aea8dd082f1bccf3dd6a268ab606d726fa0e64d))
+- **treeview:** #WB2-76, fix duplicate arrow and scss styles to avoid issue with d&d ([b5d1606](https://github.com/edificeio/edifice-ui/commit/b5d16065b59405b8b2684c54044c4e39f47bb133))
+
+### Features
+
+- #WB2-1516, add button to create children page ([#228](https://github.com/edificeio/edifice-ui/issues/228)) ([b76b1a6](https://github.com/edificeio/edifice-ui/commit/b76b1a66fbee691a18ba2dc71e925029be9737c9)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([bedfe05](https://github.com/edificeio/edifice-ui/commit/bedfe0574632c1a0f212bd34db479e2a7fc495f0)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([0bc633b](https://github.com/edificeio/edifice-ui/commit/0bc633b49982ee0cab24ed605efd9e76bdfdc6e0)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([065bbe5](https://github.com/edificeio/edifice-ui/commit/065bbe5a1de33b8e6da12c7bf0a1b5dde522aed4))
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([127d724](https://github.com/edificeio/edifice-ui/commit/127d724ac0d73262008f67caf6d5a5f5619fc299)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **bootstrap:** #WB2-1810, add emptyscreen wiki ([469e8b1](https://github.com/edificeio/edifice-ui/commit/469e8b193dd9625d1ebcdac72d100fefed35e179)), closes [#WB2-1810](https://github.com/edificeio/edifice-ui/issues/WB2-1810)
+- **react:** #WB2-1532, add module React Comments ([662dfed](https://github.com/edificeio/edifice-ui/commit/662dfed9171332886844e3e4c7e16cb037a4854c)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
+
 ## [1.5.23](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23) (2024-10-31)
 
 **Note:** Version bump only for package edifice-bootstrap

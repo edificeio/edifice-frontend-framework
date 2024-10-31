@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Bug Fixes
+
+- #EN-11, add missing path to internal docs ([38c64e9](https://github.com/edificeio/edifice-frontend-framework/commit/38c64e9235a6ae6d066baa26357f75021c645860)), closes [#EN-11](https://github.com/edificeio/edifice-frontend-framework/issues/EN-11)
+
+### Features
+
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-frontend-framework/issues/254)) ([065bbe5](https://github.com/edificeio/edifice-frontend-framework/commit/065bbe5a1de33b8e6da12c7bf0a1b5dde522aed4))
+
 ## [1.5.22-develop-pedago.15](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22-develop-pedago.14...v1.5.22-develop-pedago.15) (2024-10-25)
 
 **Note:** Version bump only for package @edifice.io/storybook

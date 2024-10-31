@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-font-size",
-  "version": "1.5.23",
+  "version": "1.6.0-develop.5",
   "description": "Rich Text Editor FontSize Extension",
   "type": "module",
   "exports": {

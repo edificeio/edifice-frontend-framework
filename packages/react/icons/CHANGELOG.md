@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([127d724](https://github.com/edificeio/edifice-ui/commit/127d724ac0d73262008f67caf6d5a5f5619fc299)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **icons:** #WB2-1874, add icon forgoing ([aba8614](https://github.com/edificeio/edifice-ui/commit/aba8614f762606ba104ab5bd8580bb78f692a15b)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
+
 # [1.6.0-develop.1](https://github.com/edificeio/edifice-ui/compare/v1.6.0-develop.0...v1.6.0-develop.1) (2024-10-25)
 
 **Note:** Version bump only for package @edifice-ui/icons

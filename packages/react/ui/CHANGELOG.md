@@ -3,6 +3,60 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Bug Fixes
+
+- #WB2-1294, fix group icon in share modal ([#259](https://github.com/edificeio/edifice-ui/issues/259)) ([5e3bfd6](https://github.com/edificeio/edifice-ui/commit/5e3bfd6761831f7981fdb92ece6955acccec7502))
+- #WB2-1296, fix resource creation when searching ([a73d1c5](https://github.com/edificeio/edifice-ui/commit/a73d1c554da872f480f4df2c11ea6945ca2273ea))
+- #WB2-1296, fix resource creation, when searching currentFolder is undefined ([d993834](https://github.com/edificeio/edifice-ui/commit/d993834f96a06fc9cebbd3fe82956a786912991b))
+- #WB2-1514, fix name type Treeview ([10501af](https://github.com/edificeio/edifice-ui/commit/10501af3e4be4cddb81dc200e48192bd0e62506b))
+- #WB2-1514, fix probleme treeview with one node + fix disappears nodes ([8df5a8b](https://github.com/edificeio/edifice-ui/commit/8df5a8b3f0cf4b95660863ef91c10928533c3cb7))
+- #WB2-1514, fix renderNode for Tree component ([f418811](https://github.com/edificeio/edifice-ui/commit/f418811a7a2b5ab14bf30f331b17b31418dc0c99))
+- #WB2-1516, remove isTreeviewArray and createChild function in favor of proper naming ([1f7f6c6](https://github.com/edificeio/edifice-ui/commit/1f7f6c6a1d4caf73cbc7679e3ca1ec38bcf0f411)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([14fc6fb](https://github.com/edificeio/edifice-ui/commit/14fc6fbe0cf8898b2d9d667edbd4c57c72414807))
+- #WB2-1768, add forget function ([4b74b35](https://github.com/edificeio/edifice-ui/commit/4b74b352cdbc24520c1110892015aa862f72c3ca)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([ae94ded](https://github.com/edificeio/edifice-ui/commit/ae94ded5751e4ad846f11d8a76cb6043f673109d)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, feedback Pr remove class border-left + add border-left witch condition class dropdown ([36ba44c](https://github.com/edificeio/edifice-ui/commit/36ba44c9eeeeab1b4c4d6f36c6043c1e6eac9e1f)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, fix feedback PR ([df1e519](https://github.com/edificeio/edifice-ui/commit/df1e519038553532ffb953cf4f2836ea01e6521f))
+- #WB2-1768, fix format eslint ([355e39e](https://github.com/edificeio/edifice-ui/commit/355e39e1b0e4b21c3056556d71a8ac5472b41b51))
+- #WB2-1917, add i18n comment.more and show button more ([76f6e93](https://github.com/edificeio/edifice-ui/commit/76f6e9306380d8bce9c9dcad4619247693da0479)), closes [#WB2-1917](https://github.com/edificeio/edifice-ui/issues/WB2-1917)
+- #WB2-1998, remove usless function in new function to reorder position element treeview ([f54c0a7](https://github.com/edificeio/edifice-ui/commit/f54c0a77d4a54763e19170f500e6c8e9877c7cff)), closes [#WB2-1998](https://github.com/edificeio/edifice-ui/issues/WB2-1998)
+- #WB2-1998, update function to indicate positions and reorganize … ([#268](https://github.com/edificeio/edifice-ui/issues/268)) ([9a121e3](https://github.com/edificeio/edifice-ui/commit/9a121e3c1955b1dc921751f1b93bdbaa2f903684)), closes [#WB2-1998](https://github.com/edificeio/edifice-ui/issues/WB2-1998)
+- #WB2-2017, add isVisible in data for visible page ([063afa1](https://github.com/edificeio/edifice-ui/commit/063afa13735d530cfdc4d68024aa36ce8653e617)), closes [#WB2-2017](https://github.com/edificeio/edifice-ui/issues/WB2-2017)
+- #WB2-2020, add space item in SortableTreeview ([f821ef6](https://github.com/edificeio/edifice-ui/commit/f821ef6477d371b8e51cf77457f4ae9cf5c464f2)), closes [#WB2-2020](https://github.com/edificeio/edifice-ui/issues/WB2-2020)
+- **treeview:** #WB2-76, align node with invisible icon ([471f37f](https://github.com/edificeio/edifice-ui/commit/471f37f9cd3238987009b7e2e9d9a7f67bce24b1)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, fix duplicate arrow and scss styles to avoid issue with d&d ([b5d1606](https://github.com/edificeio/edifice-ui/commit/b5d16065b59405b8b2684c54044c4e39f47bb133))
+- **treeview:** #WB2-76, fix missing drag focus to item ([2b8f6e4](https://github.com/edificeio/edifice-ui/commit/2b8f6e4f03a6e07918f486c703efd071e42f5d7b))
+- **treeview:** #WB2-76, remove debug node.name ([3708080](https://github.com/edificeio/edifice-ui/commit/3708080dace84c0257fd4e231f10d19365cef873)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **treeview:** #WB2-76, set externalNodeId to undefined if doesn't exist ([e830999](https://github.com/edificeio/edifice-ui/commit/e830999dc99799acf626c82482b1b90eaa0737db)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **ui:** ##WB2-1822, add type button to natif buttons ([7f9c2ff](https://github.com/edificeio/edifice-ui/commit/7f9c2ff0599806ab998917ab0cd3f4b6b73ee1e3)), closes [#WB2-1822](https://github.com/edificeio/edifice-ui/issues/WB2-1822)
+- **ui:** #WB2-1996, add isBlock prop to List Toolbar ([acb690c](https://github.com/edificeio/edifice-ui/commit/acb690cbe070878d882d2393fc7460457d02848e)), closes [#WB2-1996](https://github.com/edificeio/edifice-ui/issues/WB2-1996)
+- **ui:** #WB2-2060, add new Badge component in Header component ([7282ef8](https://github.com/edificeio/edifice-ui/commit/7282ef820a171c7b25a674cf8d6a929ffbc0c760)), closes [#WB2-2060](https://github.com/edificeio/edifice-ui/issues/WB2-2060)
+- **ui:** add forwardRef to DndTree ([87499ab](https://github.com/edificeio/edifice-ui/commit/87499ab99e1ac8bb57952d85848bc2eb3d36ed6b))
+- **ui:** remove export tree utilities ([30156a6](https://github.com/edificeio/edifice-ui/commit/30156a620f26e9f75b699802e2246ef04b9b2b37))
+- WB2-1514, add collapse node when drag parent is drag + update types ([04f592e](https://github.com/edificeio/edifice-ui/commit/04f592ee4c0fdc8f6712ab9786022c3ebae81de1))
+
+### Features
+
+- #WB2-1513, adapt new function treeview with an array TreeData +… ([#216](https://github.com/edificeio/edifice-ui/issues/216)) ([66be224](https://github.com/edificeio/edifice-ui/commit/66be2245ac122149dd3aa53e4499a6aef32c42a7)), closes [#WB2-1513](https://github.com/edificeio/edifice-ui/issues/WB2-1513)
+- #WB2-1514, add new component Treeview Sortable ([#257](https://github.com/edificeio/edifice-ui/issues/257)) ([225c789](https://github.com/edificeio/edifice-ui/commit/225c789d095d2d4882b2998cee57cc9516787cf8)), closes [#WB2-1514](https://github.com/edificeio/edifice-ui/issues/WB2-1514)
+- #WB2-1516, add button to create children page ([#228](https://github.com/edificeio/edifice-ui/issues/228)) ([b76b1a6](https://github.com/edificeio/edifice-ui/commit/b76b1a66fbee691a18ba2dc71e925029be9737c9)), closes [#WB2-1516](https://github.com/edificeio/edifice-ui/issues/WB2-1516)
+- #WB2-1761, add props type if comment provider is in read or in … ([#237](https://github.com/edificeio/edifice-ui/issues/237)) ([0186ccb](https://github.com/edificeio/edifice-ui/commit/0186ccbcc157dc3e2f8d4467c0f53e56a86ce2de)), closes [#WB2-1761](https://github.com/edificeio/edifice-ui/issues/WB2-1761)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([bedfe05](https://github.com/edificeio/edifice-ui/commit/bedfe0574632c1a0f212bd34db479e2a7fc495f0)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1768, add extend all node for dropdown treeview + add access setVisible for dropdown ([0bc633b](https://github.com/edificeio/edifice-ui/commit/0bc633b49982ee0cab24ed605efd9e76bdfdc6e0)), closes [#WB2-1768](https://github.com/edificeio/edifice-ui/issues/WB2-1768)
+- #WB2-1868, pass full node to Tree renderNode function ([#262](https://github.com/edificeio/edifice-ui/issues/262)) ([70c7f0d](https://github.com/edificeio/edifice-ui/commit/70c7f0df056a30dd9f4c8cf78653d94aba2460ba)), closes [#WB2-1868](https://github.com/edificeio/edifice-ui/issues/WB2-1868)
+- #WB2-1923, add comments storybook and fix somme issues ([#254](https://github.com/edificeio/edifice-ui/issues/254)) ([065bbe5](https://github.com/edificeio/edifice-ui/commit/065bbe5a1de33b8e6da12c7bf0a1b5dde522aed4))
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-ui/issues/172)) ([127d724](https://github.com/edificeio/edifice-ui/commit/127d724ac0d73262008f67caf6d5a5f5619fc299)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+- **core:** #WB2-1821, create useDirectory hook ([16d3d08](https://github.com/edificeio/edifice-ui/commit/16d3d083e8d9a3c706bf1ddbaa5ddf8e17d12f21)), closes [#WB2-1821](https://github.com/edificeio/edifice-ui/issues/WB2-1821)
+- **hook:** #WB2-1943, add new useBreakpoint hook to handle responsive display ([7a93a2d](https://github.com/edificeio/edifice-ui/commit/7a93a2d27eb5e6e437fb9f5d76e95574e4148daf)), closes [#WB2-1943](https://github.com/edificeio/edifice-ui/issues/WB2-1943)
+- **icons:** #WB2-1874, add icon forgoing ([aba8614](https://github.com/edificeio/edifice-ui/commit/aba8614f762606ba104ab5bd8580bb78f692a15b)), closes [#WB2-1874](https://github.com/edificeio/edifice-ui/issues/WB2-1874)
+- **Linker:** #WB2-1698, new props to customize available applications and resources list ([d7320aa](https://github.com/edificeio/edifice-ui/commit/d7320aaf02c33a25fbf8d26c96c8249663118603)), closes [#WB2-1698](https://github.com/edificeio/edifice-ui/issues/WB2-1698)
+- **react:** #WB2-1532, add module React Comments ([662dfed](https://github.com/edificeio/edifice-ui/commit/662dfed9171332886844e3e4c7e16cb037a4854c)), closes [#WB2-1532](https://github.com/edificeio/edifice-ui/issues/WB2-1532)
+- **ui:** #WB2-1537, add List component, useCheckable hook and related docs ([#252](https://github.com/edificeio/edifice-ui/issues/252)) ([ae741d3](https://github.com/edificeio/edifice-ui/commit/ae741d31a05910452a1d2f2a8d53fb39fc92af9e)), closes [#WB2-1537](https://github.com/edificeio/edifice-ui/issues/WB2-1537)
+- **ui:** #WB2-1636, adapt List component with actions Toolbar ([f520f47](https://github.com/edificeio/edifice-ui/commit/f520f47561d8ed96bac50bd9d7e584d480e8f5fe)), closes [#WB2-1636](https://github.com/edificeio/edifice-ui/issues/WB2-1636)
+- **ui:** #WB2-1651, add tooltip component to attachment component ([fce184f](https://github.com/edificeio/edifice-ui/commit/fce184f2dad8f90604d4991623fc6cd564846d83)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
 ## [1.5.23](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23) (2024-10-31)
 
 **Note:** Version bump only for package @edifice-ui/react

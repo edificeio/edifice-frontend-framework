@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Bug Fixes
+
+- #WB2-1532, #WB2-1896, reorganize comments module and fix displayed profile badge ([14fc6fb](https://github.com/edificeio/edifice-ui/commit/14fc6fbe0cf8898b2d9d667edbd4c57c72414807))
+
+### Features
+
+- **client:** #WB2-1815, export ResourceService and remove WikiResourceService ([3697839](https://github.com/edificeio/edifice-ui/commit/3697839df70b149f27464389d64feeedc9196724)), closes [#WB2-1815](https://github.com/edificeio/edifice-ui/issues/WB2-1815)
+
 ## [1.5.23](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23) (2024-10-31)
 
 **Note:** Version bump only for package edifice-ts-client

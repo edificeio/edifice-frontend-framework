@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Features
+
+- #WB2-76, add drag and drop on treeview ([#172](https://github.com/edificeio/edifice-frontend-framework/issues/172)) ([127d724](https://github.com/edificeio/edifice-frontend-framework/commit/127d724ac0d73262008f67caf6d5a5f5619fc299)), closes [#WB2-76](https://github.com/edificeio/edifice-frontend-framework/issues/WB2-76)
+
 ## [1.5.23](https://github.com/edificeio/edifice-frontend-framework/compare/v1.5.22...v1.5.23) (2024-10-31)
 
 **Note:** Version bump only for package @edifice-tiptap-extensions/extension-line-height

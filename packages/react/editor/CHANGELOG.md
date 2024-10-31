@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.5](https://github.com/edificeio/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
+
+### Bug Fixes
+
+- **treeview:** #WB2-76, align node with invisible icon ([471f37f](https://github.com/edificeio/edifice-ui/commit/471f37f9cd3238987009b7e2e9d9a7f67bce24b1)), closes [#WB2-76](https://github.com/edificeio/edifice-ui/issues/WB2-76)
+
+### Features
+
+- **ui:** #WB2-1651, add tooltip component to attachment component ([fce184f](https://github.com/edificeio/edifice-ui/commit/fce184f2dad8f90604d4991623fc6cd564846d83)), closes [#WB2-1651](https://github.com/edificeio/edifice-ui/issues/WB2-1651)
+
 ## [1.5.23](https://github.com/edificeio/edifice-ui/compare/v1.5.22...v1.5.23) (2024-10-31)
 
 **Note:** Version bump only for package @edifice-ui/editor
