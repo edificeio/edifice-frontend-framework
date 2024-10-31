@@ -62,7 +62,7 @@ jobs:
           pnpm config set //registry.tiptap.dev/:_authToken ${{ secrets.TIPTAP_PRO_TOKEN }}
           pnpm config set auto-install-peers true
 
-      - run: pnpm install --no-frozen-lockfile && pnpm build
+      - run: pnpm install && pnpm build
         name: Install & Build
 
       - name: Version & Publish

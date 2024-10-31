@@ -15,8 +15,8 @@ class Subscription<T extends ISubjectMessage> implements ISubscription {
     private _channel?: BroadcastChannel,
     handler?: (message: T) => void,
   ) {
-    this.revoke = this.setReceiver((message: MessageEvent<T>) =>
-      handler?.(message.data),
+    this.revoke = this.setReceiver(
+      (message: MessageEvent<T>) => handler?.(message.data),
     );
   }
 
