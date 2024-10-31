@@ -41,9 +41,9 @@ export class ReactionsService implements IReactionsService {
 
   async loadReactionSummaries(resourceIds: string[]) {
     const summaries = await this.http.get<ReactionSummariesData>(
-      `/audience/reactions/${this.module}/${this.resourceType}?resourceIds=${resourceIds.join(
-        ",",
-      )}`,
+      `/audience/reactions/${this.module}/${
+        this.resourceType
+      }?resourceIds=${resourceIds.join(",")}`,
     );
     return this.http.isResponseError() ? {} : summaries.reactionsByResource;
   }
