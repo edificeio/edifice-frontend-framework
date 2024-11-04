@@ -1,7 +1,7 @@
 import { Meta } from "@storybook/react";
 
-import IconButton from "../IconButton";
 import { AddUser, Block, Hourglass } from "@edifice-ui/icons";
+import IconButton from "../IconButton";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof IconButton> = {
@@ -26,6 +26,14 @@ const meta: Meta<typeof IconButton> = {
     "color": "primary",
     "variant": "filled",
     "disabled": false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The IconButton component is a specialized button that displays only an icon without text. It inherits all the properties of the regular Button component including variants (filled, outline, ghost), colors (primary, secondary, tertiary, danger), and states (default, disabled, loading). IconButtons must include an aria-label for accessibility. They are ideal for interfaces where space is limited or when the icon alone clearly conveys the action.",
+      },
+    },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };

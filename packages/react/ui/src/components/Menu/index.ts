@@ -1,2 +1,2 @@
-export * from "./Menu";
-export { type MenuButtonProps } from "./MenuButton";
+export * from "./components/Menu";
+export { type MenuButtonProps } from "./components/MenuButton";

@@ -25,6 +25,11 @@ import {
 } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 
+import { useHttpErrorToast } from "../..";
+import { Button } from "../../components";
+import Modal, { ModalElement } from "../../components/Modal/Modal";
+import { Tabs, TabsItemProps } from "../../components/Tabs";
+import { useHasWorkflow } from "../../core/useHasWorkflow";
 import { InnerTabs } from "./innertabs";
 import { ExternalLinkTabProps } from "./innertabs/ExternalLink";
 import {
@@ -32,12 +37,6 @@ import {
   InternalLinkTabResult,
 } from "./innertabs/InternalLink";
 import { MediaLibraryContext } from "./MediaLibraryContext";
-import { useHttpErrorToast } from "../..";
-import { Button } from "../../components";
-import Modal, { ModalElement } from "../../components/Modal/Modal";
-import { Tabs } from "../../components/Tabs";
-import { TabsItemProps } from "../../components/Tabs/TabsItem";
-import { useHasWorkflow } from "../../core/useHasWorkflow";
 
 //---------------------------------------------------
 // Tabs parameters
@@ -416,7 +415,7 @@ const MediaLibrary = forwardRef(
         triggerSuccess(result);
       }
       resetState();
-    }, [onSuccessAction, result, onSuccess, visibility]);
+    }, [onSuccessAction, result, onSuccess, visibility, appCode]);
 
     const handleOnCancel = () => {
       onCancel(deletionsOnCancel);

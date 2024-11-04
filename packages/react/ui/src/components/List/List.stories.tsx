@@ -16,6 +16,14 @@ import { List } from "./List";
 const meta: Meta<typeof List> = {
   title: "Components/List",
   component: List,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `List` component provides a flexible way to display collections of items with optional toolbar actions. It supports various item types and interactive elements like icons and tooltips. Features include:\n\n- Customizable list items with icons and text\n- Optional toolbar with action buttons\n- Tooltip support for actions\n- Flexible styling options\n- Support for selection and interaction states",
+      },
+    },
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
 

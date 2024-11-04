@@ -2,8 +2,8 @@ import { Download } from "@edifice-ui/icons";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 
-import { useDropzoneContext } from "./DropzoneContext";
 import Button from "../Button/Button";
+import { useDropzoneContext } from "./DropzoneContext";
 
 const DropzoneImport = () => {
   const { t } = useTranslation();
@@ -11,7 +11,7 @@ const DropzoneImport = () => {
 
   const hasFiles = files && files.length > 0;
 
-  const classes = clsx("import-wrapper", {
+  const classes = clsx("dropzone-import-wrapper", {
     "d-flex": !hasFiles,
     "d-none": hasFiles,
   });

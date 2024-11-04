@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import BookmarkedApps from "./BookmarkedApps";
-import { AppIcon } from "@edifice-react-ui/components";
 import Widget from "../Widget/Widget";
+import BookmarkedApps from "./BookmarkedApps";
 
 const meta: Meta<typeof BookmarkedApps> = {
   title: "Widgets/Bookmarked Apps",

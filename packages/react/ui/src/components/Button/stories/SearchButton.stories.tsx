@@ -13,6 +13,14 @@ const meta: Meta<typeof SearchButton> = {
     "disabled": false,
     "icon": <Search />,
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The SearchButton component is a specialized IconButton designed specifically for search functionality. It displays a search icon by default but can be customized with different icons. The component inherits all the properties of IconButton including states (default, disabled) and maintains consistent styling. SearchButtons must include an aria-label for accessibility. They are commonly used in search interfaces, filters, and anywhere search functionality needs to be triggered.",
+      },
+    },
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };
 

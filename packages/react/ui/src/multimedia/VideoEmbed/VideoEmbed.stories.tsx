@@ -7,7 +7,8 @@ const meta: Meta<typeof VideoEmbed> = {
   parameters: {
     docs: {
       description: {
-        component: "Video Embed.",
+        component:
+          "The `VideoEmbed` component provides an interface for embedding video content from various sources. It creates a responsive container that maintains aspect ratio and properly displays embedded video players. This component is commonly used for integrating video content from platforms like YouTube, Vimeo, or other video hosting services into your application.",
       },
     },
   },

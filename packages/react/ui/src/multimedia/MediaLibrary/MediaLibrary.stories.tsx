@@ -1,14 +1,15 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { WorkspaceElement } from "edifice-ts-client";
+import { useRef } from "react";
+import Button from "../../components/Button/Button";
+import { MockedDataProvider } from "../../utils";
 import MediaLibrary, {
   MediaLibraryProps,
   MediaLibraryRef,
   MediaLibraryResult,
   MediaLibraryType,
 } from "./MediaLibrary";
-import { useRef } from "react";
-import { MockedDataProvider } from "../../utils";
-import { WorkspaceElement } from "edifice-ts-client";
 
 const mockedDocuments: WorkspaceElement[] = [
   {
@@ -116,7 +117,7 @@ const meta: Meta<typeof MediaLibrary> = {
       return (
         <div
           style={{
-            height: "350px",
+            height: "40rem",
             display: "grid",
             placeItems: "center",
             marginBottom: "10em",
@@ -150,13 +151,13 @@ const meta: Meta<typeof MediaLibrary> = {
           workspaceDocuments: mockedDocuments,
         }}
       >
-        <button
+        <Button
           onClick={() => {
             mediaLibraryRef.current?.show(args.type);
           }}
         >
           Open Media Library
-        </button>
+        </Button>
 
         {<MediaLibrary ref={mediaLibraryRef} {...args} />}
       </MockedDataProvider>

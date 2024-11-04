@@ -1,9 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { AlertCircle } from "@edifice-ui/icons";
 import { Button } from "../Button";
 import Tooltip, { TooltipProps } from "./Tooltip";
-import { AlertCircle } from "@edifice-ui/icons";
-import React from "react";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Tooltip",
@@ -12,7 +11,7 @@ const meta: Meta<typeof Tooltip> = {
     docs: {
       description: {
         component:
-          "Wrapper component to show a contextual description on hover",
+          "Tooltip component allows you to display additional information when users hover over or focus on an element. It supports various placements and can be customized with different messages and styles.",
       },
     },
   },

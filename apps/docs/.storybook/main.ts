@@ -1,10 +1,12 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import { dirname, join } from "path";
+
 const config: StorybookConfig = {
   stories: [
-    "../../../packages/**/**/src/**/*.stories.@(js|jsx|ts|tsx)",
-    "../../../packages/**/**/src/**/*.mdx",
-    "../src/**/*.mdx",
+    "../../../packages/**/src/**/*.stories.@(js|jsx|ts|tsx)",
+    "../../../packages/**/src/**/*.mdx",
+    "../src/stories/**/*.stories.@(js|jsx|ts|tsx)",
+    "../src/stories/**/*.mdx",
   ],
   staticDirs: ["../public"],
   addons: [
@@ -12,7 +14,7 @@ const config: StorybookConfig = {
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-essentials"),
     getAbsolutePath("@storybook/addon-interactions"),
-    "@chromatic-com/storybook",
+    getAbsolutePath("@chromatic-com/storybook"),
   ],
   typescript: {
     reactDocgen: "react-docgen",
@@ -21,6 +23,7 @@ const config: StorybookConfig = {
     name: getAbsolutePath("@storybook/react-vite"),
     options: { strictMode: false },
   },
+  docs: {},
 };
 export default config;
 

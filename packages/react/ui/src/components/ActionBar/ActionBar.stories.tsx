@@ -6,6 +6,14 @@ import ActionBar, { ActionBarProps } from "./ActionBar";
 const meta: Meta<typeof ActionBar> = {
   title: "Components/ActionBar",
   component: ActionBar,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "ActionBar is a component that displays an action bar containing buttons. It is typically used at the bottom of a page.",
+      },
+    },
+  },
 };
 
 export default meta;

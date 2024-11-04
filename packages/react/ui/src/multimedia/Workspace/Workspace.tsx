@@ -21,7 +21,7 @@ import {
   LoadingScreen,
   SearchBar,
   TreeView,
-  TreeViewHandlers,
+  TreeViewHandlers_V1,
 } from "../../components";
 import { useWorkspaceSearch } from "../../core";
 import { FolderNode } from "../../core/useWorkspaceSearch/useWorkspaceSearch";
@@ -94,10 +94,10 @@ const Workspace = ({
     roles,
   );
 
-  const ownerRef = useRef<TreeViewHandlers>(null);
-  const sharedRef = useRef<TreeViewHandlers>(null);
-  const protectRef = useRef<TreeViewHandlers>(null);
-  const publicRef = useRef<TreeViewHandlers>(null);
+  const ownerRef = useRef<TreeViewHandlers_V1>(null);
+  const sharedRef = useRef<TreeViewHandlers_V1>(null);
+  const protectRef = useRef<TreeViewHandlers_V1>(null);
+  const publicRef = useRef<TreeViewHandlers_V1>(null);
 
   const [currentFilter, setCurrentFilter] = useState<WorkspaceSearchFilter>(
     () => {
@@ -139,7 +139,7 @@ const Workspace = ({
    */
   const rootNodeFor: (filter: WorkspaceSearchFilter) => {
     root: FolderNode;
-    othersRef: React.RefObject<TreeViewHandlers>[];
+    othersRef: React.RefObject<TreeViewHandlers_V1>[];
   } = useCallback(
     (filter: WorkspaceSearchFilter) => {
       switch (filter) {

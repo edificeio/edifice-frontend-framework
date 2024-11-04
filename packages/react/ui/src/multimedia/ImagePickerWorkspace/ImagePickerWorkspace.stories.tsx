@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { MediaLibrary } from "..";
+import { useMediaLibrary, useOdeClient } from "../../core";
 import ImagePickerWorkspace, {
   ImagePickerWorkspaceProps,
 } from "./ImagePickerWorkspace";
-import { MediaLibrary } from "..";
-import { useMediaLibrary, useOdeClient } from "../../core";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ImagePickerWorkspace> = {
@@ -33,18 +33,6 @@ const meta: Meta<typeof ImagePickerWorkspace> = {
     onUploadImage: () => {},
     onDeleteImage: () => {},
   },
-  argTypes: {
-    onUploadImage: {
-      control: {
-        type: null,
-      },
-    },
-    onDeleteImage: {
-      control: {
-        type: null,
-      },
-    },
-  },
 };
 
 export default meta;
@@ -71,7 +59,7 @@ export const AppPlaceholder: Story = {
     docs: {
       description: {
         story:
-          "When an `appCode` prop is provided with the code of an application, the ImagePicker will show app icon as a placeholder.",
+          "When the `appCode` prop is provided, the ImagePickerWorkspace displays the corresponding app icon as a placeholder.",
       },
     },
   },
@@ -86,7 +74,7 @@ export const ImageURL: Story = {
     docs: {
       description: {
         story:
-          "When an `src` prop is provided, the ImagePickerWorkspace renders it as an image. The image can be deleted by clicking the delete button. When you click the Add button, the image will be replaced with the uploaded image.",
+          "When the `src` prop is provided, the ImagePickerWorkspace displays the image. You can delete the image by clicking the delete button. Clicking the Add button will replace the current image with a new uploaded image.",
       },
     },
   },
@@ -130,7 +118,7 @@ export const UploadImageWithCallbacks: Story = {
     docs: {
       description: {
         story:
-          "The `onUploadImage` and `onClearImage` props are needed to handle callbacks when the image is uploaded or deleted.",
+          "The `onUploadImage` and `onDeleteImage` props are required to manage the callbacks for image upload and deletion events.",
       },
     },
   },

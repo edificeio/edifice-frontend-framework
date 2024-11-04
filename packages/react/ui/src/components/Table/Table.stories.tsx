@@ -2,8 +2,12 @@ import { Checklist, Globe, Lock, Users } from "@edifice-ui/icons";
 import { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Checkbox } from "../Checkbox";
-import Table from "./Table";
-
+import Table from "./components/Table";
+import { TableTbody } from "./components/TableTbody";
+import { TableTd } from "./components/TableTd";
+import { TableTh } from "./components/TableTh";
+import { TableThead } from "./components/TableThead";
+import { TableTr } from "./components/TableTr";
 interface IRow {
   id: string;
   name: string;
@@ -110,19 +114,26 @@ const data: IRow[] = [
 ];
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-const meta: Meta<typeof Table> = {
+const meta = {
   title: "Components/Table",
   component: Table,
   parameters: {
     docs: {
       description: {
         component:
-          "Table is a Compound Components, so you can create your own Table component with `Table.Tbody`, `Table.Tr`, `Table.Td`, `Table.Thead` and `Table.Th` subcomponents",
+          "Table is a compound component, allowing you to build custom table structures using `Table.Tbody`, `Table.Tr`, `Table.Td`, `Table.Thead`, and `Table.Th` subcomponents.",
       },
     },
   },
+  subcomponents: {
+    TableTbody,
+    TableTr,
+    TableTd,
+    TableThead,
+    TableTh,
+  },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-};
+} satisfies Meta<typeof Table>;
 
 export default meta;
 type Story = StoryObj<typeof Table>;

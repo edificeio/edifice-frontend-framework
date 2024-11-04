@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { ReactionDetailsData } from "edifice-ts-client";
 import { ReactionModal } from "..";
 import { useToggle } from "../../../hooks";
 import { Button } from "../../Button";
-import { ReactionDetailsData } from "edifice-ts-client";
 
 const mockedData: ReactionDetailsData = {
   reactionCounters: {
@@ -74,6 +74,14 @@ const meta: Meta<typeof ReactionModal> = {
   argTypes: {
     pageSize: {
       control: { type: "input" },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "ReactionModal is a component that displays a paginated list of user reactions to a resource. It shows reaction counters and detailed user information including display names, profiles, and reaction types. The modal supports pagination with customizable page sizes and uses a loader function to fetch reaction details asynchronously.",
+      },
     },
   },
 };

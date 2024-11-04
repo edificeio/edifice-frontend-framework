@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { Copy, Cut, Delete, Edit, Print } from "@edifice-ui/icons";
 import Dropdown from "../Dropdown";
-import { Edit, Copy, Cut, Print, Delete } from "@edifice-ui/icons";
 
 const meta: Meta<typeof Dropdown> = {
   title: "Components/Dropdown/Dropdown Item",
@@ -10,7 +10,8 @@ const meta: Meta<typeof Dropdown> = {
   parameters: {
     docs: {
       description: {
-        component: "Use `Dropdown.Item` when binding to a specific action",
+        component:
+          "The `Dropdown.Item` component represents a clickable menu item within a dropdown menu. Each item can be bound to a specific action and can optionally include an icon. This component is ideal for creating action menus, command menus, or any menu where each item triggers a distinct action when clicked.",
       },
     },
   },

@@ -1,14 +1,26 @@
-import { Video, Mic, Landscape } from "@edifice-ui/icons";
+import { Landscape } from "@edifice-ui/icons";
 import { Meta, StoryObj } from "@storybook/react";
-
-import { TabsItemProps } from "./TabsItem";
-import Tabs, { TabsProps } from "./Tabs";
+import Tabs from "./components/Tabs";
+import TabsItem, { TabsItemProps } from "./components/TabsItem";
+import TabsPanel from "./components/TabsPanel";
 
 const meta: Meta<typeof Tabs> = {
   title: "Components/Tabs",
   component: Tabs,
   args: {
     defaultId: "1",
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Tabs component allows you to organize content into separate views which can be navigated through tab items. Each tab item can have its own content and can be selected to display the corresponding content panel.",
+      },
+    },
+  },
+  subcomponents: {
+    TabsItem,
+    TabsPanel,
   },
 };
 
@@ -181,7 +193,7 @@ export const Scroll: Story = {
     docs: {
       description: {
         story:
-          "Tabs becomes horizontaly scrollable when layout is too small and content start to overflow.",
+          "Tabs become horizontally scrollable when the layout is too small and the content starts to overflow.",
       },
     },
   },

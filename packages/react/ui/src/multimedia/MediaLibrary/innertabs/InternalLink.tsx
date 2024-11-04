@@ -55,7 +55,7 @@ export const InternalLink = ({
         defaultResourceId={resourceId}
         onSelect={handleSelect}
         multiple={multiple}
-      ></InternalLinker>
+      />
       <Checkbox
         className="align-items-center"
         checked={isChecked}

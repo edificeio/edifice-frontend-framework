@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import Button, { ButtonProps } from "../Button";
 import {
   AddUser,
   Close,
@@ -8,6 +7,7 @@ import {
   RafterLeft,
   RafterRight,
 } from "@edifice-ui/icons";
+import Button, { ButtonProps } from "../Button";
 import IconButton from "../IconButton";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -36,6 +36,14 @@ const meta: Meta<typeof Button> = {
     color: "primary",
     variant: "filled",
     disabled: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The Button component provides a clickable element for user interactions. It supports multiple variants (filled, outline, ghost), colors (primary, secondary, tertiary, danger), and states (default, disabled, loading). Buttons can include icons in different positions and adapt their appearance based on the current theme. The component is highly customizable while maintaining consistent styling and behavior across the application.",
+      },
+    },
   },
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
 };

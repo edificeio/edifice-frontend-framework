@@ -6,6 +6,14 @@ import Heading from "./Heading";
 const meta: Meta<typeof Heading> = {
   title: "Components/Heading",
   component: Heading,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Heading` component provides consistent heading styles across the application. It allows you to specify both the semantic heading level (h1-h6) and visual style independently, enabling proper document structure while maintaining design flexibility. This component ensures consistent typography and maintains accessibility standards through proper heading hierarchy.",
+      },
+    },
+  },
 };
 
 export default meta;
@@ -16,15 +24,6 @@ export const Heading1: Story = {
     level: "h1",
     headingStyle: "h1",
     children: "H1 title",
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          "Heading component can receive 3 props: `as`, `headingStyle`, `children`",
-      },
-    },
   },
 };
 

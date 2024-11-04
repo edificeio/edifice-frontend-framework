@@ -4,11 +4,13 @@ import { TreeData } from "../../types";
 import { TreeNode } from "./TreeNode";
 import { useTreeView } from "./hooks/useTreeView";
 
+// @deprecated This interface is deprecated and will be removed in future versions.
 export interface TreeViewHandlers_V1 {
   unselectAll: () => void;
   select: (nodeId: string) => void;
 }
 
+// @deprecated This interface is deprecated and will be removed in future versions.
 export interface TreeViewProps {
   /**
    * TreeNode data

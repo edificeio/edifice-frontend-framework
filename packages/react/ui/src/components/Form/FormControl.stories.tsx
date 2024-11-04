@@ -1,7 +1,7 @@
 import { Mail } from "@edifice-ui/icons";
 import { Meta, StoryObj } from "@storybook/react";
 
-import { FormControl, FormText, FormControlProps } from "./index";
+import { FormControl, FormControlProps, FormText } from "./index";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof FormControl> = {
@@ -19,6 +19,14 @@ const meta: Meta<typeof FormControl> = {
     isReadOnly: false,
     isRequired: false,
     status: undefined,
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `FormControl` component is a foundational form element that provides a consistent structure for form inputs. It includes support for labels, input fields, help text, and validation states. Key features include:\n\n- Built-in support for labels with optional icons\n- Validation states (valid/invalid)\n- Optional and required field handling\n- Read-only state support\n- Help text integration\n- Consistent styling and spacing",
+      },
+    },
   },
 };
 

@@ -10,6 +10,14 @@ const meta: Meta<typeof Label> = {
   args: {
     children: "Email",
   },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Label` component is used to provide a descriptive label for form fields. It enhances accessibility by associating the label with the corresponding input element. The component supports optional text to indicate non-mandatory fields and can include icons for better visual representation.",
+      },
+    },
+  },
 } as Meta<typeof Label>;
 
 export default meta;

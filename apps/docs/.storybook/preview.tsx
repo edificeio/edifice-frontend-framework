@@ -4,10 +4,9 @@ import { HttpResponse, http } from "msw";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
+import "../../../packages/bootstrap/dist/index.css";
 import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
 import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
-
-import "../../../packages/bootstrap/dist/index.css";
 
 import i18n from "../i18n";
 
@@ -55,8 +54,8 @@ const preview: Preview = {
         method: "alphabetical",
         order: [
           "Introduction",
-          ["Welcome", "*"],
-          "Design Tokens",
+          ["Welcome", "Getting Started", "*"],
+          "Design System",
           "Icons",
           "Components",
           "Modules",
