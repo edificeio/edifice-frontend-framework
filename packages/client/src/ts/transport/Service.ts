@@ -5,10 +5,10 @@ import axios, {
   AxiosResponse,
 } from "axios";
 import { ERROR_CODE } from "../globals";
-import { IHttpResponse, IHttpParams, IHttp } from "./interfaces";
-import { IOdeServices } from "../services/OdeServices";
 import { notify } from "../notify/Framework";
 import { EVENT_NAME, LAYER_NAME } from "../notify/interfaces";
+import { IOdeServices } from "../services/OdeServices";
+import { IHttp, IHttpParams, IHttpResponse } from "./interfaces";
 
 const loadedScripts: { [url: string]: boolean } = {};
 
@@ -215,8 +215,8 @@ export class HttpService implements IHttp {
       );
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError, params) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -233,8 +233,8 @@ export class HttpService implements IHttp {
       );
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result_1 = this.mapAxiosError(e as AxiosError, params) as R;
-      return result_1;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -256,8 +256,8 @@ export class HttpService implements IHttp {
       });
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError, params) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -269,15 +269,15 @@ export class HttpService implements IHttp {
     const p = this.toAxiosConfig();
     if (p.headers) p.headers["Content-Type"] = "application/json";
     try {
-      const r = await this.axios.post<R>(
+      const response = await this.axios.post<R>(
         this.fixBaseUrl(url),
         json,
         this.toAxiosConfig(params),
       );
-      return this.mapAxiosResponse(r, params);
+      return this.mapAxiosResponse(response, params);
     } catch (e) {
-      const result_1 = this.mapAxiosError(e as AxiosError, params) as R;
-      return result_1;
+      const error = this.mapAxiosError(e as AxiosError, params);
+      throw error;
     }
   }
 
@@ -294,8 +294,8 @@ export class HttpService implements IHttp {
       );
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError, params) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -313,8 +313,8 @@ export class HttpService implements IHttp {
       });
       return this.mapAxiosResponse(res, params);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError, params) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -329,8 +329,8 @@ export class HttpService implements IHttp {
       const r = await this.axios.put<R>(this.fixBaseUrl(url), json, p);
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError, params) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
   async delete<R = any>(url: string, params?: IHttpParams): Promise<R> {
@@ -341,8 +341,8 @@ export class HttpService implements IHttp {
       );
       return this.mapAxiosResponse(r, params);
     } catch (e) {
-      const result_1 = this.mapAxiosError(e as AxiosError, params) as R;
-      return result_1;
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
     }
   }
 
@@ -353,8 +353,8 @@ export class HttpService implements IHttp {
       });
       return this.mapAxiosResponse(r);
     } catch (e) {
-      const result = this.mapAxiosError(e as AxiosError) as R;
-      return result;
+      const error = this.mapAxiosError(e as AxiosError) as R;
+      throw error;
     }
   }
 
