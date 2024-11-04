@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0-develop.6](https://github.com/opendigitaleducation/edifice-ui/compare/v1.6.0-develop.5...v1.6.0-develop.6) (2024-11-04)
+
+**Note:** Version bump only for package root
+
 # [1.6.0-develop.5](https://github.com/opendigitaleducation/edifice-ui/compare/v1.5.23...v1.6.0-develop.5) (2024-10-31)
 
 ### Bug Fixes
