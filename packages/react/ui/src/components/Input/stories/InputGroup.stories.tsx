@@ -2,12 +2,12 @@ import { Meta, StoryObj } from "@storybook/react";
 import { useMemo, useState } from "react";
 import Button from "../../Button/Button";
 
-import { Indeterminate } from "../../Checkbox/Checkbox.stories";
+import { Search } from "@edifice-ui/icons";
 import { Checkbox } from "../../Checkbox";
+import { Indeterminate } from "../../Checkbox/Checkbox.stories";
 import { FormControl } from "../../Form";
 import { Radio } from "../../Radio";
 import Input from "../Input";
-import { Search } from "@edifice-ui/icons";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof FormControl> = {
@@ -17,7 +17,7 @@ const meta: Meta<typeof FormControl> = {
     docs: {
       description: {
         component:
-          "The Input group is made with FormControl, Inputs and Button components. Adding the `input-group` class to the FormControl component will add the right style. All components have access to all their expected props.",
+          "The `Input Group` component allows you to add text, icons, or buttons directly adjacent to input fields. This creates cohesive form controls for common patterns like URL inputs with prefixes, search bars with icons, or inputs with action buttons. Features include:\n\n- Prefix and suffix text or elements\n- Border styling options including borderless variants\n- Support for icons and buttons\n- Consistent sizing and spacing\n- Disabled states",
       },
     },
   },
