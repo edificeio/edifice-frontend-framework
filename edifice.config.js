@@ -28,13 +28,17 @@ export const publishOptions = {
       name: "@edifice-ui/icons",
       packageDir: "packages/react/icons",
     },
+    {
+      name: "@edifice.io/image-resizer",
+      packageDir: "packages/image-resizer",
+    },
   ],
 
   branchConfigs: {
-    main: {
+    "main": {
       prerelease: false,
     },
-    develop: {
+    "develop": {
       prerelease: true,
     },
     "develop-b2school": {
