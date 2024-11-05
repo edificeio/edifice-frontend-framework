@@ -18,6 +18,9 @@ const useUploadFiles = ({
   application?: string;
 }) => {
   const [uploadedFiles, setUploadedFiles] = useState<WorkspaceElement[]>([]);
+  const [mapFilesUploadedRessources, setMapFilesUploadedRessources] = useState<
+    Map<string, { file: File; resource?: WorkspaceElement }>
+  >(new Map());
   const [editingImage, setEditingImage] = useState<
     WorkspaceElement | undefined
   >(undefined);
@@ -32,11 +35,23 @@ const useUploadFiles = ({
     uploadAlternateFile,
   } = useUpload(visibility, application);
 
+  const updateMapFilesUploadedRessources = useCallback(
+    (file: File, resource?: WorkspaceElement) => {
+      setMapFilesUploadedRessources((prevMap) => {
+        const newMap = new Map(prevMap);
+        newMap.set(file.name, { file, resource });
+        return newMap;
+      });
+    },
+    [],
+  );
+
   const tryUploading = useCallback(
     (files: Array<File | null>) => {
       files.forEach(async (file, index) => {
         if (file == null) return;
         let resource;
+        updateMapFilesUploadedRessources(file, undefined);
         if (file.type.startsWith("image")) {
           try {
             const replacement = await ImageResizer.resizeImageFile(file);
@@ -54,10 +69,16 @@ const useUploadFiles = ({
             ...prevFiles,
             resource,
           ]);
+          updateMapFilesUploadedRessources(file, resource);
         }
       });
     },
-    [uploadAlternateFile, uploadFile, replaceFileAt],
+    [
+      updateMapFilesUploadedRessources,
+      uploadAlternateFile,
+      replaceFileAt,
+      uploadFile,
+    ],
   );
 
   /* Try to upload more files when 
@@ -194,6 +215,7 @@ const useUploadFiles = ({
     updateImage,
     uploadFile,
     removeFile,
+    mapFilesUploadedRessources,
   };
 };
 

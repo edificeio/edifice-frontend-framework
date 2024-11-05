@@ -14,8 +14,7 @@ const UploadFiles = ({
   visibility?: WorkspaceVisibility;
 }) => {
   const {
-    files,
-    uploadedFiles,
+    mapFilesUploadedRessources,
     getUploadStatus,
     uploadFile,
     removeFile,
@@ -89,10 +88,9 @@ const UploadFiles = ({
 
   return (
     <>
-      {files.map((file) => {
-        const resource = uploadedFiles.find(
-          (uploadedFile) => uploadedFile.name === file.name,
-        );
+      {Array.from(mapFilesUploadedRessources.keys()).map((fileName: string) => {
+        const { file, resource } = mapFilesUploadedRessources.get(fileName)!;
+        if (!file) return null;
 
         return (
           <UploadCard
