@@ -86,16 +86,18 @@
     "@tiptap/react": "2.3.0",
     "@tiptap/starter-kit": "2.3.0",
     "clsx": "^2.1.1",
-    "emoji-picker-react": "4.5.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-i18next": "^14.1.0"
+    "emoji-picker-react": "4.5.2"
   },
   "devDependencies": {
+    "@edifice-ui/icons": "workspace:*",
+    "@edifice-ui/react": "workspace:*",
     "@types/node": "^20.4.9",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
-    "edifice-ts-client": "workspace:*"
+    "edifice-ts-client": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^14.1.0"
   },
   "peerDependencies": {
     "@edifice-ui/icons": "*",
