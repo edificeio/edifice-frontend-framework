@@ -20,6 +20,7 @@ export { default as BurgerMenu } from "./BurgerMenu";
 export { default as CalendarLight } from "./CalendarLight";
 export { default as Calendar } from "./Calendar";
 export { default as Camera } from "./Camera";
+export { default as Cantoo } from "./Cantoo";
 export { default as Center } from "./Center";
 export { default as Check } from "./Check";
 export { default as Checklist } from "./Checklist";
