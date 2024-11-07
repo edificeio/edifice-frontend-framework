@@ -30,11 +30,13 @@ import {
   useMediaLibraryEditor,
   useSpeechSynthetisis,
   useTipTapEditor,
+  useCantooModal,
 } from "../..";
 import { useMathsStyles } from "../../hooks/useMathsStyles";
 
 const MathsModal = lazy(async () => await import("./MathsModal"));
 const ImageEditor = lazy(async () => await import("./ImageEditor"));
+const CantooModal = lazy(async () => await import("./CantooModal"));
 
 export interface EditorRef {
   /** Get the current content. */
@@ -108,6 +110,8 @@ const Editor = forwardRef(
       useMediaLibraryEditor(editor);
     const { toggle: toggleMathsModal, ...mathsModalHandlers } =
       useMathsModal(editor);
+    const { toggle: toggleCantooModal, ...cantooModalHandlers } =
+      useCantooModal();
     const imageModal = useImageModal(editor, "media-library", visibility);
     const linkToolbarHandlers = useLinkToolbar(editor, mediaLibraryModalRef);
     const speechSynthetisis = useSpeechSynthetisis(editor);
@@ -152,6 +156,7 @@ const Editor = forwardRef(
               {...{
                 mediaLibraryRef: mediaLibraryModalRef,
                 toggleMathsModal: toggleMathsModal,
+                toggleCantooModal: toggleCantooModal,
               }}
             />
           )}
@@ -200,6 +205,10 @@ const Editor = forwardRef(
               onSave={imageModal.handleSave}
               onError={console.error}
             />
+          )}
+
+          {editable && cantooModalHandlers.isOpen && (
+            <CantooModal {...cantooModalHandlers} />
           )}
         </Suspense>
       </EditorContext.Provider>
