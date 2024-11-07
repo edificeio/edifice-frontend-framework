@@ -79,11 +79,11 @@ const CommentProvider = ({
   return (
     <CommentContext.Provider value={values}>
       <div className="my-24">
-        {type === "edit" && <CommentHeader title={title} />}
+        <CommentHeader title={title} />
 
         <div className="my-24">
           {user && <CommentForm userId={user.userId} />}
-          {commentsCount && !profilesQueries.isLoading ? (
+          {!profilesQueries.isLoading ? (
             <>
               <CommentList />
 

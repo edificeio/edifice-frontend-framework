@@ -75,9 +75,6 @@ export const useComments = ({
   };
 
   const handleReset = () => {
-    if (type === "edit") {
-      callbacks?.reset?.();
-    }
     setContent("");
 
     if (editCommentId) setEditCommentId(null);
