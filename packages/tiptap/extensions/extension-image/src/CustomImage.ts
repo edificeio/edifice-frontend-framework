@@ -277,7 +277,7 @@ export const CustomImage = Image.extend<CustomImageOptions>({
 
             uploadAndCreateImages(files, editor);
 
-            return true;
+            return false;
           },
           handleDrop: (editor, e, _s, moved) => {
             const files = Array.from(e.dataTransfer.files);
