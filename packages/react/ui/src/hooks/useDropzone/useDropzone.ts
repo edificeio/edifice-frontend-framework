@@ -61,8 +61,15 @@ const useDropzone = (props?: {
   };
 
   const addFiles = (files: File[]) => {
+    let filesToAdd = files.map(
+      (file) =>
+        // #WB-3377: Remove special characters from the file name. (it can cause issues with vertx which replace it or remove it)
+        new File([file], file.name.replace(/[!:,;="']/g, ""), {
+          type: file.type,
+        }),
+    );
     if (props?.forceFilters) {
-      const filesToAdd = applyInputFiltersOn(files);
+      filesToAdd = applyInputFiltersOn(filesToAdd);
       if (filesToAdd && filesToAdd.length)
         setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
     } else {
