@@ -32,6 +32,10 @@ export const publishOptions = {
       name: "@edifice.io/image-resizer",
       packageDir: "packages/image-resizer",
     },
+    {
+      name: "@edifice-tiptap-extensions/extension-image",
+      packageDir: "packages/tiptap/extensions/extension-image",
+    },
   ],
 
   branchConfigs: {
