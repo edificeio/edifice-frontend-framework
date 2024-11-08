@@ -26,16 +26,16 @@
   "scripts": {
     "build": "rm -rf dist && cp -r assets dist && pnpm run compile && cp dist/index.css ../../apps/docs/public/assets/themes/edifice-bootstrap/index.css",
     "clean": "rm -rf dist",
-    "compile": "sass --load-path=node_modules/ --style=compressed scss/index.scss dist/index.css",
-    "dev:fix": "stylelint scss/**/*.scss --fix",
-    "dev:lint": "stylelint scss/**/*.scss",
+    "compile": "sass --load-path=node_modules/ --style=compressed src/index.scss dist/index.css",
+    "dev:fix": "stylelint src/**/*.scss --fix",
+    "dev:lint": "stylelint src/**/*.scss",
     "format": "pnpm format:write && pnpm format:check",
-    "format:check": "npx prettier --check scss/**/*.scss",
-    "format:write": "npx prettier --write scss/**/*.scss",
+    "format:check": "npx prettier --check src/**/*.scss",
+    "format:write": "npx prettier --write src/**/*.scss",
     "generate-commit-version": "node scripts/version.cjs",
-    "watch": "sass --watch --load-path=node_modules/ --style=compressed scss/index.scss dist/index.css",
-    "watch:react": "sass --watch --style compressed --load-path=node_modules/ --no-source-map scss/index.scss ../../apps/docs/public/assets/themes/edifice-bootstrap/index.css",
-    "watch:sb": "sass --watch --style compressed --load-path=node_modules/ --no-source-map scss/index.scss ../../../recette/assets/themes/edifice-bootstrap/index.css"
+    "watch": "sass --watch --load-path=node_modules/ --style=compressed src/index.scss dist/index.css",
+    "watch:react": "sass --watch --style compressed --load-path=node_modules/ --no-source-map src/index.scss ../../apps/docs/public/assets/themes/edifice-bootstrap/index.css",
+    "watch:sb": "sass --watch --style compressed --load-path=node_modules/ --no-source-map src/index.scss ../../../recette/assets/themes/edifice-bootstrap/index.css"
   },
   "dependencies": {
     "@popperjs/core": "2.11.8",

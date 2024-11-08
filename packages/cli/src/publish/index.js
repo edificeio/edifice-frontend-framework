@@ -232,6 +232,8 @@ export const publish = async (options) => {
         const changed = changedFiles.some(
           (file) =>
             file.startsWith(path.join(pkg.packageDir, "src")) ||
+            // check if any files in the assets directory were modified
+            file.startsWith(path.join(pkg.packageDir, "assets")) ||
             file.startsWith(path.join(pkg.packageDir, "package.json")),
         );
         return changed;

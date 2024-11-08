@@ -5,7 +5,7 @@ import { App, ERROR_CODE } from "../globals";
 import { IOdeServices } from "../services/OdeServices";
 import { IUserInfo, IWebApp, UserProfile } from "../session/interfaces";
 
-declare var ATInternet: any;
+declare let ATInternet: any;
 let ATTag: any;
 
 export class AnalyticsService {
@@ -36,7 +36,7 @@ export class AnalyticsService {
 
     // SERVICE
     let SERVICE = xitiTrackingParams.LIBELLE_SERVICE.default || null;
-    for (let prop in xitiTrackingParams.LIBELLE_SERVICE) {
+    for (const prop in xitiTrackingParams.LIBELLE_SERVICE) {
       if (prop !== "default" && locationPath.indexOf(prop) >= 0) {
         SERVICE = xitiTrackingParams.LIBELLE_SERVICE[prop];
         break;
@@ -117,7 +117,7 @@ export class AnalyticsService {
     let structure;
     if (!user?.structures) return;
 
-    for (let struc of user.structures) {
+    for (const struc of user.structures) {
       const s = xitiConf.structureMap[struc];
       if (s && s.collectiviteId && s.UAI) {
         structure = s;
