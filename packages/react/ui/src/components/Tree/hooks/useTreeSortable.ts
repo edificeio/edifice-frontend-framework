@@ -52,7 +52,7 @@ export const useTreeSortable = ({
   }, [nodes]);
 
   const activationConstraint = {
-    delay: 250,
+    delay: 200,
     tolerance: 5,
   };
 
