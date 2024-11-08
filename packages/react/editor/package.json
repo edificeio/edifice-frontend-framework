@@ -58,8 +58,6 @@
     "@edifice-tiptap-extensions/extension-table-cell": "workspace:*",
     "@edifice-tiptap-extensions/extension-video": "workspace:*",
     "@edifice.io/image-resizer": "workspace:*",
-    "@edifice-ui/icons": "workspace:*",
-    "@edifice-ui/react": "workspace:*",
     "@tiptap-pro/extension-mathematics": "2.2.1",
     "@tiptap/core": "2.3.0",
     "@tiptap/extension-character-count": "2.3.0",
