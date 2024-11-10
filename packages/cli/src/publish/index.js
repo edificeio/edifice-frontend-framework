@@ -38,19 +38,32 @@ export const publish = async (options) => {
   /** @type {string[]} */
   const allTags = execSync("git tag").toString().split("\n");
 
+  // TODO: Keep this code for now, but it's not used
+  // const filteredTags = allTags
+  //   // Ensure tag is valid
+  //   .filter((t) => semver.valid(t))
+  //   // Filter tags based on whether the branch is a release or pre-release
+  //   .filter((t) => {
+  //     const isPrereleaseTag = semver.prerelease(t) !== null;
+  //     const prereleaseBranch = semver.prerelease(t)?.[0];
+  //     // For prerelease branches, only include tags for that branch
+  //     if (branchConfig.prerelease) {
+  //       return isPrereleaseTag && prereleaseBranch === branchName;
+  //     }
+  //     // For main branch, exclude all prereleases
+  //     return !isPrereleaseTag;
+  //   })
+  //   // sort by latest
+  //   // @ts-ignore
+  //   .sort(semver.compare);
+
   const filteredTags = allTags
     // Ensure tag is valid
     .filter((t) => semver.valid(t))
     // Filter tags based on whether the branch is a release or pre-release
     .filter((t) => {
       const isPrereleaseTag = semver.prerelease(t) !== null;
-      const prereleaseBranch = semver.prerelease(t)?.[0];
-      // For prerelease branches, only include tags for that branch
-      if (branchConfig.prerelease) {
-        return isPrereleaseTag && prereleaseBranch === branchName;
-      }
-      // For main branch, exclude all prereleases
-      return !isPrereleaseTag;
+      return branchConfig.prerelease ? isPrereleaseTag : !isPrereleaseTag;
     })
     // sort by latest
     // @ts-ignore
@@ -59,13 +72,17 @@ export const publish = async (options) => {
   // Get the latest tag
   let latestTag = filteredTags.at(-1);
 
+  // TODO: Keep this code for now, but it's not used
   /* if (branchConfig.prerelease) {
     const mainTags = execSync("git tag --merged main").toString().split("\n");
-    const validMainTags = mainTags.filter((t) => semver.valid(t));
+    const validMainTags = mainTags
+      .filter((t) => semver.valid(t))
+      .sort((a, b) => semver.compare(a, b));
 
     latestTag = validMainTags.at(-1) || latestTag; // Use the latest tag from main if available
   } */
 
+  // console.log({ filteredTags: filteredTags.reverse() });
   let rangeFrom = latestTag;
 
   // If RELEASE_ALL is set via a commit subject or body, all packages will be
@@ -424,8 +441,7 @@ export const publish = async (options) => {
   console.info("  Changes pushed."); */
 
   /**
-   * Tag the latest commit with the version number. This avoids creating additional release commits
-   * while maintaining a clean git history that can be used for future releases.
+   * We tag the latest commit as we want to keep the history clean without any release commits
    */
   console.info();
   console.info(`Creating new git tag v${version}`);

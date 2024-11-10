@@ -31,10 +31,10 @@ export const publishOptions = {
   ],
 
   branchConfigs: {
-    main: {
+    "main": {
       prerelease: false,
     },
-    develop: {
+    "develop": {
       prerelease: true,
     },
     "develop-b2school": {
