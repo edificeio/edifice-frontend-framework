@@ -58,6 +58,14 @@ export const publish = async (options) => {
 
   // Get the latest tag
   let latestTag = filteredTags.at(-1);
+
+  /* if (branchConfig.prerelease) {
+    const mainTags = execSync("git tag --merged main").toString().split("\n");
+    const validMainTags = mainTags.filter((t) => semver.valid(t));
+
+    latestTag = validMainTags.at(-1) || latestTag; // Use the latest tag from main if available
+  } */
+
   let rangeFrom = latestTag;
 
   // If RELEASE_ALL is set via a commit subject or body, all packages will be
@@ -112,10 +120,10 @@ export const publish = async (options) => {
     return !exclude;
   });
 
-  //   /**
-  //    * Get the commits since the latest tag
-  //    * @type {import('./index.js').Commit[]}
-  //    */
+  /**
+   * Get the commits since the latest tag
+   * @type {import('./index.js').Commit[]}
+   */
   const commitsSinceLatestTag = await Promise.all(
     rawCommitsLog.map(async (c) => {
       const parsed = await parseCommit(c.message);
@@ -166,13 +174,6 @@ export const publish = async (options) => {
     },
     -1,
   );
-
-  // If there is a breaking change and no manual tag is set, do not release
-  /* if (recommendedReleaseLevel === 2 && !tag) {
-    throw new Error(
-      'Major versions releases must be tagged and released manually.'
-    );
-  } */
 
   // If no release is semantically necessary and no manual tag is set, do not release
   if (recommendedReleaseLevel === -1 && !tag) {
@@ -398,9 +399,14 @@ export const publish = async (options) => {
   }
 
   console.info();
-  console.info("Committing changes...");
-  execSync(
+  console.info("Resetting changes...");
+  /* execSync(
     `git add -A && git reset -- ${changedPackages
+      .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
+      .join(" ")}`,
+  ); */
+  execSync(
+    `git reset -- ${changedPackages
       .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
       .join(" ")}`,
   );
@@ -409,14 +415,18 @@ export const publish = async (options) => {
       .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
       .join(" ")}`,
   );
-  execSync(`git commit -m "${releaseCommitMsg(version)}" --allow-empty -n`);
-  console.info("  Committed Changes.");
+  // execSync(`git commit -m "${releaseCommitMsg(version)}" --allow-empty -n`);
+  console.info("  Reset changes.");
 
-  console.info();
+  /* console.info();
   console.info("Pushing changes...");
   execSync(`git push origin ${currentGitBranch()}`);
-  console.info("  Changes pushed.");
+  console.info("  Changes pushed."); */
 
+  /**
+   * Tag the latest commit with the version number. This avoids creating additional release commits
+   * while maintaining a clean git history that can be used for future releases.
+   */
   console.info();
   console.info(`Creating new git tag v${version}`);
   execSync(`git tag -a -m "v${version}" v${version}`);
