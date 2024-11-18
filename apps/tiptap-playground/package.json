@@ -1,0 +1,83 @@
+{
+  "name": "edifice-tiptap-playground",
+  "version": "1.0.0",
+  "description": "Edifice Tiptap Playground",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/apps/tiptap-playground#readme",
+  "bugs": {
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edificeio/edifice-frontend-framework.git"
+  },
+  "license": "GPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm run typecheck && vite build",
+    "dev": "vite",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "pre-commit": "lint-staged",
+    "prepare": "cd .. && husky frontend/.husky || true",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch",
+    "typecheck": "tsc -b --noEmit"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx}": [
+      "pnpm run format",
+      "pnpm run lint"
+    ]
+  },
+  "dependencies": {
+    "@edifice-ui/editor": "workspace:*",
+    "@edifice-ui/icons": "workspace:*",
+    "@edifice-ui/react": "workspace:*",
+    "edifice-bootstrap": "workspace:*",
+    "edifice-ts-client": "workspace:*",
+    "@react-spring/web": "^9.7.5",
+    "@tanstack/react-query": "^5.59.13",
+    "clsx": "^2.1.1",
+    "i18next": "23.14.0",
+    "i18next-http-backend": "2.6.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-error-boundary": "4.0.13",
+    "react-hook-form": "^7.53.0",
+    "react-i18next": "14.1.0",
+    "react-router-dom": "^6.27.0",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@axe-core/react": "^4.10.0",
+    "@eslint/js": "^9.12.0",
+    "@tanstack/react-query-devtools": "^5.59.13",
+    "@types/node": "^18.19.55",
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.2",
+    "eslint": "^9.12.0",
+    "eslint-plugin-react-hooks": "5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.12",
+    "globals": "^15.11.0",
+    "lint-staged": "15.2.9",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.8.1",
+    "vite": "5.4.1",
+    "vite-tsconfig-paths": "^5.0.1"
+  },
+  "packageManager": "pnpm@9.12.2",
+  "engines": {
+    "node": "18 || 20"
+  }
+}
