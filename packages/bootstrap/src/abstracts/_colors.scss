@@ -27,12 +27,24 @@ $green: #46bfaf !default;
 $teal: #20c997 !default;
 $cyan: #0dcaf0 !default;
 
+$one-blue: #46afe6 !default;
+$one-indigo: #1a22a2 !default;
+$one-purple: #a348c0 !default;
+$one-pink: #b930a2 !default;
+$one-red: #ff3a55 !default;
+$one-orange: $orange !default;
+$one-yellow: #f1ca00 !default;
+$one-green: #5ac235 !default;
+$one-teal: #20c997 !default;
+
 /* Pale, Light and Dark Palette */
 $blue-200: #e5f5ff !default;
 $blue-300: #b9e3f8 !default;
 $blue-500: $blue !default;
 $blue-800: #2f7ea7 !default;
 $blue-900: #005a8a !default;
+
+$one-blue-800: #2f7ea7 !default;
 
 /* Pale, Light and Dark Palette */
 $indigo-200: #e5eeff !default;
@@ -47,6 +59,9 @@ $purple-500: $purple !default;
 $purple-800: #5d1d79 !default;
 $purple-900: #550070 !default;
 
+$one-purple-300: #d7b5e2 !default;
+$one-purple-800: #7c2c96 !default;
+
 /* Pale, Light and Dark Palette */
 $pink-200: #ffebfc !default;
 $pink-300: #f9beef !default;
@@ -59,6 +74,8 @@ $red-300: #ffadb9 !default;
 $red-500: $red !default;
 $red-800: #c6253b !default;
 $red-900: #9e0016 !default;
+
+$one-red-300: #ffb6c0 !default;
 
 /* Pale, Light and Dark Palette */
 $orange-200: #ffefe3 !default;
@@ -74,6 +91,8 @@ $yellow-500: $yellow !default;
 $yellow-800: #d1af00 !default;
 $yellow-900: #a89400 !default;
 
+$one-yellow-200: #fbf4d5 !default;
+
 /* Pale, Light and Dark Palette */
 $green-200: #e6f9f8 !default;
 $green-300: #b6ede5 !default;
@@ -81,9 +100,17 @@ $green-500: $green !default;
 $green-800: #058f7d !default;
 $green-900: #2e6105 !default;
 
+$one-green-200: #eaf7e4 !default;
+$one-green-300: #c8e4af !default;
+$one-green-800: #4e9019 !default;
+
 /* Main actions Colors */
 $primary: $orange !default;
 $secondary: $blue !default;
+
+$one-primary: $blue !default;
+$one-secondary: $orange !default;
+
 $tertiary: $gray-300 !default;
 $light: $gray-200 !default;
 $medium: $gray-500 !default;

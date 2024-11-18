@@ -71,20 +71,20 @@
   @each $app, $data in $icons-applications {
     [data-product="neo"] & {
       &-#{$app} {
-        background-color: color-mix(
-          in srgb,
-          map.get($data, "neo") 10%,
-          white 90%
+        background-color: color.scale(
+          map.get($data, "neo"),
+          $lightness: 90%,
+          $saturation: 5%
         );
       }
     }
 
     [data-product="one"] & {
       &-#{$app} {
-        background-color: color-mix(
-          in srgb,
-          map.get($data, "one") 10%,
-          white 90%
+        background-color: color.scale(
+          map.get($data, "one"),
+          $lightness: 90%,
+          $saturation: 5%
         );
       }
     }
@@ -94,20 +94,20 @@
   @each $app, $data in $icons-connectors {
     [data-product="neo"] & {
       &-#{$app} {
-        background-color: color-mix(
-          in srgb,
-          map.get($data, "neo") 10%,
-          white 90%
+        background-color: color.scale(
+          map.get($data, "neo"),
+          $lightness: 90%,
+          $saturation: 5%
         );
       }
     }
 
     [data-product="one"] & {
       &-#{$app} {
-        background-color: color-mix(
-          in srgb,
-          map.get($data, "one") 10%,
-          white 90%
+        background-color: color.scale(
+          map.get($data, "one"),
+          $lightness: 90%,
+          $saturation: 5%
         );
       }
     }

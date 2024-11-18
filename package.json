@@ -27,10 +27,10 @@
     "docs": "turbo run docs --filter=./apps/docs",
     "docs:build": "turbo run build --filter=./apps/docs",
     "docs:preview": "turbo run preview --filter=./apps/docs",
-    "fix": "turbo run fix",
-    "format": "turbo run format",
+    "fix": "turbo run fix --filter=./packages/**",
+    "format": "turbo run format --filter=./packages/**",
     "preinstall": "npx only-allow pnpm",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint --filter=./packages/**",
     "pre-commit": "pnpm run lint && pnpm run format",
     "prepare": "husky install",
     "publish-packages": "changeset version && changeset publish"
