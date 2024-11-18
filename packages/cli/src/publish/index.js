@@ -41,16 +41,10 @@ export const publish = async (options) => {
   const filteredTags = allTags
     // Ensure tag is valid
     .filter((t) => semver.valid(t))
-    // Filter tags based on whether the branch is a release or pre-release
+    // Only include non-prerelease tags from main branch
     .filter((t) => {
-      const isPrereleaseTag = semver.prerelease(t) !== null;
-      const prereleaseBranch = semver.prerelease(t)?.[0];
-      // For prerelease branches, only include tags for that branch
-      if (branchConfig.prerelease) {
-        return isPrereleaseTag && prereleaseBranch === branchName;
-      }
-      // For main branch, exclude all prereleases
-      return !isPrereleaseTag;
+      // Exclude any prerelease tags
+      return semver.prerelease(t) === null;
     })
     // sort by latest
     // @ts-ignore
@@ -58,6 +52,7 @@ export const publish = async (options) => {
 
   // Get the latest tag
   let latestTag = filteredTags.at(-1);
+
   let rangeFrom = latestTag;
 
   // If RELEASE_ALL is set via a commit subject or body, all packages will be
@@ -167,13 +162,6 @@ export const publish = async (options) => {
     -1,
   );
 
-  // If there is a breaking change and no manual tag is set, do not release
-  /* if (recommendedReleaseLevel === 2 && !tag) {
-    throw new Error(
-      'Major versions releases must be tagged and released manually.'
-    );
-  } */
-
   // If no release is semantically necessary and no manual tag is set, do not release
   if (recommendedReleaseLevel === -1 && !tag) {
     console.info(
@@ -199,7 +187,9 @@ export const publish = async (options) => {
 
   const version = tag
     ? semver.parse(tag)?.version
-    : semver.inc(latestTag, releaseType, npmTag);
+    : branchConfig.prerelease
+      ? `${semver.inc(latestTag, releaseType, npmTag, false)}.${Date.now()}`
+      : semver.inc(latestTag, releaseType, npmTag);
 
   if (!version) {
     throw new Error(
@@ -270,6 +260,10 @@ export const publish = async (options) => {
   const changelogCommitsMd = await Promise.all(
     Object.entries(
       commitsSinceLatestTag.reduce((prev, curr) => {
+        // Only include fix, feat, and chore commits
+        if (!["docs", "fix", "feat", "chore"].includes(curr.type)) {
+          return prev;
+        }
         return {
           ...prev,
           [curr.type]: [...(prev[curr.type] ?? []), curr],
@@ -277,20 +271,7 @@ export const publish = async (options) => {
       }, /** @type {Record<string, import('./index').Commit[]>} */ ({})),
     )
       .sort(
-        getSorterFn(([type]) =>
-          [
-            "other",
-            "examples",
-            "docs",
-            "ci",
-            "test",
-            "chore",
-            "refactor",
-            "perf",
-            "fix",
-            "feat",
-          ].indexOf(type),
-        ),
+        getSorterFn(([type]) => ["docs", "chore", "fix", "feat"].indexOf(type)),
       )
       .reverse()
       .map(async ([type, commits]) => {
@@ -334,7 +315,15 @@ export const publish = async (options) => {
   ).then((groups) => {
     return groups
       .map(([type, commits]) => {
-        return [`### ${capitalize(type)}`, commits.join("\n")].join("\n\n");
+        const typeTitle =
+          {
+            fix: "Bug fixes",
+            feat: "Features",
+            chore: "Chores",
+            docs: "Documentation",
+          }[type] || capitalize(type);
+
+        return [`### ${typeTitle}`, commits.join("\n")].join("\n\n");
       })
       .join("\n\n");
   });
@@ -399,32 +388,60 @@ export const publish = async (options) => {
 
   console.info();
   console.info("Committing changes...");
-  execSync(
-    `git add -A && git reset -- ${changedPackages
-      .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
-      .join(" ")}`,
-  );
-  execSync(
-    `git checkout -- ${changedPackages
-      .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
-      .join(" ")}`,
-  );
-  execSync(`git commit -m "${releaseCommitMsg(version)}" --allow-empty -n`);
-  console.info("  Committed Changes.");
 
-  console.info();
-  console.info("Pushing changes...");
-  execSync(`git push origin ${currentGitBranch()}`);
-  console.info("  Changes pushed.");
+  /**
+   * We only commit changes on the main branch to avoid creating a new release
+   * for every commit on a prerelease branch.
+   */
+  if (isMainBranch) {
+    /**
+     * Add all changed files and commit the changes with a release commit message.
+     */
+    execSync(`git add -A && git commit -m "${releaseCommitMsg(version)}"`);
+    console.info("  Committed Changes.");
 
-  console.info();
-  console.info(`Creating new git tag v${version}`);
-  execSync(`git tag -a -m "v${version}" v${version}`);
+    console.info();
+    console.info("Pushing changes...");
+    /**
+     * Push the changes to the main branch.
+     */
+    execSync(`git push origin ${currentGitBranch()}`);
+    console.info("  Changes pushed.");
 
-  console.info();
-  console.info("Pushing tags...");
-  execSync("git push --tags");
-  console.info("  Tags pushed.");
+    console.info();
+    console.info(`Creating new git tag v${version}`);
+    /**
+     * Create a new git tag for the release.
+     */
+    execSync(`git tag -a -m "v${version}" v${version}`);
+
+    console.info();
+    console.info("Pushing tags...");
+    /**
+     * Push the tags to the main branch.
+     */
+    execSync("git push --tags");
+    console.info("  Tags pushed.");
+  } else {
+    /**
+     * Reset the changes to the package.json files so that we don't commit them
+     * in the prerelease branch.
+     */
+    execSync(
+      `git reset -- ${changedPackages
+        .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
+        .join(" ")}`,
+    );
+    /**
+     * Checkout the package.json files so that we don't commit them in the
+     * prerelease branch.
+     */
+    execSync(
+      `git checkout -- ${changedPackages
+        .map((pkg) => path.resolve(rootDir, pkg.packageDir, "package.json"))
+        .join(" ")}`,
+    );
+  }
 
   if (ghToken && isMainBranch) {
     console.info();
