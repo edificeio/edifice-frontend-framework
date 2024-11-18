@@ -15,17 +15,17 @@ $container-spacings: (
 );
 
 [data-product="one"] {
-  --#{$prefix}blue: #46afe6;
-  --#{$prefix}indigo: #1a22a2;
-  --#{$prefix}purple: #a348c0;
-  --#{$prefix}pink: #b930a2;
-  --#{$prefix}red: #ff3a55;
-  --#{$prefix}orange: #ff8d2e;
-  --#{$prefix}yellow: #f1ca00;
-  --#{$prefix}green: #5ac235;
-  --#{$prefix}teal: #20c997;
-  --#{$prefix}primary: #2a9cc8;
-  --#{$prefix}secondary: #ff8d2e;
+  --#{$prefix}blue: $one-blue;
+  --#{$prefix}indigo: $one-indigo;
+  --#{$prefix}purple: $one-purple;
+  --#{$prefix}pink: $one-pink;
+  --#{$prefix}red: $one-red;
+  --#{$prefix}orange: $one-orange;
+  --#{$prefix}yellow: $one-yellow;
+  --#{$prefix}green: $one-green;
+  --#{$prefix}teal: $one-teal;
+  --#{$prefix}primary: $one-primary;
+  --#{$prefix}secondary: $one-secondary;
   --#{$prefix}body-bg: transparent;
   --#{$prefix}font-sans-serif: "Arimo", sans-serif;
   --#{$prefix}family-primary: "KGJune";
@@ -37,18 +37,18 @@ $container-spacings: (
   --#{$prefix}secondary-300: var(--#{$prefix}orange-300);
   --#{$prefix}secondary-500: var(--#{$prefix}orange);
   --#{$prefix}secondary-800: var(--#{$prefix}orange-800);
-  --#{$prefix}green-200: #EAF7E4;
-  --#{$prefix}yellow-200: #FBF4D5;
-  --#{$prefix}purple-300: #D7B5E2;
-  --#{$prefix}green-300: #C8E4AF;
-  --#{$prefix}red-300: #FFB6C0;
-  --#{$prefix}orange-300: #FFCBA0;
-  --#{$prefix}purple-800: #7C2C96;
-  --#{$prefix}blue-800: #2F7EA7;
-  --#{$prefix}green-800: #4E9019;
-  --#{$prefix}yellow-800: #D1AF00;
-  --#{$prefix}red-800: #C6253B;
-  --#{$prefix}orange-800: #DA6A0B;
+  --#{$prefix}green-200: $one-green-200;
+  --#{$prefix}yellow-200: $one-yellow-200;
+  --#{$prefix}purple-300: $one-purple-300;
+  --#{$prefix}green-300: $one-green-300;
+  --#{$prefix}red-300: $one-red-300;
+  --#{$prefix}orange-300: $one-orange-300;
+  --#{$prefix}purple-800: $one-purple-800;
+  --#{$prefix}blue-800: $one-blue-800;
+  --#{$prefix}green-800: $one-green-800;
+  --#{$prefix}yellow-800: $one-yellow-800;
+  --#{$prefix}red-800: $one-red-800;
+  --#{$prefix}orange-800: $one-orange-800;
 
   :where(h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6) {
     font-weight: 400;
