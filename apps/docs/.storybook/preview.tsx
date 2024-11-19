@@ -24,6 +24,9 @@ const preview: Preview = {
     // Initialize MSW
     initialize({
       onUnhandledRequest: "bypass",
+      serviceWorker: {
+        url: "./mockServiceWorker.js",
+      },
     });
   },
   tags: ["autodocs"],

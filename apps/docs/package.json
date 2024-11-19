@@ -25,5 +25,10 @@
     "docs": "storybook dev -p 6006",
     "build": "storybook build --docs -o dist/",
     "preview": "npx http-server dist/"
+  },
+  "msw": {
+    "workerDirectory": [
+      "./public"
+    ]
   }
 }
