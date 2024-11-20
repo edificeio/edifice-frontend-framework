@@ -1,6 +1,6 @@
 {
   "name": "edifice-bootstrap",
-  "version": "1.0.0",
+  "version": "1.6.0",
   "description": "Edifice CSS framework based on Bootstrap",
   "keywords": [
     "Bootstrap",
@@ -42,7 +42,6 @@
     "bootstrap": "5.3.2"
   },
   "devDependencies": {
-    "husky": "8.0.3",
     "sass": "1.70.0",
     "semantic-release": "23.0.0",
     "stylelint": "16.2.0",

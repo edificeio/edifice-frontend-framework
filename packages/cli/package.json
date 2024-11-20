@@ -1,6 +1,7 @@
 {
     "name": "@edifice.io/cli",
-    "version": "1.0.0",
+    "version": "1.6.0",
+    "private": true,
     "description": "Edifice Frontend CLI",
     "keywords": [
         "frontend",

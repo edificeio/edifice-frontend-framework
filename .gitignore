@@ -38,3 +38,4 @@ dist-ssr
 .env*.local
 
 pnpm-lock.yaml
+.pnpm-store
