@@ -1,0 +1,38 @@
+name: "Chromatic"
+
+on: push
+
+jobs:
+  chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Generate .npmrc
+        run: |
+          pnpm config set @edifice-ui:registry https://registry.npmjs.org
+          pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+          pnpm config set @tiptap-pro:registry https://registry.tiptap.dev
+          pnpm config set //registry.tiptap.dev/:_authToken ${{ secrets.TIPTAP_PRO_TOKEN }}
+          pnpm config set auto-install-peers true
+      - name: Install dependencies
+        run: |
+          pnpm install && pnpm run build
+        env:
+          TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          # ⚠️ Make sure to configure a `CHROMATIC_PROJECT_TOKEN` repository secret
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          buildScriptName: build
+          workingDir: apps/docs
+        
