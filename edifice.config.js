@@ -36,13 +36,81 @@ export const publishOptions = {
       name: "@edifice-tiptap-extensions/extension-image",
       packageDir: "packages/tiptap/extensions/extension-image",
     },
+    {
+      name: "@edifice-tiptap-extensions/extension-alert",
+      packageDir: "packages/tiptap/extensions/extension-alert",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-attachment",
+      packageDir: "packages/tiptap/extensions/extension-attachment",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-audio",
+      packageDir: "packages/tiptap/extensions/extension-audio",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-font-size",
+      packageDir: "packages/tiptap/extensions/extension-font-size",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-heading",
+      packageDir: "packages/tiptap/extensions/extension-heading",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-highlight",
+      packageDir: "packages/tiptap/extensions/extension-highlight",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-hyperlink",
+      packageDir: "packages/tiptap/extensions/extension-hyperlink",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-iframe",
+      packageDir: "packages/tiptap/extensions/extension-iframe",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-line-height",
+      packageDir: "packages/tiptap/extensions/extension-line-height",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-mathjax",
+      packageDir: "packages/tiptap/extensions/extension-mathjax",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-paragraph",
+      packageDir: "packages/tiptap/extensions/extension-paragraph",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-linker",
+      packageDir: "packages/tiptap/extensions/extension-linker",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-speechrecognition",
+      packageDir: "packages/tiptap/extensions/extension-speechrecognition",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-speechsynthesis",
+      packageDir: "packages/tiptap/extensions/extension-speechsynthesis",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-table-cell",
+      packageDir: "packages/tiptap/extensions/extension-table-cell",
+    },
+    {
+      name: "@edifice-tiptap-extensions/extension-video",
+      packageDir: "packages/tiptap/extensions/extension-video",
+    },
+    {
+      name: "@edifice-tiptap-extensions/transform",
+      packageDir: "packages/tiptap/extensions/transform",
+    },
   ],
 
   branchConfigs: {
-    main: {
+    "main": {
       prerelease: false,
     },
-    develop: {
+    "develop": {
       prerelease: true,
     },
     "develop-b2school": {

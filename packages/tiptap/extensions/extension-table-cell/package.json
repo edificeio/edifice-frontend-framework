@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-table-cell",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Rich Text Editor TypoSize Extension",
   "type": "module",
   "exports": {
