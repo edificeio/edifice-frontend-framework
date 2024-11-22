@@ -1,59 +1,59 @@
 {
-    "name": "@edifice.io/cli",
-    "version": "1.6.0",
-    "private": true,
-    "description": "Edifice Frontend CLI",
-    "keywords": [
-        "frontend",
-        "cli",
-        "scripts",
-        "publish"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/edificeio/edifice-frontend-framework.git",
-        "directory": "packages/cli"
+  "name": "@edifice.io/cli",
+  "version": "1.7.0",
+  "private": false,
+  "description": "Edifice Frontend CLI",
+  "keywords": [
+    "frontend",
+    "cli",
+    "scripts",
+    "publish"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/cli"
+  },
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "./publish": {
+      "import": {
+        "types": "./src/publish/index.d.ts",
+        "default": "./src/publish/index.js"
+      }
     },
-    "license": "AGPL-3.0",
-    "author": "Edifice",
-    "sideEffects": false,
-    "type": "module",
-    "exports": {
-        "./publish": {
-            "import": {
-                "types": "./src/publish/index.d.ts",
-                "default": "./src/publish/index.js"
-            }
-        },
-        "./package.json": "./package.json"
-    },
-    "bin": {
-        "edifice-cli": "./bin/index.js"
-    },
-    "files": [
-        "bin",
-        "src"
-    ],
-    "dependencies": {
-        "@commitlint/parse": "^19.5.0",
-        "commander": "^12.1.0",
-        "current-git-branch": "^1.1.0",
-        "interpret": "^3.1.1",
-        "jsonfile": "^6.1.0",
-        "liftoff": "^5.0.0",
-        "minimist": "^1.2.8",
-        "semver": "^7.6.3",
-        "simple-git": "^3.27.0",
-        "v8flags": "^4.0.1"
-    },
-    "devDependencies": {
-        "@types/current-git-branch": "^1.1.6",
-        "@types/interpret": "^1.1.3",
-        "@types/jsonfile": "^6.1.4",
-        "@types/liftoff": "^4.0.3",
-        "@types/minimist": "^1.2.5",
-        "@types/semver": "^7.5.8",
-        "@types/v8flags": "^3.1.3",
-        "type-fest": "^4.26.1"
-    }
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "edifice-cli": "./bin/index.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "dependencies": {
+    "@commitlint/parse": "^19.5.0",
+    "commander": "^12.1.0",
+    "current-git-branch": "^1.1.0",
+    "interpret": "^3.1.1",
+    "jsonfile": "^6.1.0",
+    "liftoff": "^5.0.0",
+    "minimist": "^1.2.8",
+    "semver": "^7.6.3",
+    "simple-git": "^3.27.0",
+    "v8flags": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/current-git-branch": "^1.1.6",
+    "@types/interpret": "^1.1.3",
+    "@types/jsonfile": "^6.1.4",
+    "@types/liftoff": "^4.0.3",
+    "@types/minimist": "^1.2.5",
+    "@types/semver": "^7.5.8",
+    "@types/v8flags": "^3.1.3",
+    "type-fest": "^4.26.1"
+  }
 }
