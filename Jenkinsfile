@@ -2,25 +2,34 @@
 
 pipeline {
   agent any
-    stages {
-      stage('Init') {
-        steps {
-          sh './scripts/publish.sh clean init'
-        }
+
+  stages {
+    stage('Init') {
+      steps {
+        sh './scripts/publish.sh clean init'
       }
-      stage('Build') {
-        steps {
-          sh './scripts/publish.sh build'
-        }
+    }
+    
+    stage('Build') {
+      steps {
+        sh './scripts/publish.sh build'
       }
-      stage('Publish') {
-        steps {
-          configFileProvider([configFile(fileId: '.npmrc-infra-front', variable: 'NPMRC')]) {
-            sh 'cp $NPMRC .npmrc'
-            sh './scripts/publish.sh publish'
-          }
+    }
+
+    stage('Publish') {
+      steps {
+        configFileProvider([configFile(fileId: '.npmrc-infra-front', variable: 'NPMRC')]) {
+          sh 'cp $NPMRC .npmrc'
+          sh './scripts/publish.sh publish'
         }
       }
     }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
 }
 
