@@ -154,6 +154,7 @@ const useUploadFiles = ({
        * update uploadedFiles with the correct updated information
        */
       if (res && typeof res === "object") {
+        res.file.title = legend;
         setUploadedFiles((prevFiles: WorkspaceElement[]) => {
           return prevFiles.map((prevFile) => {
             if (prevFile._id === res.file._id) {
