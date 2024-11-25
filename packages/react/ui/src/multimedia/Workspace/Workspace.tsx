@@ -414,7 +414,7 @@ const Workspace = ({
               </div>
             ) : (
               <EmptyScreen
-                imageSrc="./assets/themes/edifice-bootstrap/images/emptyscreen/illu-trash.svg"
+                imageSrc="/assets/themes/edifice-bootstrap/images/emptyscreen/illu-trash.svg"
                 text={t("workspace.empty.docSpace")}
                 title={t("explorer.emptyScreen.trash.title")}
               />

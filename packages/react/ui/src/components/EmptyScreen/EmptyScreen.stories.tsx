@@ -39,12 +39,14 @@ const meta: Meta<typeof EmptyScreen> = {
 export default meta;
 type Story = StoryObj<typeof EmptyScreen>;
 
+const base = import.meta.env.BASE_URL;
+
 export const Template = (args: EmptyScreenProps) => {
   return (
     <div>
       <EmptyScreen
         {...args}
-        imageSrc={`/assets/themes/edifice-bootstrap/images/emptyscreen/${args.imageSrc}.svg`}
+        imageSrc={`${base}assets/themes/edifice-bootstrap/images/emptyscreen/${args.imageSrc}.svg`}
       />
     </div>
   );
