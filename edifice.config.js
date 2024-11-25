@@ -5,10 +5,6 @@ import { fileURLToPath } from "node:url";
 export const publishOptions = {
   packages: [
     {
-      name: "@edifice.io/cli",
-      packageDir: "packages/cli",
-    },
-    {
       name: "edifice-ts-client",
       packageDir: "packages/client",
     },
@@ -111,6 +107,9 @@ export const publishOptions = {
       prerelease: false,
     },
     "develop": {
+      prerelease: true,
+    },
+    "develop-hotfix": {
       prerelease: true,
     },
     "develop-b2school": {
