@@ -20,3 +20,5 @@ catalog:
   "prettier": ^3.3.3
   "vite-plugin-dts": ^4.1.0
   "turbo": ^2.3.1
+  "@react-spring/web": ^9.7.5
+  "clsx": ^2.1.1
