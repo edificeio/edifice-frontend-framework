@@ -98,7 +98,7 @@ export const AvatarShapes: Story = {
 export const AvatarFallback: Story = {
   render: (args) => (
     <Avatar
-      src="./assets/themes/edifice-bootstrap/images/avatar/no-avatar"
+      src="/assets/themes/edifice-bootstrap/images/avatar/no-avatar"
       size="md"
       variant="square"
       alt="alternative text"

@@ -13,7 +13,7 @@ export const Example: Story = {
     const src = "";
     const alt = "alternative text";
     const placeholder =
-      "./assets/themes/edifice-bootstrap/images/common/image-placeholder.png";
+      "/assets/themes/edifice-bootstrap/images/common/image-placeholder.png";
     const { imgSrc, onError } = useImage({ src, placeholder });
 
     return <img alt={alt} onError={onError} src={imgSrc} />;
