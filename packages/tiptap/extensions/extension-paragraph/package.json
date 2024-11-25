@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-paragraph",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Rich Text Editor Paragraph Extension",
   "type": "module",
   "exports": {
