@@ -157,7 +157,7 @@ const useUploadFiles = ({
         setUploadedFiles((prevFiles: WorkspaceElement[]) => {
           return prevFiles.map((prevFile) => {
             if (prevFile._id === res.file._id) {
-              return { ...res.file };
+              return { ...res.file, title: legend, alt };
             }
             return prevFile;
           });
