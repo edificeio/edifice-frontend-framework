@@ -1,8 +1,8 @@
+import ImageResizer from "@edifice.io/image-resizer";
 import { mergeAttributes, nodeInputRule } from "@tiptap/core";
 import Image from "@tiptap/extension-image";
-import { Plugin } from "prosemirror-state";
 import { WorkspaceElement } from "edifice-ts-client";
-import ImageResizer from "@edifice.io/image-resizer";
+import { Plugin } from "prosemirror-state";
 
 export const IMAGE_INPUT_REGEX =
   /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
@@ -232,66 +232,87 @@ export const CustomImage = Image.extend<CustomImageOptions>({
   },
 
   addProseMirrorPlugins() {
-    const uploadAndCreateImages = async (
-      files: File[],
-      editor,
-      position?: number,
-    ) => {
-      const images = files.filter((file) =>
+    const uploadNode = async (file: File) => {
+      /**
+       * Resize the image
+       */
+      const resizedImage = await ImageResizer.resizeImageFile(file);
+
+      /**
+       * Upload the image
+       */
+      const image = await this.options.uploadFile(resizedImage);
+
+      /**
+       * Get the image url
+       */
+      const imageUrl = `/workspace/${image.public ? "pub/" : ""}document/${
+        image._id
+      }?timestamp=${new Date().getTime()}`;
+
+      /**
+       * Create the image node
+       */
+
+      const node = this.type.create({
+        src: imageUrl,
+        alt: image.alt,
+        title: image.title,
+      });
+
+      return node;
+    };
+
+    const getFilteredFiles = (files: FileList) => {
+      return Array.from(files).filter((file) =>
         /image\/(png|jpeg|jpg|gif|webp|heic|avif)/.test(file.type),
       );
-      images.forEach(async (file) => {
-        const resizedImage = await ImageResizer.resizeImageFile(file);
-        const image = await this.options.uploadFile(resizedImage);
+    };
 
-        if (image) {
-          /**
-           * WB-3053: addTimestampToImageUrl to update correctly image in tiptap-image-extension
-           */
-          const imageUrl = `/workspace/${image.public ? "pub/" : ""}document/${
-            image._id
-          }?timestamp=${new Date().getTime()}`;
-          const node = this.type.create({
-            src: `${imageUrl}`,
-            alt: image.alt,
-            title: image.title,
-          }); // creates the image element
+    const handleImageInsert = async (
+      editor: any,
+      file: File,
+      position?: number,
+    ) => {
+      const node = await uploadNode(file);
+      if (!node) return;
 
-          let transaction; // places it in the correct position
-          if (position) {
-            transaction = editor.state.tr.insert(position, node); // places it in the correct position
-          } else {
-            transaction = editor.state.tr.replaceSelectionWith(node); // places it in the correct position
-          }
+      const transaction =
+        position !== undefined
+          ? editor.state.tr.insert(position, node)
+          : editor.state.tr.replaceSelectionWith(node);
 
-          editor.dispatch(transaction);
-        }
-      });
+      editor.dispatch(transaction);
     };
 
     return [
       new Plugin({
         props: {
           handlePaste: (editor, e) => {
-            const files = Array.from(e.clipboardData.files);
+            const files = getFilteredFiles(e.clipboardData?.files);
+            if (files.length === 0) return false;
 
-            uploadAndCreateImages(files, editor);
-
-            return false;
-          },
-          handleDrop: (editor, e, _s, moved) => {
-            const files = Array.from(e.dataTransfer.files);
-            if (!moved && files.length > 0) {
-              const { pos: position } = editor.posAtCoords({
-                left: e.clientX,
-                top: e.clientY,
-              });
-
-              uploadAndCreateImages(files, editor, position);
-              return true;
+            for (const file of files) {
+              handleImageInsert(editor, file);
             }
 
-            return false;
+            return true;
+          },
+          handleDrop: (editor, e, _s, moved) => {
+            if (moved) return false;
+
+            const files = getFilteredFiles(e.dataTransfer.files);
+            if (files.length === 0) return false;
+
+            const { pos: position } = editor.posAtCoords({
+              left: e.clientX,
+              top: e.clientY,
+            });
+
+            for (const file of files) {
+              handleImageInsert(editor, file, position);
+            }
+            return true;
           },
         },
       }),
