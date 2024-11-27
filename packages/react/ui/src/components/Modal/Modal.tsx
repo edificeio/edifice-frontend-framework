@@ -8,19 +8,19 @@
  */
 import { forwardRef, useEffect } from "react";
 
-import { useTransition, animated } from "@react-spring/web";
+import { animated, useTransition } from "@react-spring/web";
 import clsx from "clsx";
 
+import { useClickOutside, useKeyPress, useTrapFocus } from "../../hooks";
 import ModalBody from "./ModalBody";
 import { ModalContext, ModalContextProps } from "./ModalContext";
 import ModalFooter from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
 import ModalSubtitle from "./ModalSubtitle";
-import { useClickOutside, useTrapFocus, useKeyPress } from "../../hooks";
 
 export type ModalElement = HTMLDivElement;
 
-export type ModalSize = "md" | "lg";
+export type ModalSize = "sm" | "md" | "lg";
 
 export interface ModalProps {
   /**
