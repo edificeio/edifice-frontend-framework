@@ -38,7 +38,11 @@ const meta: Meta<typeof ImagePickerWorkspace> = {
 export default meta;
 type Story = StoryObj<typeof ImagePickerWorkspace>;
 
-export const Base: Story = {};
+export const Base: Story = {
+  args: {
+    size: "160",
+  },
+};
 
 export const DisabledButton: Story = {
   parameters: {

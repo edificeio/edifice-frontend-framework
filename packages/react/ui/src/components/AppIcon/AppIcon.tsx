@@ -6,7 +6,14 @@ import { IWebApp } from "edifice-ts-client";
 import { useOdeIcons, usePaths } from "../../core";
 import { Image } from "../Image";
 
-export type AppIconSize = "24" | "32" | "40" | "48" | "80" | "160";
+export type AppIconSize =
+  | "24"
+  | "32"
+  | "40"
+  | "48"
+  | "80"
+  | "160"
+  | (string & {});
 
 export interface BaseProps {
   /**
@@ -142,8 +149,8 @@ const AppIcon = forwardRef(
       >
         <svg
           ref={ref}
-          width={size}
-          height={size}
+          /* width="100%"
+          height="100%" */
           role="img"
           fill="currentColor"
           xmlns="http://www.w3.org/2000/svg"

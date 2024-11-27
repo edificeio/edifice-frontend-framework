@@ -1,15 +1,15 @@
-import { ComponentPropsWithRef, useEffect, useState } from "react";
+import { ComponentPropsWithoutRef, useEffect, useState } from "react";
 
 import { Delete, Edit } from "@edifice-ui/icons";
 import { IWebApp } from "edifice-ts-client";
 
+import clsx from "clsx";
 import { AppIcon } from "../../components/AppIcon";
 import { Avatar } from "../../components/Avatar";
 import { IconButton } from "../../components/Button";
-import clsx from "clsx";
 
 export interface ImagePickerWorkspaceProps
-  extends ComponentPropsWithRef<"input"> {
+  extends ComponentPropsWithoutRef<"div"> {
   /**
    * Accessible description of the add button
    */
@@ -48,12 +48,18 @@ export interface ImagePickerWorkspaceProps
    * Callback when deleting image
    */
   onDeleteImage: () => void;
+
+  /**
+   * Size of the image picker workspace
+   */
+  size?: "160" | (string & {});
 }
 
 const ImagePickerWorkspace = ({
   addButtonLabel = "Add image",
   deleteButtonLabel = "Delete image",
   src,
+  size = "160",
   className,
   mediaLibraryRef,
   libraryMedia,
@@ -83,7 +89,11 @@ const ImagePickerWorkspace = ({
   const classes = clsx("image-input", className);
 
   return (
-    <div id="image-input" className={classes}>
+    <div
+      id="image-input"
+      className={classes}
+      style={{ width: size + "px", height: size + "px" }}
+    >
       <div className="image-input-actions gap-8">
         <IconButton
           aria-label={addButtonLabel}
@@ -106,7 +116,7 @@ const ImagePickerWorkspace = ({
       {preview ? (
         <Avatar alt="" src={preview} size="xl" />
       ) : (
-        <AppIcon app={app} iconFit="ratio" size="160" variant="rounded" />
+        <AppIcon app={app} iconFit="ratio" size={size} variant="rounded" />
       )}
     </div>
   );
