@@ -20,7 +20,7 @@ const meta: Meta<typeof Modal> = {
   },
   argTypes: {
     size: {
-      options: ["md", "lg"],
+      options: ["sm", "md", "lg"],
       control: { type: "select" },
     },
   },
