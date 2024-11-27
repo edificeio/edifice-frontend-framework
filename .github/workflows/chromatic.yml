@@ -1,6 +1,13 @@
 name: "Chromatic"
 
-on: push
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - develop
+      - develop*
 
 jobs:
   chromatic:
@@ -35,4 +42,3 @@ jobs:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           buildScriptName: build
           workingDir: apps/docs
-        
