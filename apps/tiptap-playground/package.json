@@ -20,10 +20,6 @@
     "format": "prettier --write .",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui",
-    "test:watch": "vitest --watch",
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
