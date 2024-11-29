@@ -14,7 +14,11 @@ declare module "@tiptap/core" {
 
 export const Attachment = Node.create<AttachmentOptions>({
   name: "attachments",
-  content: "",
+
+  // FIX #WB2-2156: links parsing
+  content: "block+",
+  priority: 10001,
+
   marks: "",
   group: "block",
   selectable: true,
@@ -62,12 +66,18 @@ export const Attachment = Node.create<AttachmentOptions>({
 
           for (let i = 0; i < links.length; i++) {
             const link = links[i];
+
+            const dataDocumentId = link.getAttribute("data-document-id");
             const href = link.getAttribute("href");
+
+            if (!dataDocumentId && !href) {
+              continue;
+            }
+
             const name = link.textContent;
             const regexResult = href.match(/([^/]+$)/);
             const documentId =
-              link.getAttribute("data-document-id") ||
-              (regexResult && regexResult[0]);
+              dataDocumentId || (regexResult && regexResult[0]);
             const dataContentType = link.getAttribute("data-content-type");
 
             parsedLinks.push({
