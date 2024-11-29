@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 
-import { TabsItemProps } from "./TabsItem";
+import { TabsItemProps } from "../components/TabsItem";
 
 export interface TabsContextProps {
   activeTab?: string;

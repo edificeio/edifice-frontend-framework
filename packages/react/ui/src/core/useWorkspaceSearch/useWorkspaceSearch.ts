@@ -48,7 +48,7 @@ export default function useWorkspaceSearch(
   ) {
     switch (action.type) {
       case "update": {
-        const node = findNodeById(state, action.folderId);
+        const node = findNodeById(state, action.folderId as string);
         if (node) {
           node.children = action.subfolders.map((f) => ({
             id: f._id || "",

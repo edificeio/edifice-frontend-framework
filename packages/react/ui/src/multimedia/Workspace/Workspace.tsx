@@ -23,7 +23,7 @@ import {
   TreeView,
   TreeViewHandlers_V1,
 } from "../../components";
-import { useWorkspaceSearch } from "../../core";
+import { usePaths, useWorkspaceSearch } from "../../core";
 import { FolderNode } from "../../core/useWorkspaceSearch/useWorkspaceSearch";
 import { findTreeNode } from "../../utils";
 
@@ -66,6 +66,7 @@ const Workspace = ({
   defaultFolder,
   showPublicFolder,
 }: WorkspaceProps) => {
+  const [imagePath] = usePaths();
   const { t } = useTranslation();
 
   const { root: ownerRoot, loadContent: loadOwnerDocs } = useWorkspaceSearch(
@@ -414,7 +415,7 @@ const Workspace = ({
               </div>
             ) : (
               <EmptyScreen
-                imageSrc="/assets/themes/edifice-bootstrap/images/emptyscreen/illu-trash.svg"
+                imageSrc={`${imagePath}/emptyscreen/illu-trash.svg`}
                 text={t("workspace.empty.docSpace")}
                 title={t("explorer.emptyScreen.trash.title")}
               />
