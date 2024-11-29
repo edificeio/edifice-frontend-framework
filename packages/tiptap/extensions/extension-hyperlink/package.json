@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-hyperlink",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "Rich Text Editor Hyperlink Extension",
   "type": "module",
   "exports": {
