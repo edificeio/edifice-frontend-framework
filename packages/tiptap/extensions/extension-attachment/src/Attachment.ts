@@ -14,7 +14,11 @@ declare module "@tiptap/core" {
 
 export const Attachment = Node.create<AttachmentOptions>({
   name: "attachments",
-  content: "",
+
+  // FIX #WB2-2156: links parsing
+  content: "block+",
+  priority: 10001,
+
   marks: "",
   group: "block",
   selectable: true,
