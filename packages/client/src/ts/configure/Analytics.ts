@@ -173,7 +173,7 @@ export class Analytics {
       ID_PERSO: pseudonymization(me.userId),
       PROFILE:
         desc.profiles && desc.profiles.length > 0
-          ? profileMap[desc.profiles[0]] ?? ""
+          ? (profileMap[desc.profiles[0]] ?? "")
           : "",
     };
   }

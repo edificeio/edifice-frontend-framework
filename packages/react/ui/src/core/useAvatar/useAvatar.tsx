@@ -1,7 +1,7 @@
 import { ID, UserProfile, odeServices } from "edifice-ts-client";
 import { useMemo } from "react";
-import { Badge } from "../../components";
 import { useTranslation } from "react-i18next";
+import { Badge } from "../../components";
 
 export default function useAvatar(
   userId: ID,
@@ -14,8 +14,8 @@ export default function useAvatar(
     return ["teacher", "student", "relative", "personnel"].includes(profile) ? (
       <Badge
         variant={{
-          type: "profile",
-          profile: profile as "teacher" | "student" | "relative" | "personnel",
+          type: "user",
+          profile: profile as "Teacher" | "Student" | "Relative" | "Personnel",
         }}
       >
         {t(profile)}

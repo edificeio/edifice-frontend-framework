@@ -41,7 +41,7 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   return (
     <NodeViewWrapper as="span" contentEditable={false}>
       <Badge
-        variant={{ type: "chip", background: true }}
+        variant={{ type: "chip" }}
         className={classes}
         onClick={handleBadgeClick}
         data-drag-handle

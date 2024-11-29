@@ -33,7 +33,9 @@
     "format:write": "npx prettier --write \"src/**/*.ts\""
   },
   "devDependencies": {
-    "@types/node": "20.11.6"
+    "@types/node": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
   },
   "publishConfig": {
     "access": "public"

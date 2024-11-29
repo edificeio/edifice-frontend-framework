@@ -39,11 +39,13 @@
   },
   "devDependencies": {
     "@types/jasmine": "5.1.4",
-    "@types/node": "20.11.6",
+    "@types/node": "catalog:",
     "jasmine": "5.1.0",
     "rimraf": "5.0.5",
     "rollup-plugin-visualizer": "catalog:",
     "typedoc": "0.25.7",
-    "typedoc-plugin-markdown": "3.17.1"
+    "typedoc-plugin-markdown": "3.17.1",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
   }
 }
