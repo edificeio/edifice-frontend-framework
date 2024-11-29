@@ -22,7 +22,7 @@ export const useCheckable = <T extends { _id: string }>(
 
   const handleOnSelectAllItems = (deselect: boolean) => {
     setSelectedItems(() => {
-      return deselect ? [] : data?.map((item) => item._id) ?? [];
+      return deselect ? [] : (data?.map((item) => item._id) ?? []);
     });
   };
 
