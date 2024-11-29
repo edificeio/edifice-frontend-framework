@@ -5,6 +5,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
+import { PluginOption } from "vite";
 import { peerDependencies } from "./package.json";
 
 export default defineConfig({
@@ -24,5 +25,5 @@ export default defineConfig({
       external: [...Object.keys(peerDependencies), "react/jsx-runtime"],
     },
   },
-  plugins: [react(), dts(), visualizer()],
+  plugins: [react(), dts(), visualizer() as PluginOption],
 });
