@@ -50,7 +50,7 @@ export function ThemeProvider({ defaultTheme, children }: ThemeProps) {
       },
       {
         data: "data-product",
-        value: defaultTheme === "none" ? "" : defaultTheme ?? dataProduct,
+        value: defaultTheme === "none" ? "" : (defaultTheme ?? dataProduct),
       },
     ];
 

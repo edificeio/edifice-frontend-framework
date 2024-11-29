@@ -164,7 +164,7 @@ export class AnalyticsService {
       ID_PERSO: pseudonymization(user.userId),
       PROFILE:
         userProfile && userProfile.length > 0
-          ? profileMap[userProfile[0]] ?? ""
+          ? (profileMap[userProfile[0]] ?? "")
           : "",
     };
   }
