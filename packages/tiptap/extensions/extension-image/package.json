@@ -28,6 +28,12 @@
     "lint": "eslint src --ext ts --report-unused-disable-directives --max-warnings 0",
     "release": "pnpm run generate-commit-version && pnpm run build"
   },
+  "dependencies": {
+    "@edifice.io/image-resizer": "workspace:*",
+    "@tiptap/extension-image": "2.3.0",
+    "edifice-ts-client": "^1.5.21",
+    "prosemirror-state": "^1.4.3"
+  },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-commonjs": "^24.0.1",
@@ -38,12 +44,6 @@
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "rollup-plugin-typescript2": "^0.34.1"
-  },
-  "dependencies": {
-    "@edifice.io/image-resizer": "workspace:*",
-    "@tiptap/extension-image": "2.3.0",
-    "edifice-ts-client": "^1.5.21",
-    "prosemirror-state": "^1.4.3"
   },
   "peerDependencies": {
     "@tiptap/core": "2.3.0",
