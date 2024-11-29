@@ -5,6 +5,7 @@ import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 
+import { PluginOption } from "vite";
 import { dependencies, peerDependencies } from "./package.json";
 
 export default defineConfig({
@@ -19,6 +20,10 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
+      output: {
+        preserveModules: true,
+        preserveModulesRoot: "src",
+      },
       external: [
         ...Object.keys(dependencies),
         ...Object.keys(peerDependencies),
@@ -35,6 +40,6 @@ export default defineConfig({
       },
     }),
     dts(),
-    visualizer(),
+    visualizer() as PluginOption,
   ],
 });
