@@ -35,12 +35,10 @@ $colors: map.merge($colors, $extra-colors);
 $utilities: map.merge(
   $utilities,
   (
-    "shadow":
-      map.merge(
+    "shadow": map.merge(
         map.get($utilities, "shadow"),
         (
-          values:
-            map.merge(
+          values: map.merge(
               map.get(map.get($utilities, "shadow"), "values"),
               (
                 hover: $box-shadow-hover,
@@ -49,12 +47,10 @@ $utilities: map.merge(
             ),
         )
       ),
-    "color":
-      map.merge(
+    "color": map.merge(
         map.get($utilities, "color"),
         (
-          values:
-            map.merge(
+          values: map.merge(
               map.get(map.get($utilities, "color"), "values"),
               (
                 "gray-700": $gray-700,
@@ -67,19 +63,16 @@ $utilities: map.merge(
             ),
         )
       ),
-    "height":
-      map.merge(
+    "height": map.merge(
         map.get($utilities, "height"),
         (
-          values:
-            map.merge(
+          values: map.merge(
               map.get(map.get($utilities, "height"), "values"),
               (1\/4: 25%, 1\/2: 50%, 3\/4: 75%, full: 100%, auto: auto)
             ),
         )
       ),
-    "width":
-      map.merge(
+    "width": map.merge(
         map.get($utilities, "width"),
         (
           values: map.merge($width-sizing, $spacers),
