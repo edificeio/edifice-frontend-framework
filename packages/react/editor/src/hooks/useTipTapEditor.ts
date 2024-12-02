@@ -1,20 +1,17 @@
 import { useEffect } from "react";
 
-// Import TipTap module overloaded typings (custom commands)
-import "@edifice-tiptap-extensions/extension-audio";
-import "@edifice-tiptap-extensions/extension-image";
-import "@edifice-tiptap-extensions/extension-video";
-
-import { Alert } from "@edifice-tiptap-extensions/extension-alert";
-import { FontSize } from "@edifice-tiptap-extensions/extension-font-size";
-import { CustomHeading } from "@edifice-tiptap-extensions/extension-heading";
-import { CustomHighlight } from "@edifice-tiptap-extensions/extension-highlight";
-import { Hyperlink } from "@edifice-tiptap-extensions/extension-hyperlink";
-import { Iframe } from "@edifice-tiptap-extensions/extension-iframe";
-import { SpeechRecognition } from "@edifice-tiptap-extensions/extension-speechrecognition";
-import { SpeechSynthesis } from "@edifice-tiptap-extensions/extension-speechsynthesis";
-import { TableCell } from "@edifice-tiptap-extensions/extension-table-cell";
 import { useOdeClient, useUpload } from "@edifice-ui/react";
+
+import { Alert } from "@edifice.io/tiptap-extensions/alert";
+import { FontSize } from "@edifice.io/tiptap-extensions/font-size";
+import { CustomHeading } from "@edifice.io/tiptap-extensions/heading";
+import { CustomHighlight } from "@edifice.io/tiptap-extensions/highlight";
+import { Hyperlink } from "@edifice.io/tiptap-extensions/hyperlink";
+import { Iframe } from "@edifice.io/tiptap-extensions/iframe";
+import { SpeechRecognition } from "@edifice.io/tiptap-extensions/speech-recognition";
+import { SpeechSynthesis } from "@edifice.io/tiptap-extensions/speech-synthesis";
+import { TableCell } from "@edifice.io/tiptap-extensions/table-cell";
+import { Mathematics } from "@tiptap-pro/extension-mathematics";
 import Color from "@tiptap/extension-color";
 import Focus from "@tiptap/extension-focus";
 import FontFamily from "@tiptap/extension-font-family";
@@ -30,10 +27,10 @@ import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
 import { Content, FocusPosition, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { Mathematics } from "@tiptap-pro/extension-mathematics";
 
 import { useTranslation } from "react-i18next";
 
+import { WorkspaceVisibility } from "edifice-ts-client";
 import {
   AttachmentNodeView,
   AttachmentRenderer,
@@ -45,7 +42,6 @@ import {
   MediaRenderer,
   VideoNodeView,
 } from "../components";
-import { WorkspaceVisibility } from "edifice-ts-client";
 
 /**
  * Hook that creates a tiptap editor instance.
