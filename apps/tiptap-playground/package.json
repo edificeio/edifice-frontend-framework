@@ -23,8 +23,6 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
-    "@edifice-ui/editor": "workspace:*",
-    "@edifice-ui/icons": "workspace:*",
     "@edifice-ui/react": "workspace:*",
     "edifice-bootstrap": "workspace:*",
     "edifice-ts-client": "workspace:*",

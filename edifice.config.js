@@ -17,14 +17,6 @@ export const publishOptions = {
       packageDir: "packages/react/ui",
     },
     {
-      name: "@edifice-ui/editor",
-      packageDir: "packages/react/editor",
-    },
-    {
-      name: "@edifice-ui/icons",
-      packageDir: "packages/react/icons",
-    },
-    {
       name: "@edifice.io/image-resizer",
       packageDir: "packages/image-resizer",
     },

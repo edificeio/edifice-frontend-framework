@@ -126,12 +126,12 @@
     "@tiptap/html": "2.3.0",
     "@tiptap/pm": "2.3.0",
     "@tiptap/starter-kit": "2.3.0",
-    "prosemirror-state": "^1.4.3",
     "prosemirror-model": "^1.0.0",
+    "prosemirror-state": "^1.4.3",
     "prosemirror-transform": "^1.0.0",
     "prosemirror-view": "^1.27.0",
-    "vite-plugin-dts": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
   },
   "devDependencies": {
     "@types/dom-speech-recognition": "^0.0.1",
