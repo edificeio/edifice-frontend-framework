@@ -7,7 +7,6 @@ import {
   useImperativeHandle,
 } from "react";
 
-import "@edifice-tiptap-extensions/extension-image";
 import { LoadingScreen, MediaLibrary, useOdeClient } from "@edifice-ui/react";
 import {
   Content,

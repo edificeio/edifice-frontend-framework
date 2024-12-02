@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Hyperlink } from "@edifice-tiptap-extensions/extension-hyperlink";
+import { Hyperlink } from "@edifice.io/tiptap-extensions/hyperlink";
 import CharacterCount from "@tiptap/extension-character-count";
 import { Content, HTMLContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";

@@ -1,4 +1,4 @@
-import { Audio } from "@edifice-tiptap-extensions/extension-audio";
+import { Audio } from "@edifice.io/tiptap-extensions/audio";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
 const AudioNodeView = (Component: any) =>

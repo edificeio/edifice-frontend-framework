@@ -1,4 +1,4 @@
-import { Linker } from "@edifice-tiptap-extensions/extension-linker";
+import { Linker } from "@edifice.io/tiptap-extensions/linker";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
 const LinkerNodeView = (Component: any) =>
