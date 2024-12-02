@@ -1,11 +1,11 @@
+import { ID } from "../globals";
+import { IOdeServices } from "../services/OdeServices";
+import { DocumentHelper } from "../utils/DocumentHelper";
 import {
   WorkspaceElement,
   WorkspaceSearchFilter,
   WorkspaceVisibility,
 } from "./interface";
-import { ID } from "../globals";
-import { IOdeServices } from "../services/OdeServices";
-import { DocumentHelper } from "../utils/DocumentHelper";
 
 interface ElementQuery {
   /**
@@ -53,7 +53,7 @@ export class WorkspaceService {
   }
 
   private extractMetadata(file: Blob | File) {
-    const tmpName = file.name || "";
+    const tmpName = (file as File).name || "";
     const nameSplit = tmpName.split(".");
     const contentType = file.type || "application/octet-stream";
     const extension =

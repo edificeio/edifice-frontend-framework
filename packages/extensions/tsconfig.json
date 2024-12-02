@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "ESNext",
+    "lib": ["ES2016", "DOM"],
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noImplicitReturns": false,
+    "skipLibCheck": true,
+    "sourceMap": true
+  },
+  "exclude": ["dist", "node_modules"],
+  "include": ["src"]
+}

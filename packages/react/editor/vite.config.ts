@@ -27,9 +27,10 @@ export default defineConfig({
       external: [
         ...Object.keys(dependencies),
         ...Object.keys(peerDependencies),
+        /^@edifice\.io\/tiptap-extensions\/.*/,
         "react/jsx-runtime",
         "edifice-ts-client",
-        "@edifice-ui/icons/nav",
+        /^@edifice-ui\/icons\/.*/,
       ],
     },
   },
