@@ -1,4 +1,4 @@
-import { Role, WorkspaceElement } from "edifice-ts-client";
+import { Role, WorkspaceElement } from "@edifice.io/ts-client";
 
 import { Workspace as Component } from "../../Workspace";
 import { useMediaLibraryContext } from "../MediaLibraryContext";

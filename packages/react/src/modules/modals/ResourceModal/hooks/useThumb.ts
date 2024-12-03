@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { IResource } from "edifice-ts-client";
+import { IResource } from "@edifice.io/ts-client";
 
 interface UseThumbProps {
   isUpdating: boolean;

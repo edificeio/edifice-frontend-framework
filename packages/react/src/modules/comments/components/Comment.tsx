@@ -1,4 +1,4 @@
-import { UserProfile } from "edifice-ts-client";
+import { UserProfile } from "@edifice.io/ts-client";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../..";

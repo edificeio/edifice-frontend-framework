@@ -1,4 +1,4 @@
-import { IResource } from "edifice-ts-client";
+import { IResource } from "@edifice.io/ts-client";
 import {
   UseFormRegister,
   UseFormSetValue,

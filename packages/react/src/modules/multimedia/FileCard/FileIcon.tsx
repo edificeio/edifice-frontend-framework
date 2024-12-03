@@ -1,5 +1,5 @@
+import { Role } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { Role } from "edifice-ts-client";
 import { IconPaperclip } from "../../icons/components";
 
 const FileIcon = ({

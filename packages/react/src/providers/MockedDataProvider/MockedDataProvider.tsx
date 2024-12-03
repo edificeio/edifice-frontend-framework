@@ -1,4 +1,4 @@
-import { createContext, type ReactNode, useMemo, useContext } from "react";
+import { createContext, type ReactNode, useContext, useMemo } from "react";
 
 import {
   App,
@@ -6,7 +6,7 @@ import {
   IResource,
   ResourceType,
   WorkspaceElement,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
 
 export interface MockedDataProps {
   children: ReactNode;

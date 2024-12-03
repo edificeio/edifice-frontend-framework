@@ -1,7 +1,7 @@
 import { useEffect, useId, useState } from "react";
 
+import { Embedder, odeServices } from "@edifice.io/ts-client";
 import { useDebounce } from "@uidotdev/usehooks";
-import { Embedder, odeServices } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 import {
   Button,

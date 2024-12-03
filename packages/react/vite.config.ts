@@ -48,7 +48,7 @@ export default defineConfig({
         ...Object.keys(dependencies),
         ...Object.keys(peerDependencies),
         "react/jsx-runtime",
-        "edifice-ts-client",
+        "@edifice.io/ts-client",
         /^@edifice\.io\/tiptap-extensions\/.*/,
         /^dayjs\/plugin\/.+\.js$/,
         /^dayjs\/locale\/.+\.js$/,

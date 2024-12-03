@@ -1,5 +1,5 @@
+import { ViewsDetails } from "@edifice.io/ts-client";
 import { StringUtils } from "@edifice.io/utilities";
-import { ViewsDetails } from "edifice-ts-client";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../components";

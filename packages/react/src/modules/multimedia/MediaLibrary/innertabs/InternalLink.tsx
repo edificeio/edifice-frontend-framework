@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { ILinkedResource } from "edifice-ts-client";
+import { ILinkedResource } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 
 import { Checkbox } from "../../../../components";

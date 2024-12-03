@@ -1,7 +1,7 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
 
+import { WorkspaceElement, WorkspaceVisibility } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { WorkspaceElement, WorkspaceVisibility } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 
 import { FormControl, Input, Toolbar } from "../../../components";

@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, Ref } from "react";
 
+import { UserProfile } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { UserProfile } from "edifice-ts-client";
 
 export type BadgeRef = HTMLSpanElement;
 
