@@ -1,6 +1,6 @@
 {
   "name": "@edifice-tiptap-extensions/extension-image",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "Rich Text Editor Attachment Extension",
   "type": "module",
   "exports": {
