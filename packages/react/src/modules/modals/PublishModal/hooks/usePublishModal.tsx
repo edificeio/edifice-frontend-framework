@@ -7,9 +7,9 @@ import {
 } from "edifice-ts-client";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
+import { libraryMaps } from "@edifice.io/utilities";
 import { useToast } from "../../../../hooks";
 import { useEdificeClient } from "../../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { libraryMaps } from "../../../../utilities";
 import { ToastError } from "../components/ToastError";
 import { ToastSuccess } from "../components/ToastSuccess";
 

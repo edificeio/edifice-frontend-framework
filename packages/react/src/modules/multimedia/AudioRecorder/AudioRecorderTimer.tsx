@@ -1,4 +1,4 @@
-import { convertMsToMS } from "../../../utilities";
+import { convertMsToMS } from "@edifice.io/utilities";
 import { IconMic, IconPause, IconRecord } from "../../icons/components";
 import { PlayState, RecordState } from "./useAudioRecorder";
 

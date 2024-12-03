@@ -1,0 +1,44 @@
+{
+  "name": "@edifice.io/utilities",
+  "version": "1.7.2",
+  "description": "Edifice Utilities Package",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/utilities#readme",
+  "bugs": {
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "directory": "packages/utilities",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
+  },
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "format": "pnpm run format:write && pnpm run format:check",
+    "format:check": "npx prettier --check \"src/**/*.ts\"",
+    "format:write": "npx prettier --write \"src/**/*.ts\""
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
