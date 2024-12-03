@@ -129,6 +129,7 @@ export const CheckboxRadio: Story = {
             <Radio
               value="CP"
               model={value}
+              name="class"
               onChange={(e) => setValue(e.target.value)}
             />
           </div>
@@ -139,6 +140,7 @@ export const CheckboxRadio: Story = {
             <Radio
               value="CE1"
               model={value}
+              name="class"
               onChange={(e) => setValue(e.target.value)}
             />
           </div>

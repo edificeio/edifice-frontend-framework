@@ -1,4 +1,4 @@
-import { FOLDER, IFolder } from "edifice-ts-client";
+import { FOLDER, IFolder } from "@edifice.io/ts-client";
 import { TreeData } from "../../../types";
 
 export function findTreeNode(

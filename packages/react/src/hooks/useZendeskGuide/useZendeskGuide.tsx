@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { UserProfile, odeServices } from "edifice-ts-client";
+import { UserProfile, odeServices } from "@edifice.io/ts-client";
 
 import { useIsAdml, useUser } from "..";
 import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";

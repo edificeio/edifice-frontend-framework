@@ -1,12 +1,12 @@
 import { ReactNode, useState } from "react";
 
-import { UseMutationResult } from "@tanstack/react-query";
 import {
   ID,
   PutShareResponse,
   RightStringified,
   ShareRight,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
+import { UseMutationResult } from "@tanstack/react-query";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 

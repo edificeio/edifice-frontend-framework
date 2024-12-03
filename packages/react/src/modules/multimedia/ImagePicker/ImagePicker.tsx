@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef, useEffect, useState } from "react";
 
-import { IWebApp } from "edifice-ts-client";
+import { IWebApp } from "@edifice.io/ts-client";
 
 import clsx from "clsx";
 import { AppIcon, Avatar, IconButton } from "../../../components";

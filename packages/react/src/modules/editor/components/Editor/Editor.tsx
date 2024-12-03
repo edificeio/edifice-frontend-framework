@@ -7,6 +7,7 @@ import {
   useImperativeHandle,
 } from "react";
 
+import { WorkspaceVisibility } from "@edifice.io/ts-client";
 import {
   Content,
   EditorContent,
@@ -14,7 +15,6 @@ import {
   JSONContent,
 } from "@tiptap/react";
 import clsx from "clsx";
-import { WorkspaceVisibility } from "edifice-ts-client";
 
 import {
   BubbleMenuEditImage,

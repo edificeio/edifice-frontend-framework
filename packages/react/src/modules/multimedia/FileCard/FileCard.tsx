@@ -1,12 +1,12 @@
 import { useRef } from "react";
 
-import clsx from "clsx";
 import {
   DocumentHelper,
   Role,
   WorkspaceElement,
   odeServices,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
+import clsx from "clsx";
 
 import { Card, CardProps } from "../../../components";
 import { useThumbnail } from "../../../hooks/useThumbnail";

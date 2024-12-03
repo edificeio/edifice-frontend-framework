@@ -1,6 +1,6 @@
 import { useEffect, useMemo, type ReactNode } from "react";
 
-import { IOdeTheme } from "edifice-ts-client";
+import { IOdeTheme } from "@edifice.io/ts-client";
 import { useConf } from "../../hooks";
 import { useEdificeClient } from "../EdificeClientProvider/EdificeClientProvider.hook";
 import { EdificeThemeContext } from "./EdificeThemeProvider.context";
