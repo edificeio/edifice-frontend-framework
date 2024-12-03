@@ -1,4 +1,4 @@
-import { IAction } from "edifice-ts-client";
+import { IAction } from "../services";
 
 export const isActionAvailable = (
   workflow: string,

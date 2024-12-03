@@ -21,7 +21,7 @@ import {
   useHover,
 } from "@floating-ui/react";
 
-import { mergeRefs } from "../../utilities/ref";
+import { mergeRefs } from "../../utilities/refs/ref";
 
 export enum KEYS {
   Enter = "Enter",

@@ -1,0 +1,14 @@
+node_modules
+dist
+.gradle
+deployment/
+*.tsbuildinfo
+test/
+.DS_Store
+yarn-error.log
+test/Foundation.spec.mjs
+stats.html
+npm-debug*
+.pnpm-store
+stats.html
+version.txt

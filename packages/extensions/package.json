@@ -112,7 +112,7 @@
     "lint": "eslint \"**/*.ts\""
   },
   "dependencies": {
-    "@edifice.io/image-resizer": "workspace:*",
+    "@edifice.io/utilities": "workspace:*",
     "@tiptap/core": "2.3.0",
     "@tiptap/extension-bold": "2.3.0",
     "@tiptap/extension-document": "2.3.0",

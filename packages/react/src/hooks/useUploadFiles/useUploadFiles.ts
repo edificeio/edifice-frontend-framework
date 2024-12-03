@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 
-import ImageResizer from "@edifice.io/image-resizer";
+import { ImageResizer, addTimestampToImageUrl } from "@edifice.io/utilities";
 import { WorkspaceElement, WorkspaceVisibility } from "edifice-ts-client";
 
-import { useDropzoneContext } from "../../components/Dropzone/DropzoneContext";
-import { addTimestampToImageUrl } from "../../utilities";
+import { useDropzoneContext } from "../../components";
 import { useUpload } from "../useUpload";
 import { useWorkspaceFile } from "../useWorkspaceFile";
 

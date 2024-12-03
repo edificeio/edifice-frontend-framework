@@ -8,7 +8,7 @@ Extensions based on [Tiptap Editor](https://tiptap.dev/). Extends functionalitie
 ## Prerequisites
 
 - `pnpm: >= 9`
-- `node: >= 18`
+- `node: >= 20`
 
 ## Getting Started
 
