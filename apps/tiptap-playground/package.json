@@ -25,11 +25,11 @@
   },
   "dependencies": {
     "@edifice.io/react": "workspace:*",
+    "@edifice.io/ts-client": "workspace:*",
     "@react-spring/web": "catalog:",
     "@tanstack/react-query": "catalog:",
     "clsx": "catalog:",
     "edifice-bootstrap": "workspace:*",
-    "@edifice.io/ts-client": "workspace:*",
     "i18next": "23.14.0",
     "i18next-http-backend": "2.6.1",
     "react": "catalog:",

@@ -8,8 +8,8 @@
   },
   "repository": {
     "type": "git",
-    "directory": "packages/client",
-    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/client"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",
@@ -35,9 +35,9 @@
     "format:write": "npx prettier --write \"src/ts/**/*.ts\""
   },
   "dependencies": {
+    "@edifice.io/utilities": "workspace:*",
     "axios": "^1.7.2",
-    "core-js": "^3.35.1",
-    "@edifice.io/utilities": "workspace:*"
+    "core-js": "^3.35.1"
   },
   "devDependencies": {
     "@types/jasmine": "5.1.4",
