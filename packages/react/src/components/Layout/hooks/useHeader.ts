@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useId, useMemo, useState } from "react";
 
+import { IUserInfo, odeServices } from "@edifice.io/ts-client";
 import { useHover } from "@uidotdev/usehooks";
-import { IUserInfo, odeServices } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 import { useBookmark, useHasWorkflow } from "../../../hooks";
 import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";

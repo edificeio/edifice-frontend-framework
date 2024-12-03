@@ -1,5 +1,5 @@
+import { ERROR_CODE, odeServices, ReactionType } from "@edifice.io/ts-client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ERROR_CODE, odeServices, ReactionType } from "edifice-ts-client";
 
 /**
  * This hook implements some logic and provides functions to easily call "audience" backend endpoints.

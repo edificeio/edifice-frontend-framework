@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-import { WorkspaceElement } from "edifice-ts-client";
+import { WorkspaceElement } from "@edifice.io/ts-client";
 import { TabsItemProps } from "../../components";
 import { MediaLibraryRef, MediaLibraryResult } from "../../modules/multimedia";
 import { useWorkspaceFile } from "../useWorkspaceFile";

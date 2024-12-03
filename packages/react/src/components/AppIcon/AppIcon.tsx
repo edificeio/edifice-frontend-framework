@@ -1,7 +1,7 @@
 import { forwardRef, Ref } from "react";
 
+import { IWebApp } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { IWebApp } from "edifice-ts-client";
 
 import { usePaths } from "../../hooks";
 import { useEdificeIcons } from "../../hooks/useEdificeIcons";

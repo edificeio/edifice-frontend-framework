@@ -1,6 +1,5 @@
 import { ReactNode, useId } from "react";
 
-import { UseMutationResult } from "@tanstack/react-query";
 import {
   CreateParameters,
   CreateResult,
@@ -9,7 +8,8 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
+import { UseMutationResult } from "@tanstack/react-query";
 import { createPortal } from "react-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";

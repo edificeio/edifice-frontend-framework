@@ -1,5 +1,5 @@
+import { ReactionSummaryData, ReactionType } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { ReactionSummaryData, ReactionType } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 import { Dropdown, IconButton, Tooltip } from "../../components";
 import { default as useReactionIcons } from "./hooks/useReactionIcons";

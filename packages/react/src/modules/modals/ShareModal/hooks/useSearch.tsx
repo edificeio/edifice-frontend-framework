@@ -6,7 +6,7 @@ import {
   ShareRightWithVisibles,
   ShareSubject,
   odeServices,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 
 import { useDebounce } from "@uidotdev/usehooks";

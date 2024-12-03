@@ -8,8 +8,8 @@ import {
   useState,
 } from "react";
 
+import { WorkspaceElement, odeServices } from "@edifice.io/ts-client";
 import { convertMsToMS, getBestSupportedMimeType } from "@edifice.io/utilities";
-import { WorkspaceElement, odeServices } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 import {
   FormControl,

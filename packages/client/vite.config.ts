@@ -7,7 +7,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "./src/ts/index.ts"),
-      name: "edifice-ts-client",
+      name: "@edifice.io/ts-client",
       fileName: "index",
       formats: ["cjs", "es"],
     },

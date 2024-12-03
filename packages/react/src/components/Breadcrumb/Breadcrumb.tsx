@@ -1,6 +1,6 @@
 import { forwardRef, Ref } from "react";
 
-import { IWebApp } from "edifice-ts-client";
+import { IWebApp } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 
 import { IconRafterRight } from "../../modules/icons/components";

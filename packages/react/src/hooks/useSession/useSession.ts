@@ -1,5 +1,5 @@
+import { IGetSession, odeServices } from "@edifice.io/ts-client";
 import { useQuery } from "@tanstack/react-query";
-import { IGetSession, odeServices } from "edifice-ts-client";
 
 export default function useSession() {
   return useQuery<IGetSession>({

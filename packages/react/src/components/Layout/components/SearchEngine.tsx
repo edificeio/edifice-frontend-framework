@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 import { FormControl, Popover, SearchButton } from "../../../components";
 import { useHover } from "../../../hooks";
-import { IconSearch } from "../../../modules/icons/components";
+import IconSearch from "../../../modules/icons/components/nav/IconSearch";
 import { NavItem } from "../components/NavItem";
 
 const SearchEngine = () => {

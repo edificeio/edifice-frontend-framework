@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 export const publishOptions = {
   packages: [
     {
-      name: "edifice-ts-client",
+      name: "@edifice.io/ts-client",
       packageDir: "packages/client",
     },
     {

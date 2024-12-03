@@ -1,11 +1,11 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 
-import { App, odeServices } from "edifice-ts-client";
+import { App, odeServices } from "@edifice.io/ts-client";
 /*
  * Augmented definition of a resource, until behaviours are dropped.
  * The path would otherwise be found by using `IWebResourceService.getViewUrl(resource)`
  */
-import { ILinkedResource } from "edifice-ts-client";
+import { ILinkedResource } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 
 import { useDebounce } from "@uidotdev/usehooks";

@@ -1,4 +1,4 @@
-import { IUserInfo, IWebApp } from "edifice-ts-client";
+import { IUserInfo, IWebApp } from "@edifice.io/ts-client";
 
 import { libraryMaps } from "@edifice.io/utilities";
 import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";

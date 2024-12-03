@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { ReactionDetailsData } from "edifice-ts-client";
+import { ReactionDetailsData } from "@edifice.io/ts-client";
 import { ReactionModal } from "..";
 import { Button } from "../../../components";
 import { useToggle } from "../../../hooks";

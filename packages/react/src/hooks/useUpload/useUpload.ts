@@ -6,7 +6,7 @@ import {
   WorkspaceElement,
   WorkspaceVisibility,
   odeServices,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
 
 import { getOrGenerateBlobId } from "@edifice.io/utilities";
 import { useBrowserInfo } from "../../hooks";

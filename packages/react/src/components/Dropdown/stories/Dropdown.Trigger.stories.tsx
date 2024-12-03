@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { RefAttributes } from "react";
 import { JSX } from "react/jsx-runtime";
-import { IconFilter } from "../../../modules/icons/components";
+import { IconEdit, IconFilter } from "../../../modules/icons/components";
 import IconButton, { IconButtonProps } from "../../Button/IconButton";
 import Dropdown from "../Dropdown";
 import DropdownTrigger from "../DropdownTrigger";

@@ -1,4 +1,4 @@
-import { ShareRight, ShareRightAction } from "edifice-ts-client";
+import { ShareRight, ShareRightAction } from "@edifice.io/ts-client";
 
 export const hasRight = (
   shareRight: ShareRight,

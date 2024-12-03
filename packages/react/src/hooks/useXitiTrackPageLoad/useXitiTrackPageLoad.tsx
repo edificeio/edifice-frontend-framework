@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { odeServices } from "edifice-ts-client";
+import { odeServices } from "@edifice.io/ts-client";
 
 import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
 

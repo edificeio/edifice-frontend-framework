@@ -19,12 +19,14 @@ import {
 import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
 import { useEdificeTheme } from "../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
 
-import { IconHome, IconRafterDown } from "../../../modules/icons/components";
+import { IconRafterDown } from "../../../modules/icons/components";
 import { IconAssistance } from "../../../modules/icons/components/apps";
 import {
   IconCommunity,
   IconDisconnect,
+  IconHome,
   IconMyApps,
+  IconNeoMessaging,
   IconNewRelease,
   IconOneMessaging,
   IconOneProfile,
@@ -280,7 +282,7 @@ const Header = ({ is1d = false, src = "" }: HeaderProps): JSX.Element => {
                     link="/conversation/conversation"
                     translate={t("conversation")}
                   >
-                    <IconOneMessaging color="#fff" />
+                    <IconNeoMessaging color="#fff" />
                     {hasMessages && (
                       <Badge
                         variant={{ type: "notification", level: "warning" }}
@@ -299,7 +301,7 @@ const Header = ({ is1d = false, src = "" }: HeaderProps): JSX.Element => {
                     link={msgLink}
                     translate={t("conversation")}
                   >
-                    <IconOneMessaging color="#fff" />
+                    <IconNeoMessaging color="#fff" />
                     {hasMessages && (
                       <Badge
                         variant={{ type: "notification", level: "warning" }}

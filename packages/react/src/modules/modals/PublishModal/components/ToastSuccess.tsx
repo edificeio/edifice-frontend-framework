@@ -1,4 +1,4 @@
-import { PublishResult } from "edifice-ts-client";
+import { PublishResult } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 
 export function ToastSuccess({ result }: { result: PublishResult }) {

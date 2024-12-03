@@ -6,6 +6,7 @@ import {
   IconCut,
   IconDelete,
   IconEdit,
+  IconFilter,
   IconPrint,
 } from "../../../modules/icons/components";
 import IconButton, { IconButtonProps } from "../../Button/IconButton";
@@ -178,7 +179,7 @@ export const CheckboxGroup: Story = {
       <Dropdown>
         <Dropdown.Trigger
           label="Dropdown"
-          icon={<Filter />}
+          icon={<IconFilter />}
           badgeContent={count}
         />
         <Dropdown.Menu>
@@ -223,7 +224,7 @@ export const RadioGroup: Story = {
 
     return (
       <Dropdown>
-        <Dropdown.Trigger label="Dropdown" icon={<Filter />} />
+        <Dropdown.Trigger label="Dropdown" icon={<IconFilter />} />
         <Dropdown.Menu>
           {radioOptions.map((option, index) => (
             <Dropdown.RadioItem
@@ -292,7 +293,7 @@ export const Stack: Story = {
 
     return (
       <Dropdown>
-        <Dropdown.Trigger label="Dropdown" icon={<Filter />} />
+        <Dropdown.Trigger label="Dropdown" icon={<IconFilter />} />
         <Dropdown.Menu>
           <Dropdown.Item onClick={() => console.log("click")}>
             Action label
@@ -349,7 +350,7 @@ export const CustomTrigger: Story = {
               aria-label="label"
               color="tertiary"
               variant="ghost"
-              icon={<Edit />}
+              icon={<IconEdit />}
             />
 
             <Dropdown.Menu>
@@ -390,7 +391,7 @@ export const CustomMenu: Story = {
               aria-label="label"
               color="tertiary"
               variant="ghost"
-              icon={<Edit />}
+              icon={<IconEdit />}
             />
 
             <Dropdown.Menu>

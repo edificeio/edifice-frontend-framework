@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
-import { UseMutationResult } from "@tanstack/react-query";
 import {
   BlogResource,
   BlogUpdate,
@@ -8,7 +7,8 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from "edifice-ts-client";
+} from "@edifice.io/ts-client";
+import { UseMutationResult } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { Heading, Radio } from "../../../../components";
 import { useResource } from "../../../../hooks/useResource";
