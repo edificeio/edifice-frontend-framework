@@ -45,7 +45,7 @@ export function EdificeThemeProvider({
       },
       {
         data: "data-product",
-        value: defaultTheme === "none" ? "" : defaultTheme ?? dataProduct,
+        value: defaultTheme === "none" ? "" : (defaultTheme ?? dataProduct),
       },
     ];
 
