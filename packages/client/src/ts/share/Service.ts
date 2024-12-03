@@ -1,5 +1,5 @@
 import { IOdeServices } from "../services/OdeServices";
-import { StringUtils } from "../utils/StringUtils";
+import { StringUtils } from "../utilities/StringUtils";
 
 import { Bookmark, Group, User } from "../directory/interface";
 import {

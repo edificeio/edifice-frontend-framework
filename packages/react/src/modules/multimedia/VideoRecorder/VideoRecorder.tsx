@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 
+import { convertMsToMS, getBestSupportedMimeType } from "@edifice.io/utilities";
 import { WorkspaceElement, odeServices } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
 import {
@@ -20,7 +21,6 @@ import {
   ToolbarItem,
 } from "../../../components";
 import { useBrowserInfo, useUpload } from "../../../hooks";
-import { convertMsToMS, getBestSupportedMimeType } from "../../../utilities";
 import {
   IconPause,
   IconPlayFilled,

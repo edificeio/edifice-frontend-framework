@@ -1,3 +1,4 @@
+import { StringUtils } from "@edifice.io/utilities";
 import {
   ReactionDetailsData,
   ReactionType,
@@ -7,7 +8,6 @@ import { useCallback, useEffect, useId, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { Button, Modal, Tabs, TabsItemProps } from "../../components";
-import { StringUtils } from "../../utilities";
 import { default as useReactionIcons } from "./hooks/useReactionIcons";
 import { ReactionModalCard } from "./ReactionModal.Card";
 

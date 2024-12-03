@@ -1,14 +1,15 @@
 {
-  "name": "@edifice.io/image-resizer",
+  "name": "@edifice.io/utilities",
   "version": "1.7.2",
-  "description": "Edifice Image Resizer",
-  "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/image-resizer#readme",
+  "description": "Edifice Utilities Package",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/utilities#readme",
   "bugs": {
-    "url": "https://github.com/edificeio/edifice-ui/issues"
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/edificeio/edifice-ui.git"
+    "directory": "packages/utilities",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",

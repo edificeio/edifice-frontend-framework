@@ -1,7 +1,7 @@
 import { IUserInfo, IWebApp } from "edifice-ts-client";
 
+import { libraryMaps } from "@edifice.io/utilities";
 import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { libraryMaps } from "../../utilities/libraryMaps";
 
 /**
  * Search for Library app in userinfo apps and return Library URL as a string.

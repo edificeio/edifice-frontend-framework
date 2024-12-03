@@ -1,5 +1,5 @@
+import { MimeTypeUtils } from "@edifice.io/utilities";
 import { WorkspaceElement } from "../services";
-import { MimeTypeUtils } from "./MimeTypeUtils";
 
 export type RoleMapperParams = {
   type: string;

@@ -7,7 +7,7 @@ export * from "./notify/interfaces";
 export * from "./services";
 export * from "./session/interfaces";
 export * from "./transport/interfaces";
-export * from "./utils";
+export * from "./utilities";
 export * from "./video/interface";
 export * from "./widget/interfaces";
 export * from "./workspace/interface";
