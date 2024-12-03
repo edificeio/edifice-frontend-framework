@@ -1,6 +1,6 @@
+import { StringUtils } from "@edifice.io/utilities";
 import clsx from "clsx";
 import { Button } from "../../components";
-import { StringUtils } from "../../utilities";
 import { IconSee } from "../icons/components";
 
 export interface ViewsCounterProps {

@@ -8,9 +8,9 @@ import {
   odeServices,
 } from "edifice-ts-client";
 
+import { getOrGenerateBlobId } from "@edifice.io/utilities";
 import { useBrowserInfo } from "../../hooks";
 import { Status } from "../../types";
-import { getOrGenerateBlobId } from "../../utilities";
 import { useWorkspaceFile } from "../useWorkspaceFile";
 
 const useUpload = (

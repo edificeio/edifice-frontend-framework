@@ -1,6 +1,6 @@
+import { StringUtils } from "@edifice.io/utilities";
 import { ViewsDetailsProfile } from "edifice-ts-client";
 import { useTranslation } from "react-i18next";
-import { StringUtils } from "../../utilities";
 import { IconUsers } from "../icons/components";
 import {
   IconGuest,

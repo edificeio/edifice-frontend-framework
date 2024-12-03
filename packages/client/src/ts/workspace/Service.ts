@@ -1,6 +1,6 @@
 import { ID } from "../globals";
 import { IOdeServices } from "../services/OdeServices";
-import { DocumentHelper } from "../utils/DocumentHelper";
+import { DocumentHelper } from "../utilities/DocumentHelper";
 import {
   WorkspaceElement,
   WorkspaceSearchFilter,

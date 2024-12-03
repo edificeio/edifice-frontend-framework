@@ -1,4 +1,4 @@
-import ImageResizer from "@edifice.io/image-resizer";
+import ImageResizer from "@edifice.io/utilities";
 import { mergeAttributes, nodeInputRule } from "@tiptap/core";
 import TiptapImage from "@tiptap/extension-image";
 import { WorkspaceElement } from "edifice-ts-client";

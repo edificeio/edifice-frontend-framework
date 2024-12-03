@@ -1,6 +1,20 @@
 import { FOLDER, IFolder } from "edifice-ts-client";
 import { TreeData } from "../../../types";
 
+export function findTreeNode(
+  root: TreeData,
+  predicate: (node: TreeData) => boolean,
+): TreeData | undefined {
+  if (predicate(root)) return root;
+
+  if (Array.isArray(root.children)) {
+    for (const child of root.children) {
+      const found = findTreeNode(child, predicate);
+      if (found) return found;
+    }
+  }
+}
+
 export function findNodeById(
   data: TreeData | TreeData[],
   id: string,

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { odeServices } from "edifice-ts-client";
-
-import { useMockedData } from "../../utilities";
+import { useMockedData } from "../../providers/MockedDataProvider";
 
 export default function useHasWorkflow(
   workflow: string | string[],

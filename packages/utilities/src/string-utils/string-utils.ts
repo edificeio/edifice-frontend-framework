@@ -11,4 +11,10 @@ export class StringUtils {
       ? `${Number(counter / 1000).toFixed(1)} k`
       : "" + counter;
   }
+  static generateVirtualId(): string {
+    return "xxxx-xxxx-xxx-xxxx".replace(/[x]/g, () => {
+      const r = Math.floor(Math.random() * 16);
+      return r.toString(16);
+    });
+  }
 }

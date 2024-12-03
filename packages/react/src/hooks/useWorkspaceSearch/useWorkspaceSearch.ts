@@ -10,8 +10,8 @@ import {
 } from "edifice-ts-client";
 
 import { findNodeById } from "../../components/TreeView/utilities/treeview";
+import { useMockedData } from "../../providers/MockedDataProvider";
 import { TreeData } from "../../types";
-import { useMockedData } from "../../utilities";
 import { useHasWorkflow } from "../useHasWorkflow";
 
 export type FolderNode = TreeData & { files?: WorkspaceElement[] };
