@@ -5,8 +5,10 @@ import { initialize, mswLoader } from "msw-storybook-addon";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import "../../../packages/bootstrap/dist/index.css";
-import { OdeClientProvider } from "../../../packages/react/ui/src/core/OdeClientProvider";
-import { ThemeProvider } from "../../../packages/react/ui/src/core/ThemeProvider";
+import {
+  EdificeClientProvider,
+  EdificeThemeProvider,
+} from "../../../packages/react/src/providers";
 
 import i18n from "../i18n";
 
@@ -755,15 +757,15 @@ const preview: Preview = {
       return (
         <QueryClientProvider client={queryClient}>
           <I18nextProvider i18n={i18n}>
-            <OdeClientProvider
+            <EdificeClientProvider
               params={{
                 app,
               }}
             >
-              <ThemeProvider defaultTheme="none">
+              <EdificeThemeProvider defaultTheme="none">
                 {renderStoryTheme()}
-              </ThemeProvider>
-            </OdeClientProvider>
+              </EdificeThemeProvider>
+            </EdificeClientProvider>
           </I18nextProvider>
         </QueryClientProvider>
       );

@@ -9,7 +9,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/edificeio/edifice-frontend-framework.git"
+    "url": "git+https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "apps/tiptap-playground"
   },
   "license": "GPL-3.0",
   "author": "Edifice",
@@ -23,14 +24,12 @@
     "typecheck": "tsc -b --noEmit"
   },
   "dependencies": {
-    "@edifice-ui/editor": "workspace:*",
-    "@edifice-ui/icons": "workspace:*",
-    "@edifice-ui/react": "workspace:*",
-    "edifice-bootstrap": "workspace:*",
-    "edifice-ts-client": "workspace:*",
+    "@edifice.io/react": "workspace:*",
     "@react-spring/web": "catalog:",
     "@tanstack/react-query": "catalog:",
     "clsx": "catalog:",
+    "edifice-bootstrap": "workspace:*",
+    "edifice-ts-client": "workspace:*",
     "i18next": "23.14.0",
     "i18next-http-backend": "2.6.1",
     "react": "catalog:",
