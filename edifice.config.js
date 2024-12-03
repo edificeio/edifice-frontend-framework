@@ -13,16 +13,8 @@ export const publishOptions = {
       packageDir: "packages/bootstrap",
     },
     {
-      name: "@edifice-ui/react",
+      name: "@edifice.io/react",
       packageDir: "packages/react/ui",
-    },
-    {
-      name: "@edifice-ui/editor",
-      packageDir: "packages/react/editor",
-    },
-    {
-      name: "@edifice-ui/icons",
-      packageDir: "packages/react/icons",
     },
     {
       name: "@edifice.io/image-resizer",

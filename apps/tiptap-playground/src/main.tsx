@@ -1,6 +1,6 @@
 import React, { StrictMode } from 'react';
 
-import { OdeClientProvider, ThemeProvider } from '@edifice-ui/react';
+import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
 import {
   QueryCache,
   QueryClient,
@@ -43,15 +43,15 @@ const queryClient = new QueryClient({
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <OdeClientProvider
+      <EdificeClientProvider
         params={{
           app: 'blog',
         }}
       >
-        <ThemeProvider>
+        <EdificeThemeProvider>
           <Playground />
-        </ThemeProvider>
-      </OdeClientProvider>
+        </EdificeThemeProvider>
+      </EdificeClientProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>,

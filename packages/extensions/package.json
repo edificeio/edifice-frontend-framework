@@ -2,13 +2,14 @@
   "name": "@edifice.io/tiptap-extensions",
   "version": "2.0.0-develop-rc.14",
   "description": "Edifice Rich Text Editor Extensions",
-  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/shared/extensions#readme",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/extensions#readme",
   "bugs": {
     "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/extensions"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",
@@ -126,12 +127,12 @@
     "@tiptap/html": "2.3.0",
     "@tiptap/pm": "2.3.0",
     "@tiptap/starter-kit": "2.3.0",
-    "prosemirror-state": "^1.4.3",
     "prosemirror-model": "^1.0.0",
+    "prosemirror-state": "^1.4.3",
     "prosemirror-transform": "^1.0.0",
     "prosemirror-view": "^1.27.0",
-    "vite-plugin-dts": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
   },
   "devDependencies": {
     "@types/dom-speech-recognition": "^0.0.1",
