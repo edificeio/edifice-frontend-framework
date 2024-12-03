@@ -1,7 +1,7 @@
 # Edifice React Components
 
-![npm](https://img.shields.io/npm/v/@edifice-ui/react?style=flat-square)
-![bundlephobia](https://img.shields.io/bundlephobia/min/@edifice-ui/react?style=flat-square)
+![npm](https://img.shields.io/npm/v/@edifice.io/react?style=flat-square)
+![bundlephobia](https://img.shields.io/bundlephobia/min/@edifice.io/react?style=flat-square)
 
 ## Getting Started
 

@@ -13,7 +13,7 @@ export const publishOptions = {
       packageDir: "packages/bootstrap",
     },
     {
-      name: "@edifice-ui/react",
+      name: "@edifice.io/react",
       packageDir: "packages/react/ui",
     },
     {

@@ -1,6 +1,6 @@
 import React, { StrictMode } from 'react';
 
-import { EdificeClientProvider, EdificeThemeProvider } from '@edifice-ui/react';
+import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
 import {
   QueryCache,
   QueryClient,

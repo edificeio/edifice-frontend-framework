@@ -1,5 +1,5 @@
 {
-  "name": "@edifice-ui/react",
+  "name": "@edifice.io/react",
   "version": "1.7.2",
   "description": "Edifice React Library",
   "keywords": [
@@ -9,13 +9,14 @@
     "library",
     "ui"
   ],
-  "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/react#readme",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/react#readme",
   "bugs": {
-    "url": "https://github.com/edificeio/edifice-ui/issues"
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/edificeio/edifice-ui.git"
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/react"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",

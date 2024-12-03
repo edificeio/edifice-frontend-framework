@@ -6,9 +6,9 @@ import {
   Toolbar,
   ToolbarItem,
   useEdificeClient,
-} from '@edifice-ui/react';
-import { Editor, EditorRef } from '@edifice-ui/react/editor';
-import { IconEdit, IconTextToSpeech } from '@edifice-ui/react/icons';
+} from '@edifice.io/react';
+import { Editor, EditorRef } from '@edifice.io/react/editor';
+import { IconEdit, IconTextToSpeech } from '@edifice.io/react/icons';
 
 import defaultImage1 from '../assets/editeur-default-1.png';
 import defaultImage2 from '../assets/editeur-default-2.png';
