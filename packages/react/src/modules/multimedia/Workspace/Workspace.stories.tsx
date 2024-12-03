@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { WorkspaceElement } from "@edifice.io/ts-client";
-import { MockedDataProvider } from "../../../utilities";
+import { MockedDataProvider } from "../../../providers/MockedDataProvider";
 import Workspace from "./Workspace";
 
 const mockedDocuments: WorkspaceElement[] = [

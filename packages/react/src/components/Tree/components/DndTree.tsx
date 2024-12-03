@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import { Ref, forwardRef, useId } from "react";
-import { mergeRefs } from "../../../utilities/refs/ref";
+import { mergeRefs } from "../../../utilities";
 import { useTree } from "../hooks/useTree";
 import { DndTreeNodeProps, DndTreeProps } from "../types";
 import { TreeNode } from "./Tree";

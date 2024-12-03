@@ -4,7 +4,7 @@ import { WorkspaceElement } from "@edifice.io/ts-client";
 import { useRef } from "react";
 
 import { Button } from "../../../components";
-import { MockedDataProvider } from "../../../utilities";
+import { MockedDataProvider } from "../../../providers/MockedDataProvider";
 import MediaLibrary, {
   MediaLibraryProps,
   MediaLibraryRef,

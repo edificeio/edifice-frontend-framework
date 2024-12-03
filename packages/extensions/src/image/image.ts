@@ -1,5 +1,5 @@
 import { WorkspaceElement } from "@edifice.io/ts-client";
-import ImageResizer from "@edifice.io/utilities";
+import { ImageResizer } from "@edifice.io/utilities";
 import { mergeAttributes, nodeInputRule } from "@tiptap/core";
 import TiptapImage from "@tiptap/extension-image";
 import { Plugin } from "prosemirror-state";
