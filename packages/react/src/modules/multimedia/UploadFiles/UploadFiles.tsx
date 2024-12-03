@@ -1,8 +1,8 @@
 import { WorkspaceElement, WorkspaceVisibility } from "edifice-ts-client";
 
+import { customSize } from "@edifice.io/utilities";
 import { useEffect, useRef } from "react";
 import { useUploadFiles } from "../../../hooks";
-import { customSize } from "../../../utilities/fileSize";
 import { ImageEditor } from "../ImageEditor";
 import { UploadCard } from "../UploadCard";
 

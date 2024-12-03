@@ -17,8 +17,8 @@ export const publishOptions = {
       packageDir: "packages/react/ui",
     },
     {
-      name: "@edifice.io/image-resizer",
-      packageDir: "packages/image-resizer",
+      name: "@edifice.io/utilities",
+      packageDir: "packages/utilities",
     },
     {
       name: "@edifice.io/tiptap-extensions",

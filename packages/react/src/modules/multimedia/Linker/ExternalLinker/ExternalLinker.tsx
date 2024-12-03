@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
+import { StringUtils } from "@edifice.io/utilities";
 import { Checkbox, FormControl, Input, Label } from "../../../../components";
 import { useToggle } from "../../../../hooks";
-import { StringUtils } from "../../../../utilities";
 
 /**
  * Properties for the ExternalLink.

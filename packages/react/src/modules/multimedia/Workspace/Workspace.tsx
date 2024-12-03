@@ -16,9 +16,9 @@ import {
   TreeView,
   TreeViewHandlers_V1,
 } from "../../../components";
+import { findTreeNode } from "../../../components/TreeView/utilities";
 import { usePaths, useWorkspaceSearch } from "../../../hooks";
 import { FolderNode } from "../../../hooks/useWorkspaceSearch/useWorkspaceSearch";
-import { findTreeNode } from "../../../utilities";
 import {
   IconSortAscendingLetters,
   IconSortDescendingLetters,
