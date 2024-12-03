@@ -136,7 +136,7 @@
   },
   "devDependencies": {
     "@types/dom-speech-recognition": "^0.0.1",
-    "edifice-ts-client": "workspace:*"
+    "@edifice.io/ts-client": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

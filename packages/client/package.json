@@ -1,14 +1,15 @@
 {
-  "name": "edifice-ts-client",
+  "name": "@edifice.io/ts-client",
   "version": "1.7.3",
   "description": "Edifice TypeScript Client",
-  "homepage": "https://github.com/edificeio/edifice-ui/tree/main/packages/client#readme",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/client#readme",
   "bugs": {
-    "url": "https://github.com/edificeio/edifice-ui/issues"
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/edificeio/edifice-ui.git"
+    "directory": "packages/client",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git"
   },
   "license": "AGPL-3.0",
   "author": "Edifice",

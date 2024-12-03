@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { WorkspaceElement } from "edifice-ts-client";
+import { WorkspaceElement } from "@edifice.io/ts-client";
 import { MockedDataProvider } from "../../../utilities";
 import Workspace from "./Workspace";
 

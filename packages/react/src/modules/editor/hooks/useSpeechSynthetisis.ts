@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
+import { odeServices } from "@edifice.io/ts-client";
 import { Editor } from "@tiptap/react";
-import { odeServices } from "edifice-ts-client";
 
 /**
  * Custom hook to manage speech synthetisis.

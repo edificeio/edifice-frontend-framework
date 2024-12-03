@@ -1,4 +1,4 @@
-import { ReactionDetailsData } from "edifice-ts-client";
+import { ReactionDetailsData } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 import { Avatar } from "../../components";
 import { useAvatar } from "../../hooks";

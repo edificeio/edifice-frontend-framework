@@ -1,4 +1,4 @@
-import { WorkspaceElement, WorkspaceVisibility } from "edifice-ts-client";
+import { WorkspaceElement, WorkspaceVisibility } from "@edifice.io/ts-client";
 
 import { customSize } from "@edifice.io/utilities";
 import { useEffect, useRef } from "react";

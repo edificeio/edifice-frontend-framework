@@ -1,13 +1,13 @@
 import React, { StrictMode } from 'react';
 
 import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
+import { ERROR_CODE } from '@edifice.io/ts-client';
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ERROR_CODE } from 'edifice-ts-client';
 import { createRoot } from 'react-dom/client';
 
 import 'edifice-bootstrap/dist/index.css';

@@ -1,7 +1,7 @@
 import { forwardRef, ReactNode, Ref, useMemo } from "react";
 
+import { IWebApp } from "@edifice.io/ts-client";
 import clsx from "clsx";
-import { IWebApp } from "edifice-ts-client";
 
 import { useEdificeIcons } from "../../hooks/useEdificeIcons";
 import CardBody from "./CardBody";

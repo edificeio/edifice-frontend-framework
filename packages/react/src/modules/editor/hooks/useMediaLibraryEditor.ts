@@ -1,8 +1,8 @@
 import { useCallback, useRef } from "react";
 
+import { WorkspaceElement } from "@edifice.io/ts-client";
 import { addTimestampToImageUrl } from "@edifice.io/utilities";
 import { Editor } from "@tiptap/react";
-import { WorkspaceElement } from "edifice-ts-client";
 import { TabsItemProps } from "../../../components";
 import { useWorkspaceFile } from "../../../hooks";
 import {

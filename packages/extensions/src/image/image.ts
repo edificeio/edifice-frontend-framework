@@ -1,7 +1,7 @@
+import { WorkspaceElement } from "@edifice.io/ts-client";
 import ImageResizer from "@edifice.io/utilities";
 import { mergeAttributes, nodeInputRule } from "@tiptap/core";
 import TiptapImage from "@tiptap/extension-image";
-import { WorkspaceElement } from "edifice-ts-client";
 import { Plugin } from "prosemirror-state";
 
 export const IMAGE_INPUT_REGEX =

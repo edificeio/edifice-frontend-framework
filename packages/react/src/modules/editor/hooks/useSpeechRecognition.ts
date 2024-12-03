@@ -1,7 +1,7 @@
 import { useState } from "react";
 
+import { odeServices } from "@edifice.io/ts-client";
 import { Editor } from "@tiptap/react";
-import { odeServices } from "edifice-ts-client";
 
 export const useSpeechRecognition = (editor: Editor | null) => {
   const [isActive, setActive] = useState(false);
