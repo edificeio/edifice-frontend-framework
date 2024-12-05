@@ -2,6 +2,16 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import EmptyScreen, { EmptyScreenProps } from "./EmptyScreen";
 
+import illuBlog from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-blog.svg";
+import illuCollaborativeEditor from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-collaborativeeditor.svg";
+import illuCollaborativeWall from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-collaborativewall.svg";
+import illuExercizer from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-exercizer.svg";
+import illuMindmap from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-mindmap.svg";
+import illuScrapbook from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-scrapbook.svg";
+import illuSearch from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-search.svg";
+import illuTimelineGenerator from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-timelinegenerator.svg";
+import illuTrash from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg";
+
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof EmptyScreen> = {
   title: "Components/EmptyScreen",
@@ -20,6 +30,17 @@ const meta: Meta<typeof EmptyScreen> = {
         "illu-timelinegenerator",
         "illu-trash",
       ],
+      mapping: {
+        "illu-blog": illuBlog,
+        "illu-collaborativeeditor": illuCollaborativeEditor,
+        "illu-collaborativewall": illuCollaborativeWall,
+        "illu-exercizer": illuExercizer,
+        "illu-mindmap": illuMindmap,
+        "illu-scrapbook": illuScrapbook,
+        "illu-search": illuSearch,
+        "illu-timelinegenerator": illuTimelineGenerator,
+        "illu-trash": illuTrash,
+      },
     },
   },
   args: {
@@ -39,15 +60,10 @@ const meta: Meta<typeof EmptyScreen> = {
 export default meta;
 type Story = StoryObj<typeof EmptyScreen>;
 
-const base = import.meta.env.BASE_URL;
-
 export const Template = (args: EmptyScreenProps) => {
   return (
     <div>
-      <EmptyScreen
-        {...args}
-        imageSrc={`${base}assets/themes/edifice-bootstrap/images/emptyscreen/${args.imageSrc}.svg`}
-      />
+      <EmptyScreen {...args} imageSrc={args.imageSrc} />
     </div>
   );
 };

@@ -9,12 +9,12 @@ export const publishOptions = {
       packageDir: "packages/client",
     },
     {
-      name: "edifice-bootstrap",
+      name: "@edifice.io/bootstrap",
       packageDir: "packages/bootstrap",
     },
     {
       name: "@edifice.io/react",
-      packageDir: "packages/react/ui",
+      packageDir: "packages/react",
     },
     {
       name: "@edifice.io/utilities",
@@ -22,7 +22,7 @@ export const publishOptions = {
     },
     {
       name: "@edifice.io/tiptap-extensions",
-      packageDir: "packages/tiptap/extensions",
+      packageDir: "packages/extensions",
     },
   ],
 
@@ -34,6 +34,9 @@ export const publishOptions = {
       prerelease: true,
     },
     "develop-hotfix": {
+      prerelease: true,
+    },
+    "develop-rc": {
       prerelease: true,
     },
     "develop-b2school": {
