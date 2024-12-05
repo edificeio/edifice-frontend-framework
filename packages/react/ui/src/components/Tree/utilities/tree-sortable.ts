@@ -1,6 +1,6 @@
 import { Active, Over, UniqueIdentifier } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { FlattenedItem, Projected, TreeItem } from "../types";
+import { FlattendedNodes, FlattenedItem, Projected, TreeItem } from "../types";
 
 export function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
@@ -95,6 +95,35 @@ export function flattenTree(
 
     return acc;
   }, [] as FlattenedItem[]);
+}
+
+export function flattenNodes(
+  nodes: TreeItem[],
+  expandedNodes: Set<string>,
+): FlattendedNodes[] {
+  const flatten = (
+    nodes: TreeItem[],
+    isChild = false,
+    parentExpanded = true,
+  ): FlattendedNodes[] => {
+    return nodes.reduce<FlattendedNodes[]>((acc, node) => {
+      const isExpanded =
+        expandedNodes.has(node.id) && node.children && node.children.length > 0;
+      acc.push({
+        id: node.id,
+        name: node.name,
+        isChild,
+        haveChilds: !!node.children?.length,
+        expandNode: isExpanded ?? false,
+        parentExpanded,
+      });
+      if (node.children && isExpanded) {
+        acc = acc.concat(flatten(node.children, true, isExpanded));
+      }
+      return acc;
+    }, []);
+  };
+  return flatten(nodes);
 }
 
 export function updateParentIds(

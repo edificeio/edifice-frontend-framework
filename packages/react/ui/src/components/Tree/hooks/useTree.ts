@@ -242,10 +242,6 @@ export const useTree = ({
     handleCollapseNode(nodeId);
   };
 
-  const collapseAllNodes = () => {
-    setExpandedNodes(new Set());
-  };
-
   return {
     selectedNodeId,
     expandedNodes,
@@ -253,6 +249,6 @@ export const useTree = ({
     draggedNodeId,
     handleItemClick,
     handleFoldUnfold,
-    collapseAllNodes,
+    handleCollapseNode,
   };
 };
