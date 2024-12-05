@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import noAvatar from "@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg";
 import Avatar from "./Avatar";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -99,12 +100,7 @@ const base = import.meta.env.BASE_URL;
 
 export const AvatarFallback: Story = {
   render: (args) => (
-    <Avatar
-      src={`${base}assets/themes/edifice-bootstrap/images/avatar/no-avatar.svg`}
-      size="md"
-      variant="square"
-      alt="alternative text"
-    />
+    <Avatar src={noAvatar} size="md" variant="square" alt="alternative text" />
   ),
 
   parameters: {

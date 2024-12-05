@@ -6,4 +6,4 @@ export { default as Tree } from "./components/Tree";
 
 export * from "./hooks/useTreeSortable";
 export * from "./types";
-export * from "./utilities/tree-sortable";
+//export * from "./utilities/tree-sortable";

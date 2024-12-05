@@ -10,7 +10,7 @@ import {
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRoot } from 'react-dom/client';
 
-import 'edifice-bootstrap/dist/index.css';
+import '@edifice.io/bootstrap/dist/index.css';
 import Playground from './components/Playground';
 import './i18n';
 

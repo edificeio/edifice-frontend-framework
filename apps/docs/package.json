@@ -25,6 +25,7 @@
     "preview": "npx http-server dist/"
   },
   "dependencies": {
+    "@edifice.io/bootstrap": "workspace:*",
     "@edifice.io/react": "workspace:*",
     "@tanstack/react-query": "catalog:",
     "i18next": "^23.15.1",
