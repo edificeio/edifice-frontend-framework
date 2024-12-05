@@ -32,6 +32,7 @@ import {
 import { LoadingScreen } from '../../../../components';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { MediaLibrary } from '../../../multimedia';
+import { useCantooAdaptTextBox } from '../../hooks/useCantooAdaptTextBox';
 import { useMathsStyles } from '../../hooks/useMathsStyles';
 
 const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
@@ -39,6 +40,10 @@ const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
 const ImageEditor = lazy(
   async () =>
     await import('../../../multimedia/ImageEditor/components/ImageEditor'),
+);
+
+const CantooAdaptTextBoxView = lazy(
+  async () => await import('./CantooAdaptTextBoxView'),
 );
 
 export interface EditorRef {
@@ -114,6 +119,7 @@ const Editor = forwardRef(
       useMediaLibraryEditor(editor);
     const { toggle: toggleMathsModal, ...mathsModalHandlers } =
       useMathsModal(editor);
+    const cantooAdaptTextBox = useCantooAdaptTextBox();
     const imageModal = useImageModal(editor, 'media-library', visibility);
     const linkToolbarHandlers = useLinkToolbar(editor, mediaLibraryModalRef);
     const speechSynthetisis = useSpeechSynthetisis(editor);
@@ -158,6 +164,7 @@ const Editor = forwardRef(
               {...{
                 mediaLibraryRef: mediaLibraryModalRef,
                 toggleMathsModal: toggleMathsModal,
+                cantooAdaptTextBoxRef: cantooAdaptTextBox,
               }}
             />
           )}
@@ -207,6 +214,8 @@ const Editor = forwardRef(
               onError={console.error}
             />
           )}
+
+          {editable && cantooAdaptTextBox.isOpen && <CantooAdaptTextBoxView />}
         </Suspense>
       </EditorContext.Provider>
     );

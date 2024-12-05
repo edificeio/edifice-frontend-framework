@@ -34,17 +34,28 @@ import { EditorToolbarPlusMenu } from './EditorToolbar.PlusMenu';
 import { EditorToolbarTextColor } from './EditorToolbar.TextColor';
 import { EditorToolbarTextSize } from './EditorToolbar.TextSize';
 import { EditorToolbarTypography } from './EditorToolbar.Typography';
+import { EditorToolbarCantoo } from './EditorToolbar.Cantoo.tsx';
+import { useCantooEditor } from '../..';
+import { CantooAdaptTextBox } from '../../hooks/useCantooAdaptTextBox.ts';
 
 interface Props {
   /** Ref to a MediaLibrary instance */
   mediaLibraryRef: RefObject<MediaLibraryRef>;
   /** API to open/close a Math modal. */
   toggleMathsModal: () => void;
+  /** API to open/close a Cantoo modal. */
+  cantooAdaptTextBoxRef: CantooAdaptTextBox;
 }
 
-export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
+export const EditorToolbar = ({
+  mediaLibraryRef,
+  toggleMathsModal,
+  cantooAdaptTextBoxRef,
+}: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
+
+  const { isAvailable: canUseCantoo } = useCantooEditor(editor);
 
   const [plusOptions, listOptions, alignmentOptions] = useActionOptions(
     editor,
@@ -173,11 +184,31 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
         name: 'speechtotext',
         tooltip: t('tiptap.toolbar.stt'),
       },
+      //------------- CANTOO ---------------//
+      {
+        type: 'dropdown',
+        props: {
+          children: (
+            triggerProps: JSX.IntrinsicAttributes &
+              Omit<IconButtonProps, 'ref'> &
+              RefAttributes<HTMLButtonElement>,
+          ) => (
+            <EditorToolbarCantoo
+              triggerProps={triggerProps}
+              openCantooAdaptTextBox={cantooAdaptTextBoxRef.toggle}
+              isCantooAdaptTextBoxOpen={cantooAdaptTextBoxRef.isOpen}
+            />
+          ),
+        },
+        name: 'cantoo',
+        visibility: canUseCantoo ? 'show' : 'hide',
+        tooltip: t('tiptap.toolbar.cantoo.choice'),
+      },
       //------------------------------------//
       {
         type: 'divider',
         name: 'div-speech',
-        visibility: canRecognizeSpeech ? 'show' : 'hide',
+        visibility: canRecognizeSpeech || canUseCantoo ? 'show' : 'hide',
       },
       //--------------- TYPOGRAPHY ---------------//
       {
