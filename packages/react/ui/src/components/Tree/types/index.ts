@@ -176,6 +176,11 @@ export interface FlattenedItem extends TreeItem {
   depth: number;
 }
 
+export interface FlattendedNodes extends TreeItem {
+  expandNode: boolean,
+  parentExpanded: boolean,
+}
+
 export interface TreeViewHandlers {
   unselect: () => void;
   select: (nodeId: string) => void;

@@ -19,6 +19,7 @@ import {
   SortableTreeProps,
   TreeItem,
 } from "../types";
+import { flattenNodes } from "../utilities/tree-sortable";
 
 const SortableTree = ({
   nodes,
@@ -35,7 +36,7 @@ const SortableTree = ({
     expandedNodes,
     handleItemClick,
     handleFoldUnfold,
-    collapseAllNodes,
+    handleCollapseNode,
   } = useTree({
     data: nodes,
     externalSelectedNodeId,
@@ -63,12 +64,14 @@ const SortableTree = ({
   } = useTreeSortable({
     nodes: nodes as TreeItem[],
     onSortable,
-    collapseAllNodes,
+    handleCollapseNode,
   });
+
+  const newNodes = flattenNodes(items as TreeItem[], expandedNodes);
 
   return (
     <div className="treeview">
-      <ul role="tree" className="m-0 p-0">
+      <div role="tree" className="m-0 p-0">
         <DndContext
           accessibility={{ announcements }}
           sensors={sensors}
@@ -83,7 +86,8 @@ const SortableTree = ({
             strategy={verticalListSortingStrategy}
           >
             {Array.isArray(items) &&
-              items.map((node) => (
+              newNodes.map((node) => (
+                node.parentExpanded ? (
                 <TreeNode
                   node={node}
                   key={node.id}
@@ -97,9 +101,10 @@ const SortableTree = ({
                   depth={
                     node.id === activeId && projected ? projected.depth : 0
                   }
-                  indentationWidth={indentationWidth}
+                  isChild={node.isChild}
+                 indentationWidth={indentationWidth}
                   projected={projected}
-                />
+                />): null
               ))}
           </SortableContext>
           {createPortal(
@@ -114,30 +119,26 @@ const SortableTree = ({
             document.body,
           )}
         </DndContext>
-      </ul>
+      </div>
     </div>
   );
 };
 
 const TreeNode = forwardRef(
-  (
-    {
-      node,
-      selectedNodeId,
-      showIcon = false,
-      expandedNodes,
-      focused,
-      disabled,
-      indentationWidth,
-      depth,
-      isChild,
-      projected,
-      renderNode,
-      onTreeItemClick,
-      onToggleNode,
-    }: SortableTreeNodeProps,
-    ref: Ref<HTMLLIElement>,
-  ) => {
+  ({
+    node,
+    selectedNodeId,
+    showIcon = false,
+    expandedNodes,
+    focused,
+    disabled,
+    indentationWidth,
+    depth,
+    isChild,
+    renderNode,
+    onTreeItemClick,
+    onToggleNode,
+  }: SortableTreeNodeProps) => {
     const { t } = useTranslation();
 
     const selected = selectedNodeId === node.id;
@@ -164,13 +165,12 @@ const TreeNode = forwardRef(
       action: clsx("action-container d-flex align-items-center gap-8 px-2", {
         "drag-focus": focused,
         "border border-secondary rounded rounded-2 shadow bg-white": isDragging,
-      }),
-      arrow: clsx({
-        invisible: !Array.isArray(node.children) || node.children.length === 0,
+        "display": expanded ? "block" : "none",
       }),
       button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
         "py-8": depth === 0,
         "py-4": depth === 1,
+        "ps-8": isChild,
       }),
     };
 
@@ -196,7 +196,9 @@ const TreeNode = forwardRef(
 
     const spaceGestion = () =>
       !isDragging
-        ? null
+        ? isChild
+          ? "20px"
+          : null
         : isChild
           ? depth === 1
             ? `${indentationWidth * depth}px`
@@ -221,21 +223,22 @@ const TreeNode = forwardRef(
       >
         <div>
           <div className={treeItemClasses.action}>
-            <div
-              className={treeItemClasses.arrow}
-              tabIndex={0}
-              role="button"
-              onClick={() => onToggleNode?.(node.id)}
-              onKeyDown={handleItemToggleKeyDown}
-              aria-label={t("foldUnfold")}
-            >
-              <RafterRight
-                width={16}
-                style={{
-                  transform: expanded ? "rotate(90deg)" : "",
-                }}
-              />
-            </div>
+            {node.haveChilds && (
+              <div
+                tabIndex={0}
+                role="button"
+                onClick={() => onToggleNode?.(node.id)}
+                onKeyDown={handleItemToggleKeyDown}
+                aria-label={t("foldUnfold")}
+              >
+                <RafterRight
+                  width={16}
+                  style={{
+                    transform: expanded ? "rotate(90deg)" : "",
+                  }}
+                />
+              </div>
+            )}
 
             {node.children && showIcon ? (
               <Folder title="folder" width={20} height={20} />
@@ -260,32 +263,6 @@ const TreeNode = forwardRef(
               )}
             </div>
           </div>
-
-          {expanded && node.children && !!node.children.length && (
-            <ul role="group">
-              {node.children?.map((node) => (
-                <TreeNode
-                  ref={ref}
-                  node={node}
-                  key={node.id}
-                  showIcon={showIcon}
-                  selectedNodeId={selectedNodeId}
-                  expandedNodes={expandedNodes}
-                  onTreeItemClick={onTreeItemClick}
-                  onToggleNode={onToggleNode}
-                  renderNode={renderNode}
-                  indentationWidth={indentationWidth}
-                  depth={
-                    node.id === projected?.activeId && projected
-                      ? projected.depth
-                      : 0
-                  }
-                  isChild={true}
-                  projected={projected}
-                />
-              ))}
-            </ul>
-          )}
         </div>
       </li>
     );
