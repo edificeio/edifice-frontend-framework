@@ -29,11 +29,13 @@ import {
   useSpeechSynthetisis,
   useTipTapEditor,
 } from '../..';
-import { LoadingScreen } from '../../../../components';
+import { Flex, LoadingScreen } from '../../../../components';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { MediaLibrary } from '../../../multimedia';
+import { useCantooAdaptTextBox } from '../../hooks/useCantooAdaptTextBox';
 import { useMathsStyles } from '../../hooks/useMathsStyles';
 import { BubbleMenuEditInformationPane } from '../BubbleMenuEditInformationPane';
+import CantooAdaptTextBoxView from './CantooAdaptTextBoxView';
 
 const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
 
@@ -115,6 +117,7 @@ const Editor = forwardRef(
       useMediaLibraryEditor(editor);
     const { toggle: toggleMathsModal, ...mathsModalHandlers } =
       useMathsModal(editor);
+    const cantooAdaptTextBox = useCantooAdaptTextBox();
     const imageModal = useImageModal(editor, 'media-library', visibility);
     const linkToolbarHandlers = useLinkToolbar(editor, mediaLibraryModalRef);
     const speechSynthetisis = useSpeechSynthetisis(editor);
@@ -159,14 +162,24 @@ const Editor = forwardRef(
               {...{
                 mediaLibraryRef: mediaLibraryModalRef,
                 toggleMathsModal: toggleMathsModal,
+                cantooAdaptTextBoxRef: cantooAdaptTextBox,
               }}
             />
           )}
-          <EditorContent
-            id={id ?? editorId}
-            editor={editor}
-            className={contentClass}
-          />
+          <Flex direction="row">
+            <EditorContent
+              id={id ?? editorId}
+              editor={editor}
+              className={contentClass}
+              style={{ flex: 1 }}
+            />
+
+            {editable && cantooAdaptTextBox.openPosition.right && (
+              <CantooAdaptTextBoxView
+                openPosition={cantooAdaptTextBox.openPosition}
+              />
+            )}
+          </Flex>
         </div>
 
         <LinkToolbar editor={editor} {...linkToolbarHandlers} />
@@ -212,6 +225,12 @@ const Editor = forwardRef(
               onCancel={imageModal.handleCancel}
               onSave={imageModal.handleSave}
               onError={console.error}
+            />
+          )}
+
+          {editable && cantooAdaptTextBox.openPosition.bottom && (
+            <CantooAdaptTextBoxView
+              openPosition={cantooAdaptTextBox.openPosition}
             />
           )}
         </Suspense>
