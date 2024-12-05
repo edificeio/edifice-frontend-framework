@@ -86,26 +86,27 @@ const SortableTree = ({
             strategy={verticalListSortingStrategy}
           >
             {Array.isArray(items) &&
-              newNodes.map((node) => (
+              newNodes.map((node) =>
                 node.parentExpanded ? (
-                <TreeNode
-                  node={node}
-                  key={node.id}
-                  showIcon={showIcon}
-                  expandedNodes={expandedNodes}
-                  selectedNodeId={selectedNodeId}
-                  renderNode={renderNode}
-                  disabled={isDisabled(node.id)}
-                  onTreeItemClick={handleItemClick}
-                  onToggleNode={handleFoldUnfold}
-                  depth={
-                    node.id === activeId && projected ? projected.depth : 0
-                  }
-                  isChild={node.isChild}
-                 indentationWidth={indentationWidth}
-                  projected={projected}
-                />): null
-              ))}
+                  <TreeNode
+                    node={node}
+                    key={node.id}
+                    showIcon={showIcon}
+                    expandedNodes={expandedNodes}
+                    selectedNodeId={selectedNodeId}
+                    renderNode={renderNode}
+                    disabled={isDisabled(node.id)}
+                    onTreeItemClick={handleItemClick}
+                    onToggleNode={handleFoldUnfold}
+                    depth={
+                      node.id === activeId && projected ? projected.depth : 0
+                    }
+                    isChild={node.isChild}
+                    indentationWidth={indentationWidth}
+                    projected={projected}
+                  />
+                ) : null,
+              )}
           </SortableContext>
           {createPortal(
             <DragOverlay

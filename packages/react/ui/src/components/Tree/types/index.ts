@@ -177,8 +177,8 @@ export interface FlattenedItem extends TreeItem {
 }
 
 export interface FlattendedNodes extends TreeItem {
-  expandNode: boolean,
-  parentExpanded: boolean,
+  expandNode: boolean;
+  parentExpanded: boolean;
 }
 
 export interface TreeViewHandlers {

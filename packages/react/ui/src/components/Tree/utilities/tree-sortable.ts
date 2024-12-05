@@ -97,10 +97,18 @@ export function flattenTree(
   }, [] as FlattenedItem[]);
 }
 
-export function flattenNodes(nodes: TreeItem[], expandedNodes: Set<string>): FlattendedNodes[] {
-  const flatten = (nodes: TreeItem[], isChild = false, parentExpanded = true): FlattendedNodes[] => {
+export function flattenNodes(
+  nodes: TreeItem[],
+  expandedNodes: Set<string>,
+): FlattendedNodes[] {
+  const flatten = (
+    nodes: TreeItem[],
+    isChild = false,
+    parentExpanded = true,
+  ): FlattendedNodes[] => {
     return nodes.reduce<FlattendedNodes[]>((acc, node) => {
-      const isExpanded = expandedNodes.has(node.id) && node.children && node.children.length > 0;
+      const isExpanded =
+        expandedNodes.has(node.id) && node.children && node.children.length > 0;
       acc.push({
         id: node.id,
         name: node.name,
