@@ -30,6 +30,8 @@ import { EditorToolbarPlusMenu } from "./EditorToolbar.PlusMenu";
 import { EditorToolbarTextColor } from "./EditorToolbar.TextColor";
 import { EditorToolbarTextSize } from "./EditorToolbar.TextSize";
 import { EditorToolbarTypography } from "./EditorToolbar.Typography";
+import { EditorToolbarCantoo } from "./EditorToolbar.Cantoo.tsx";
+
 import {
   useActionOptions,
   useEditorContext,
@@ -38,15 +40,22 @@ import {
 import { hasExtension } from "../../utils/has-extension";
 import { hasMark } from "../../utils/has-mark";
 import { hasTextStyle } from "../../utils/has-text-style";
+import { useCantooEditor } from "../..";
 
 interface Props {
   /** Ref to a MediaLibrary instance */
   mediaLibraryRef: RefObject<MediaLibraryRef>;
   /** API to open/close a Math modal. */
   toggleMathsModal: Function;
+  /** API to open/close a Cantoo modal. */
+  toggleCantooModal: Function;
 }
 
-export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
+export const EditorToolbar = ({
+  mediaLibraryRef,
+  toggleMathsModal,
+  toggleCantooModal,
+}: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
 
@@ -61,6 +70,8 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
     isActive: speechRecognition,
     toggle: toggleSpeechRecognition,
   } = useSpeechRecognition(editor);
+
+  const { isAvailable: canUseCantoo } = useCantooEditor(editor);
 
   const toolbarItems: ToolbarItem[] = useMemo(() => {
     const showIf = (truthy: boolean) => (truthy ? "show" : "hide");
@@ -176,6 +187,25 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
         visibility: canRecognizeSpeech ? "show" : "hide",
         name: "speechtotext",
         tooltip: t("tiptap.toolbar.stt"),
+      },
+      //------------- CANTOO ---------------//
+      {
+        type: "dropdown",
+        props: {
+          children: (
+            triggerProps: JSX.IntrinsicAttributes &
+              Omit<IconButtonProps, "ref"> &
+              RefAttributes<HTMLButtonElement>,
+          ) => (
+            <EditorToolbarCantoo
+              triggerProps={triggerProps}
+              openModal={toggleCantooModal}
+            />
+          ),
+        },
+        name: "cantoo",
+        visibility: canUseCantoo ? "show" : "hide",
+        tooltip: t("tiptap.toolbar.cantoo.choice"),
       },
       //------------------------------------//
       {
