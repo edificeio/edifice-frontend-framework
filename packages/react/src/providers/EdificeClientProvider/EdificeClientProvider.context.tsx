@@ -11,19 +11,19 @@ import {
 } from "@edifice.io/ts-client";
 import { UseQueryResult } from "@tanstack/react-query";
 
-export interface OdeProviderParams {
+export interface EdificeClientParams {
   alternativeApp?: boolean;
   app: App;
   cdnDomain?: string | null;
   version?: string | null;
 }
 
-export interface OdeClientProps {
+export interface EdificeClientProviderProps {
   children: ReactNode;
-  params: OdeProviderParams;
+  params: EdificeClientParams;
 }
 
-export interface OdeContextProps {
+export interface EdificeClientContextProps {
   appCode: App;
   applications: IWebApp[] | undefined;
   confQuery: UseQueryResult<IGetConf>;
@@ -36,6 +36,5 @@ export interface OdeContextProps {
   userProfile: UserProfile | undefined;
 }
 
-export const EdificeClientContext = createContext<OdeContextProps | null>(
-  null!,
-);
+export const EdificeClientContext =
+  createContext<EdificeClientContextProps | null>(null!);

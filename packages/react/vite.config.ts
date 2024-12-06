@@ -8,7 +8,11 @@ import dts from "vite-plugin-dts";
 import { PluginPure } from "rollup-plugin-pure";
 import { PluginOption } from "vite";
 import { removeDsn } from "../../plugins/remove-display-name";
-import { dependencies, peerDependencies } from "./package.json";
+import {
+  dependencies,
+  optionalDependencies,
+  peerDependencies,
+} from "./package.json";
 
 export default defineConfig({
   esbuild: {
@@ -47,6 +51,7 @@ export default defineConfig({
       external: [
         ...Object.keys(dependencies),
         ...Object.keys(peerDependencies),
+        ...Object.keys(optionalDependencies),
         "react/jsx-runtime",
         "@edifice.io/ts-client",
         /^@edifice\.io\/tiptap-extensions\/.*/,

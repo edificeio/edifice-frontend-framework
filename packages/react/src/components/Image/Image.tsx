@@ -2,7 +2,7 @@ import { forwardRef, Ref } from "react";
 
 import clsx from "clsx";
 
-import { usePaths } from "../../hooks";
+import commonPlaceholder from "@edifice.io/bootstrap/dist/images/common/image-placeholder.png";
 import useImage from "../../hooks/useImage/useImage";
 
 export interface ImageProps extends React.ComponentPropsWithRef<"img"> {
@@ -45,9 +45,7 @@ const Image = forwardRef(
     }: ImageProps,
     ref: Ref<HTMLImageElement>,
   ) => {
-    const [imagePath] = usePaths();
-    const placeholder =
-      imgPlaceholder ?? `${imagePath}/common/image-placeholder.png`;
+    const placeholder = imgPlaceholder ?? commonPlaceholder;
 
     const { imgSrc, onError } = useImage({ src, placeholder });
 

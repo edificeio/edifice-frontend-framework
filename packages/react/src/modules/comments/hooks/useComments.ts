@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { usePaths } from "../../..";
 import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
 import {
   CommentCallbacks,
@@ -9,6 +8,8 @@ import {
   CommentType,
 } from "../types";
 import { useProfileQueries } from "./useProfileQueries";
+
+import illuPad from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-pad.svg";
 
 export const useComments = ({
   defaultComments,
@@ -24,12 +25,9 @@ export const useComments = ({
   const [content, setContent] = useState<string>("");
   const [editCommentId, setEditCommentId] = useState<string | null>(null);
   const [commentLimit, setCommentLimit] = useState(options.maxComments);
-  const [imagePath] = usePaths();
 
   const { t } = useTranslation();
   const { user } = useEdificeClient();
-
-  const emptyscreenPath = `${imagePath}/emptyscreen/illu-pad.svg`;
 
   const usersIds = Array.from(
     new Set(defaultComments?.map((comment) => comment.authorId)),
@@ -113,7 +111,7 @@ export const useComments = ({
     content,
     title,
     user,
-    emptyscreenPath,
+    emptyscreenPath: illuPad,
     defaultCommentsCount,
     comments,
     editCommentId,

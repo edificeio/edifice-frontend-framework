@@ -2,7 +2,7 @@ import { forwardRef, Ref } from "react";
 
 import clsx from "clsx";
 
-import { usePaths } from "../../hooks";
+import noAvatar from "@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg";
 import { Image } from "../Image";
 
 export type AvatarVariants = "square" | "rounded" | "circle";
@@ -49,8 +49,7 @@ const Avatar = forwardRef(
     }: AvatarProps,
     ref: Ref<HTMLDivElement>,
   ) => {
-    const [imagePath] = usePaths();
-    const placeholder = imgPlaceholder || `${imagePath}/avatar/no-avatar.svg`;
+    const placeholder = imgPlaceholder || noAvatar;
 
     const isSquare = variant === "square";
     const isRounded = variant === "rounded";

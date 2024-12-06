@@ -15,7 +15,7 @@ import {
   EmptyScreen,
   SearchBar,
 } from "../../../../components";
-import { usePaths, useResourceSearch } from "../../../../hooks";
+import { useResourceSearch } from "../../../../hooks";
 import { useEdificeTheme } from "../../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
 import { IconApplications } from "../../../icons/components";
 import LinkerCard from "../../LinkerCard/LinkerCard";
@@ -69,7 +69,6 @@ const InternalLinker = ({
 }: InternalLinkerProps) => {
   const { t } = useTranslation();
   const { theme } = useEdificeTheme();
-  const [imagePath] = usePaths();
 
   // Get available applications, and a function to load their resources.
   const { resourceApplications, loadResources } = useResourceSearch(appCode);
@@ -297,6 +296,29 @@ const InternalLinker = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resources]);
 
+  const [emptySearch, setEmptySearch] = useState("");
+  const [appEmptySearch, setAppEmptySearch] = useState("");
+
+  useEffect(() => {
+    const getImageLibrary = async () => {
+      const imageLibrary = await import(
+        `@edifice.io/bootstrap/dist/images/${theme?.bootstrapVersion}/illu-empty-search.svg`
+      );
+      setEmptySearch(imageLibrary.default);
+    };
+    getImageLibrary();
+  }, [theme]);
+
+  useEffect(() => {
+    const getImageLibrary = async () => {
+      const imageLibrary = await import(
+        `@edifice.io/bootstrap/dist/images/${theme?.bootstrapVersion}/illu-empty-search-${selectedApplication?.application}.svg`
+      );
+      setAppEmptySearch(imageLibrary.default);
+    };
+    getImageLibrary();
+  }, [selectedApplication, theme]);
+
   return (
     <div className="d-flex flex-column flex-fill overflow-hidden">
       <div className="search d-flex bg-light rounded-top border border-bottom-0">
@@ -369,7 +391,7 @@ const InternalLinker = ({
         {selectedApplication && resources && resources.length <= 0 && (
           <div className="d-flex justify-content-center mt-16">
             <EmptyScreen
-              imageSrc={`${imagePath}/${theme?.bootstrapVersion}/illu-empty-search-${selectedApplication.application}.svg`}
+              imageSrc={appEmptySearch}
               text={t("bbm.linker.int.notfound")}
               className="mt-16"
             />
@@ -379,7 +401,7 @@ const InternalLinker = ({
         {!selectedApplication && (
           <div className="d-flex justify-content-center mt-32">
             <EmptyScreen
-              imageSrc={`${imagePath}/${theme?.bootstrapVersion}/illu-empty-search.svg`}
+              imageSrc={emptySearch}
               text={t("bbm.linker.int.empty")}
               className="mt-32"
             />

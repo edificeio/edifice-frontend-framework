@@ -88,11 +88,11 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@edifice.io/tiptap-extensions": "workspace:*",
     "@edifice.io/utilities": "workspace:*",
+    "@edifice.io/bootstrap": "workspace:*",
     "@floating-ui/react": "0.26.0",
     "@pixi/mixin-get-child-by-name": "7.4.2",
     "@pixi/react": "7.1.2",
     "@popperjs/core": "2.11.8",
-    "@tiptap-pro/extension-mathematics": "2.2.1",
     "@tiptap/core": "2.3.0",
     "@tiptap/extension-character-count": "2.3.0",
     "@tiptap/extension-color": "2.3.0",
@@ -131,6 +131,9 @@
     "react-slugify": "^3.0.3",
     "swiper": "^10.1.0",
     "ua-parser-js": "^1.0.36"
+  },
+  "optionalDependencies": {
+    "@tiptap-pro/extension-mathematics": "2.2.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "^7.23.3",

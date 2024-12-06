@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import { Alert } from "../../../../components";
-import { usePaths } from "../../../../hooks";
+
+import creativeCommons from "@edifice.io/bootstrap/dist/images/common/image-creative-commons.png";
 
 export const PublishModalFooter = () => {
   const { t } = useTranslation();
-  const [imagePath] = usePaths();
   return (
     <>
       <ul className="mb-12">
@@ -12,7 +12,7 @@ export const PublishModalFooter = () => {
           {t("bpr.form.publication.licence.text.1")}
           <img
             className="ms-8 d-inline-block"
-            src={`${imagePath}/common/image-creative-commons.png`}
+            src={creativeCommons}
             alt="licence creative commons"
           />
         </li>

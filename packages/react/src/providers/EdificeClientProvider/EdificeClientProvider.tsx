@@ -1,18 +1,12 @@
-import { useEffect, useMemo, type ReactNode } from "react";
+import { useEffect, useMemo } from "react";
 
-import {
-  App,
-  IGetConf,
-  IGetSession,
-  IUserDescription,
-  IUserInfo,
-  IWebApp,
-  UserProfile,
-} from "@edifice.io/ts-client";
-import { UseQueryResult } from "@tanstack/react-query";
+import { App } from "@edifice.io/ts-client";
 import { useTranslation } from "react-i18next";
 import { useConf, useSession } from "../../hooks";
-import { EdificeClientContext } from "./EdificeClientProvider.context";
+import {
+  EdificeClientContext,
+  EdificeClientProviderProps,
+} from "./EdificeClientProvider.context";
 
 export interface OdeProviderParams {
   alternativeApp?: boolean;
@@ -21,25 +15,10 @@ export interface OdeProviderParams {
   version?: string | null;
 }
 
-export interface OdeClientProps {
-  children: ReactNode;
-  params: OdeProviderParams;
-}
-
-export interface OdeContextProps {
-  appCode: App;
-  applications: IWebApp[] | undefined;
-  confQuery: UseQueryResult<IGetConf>;
-  currentApp: IWebApp | undefined;
-  currentLanguage: string | undefined;
-  init: boolean;
-  sessionQuery: UseQueryResult<IGetSession>;
-  user: IUserInfo | undefined;
-  userDescription: Partial<IUserDescription> | undefined;
-  userProfile: UserProfile | undefined;
-}
-
-export function EdificeClientProvider({ children, params }: OdeClientProps) {
+export function EdificeClientProvider({
+  children,
+  params,
+}: EdificeClientProviderProps) {
   const appCode = params.app;
 
   const { t } = useTranslation();
