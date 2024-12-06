@@ -6,9 +6,7 @@ import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Button, Image, Modal } from "../../../components";
-import { usePaths } from "../../../hooks";
 import { useOnboardingModal } from "./useOnboardingModal";
-
 interface ModalItemsProps {
   /**
    * /onboarding/*.svg
@@ -49,7 +47,6 @@ interface OnboardingProps {
 }
 
 const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
-  const [imagePath] = usePaths();
   const [swiperInstance, setSwiperInstance] = useState<any>();
   const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
@@ -106,7 +103,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
                       height="140"
                       className="mx-auto my-12"
                       loading="lazy"
-                      src={`${imagePath}/${item.src}`}
+                      src={item.src}
                       alt={t(item.alt)}
                     />
                     <p>{t(item.text)}</p>
