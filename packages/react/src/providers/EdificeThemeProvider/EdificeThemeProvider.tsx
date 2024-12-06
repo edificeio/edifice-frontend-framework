@@ -1,18 +1,11 @@
-import { useEffect, useMemo, type ReactNode } from "react";
+import { useEffect, useMemo } from "react";
 
-import { IOdeTheme } from "@edifice.io/ts-client";
 import { useConf } from "../../hooks";
 import { useEdificeClient } from "../EdificeClientProvider/EdificeClientProvider.hook";
-import { EdificeThemeContext } from "./EdificeThemeProvider.context";
-
-export interface EdificeThemeProps {
-  children: ReactNode;
-  defaultTheme?: "one" | "neo" | "none";
-}
-
-export interface EdificeThemeContextProps {
-  theme: IOdeTheme | undefined;
-}
+import {
+  EdificeThemeContext,
+  EdificeThemeProps,
+} from "./EdificeThemeProvider.context";
 
 export function EdificeThemeProvider({
   defaultTheme,
