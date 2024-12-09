@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { useRef } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { VideoRecorder } from "../../VideoRecorder";
-import { VideoRecorderRef } from "../../VideoRecorder/VideoRecorder";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import { VideoRecorder } from '../../VideoRecorder';
+import { VideoRecorderRef } from '../../VideoRecorder/VideoRecorder';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const Video = () => {
   const { appCode, setResult, setPreSuccess } = useMediaLibraryContext();
@@ -28,7 +28,7 @@ export const Video = () => {
     <VideoRecorder
       ref={ref}
       appCode={appCode}
-      caption={t("bbm.video.caption")}
+      caption={t('bbm.video.caption')}
       onRecordUpdated={handleRecordUpdated}
       onError={handleError}
       hideSaveAction={true}

@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 import {
   IResource,
   odeServices,
   type PublishParameters,
-} from "@edifice.io/ts-client";
-import { type SubmitHandler, useForm } from "react-hook-form";
+} from '@edifice.io/ts-client';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { libraryMaps } from "@edifice.io/utilities";
-import { useToast } from "../../../../hooks";
-import { useEdificeClient } from "../../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { ToastError } from "../components/ToastError";
-import { ToastSuccess } from "../components/ToastSuccess";
+import { libraryMaps } from '@edifice.io/utilities';
+import { useToast } from '../../../../hooks';
+import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { ToastError } from '../components/ToastError';
+import { ToastSuccess } from '../components/ToastSuccess';
 
 interface ModalProps {
   resource: IResource;
@@ -34,7 +34,7 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
   const toast = useToast();
 
   const [cover, setCover] = useState<string | Blob | File>(
-    resource?.thumbnail || "",
+    resource?.thumbnail || '',
   );
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
     setValue,
     handleSubmit,
     formState: { errors, isSubmitting, isDirty, isValid },
-  } = useForm<FormDataProps>({ mode: "onChange" });
+  } = useForm<FormDataProps>({ mode: 'onChange' });
 
   // models for Dropdown select lists
   const [selectedActivities, setSelectedActivities] = useState<
@@ -92,42 +92,42 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
 
   const handleUploadImage = (file: File | string) => setCover(file);
 
-  const handleDeleteImage = () => setCover("");
+  const handleDeleteImage = () => setCover('');
 
   const handlePublish: SubmitHandler<FormDataProps> = async (
     formData: FormDataProps,
   ) => {
-    const userId = user ? user?.userId : "";
+    const userId = user ? user?.userId : '';
 
     try {
       let coverBlob = new Blob();
 
-      if (typeof cover === "string") {
+      if (typeof cover === 'string') {
         coverBlob = await odeServices.http().get(cover, {
-          responseType: "blob",
+          responseType: 'blob',
         });
       } else if (cover) {
         coverBlob = await odeServices
           .http()
           .get(URL.createObjectURL(cover as Blob), {
-            responseType: "blob",
+            responseType: 'blob',
           });
       } else if (resource?.thumbnail) {
         coverBlob = await odeServices.http().get(resource?.thumbnail, {
-          responseType: "blob",
+          responseType: 'blob',
         });
       }
 
       const teacherAvatar: Blob = await odeServices
         .http()
         .get(`/userbook/avatar/${userId}?thumbnail=48x48`, {
-          responseType: "blob",
+          responseType: 'blob',
         } as any);
 
       const resAttachmentSchool = await odeServices
         .http()
         .get(`/directory/user/${userId}/attachment-school`, {
-          responseType: "json",
+          responseType: 'json',
         } as any);
 
       const application = libraryMaps[appCode as string];
@@ -140,7 +140,7 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
         description: formData.description,
         keyWords: formData.keyWords,
         language: formData.language,
-        licence: "CC-BY",
+        licence: 'CC-BY',
         resourceId: resource?.assetId,
         resourceEntId: resource?.assetId,
         subjectArea: selectedSubjectAreas as string[],
@@ -156,7 +156,7 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
         toast.success(<ToastSuccess result={result} />, {
           duration: 10000,
         });
-      } else if (result.message === "CONTENT_TOO_LARGE") {
+      } else if (result.message === 'CONTENT_TOO_LARGE') {
         toast.error(<ToastError errorMessage={result.message} />);
       } else {
         toast.error(<ToastError formData={formData} />);

@@ -1,7 +1,7 @@
-import { ISessionFramework } from "./interfaces";
-import { Session } from "./Session";
-import { transport } from "../transport/Framework";
-import { ERROR_CODE } from "../globals";
+import { ISessionFramework } from './interfaces';
+import { Session } from './Session';
+import { transport } from '../transport/Framework';
+import { ERROR_CODE } from '../globals';
 
 export class SessionFramework implements ISessionFramework {
   session: Session = new Session();
@@ -18,18 +18,18 @@ export class SessionFramework implements ISessionFramework {
     secureLocation?: boolean,
   ): Promise<void> {
     const data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    if (typeof rememberMe !== "undefined") {
-      data.append("rememberMe", "" + rememberMe);
+    data.append('email', email);
+    data.append('password', password);
+    if (typeof rememberMe !== 'undefined') {
+      data.append('rememberMe', '' + rememberMe);
     }
-    if (typeof secureLocation !== "undefined") {
-      data.append("secureLocation", "" + secureLocation);
+    if (typeof secureLocation !== 'undefined') {
+      data.append('secureLocation', '' + secureLocation);
     }
 
     return transport.http
-      .post<void>("/auth/login", data, {
-        headers: { "content-type": "application/x-www-form-urlencoded" },
+      .post<void>('/auth/login', data, {
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
       })
       .finally(() => {
         switch (transport.http.latestResponse.status) {
@@ -43,7 +43,7 @@ export class SessionFramework implements ISessionFramework {
   }
 
   logout(): Promise<void> {
-    return transport.http.get<void>("/auth/logout").finally(() => {
+    return transport.http.get<void>('/auth/logout').finally(() => {
       // void, always successful
     });
   }

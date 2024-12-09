@@ -1,14 +1,14 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import noAvatar from "@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg";
-import { Image } from "../Image";
+import noAvatar from '@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg';
+import { Image } from '../Image';
 
-export type AvatarVariants = "square" | "rounded" | "circle";
-export type AvatarSizes = "xs" | "sm" | "md" | "lg" | "xl";
+export type AvatarVariants = 'square' | 'rounded' | 'circle';
+export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
-export interface AvatarProps extends React.ComponentPropsWithRef<"img"> {
+export interface AvatarProps extends React.ComponentPropsWithRef<'img'> {
   /**
    * Shape of Avatar
    * `title`, `square`, `circle`
@@ -39,8 +39,8 @@ export interface AvatarProps extends React.ComponentPropsWithRef<"img"> {
 const Avatar = forwardRef(
   (
     {
-      variant = "square",
-      size = "md",
+      variant = 'square',
+      size = 'md',
       alt,
       src,
       imgPlaceholder,
@@ -51,26 +51,26 @@ const Avatar = forwardRef(
   ) => {
     const placeholder = imgPlaceholder || noAvatar;
 
-    const isSquare = variant === "square";
-    const isRounded = variant === "rounded";
-    const isCircle = variant === "circle";
+    const isSquare = variant === 'square';
+    const isRounded = variant === 'rounded';
+    const isCircle = variant === 'circle';
 
     const avatarSizes = {
-      "avatar-xs": size === "xs",
-      "avatar-sm": size === "sm",
-      "avatar-md": size === "md",
-      "avatar-lg": size === "lg",
-      "avatar-xl": size === "xl",
+      'avatar-xs': size === 'xs',
+      'avatar-sm': size === 'sm',
+      'avatar-md': size === 'md',
+      'avatar-lg': size === 'lg',
+      'avatar-xl': size === 'xl',
     };
 
     const avatarVariants = {
-      "square": isSquare,
-      "rounded": isRounded,
-      "rounded-circle": isCircle,
+      'square': isSquare,
+      'rounded': isRounded,
+      'rounded-circle': isCircle,
     };
 
     const classes = clsx(
-      "avatar",
+      'avatar',
       {
         ...avatarSizes,
         ...avatarVariants,
@@ -91,6 +91,6 @@ const Avatar = forwardRef(
   },
 );
 
-Avatar.displayName = "Avatar";
+Avatar.displayName = 'Avatar';
 
 export default Avatar;

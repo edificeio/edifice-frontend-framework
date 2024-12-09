@@ -1,24 +1,24 @@
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import {
   AnimateLayoutChanges,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import clsx from "clsx";
-import { CSSProperties, Ref, forwardRef } from "react";
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
-import { IconFolder, IconRafterRight } from "../../../modules/icons/components";
-import { useTree } from "../hooks/useTree";
-import { useTreeSortable } from "../hooks/useTreeSortable";
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import clsx from 'clsx';
+import { CSSProperties, Ref, forwardRef } from 'react';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
+import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
+import { useTree } from '../hooks/useTree';
+import { useTreeSortable } from '../hooks/useTreeSortable';
 import {
   FlattenedItem,
   SortableTreeNodeProps,
   SortableTreeProps,
   TreeItem,
-} from "../types";
+} from '../types';
 
 const SortableTree = ({
   nodes,
@@ -161,21 +161,21 @@ const TreeNode = forwardRef(
     };
 
     const treeItemClasses = {
-      action: clsx("action-container d-flex align-items-center gap-8 px-2", {
-        "drag-focus": focused,
-        "border border-secondary rounded rounded-2 shadow bg-white": isDragging,
+      action: clsx('action-container d-flex align-items-center gap-8 px-2', {
+        'drag-focus': focused,
+        'border border-secondary rounded rounded-2 shadow bg-white': isDragging,
       }),
       arrow: clsx({
         invisible: !Array.isArray(node.children) || node.children.length === 0,
       }),
-      button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
-        "py-8": depth === 0,
-        "py-4": depth === 1,
+      button: clsx('flex-fill d-flex align-items-center text-truncate gap-8', {
+        'py-8': depth === 0,
+        'py-4': depth === 1,
       }),
     };
 
     const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.code === "Enter" || event.code === "Space") {
+      if (event.code === 'Enter' || event.code === 'Space') {
         event.preventDefault();
         event.stopPropagation();
 
@@ -186,7 +186,7 @@ const TreeNode = forwardRef(
     const handleItemToggleKeyDown = (
       event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
-      if (event.code === "Enter" || event.code === "Space") {
+      if (event.code === 'Enter' || event.code === 'Space') {
         event.preventDefault();
         event.stopPropagation();
 
@@ -200,7 +200,7 @@ const TreeNode = forwardRef(
         : isChild
           ? depth === 1
             ? `${indentationWidth * depth}px`
-            : "0px"
+            : '0px'
           : `${indentationWidth * depth}px`;
 
     return (
@@ -227,12 +227,12 @@ const TreeNode = forwardRef(
               role="button"
               onClick={() => onToggleNode?.(node.id)}
               onKeyDown={handleItemToggleKeyDown}
-              aria-label={t("foldUnfold")}
+              aria-label={t('foldUnfold')}
             >
               <IconRafterRight
                 width={16}
                 style={{
-                  transform: expanded ? "rotate(90deg)" : "",
+                  transform: expanded ? 'rotate(90deg)' : '',
                 }}
               />
             </div>
@@ -307,19 +307,19 @@ export const DragOverlayItem = forwardRef(
         ref={ref}
         {...props}
         className="opacity-0"
-        style={{ cursor: "grabbing" }}
+        style={{ cursor: 'grabbing' }}
       >
         <div
-          className={clsx("action-container align-items-center gap-8 px-2")}
+          className={clsx('action-container align-items-center gap-8 px-2')}
           style={{
-            backgroundColor: "white",
-            border: "1px solid black",
-            width: "100px",
+            backgroundColor: 'white',
+            border: '1px solid black',
+            width: '100px',
           }}
         >
           <div
             className={clsx(
-              "flex-fill d-flex align-items-center text-truncate gap-8 py-8",
+              'flex-fill d-flex align-items-center text-truncate gap-8 py-8',
             )}
           >
             <span className="text-truncate">{activeItem?.name}</span>
@@ -330,6 +330,6 @@ export const DragOverlayItem = forwardRef(
   },
 );
 
-SortableTree.displayName = "SortableTree";
+SortableTree.displayName = 'SortableTree';
 
 export default SortableTree;

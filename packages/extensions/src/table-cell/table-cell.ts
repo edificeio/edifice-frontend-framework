@@ -1,4 +1,4 @@
-import { TableCell as TipTapTableCell } from "@tiptap/extension-table-cell";
+import { TableCell as TipTapTableCell } from '@tiptap/extension-table-cell';
 
 /**
  * This custom extension allows setting a background-color to table cells.
@@ -20,7 +20,7 @@ export const TableCell = TipTapTableCell.extend({
           };
         },
         parseHTML: (element: { style?: { backgroundColor: string } }) => {
-          return element.style?.backgroundColor?.replace(/['"]+/g, "");
+          return element.style?.backgroundColor?.replace(/['"]+/g, '');
         },
       },
     };

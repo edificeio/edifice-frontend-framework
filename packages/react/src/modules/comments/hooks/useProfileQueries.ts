@@ -1,10 +1,10 @@
-import { odeServices } from "@edifice.io/ts-client";
-import { useQueries } from "@tanstack/react-query";
+import { odeServices } from '@edifice.io/ts-client';
+import { useQueries } from '@tanstack/react-query';
 
 export const useProfileQueries = (usersIds: string[]) => {
   const results = useQueries({
     queries: usersIds.map((userId) => ({
-      queryKey: ["post", userId],
+      queryKey: ['post', userId],
       queryFn: async () => {
         const data = await odeServices.session().getUserProfile({
           params: { id: userId },

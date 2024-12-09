@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { Meta, StoryObj } from "@storybook/react";
-import useDropzone from "./useDropzone";
+import { Meta, StoryObj } from '@storybook/react';
+import useDropzone from './useDropzone';
 
 const meta: Meta<typeof useDropzone> = {
-  title: "Hooks/useDropzone",
+  title: 'Hooks/useDropzone',
 };
 
 export default meta;
@@ -22,12 +22,12 @@ export const Example: Story = {
     } = useDropzone();
 
     const [preview, setPreview] = useState<Record<string, string>>({
-      name: "",
-      image: "",
+      name: '',
+      image: '',
     });
 
     useEffect(() => {
-      setPreview({ ...preview, name: "", image: "" });
+      setPreview({ ...preview, name: '', image: '' });
 
       const file = files?.[0];
       if (!file) {

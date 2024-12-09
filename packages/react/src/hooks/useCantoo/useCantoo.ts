@@ -1,23 +1,23 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { odeServices } from "@edifice.io/ts-client";
+import { odeServices } from '@edifice.io/ts-client';
 
-import { useHasWorkflow } from "../useHasWorkflow";
+import { useHasWorkflow } from '../useHasWorkflow';
 
 export default function useCantoo() {
   const hasWorkflow = useHasWorkflow(
-    "org.entcore.portal.controllers.PortalController|optionalFeatureCantoo",
+    'org.entcore.portal.controllers.PortalController|optionalFeatureCantoo',
   );
 
   useEffect(() => {
-    if (hasWorkflow && !document.getElementById("cantoo-edifice-script")) {
+    if (hasWorkflow && !document.getElementById('cantoo-edifice-script')) {
       (async () => {
         const cantooResponse = await odeServices
           .http()
-          .get("/optionalFeature/cantoo");
+          .get('/optionalFeature/cantoo');
         if (cantooResponse && cantooResponse.scriptPath) {
-          const script = document.createElement("script");
-          script.id = "cantoo-edifice-script";
+          const script = document.createElement('script');
+          script.id = 'cantoo-edifice-script';
           script.src = cantooResponse.scriptPath;
           script.async = true;
           document.body.appendChild(script);

@@ -1,6 +1,6 @@
-import { session } from "../../session/Framework";
-import { transport } from "../../transport/Framework";
-import { ITimelineNotification, NotificationModel } from "./interfaces";
+import { session } from '../../session/Framework';
+import { transport } from '../../transport/Framework';
+import { ITimelineNotification, NotificationModel } from './interfaces';
 
 /* const http = TransportFrameworkFactory.instance().http;
 const me = SessionFrameworkFactory.instance().session.user; */
@@ -26,14 +26,14 @@ export class Notification implements ITimelineNotification {
   }
 
   delete() {
-    return http.delete("/timeline/" + this._id);
+    return http.delete('/timeline/' + this._id);
   }
 
   discard() {
-    return http.put("/timeline/" + this._id);
+    return http.put('/timeline/' + this._id);
   }
 
   report() {
-    return http.put("/timeline/" + this._id + "/report");
+    return http.put('/timeline/' + this._id + '/report');
   }
 }

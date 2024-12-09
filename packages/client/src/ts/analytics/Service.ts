@@ -1,9 +1,9 @@
-import { ParamsByTrackingSystem, XitiConf } from "../configure/Analytics";
-import { configure } from "../configure/Framework";
-import { IXitiTrackingParams } from "../configure/interfaces";
-import { App, ERROR_CODE } from "../globals";
-import { IOdeServices } from "../services/OdeServices";
-import { IUserInfo, IWebApp, UserProfile } from "../session/interfaces";
+import { ParamsByTrackingSystem, XitiConf } from '../configure/Analytics';
+import { configure } from '../configure/Framework';
+import { IXitiTrackingParams } from '../configure/interfaces';
+import { App, ERROR_CODE } from '../globals';
+import { IOdeServices } from '../services/OdeServices';
+import { IUserInfo, IWebApp, UserProfile } from '../session/interfaces';
 
 declare let ATInternet: any;
 let ATTag: any;
@@ -37,7 +37,7 @@ export class AnalyticsService {
     // SERVICE
     let SERVICE = xitiTrackingParams.LIBELLE_SERVICE.default || null;
     for (const prop in xitiTrackingParams.LIBELLE_SERVICE) {
-      if (prop !== "default" && locationPath.indexOf(prop) >= 0) {
+      if (prop !== 'default' && locationPath.indexOf(prop) >= 0) {
         SERVICE = xitiTrackingParams.LIBELLE_SERVICE[prop];
         break;
       }
@@ -61,10 +61,10 @@ export class AnalyticsService {
       category: xitiTrackingParams.PROFILE,
     });
     ATTag.page.set({
-      name: app?.prefix === "userbook" ? "directory" : app?.prefix,
-      chapter1: "",
-      chapter2: "",
-      chapter3: "",
+      name: app?.prefix === 'userbook' ? 'directory' : app?.prefix,
+      chapter1: '',
+      chapter2: '',
+      chapter3: '',
       level2: xitiTrackingParams.STRUCT_UAI,
     });
     ATTag.dispatch();
@@ -74,9 +74,9 @@ export class AnalyticsService {
     app: App,
   ): Promise<IXitiTrackingParams | undefined> {
     const [analyticsConf, xitiConfig] = await Promise.all([
-      this.http.get<ParamsByTrackingSystem>("/analyticsConf"),
+      this.http.get<ParamsByTrackingSystem>('/analyticsConf'),
       //FIXME change servers config to only keep the "all-in-one" query to /analyticsConf.
-      this.http.get<XitiConf>("/xiti/config"),
+      this.http.get<XitiConf>('/xiti/config'),
     ]);
 
     if (!analyticsConf?.type) {
@@ -93,13 +93,13 @@ export class AnalyticsService {
   }
 
   private async loadXitiScript() {
-    if (typeof ATInternet === "undefined") {
-      const scriptPath = "/xiti/public/js/lib/smarttag_ENT.js";
+    if (typeof ATInternet === 'undefined') {
+      const scriptPath = '/xiti/public/js/lib/smarttag_ENT.js';
       const response = await this.http.get<string>(scriptPath, {
-        headers: { Accept: "application/javascript" },
+        headers: { Accept: 'application/javascript' },
       });
       if (this.http.latestResponse.status != 200) {
-        throw "Error while loading XiTi script";
+        throw 'Error while loading XiTi script';
       }
       eval(response);
     }
@@ -134,7 +134,7 @@ export class AnalyticsService {
 
     // ID_PERSO
     function pseudonymization(stringId: string): string {
-      let buffer = "";
+      let buffer = '';
       for (let i = 0; i < stringId.length; i++) {
         buffer += stringId.charCodeAt(i);
       }
@@ -143,17 +143,17 @@ export class AnalyticsService {
 
     // PROFIL
     const profileMap = {
-      Student: "ELEVE",
-      Teacher: "ENSEIGNANT",
-      Relative: "PARENT",
-      Personnel: "ADMIN_VIE_SCOL_TECH",
-      Guest: "AUTRE",
+      Student: 'ELEVE',
+      Teacher: 'ENSEIGNANT',
+      Relative: 'PARENT',
+      Personnel: 'ADMIN_VIE_SCOL_TECH',
+      Guest: 'AUTRE',
     };
 
     return {
       LIBELLE_SERVICE: appXitiConf.LIBELLE_SERVICE, // Which property of LIBELLE_SERVICE to use depends on the frontend.
-      TYPE: appXitiConf.OUTIL ? "TIERS" : "NATIF",
-      OUTIL: appXitiConf.OUTIL ? appXitiConf.OUTIL : "",
+      TYPE: appXitiConf.OUTIL ? 'TIERS' : 'NATIF',
+      OUTIL: appXitiConf.OUTIL ? appXitiConf.OUTIL : '',
       STRUCT_ID: structure.collectiviteId,
       STRUCT_UAI: structure.UAI,
       PROJET: structure.projetId ? structure.projetId : xitiConf.ID_PROJET,
@@ -164,8 +164,8 @@ export class AnalyticsService {
       ID_PERSO: pseudonymization(user.userId),
       PROFILE:
         userProfile && userProfile.length > 0
-          ? (profileMap[userProfile[0]] ?? "")
-          : "",
+          ? (profileMap[userProfile[0]] ?? '')
+          : '',
     };
   }
 }

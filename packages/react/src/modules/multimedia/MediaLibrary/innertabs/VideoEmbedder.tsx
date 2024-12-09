@@ -1,5 +1,5 @@
-import VideoEmbed from "../../VideoEmbed/VideoEmbed";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import VideoEmbed from '../../VideoEmbed/VideoEmbed';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const VideoEmbedder = () => {
   const { switchType, setResult } = useMediaLibraryContext();

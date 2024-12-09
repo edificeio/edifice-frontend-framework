@@ -1,6 +1,6 @@
-import { mergeAttributes } from "@tiptap/core";
-import { Heading } from "@tiptap/extension-heading";
-import "@tiptap/extension-text-style";
+import { mergeAttributes } from '@tiptap/core';
+import { Heading } from '@tiptap/extension-heading';
+import '@tiptap/extension-text-style';
 
 export declare type Level = 1 | 2;
 
@@ -9,7 +9,7 @@ interface Options {
   HTMLAttributes: Record<string, any>;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     customHeading: {
       /**
@@ -21,7 +21,7 @@ declare module "@tiptap/core" {
 }
 
 export const CustomHeading = Heading.extend<Options>({
-  name: "customHeading",
+  name: 'customHeading',
 
   addOptions() {
     return {
@@ -68,9 +68,9 @@ export const CustomHeading = Heading.extend<Options>({
                 content.marks.forEach((mark) => {
                   /* find textStyle mark and if has fontSize attrs */
                   if (
-                    mark.type.name === "textStyle" &&
-                    mark.attrs["fontSize"] &&
-                    mark.attrs["fontSize"] !== null
+                    mark.type.name === 'textStyle' &&
+                    mark.attrs['fontSize'] &&
+                    mark.attrs['fontSize'] !== null
                   ) {
                     /* remove any fontSize attr to reset heading style */
                     tr = tr.removeMark(pos, pos + node.nodeSize, mark.type);

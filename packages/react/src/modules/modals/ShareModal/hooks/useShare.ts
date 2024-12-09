@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer } from 'react';
 
 import {
   odeServices,
@@ -7,26 +7,26 @@ import {
   type ShareRightAction,
   type ShareRightActionDisplayName,
   type ShareRightWithVisibles,
-} from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+} from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { useToast, useUser } from "../../../../hooks";
-import { useEdificeClient } from "../../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { ShareOptions, ShareResourceMutation } from "../ShareModal";
+import { useToast, useUser } from '../../../../hooks';
+import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { ShareOptions, ShareResourceMutation } from '../ShareModal';
 
 interface UseShareResourceModalProps {
   /**
    * Resource ID (assetId)
    */
-  resourceId: ShareOptions["resourceId"];
+  resourceId: ShareOptions['resourceId'];
   /**
    * Resource Rights (based on the new rights array)
    */
-  resourceRights: ShareOptions["resourceRights"];
+  resourceRights: ShareOptions['resourceRights'];
   /**
    * Resource Creator Id: Id of the user who created the resource
    */
-  resourceCreatorId: ShareOptions["resourceCreatorId"];
+  resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareResource?: ShareResourceMutation;
   onSuccess: () => void;
   setIsLoading: (value: boolean) => void;
@@ -39,11 +39,11 @@ type State = {
 };
 
 export type ShareAction =
-  | { type: "init"; payload: Partial<State> }
-  | { type: "updateShareRights"; payload: ShareRightWithVisibles }
-  | { type: "toggleRight"; payload: ShareRightWithVisibles }
-  | { type: "deleteRow"; payload: ShareRightWithVisibles }
-  | { type: "isSharing"; payload: boolean };
+  | { type: 'init'; payload: Partial<State> }
+  | { type: 'updateShareRights'; payload: ShareRightWithVisibles }
+  | { type: 'toggleRight'; payload: ShareRightWithVisibles }
+  | { type: 'deleteRow'; payload: ShareRightWithVisibles }
+  | { type: 'isSharing'; payload: boolean };
 
 const initialState: State = {
   isSharing: false,
@@ -58,15 +58,15 @@ const initialState: State = {
 
 function reducer(state: State, action: ShareAction) {
   switch (action.type) {
-    case "init":
+    case 'init':
       return { ...state, ...action.payload };
-    case "deleteRow":
+    case 'deleteRow':
       return { ...state, shareRights: action.payload };
-    case "updateShareRights":
+    case 'updateShareRights':
       return { ...state, shareRights: action.payload };
-    case "toggleRight":
+    case 'toggleRight':
       return { ...state, shareRights: action.payload };
-    case "isSharing":
+    case 'isSharing':
       return { ...state, isSharing: action.payload };
     default:
       throw new Error(`Unhandled action type`);
@@ -100,7 +100,7 @@ export default function useShare({
         ]);
 
         dispatch({
-          type: "init",
+          type: 'init',
           payload: {
             shareRightActions,
             shareRights,
@@ -174,7 +174,7 @@ export default function useShare({
     }
 
     // if bookmark then apply right to users and groups
-    if (shareRight.type === "sharebookmark") {
+    if (shareRight.type === 'sharebookmark') {
       newShareRights[index].users?.forEach((user: { id: any }) => {
         const userIndex = newShareRights.findIndex(
           (item) => item.id === user.id,
@@ -197,7 +197,7 @@ export default function useShare({
     }
 
     dispatch({
-      type: "toggleRight",
+      type: 'toggleRight',
       payload: {
         rights: newShareRights,
         ...props,
@@ -206,17 +206,17 @@ export default function useShare({
   };
 
   const notifySuccess = (value: PutShareResponse) => {
-    if (Object.keys(value)[0] === "error") {
-      toast.error(t("explorer.shared.status.error"));
-      console.error("Failed to save share", value);
+    if (Object.keys(value)[0] === 'error') {
+      toast.error(t('explorer.shared.status.error'));
+      console.error('Failed to save share', value);
     } else {
-      toast.success(t("explorer.shared.status.saved"));
+      toast.success(t('explorer.shared.status.saved'));
     }
   };
 
   const handleShare = async () => {
     dispatch({
-      type: "isSharing",
+      type: 'isSharing',
       payload: true,
     });
 
@@ -225,7 +225,7 @@ export default function useShare({
       // add my rights if needed (because visible api does not return my rights)
       const myRights = resourceRights
         .filter((right) => user && right.includes(`user:${user.userId}`))
-        .map((right) => right.split(":")[2])
+        .map((right) => right.split(':')[2])
         .filter((right) => !!right);
 
       const shares = [...state.shareRights.rights];
@@ -239,11 +239,11 @@ export default function useShare({
         });
         shares.push({
           actions,
-          avatarUrl: "",
-          directoryUrl: "",
+          avatarUrl: '',
+          directoryUrl: '',
           displayName: user!.username,
           id: user!.userId,
-          type: "user",
+          type: 'user',
         });
       }
 
@@ -262,12 +262,12 @@ export default function useShare({
       }
       onSuccess();
     } catch (error) {
-      if (typeof error === "string")
-        toast.error(t("explorer.shared.status.error"));
-      console.error("Failed to save share", error);
+      if (typeof error === 'string')
+        toast.error(t('explorer.shared.status.error'));
+      console.error('Failed to save share', error);
     } finally {
       dispatch({
-        type: "isSharing",
+        type: 'isSharing',
         payload: false,
       });
     }
@@ -275,7 +275,7 @@ export default function useShare({
 
   const handleDeleteRow = (shareRight: ShareRight) => {
     dispatch({
-      type: "deleteRow",
+      type: 'deleteRow',
       payload: {
         ...state.shareRights,
         rights: state.shareRights.rights.filter(

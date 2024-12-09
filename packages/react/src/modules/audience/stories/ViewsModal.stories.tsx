@@ -1,32 +1,32 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { ViewsDetails } from "@edifice.io/ts-client";
-import { useToggle } from "../../../hooks";
-import ViewsCounter from "../ViewsCounter";
-import ViewsModal from "../ViewsModal";
+import { ViewsDetails } from '@edifice.io/ts-client';
+import { useToggle } from '../../../hooks';
+import ViewsCounter from '../ViewsCounter';
+import ViewsModal from '../ViewsModal';
 
 const viewsDetailsMockedData: ViewsDetails = {
   viewsCounter: 20,
   uniqueViewsCounter: 5,
   uniqueViewsPerProfile: [
     {
-      profile: "Student",
+      profile: 'Student',
       counter: 1,
     },
     {
-      profile: "Relative",
+      profile: 'Relative',
       counter: 1,
     },
     {
-      profile: "Teacher",
+      profile: 'Teacher',
       counter: 1,
     },
     {
-      profile: "Personnel",
+      profile: 'Personnel',
       counter: 1,
     },
     {
-      profile: "Guest",
+      profile: 'Guest',
       counter: 1,
     },
   ],
@@ -34,9 +34,9 @@ const viewsDetailsMockedData: ViewsDetails = {
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ViewsModal> = {
-  title: "Modules/Audience/Views modal",
+  title: 'Modules/Audience/Views modal',
   component: ViewsModal,
-  decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
   args: {
     viewsDetails: viewsDetailsMockedData,
   },
@@ -44,7 +44,7 @@ const meta: Meta<typeof ViewsModal> = {
     docs: {
       description: {
         component:
-          "ViewsModal is a component that displays detailed view statistics for content. It shows the total views, unique views, and a breakdown of views by user profile. The modal provides comprehensive analytics about content engagement across different user types.",
+          'ViewsModal is a component that displays detailed view statistics for content. It shows the total views, unique views, and a breakdown of views by user profile. The modal provides comprehensive analytics about content engagement across different user types.',
       },
     },
   },

@@ -1,4 +1,4 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
 export interface ActionBarProps {
   /**
@@ -19,5 +19,5 @@ const ActionBar = forwardRef(
   },
 );
 
-ActionBar.displayName = "ActionBar";
+ActionBar.displayName = 'ActionBar';
 export default ActionBar;

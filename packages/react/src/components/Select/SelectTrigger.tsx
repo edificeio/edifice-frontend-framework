@@ -1,13 +1,13 @@
-import { RefAttributes } from "react";
+import { RefAttributes } from 'react';
 
-import { JSX } from "react/jsx-runtime";
+import { JSX } from 'react/jsx-runtime';
 
-import Dropdown from "../Dropdown/Dropdown";
-import { DropdownTriggerProps } from "../Dropdown/DropdownTrigger";
+import Dropdown from '../Dropdown/Dropdown';
+import { DropdownTriggerProps } from '../Dropdown/DropdownTrigger';
 
 const SelectTrigger = (
   props: JSX.IntrinsicAttributes &
-    Omit<DropdownTriggerProps, "ref"> &
+    Omit<DropdownTriggerProps, 'ref'> &
     RefAttributes<HTMLButtonElement>,
 ) => {
   return (
@@ -15,5 +15,5 @@ const SelectTrigger = (
   );
 };
 
-SelectTrigger.displayName = "SelectTrigger";
+SelectTrigger.displayName = 'SelectTrigger';
 export default SelectTrigger;

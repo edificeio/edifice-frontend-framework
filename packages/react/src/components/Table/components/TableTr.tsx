@@ -3,4 +3,4 @@ export const TableTr = (props: React.HTMLAttributes<HTMLTableRowElement>) => {
   return <tr {...restProps}>{children}</tr>;
 };
 
-TableTr.displayName = "Table.Tr";
+TableTr.displayName = 'Table.Tr';

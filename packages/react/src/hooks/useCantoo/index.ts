@@ -1,1 +1,1 @@
-export { default as useCantoo } from "./useCantoo";
+export { default as useCantoo } from './useCantoo';

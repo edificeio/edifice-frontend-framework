@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import { useCallback, useEffect, useReducer, useRef } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { ToolbarItem } from "../../../components";
-import { useWorkspaceFile } from "../../../hooks";
+import { ToolbarItem } from '../../../components';
+import { useWorkspaceFile } from '../../../hooks';
 import {
   IconLoader,
   IconPause,
@@ -14,17 +14,17 @@ import {
   IconRefresh,
   IconRestart,
   IconSave,
-} from "../../icons/components";
+} from '../../icons/components';
 
 export type RecordState =
-  | "IDLE"
-  | "RECORDING"
-  | "PAUSED"
-  | "RECORDED"
-  | "SAVING"
-  | "SAVED";
+  | 'IDLE'
+  | 'RECORDING'
+  | 'PAUSED'
+  | 'RECORDED'
+  | 'SAVING'
+  | 'SAVED';
 
-export type PlayState = "IDLE" | "PLAYING" | "PAUSED";
+export type PlayState = 'IDLE' | 'PLAYING' | 'PAUSED';
 
 type AudioReducerState = {
   recordState: RecordState;
@@ -50,13 +50,13 @@ export default function useAudioRecorder(
   onSaveSuccess?: (resource: WorkspaceElement) => void,
   onUpdateRecord?: (audioUrl?: string) => void,
   hideSaveAction: boolean = false,
-  visibility: WorkspaceVisibility = "protected",
-  application: string = "media-library",
+  visibility: WorkspaceVisibility = 'protected',
+  application: string = 'media-library',
 ) {
   function audioReducer(
     state: AudioReducerState,
     action: {
-      type: "update";
+      type: 'update';
       updatedState?: Partial<AudioReducerState>;
     },
   ): AudioReducerState {
@@ -78,9 +78,9 @@ export default function useAudioRecorder(
     },
     dispatch,
   ] = useReducer(audioReducer, {
-    recordState: "IDLE",
+    recordState: 'IDLE',
     isEncoding: false,
-    playState: "IDLE",
+    playState: 'IDLE',
     recordTime: 0,
     maxDuration: 180, // max duration in s (3 minutes by default)
   });
@@ -97,13 +97,13 @@ export default function useAudioRecorder(
 
   // Init Web Socket to send audio chunks to backend
   useEffect(() => {
-    const encoderWorker = new Worker("/infra/public/js/audioEncoder.js");
+    const encoderWorker = new Worker('/infra/public/js/audioEncoder.js');
     dispatch({
-      type: "update",
+      type: 'update',
       updatedState: { encoderWorker: encoderWorker },
     });
     encoderWorker.postMessage([
-      "init",
+      'init',
       audioContext?.sampleRate || DEFAULT_SAMPLE_RATE,
     ]);
 
@@ -144,7 +144,7 @@ export default function useAudioRecorder(
     micStream?.getTracks().forEach((track) => track.stop());
     micStreamAudioSourceNode?.disconnect();
     audioWorkletNode?.port.removeEventListener(
-      "message",
+      'message',
       handleAudioWorkletNodeMessage,
     );
     audioWorkletNode?.port.close();
@@ -167,7 +167,7 @@ export default function useAudioRecorder(
     // https://developer.mozilla.org/en-US/docs/Web/API/AudioWorkletProcessor
     try {
       await audioContext.audioWorklet.addModule(
-        "/infra/public/js/audio-recorder-processor.js",
+        '/infra/public/js/audio-recorder-processor.js',
       );
     } catch (err) {
       console.error(err);
@@ -175,27 +175,27 @@ export default function useAudioRecorder(
 
     const audioWorkletNode = new AudioWorkletNode(
       audioContext,
-      "audio-recorder-processor",
+      'audio-recorder-processor',
     );
 
     // Message received from the audio recorder processor. cf handleAudioWorkletNodeMessage function.
     // Basically the Audio recorder processor returns the input channels that will be treated by the audioEncoder worker.
     audioWorkletNode.port.addEventListener(
-      "message",
+      'message',
       handleAudioWorkletNodeMessage,
     );
 
     // Store the audio context and stream in the state, reset record time and set states
     dispatch({
-      type: "update",
+      type: 'update',
       updatedState: {
         micStream,
         micStreamAudioSourceNode,
         audioContext,
         recordTime: 0,
         audioWorkletNode,
-        recordState: "RECORDING",
-        playState: "IDLE",
+        recordState: 'RECORDING',
+        playState: 'IDLE',
       },
     });
 
@@ -214,11 +214,11 @@ export default function useAudioRecorder(
       audioRef.current.currentTime = 0;
       audioRef.current.pause();
     }
-    if (recordState === "PAUSED") {
+    if (recordState === 'PAUSED') {
       // Resume recording
       dispatch({
-        type: "update",
-        updatedState: { recordState: "RECORDING", playState: "IDLE" },
+        type: 'update',
+        updatedState: { recordState: 'RECORDING', playState: 'IDLE' },
       });
       audioContext?.resume();
       onUpdateRecord?.(undefined);
@@ -231,10 +231,10 @@ export default function useAudioRecorder(
 
   const handleRecordPause = useCallback(() => {
     dispatch({
-      type: "update",
+      type: 'update',
       updatedState: {
-        recordState: "PAUSED",
-        playState: "IDLE",
+        recordState: 'PAUSED',
+        playState: 'IDLE',
         isEncoding: true,
       },
     });
@@ -242,7 +242,7 @@ export default function useAudioRecorder(
     if (encoderWorker && leftChannelRef.current && rightChannelRef.current) {
       // Encode audio
       encoderWorker.postMessage([
-        "wav",
+        'wav',
         rightChannelRef.current,
         leftChannelRef.current,
         rightChannelRef.current.length * BUFFER_SIZE,
@@ -251,7 +251,7 @@ export default function useAudioRecorder(
         const audioUrl = window.URL.createObjectURL(event.data);
 
         dispatch({
-          type: "update",
+          type: 'update',
           updatedState: { isEncoding: false },
         });
 
@@ -267,7 +267,7 @@ export default function useAudioRecorder(
   }, [audioContext, encoderWorker, onUpdateRecord]);
 
   const handlePlay = useCallback(() => {
-    dispatch({ type: "update", updatedState: { playState: "PLAYING" } });
+    dispatch({ type: 'update', updatedState: { playState: 'PLAYING' } });
     if (audioRef?.current?.currentTime) {
       audioRef.current.play();
     } else {
@@ -279,17 +279,17 @@ export default function useAudioRecorder(
 
   const handlePlayPause = useCallback(() => {
     audioRef?.current?.pause();
-    dispatch({ type: "update", updatedState: { playState: "PAUSED" } });
+    dispatch({ type: 'update', updatedState: { playState: 'PAUSED' } });
   }, [audioRef]);
 
   const handleReset = useCallback(() => {
     closeAudioStream();
 
     dispatch({
-      type: "update",
+      type: 'update',
       updatedState: {
-        playState: "IDLE",
-        recordState: "IDLE",
+        playState: 'IDLE',
+        recordState: 'IDLE',
       },
     });
 
@@ -308,7 +308,7 @@ export default function useAudioRecorder(
     useCallback(async () => {
       const audioName = audioNameRef.current?.value;
       if (!audioName) {
-        console.error("Audio name is required");
+        console.error('Audio name is required');
         return;
       }
       if (audioRef.current) {
@@ -316,8 +316,8 @@ export default function useAudioRecorder(
         audioRef.current.currentTime = 0;
       }
       dispatch({
-        type: "update",
-        updatedState: { recordState: "SAVING", playState: "IDLE" },
+        type: 'update',
+        updatedState: { recordState: 'SAVING', playState: 'IDLE' },
       });
       return new Promise<WorkspaceElement | undefined>((resolve, reject) => {
         try {
@@ -327,7 +327,7 @@ export default function useAudioRecorder(
             rightChannelRef.current
           ) {
             encoderWorker.postMessage([
-              "mp3",
+              'mp3',
               rightChannelRef.current,
               leftChannelRef.current,
               rightChannelRef.current.length * BUFFER_SIZE,
@@ -336,7 +336,7 @@ export default function useAudioRecorder(
             encoderWorker.onmessage = async (event: MessageEvent) => {
               if (event.data instanceof Blob) {
                 const file = new File([event.data], audioName!, {
-                  type: "audio/mp3",
+                  type: 'audio/mp3',
                 });
 
                 const resourceAudio = await create(file, {
@@ -349,8 +349,8 @@ export default function useAudioRecorder(
                 }
 
                 dispatch({
-                  type: "update",
-                  updatedState: { recordState: "SAVED" },
+                  type: 'update',
+                  updatedState: { recordState: 'SAVED' },
                 });
 
                 resolve(resourceAudio);
@@ -359,10 +359,10 @@ export default function useAudioRecorder(
           }
         } catch (error) {
           dispatch({
-            type: "update",
-            updatedState: { playState: "IDLE", recordState: "IDLE" },
+            type: 'update',
+            updatedState: { playState: 'IDLE', recordState: 'IDLE' },
           });
-          console.error("Error while saving", error);
+          console.error('Error while saving', error);
           reject();
         }
       });
@@ -375,11 +375,11 @@ export default function useAudioRecorder(
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
-    dispatch({ type: "update", updatedState: { playState: "IDLE" } });
+    dispatch({ type: 'update', updatedState: { playState: 'IDLE' } });
   }, [audioRef]);
 
   const handlePlayEnded = useCallback(() => {
-    dispatch({ type: "update", updatedState: { playState: "PAUSED" } });
+    dispatch({ type: 'update', updatedState: { playState: 'PAUSED' } });
     if (audioRef.current) {
       audioRef.current.currentTime = 0;
     }
@@ -389,12 +389,12 @@ export default function useAudioRecorder(
    * Auto-stop recording when max allowed duration is reached.
    */
   useEffect(() => {
-    if (recordState === "RECORDING" && audioContext) {
+    if (recordState === 'RECORDING' && audioContext) {
       const timer = window.setInterval(
         // Compute exact elapsed time by diffing the start time.
         () => {
           dispatch({
-            type: "update",
+            type: 'update',
             updatedState: {
               recordTime: audioContext.currentTime,
             },
@@ -413,119 +413,119 @@ export default function useAudioRecorder(
   }, [audioContext, handleRecordPause, maxDuration, recordState]);
 
   const recordText =
-    recordState === "IDLE"
-      ? t("bbm.audio.record.start")
-      : t("bbm.audio.record.resume");
+    recordState === 'IDLE'
+      ? t('bbm.audio.record.start')
+      : t('bbm.audio.record.resume');
 
   const toolbarItems: ToolbarItem[] = [
     {
-      type: "icon",
-      name: "record",
-      visibility: recordState === "RECORDING" ? "hide" : "show",
+      type: 'icon',
+      name: 'record',
+      visibility: recordState === 'RECORDING' ? 'hide' : 'show',
       props: {
-        "icon": <IconRecord />,
-        "color": "danger",
-        "disabled":
-          (recordState !== "IDLE" && recordState !== "PAUSED") ||
+        'icon': <IconRecord />,
+        'color': 'danger',
+        'disabled':
+          (recordState !== 'IDLE' && recordState !== 'PAUSED') ||
           recordTime >= maxDuration,
-        "onClick": handleRecord,
-        "aria-label": recordText,
+        'onClick': handleRecord,
+        'aria-label': recordText,
       },
       tooltip: recordText,
     },
     {
-      type: "icon",
-      name: "recordPause",
-      visibility: recordState === "RECORDING" ? "show" : "hide",
+      type: 'icon',
+      name: 'recordPause',
+      visibility: recordState === 'RECORDING' ? 'show' : 'hide',
       props: {
-        "icon": <IconRecordPause />,
-        "color": "danger",
-        "disabled": recordState !== "RECORDING",
-        "onClick": handleRecordPause,
-        "aria-label": t("bbm.audio.record.pause"),
+        'icon': <IconRecordPause />,
+        'color': 'danger',
+        'disabled': recordState !== 'RECORDING',
+        'onClick': handleRecordPause,
+        'aria-label': t('bbm.audio.record.pause'),
       },
-      tooltip: t("bbm.audio.record.pause"),
+      tooltip: t('bbm.audio.record.pause'),
     },
-    { type: "divider" },
+    { type: 'divider' },
     {
-      type: "icon",
-      name: "encoding",
-      visibility: isEncoding ? "show" : "hide",
+      type: 'icon',
+      name: 'encoding',
+      visibility: isEncoding ? 'show' : 'hide',
       props: {
-        icon: <IconLoader style={{ animation: "loading 1s infinite" }} />,
+        icon: <IconLoader style={{ animation: 'loading 1s infinite' }} />,
         disabled: true,
       },
     },
     {
-      type: "icon",
-      name: "play",
-      visibility: isEncoding || playState === "PLAYING" ? "hide" : "show",
+      type: 'icon',
+      name: 'play',
+      visibility: isEncoding || playState === 'PLAYING' ? 'hide' : 'show',
       props: {
-        "icon": <IconPlayFilled />,
-        "disabled":
-          recordState !== "RECORDED" &&
-          recordState !== "PAUSED" &&
-          recordState !== "SAVED",
-        "onClick": handlePlay,
-        "aria-label": t("bbm.audio.play.start"),
+        'icon': <IconPlayFilled />,
+        'disabled':
+          recordState !== 'RECORDED' &&
+          recordState !== 'PAUSED' &&
+          recordState !== 'SAVED',
+        'onClick': handlePlay,
+        'aria-label': t('bbm.audio.play.start'),
       },
-      tooltip: t("bbm.audio.play.start"),
+      tooltip: t('bbm.audio.play.start'),
     },
     {
-      type: "icon",
-      name: "playPause",
-      visibility: !isEncoding && playState === "PLAYING" ? "show" : "hide",
+      type: 'icon',
+      name: 'playPause',
+      visibility: !isEncoding && playState === 'PLAYING' ? 'show' : 'hide',
       props: {
-        "icon": <IconPause />,
-        "onClick": handlePlayPause,
-        "aria-label": t("bbm.audio.play.pause"),
+        'icon': <IconPause />,
+        'onClick': handlePlayPause,
+        'aria-label': t('bbm.audio.play.pause'),
       },
-      tooltip: t("bbm.audio.play.pause"),
+      tooltip: t('bbm.audio.play.pause'),
     },
     {
-      type: "icon",
-      name: "stop",
+      type: 'icon',
+      name: 'stop',
       props: {
-        "icon": <IconRestart />,
-        "disabled": playState !== "PLAYING" && playState !== "PAUSED",
-        "onClick": handlePlayStop,
-        "aria-label": t("bbm.audio.play.stop"),
+        'icon': <IconRestart />,
+        'disabled': playState !== 'PLAYING' && playState !== 'PAUSED',
+        'onClick': handlePlayStop,
+        'aria-label': t('bbm.audio.play.stop'),
       },
-      tooltip: t("bbm.audio.play.stop"),
+      tooltip: t('bbm.audio.play.stop'),
     },
-    { type: "divider" },
+    { type: 'divider' },
     {
-      type: "icon",
-      name: "reset",
+      type: 'icon',
+      name: 'reset',
       props: {
-        "icon": <IconRefresh />,
-        "disabled":
-          recordState !== "RECORDED" &&
-          recordState !== "PAUSED" &&
-          playState !== "PLAYING" &&
-          playState !== "PAUSED",
-        "onClick": handleReset,
-        "aria-label": t("bbm.audio.record.reset"),
+        'icon': <IconRefresh />,
+        'disabled':
+          recordState !== 'RECORDED' &&
+          recordState !== 'PAUSED' &&
+          playState !== 'PLAYING' &&
+          playState !== 'PAUSED',
+        'onClick': handleReset,
+        'aria-label': t('bbm.audio.record.reset'),
       },
-      tooltip: t("bbm.audio.record.reset"),
+      tooltip: t('bbm.audio.record.reset'),
     },
     {
-      type: "icon",
-      name: "save",
-      visibility: hideSaveAction ? "hide" : "show",
+      type: 'icon',
+      name: 'save',
+      visibility: hideSaveAction ? 'hide' : 'show',
       props: {
-        "icon": <IconSave />,
-        "disabled":
-          (recordState !== "RECORDED" &&
-            recordState !== "PAUSED" &&
-            playState !== "PLAYING" &&
-            playState !== "PAUSED") ||
-          recordState === "SAVED" ||
+        'icon': <IconSave />,
+        'disabled':
+          (recordState !== 'RECORDED' &&
+            recordState !== 'PAUSED' &&
+            playState !== 'PLAYING' &&
+            playState !== 'PAUSED') ||
+          recordState === 'SAVED' ||
           !audioNameRef.current?.value,
-        "onClick": handleSave,
-        "aria-label": t("bbm.audio.record.save"),
+        'onClick': handleSave,
+        'aria-label': t('bbm.audio.record.save'),
       },
-      tooltip: t("bbm.audio.record.save"),
+      tooltip: t('bbm.audio.record.save'),
     },
   ];
 

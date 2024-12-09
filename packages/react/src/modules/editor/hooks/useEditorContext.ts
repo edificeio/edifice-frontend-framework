@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
-import { Editor } from "@tiptap/react";
+import { Editor } from '@tiptap/react';
 
 export const EditorContext = createContext<{
   /**

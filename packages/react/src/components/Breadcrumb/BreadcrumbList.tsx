@@ -1,6 +1,6 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 export interface BreadcrumbListProps {
   /**
@@ -19,7 +19,7 @@ const BreadcrumbList = forwardRef(
     ref: Ref<HTMLOListElement>,
   ) => {
     const classes = clsx(
-      "breadcrumb d-flex flex-nowrap align-items-center mb-0",
+      'breadcrumb d-flex flex-nowrap align-items-center mb-0',
       className,
     );
     return (
@@ -30,6 +30,6 @@ const BreadcrumbList = forwardRef(
   },
 );
 
-BreadcrumbList.displayName = "BreadcrumbList";
+BreadcrumbList.displayName = 'BreadcrumbList';
 
 export default BreadcrumbList;

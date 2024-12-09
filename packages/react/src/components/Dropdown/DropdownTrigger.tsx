@@ -1,12 +1,12 @@
-import { Ref, forwardRef } from "react";
+import { Ref, forwardRef } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { IconRafterUp } from "../../modules/icons/components";
-import { useDropdownContext } from "./DropdownContext";
+import { IconRafterUp } from '../../modules/icons/components';
+import { useDropdownContext } from './DropdownContext';
 
 export interface DropdownTriggerProps
-  extends React.ComponentPropsWithRef<"button"> {
+  extends React.ComponentPropsWithRef<'button'> {
   /**
    * Dropdown trigger title
    */
@@ -22,11 +22,11 @@ export interface DropdownTriggerProps
   /**
    * Set appearance
    */
-  variant?: "ghost";
+  variant?: 'ghost';
   /**
    * Button size
    */
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
   /**
    * Disabled Trigger
    * */
@@ -60,10 +60,10 @@ const DropdownTrigger = forwardRef(
     const { triggerProps, block } = useDropdownContext();
 
     const className = clsx(
-      "dropdown-toggle ",
+      'dropdown-toggle ',
       size,
       variant,
-      { "w-100": block },
+      { 'w-100': block },
       triggerProps.className,
       restProps.className,
     );
@@ -101,6 +101,6 @@ const DropdownTrigger = forwardRef(
   },
 );
 
-DropdownTrigger.displayName = "Dropdown.Trigger";
+DropdownTrigger.displayName = 'Dropdown.Trigger';
 
 export default DropdownTrigger;

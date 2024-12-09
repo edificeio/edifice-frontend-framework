@@ -1,12 +1,12 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Role,
   WorkspaceElement,
   WorkspaceSearchFilter,
-} from "@edifice.io/ts-client";
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+} from '@edifice.io/ts-client';
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 import {
   Dropdown,
   EmptyScreen,
@@ -15,16 +15,18 @@ import {
   SearchBar,
   TreeView,
   TreeViewHandlers_V1,
-} from "../../../components";
-import { findTreeNode } from "../../../components/TreeView/utilities";
-import { usePaths, useWorkspaceSearch } from "../../../hooks";
-import { FolderNode } from "../../../hooks/useWorkspaceSearch/useWorkspaceSearch";
+} from '../../../components';
+import { findTreeNode } from '../../../components/TreeView/utilities';
+import { useWorkspaceSearch } from '../../../hooks';
+import { FolderNode } from '../../../hooks/useWorkspaceSearch/useWorkspaceSearch';
 import {
   IconSortAscendingLetters,
   IconSortDescendingLetters,
   IconSortTime,
-} from "../../icons/components";
-import { FileCard } from "../FileCard";
+} from '../../icons/components';
+import { FileCard } from '../FileCard';
+
+import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 
 /**
  * MediaLibrary component properties
@@ -65,32 +67,31 @@ const Workspace = ({
   defaultFolder,
   showPublicFolder,
 }: WorkspaceProps) => {
-  const [imagePath] = usePaths();
   const { t } = useTranslation();
 
   const { root: ownerRoot, loadContent: loadOwnerDocs } = useWorkspaceSearch(
-    "root",
-    t("workspace.tree.owner"),
-    "owner",
+    'root',
+    t('workspace.tree.owner'),
+    'owner',
     roles,
   );
   const { root: sharedRoot, loadContent: loadSharedDocs } = useWorkspaceSearch(
-    "root",
-    t("workspace.tree.shared"),
-    "shared",
+    'root',
+    t('workspace.tree.shared'),
+    'shared',
     roles,
   );
   const { root: protectRoot, loadContent: loadProtectedDocs } =
     useWorkspaceSearch(
-      "root",
-      t("workspace.tree.protected"),
-      "protected",
+      'root',
+      t('workspace.tree.protected'),
+      'protected',
       roles,
     );
   const { root: publicRoot, loadContent: loadPublicDocs } = useWorkspaceSearch(
-    "root",
-    t("workspace.tree.public"),
-    "public",
+    'root',
+    t('workspace.tree.public'),
+    'public',
     roles,
   );
 
@@ -102,22 +103,22 @@ const Workspace = ({
   const [currentFilter, setCurrentFilter] = useState<WorkspaceSearchFilter>(
     () => {
       // Determine which root folder to load at first.
-      if ("public" === defaultFolder) {
-        return showPublicFolder ? defaultFolder : "protected";
+      if ('public' === defaultFolder) {
+        return showPublicFolder ? defaultFolder : 'protected';
       }
-      if ("protected" === defaultFolder || "shared" === defaultFolder)
+      if ('protected' === defaultFolder || 'shared' === defaultFolder)
         return defaultFolder;
-      return "owner";
+      return 'owner';
     },
   );
 
   const [currentNode, setCurrentNode] = useState<FolderNode>(() => {
     // Determine which root folder to load at first.
-    if ("public" === defaultFolder) {
+    if ('public' === defaultFolder) {
       return showPublicFolder ? publicRoot : protectRoot;
     }
-    if ("protected" === defaultFolder) return protectRoot;
-    if ("shared" === defaultFolder) return sharedRoot;
+    if ('protected' === defaultFolder) return protectRoot;
+    if ('shared' === defaultFolder) return sharedRoot;
     return ownerRoot;
   });
 
@@ -126,8 +127,8 @@ const Workspace = ({
   const [searchTerm, setSearchTerm] = useState<string | undefined>(null!);
 
   const [sortOrder, setSortOrder] = useState<[string, string]>([
-    "modified",
-    "desc",
+    'modified',
+    'desc',
   ]);
 
   const [selectedDocuments, setSelectedDocuments] = useState<
@@ -143,28 +144,28 @@ const Workspace = ({
   } = useCallback(
     (filter: WorkspaceSearchFilter) => {
       switch (filter) {
-        case "owner":
+        case 'owner':
           return {
             root: ownerRoot,
             othersRef: [sharedRef, protectRef, publicRef],
           };
-        case "shared":
+        case 'shared':
           return {
             root: sharedRoot,
             othersRef: [ownerRef, protectRef, publicRef],
           };
-        case "protected":
+        case 'protected':
           return {
             root: protectRoot,
             othersRef: [ownerRef, sharedRef, publicRef],
           };
-        case "public":
+        case 'public':
           return {
             root: publicRoot,
             othersRef: [ownerRef, sharedRef, protectRef],
           };
         default:
-          throw "no.root.node";
+          throw 'no.root.node';
       }
     },
     [ownerRoot, sharedRoot, protectRoot, publicRoot],
@@ -175,20 +176,20 @@ const Workspace = ({
    */
   const loadContent = useCallback(() => {
     switch (currentFilter) {
-      case "owner":
+      case 'owner':
         loadOwnerDocs(currentNode.id);
         break;
-      case "shared":
+      case 'shared':
         loadSharedDocs(currentNode.id);
         break;
-      case "protected":
+      case 'protected':
         loadProtectedDocs(currentNode.id);
         break;
-      case "public":
+      case 'public':
         loadPublicDocs(currentNode.id);
         break;
       default:
-        throw "no.way";
+        throw 'no.way';
     }
   }, [
     currentFilter,
@@ -215,23 +216,23 @@ const Workspace = ({
   useEffect(() => {
     let ref;
     switch (currentFilter) {
-      case "owner":
+      case 'owner':
         ref = ownerRef;
         break;
-      case "shared":
+      case 'shared':
         ref = sharedRef;
         break;
-      case "protected":
+      case 'protected':
         ref = protectRef;
         break;
-      case "public":
+      case 'public':
         ref = publicRef;
         break;
       default:
         return;
     }
     // Selecting a tree node here will trigger a selectAndLoadContent()
-    ref?.current?.select("root");
+    ref?.current?.select('root');
   }, [currentFilter]);
 
   /** Load content when the callback is updated. */
@@ -247,8 +248,8 @@ const Workspace = ({
       }
       // Apply sort order
       const sortFunction: (a: any, b: any) => number =
-        sortOrder[0] === "name"
-          ? sortOrder[1] === "asc"
+        sortOrder[0] === 'name'
+          ? sortOrder[1] === 'asc'
             ? (a, b) => compare(a.name, b.name)
             : (a, b) => compare(b.name, a.name)
           : (a, b) => compare(b.modified, a.modified);
@@ -281,11 +282,11 @@ const Workspace = ({
   }
 
   function getSortOrderLabel() {
-    return sortOrder[0] === "name"
-      ? sortOrder[1] === "asc"
-        ? t("sort.order.alpha.asc")
-        : t("sort.order.alpha.desc")
-      : t("sort.order.modify.desc");
+    return sortOrder[0] === 'name'
+      ? sortOrder[1] === 'asc'
+        ? t('sort.order.alpha.asc')
+        : t('sort.order.alpha.desc')
+      : t('sort.order.modify.desc');
   }
 
   function handleSelectDoc(doc: WorkspaceElement) {
@@ -303,7 +304,7 @@ const Workspace = ({
     onSelect(currentDocuments);
   }
 
-  const workspace = clsx("workspace flex-grow-1 gap-0", className);
+  const workspace = clsx('workspace flex-grow-1 gap-0', className);
 
   return (
     <Grid className={workspace}>
@@ -313,29 +314,29 @@ const Workspace = ({
         xl="4"
         className="workspace-folders p-12 pt-0 gap-12"
       >
-        <div style={{ position: "sticky", top: 0, paddingTop: "1.2rem" }}>
+        <div style={{ position: 'sticky', top: 0, paddingTop: '1.2rem' }}>
           <TreeView
             ref={ownerRef}
             data={ownerRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent("owner", nodeId)}
-            onTreeItemUnfold={(nodeId) => selectAndLoadContent("owner", nodeId)}
+            onTreeItemClick={(nodeId) => selectAndLoadContent('owner', nodeId)}
+            onTreeItemUnfold={(nodeId) => selectAndLoadContent('owner', nodeId)}
           />
           <TreeView
             ref={sharedRef}
             data={sharedRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent("shared", nodeId)}
+            onTreeItemClick={(nodeId) => selectAndLoadContent('shared', nodeId)}
             onTreeItemUnfold={(nodeId) =>
-              selectAndLoadContent("shared", nodeId)
+              selectAndLoadContent('shared', nodeId)
             }
           />
           <TreeView
             ref={protectRef}
             data={protectRoot}
             onTreeItemClick={(nodeId) =>
-              selectAndLoadContent("protected", nodeId)
+              selectAndLoadContent('protected', nodeId)
             }
             onTreeItemUnfold={(nodeId) =>
-              selectAndLoadContent("protected", nodeId)
+              selectAndLoadContent('protected', nodeId)
             }
           />
           {showPublicFolder && (
@@ -343,10 +344,10 @@ const Workspace = ({
               ref={publicRef}
               data={publicRoot}
               onTreeItemClick={(nodeId) =>
-                selectAndLoadContent("public", nodeId)
+                selectAndLoadContent('public', nodeId)
               }
               onTreeItemUnfold={(nodeId) =>
-                selectAndLoadContent("public", nodeId)
+                selectAndLoadContent('public', nodeId)
               }
             />
           )}
@@ -364,7 +365,7 @@ const Workspace = ({
             </div>
             <div className="d-flex align-items-center justify-content-end px-8 py-4">
               <small className="text-muted">
-                {t("workspace.search.order")}
+                {t('workspace.search.order')}
               </small>
               <Dropdown>
                 <Dropdown.Trigger
@@ -375,21 +376,21 @@ const Workspace = ({
                 <Dropdown.Menu>
                   <Dropdown.Item
                     icon={<IconSortTime />}
-                    onClick={() => setSortOrder(["modified", "desc"])}
+                    onClick={() => setSortOrder(['modified', 'desc'])}
                   >
-                    {t("sort.order.modify.desc")}
+                    {t('sort.order.modify.desc')}
                   </Dropdown.Item>
                   <Dropdown.Item
                     icon={<IconSortAscendingLetters />}
-                    onClick={() => setSortOrder(["name", "asc"])}
+                    onClick={() => setSortOrder(['name', 'asc'])}
                   >
-                    {t("sort.order.alpha.asc")}
+                    {t('sort.order.alpha.asc')}
                   </Dropdown.Item>
                   <Dropdown.Item
                     icon={<IconSortDescendingLetters />}
-                    onClick={() => setSortOrder(["name", "desc"])}
+                    onClick={() => setSortOrder(['name', 'desc'])}
                   >
-                    {t("sort.order.alpha.desc")}
+                    {t('sort.order.alpha.desc')}
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -414,9 +415,9 @@ const Workspace = ({
               </div>
             ) : (
               <EmptyScreen
-                imageSrc={`${imagePath}/emptyscreen/illu-trash.svg`}
-                text={t("workspace.empty.docSpace")}
-                title={t("explorer.emptyScreen.trash.title")}
+                imageSrc={illuTrash}
+                text={t('workspace.empty.docSpace')}
+                title={t('explorer.emptyScreen.trash.title')}
               />
             )}
           </Grid.Col>

@@ -1,1 +1,1 @@
-export { default as useDirectory } from "./useDirectory";
+export { default as useDirectory } from './useDirectory';

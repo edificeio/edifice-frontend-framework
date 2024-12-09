@@ -1,5 +1,5 @@
-@use "../abstracts/" as *;
-@use "../vendors/bootstrap";
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
 
 .btn {
   --#{$prefix}btn-active-box-shadow-color: #{$btn-box-shadow};
@@ -114,7 +114,7 @@
     color: var(--#{$prefix}gray-800);
     background-color: var(--#{$prefix}btn-search-bg);
 
-    @include data-product("one") {
+    @include data-product('one') {
       --#{$prefix}btn-border-color: var(--#{$prefix}gray-400);
     }
 

@@ -1,10 +1,10 @@
-import { Ref } from "react";
+import { Ref } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { Button, FormControl } from "../../../components";
-import { IconSave } from "../../icons/components";
-import { BookmarkProps } from "./hooks/useShareBookmark";
+import { Button, FormControl } from '../../../components';
+import { IconSave } from '../../icons/components';
+import { BookmarkProps } from './hooks/useShareBookmark';
 
 export const ShareBookmark = ({
   bookmark,
@@ -30,7 +30,7 @@ export const ShareBookmark = ({
             key={bookmark.id}
             ref={refBookmark}
             onChange={onBookmarkChange}
-            placeholder={t("explorer.modal.share.sharebookmark.placeholder")}
+            placeholder={t('explorer.modal.share.sharebookmark.placeholder')}
             size="sm"
             type="text"
           />
@@ -44,7 +44,7 @@ export const ShareBookmark = ({
           onClick={onSave}
           className="text-nowrap"
         >
-          {t("explorer.modal.share.sharebookmark.save")}
+          {t('explorer.modal.share.sharebookmark.save')}
         </Button>
       </FormControl>
     </div>

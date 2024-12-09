@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect } from 'react';
 
-import { useDropdownContext } from "../Dropdown/DropdownContext";
-import { FormControl } from "../Form";
-import Input from "../Input/Input";
+import { useDropdownContext } from '../Dropdown/DropdownContext';
+import { FormControl } from '../Form';
+import Input from '../Input/Input';
 
 export interface ComboboxTriggerProps
-  extends React.ComponentPropsWithRef<"button"> {
+  extends React.ComponentPropsWithRef<'button'> {
   handleSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   value: string;
   searchMinLength?: number;
@@ -14,7 +14,7 @@ export interface ComboboxTriggerProps
 
 const ComboboxTrigger = ({
   placeholder,
-  value = "",
+  value = '',
   searchMinLength = 3,
   handleSearchInputChange,
 }: ComboboxTriggerProps) => {
@@ -22,7 +22,7 @@ const ComboboxTrigger = ({
 
   const inputProps: Record<string, any> = {
     ...triggerProps,
-    role: "combobox",
+    role: 'combobox',
     onClick: () => {
       if (value.length >= searchMinLength) {
         setVisible(true);

@@ -5,9 +5,9 @@ import {
   useId,
   useImperativeHandle,
   useRef,
-} from "react";
+} from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 export interface CheckboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -55,11 +55,11 @@ const Checkbox = forwardRef(
     const id = useId();
 
     const checkboxProps = {
-      type: "checkbox",
+      type: 'checkbox',
       checked,
       disabled,
       ref: refCheckbox,
-      className: clsx(restProps.className, "form-check-input c-pointer"),
+      className: clsx(restProps.className, 'form-check-input c-pointer'),
       id,
     };
 
@@ -81,6 +81,6 @@ const Checkbox = forwardRef(
   },
 );
 
-Checkbox.displayName = "Checkbox";
+Checkbox.displayName = 'Checkbox';
 
 export default Checkbox;

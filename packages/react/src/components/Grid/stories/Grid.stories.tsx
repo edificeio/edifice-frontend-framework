@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { Grid } from "../Grid";
+import { Meta, StoryObj } from '@storybook/react';
+import { Grid } from '../Grid';
 
 const meta: Meta<typeof Grid> = {
-  title: "Layout/Grid",
+  title: 'Layout/Grid',
   component: Grid,
 };
 
@@ -16,9 +16,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -26,9 +26,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -36,9 +36,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -46,9 +46,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -56,9 +56,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -66,9 +66,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -76,9 +76,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -86,9 +86,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -96,9 +96,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -106,9 +106,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -116,9 +116,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -126,9 +126,9 @@ export const Base: Story = {
         <Grid.Col
           sm="1"
           style={{
-            backgroundColor: "#ebebeb",
-            padding: ".8rem",
-            minHeight: "10rem",
+            backgroundColor: '#ebebeb',
+            padding: '.8rem',
+            minHeight: '10rem',
           }}
         >
           1
@@ -144,7 +144,7 @@ export const Responsive: Story = {
       <Grid>
         <Grid.Col
           sm="4"
-          style={{ backgroundColor: "#ebebeb", padding: ".8rem" }}
+          style={{ backgroundColor: '#ebebeb', padding: '.8rem' }}
         >
           <p>Size of 4 columns for each breakpoint (small, medium, large)</p>
         </Grid.Col>
@@ -152,7 +152,7 @@ export const Responsive: Story = {
           sm="4"
           md="6"
           lg="8"
-          style={{ backgroundColor: "#ebebeb", padding: ".8rem" }}
+          style={{ backgroundColor: '#ebebeb', padding: '.8rem' }}
         >
           <p>Size of 4 columns on Mobile, 6 on Tablet, 8 on Desktop</p>
         </Grid.Col>
@@ -164,7 +164,7 @@ export const Responsive: Story = {
     docs: {
       description: {
         story:
-          "We can reassign the size of a column with `sm`, `md`, `lg` props.",
+          'We can reassign the size of a column with `sm`, `md`, `lg` props.',
       },
     },
   },

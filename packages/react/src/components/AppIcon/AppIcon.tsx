@@ -1,13 +1,15 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref, Suspense } from 'react';
 
-import { IWebApp } from "@edifice.io/ts-client";
-import clsx from "clsx";
+import { IWebApp } from '@edifice.io/ts-client';
+import clsx from 'clsx';
 
-import { usePaths } from "../../hooks";
-import { useEdificeIcons } from "../../hooks/useEdificeIcons";
-import { Image } from "../Image";
+import { useEdificeIcons } from '../../hooks/useEdificeIcons';
+import { Image } from '../Image';
+import { LoadingScreen } from '../LoadingScreen';
 
-export type AppIconSize = "24" | "32" | "40" | "48" | "80" | "160";
+import * as IconSprites from '../../modules/icons/components/apps';
+
+export type AppIconSize = '24' | '32' | '40' | '48' | '80' | '160';
 
 export interface BaseProps {
   /**
@@ -24,14 +26,14 @@ export interface BaseProps {
   className?: string;
 }
 
-type AppVariants = "square" | "circle" | "rounded";
-type SquareVariant = Extract<AppVariants, "square">;
+type AppVariants = 'square' | 'circle' | 'rounded';
+type SquareVariant = Extract<AppVariants, 'square'>;
 
 type SquareIcon = {
   /**
    * Show icon full width
    */
-  iconFit?: "contain";
+  iconFit?: 'contain';
   /**
    * Square variant
    */
@@ -42,7 +44,7 @@ type VariantsIcon = {
   /**
    * Add padding around icon
    */
-  iconFit: "ratio";
+  iconFit: 'ratio';
   /**
    * Rounded or Circle variant
    */
@@ -59,73 +61,63 @@ const AppIcon = forwardRef(
   (
     {
       app,
-      size = "24",
-      iconFit = "contain",
-      variant = "square",
-      className = "",
+      size = '24',
+      iconFit = 'contain',
+      variant = 'square',
+      className = '',
     }: AppIconProps,
-    ref: Ref<SVGSVGElement>,
+    ref: Ref<HTMLDivElement>,
   ) => {
     const { isIconUrl, getIconCode } = useEdificeIcons();
-    const [, iconPath] = usePaths();
 
-    const isSquare = variant === "square";
-    const isRounded = variant === "rounded";
-    const isCircle = variant === "circle";
-    const isContain = iconFit === "contain";
-    const isRatio = iconFit === "ratio";
+    /*  const loadIcon = (iconName: string) => {
+      return lazy(
+        () => import(`../../modules/icons/components/apps/${iconName}`),
+      );
+    }; */
+
+    const isSquare = variant === 'square';
+    const isRounded = variant === 'rounded';
+    const isCircle = variant === 'circle';
+    const isContain = iconFit === 'contain';
+    const isRatio = iconFit === 'ratio';
 
     const iconSizes = {
-      "icon-xs": size === "24",
-      "icon-sm": size === "40",
-      "icon-md": size === "48",
-      "icon-lg": size === "80",
-      "icon-xl": size === "160",
+      'icon-xs': size === '24',
+      'icon-sm': size === '40',
+      'icon-md': size === '48',
+      'icon-lg': size === '80',
+      'icon-xl': size === '160',
     };
 
     const iconVariant = {
-      "square": isSquare,
-      "rounded": isRounded,
-      "rounded-circle": isCircle,
+      'square': isSquare,
+      'rounded': isRounded,
+      'rounded-circle': isCircle,
     };
 
     const iconFits = {
-      "icon-contain": isContain,
-      "icon-ratio": isRatio,
+      'icon-contain': isContain,
+      'icon-ratio': isRatio,
     };
 
     const icon =
-      typeof app === "string"
+      typeof app === 'string'
         ? app
         : app?.icon !== undefined
           ? app.icon
-          : "placeholder";
+          : 'placeholder';
     const displayName =
-      typeof app !== "string" && app?.displayName !== undefined
+      typeof app !== 'string' && app?.displayName !== undefined
         ? app.displayName
-        : "";
-    const code = app ? getIconCode(app) : "";
+        : '';
+    const code = app ? getIconCode(app) : '';
     const isIconURL = isIconUrl(icon);
 
-    const appCode = code || "placeholder";
-
-    if (isIconURL) {
-      const classes = clsx("h-full", className);
-      return (
-        <Image
-          src={icon}
-          alt={displayName}
-          objectFit="contain"
-          width={size}
-          height={size}
-          className={classes}
-          style={{ minWidth: size + "px" }}
-        />
-      );
-    }
+    const appCode = code || 'placeholder';
 
     const classes = clsx(
-      "app-icon",
+      'app-icon',
       {
         ...iconSizes,
         ...iconVariant,
@@ -136,27 +128,43 @@ const AppIcon = forwardRef(
       className,
     );
 
-    return (
-      <div
-        className={classes}
-        style={{ width: size + "px", height: size + "px" }}
-      >
-        <svg
-          ref={ref}
+    const IconComponent =
+      IconSprites[
+        `Icon${appCode
+          .split('-')
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join('')}` as keyof typeof IconSprites
+      ];
+
+    if (isIconURL) {
+      const classes = clsx('h-full', className);
+      return (
+        <Image
+          src={icon}
+          alt={displayName}
+          objectFit="contain"
           width={size}
           height={size}
-          role="img"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
+          className={classes}
+          style={{ minWidth: size + 'px' }}
+        />
+      );
+    }
+
+    return (
+      <Suspense fallback={<LoadingScreen />}>
+        <div
+          ref={ref}
+          className={classes}
+          style={{ width: size + 'px', height: size + 'px' }}
         >
-          <use xlinkHref={`${iconPath}/apps.svg#${appCode}`} />
-        </svg>
-      </div>
+          <IconComponent width={size} height={size} />
+        </div>
+      </Suspense>
     );
   },
 );
 
-AppIcon.displayName = "AppIcon";
+AppIcon.displayName = 'AppIcon';
 
 export default AppIcon;

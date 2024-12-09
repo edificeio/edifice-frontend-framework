@@ -1,7 +1,7 @@
 import {
   AbstractBehaviourService,
   ILinkedResource,
-} from "./AbstractBehaviourService";
+} from './AbstractBehaviourService';
 
 type PagesData = {
   _id: string;
@@ -32,16 +32,16 @@ type PagesData = {
 };
 
 export class PagesBehaviour extends AbstractBehaviourService {
-  APP = "pages";
-  RESOURCE = "pages";
+  APP = 'pages';
+  RESOURCE = 'pages';
 
   async loadResources() {
-    const websites = await this.httpGet<PagesData[]>("/pages/list/all");
+    const websites = await this.httpGet<PagesData[]>('/pages/list/all');
     const pages: Array<ILinkedResource> = [];
     websites.forEach((website) => {
       const icon = website.thumbnail
-        ? website.thumbnail + "?thumbnail=48x48"
-        : "/img/illustrations/pages.svg";
+        ? website.thumbnail + '?thumbnail=48x48'
+        : '/img/illustrations/pages.svg';
 
       pages.push(
         this.dataToResource({
@@ -49,9 +49,9 @@ export class PagesBehaviour extends AbstractBehaviourService {
           owner: website.owner.userId,
           ownerName: website.owner.displayName,
           icon: icon,
-          path: "/pages#/website/" + website._id,
+          path: '/pages#/website/' + website._id,
           _id: website._id,
-          shared: typeof website.shared !== "undefined",
+          shared: typeof website.shared !== 'undefined',
           modified: website.modified,
         }),
       );
@@ -63,9 +63,9 @@ export class PagesBehaviour extends AbstractBehaviourService {
             owner: website.owner.userId,
             ownerName: website.owner.displayName,
             icon: icon,
-            path: "/pages#/website/" + website._id + "/" + page.titleLink,
-            _id: website._id + "/" + page.titleLink,
-            shared: typeof website.shared !== "undefined",
+            path: '/pages#/website/' + website._id + '/' + page.titleLink,
+            _id: website._id + '/' + page.titleLink,
+            shared: typeof website.shared !== 'undefined',
             modified: website.modified,
           }),
         );

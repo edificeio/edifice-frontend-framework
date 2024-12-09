@@ -1,9 +1,9 @@
-import { WorkspaceElement } from "@edifice.io/ts-client";
+import { WorkspaceElement } from '@edifice.io/ts-client';
 
-import { Dropzone } from "../../../../components/Dropzone";
-import { UploadFiles } from "../../UploadFiles";
-import { MediaLibraryType } from "../MediaLibrary";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import { Dropzone } from '../../../../components/Dropzone';
+import { UploadFiles } from '../../UploadFiles';
+import { MediaLibraryType } from '../MediaLibrary';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 /**
  * Get acceptable file (MIME-)types or extensions, for a MediaLibraryType.
@@ -16,18 +16,18 @@ const acceptedTypes = (type: MediaLibraryType) => {
   const acceptedTypes = [];
 
   switch (type) {
-    case "audio":
-      acceptedTypes.push("audio/*");
+    case 'audio':
+      acceptedTypes.push('audio/*');
       break;
-    case "video":
-      acceptedTypes.push("video/*");
+    case 'video':
+      acceptedTypes.push('video/*');
       break;
-    case "image":
-      acceptedTypes.push("image/png");
-      acceptedTypes.push("image/jpeg");
-      acceptedTypes.push("image/webp");
-      acceptedTypes.push("image/gif");
-      acceptedTypes.push("image/avif");
+    case 'image':
+      acceptedTypes.push('image/png');
+      acceptedTypes.push('image/jpeg');
+      acceptedTypes.push('image/webp');
+      acceptedTypes.push('image/gif');
+      acceptedTypes.push('image/avif');
       break;
     default:
       break;
@@ -61,7 +61,7 @@ export const Upload = () => {
 
   return (
     <div className="py-8 flex-grow-1">
-      <Dropzone multiple={multiple} accept={acceptedTypes(type ?? "embedder")}>
+      <Dropzone multiple={multiple} accept={acceptedTypes(type ?? 'embedder')}>
         <UploadFiles
           onFilesChange={handleOnFilesChange}
           visibility={visibility}

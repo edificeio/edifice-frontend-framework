@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useModalContext } from "./ModalContext";
+import { useModalContext } from './ModalContext';
 
 export interface ModalBodyProps {
   /**
@@ -22,7 +22,7 @@ const ModalBody = (props: ModalBodyProps) => {
   const { ariaDescriptionId } = useModalContext();
   const { children, className } = props;
 
-  const classes = clsx("modal-body", className);
+  const classes = clsx('modal-body', className);
 
   return (
     <div id={ariaDescriptionId} className={classes}>
@@ -31,6 +31,6 @@ const ModalBody = (props: ModalBodyProps) => {
   );
 };
 
-ModalBody.displayName = "Modal.Body";
+ModalBody.displayName = 'Modal.Body';
 
 export default ModalBody;

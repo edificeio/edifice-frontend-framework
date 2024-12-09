@@ -1,5 +1,5 @@
-import { Abbr } from "./abbr";
+import { Abbr } from './abbr';
 
-export * from "./abbr";
+export * from './abbr';
 
 export default Abbr;

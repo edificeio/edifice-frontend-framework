@@ -1,6 +1,6 @@
-import { ChangeEvent, forwardRef, ReactNode, Ref, useId } from "react";
+import { ChangeEvent, forwardRef, ReactNode, Ref, useId } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 export interface RadioProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -41,14 +41,14 @@ const Radio = forwardRef(
     const id = useId();
 
     const radioProps = {
-      type: "radio",
+      type: 'radio',
       checked,
       disabled,
       ref,
       className: clsx(
         restProps.className,
-        "form-check-input c-pointer",
-        icon && "d-none",
+        'form-check-input c-pointer',
+        icon && 'd-none',
       ),
       id,
     };
@@ -61,8 +61,8 @@ const Radio = forwardRef(
     return (
       <div
         className={clsx(
-          "form-check d-flex align-items-center gap-8",
-          icon && "ps-0",
+          'form-check d-flex align-items-center gap-8',
+          icon && 'ps-0',
         )}
       >
         <input {...inputProps} />
@@ -70,8 +70,8 @@ const Radio = forwardRef(
           <label
             htmlFor={inputProps.id}
             className={clsx(
-              "c-pointer",
-              model !== restProps.value && "text-muted",
+              'c-pointer',
+              model !== restProps.value && 'text-muted',
             )}
           >
             {icon}
@@ -87,6 +87,6 @@ const Radio = forwardRef(
   },
 );
 
-Radio.displayName = "Radio";
+Radio.displayName = 'Radio';
 
 export default Radio;

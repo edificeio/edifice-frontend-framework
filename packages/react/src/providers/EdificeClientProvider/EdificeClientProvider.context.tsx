@@ -1,4 +1,4 @@
-import { createContext, type ReactNode } from "react";
+import { createContext, type ReactNode } from 'react';
 
 import {
   App,
@@ -8,8 +8,8 @@ import {
   IUserInfo,
   IWebApp,
   UserProfile,
-} from "@edifice.io/ts-client";
-import { UseQueryResult } from "@tanstack/react-query";
+} from '@edifice.io/ts-client';
+import { UseQueryResult } from '@tanstack/react-query';
 
 export interface EdificeClientParams {
   alternativeApp?: boolean;

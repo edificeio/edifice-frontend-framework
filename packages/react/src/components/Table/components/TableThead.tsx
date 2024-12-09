@@ -5,4 +5,4 @@ export const TableThead = (
   return <thead {...restProps}>{children}</thead>;
 };
 
-TableThead.displayName = "Table.Thead";
+TableThead.displayName = 'Table.Thead';

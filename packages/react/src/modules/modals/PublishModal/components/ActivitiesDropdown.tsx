@@ -1,9 +1,9 @@
-import { Control, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
-import { Dropdown } from "../../../../components";
-import { useActivitiesOptions } from "../hooks/useActivitiesOptions";
-import { FormDataProps } from "../hooks/usePublishModal";
+import { Dropdown } from '../../../../components';
+import { useActivitiesOptions } from '../hooks/useActivitiesOptions';
+import { FormDataProps } from '../hooks/usePublishModal';
 
 export const ActivitiesDropdown = ({
   control,
@@ -29,7 +29,7 @@ export const ActivitiesDropdown = ({
             <Dropdown block overflow>
               <Dropdown.Trigger
                 size="md"
-                label={t("bpr.form.publication.type")}
+                label={t('bpr.form.publication.type')}
                 badgeContent={selectedActivities?.length}
               />
               <Dropdown.Menu>

@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react';
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -18,7 +18,10 @@ const SvgIconConversation = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <path d="m0 21.67 7.8-8.23 4.22 2.41 4.24-2.4 7.79 8.22zm0-2.74V8.97l6.1 3.54zm0-12.1V3.44h24.05v3.4l-12.03 6.84zm17.94 5.68 6.1-3.54v9.96z" />
+    <path
+      fill="currentColor"
+      d="m0 21.67 7.8-8.23 4.22 2.41 4.24-2.4 7.79 8.22zm0-2.74V8.97l6.1 3.54zm0-12.1V3.44h24.05v3.4l-12.03 6.84zm17.94 5.68 6.1-3.54v9.96z"
+    />
   </svg>
 );
 export default SvgIconConversation;

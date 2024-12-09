@@ -1,5 +1,5 @@
-@use "../abstracts/" as *;
-@use "../vendors/bootstrap";
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
 
 .card {
   --#{$prefix}card-cap-bg: var(--#{$prefix}gray-200);
@@ -27,11 +27,11 @@
     border-color: var(--#{$prefix}card-hover-border-color);
   }
 
-  @include data-product("one") {
+  @include data-product('one') {
     --#{$prefix}card-border-color: var(--#{$prefix}gray-400);
   }
 
-  @include data-product("neo") {
+  @include data-product('neo') {
     border-color: transparent;
     box-shadow: var(--#{$prefix}box-shadow);
   }
@@ -204,7 +204,7 @@
       border-color: var(--#{$prefix}card-selected);
     }
 
-    @include data-product("one") {
+    @include data-product('one') {
       --#{$prefix}card-selected: var(--#{$prefix}orange);
     }
 

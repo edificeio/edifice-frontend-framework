@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .dropdown {
   width: min-content;
@@ -33,10 +33,10 @@
       background-color: $dropdown-link-active-bg;
     }
 
-    &[role="menuitemradio"] {
+    &[role='menuitemradio'] {
       cursor: pointer;
 
-      &[aria-checked="true"] {
+      &[aria-checked='true'] {
         background-color: var(--#{$prefix}secondary-200);
 
         &:hover {

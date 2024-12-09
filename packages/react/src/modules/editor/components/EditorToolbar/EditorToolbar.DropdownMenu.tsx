@@ -1,18 +1,18 @@
-import { Fragment, ReactNode, RefAttributes } from "react";
+import { Fragment, ReactNode, RefAttributes } from 'react';
 import {
   Dropdown,
   DropdownMenuOptions,
   IconButton,
   IconButtonProps,
   Tooltip,
-} from "../../../../components";
+} from '../../../../components';
 
 interface Props {
   /**
    * Props for the trigger
    */
   triggerProps: JSX.IntrinsicAttributes &
-    Omit<IconButtonProps, "ref"> &
+    Omit<IconButtonProps, 'ref'> &
     RefAttributes<HTMLButtonElement>;
   /**
    * Menu icon
@@ -50,7 +50,7 @@ export const EditorToolbarDropdownMenu = ({
         {options.map((option, index) => {
           return (
             <Fragment key={index}>
-              {option.type === "divider" ? (
+              {option.type === 'divider' ? (
                 <Dropdown.Separator />
               ) : (
                 <Dropdown.Item

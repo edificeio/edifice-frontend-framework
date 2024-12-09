@@ -6,21 +6,21 @@
  * @see Source    https://github.com/opendigitaleducation/edifice-ui/blob/main/packages/core/src/Modal/Modal.tsx
  * @see WAI-ARIA  https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
  */
-import { forwardRef, useEffect } from "react";
+import { forwardRef, useEffect } from 'react';
 
-import { animated, useTransition } from "@react-spring/web";
-import clsx from "clsx";
+import { animated, useTransition } from '@react-spring/web';
+import clsx from 'clsx';
 
-import { useClickOutside, useKeyPress, useTrapFocus } from "../../hooks";
-import ModalBody from "./ModalBody";
-import { ModalContext, ModalContextProps } from "./ModalContext";
-import ModalFooter from "./ModalFooter";
-import ModalHeader from "./ModalHeader";
-import ModalSubtitle from "./ModalSubtitle";
+import { useClickOutside, useKeyPress, useTrapFocus } from '../../hooks';
+import ModalBody from './ModalBody';
+import { ModalContext, ModalContextProps } from './ModalContext';
+import ModalFooter from './ModalFooter';
+import ModalHeader from './ModalHeader';
+import ModalSubtitle from './ModalSubtitle';
 
 export type ModalElement = HTMLDivElement;
 
-export type ModalSize = "sm" | "md" | "lg";
+export type ModalSize = 'sm' | 'md' | 'lg';
 
 export interface ModalProps {
   /**
@@ -73,7 +73,7 @@ const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
     id,
     isOpen,
     onModalClose,
-    size = "md",
+    size = 'md',
     viewport = false,
     scrollable = false,
     focusId,
@@ -86,13 +86,13 @@ const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
   const modalRef = useClickOutside(onModalClose);
   const trapRef = useTrapFocus();
 
-  useKeyPress(onModalClose, ["Escape"]);
+  useKeyPress(onModalClose, ['Escape']);
 
   useEffect(() => {
     if (isOpen) {
       // a11y: trap focus into modal
       // a11y: prevent body scrolling while modale is active
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
       // a11y: set focus to focusId element
       // (if focusId is not setted then focus will go to close button at top right corner cf. ModalHeader)
       if (focusId) {
@@ -102,18 +102,18 @@ const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
     }
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     };
   }, [focusId, isOpen]);
 
-  const modalClasses = clsx("modal fade", {
-    "show d-block": isOpen,
-    "modal-scrollable": scrollable,
-    "viewport": viewport,
+  const modalClasses = clsx('modal fade', {
+    'show d-block': isOpen,
+    'modal-scrollable': scrollable,
+    'viewport': viewport,
     [`modal-${size}`]: size,
   });
 
-  const dialogClasses = clsx("modal-dialog");
+  const dialogClasses = clsx('modal-dialog');
 
   const modalContextValue: ModalContextProps = {
     ariaLabelId,
@@ -183,6 +183,6 @@ const Modal = Object.assign(Root, {
   Footer: ModalFooter,
 });
 
-Root.displayName = "Modal";
+Root.displayName = 'Modal';
 
 export default Modal;

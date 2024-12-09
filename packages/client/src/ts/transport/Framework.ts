@@ -1,5 +1,5 @@
-import { Http } from "./Http";
-import { IHttp, ITransportFramework } from "./interfaces";
+import { Http } from './Http';
+import { IHttp, ITransportFramework } from './interfaces';
 
 class TransportFramework implements ITransportFramework {
   private _http = new Http();

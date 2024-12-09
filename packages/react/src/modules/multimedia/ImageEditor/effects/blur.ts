@@ -1,7 +1,7 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
-import { aggregate } from "../utilities/aggregate";
-import { getApplicationScale } from "./misc";
+import { aggregate } from '../utilities/aggregate';
+import { getApplicationScale } from './misc';
 
 //
 // Global constants used for crop effects
@@ -12,7 +12,7 @@ const BRUSH_SIZE = 20;
 // Define the delay (in ms) of the debounce to avoid lags
 const DEBOUNCE = 50;
 // Define the name of brush object in the PIXI context
-const CURSOR_NAME = "BRUSH_CURSOR";
+const CURSOR_NAME = 'BRUSH_CURSOR';
 
 //
 // Implementation
@@ -148,19 +148,19 @@ export function start(
   const cursor = drawCursor(application);
   // Apply blur effect and move cursor while mouse moving
   const cursorListener = moveCursorListener(application);
-  application.stage.on("pointermove", cursorListener);
+  application.stage.on('pointermove', cursorListener);
   const blurListener = drawBlurListener(application, { spriteName });
-  application.stage.on("pointerdown", () => {
-    application.stage.on("pointermove", blurListener);
+  application.stage.on('pointerdown', () => {
+    application.stage.on('pointermove', blurListener);
   });
   // Stop listening move when cursor is up
   const stopListening = () => {
-    application?.stage?.off("pointermove", blurListener);
+    application?.stage?.off('pointermove', blurListener);
   };
-  globalThis.addEventListener("pointerup", stopListening);
+  globalThis.addEventListener('pointerup', stopListening);
   // Remove global listener when cursor is destroyed
-  cursor.once("destroyed", () => {
-    globalThis.removeEventListener("pointerup", stopListening);
+  cursor.once('destroyed', () => {
+    globalThis.removeEventListener('pointerup', stopListening);
   });
 }
 /**
@@ -170,6 +170,6 @@ export function start(
  */
 export function stop(application: PIXI.Application): void {
   removeCursor(application);
-  application.stage.off("pointerdown");
-  application.stage.off("pointermove");
+  application.stage.off('pointerdown');
+  application.stage.off('pointermove');
 }

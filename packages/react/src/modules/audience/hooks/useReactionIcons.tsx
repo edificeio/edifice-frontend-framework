@@ -1,5 +1,5 @@
-import { ReactionType } from "@edifice.io/ts-client";
-import { IconReaction } from "../../icons/components";
+import { ReactionType } from '@edifice.io/ts-client';
+import { IconReaction } from '../../icons/components';
 import {
   IconCongrats,
   IconCongratsCounter,
@@ -9,7 +9,7 @@ import {
   IconInterestingCounter,
   IconThanks,
   IconThanksCounter,
-} from "../../icons/components/audience";
+} from '../../icons/components/audience';
 
 export default function useReactionIcons() {
   /**
@@ -24,13 +24,13 @@ export default function useReactionIcons() {
     asCounter?: boolean,
   ) => {
     switch (reactionType) {
-      case "REACTION_1":
+      case 'REACTION_1':
         return asCounter ? <IconThanksCounter /> : <IconThanks />;
-      case "REACTION_2":
+      case 'REACTION_2':
         return asCounter ? <IconGreatCounter /> : <IconGreat />;
-      case "REACTION_3":
+      case 'REACTION_3':
         return asCounter ? <IconCongratsCounter /> : <IconCongrats />;
-      case "REACTION_4":
+      case 'REACTION_4':
         return asCounter ? <IconInterestingCounter /> : <IconInteresting />;
       default:
         return <IconReaction />;
@@ -44,16 +44,16 @@ export default function useReactionIcons() {
    */
   const getReactionLabel = (reactionType?: ReactionType | null) => {
     switch (reactionType) {
-      case "REACTION_1":
-        return "audience.reaction.thanks";
-      case "REACTION_2":
-        return "audience.reaction.great";
-      case "REACTION_3":
-        return "audience.reaction.congrats";
-      case "REACTION_4":
-        return "audience.reaction.interesting";
+      case 'REACTION_1':
+        return 'audience.reaction.thanks';
+      case 'REACTION_2':
+        return 'audience.reaction.great';
+      case 'REACTION_3':
+        return 'audience.reaction.congrats';
+      case 'REACTION_4':
+        return 'audience.reaction.interesting';
       default:
-        return "audience.reaction.default";
+        return 'audience.reaction.default';
     }
   };
 

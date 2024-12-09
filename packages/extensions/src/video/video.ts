@@ -1,4 +1,4 @@
-import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
+import { mergeAttributes, Node, nodeInputRule } from '@tiptap/core';
 
 export interface VideoOptions {
   url: string;
@@ -7,7 +7,7 @@ export interface VideoOptions {
   HTMLAttributes: Record<string, any>;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     video: {
       /**
@@ -35,8 +35,8 @@ declare module "@tiptap/core" {
 const VIDEO_INPUT_REGEX = /!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\)/;
 
 export const Video = Node.create({
-  name: "video",
-  group: "block",
+  name: 'video',
+  group: 'block',
   draggable: true,
   selectable: true,
 
@@ -44,15 +44,15 @@ export const Video = Node.create({
     return {
       src: {
         default: null,
-        parseHTML: (el: any) => (el as HTMLSpanElement).getAttribute("src"),
+        parseHTML: (el: any) => (el as HTMLSpanElement).getAttribute('src'),
         renderHTML: (attrs: any) => ({ src: attrs.src }),
       },
       controls: {
         default: true,
         parseHTML: (el: any) => {
-          if ((el as HTMLSpanElement).getAttribute("controls")) {
-            return (el as HTMLSpanElement).getAttribute("controls");
-          } else if ((el as HTMLSpanElement).hasAttribute("controls")) {
+          if ((el as HTMLSpanElement).getAttribute('controls')) {
+            return (el as HTMLSpanElement).getAttribute('controls');
+          } else if ((el as HTMLSpanElement).hasAttribute('controls')) {
             return true;
           } else {
             return false;
@@ -61,27 +61,27 @@ export const Video = Node.create({
         renderHTML: (attrs: any) => ({ controls: attrs.controls }),
       },
       documentId: {
-        default: "",
+        default: '',
         renderHTML: (attributes: any) => {
-          return { "data-document-id": attributes.documentId };
+          return { 'data-document-id': attributes.documentId };
         },
-        parseHTML: (element: any) => element.getAttribute("data-document-id"),
+        parseHTML: (element: any) => element.getAttribute('data-document-id'),
       },
       isCaptation: {
         default: false,
         renderHTML: (attributes: any) => {
-          return { "data-document-is-captation": attributes.isCaptation };
+          return { 'data-document-is-captation': attributes.isCaptation };
         },
         parseHTML: (element: any) =>
-          element.getAttribute("data-document-is-captation"),
+          element.getAttribute('data-document-is-captation'),
       },
       videoResolution: {
-        default: "404x720",
+        default: '404x720',
         renderHTML: (attributes: any) => {
-          return { "data-video-resolution": attributes.videoResolution };
+          return { 'data-video-resolution': attributes.videoResolution };
         },
         parseHTML: (element: any) =>
-          element.getAttribute("data-video-resolution"),
+          element.getAttribute('data-video-resolution'),
       },
       width: {
         renderHTML: (attributes: any) => {
@@ -89,7 +89,7 @@ export const Video = Node.create({
             width: parseInt(attributes.width),
           };
         },
-        parseHTML: (element) => element.getAttribute("width"),
+        parseHTML: (element) => element.getAttribute('width'),
       },
       height: {
         renderHTML: (attributes: any) => {
@@ -97,7 +97,7 @@ export const Video = Node.create({
             height: parseInt(attributes.height),
           };
         },
-        parseHTML: (element) => element.getAttribute("height"),
+        parseHTML: (element) => element.getAttribute('height'),
       },
     };
   },
@@ -105,9 +105,9 @@ export const Video = Node.create({
   parseHTML() {
     return [
       {
-        tag: "div.video-wrapper>video,video",
+        tag: 'div.video-wrapper>video,video',
         getAttrs: (el: any) => ({
-          src: (el as HTMLVideoElement).getAttribute("src"),
+          src: (el as HTMLVideoElement).getAttribute('src'),
         }),
       },
     ];
@@ -115,9 +115,9 @@ export const Video = Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "div",
-      { class: "video-wrapper" },
-      ["video", mergeAttributes(HTMLAttributes)],
+      'div',
+      { class: 'video-wrapper' },
+      ['video', mergeAttributes(HTMLAttributes)],
     ];
   },
 
@@ -131,7 +131,7 @@ export const Video = Node.create({
           width = 350,
           height = 197,
           controls = true,
-          controlslist = "nodownload",
+          controlslist = 'nodownload',
           options,
         ) =>
         ({ commands, state }) => {
@@ -153,7 +153,7 @@ export const Video = Node.create({
       toggleVideo:
         () =>
         ({ commands }) =>
-          commands.toggleNode(this.name, "paragraph"),
+          commands.toggleNode(this.name, 'paragraph'),
     };
   },
 

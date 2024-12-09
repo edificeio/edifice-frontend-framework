@@ -1,5 +1,5 @@
-import { Canvas, Meta } from "@storybook/blocks";
-import * as useToastStories from "./useToast.stories";
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useToastStories from './useToast.stories';
 
 <Meta of={useToastStories} />
 
@@ -38,7 +38,7 @@ const infoNotify = () =>
 const warningNotify = () =>
   toast.warning(<h3>This is a warning message in a H3 tag</h3>);
 
-const sucessNotify = () => toast.success("This is a success message!");
+const sucessNotify = () => toast.success('This is a success message!');
 
 const errorNotify = () =>
   toast.error(<div>This is an error message in a DIV tag</div>);

@@ -1,10 +1,10 @@
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller } from 'react-hook-form';
 
-import { Select } from "../../../../components";
-import { useLanguageOptions } from "../hooks/useLanguageOptions";
-import { FormDataProps } from "../hooks/usePublishModal";
+import { Select } from '../../../../components';
+import { useLanguageOptions } from '../hooks/useLanguageOptions';
+import { FormDataProps } from '../hooks/usePublishModal';
 
-const defaultSelectLanguageOption = "bpr.form.publication.language";
+const defaultSelectLanguageOption = 'bpr.form.publication.language';
 
 export const LangSelect = ({
   control,

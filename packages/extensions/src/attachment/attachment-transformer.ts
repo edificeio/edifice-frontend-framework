@@ -1,10 +1,10 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export interface AttachmentOptions {
   HTMLAttributes: Record<string, string>;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     attachment: {
       setAttachment: (attachment) => ReturnType;
@@ -13,10 +13,10 @@ declare module "@tiptap/core" {
 }
 
 export const AttachmentTransformer = Node.create<AttachmentOptions>({
-  name: "attachments",
-  content: "",
-  marks: "",
-  group: "inline",
+  name: 'attachments',
+  content: '',
+  marks: '',
+  group: 'inline',
   inline: true,
   selectable: true,
   atom: true,
@@ -25,13 +25,13 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
   addOptions() {
     return {
       HTMLAttributes: {
-        class: "attachments",
+        class: 'attachments',
       },
     };
   },
 
   parseHTML() {
-    return [{ tag: "div[class=attachments]" }];
+    return [{ tag: 'div[class=attachments]' }];
   },
 
   renderHTML({ HTMLAttributes }) {
@@ -39,7 +39,7 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
 
     const renderedLinks = links.map((el) => {
       return [
-        "a",
+        'a',
         {
           name: el.name,
           href: el.href,
@@ -50,7 +50,7 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
       ];
     });
 
-    return ["div", this.options.HTMLAttributes, ...renderedLinks];
+    return ['div', this.options.HTMLAttributes, ...renderedLinks];
   },
 
   addAttributes() {
@@ -58,18 +58,18 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
       links: {
         default: [],
         parseHTML: (element) => {
-          const links = element.getElementsByTagName("a");
+          const links = element.getElementsByTagName('a');
           const parsedLinks = [];
 
           for (let i = 0; i < links.length; i++) {
             const link = links[i];
-            const href = link.getAttribute("href");
+            const href = link.getAttribute('href');
             const name = link.textContent;
             const regexResult = href.match(/([^/]+$)/);
             const documentId =
-              link.getAttribute("data-document-id") ||
+              link.getAttribute('data-document-id') ||
               (regexResult && regexResult[0]);
-            const dataContentType = link.getAttribute("data-content-type");
+            const dataContentType = link.getAttribute('data-content-type');
 
             parsedLinks.push({
               href,
@@ -100,10 +100,10 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
       setAttachment:
         (
           attrs = {
-            dataContentType: "",
-            name: "",
-            documentId: "",
-            href: "",
+            dataContentType: '',
+            name: '',
+            documentId: '',
+            href: '',
           },
         ) =>
         ({ chain }) => {

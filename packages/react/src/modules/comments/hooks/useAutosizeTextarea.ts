@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export const useAutosizeTextarea = (
   /**
@@ -14,7 +14,7 @@ export const useAutosizeTextarea = (
 
   const resizeTextarea = () => {
     if (ref.current) {
-      ref.current.style.height = "auto"; // Réinitialise la hauteur avant de recalculer
+      ref.current.style.height = 'auto'; // Réinitialise la hauteur avant de recalculer
       const scrollHeight = ref.current.scrollHeight;
       ref.current.style.height = `${scrollHeight}px`; // Ajuste à la nouvelle hauteur
     }

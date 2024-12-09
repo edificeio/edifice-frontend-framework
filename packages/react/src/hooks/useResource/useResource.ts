@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { IResource, odeServices } from "@edifice.io/ts-client";
+import { IResource, odeServices } from '@edifice.io/ts-client';
 
 const useResource = (application: string, id: string) => {
   const [resource, setResource] = useState<IResource>(null!);
 
   useEffect(() => {
-    if (id === "") {
-      console.warn("resourceId must be an assetId and not an empty string");
+    if (id === '') {
+      console.warn('resourceId must be an assetId and not an empty string');
       return;
     }
 

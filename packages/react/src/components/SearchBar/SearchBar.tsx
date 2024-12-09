@@ -1,12 +1,12 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent } from 'react';
 
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { IconSearch } from "../../modules/icons/components";
-import { Size } from "../../types";
-import { SearchButton } from "../Button";
-import FormControl from "../Form/FormControl";
+import { IconSearch } from '../../modules/icons/components';
+import { Size } from '../../types';
+import { SearchButton } from '../Button';
+import FormControl from '../Form/FormControl';
 
 export interface BaseProps {
   /**
@@ -16,7 +16,7 @@ export interface BaseProps {
   /**
    * Control SearchBar size
    */
-  size?: Exclude<Size, "sm">;
+  size?: Exclude<Size, 'sm'>;
   /**
    * Disabled status
    */
@@ -59,8 +59,8 @@ export type SearchBarProps = BaseProps & Props;
 
 const SearchBar = ({
   isVariant = false,
-  size = "md",
-  placeholder = "search",
+  size = 'md',
+  placeholder = 'search',
   className,
   disabled,
   onChange,
@@ -70,13 +70,13 @@ const SearchBar = ({
   const { t } = useTranslation();
 
   const searchbar = clsx(className, {
-    "input-group": !isVariant,
-    "position-relative": isVariant,
+    'input-group': !isVariant,
+    'position-relative': isVariant,
   });
 
   const input = clsx({
-    "border-end-0": !isVariant,
-    "ps-48": isVariant,
+    'border-end-0': !isVariant,
+    'ps-48': isVariant,
   });
 
   const handleClick = () => {
@@ -103,7 +103,7 @@ const SearchBar = ({
       {!isVariant && (
         <SearchButton
           type="submit"
-          aria-label={t("search")}
+          aria-label={t('search')}
           icon={<IconSearch />}
           className="border-start-0"
           onClick={handleClick}
@@ -113,5 +113,5 @@ const SearchBar = ({
   );
 };
 
-SearchBar.displayName = "SearchBar";
+SearchBar.displayName = 'SearchBar';
 export default SearchBar;

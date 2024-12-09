@@ -1,4 +1,5 @@
-import { useTranslation } from "react-i18next";
+import commonPlaceholder from '@edifice.io/bootstrap/dist/images/common/image-placeholder.png';
+import { useTranslation } from 'react-i18next';
 import {
   Button,
   Card,
@@ -7,15 +8,14 @@ import {
   Image,
   Loading,
   Tooltip,
-} from "../../../components";
-import { usePaths } from "../../../hooks";
-import { Status } from "../../../types";
+} from '../../../components';
+import { Status } from '../../../types';
 import {
   IconClose,
   IconReset,
   IconSuccessOutline,
   IconWand,
-} from "../../icons/components";
+} from '../../icons/components';
 
 export interface UploadItemProps {
   /**
@@ -58,34 +58,31 @@ export interface UploadCardProps extends CardProps {
 // INFO: This component is for internal use only. It is not exported for external use.
 const UploadCard = ({
   item,
-  status = "idle",
+  status = 'idle',
   isClickable = false,
   isSelectable = false,
   onDelete,
   onEdit,
   onRetry,
 }: UploadCardProps) => {
-  const [imagePath] = usePaths();
-
   const { t } = useTranslation();
 
   const { src, name, info } = item;
 
-  const isIdle = status === "idle";
-  const isLoading = status === "loading";
-  const isSuccess = status === "success";
+  const isIdle = status === 'idle';
+  const isLoading = status === 'loading';
+  const isSuccess = status === 'success';
 
-  const isTypeImage = info?.type.startsWith("image");
+  const isTypeImage = info?.type.startsWith('image');
 
   /**
    * WB-3053: add mapping object to store information
    * <Image/> component is not used for placeholder because of re-render intempestive image download
    */
-  const imgPlaceholder = `${imagePath}/common/image-placeholder.png`;
   const defaultMapping = {
-    text: "",
+    text: '',
     context: null,
-    image: <img src={imgPlaceholder} alt="" width="48" height="48" />,
+    image: <img src={commonPlaceholder} alt="" width="48" height="48" />,
   };
 
   const mapping = {
@@ -93,7 +90,7 @@ const UploadCard = ({
       text: (
         <strong>
           <small className="text-danger caption">
-            {t("tiptap.upload.error")}
+            {t('tiptap.upload.error')}
           </small>
         </strong>
       ),
@@ -104,22 +101,22 @@ const UploadCard = ({
           color="tertiary"
           onClick={onRetry}
         >
-          {t("tiptap.upload.retry")}
+          {t('tiptap.upload.retry')}
         </Button>
       ),
       image: (
         <Image
           alt=""
-          src={`${imagePath}/common/image-status-error.svg`}
+          src={`${commonPlaceholder}/common/image-status-error.svg`}
           objectFit="cover"
         />
       ),
     },
     idle: defaultMapping,
     loading: {
-      text: "",
+      text: '',
       context: (
-        <Tooltip message={t("tiptap.tooltip.upload.loading")} placement="top">
+        <Tooltip message={t('tiptap.tooltip.upload.loading')} placement="top">
           <Loading
             isLoading
             loadingPosition="left"
@@ -137,14 +134,14 @@ const UploadCard = ({
         </em>
       ),
       context: (
-        <Tooltip message={t("tiptap.tooltip.upload.loaded")} placement="top">
+        <Tooltip message={t('tiptap.tooltip.upload.loaded')} placement="top">
           <IconSuccessOutline className="text-success" />
         </Tooltip>
       ),
       image: (
         <Image
           alt=""
-          src={src ?? ""}
+          src={src ?? ''}
           width="48"
           objectFit="cover"
           className="rounded"
@@ -157,11 +154,11 @@ const UploadCard = ({
 
   const canEditItem = () =>
     isTypeImage && (
-      <Tooltip message={t("tiptap.tooltip.upload.edit")} placement="top">
+      <Tooltip message={t('tiptap.tooltip.upload.edit')} placement="top">
         <IconButton
           icon={<IconWand />}
           variant="ghost"
-          aria-label={t("tiptap.tooltip.upload.loading")}
+          aria-label={t('tiptap.tooltip.upload.loading')}
           disabled={isLoading || !isSuccess}
           onClick={onEdit}
           color="secondary"
@@ -188,13 +185,13 @@ const UploadCard = ({
               {!isIdle && <div className="vr"></div>}
               {canEditItem()}
               <Tooltip
-                message={t("tiptap.tooltip.upload.delete")}
+                message={t('tiptap.tooltip.upload.delete')}
                 placement="top"
               >
                 <IconButton
                   icon={<IconClose />}
                   variant="ghost"
-                  aria-label={t("tiptap.tooltip.upload.delete")}
+                  aria-label={t('tiptap.tooltip.upload.delete')}
                   color="tertiary"
                   onClick={onDelete}
                 />

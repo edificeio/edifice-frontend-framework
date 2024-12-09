@@ -1,5 +1,5 @@
-import { FOLDER, IFolder } from "@edifice.io/ts-client";
-import { TreeData } from "../../../types";
+import { FOLDER, IFolder } from '@edifice.io/ts-client';
+import { TreeData } from '../../../types';
 
 export function findTreeNode(
   root: TreeData,

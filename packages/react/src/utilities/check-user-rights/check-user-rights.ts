@@ -2,7 +2,7 @@ import {
   ResourceRight,
   odeServices,
   type RightRole,
-} from "@edifice.io/ts-client";
+} from '@edifice.io/ts-client';
 
 export interface IObjectWithRights {
   rights: string[];
@@ -53,7 +53,7 @@ const checkHasRights = async ({ roles, rights }: UseHasRightsProps) => {
   }
   if (Array.isArray(rights)) {
     if (rights.length > 0) {
-      if (typeof rights[0] === "string") {
+      if (typeof rights[0] === 'string') {
         const can = await checkRights(roles, rights as string[]);
         return can;
       } else {
@@ -67,7 +67,7 @@ const checkHasRights = async ({ roles, rights }: UseHasRightsProps) => {
       return false;
     }
   } else {
-    if (typeof rights === "string") {
+    if (typeof rights === 'string') {
       const can = await checkRights(roles, rights);
       return can;
     } else if (rights) {
@@ -78,10 +78,10 @@ const checkHasRights = async ({ roles, rights }: UseHasRightsProps) => {
 };
 
 export const checkUserRight = async (
-  rights: UseHasRightsProps["rights"],
+  rights: UseHasRightsProps['rights'],
   additionalRoles?: RightRole | RightRole[],
 ) => {
-  const defaultRoles: Roles = ["contrib", "creator", "manager", "read"];
+  const defaultRoles: Roles = ['contrib', 'creator', 'manager', 'read'];
   let roles: Roles = defaultRoles;
 
   if (Array.isArray(additionalRoles)) {

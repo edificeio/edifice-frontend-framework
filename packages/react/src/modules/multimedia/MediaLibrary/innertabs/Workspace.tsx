@@ -1,7 +1,7 @@
-import { Role, WorkspaceElement } from "@edifice.io/ts-client";
+import { Role, WorkspaceElement } from '@edifice.io/ts-client';
 
-import { Workspace as Component } from "../../Workspace";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import { Workspace as Component } from '../../Workspace';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const Workspace = () => {
   const { type, setResultCounter, setResult, multiple, visibility } =
@@ -9,12 +9,12 @@ export const Workspace = () => {
 
   function getDocumentRoleFilter(): Role | Role[] | null {
     switch (type) {
-      case "image":
-        return "img";
-      case "audio":
-        return "audio";
-      case "video":
-        return "video";
+      case 'image':
+        return 'img';
+      case 'audio':
+        return 'audio';
+      case 'video':
+        return 'video';
       default:
         return null; // = all document roles
     }
@@ -36,7 +36,7 @@ export const Workspace = () => {
       multiple={multiple}
       className="border rounded overflow-y-auto"
       defaultFolder={visibility}
-      showPublicFolder={visibility === "public"}
+      showPublicFolder={visibility === 'public'}
     />
   );
 };

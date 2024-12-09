@@ -1,13 +1,13 @@
-import { ID } from "@edifice.io/ts-client";
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
+import { ID } from '@edifice.io/ts-client';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
-import { ActivitiesDropdown } from "./components/ActivitiesDropdown";
-import { AgeSelect } from "./components/AgeSelect";
-import { LangSelect } from "./components/LangSelect";
-import { PublishModalFooter } from "./components/PublishModalFooter";
-import { SubjectsDropdown } from "./components/SubjectsDropdown";
-import usePublishModal from "./hooks/usePublishModal";
+import { ActivitiesDropdown } from './components/ActivitiesDropdown';
+import { AgeSelect } from './components/AgeSelect';
+import { LangSelect } from './components/LangSelect';
+import { PublishModalFooter } from './components/PublishModalFooter';
+import { SubjectsDropdown } from './components/SubjectsDropdown';
+import usePublishModal from './hooks/usePublishModal';
 
 import {
   Button,
@@ -18,12 +18,12 @@ import {
   LoadingScreen,
   Modal,
   TextArea,
-} from "../../../components";
-import { useMediaLibrary } from "../../../hooks";
-import { useResource } from "../../../hooks/useResource";
-import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { MediaLibrary } from "../../multimedia";
-import ImagePicker from "../../multimedia/ImagePicker/ImagePicker";
+} from '../../../components';
+import { useMediaLibrary } from '../../../hooks';
+import { useResource } from '../../../hooks/useResource';
+import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { MediaLibrary } from '../../multimedia';
+import ImagePicker from '../../multimedia/ImagePicker/ImagePicker';
 
 interface PublishModalProps {
   isOpen: boolean;
@@ -65,32 +65,32 @@ export default function PublishModal({
     selectSubjects,
   } = usePublishModal({ resource, onSuccess });
 
-  const defaultSelectAgeMinOption = "bpr.form.publication.age.min";
-  const defaultSelectAgeMaxOption = "bpr.form.publication.age.max";
+  const defaultSelectAgeMinOption = 'bpr.form.publication.age.min';
+  const defaultSelectAgeMaxOption = 'bpr.form.publication.age.max';
 
   if (!resource) return <LoadingScreen />;
 
   return createPortal(
     <Modal isOpen={isOpen} onModalClose={onCancel} id="libraryModal" size="lg">
-      <Modal.Header onModalClose={onCancel}>{t("bpr.publish")}</Modal.Header>
-      <Modal.Subtitle>{t("bpr.form.tip")}</Modal.Subtitle>
+      <Modal.Header onModalClose={onCancel}>{t('bpr.publish')}</Modal.Header>
+      <Modal.Subtitle>{t('bpr.form.tip')}</Modal.Subtitle>
       <Modal.Body>
         <Heading headingStyle="h4" level="h3" className="mb-16">
-          {t("bpr.form.publication.heading.general")}
+          {t('bpr.form.publication.heading.general')}
         </Heading>
 
         <form id="libraryModalForm" onSubmit={handleSubmit(handlePublish)}>
           <div className="d-block d-md-flex mb-24 gap-24">
-            <div style={{ maxWidth: "160px" }}>
+            <div style={{ maxWidth: '160px' }}>
               <div className="form-label">
-                {t("bpr.form.publication.cover.title")}
+                {t('bpr.form.publication.cover.title')}
               </div>
               <ImagePicker
                 app={currentApp}
                 src={resource?.thumbnail}
-                addButtonLabel={t("bpr.form.publication.cover.upload.add")}
+                addButtonLabel={t('bpr.form.publication.cover.upload.add')}
                 deleteButtonLabel={t(
-                  "bpr.form.publication.cover.upload.remove",
+                  'bpr.form.publication.cover.upload.remove',
                 )}
                 onUploadImage={handleUploadImage}
                 onDeleteImage={handleDeleteImage}
@@ -101,30 +101,30 @@ export default function PublishModal({
               {!cover && (
                 <p className="form-text is-invalid">
                   <em>
-                    {t("bpr.form.publication.cover.upload.required.image")}
+                    {t('bpr.form.publication.cover.upload.required.image')}
                   </em>
                 </p>
               )}
             </div>
             <div className="flex-fill">
               <FormControl id="title" className="mb-16" isRequired>
-                <Label>{t("bpr.form.publication.title")}</Label>
+                <Label>{t('bpr.form.publication.title')}</Label>
                 <Input
                   type="text"
                   defaultValue={resource?.name}
-                  {...register("title", { required: true })}
-                  placeholder={t("bpr.form.publication.title.placeholder")}
+                  {...register('title', { required: true })}
+                  placeholder={t('bpr.form.publication.title.placeholder')}
                   size="md"
                   aria-required={true}
                 />
               </FormControl>
 
               <FormControl id="description" isRequired>
-                <Label>{t("bpr.form.publication.description")}</Label>
+                <Label>{t('bpr.form.publication.description')}</Label>
                 <TextArea
-                  {...register("description", { required: true })}
+                  {...register('description', { required: true })}
                   placeholder={t(
-                    "bpr.form.publication.description.placeholder",
+                    'bpr.form.publication.description.placeholder',
                   )}
                   size="md"
                 />
@@ -135,7 +135,7 @@ export default function PublishModal({
           <hr />
 
           <Heading headingStyle="h4" level="h3" className="mb-16">
-            {t("bpr.form.publication.heading.infos")}
+            {t('bpr.form.publication.heading.infos')}
           </Heading>
 
           <div className="d-flex flex-column flex-md-row gap-16 row mb-24">
@@ -154,7 +154,7 @@ export default function PublishModal({
 
           <div className="mb-24">
             <label htmlFor="" className="form-label">
-              {t("bpr.form.publication.age")}
+              {t('bpr.form.publication.age')}
             </label>
             <div className="d-flex gap-8">
               <div className="col col-md-2 d-flex">
@@ -182,12 +182,12 @@ export default function PublishModal({
 
           <div className="mb-24">
             <FormControl id="keywords" isOptional>
-              <Label>{t("bpr.form.publication.keywords")}</Label>
+              <Label>{t('bpr.form.publication.keywords')}</Label>
               <Input
                 type="text"
-                {...register("keyWords")}
+                {...register('keyWords')}
                 size="md"
-                placeholder={t("bpr.form.publication.keywords.placeholder")}
+                placeholder={t('bpr.form.publication.keywords.placeholder')}
               />
             </FormControl>
           </div>
@@ -195,7 +195,7 @@ export default function PublishModal({
           <hr />
 
           <Heading headingStyle="h4" level="h3" className="mb-16">
-            {t("bpr.form.publication.licence.text")}
+            {t('bpr.form.publication.licence.text')}
           </Heading>
 
           <PublishModalFooter />
@@ -208,7 +208,7 @@ export default function PublishModal({
           type="button"
           variant="ghost"
         >
-          {t("cancel")}
+          {t('cancel')}
         </Button>
         <Button
           form="libraryModalForm"
@@ -218,7 +218,7 @@ export default function PublishModal({
           isLoading={isSubmitting}
           disabled={!cover || isSubmitting || !isDirty || !isValid}
         >
-          {t("bpr.form.submit")}
+          {t('bpr.form.submit')}
         </Button>
       </Modal.Footer>
       <MediaLibrary
@@ -229,6 +229,6 @@ export default function PublishModal({
         {...mediaLibraryHandlers}
       />
     </Modal>,
-    document.getElementById("portal") as HTMLElement,
+    document.getElementById('portal') as HTMLElement,
   );
 }

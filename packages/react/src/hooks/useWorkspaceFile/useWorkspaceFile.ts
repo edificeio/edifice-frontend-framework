@@ -2,7 +2,7 @@ import {
   WorkspaceElement,
   WorkspaceVisibility,
   odeServices,
-} from "@edifice.io/ts-client";
+} from '@edifice.io/ts-client';
 
 const useWorkspaceFile = () => {
   /**
@@ -35,13 +35,13 @@ const useWorkspaceFile = () => {
     visibility?: WorkspaceVisibility;
   }) => {
     const regex = /\/workspace\/document\/([0-9a-fA-F-]+)/;
-    const matches = (uri ?? "").match(regex);
+    const matches = (uri ?? '').match(regex);
     if (matches && matches.length === 2) {
       const uuid = matches[1];
 
       // Get previous documents
       const existingDocuments = await odeServices.workspace().searchDocuments({
-        filter: "all",
+        filter: 'all',
         id: uuid,
         limit: 1,
       });
@@ -57,7 +57,7 @@ const useWorkspaceFile = () => {
 
       // Get updated file because `updateFile` method doesnt return information
       const updatedDocuments = await odeServices.workspace().searchDocuments({
-        filter: "all",
+        filter: 'all',
         id: uuid,
         limit: 1,
       });
@@ -68,13 +68,13 @@ const useWorkspaceFile = () => {
        */
       return {
         file: updatedFile,
-        src: `/workspace/${updatedFile.public ? "pub/" : ""}document/${uuid}`,
+        src: `/workspace/${updatedFile.public ? 'pub/' : ''}document/${uuid}`,
       };
     } else {
       const res = await odeServices
         .workspace()
         .saveFile(blob, { application, parentId, visibility });
-      return `/workspace/${res.public ? "pub/" : ""}document/${res._id}`;
+      return `/workspace/${res.public ? 'pub/' : ''}document/${res._id}`;
     }
   };
   // const get = () => {}

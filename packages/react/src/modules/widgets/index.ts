@@ -1,2 +1,2 @@
-export * from "./Widget";
-export * from "./BookmarkedApps";
+export * from './Widget';
+export * from './BookmarkedApps';

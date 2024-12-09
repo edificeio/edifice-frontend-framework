@@ -1,5 +1,5 @@
-import { Image } from "./image";
+import { Image } from './image';
 
-export * from "./image";
+export * from './image';
 
 export default Image;

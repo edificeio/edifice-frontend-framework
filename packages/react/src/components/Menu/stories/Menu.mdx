@@ -59,16 +59,16 @@ const useMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isSelected = (path = "/") => {
+  const isSelected = (path = '/') => {
     const match = matchPath(path, location.pathname);
     return match?.pathname === location.pathname;
   };
 
   const menus = {
-    children: "text",
+    children: 'text',
     onClick: () => navigate(`/id/${params.id}`),
     leftIcon: <ViewList />,
-    selected: isSelected("/id/:id/") ?? false,
+    selected: isSelected('/id/:id/') ?? false,
   };
 
   return menus;

@@ -1,11 +1,11 @@
-import { forwardRef, ReactNode, Ref, useMemo } from "react";
+import { forwardRef, ReactNode, Ref, useMemo } from 'react';
 
-import { Context } from "./FormContext";
-import FormText from "./FormText";
-import { Input } from "../Input";
-import { Label } from "../Label";
+import { Context } from './FormContext';
+import FormText from './FormText';
+import { Input } from '../Input';
+import { Label } from '../Label';
 
-export interface FormControlProps extends React.ComponentPropsWithRef<"div"> {
+export interface FormControlProps extends React.ComponentPropsWithRef<'div'> {
   /**
    * For accessibility
    */
@@ -33,7 +33,7 @@ export interface FormControlProps extends React.ComponentPropsWithRef<"div"> {
   /**
    * Status to handle Form Validation
    */
-  status?: "valid" | "invalid";
+  status?: 'valid' | 'invalid';
 }
 
 /**
@@ -81,6 +81,6 @@ const FormControl = Object.assign(Root, {
   Text: FormText,
 });
 
-Root.displayName = "FormControl";
+Root.displayName = 'FormControl';
 
 export default FormControl;

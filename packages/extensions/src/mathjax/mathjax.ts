@@ -1,8 +1,8 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export const MathJax = Node.create({
-  name: "mathjaxnode",
-  group: "inline",
+  name: 'mathjaxnode',
+  group: 'inline',
   inline: true,
   atom: false,
   selectable: true,
@@ -10,7 +10,7 @@ export const MathJax = Node.create({
   parseHTML() {
     return [
       {
-        tag: "mathjax",
+        tag: 'mathjax',
       },
     ];
   },
@@ -31,25 +31,25 @@ export const MathJax = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    let equation = (HTMLAttributes.equation || "")
+    let equation = (HTMLAttributes.equation || '')
       // Get what is between \begin{equation}{... ...}\end{equation}
       // Or between  \begin{equation}... ...\end{equation} without enclosing brackets
       .replaceAll(
         /(?:\\)?begin{equation}\s*\n?\s*{(.+?)}\n?\s*?(?:\\)?end{equation}/gm,
-        "$$$1$$",
+        '$$$1$$',
       )
       .replaceAll(
         /(?:\\)?begin{equation}\s*\n?\s*(.+?)\n?\s*?(?:\\)?end{equation}/gm,
-        "$$$1$$",
+        '$$$1$$',
       );
     if (equation.length > 0) {
-      if (equation.charAt(0) !== "$") {
+      if (equation.charAt(0) !== '$') {
         equation = `$${equation}`;
       }
-      if (equation.charAt(equation.length - 1) !== "$") {
+      if (equation.charAt(equation.length - 1) !== '$') {
         equation = `${equation}$`;
       }
     }
-    return ["span", {}, equation];
+    return ['span', {}, equation];
   },
 });

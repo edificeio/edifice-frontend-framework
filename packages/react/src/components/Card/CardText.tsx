@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 const CardText = ({
   children,
@@ -10,12 +10,12 @@ const CardText = ({
   className?: string;
 }) => {
   const text = clsx(
-    "card-text small text-break text-truncate text-truncate-1",
+    'card-text small text-break text-truncate text-truncate-1',
     className,
   );
   return <p className={text}>{children}</p>;
 };
 
-CardText.displayName = "Card.Text";
+CardText.displayName = 'Card.Text';
 
 export default CardText;

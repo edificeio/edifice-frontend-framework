@@ -1,6 +1,6 @@
 export interface WorkspaceElement {
   _id?: string;
-  eType: "folder" | "file" | string;
+  eType: 'folder' | 'file' | string;
   eParent: string;
   name: string;
   title?: string;
@@ -24,19 +24,19 @@ export interface WorkspaceElement {
   ownerName?: string;
   owner: { userId: string; displayName: string };
   //upload
-  uploadStatus?: "loading" | "loaded" | "failed" | "abort";
+  uploadStatus?: 'loading' | 'loaded' | 'failed' | 'abort';
   uploadXhr?: XMLHttpRequest;
   hiddenBlob?: Blob;
   metadata?: {
-    "content-type"?: string;
-    "role"?: string;
-    "extension"?: string;
-    "filename"?: string;
-    "size"?: number;
-    "captation"?: boolean;
-    "duration"?: number;
-    "width"?: number;
-    "height"?: number;
+    'content-type'?: string;
+    'role'?: string;
+    'extension'?: string;
+    'filename'?: string;
+    'size'?: number;
+    'captation'?: boolean;
+    'duration'?: number;
+    'width'?: number;
+    'height'?: number;
   };
   link?: string;
   icon?: string;
@@ -55,8 +55,8 @@ export interface WorkspaceElement {
 }
 
 /** Supported view preferences */
-export type WorkspacePreferenceView = "list" | "icons" | "carousel";
-export type WorkspaceVisibility = "public" | "protected";
+export type WorkspacePreferenceView = 'list' | 'icons' | 'carousel';
+export type WorkspaceVisibility = 'public' | 'protected';
 
 /** Workspace preferences */
 export interface WorkspacePreference {
@@ -64,15 +64,15 @@ export interface WorkspacePreference {
   sortDesc?: boolean;
   view?: WorkspacePreferenceView;
   bbmView?: WorkspacePreferenceView;
-  quickstart?: "viewed" | "notviewed";
+  quickstart?: 'viewed' | 'notviewed';
 }
 
 /** Supported search filters */
 export type WorkspaceSearchFilter =
-  | "owner"
-  | "shared"
-  | "protected"
-  | "public"
-  | "trash"
-  | "all"
-  | "external";
+  | 'owner'
+  | 'shared'
+  | 'protected'
+  | 'public'
+  | 'trash'
+  | 'all'
+  | 'external';

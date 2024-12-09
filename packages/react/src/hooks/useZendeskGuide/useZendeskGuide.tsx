@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { UserProfile, odeServices } from "@edifice.io/ts-client";
+import { UserProfile, odeServices } from '@edifice.io/ts-client';
 
-import { useIsAdml, useUser } from "..";
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { useEdificeTheme } from "../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
-import { useHasWorkflow } from "../useHasWorkflow";
+import { useIsAdml, useUser } from '..';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import { useHasWorkflow } from '../useHasWorkflow';
 
 type DataModel =
   | {
-      labels: {};
+      labels: Record<string, string>;
       default: string;
       profile: string[];
     }
@@ -26,18 +26,18 @@ export default function useZendeskGuide() {
   const isMobileView = window.innerWidth <= 768;
 
   const hasSupportWorkflow = useHasWorkflow(
-    "net.atos.entng.support.controllers.DisplayController|view",
+    'net.atos.entng.support.controllers.DisplayController|view',
   );
 
-  const [locationPathname, setLocationPathname] = useState("");
+  const [locationPathname, setLocationPathname] = useState('');
   const [dataModule, setDataModule] = useState<DataModel>(undefined);
 
   const setZendeskGuideLabels = () => {
     // Split the location pathname to get the module label
-    const modulePathnameSplit = locationPathname.split("/");
-    let moduleLabel = "";
+    const modulePathnameSplit = locationPathname.split('/');
+    let moduleLabel = '';
 
-    let labels = "";
+    let labels = '';
 
     // Get the data module from the data and check if the module has labels if not take the default value if exists
     if (
@@ -54,7 +54,7 @@ export default function useZendeskGuide() {
           if (moduleLabel.length === 0) {
             moduleLabel = modulePathnameSplit[i];
           } else {
-            moduleLabel = moduleLabel + "/" + modulePathnameSplit[i];
+            moduleLabel = moduleLabel + '/' + modulePathnameSplit[i];
           }
         }
       }
@@ -75,42 +75,42 @@ export default function useZendeskGuide() {
 
     // Exception for the collaborative wall
     if (
-      modulePathnameSplit.includes("collaborativewall") &&
-      modulePathnameSplit.includes("id") &&
+      modulePathnameSplit.includes('collaborativewall') &&
+      modulePathnameSplit.includes('id') &&
       isMobileView
     ) {
-      (window as any).zE("webWidget", "hide");
+      (window as any).zE('webWidget', 'hide');
     }
 
     // Check if label has tag ${adml} and replace it with the user role
-    if (labels.includes("${adml}")) {
+    if (labels.includes('${adml}')) {
       if (isAdml) {
-        labels = labels.replace("${adml}", "adml");
+        labels = labels.replace('${adml}', 'adml');
       } else {
-        labels = labels.replace("/${adml}", "");
+        labels = labels.replace('/${adml}', '');
       }
     }
 
     // Check if the label has a ${profile} tag and replace it with the user profile
-    if (labels.includes("${profile}")) {
+    if (labels.includes('${profile}')) {
       const userProfile = userDescription?.profiles as UserProfile;
       labels = labels.replace(
-        "${profile}",
+        '${profile}',
         (userProfile[0] as string).toLowerCase(),
       );
     }
 
     // Check if the user has a ${theme} tag and replace it with the theme
-    if (labels.includes("${theme")) {
+    if (labels.includes('${theme')) {
       if (theme?.is1d) {
-        labels = labels.replace("${theme}", "1D");
+        labels = labels.replace('${theme}', '1D');
       } else {
-        labels = labels.replace("${theme}", "2D");
+        labels = labels.replace('${theme}', '2D');
       }
     }
 
     // Check if the label is not empty and set the labels to the Zendesk Guide Widget
-    (window as any).zE("webWidget", "helpCenter:setSuggestions", {
+    (window as any).zE('webWidget', 'helpCenter:setSuggestions', {
       labels: [labels],
     });
   };
@@ -130,7 +130,7 @@ export default function useZendeskGuide() {
 
   useEffect(() => {
     if (
-      document.getElementById("ze-snippet") ||
+      document.getElementById('ze-snippet') ||
       hasSupportWorkflow === undefined
     ) {
       return;
@@ -139,25 +139,25 @@ export default function useZendeskGuide() {
     (async () => {
       const zendeskGuideConfig = await odeServices
         .http()
-        .get("/zendeskGuide/config");
+        .get('/zendeskGuide/config');
 
       if (
         zendeskGuideConfig &&
         zendeskGuideConfig.key &&
-        zendeskGuideConfig.key !== ""
+        zendeskGuideConfig.key !== ''
       ) {
-        const scriptZendesk = document.createElement("script");
-        scriptZendesk.id = "ze-snippet";
+        const scriptZendesk = document.createElement('script');
+        scriptZendesk.id = 'ze-snippet';
         scriptZendesk.src = `https://static.zdassets.com/ekr/snippet.js?key=${zendeskGuideConfig.key}`;
 
         document.body.appendChild(scriptZendesk).onload = () => {
-          if (currentLanguage === "es") {
+          if (currentLanguage === 'es') {
             (window as any).zE(function () {
-              (window as any).zE.setLocale("es-419");
+              (window as any).zE.setLocale('es-419');
             });
           } else {
             (window as any).zE(function () {
-              (window as any).zE.setLocale("fr");
+              (window as any).zE.setLocale('fr');
             });
           }
 
@@ -165,11 +165,11 @@ export default function useZendeskGuide() {
             setDataModule(zendeskGuideConfig.module);
           }
 
-          (window as any).zE("webWidget", "show");
+          (window as any).zE('webWidget', 'show');
 
-          (window as any).zE("webWidget", "updateSettings", {
+          (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: { theme: zendeskGuideConfig.color || "#ffc400" },
+              color: { theme: zendeskGuideConfig.color || '#ffc400' },
               zIndex: 3,
               launcher: {
                 mobile: {
@@ -181,15 +181,15 @@ export default function useZendeskGuide() {
               },
               helpCenter: {
                 messageButton: {
-                  "*": "Assistance ENT",
-                  "es-419": "Asistencia ENT",
+                  '*': 'Assistance ENT',
+                  'es-419': 'Asistencia ENT',
                 },
               },
             },
           });
 
-          window.addEventListener("scroll", () => {
-            (window as any).zE("webWidget", "updateSettings", {
+          window.addEventListener('scroll', () => {
+            (window as any).zE('webWidget', 'updateSettings', {
               webWidget: {
                 launcher: {
                   mobile: {
@@ -200,9 +200,9 @@ export default function useZendeskGuide() {
             });
           });
 
-          (window as any).zE("webWidget:on", "open", function () {
+          (window as any).zE('webWidget:on', 'open', function () {
             if (hasSupportWorkflow) {
-              (window as any).zE("webWidget", "updateSettings", {
+              (window as any).zE('webWidget', 'updateSettings', {
                 webWidget: {
                   contactForm: {
                     suppress: false,
@@ -213,28 +213,28 @@ export default function useZendeskGuide() {
           });
 
           (window as any).zE(
-            "webWidget:on",
-            "userEvent",
+            'webWidget:on',
+            'userEvent',
             function (ref: { category: any; action: any; properties: any }) {
               const category = ref.category;
               const action = ref.action;
               const properties = ref.properties;
               if (
-                action === "Contact Form Shown" &&
-                category === "Zendesk Web Widget" &&
+                action === 'Contact Form Shown' &&
+                category === 'Zendesk Web Widget' &&
                 properties &&
-                properties.name === "contact-form" &&
+                properties.name === 'contact-form' &&
                 hasSupportWorkflow
               ) {
-                (window as any).zE("webWidget", "updateSettings", {
+                (window as any).zE('webWidget', 'updateSettings', {
                   webWidget: {
                     contactForm: {
                       suppress: true,
                     },
                   },
                 });
-                (window as any).zE("webWidget", "close");
-                window.open("/support", "_blank");
+                (window as any).zE('webWidget', 'close');
+                window.open('/support', '_blank');
               }
             },
           );

@@ -1,12 +1,12 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { useState } from "react";
-import { IconPaperclip, IconUsers } from "../../modules/icons/components";
-import AppIcon from "../AppIcon/AppIcon";
-import Card, { CardProps } from "./Card";
+import { useState } from 'react';
+import { IconPaperclip, IconUsers } from '../../modules/icons/components';
+import AppIcon from '../AppIcon/AppIcon';
+import Card, { CardProps } from './Card';
 
 const meta: Meta<typeof Card> = {
-  title: "Components/Card",
+  title: 'Components/Card',
   component: Card,
   args: {
     isSelectable: true,
@@ -16,7 +16,7 @@ const meta: Meta<typeof Card> = {
     docs: {
       description: {
         component:
-          "The Card component is a compound component that can be used to display content in a consistent way. It gives you `Card.Header`, `Card.Body`, `Card.Title`, `Card.Text`, `Card.Image`, `Card.User`, `Card.Footer` to create your own component. It can be made selectable or clickable. You can customize its appearance using className props and nest other components inside it.",
+          'The Card component is a compound component that can be used to display content in a consistent way. It gives you `Card.Header`, `Card.Body`, `Card.Title`, `Card.Text`, `Card.Image`, `Card.User`, `Card.Footer` to create your own component. It can be made selectable or clickable. You can customize its appearance using className props and nest other components inside it.',
       },
     },
   },
@@ -81,19 +81,19 @@ export const SelectedState: Story = {
 export const ExampleFileCard: Story = {
   render: (args: CardProps) => {
     return (
-      <div style={{ width: "16rem" }}>
+      <div style={{ width: '16rem' }}>
         <Card
           className="card-file"
           isClickable={args.isClickable}
           isSelectable={args.isSelectable}
           isSelected={args.isSelected}
-          onClick={() => console.log("click")}
+          onClick={() => console.log('click')}
         >
           <Card.Body space="8">
             <div
               className="file position-relative rounded bg-gray-300"
               style={{
-                aspectRatio: "16/10",
+                aspectRatio: '16/10',
               }}
             >
               <div className="position-absolute top-50 start-50 translate-middle bg-gray-300">
@@ -118,7 +118,7 @@ export const ExampleFileCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: "We built our FileCard component with the `Card` component.",
+        story: 'We built our FileCard component with the `Card` component.',
       },
     },
   },
@@ -132,7 +132,7 @@ export const ExampleLinkerCard: Story = {
         isClickable={args.isClickable}
         isSelectable={args.isSelectable}
         isSelected={args.isSelected}
-        onClick={() => console.log("click")}
+        onClick={() => console.log('click')}
       >
         <Card.Body space="8">
           <div className="card-image ps-8 pe-4">
@@ -164,7 +164,7 @@ export const ExampleLinkerCard: Story = {
   parameters: {
     docs: {
       description: {
-        story: "We built our LinkerCard component with the `Card` component.",
+        story: 'We built our LinkerCard component with the `Card` component.',
       },
     },
   },

@@ -1,8 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
-import { FormControlProps } from "./FormControl";
+import { FormControlProps } from './FormControl';
 
-type Props = Omit<FormControlProps, "className" | "children">;
+type Props = Omit<FormControlProps, 'className' | 'children'>;
 
 export type FormContextProps = Props;
 

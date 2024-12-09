@@ -1,5 +1,5 @@
-import { addTimestampToImageUrl } from "@edifice.io/utilities";
-import { Editor } from "@tiptap/react";
+import { addTimestampToImageUrl } from '@edifice.io/utilities';
+import { Editor } from '@tiptap/react';
 /**
  * This hooks lets manipulate selected image node by
  * - setting attributes
@@ -18,7 +18,7 @@ export function useImageSelection(editor?: Editor | null | undefined) {
     editor.state.doc.nodesBetween($from.pos, $to.pos, (node) => {
       if (
         node.isAtom &&
-        (node.type.name === "image" || node.type.name === "custom-image")
+        (node.type.name === 'image' || node.type.name === 'custom-image')
       ) {
         const { src, title, alt } = node.attrs;
         datas.push({
@@ -42,7 +42,7 @@ export function useImageSelection(editor?: Editor | null | undefined) {
     // Update our custom image node
     const hasUpdate = editor
       ?.chain()
-      .updateAttributes("custom-image", {
+      .updateAttributes('custom-image', {
         src: addTimestampToImageUrl(url),
         alt,
         title,
@@ -52,7 +52,7 @@ export function useImageSelection(editor?: Editor | null | undefined) {
     if (!hasUpdate) {
       editor
         ?.chain()
-        .updateAttributes("image", {
+        .updateAttributes('image', {
           src: addTimestampToImageUrl(url),
           alt,
           title,

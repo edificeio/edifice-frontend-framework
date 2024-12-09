@@ -1,12 +1,12 @@
-import { APP } from "../globals";
-import { IOdeServices } from "../services/OdeServices";
+import { APP } from '../globals';
+import { IOdeServices } from '../services/OdeServices';
 import {
   VideoConf,
   VideoEncodeResponse,
   VideoPublicConfResponse,
   VideoUploadParams,
   VideoUploadResponse,
-} from "./interface";
+} from './interface';
 
 export class VideoService {
   private static MAX_WEIGHT = 50; // in Mbytes. Applies to uploaded videos.
@@ -32,11 +32,11 @@ export class VideoService {
     );
     return {
       maxWeight:
-        publicConf?.["max-videosize-mbytes"] ?? VideoService.MAX_WEIGHT,
+        publicConf?.['max-videosize-mbytes'] ?? VideoService.MAX_WEIGHT,
       maxDuration:
-        publicConf?.["max-videoduration-minutes"] ?? VideoService.MAX_DURATION,
+        publicConf?.['max-videoduration-minutes'] ?? VideoService.MAX_DURATION,
       acceptVideoUploadExtensions:
-        publicConf?.["accept-videoupload-extensions"]?.map((ext) =>
+        publicConf?.['accept-videoupload-extensions']?.map((ext) =>
           ext.toUpperCase(),
         ) ?? [],
     };
@@ -54,23 +54,23 @@ export class VideoService {
     duration,
   }: VideoUploadParams): Promise<VideoUploadResponse> {
     if (!data.file) {
-      throw new Error("Invalid video file.");
+      throw new Error('Invalid video file.');
     }
 
     if (!data.filename) {
-      throw new Error("Invalid video filename");
+      throw new Error('Invalid video filename');
     }
 
     const browser = `${data.browser.name} ${data.browser.version}`;
 
     const formData = new FormData();
-    formData.append("device", data.device || "");
-    formData.append("browser", browser);
-    formData.append("url", data.url);
-    formData.append("app", appCode);
-    formData.append("file", data.file, data.filename);
-    formData.append("weight", "" + data.file.size);
-    formData.append("captation", "" + captation);
+    formData.append('device', data.device || '');
+    formData.append('browser', browser);
+    formData.append('url', data.url);
+    formData.append('app', appCode);
+    formData.append('file', data.file, data.filename);
+    formData.append('weight', '' + data.file.size);
+    formData.append('captation', '' + captation);
 
     let encodeUrl = `/video/encode?captation=${captation}`;
     if (duration) {
@@ -81,11 +81,11 @@ export class VideoService {
     const encodeResponse = await this.http.post<VideoEncodeResponse>(
       encodeUrl,
       formData,
-      { headers: { "Content-Type": "multipart/form-data" } },
+      { headers: { 'Content-Type': 'multipart/form-data' } },
     );
 
     // if encoding request is pending then get /video/status API to get final result
-    if (encodeResponse.state == "running") {
+    if (encodeResponse.state == 'running') {
       let previous = 0;
       let seconds = 1;
       do {
@@ -99,7 +99,7 @@ export class VideoService {
         const checkResponse = await this.http.get<VideoUploadResponse>(
           `/video/status/${encodeResponse.processid}`,
         );
-        if (checkResponse.state == "succeed") {
+        if (checkResponse.state == 'succeed') {
           if (checkResponse.videoworkspaceid && checkResponse.videosize) {
             // Track a VIDEO_SAVE event
             this.context
@@ -116,11 +116,11 @@ export class VideoService {
           }
           return checkResponse;
         }
-        if (checkResponse.state == "error") {
+        if (checkResponse.state == 'error') {
           break;
         }
       } while (true);
     }
-    throw new Error("Video cannot be uploaded.");
+    throw new Error('Video cannot be uploaded.');
   }
 }

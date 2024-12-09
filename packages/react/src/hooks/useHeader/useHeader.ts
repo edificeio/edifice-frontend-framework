@@ -1,13 +1,13 @@
-import { useCallback, useId, useMemo, useState } from "react";
+import { useCallback, useId, useMemo, useState } from 'react';
 
-import { IUserInfo, odeServices } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { IUserInfo, odeServices } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { useHover } from "../../hooks";
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { useEdificeTheme } from "../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
-import { useBookmark } from "../useBookmark";
-import { useHasWorkflow } from "../useHasWorkflow";
+import { useHover } from '../../hooks';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import { useBookmark } from '../useBookmark';
+import { useHasWorkflow } from '../useHasWorkflow';
 
 export default function useHeader({
   user,
@@ -48,7 +48,7 @@ export default function useHeader({
   const userAvatar = avatar;
   const userName = user?.username;
 
-  const welcomeUser = t("welcome", { username: user?.firstName });
+  const welcomeUser = t('welcome', { username: user?.firstName });
 
   /**
    * Get Bookmarked Apps
@@ -59,13 +59,13 @@ export default function useHeader({
    * Handle Header Workflows
    */
   const communityWorkflow = useHasWorkflow(
-    "net.atos.entng.community.controllers.CommunityController|view",
+    'net.atos.entng.community.controllers.CommunityController|view',
   );
   const conversationWorflow = useHasWorkflow(
-    "org.entcore.conversation.controllers.ConversationController|view",
+    'org.entcore.conversation.controllers.ConversationController|view',
   );
   const searchWorkflow = useHasWorkflow(
-    "fr.openent.searchengine.controllers.SearchEngineController|view",
+    'fr.openent.searchengine.controllers.SearchEngineController|view',
   );
 
   const toggleCollapsedNav = useCallback(() => {
@@ -74,7 +74,7 @@ export default function useHeader({
 
   const handleLogout = async () => {
     await odeServices.session().logout();
-    window.location.href = theme?.logoutCallback ?? "/auth/login";
+    window.location.href = theme?.logoutCallback ?? '/auth/login';
   };
 
   return useMemo(

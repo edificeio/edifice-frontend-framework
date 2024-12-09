@@ -1,7 +1,7 @@
-import { ReactionSummaryData } from "@edifice.io/ts-client";
-import { StringUtils } from "@edifice.io/utilities";
-import { Button } from "../../components";
-import { default as useReactionIcons } from "./hooks/useReactionIcons";
+import { ReactionSummaryData } from '@edifice.io/ts-client';
+import { StringUtils } from '@edifice.io/utilities';
+import { Button } from '../../components';
+import { default as useReactionIcons } from './hooks/useReactionIcons';
 
 export interface ReactionSummaryProps {
   summary?: ReactionSummaryData;
@@ -37,7 +37,7 @@ const ReactionSummary = ({
         </div>
         {hasNoReactions ? (
           <div className="reaction-overlap">
-            {getReactionIcon("REACTION_1", true)}
+            {getReactionIcon('REACTION_1', true)}
           </div>
         ) : (
           reactionTypes?.map((reactionType) => (
@@ -51,6 +51,6 @@ const ReactionSummary = ({
   );
 };
 
-ReactionSummary.displayName = "ReactionSummary";
+ReactionSummary.displayName = 'ReactionSummary';
 
 export default ReactionSummary;

@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import Checkbox from "./Checkbox";
+import Checkbox from './Checkbox';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Checkbox> = {
-  title: "Forms/Checkbox",
+  title: 'Forms/Checkbox',
   component: Checkbox,
   args: {
     label: "Activer l'option",
@@ -18,7 +18,7 @@ const meta: Meta<typeof Checkbox> = {
     docs: {
       description: {
         component:
-          "The Checkbox component is a form control that allows users to select one or more options from a set. It supports three states: checked, unchecked, and indeterminate. The component can be disabled to prevent user interaction and includes a label for accessibility. The indeterminate state is useful for parent checkboxes that control a group of child checkboxes when some, but not all, children are checked.",
+          'The Checkbox component is a form control that allows users to select one or more options from a set. It supports three states: checked, unchecked, and indeterminate. The component can be disabled to prevent user interaction and includes a label for accessibility. The indeterminate state is useful for parent checkboxes that control a group of child checkboxes when some, but not all, children are checked.',
       },
     },
   },
@@ -78,9 +78,9 @@ export const Indeterminate: Story = {
 
     const label = () => {
       if (isIndeterminate) {
-        return "Ni décoché, ni coché";
+        return 'Ni décoché, ni coché';
       } else {
-        return isChecked ? "Coché" : "Décoché";
+        return isChecked ? 'Coché' : 'Décoché';
       }
     };
 

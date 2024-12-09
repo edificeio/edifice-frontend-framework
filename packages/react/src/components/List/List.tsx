@@ -1,8 +1,8 @@
-import { useMediaQuery } from "@uidotdev/usehooks";
-import clsx from "clsx";
-import { Fragment, ReactNode, useEffect } from "react";
-import { Checkbox, Toolbar, ToolbarItem } from "..";
-import { useCheckable } from "../..";
+import { useMediaQuery } from '@uidotdev/usehooks';
+import clsx from 'clsx';
+import { Fragment, ReactNode, useEffect } from 'react';
+import { Checkbox, Toolbar, ToolbarItem } from '..';
+import { useCheckable } from '../..';
 
 export type ListProps<T> = {
   /**
@@ -37,7 +37,7 @@ export const List = <T extends { _id: string }>({
     handleOnSelectItem,
   } = useCheckable<T>(data);
 
-  const isDesktopDevice = useMediaQuery("only screen and (min-width: 1024px)");
+  const isDesktopDevice = useMediaQuery('only screen and (min-width: 1024px)');
 
   useEffect(() => {
     if (selectedItems) onSelectedItems?.(selectedItems);
@@ -48,8 +48,8 @@ export const List = <T extends { _id: string }>({
       {items && (
         <>
           <div
-            className={clsx("d-flex align-items-center gap-8", {
-              "px-12": items,
+            className={clsx('d-flex align-items-center gap-8', {
+              'px-12': items,
             })}
           >
             <>
@@ -66,8 +66,8 @@ export const List = <T extends { _id: string }>({
                 isBlock
                 align="left"
                 variant="no-shadow"
-                className={clsx("gap-4 py-4", {
-                  "px-0 ms-auto": !isDesktopDevice,
+                className={clsx('gap-4 py-4', {
+                  'px-0 ms-auto': !isDesktopDevice,
                 })}
               />
             </>

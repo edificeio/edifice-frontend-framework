@@ -1,52 +1,52 @@
-import { Meta, StoryObj } from "@storybook/react";
-import SortableTree from "../components/SortableTree";
-import { SortableTreeProps } from "../types";
+import { Meta, StoryObj } from '@storybook/react';
+import SortableTree from '../components/SortableTree';
+import { SortableTreeProps } from '../types';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof SortableTree> = {
-  title: "Components/Tree/SortableTree",
+  title: 'Components/Tree/SortableTree',
   component: SortableTree,
   parameters: {
     docs: {
       description: {
         component:
-          "SortableTree component allows you to display hierarchical data in a tree structure with drag-and-drop functionality. Each node can have its own properties and children, and the tree can be expanded or collapsed to show or hide its branches. Nodes can be reordered by dragging and dropping them to new positions.",
+          'SortableTree component allows you to display hierarchical data in a tree structure with drag-and-drop functionality. Each node can have its own properties and children, and the tree can be expanded or collapsed to show or hide its branches. Nodes can be reordered by dragging and dropping them to new positions.',
       },
     },
   },
   args: {
     nodes: [
       {
-        id: "1",
-        name: "First Element",
+        id: '1',
+        name: 'First Element',
         section: true,
         children: [
           {
-            id: "3",
-            name: "level 1 arborescence tree",
+            id: '3',
+            name: 'level 1 arborescence tree',
           },
           {
-            id: "4",
-            name: "level 2 arborescence tree",
+            id: '4',
+            name: 'level 2 arborescence tree',
           },
         ],
       },
       {
-        id: "2",
-        name: "Second Element",
+        id: '2',
+        name: 'Second Element',
         children: [
           {
-            id: "6",
-            name: "level 1 arborescence tree",
+            id: '6',
+            name: 'level 1 arborescence tree',
           },
           {
-            id: "7",
-            name: "level 2 arborescence tree",
+            id: '7',
+            name: 'level 2 arborescence tree',
           },
         ],
       },
     ],
-    selectedNodeId: "1",
+    selectedNodeId: '1',
     renderNode: (payload) => (
       <div className="d-flex align-items-center">{payload?.node?.name}</div>
     ),
@@ -71,7 +71,7 @@ export const Base: Story = {
     docs: {
       description: {
         story:
-          "SortableTree component allows to drag and drop tree nodes to reorder them",
+          'SortableTree component allows to drag and drop tree nodes to reorder them',
       },
     },
   },

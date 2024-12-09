@@ -1,1 +1,1 @@
-export { default as useConf } from "./useConf";
+export { default as useConf } from './useConf';

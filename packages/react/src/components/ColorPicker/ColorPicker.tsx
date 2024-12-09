@@ -1,23 +1,23 @@
-import { ComponentPropsWithRef, forwardRef, Ref } from "react";
+import { ComponentPropsWithRef, forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
 import {
   IconDeleteColor,
   IconInfoCircle,
-} from "../../modules/icons/components";
-import { Tooltip } from "../Tooltip";
+} from '../../modules/icons/components';
+import { Tooltip } from '../Tooltip';
 import {
   AccessiblePalette,
   ColorPalette,
   ColorPaletteHues,
   ColorPaletteItem,
   DefaultPalette,
-} from "./ColorPalette";
-import ColorPickerItem from "./ColorPickerItem";
+} from './ColorPalette';
+import ColorPickerItem from './ColorPickerItem';
 
-export interface ColorPickerProps extends ComponentPropsWithRef<"div"> {
+export interface ColorPickerProps extends ComponentPropsWithRef<'div'> {
   /**
    * Palettes of pickable colors
    */
@@ -38,7 +38,7 @@ const ColorPicker = forwardRef(
   (
     {
       palettes = [DefaultPalette, AccessiblePalette],
-      model = "#4A4A4A",
+      model = '#4A4A4A',
       onSuccess,
       ...restProps
     }: ColorPickerProps,
@@ -54,7 +54,7 @@ const ColorPicker = forwardRef(
         {palettes.map((palette: ColorPalette, paletteIdx) => (
           <div
             key={paletteIdx}
-            className={clsx("color-picker mx-8", palette.className)}
+            className={clsx('color-picker mx-8', palette.className)}
           >
             <div className="color-picker-label small mt-4 mb-8">
               {t(palette.label)}
@@ -64,7 +64,7 @@ const ColorPicker = forwardRef(
                     width={18}
                     height={18}
                     className="mx-4 position-relative"
-                    style={{ top: "4px" }}
+                    style={{ top: '4px' }}
                   />
                 </Tooltip>
               )}
@@ -115,6 +115,6 @@ const ColorPicker = forwardRef(
   },
 );
 
-ColorPicker.displayName = "ColorPicker";
+ColorPicker.displayName = 'ColorPicker';
 
 export default ColorPicker;

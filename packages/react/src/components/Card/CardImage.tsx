@@ -1,36 +1,36 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useCardContext } from "./CardContext";
-import { AppIcon } from "../AppIcon";
-import { Image } from "../Image";
+import { useCardContext } from './CardContext';
+import { AppIcon } from '../AppIcon';
+import { Image } from '../Image';
 
 const CardImage = ({
   imageSrc,
   className,
-  variant = "medium",
+  variant = 'medium',
 }: {
   imageSrc?: string | undefined;
   className?: string;
-  variant?: "small" | "medium" | "landscape";
+  variant?: 'small' | 'medium' | 'landscape';
 }) => {
   const { app } = useCardContext();
 
   const style =
-    variant === "landscape"
+    variant === 'landscape'
       ? {
-          width: "100%",
-          height: "auto",
+          width: '100%',
+          height: 'auto',
         }
       : null;
 
   return (
-    <div className={clsx("card-image", variant)}>
+    <div className={clsx('card-image', variant)}>
       {imageSrc ? (
         <Image
           alt=""
           src={imageSrc}
           objectFit="cover"
-          className={clsx("h-full w-100", className)}
+          className={clsx('h-full w-100', className)}
         />
       ) : (
         <AppIcon
@@ -45,6 +45,6 @@ const CardImage = ({
   );
 };
 
-CardImage.displayName = "Card.Image";
+CardImage.displayName = 'Card.Image';
 
 export default CardImage;

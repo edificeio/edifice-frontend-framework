@@ -1,9 +1,9 @@
-import { ComponentPropsWithRef, forwardRef, ReactNode, Ref } from "react";
+import { ComponentPropsWithRef, forwardRef, ReactNode, Ref } from 'react';
 
-import { Tooltip } from "..";
-import { IconPaperclip } from "../../modules/icons/components";
+import { Tooltip } from '..';
+import { IconPaperclip } from '../../modules/icons/components';
 
-export interface AttachmentProps extends ComponentPropsWithRef<"div"> {
+export interface AttachmentProps extends ComponentPropsWithRef<'div'> {
   /**
    * Name of resource or Folder
    * */
@@ -18,7 +18,7 @@ export type AttachmentType = AttachmentProps;
 
 const Attachment = forwardRef(
   (
-    { name = "Attachment Name", options, ...restProps }: AttachmentProps,
+    { name = 'Attachment Name', options, ...restProps }: AttachmentProps,
     ref: Ref<HTMLDivElement>,
   ) => {
     return (
@@ -36,6 +36,6 @@ const Attachment = forwardRef(
   },
 );
 
-Attachment.displayName = "Attachment";
+Attachment.displayName = 'Attachment';
 
 export default Attachment;

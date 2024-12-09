@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export default function useTrapFocus() {
   const ref = useRef<HTMLElement | null>(null);
@@ -18,7 +18,7 @@ export default function useTrapFocus() {
       ref && (focusableContent?.[focusableContent.length - 1] as HTMLElement);
 
     const handleKeydown = (event: KeyboardEvent) => {
-      const isTabPressed = event.key === "Tab";
+      const isTabPressed = event.key === 'Tab';
 
       if (!isTabPressed) {
         return;
@@ -40,9 +40,9 @@ export default function useTrapFocus() {
     };
 
     if (node) {
-      node.addEventListener("keydown", handleKeydown);
+      node.addEventListener('keydown', handleKeydown);
       return () => {
-        node.removeEventListener("keydown", handleKeydown);
+        node.removeEventListener('keydown', handleKeydown);
       };
     }
   }, []);

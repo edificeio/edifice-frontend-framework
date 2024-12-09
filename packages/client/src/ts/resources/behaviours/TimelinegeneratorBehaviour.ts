@@ -1,7 +1,7 @@
 import {
   AbstractBehaviourService,
   ILinkedResource,
-} from "./AbstractBehaviourService";
+} from './AbstractBehaviourService';
 
 type TimelineData = {
   icon: string;
@@ -18,25 +18,25 @@ type TimelineData = {
 };
 
 export class TimelinegeneratorBehaviour extends AbstractBehaviourService {
-  APP = "timelinegenerator";
-  RESOURCE = "timelinegenerator";
+  APP = 'timelinegenerator';
+  RESOURCE = 'timelinegenerator';
 
   loadResources() {
     return new Promise<ILinkedResource[]>(async (resolve, reject) => {
       try {
         const datas = await this.httpGet<TimelineData[]>(
-          "/timelinegenerator/timelines",
+          '/timelinegenerator/timelines',
         );
         const resources = datas.map((data) => {
-          const icon = data.icon || "/img/illustrations/timeline-default.png";
+          const icon = data.icon || '/img/illustrations/timeline-default.png';
           return this.dataToResource({
             title: data.headline,
             ownerName: data.owner.displayName,
             owner: data.owner.userId,
             icon: icon,
-            path: "/timelinegenerator#/view/" + data._id,
+            path: '/timelinegenerator#/view/' + data._id,
             _id: data._id,
-            shared: typeof data.shared !== "undefined",
+            shared: typeof data.shared !== 'undefined',
             modified: data.modified,
           });
         });

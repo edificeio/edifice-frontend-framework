@@ -1,9 +1,9 @@
-import clsx from "clsx";
-import { Ref, forwardRef } from "react";
-import { useTranslation } from "react-i18next";
-import { IconFolder, IconRafterRight } from "../../../modules/icons/components";
-import { useTree } from "../hooks/useTree";
-import { TreeNodeProps, TreeProps } from "../types";
+import clsx from 'clsx';
+import { Ref, forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
+import { useTree } from '../hooks/useTree';
+import { TreeNodeProps, TreeProps } from '../types';
 
 const Tree = ({
   nodes,
@@ -89,23 +89,23 @@ export const TreeNode = forwardRef(
     const expanded = expandedNodes.has(node.id);
 
     const treeItemClasses = {
-      action: clsx("action-container d-flex align-items-center gap-8 px-2", {
-        "drag-focus": focused,
-        "py-4": !node.section,
+      action: clsx('action-container d-flex align-items-center gap-8 px-2', {
+        'drag-focus': focused,
+        'py-4': !node.section,
       }),
       arrow: clsx({
-        "py-4": !node.section,
-        "py-8": node.section,
-        "invisible":
+        'py-4': !node.section,
+        'py-8': node.section,
+        'invisible':
           !Array.isArray(node.children) || node.children.length === 0,
       }),
-      button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
-        "py-8": node.section,
+      button: clsx('flex-fill d-flex align-items-center text-truncate gap-8', {
+        'py-8': node.section,
       }),
     };
 
     const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.code === "Enter" || event.code === "Space") {
+      if (event.code === 'Enter' || event.code === 'Space') {
         event.preventDefault();
         event.stopPropagation();
 
@@ -116,7 +116,7 @@ export const TreeNode = forwardRef(
     const handleItemToggleKeyDown = (
       event: React.KeyboardEvent<HTMLDivElement>,
     ) => {
-      if (event.code === "Enter" || event.code === "Space") {
+      if (event.code === 'Enter' || event.code === 'Space') {
         event.preventDefault();
         event.stopPropagation();
 
@@ -143,12 +143,12 @@ export const TreeNode = forwardRef(
                 role="button"
                 onClick={() => onToggleNode?.(node.id)}
                 onKeyDown={handleItemToggleKeyDown}
-                aria-label={t("foldUnfold")}
+                aria-label={t('foldUnfold')}
               >
                 <IconRafterRight
                   width={16}
                   style={{
-                    transform: expanded ? "rotate(90deg)" : "",
+                    transform: expanded ? 'rotate(90deg)' : '',
                   }}
                 />
               </div>
@@ -205,6 +205,6 @@ export const TreeNode = forwardRef(
   },
 );
 
-Tree.displayName = "Tree";
+Tree.displayName = 'Tree';
 
 export default Tree;

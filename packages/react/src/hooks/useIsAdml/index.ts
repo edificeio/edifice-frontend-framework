@@ -1,1 +1,1 @@
-export { default as useIsAdml } from "./useIsAdml";
+export { default as useIsAdml } from './useIsAdml';

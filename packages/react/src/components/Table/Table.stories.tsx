@@ -1,18 +1,18 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import {
   IconChecklist,
   IconGlobe,
   IconLock,
   IconUsers,
-} from "../../modules/icons/components";
-import { Checkbox } from "../Checkbox";
-import Table from "./components/Table";
-import { TableTbody } from "./components/TableTbody";
-import { TableTd } from "./components/TableTd";
-import { TableTh } from "./components/TableTh";
-import { TableThead } from "./components/TableThead";
-import { TableTr } from "./components/TableTr";
+} from '../../modules/icons/components';
+import { Checkbox } from '../Checkbox';
+import Table from './components/Table';
+import { TableTbody } from './components/TableTbody';
+import { TableTd } from './components/TableTd';
+import { TableTh } from './components/TableTh';
+import { TableThead } from './components/TableThead';
+import { TableTr } from './components/TableTr';
 
 interface IRow {
   id: string;
@@ -33,101 +33,101 @@ interface IRow {
 
 const data: IRow[] = [
   {
-    id: "1",
-    name: "The form user",
+    id: '1',
+    name: 'The form user',
     createdAt: 1677163550,
-    creatorId: "1",
-    creatorName: "Guillaume Tell",
+    creatorId: '1',
+    creatorName: 'Guillaume Tell',
     modifiedAt: 1677163550,
-    modifierId: "1",
-    modifierName: "Guillaume Tell",
+    modifierId: '1',
+    modifierName: 'Guillaume Tell',
     thumbnail:
-      "https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=",
+      'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
     trashed: false,
     shared: true,
     numberOfShares: 49,
     public: true,
-    currentRole: "Gestionnaire",
+    currentRole: 'Gestionnaire',
   },
   {
-    id: "2",
-    name: "Le blog des éco-délégués",
+    id: '2',
+    name: 'Le blog des éco-délégués',
     createdAt: 1677163550,
-    creatorId: "1",
-    creatorName: "Guillaume Tell",
+    creatorId: '1',
+    creatorName: 'Guillaume Tell',
     modifiedAt: 1677163550,
-    modifierId: "1",
-    modifierName: "Guillaume Tell",
+    modifierId: '1',
+    modifierName: 'Guillaume Tell',
     thumbnail:
-      "https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=",
+      'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
     trashed: false,
     shared: true,
     numberOfShares: 26,
     public: false,
-    currentRole: "Gestionnaire",
+    currentRole: 'Gestionnaire',
   },
   {
-    id: "3",
-    name: "Le roman de renard",
+    id: '3',
+    name: 'Le roman de renard',
     createdAt: 1677163550,
-    creatorId: "1",
-    creatorName: "Guillaume Tell",
+    creatorId: '1',
+    creatorName: 'Guillaume Tell',
     modifiedAt: 1677163550,
-    modifierId: "1",
-    modifierName: "Guillaume Tell",
+    modifierId: '1',
+    modifierName: 'Guillaume Tell',
     thumbnail:
-      "https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=",
+      'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
     trashed: false,
     shared: true,
     numberOfShares: 12,
     public: true,
-    currentRole: "Gestionnaire",
+    currentRole: 'Gestionnaire',
   },
   {
-    id: "4",
-    name: "La conjugaison pour les Nuls",
+    id: '4',
+    name: 'La conjugaison pour les Nuls',
     createdAt: 1677163550,
-    creatorId: "1",
-    creatorName: "Guillaume Tell",
+    creatorId: '1',
+    creatorName: 'Guillaume Tell',
     modifiedAt: 1677163550,
-    modifierId: "1",
-    modifierName: "Guillaume Tell",
+    modifierId: '1',
+    modifierName: 'Guillaume Tell',
     thumbnail:
-      "https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=",
+      'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
     trashed: false,
     shared: false,
     numberOfShares: 0,
     public: false,
-    currentRole: "Gestionnaire",
+    currentRole: 'Gestionnaire',
   },
   {
-    id: "5",
-    name: "Qui était Jules César?",
+    id: '5',
+    name: 'Qui était Jules César?',
     createdAt: 1677163550,
-    creatorId: "1",
-    creatorName: "Guillaume Tell",
+    creatorId: '1',
+    creatorName: 'Guillaume Tell',
     modifiedAt: 1677163550,
-    modifierId: "1",
-    modifierName: "Guillaume Tell",
+    modifierId: '1',
+    modifierName: 'Guillaume Tell',
     thumbnail:
-      "https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=",
+      'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
     trashed: false,
     shared: true,
     numberOfShares: 29,
     public: false,
-    currentRole: "Gestionnaire",
+    currentRole: 'Gestionnaire',
   },
 ];
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: "Components/Table",
+  title: 'Components/Table',
   component: Table,
   parameters: {
     docs: {
       description: {
         component:
-          "Table is a compound component, allowing you to build custom table structures using `Table.Tbody`, `Table.Tr`, `Table.Td`, `Table.Thead`, and `Table.Th` subcomponents.",
+          'Table is a compound component, allowing you to build custom table structures using `Table.Tbody`, `Table.Tr`, `Table.Td`, `Table.Thead`, and `Table.Th` subcomponents.',
       },
     },
   },
@@ -150,7 +150,7 @@ export const Base: Story = {
       <Table>
         <Table.Thead>
           <Table.Tr>
-            {["Nom de la ressource", "Création", "Rôle"].map((theadItem) => (
+            {['Nom de la ressource', 'Création', 'Rôle'].map((theadItem) => (
               <Table.Th key={theadItem}>{theadItem}</Table.Th>
             ))}
           </Table.Tr>
@@ -160,7 +160,7 @@ export const Base: Story = {
             <Table.Tr>
               <Table.Td>
                 <div className="d-flex gap-8 align-items-center">
-                  <IconChecklist width={20} height={20} />{" "}
+                  <IconChecklist width={20} height={20} />{' '}
                   <div>{item.name}</div>
                 </div>
               </Table.Td>
@@ -217,12 +217,12 @@ export const TableWithRowSelection: Story = {
               />
             </Table.Th>
             {[
-              "Nom de la ressource",
-              "Création",
-              "Auteur",
-              "Partage",
-              "Dernière modif",
-              "Rôle",
+              'Nom de la ressource',
+              'Création',
+              'Auteur',
+              'Partage',
+              'Dernière modif',
+              'Rôle',
             ].map((theadItem) => (
               <Table.Th key={theadItem}>{theadItem}</Table.Th>
             ))}
@@ -241,7 +241,7 @@ export const TableWithRowSelection: Story = {
               </Table.Td>
               <Table.Td>
                 <div className="d-flex gap-8 align-items-center">
-                  <IconChecklist width={20} height={20} />{" "}
+                  <IconChecklist width={20} height={20} />{' '}
                   <div>{item.name}</div>
                 </div>
               </Table.Td>

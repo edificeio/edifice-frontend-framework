@@ -1,25 +1,25 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { IconApplications, IconViewList } from "../../modules/icons/components";
-import Radio, { RadioProps } from "./Radio";
+import { IconApplications, IconViewList } from '../../modules/icons/components';
+import Radio, { RadioProps } from './Radio';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Radio> = {
-  title: "Forms/Radio",
+  title: 'Forms/Radio',
   component: Radio,
   args: {
-    label: "",
-    value: "",
-    model: "",
+    label: '',
+    value: '',
+    model: '',
     onChange: () => {},
   },
   parameters: {
     docs: {
       description: {
         component:
-          "Radio component for creating radio button inputs. Supports customizable labels, values, and onChange handlers. Radio buttons are used when users need to select a single option from a list of mutually exclusive choices.",
+          'Radio component for creating radio button inputs. Supports customizable labels, values, and onChange handlers. Radio buttons are used when users need to select a single option from a list of mutually exclusive choices.',
       },
     },
   },
@@ -31,7 +31,7 @@ type Story = StoryObj<typeof Radio>;
 
 export const Base: Story = {
   render: (args: RadioProps) => {
-    const [value, setValue] = useState<string>("CP");
+    const [value, setValue] = useState<string>('CP');
 
     const handleChange = ({
       target: { value },
@@ -41,16 +41,16 @@ export const Base: Story = {
 
     const options = [
       {
-        label: "Classe préparatoire",
-        value: "CP",
+        label: 'Classe préparatoire',
+        value: 'CP',
       },
       {
-        label: "Cours élémentaire 1",
-        value: "CM1",
+        label: 'Cours élémentaire 1',
+        value: 'CM1',
       },
       {
-        label: "Cours élémentaire 2",
-        value: "CM2",
+        label: 'Cours élémentaire 2',
+        value: 'CM2',
       },
     ];
 
@@ -76,16 +76,16 @@ export const Base: Story = {
 
 export const RadioWithIcons: Story = {
   render: (args) => {
-    const [value, setValue] = useState<string>("list");
+    const [value, setValue] = useState<string>('list');
 
     const options = [
       {
         icon: <IconViewList />,
-        value: "list",
+        value: 'list',
       },
       {
         icon: <IconApplications />,
-        value: "grid",
+        value: 'grid',
       },
     ];
 

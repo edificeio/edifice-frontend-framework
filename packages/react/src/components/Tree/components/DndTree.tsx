@@ -1,9 +1,9 @@
-import { useDroppable } from "@dnd-kit/core";
-import { Ref, forwardRef, useId } from "react";
-import { mergeRefs } from "../../../utilities";
-import { useTree } from "../hooks/useTree";
-import { DndTreeNodeProps, DndTreeProps } from "../types";
-import { TreeNode } from "./Tree";
+import { useDroppable } from '@dnd-kit/core';
+import { Ref, forwardRef, useId } from 'react';
+import { mergeRefs } from '../../../utilities';
+import { useTree } from '../hooks/useTree';
+import { DndTreeNodeProps, DndTreeProps } from '../types';
+import { TreeNode } from './Tree';
 
 export const DndTree = forwardRef(
   (
@@ -80,7 +80,7 @@ const DndTreeNode = forwardRef(
         id: node.id,
         name: node.name,
         isTreeview: true,
-        accepts: ["folder", "resource"],
+        accepts: ['folder', 'resource'],
       },
     });
 
@@ -104,6 +104,6 @@ const DndTreeNode = forwardRef(
   },
 );
 
-DndTree.displayName = "DndTree";
+DndTree.displayName = 'DndTree';
 
 export default DndTree;

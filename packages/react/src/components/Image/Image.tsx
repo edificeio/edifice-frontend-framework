@@ -1,11 +1,11 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import commonPlaceholder from "@edifice.io/bootstrap/dist/images/common/image-placeholder.png";
-import useImage from "../../hooks/useImage/useImage";
+import commonPlaceholder from '@edifice.io/bootstrap/dist/images/common/image-placeholder.png';
+import useImage from '../../hooks/useImage/useImage';
 
-export interface ImageProps extends React.ComponentPropsWithRef<"img"> {
+export interface ImageProps extends React.ComponentPropsWithRef<'img'> {
   /**
    * Image URL
    */
@@ -17,11 +17,11 @@ export interface ImageProps extends React.ComponentPropsWithRef<"img"> {
   /**
    * Image ratio
    */
-  ratio?: "1" | "4" | "16" | "21";
+  ratio?: '1' | '4' | '16' | '21';
   /**
    * Object fit property
    */
-  objectFit?: "contain" | "cover" | "fill" | "scale" | "none";
+  objectFit?: 'contain' | 'cover' | 'fill' | 'scale' | 'none';
   /**
    * Placeholder image as fallback
    */
@@ -50,18 +50,18 @@ const Image = forwardRef(
     const { imgSrc, onError } = useImage({ src, placeholder });
 
     const ratioImage = {
-      "ratio ratio-1x1": ratio === "1",
-      "ratio ratio-4x3": ratio === "4",
-      "ratio ratio-16x9": ratio === "16",
-      "ratio ratio-21x9": ratio === "21",
+      'ratio ratio-1x1': ratio === '1',
+      'ratio ratio-4x3': ratio === '4',
+      'ratio ratio-16x9': ratio === '16',
+      'ratio ratio-21x9': ratio === '21',
     };
 
     const objectImage = {
-      "object-fit-contain": objectFit === "contain",
-      "object-fit-cover": objectFit === "cover",
-      "object-fit-fill": objectFit === "fill",
-      "object-fit-scale": objectFit === "scale",
-      "object-fit-none": objectFit === "none",
+      'object-fit-contain': objectFit === 'contain',
+      'object-fit-cover': objectFit === 'cover',
+      'object-fit-fill': objectFit === 'fill',
+      'object-fit-scale': objectFit === 'scale',
+      'object-fit-none': objectFit === 'none',
     };
 
     const ratioClasses = clsx({
@@ -94,6 +94,6 @@ const Image = forwardRef(
   },
 );
 
-Image.displayName = "Image";
+Image.displayName = 'Image';
 
 export default Image;

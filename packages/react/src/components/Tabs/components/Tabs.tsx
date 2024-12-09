@@ -1,10 +1,10 @@
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo } from 'react';
 
-import { TabsContext } from "../context/TabsContext";
-import { useTabs } from "../hooks/useTabs";
-import TabsItem, { TabsItemProps } from "./TabsItem";
-import TabsList from "./TabsList";
-import TabsPanel from "./TabsPanel";
+import { TabsContext } from '../context/TabsContext';
+import { useTabs } from '../hooks/useTabs';
+import TabsItem, { TabsItemProps } from './TabsItem';
+import TabsList from './TabsList';
+import TabsPanel from './TabsPanel';
 
 export interface TabsProps {
   /**
@@ -63,7 +63,7 @@ export const Tabs = ({ defaultId, items, onChange, children }: TabsProps) => {
 
   return (
     <TabsContext.Provider value={value}>
-      {typeof children === "function" ? (
+      {typeof children === 'function' ? (
         children(currentItem)
       ) : (
         <>
@@ -81,6 +81,6 @@ Tabs.Item = TabsItem;
 Tabs.Panel = TabsPanel;
 Tabs.List = TabsList;
 
-Tabs.displayName = "Tabs";
+Tabs.displayName = 'Tabs';
 
 export default Tabs;

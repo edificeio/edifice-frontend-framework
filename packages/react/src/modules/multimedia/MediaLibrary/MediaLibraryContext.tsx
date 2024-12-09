@@ -1,12 +1,12 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from "@edifice.io/ts-client";
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
 
 import {
   AvailableTab,
   MediaLibraryResult,
   MediaLibraryType,
-} from "./MediaLibrary";
+} from './MediaLibrary';
 
 export const MediaLibraryContext = createContext<{
   /** Application code (example: "blog") */

@@ -1,5 +1,5 @@
-@use "../abstracts/" as *;
-@use "../vendors/bootstrap";
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
 
 @each $value, $color in $extra-colors {
   .text-bg-#{$value} {

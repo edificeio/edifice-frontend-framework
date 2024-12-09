@@ -1,9 +1,9 @@
-import { ReactNode, useId } from "react";
+import { ReactNode, useId } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useDropdownContext } from "./DropdownContext";
-import { Checkbox } from "../Checkbox";
+import { useDropdownContext } from './DropdownContext';
+import { Checkbox } from '../Checkbox';
 
 interface DropdownCheckboxItem {
   /**
@@ -44,7 +44,7 @@ const DropdownCheckboxItem = ({
     readOnly: true,
   };
 
-  const dropdownCheckboxItem = clsx("dropdown-item c-pointer", {
+  const dropdownCheckboxItem = clsx('dropdown-item c-pointer', {
     focus: isFocused === id,
   });
 
@@ -68,6 +68,6 @@ const DropdownCheckboxItem = ({
   );
 };
 
-DropdownCheckboxItem.displayName = "Dropdown.CheckboxItem";
+DropdownCheckboxItem.displayName = 'Dropdown.CheckboxItem';
 
 export default DropdownCheckboxItem;

@@ -1,6 +1,6 @@
-import { Mark, mergeAttributes } from "@tiptap/core";
+import { Mark, mergeAttributes } from '@tiptap/core';
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     abbr: {
       /**
@@ -16,7 +16,7 @@ declare module "@tiptap/core" {
 }
 
 export const Abbr = Mark.create({
-  name: "abbr",
+  name: 'abbr',
 
   addOptions() {
     return {
@@ -27,14 +27,14 @@ export const Abbr = Mark.create({
   parseHTML() {
     return [
       {
-        tag: "abbr",
+        tag: 'abbr',
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "abbr",
+      'abbr',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
       0,
     ];

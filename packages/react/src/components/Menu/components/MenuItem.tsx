@@ -1,5 +1,5 @@
-import { ReactNode, useEffect, useId, useRef } from "react";
-import { useMenuContext } from "./MenuContext";
+import { ReactNode, useEffect, useId, useRef } from 'react';
+import { useMenuContext } from './MenuContext';
 
 export const MenuItem = ({ children }: { children: ReactNode }) => {
   const itemRef = useRef<HTMLLIElement | null>(null);

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { EdificeThemeContext } from "./EdificeThemeProvider.context";
+import { useContext } from 'react';
+import { EdificeThemeContext } from './EdificeThemeProvider.context';
 
 export function useEdificeTheme() {
   const context = useContext(EdificeThemeContext);

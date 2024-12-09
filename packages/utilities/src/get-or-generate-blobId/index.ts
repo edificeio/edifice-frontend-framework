@@ -1,1 +1,1 @@
-export * from "./get-or-generate-blobId";
+export * from './get-or-generate-blobId';

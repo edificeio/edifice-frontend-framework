@@ -1,7 +1,7 @@
 // https://mantine.dev/hooks/use-click-outside
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-const DEFAULT_EVENTS = ["mousedown", "touchstart"];
+const DEFAULT_EVENTS = ['mousedown', 'touchstart'];
 
 export default function useClickOutside<T extends HTMLElement = any>(
   handler: () => void,
@@ -15,8 +15,8 @@ export default function useClickOutside<T extends HTMLElement = any>(
       const { target } = event ?? {};
       if (Array.isArray(nodes)) {
         const shouldIgnore =
-          target?.hasAttribute("data-ignore-outside-clicks") ||
-          (!document.body.contains(target) && target.tagName !== "HTML");
+          target?.hasAttribute('data-ignore-outside-clicks') ||
+          (!document.body.contains(target) && target.tagName !== 'HTML');
         const shouldTrigger = nodes.every(
           (node) => !!node && !event.composedPath().includes(node),
         );

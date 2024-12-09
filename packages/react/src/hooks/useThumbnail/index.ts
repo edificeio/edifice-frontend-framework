@@ -1,1 +1,1 @@
-export { default as useThumbnail } from "./useThumbnail";
+export { default as useThumbnail } from './useThumbnail';

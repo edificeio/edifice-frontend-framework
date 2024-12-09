@@ -1,1 +1,1 @@
-export { default as useEdificeIcons } from "./useEdificeIcons";
+export { default as useEdificeIcons } from './useEdificeIcons';

@@ -3,12 +3,12 @@ import axios, {
   AxiosInstance,
   // AxiosRequestConfig,
   AxiosResponse,
-} from "axios";
-import { ERROR_CODE } from "../globals";
-import { notify } from "../notify/Framework";
-import { EVENT_NAME, LAYER_NAME } from "../notify/interfaces";
-import { IOdeServices } from "../services/OdeServices";
-import { IHttp, IHttpParams, IHttpResponse } from "./interfaces";
+} from 'axios';
+import { ERROR_CODE } from '../globals';
+import { notify } from '../notify/Framework';
+import { EVENT_NAME, LAYER_NAME } from '../notify/interfaces';
+import { IOdeServices } from '../services/OdeServices';
+import { IHttp, IHttpParams, IHttpResponse } from './interfaces';
 
 const loadedScripts: { [url: string]: boolean } = {};
 
@@ -28,10 +28,10 @@ export class HttpService implements IHttp {
 
   private fixBaseUrl(url: string) {
     // skip absolute url
-    if (url.startsWith("http://") || url.startsWith("https://")) {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     } else if (this.baseUrl) {
-      if (this.baseUrl.endsWith("/") || url.startsWith("/")) {
+      if (this.baseUrl.endsWith('/') || url.startsWith('/')) {
         return `${this.baseUrl}${url}`;
       } else {
         return `${this.baseUrl}/${url}`;
@@ -56,15 +56,15 @@ export class HttpService implements IHttp {
     if (
       cdnUrl &&
       XMLHttpRequest &&
-      !(XMLHttpRequest.prototype as any)["cdnUrl"]
+      !(XMLHttpRequest.prototype as any)['cdnUrl']
     ) {
-      (XMLHttpRequest.prototype as any)["cdnUrl"] = cdnUrl;
+      (XMLHttpRequest.prototype as any)['cdnUrl'] = cdnUrl;
       (XMLHttpRequest.prototype as any).baseOpen =
         XMLHttpRequest.prototype.open;
       XMLHttpRequest.prototype.open = function () {
         const url = arguments[1] as string;
         //PUBLIC infra
-        if (url.startsWith("/infra/public")) {
+        if (url.startsWith('/infra/public')) {
           arguments[1] = cdnUrl + url;
         }
         //PUBLIC files (/.*/public)
@@ -73,15 +73,15 @@ export class HttpService implements IHttp {
           arguments[1] = cdnUrl + url;
         }
         //ASSETS files
-        if (url.startsWith("/assets")) {
+        if (url.startsWith('/assets')) {
           arguments[1] = cdnUrl + url;
         }
         //SKIP PUBLIC CONF
-        if (url == "/conf/public") {
+        if (url == '/conf/public') {
           arguments[1] = url;
         }
         //SKIP HTTP
-        if (url.startsWith("http")) {
+        if (url.startsWith('http')) {
           arguments[1] = url;
         }
         return (this as any).baseOpen.apply(this, arguments);
@@ -119,14 +119,14 @@ export class HttpService implements IHttp {
 
   private toCdnUrl(url: string) {
     url = this.fixBaseUrl(url);
-    const CDN_DOMAIN: string = this.context.conf().getCdnUrl() || "";
+    const CDN_DOMAIN: string = this.context.conf().getCdnUrl() || '';
     // If CDN domain is defined, and requested url is not /public/conf (SKIP PUBLIC CONF)
-    if (CDN_DOMAIN!.length > 0 && url !== "/conf/public") {
-      const originalURL = "" + url;
+    if (CDN_DOMAIN!.length > 0 && url !== '/conf/public') {
+      const originalURL = '' + url;
       //PUBLIC infra or ASSETS files
       if (
-        originalURL.startsWith("/infra/public") ||
-        originalURL.startsWith("/assets")
+        originalURL.startsWith('/infra/public') ||
+        originalURL.startsWith('/assets')
       ) {
         url = CDN_DOMAIN + originalURL;
       } else {
@@ -244,14 +244,14 @@ export class HttpService implements IHttp {
     params?: IHttpParams,
   ): Promise<R> {
     const p = this.toAxiosConfig(params);
-    if (p.headers && p.headers["Content-Type"]) {
-      delete p.headers["Content-Type"];
+    if (p.headers && p.headers['Content-Type']) {
+      delete p.headers['Content-Type'];
     }
     try {
       const r = await this.axios.post<R>(this.fixBaseUrl(url), data, {
         ...p,
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
       return this.mapAxiosResponse(r, params);
@@ -267,7 +267,7 @@ export class HttpService implements IHttp {
     params?: IHttpParams,
   ): Promise<R> {
     const p = this.toAxiosConfig();
-    if (p.headers) p.headers["Content-Type"] = "application/json";
+    if (p.headers) p.headers['Content-Type'] = 'application/json';
     try {
       const response = await this.axios.post<R>(
         this.fixBaseUrl(url),
@@ -302,13 +302,13 @@ export class HttpService implements IHttp {
   async putFile<R = any>(url: string, data: FormData, params?: IHttpParams) {
     try {
       const p = this.toAxiosConfig(params);
-      if (p.headers && p.headers["Content-Type"]) {
-        delete p.headers["Content-Type"];
+      if (p.headers && p.headers['Content-Type']) {
+        delete p.headers['Content-Type'];
       }
       const res = await this.axios.put(this.fixBaseUrl(url), data, {
         ...p,
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
       return this.mapAxiosResponse(res, params);
@@ -324,7 +324,7 @@ export class HttpService implements IHttp {
     params?: IHttpParams,
   ): Promise<R> {
     const p = this.toAxiosConfig(params);
-    if (p.headers) p.headers["Content-Type"] = "application/json";
+    if (p.headers) p.headers['Content-Type'] = 'application/json';
     try {
       const r = await this.axios.put<R>(this.fixBaseUrl(url), json, p);
       return this.mapAxiosResponse(r, params);
@@ -363,16 +363,16 @@ export class HttpService implements IHttp {
     params?: IHttpParams,
     variableName?: string,
   ): Promise<R> {
-    const resultName = variableName ?? "exports";
+    const resultName = variableName ?? 'exports';
     const p = this.toAxiosConfig(params);
-    if (p.headers) p.headers["Accept"] = "application/javascript";
+    if (p.headers) p.headers['Accept'] = 'application/javascript';
     return this.axios
       .get<string>(this.toCdnUrl(url), p)
       .then((r) => this.mapAxiosResponse(r, params))
       .then((r) => {
         try {
           const securedScript = `"use strict";var ${
-            resultName.split(".")[0]
+            resultName.split('.')[0]
           }={};${r};return ${resultName};`;
           const result = Function(securedScript)();
           return result;

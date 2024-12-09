@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Meta, StoryObj } from "@storybook/react";
-import Button from "../../components/Button/Button";
-import useClickOutside from "./useClickOutside";
+import { Meta, StoryObj } from '@storybook/react';
+import Button from '../../components/Button/Button';
+import useClickOutside from './useClickOutside';
 
 const meta: Meta<typeof useClickOutside> = {
-  title: "Hooks/useClickOutside",
+  title: 'Hooks/useClickOutside',
 };
 
 export default meta;

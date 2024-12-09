@@ -1,6 +1,6 @@
-import { App, USER_PREFS } from "../globals";
-import { IWebApp } from "../session/interfaces";
-import { configure } from "./Framework";
+import { App, USER_PREFS } from '../globals';
+import { IWebApp } from '../session/interfaces';
+import { configure } from './Framework';
 
 //-------------------------------------
 export abstract class ConfigurationFrameworkFactory {
@@ -75,8 +75,8 @@ export interface IConfigurationFramework {
   };
 }
 
-export type AnalyticStatus = "void" | "pending" | "ready" | "failed";
-export type TrackingType = "matomo" | "internal";
+export type AnalyticStatus = 'void' | 'pending' | 'ready' | 'failed';
+export type TrackingType = 'matomo' | 'internal';
 export interface ITrackingParams {
   /** Whitelist of events to track, in the form "app" or "app.eventName" or "*.eventName". */
   trackOnly: string[];
@@ -182,7 +182,7 @@ export interface IThemeConf {
 //-------------------------------------
 export interface IThemeConfOverriding {
   //-------------------------------------
-  parent: "panda" | "theme-open-ent";
+  parent: 'panda' | 'theme-open-ent';
   child: string;
   bootstrapVersion: string;
   skins: Array<string>;
@@ -237,7 +237,6 @@ export interface IUserPreferences {
 
 export interface IOdeTheme {
   basePath: string;
-  bootstrapPath: string;
   bootstrapVersion: string;
   is1d: boolean;
   logoutCallback: string;

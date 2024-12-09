@@ -1,10 +1,10 @@
-import { ChangeEvent, Fragment, useEffect, useState } from "react";
+import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import ComboboxTrigger from "./ComboboxTrigger";
-import { Dropdown } from "../Dropdown";
-import { Loading } from "../Loading";
+import ComboboxTrigger from './ComboboxTrigger';
+import { Dropdown } from '../Dropdown';
+import { Loading } from '../Loading';
 
 export interface ComboboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -61,13 +61,13 @@ const Combobox = ({
       return (
         <div className="d-flex align-items-center p-4">
           <Loading isLoading={isLoading} />
-          <span className="ps-4">{t("explorer.search.pending")}</span>
+          <span className="ps-4">{t('explorer.search.pending')}</span>
         </div>
       );
     }
 
     if (noResult) {
-      return <div className="p-4">{t("portal.no.result")}</div>;
+      return <div className="p-4">{t('portal.no.result')}</div>;
     }
 
     return options.map((option, index) => (
@@ -99,6 +99,6 @@ const Combobox = ({
 };
 
 Combobox.Trigger = ComboboxTrigger;
-Combobox.displayName = "Combobox";
+Combobox.displayName = 'Combobox';
 
 export default Combobox;

@@ -1,1 +1,1 @@
-export * from "./useCheckable";
+export * from './useCheckable';

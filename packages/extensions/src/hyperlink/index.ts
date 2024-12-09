@@ -1,5 +1,5 @@
-import { Hyperlink } from "./hyperlink";
+import { Hyperlink } from './hyperlink';
 
-export * from "./hyperlink";
+export * from './hyperlink';
 
 export default Hyperlink;

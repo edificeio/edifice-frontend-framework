@@ -10,10 +10,10 @@ export function getThumbnail(
   width: number = 0,
   height: number = 0,
 ): string {
-  if (!src.includes("data:image") && !src.includes("thumbnail")) {
+  if (!src.includes('data:image') && !src.includes('thumbnail')) {
     src =
       src +
-      (src.includes("?") ? "&thumbnail=" : "?thumbnail=") +
+      (src.includes('?') ? '&thumbnail=' : '?thumbnail=') +
       `${width}x${height}`;
   }
   return src;

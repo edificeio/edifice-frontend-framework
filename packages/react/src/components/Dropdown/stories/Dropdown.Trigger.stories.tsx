@@ -1,17 +1,17 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { RefAttributes } from "react";
-import { JSX } from "react/jsx-runtime";
-import { IconEdit, IconFilter } from "../../../modules/icons/components";
-import IconButton, { IconButtonProps } from "../../Button/IconButton";
-import Dropdown from "../Dropdown";
-import DropdownTrigger from "../DropdownTrigger";
+import { RefAttributes } from 'react';
+import { JSX } from 'react/jsx-runtime';
+import { IconEdit, IconFilter } from '../../../modules/icons/components';
+import IconButton, { IconButtonProps } from '../../Button/IconButton';
+import Dropdown from '../Dropdown';
+import DropdownTrigger from '../DropdownTrigger';
 
 const meta: Meta<typeof DropdownTrigger> = {
-  title: "Components/Dropdown/Dropdown Trigger",
+  title: 'Components/Dropdown/Dropdown Trigger',
   component: DropdownTrigger,
   args: {
-    label: "",
+    label: '',
     icon: undefined,
     badgeContent: 0,
     disabled: false,
@@ -20,11 +20,11 @@ const meta: Meta<typeof DropdownTrigger> = {
     docs: {
       description: {
         component:
-          "The `Dropdown.Trigger` component serves as the clickable element that toggles the dropdown menu. It can be customized with a label, icon, and badge content. The trigger supports both button and icon button variants, and can be disabled when needed. Key features include:\n\n- Optional label text\n- Optional icon support\n- Badge content display\n- Disabled state\n- Keyboard accessibility\n- ARIA attributes for screen readers",
+          'The `Dropdown.Trigger` component serves as the clickable element that toggles the dropdown menu. It can be customized with a label, icon, and badge content. The trigger supports both button and icon button variants, and can be disabled when needed. Key features include:\n\n- Optional label text\n- Optional icon support\n- Badge content display\n- Disabled state\n- Keyboard accessibility\n- ARIA attributes for screen readers',
       },
     },
   },
-  decorators: [(Story) => <div style={{ height: "400px" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '400px' }}>{Story()}</div>],
 };
 
 export default meta;
@@ -59,7 +59,7 @@ export const WithIcon: Story = {
   parameters: {
     docs: {
       description: {
-        story: "`Dropdown.Trigger` accepts a prop `icon`",
+        story: '`Dropdown.Trigger` accepts a prop `icon`',
       },
     },
   },
@@ -80,7 +80,7 @@ export const WithLabel: Story = {
   parameters: {
     docs: {
       description: {
-        story: "`Dropdown.Trigger` accepts a prop `label` to display a text",
+        story: '`Dropdown.Trigger` accepts a prop `label` to display a text',
       },
     },
   },
@@ -101,7 +101,7 @@ export const Disabled: Story = {
   parameters: {
     docs: {
       description: {
-        story: "`Dropdown.Trigger` accepts a prop `label` to display a text",
+        story: '`Dropdown.Trigger` accepts a prop `label` to display a text',
       },
     },
   },
@@ -139,7 +139,7 @@ export const Size: Story = {
     docs: {
       description: {
         story:
-          "`Dropdown.Trigger` exists in 3 sizes controlled by `size` prop with `sm | md | lg` as value",
+          '`Dropdown.Trigger` exists in 3 sizes controlled by `size` prop with `sm | md | lg` as value',
       },
     },
   },
@@ -159,7 +159,7 @@ export const GhostVariant: Story = {
   parameters: {
     docs: {
       description: {
-        story: "`Dropdown.Trigger` accepts a prop `variant`",
+        story: '`Dropdown.Trigger` accepts a prop `variant`',
       },
     },
   },
@@ -171,7 +171,7 @@ export const CustomTrigger: Story = {
       <Dropdown>
         {(
           triggerProps: JSX.IntrinsicAttributes &
-            Omit<IconButtonProps, "ref"> &
+            Omit<IconButtonProps, 'ref'> &
             RefAttributes<HTMLButtonElement>,
         ) => (
           <>
@@ -197,7 +197,7 @@ export const CustomTrigger: Story = {
     docs: {
       description: {
         story:
-          "Any component can be used as a custom trigger when use as a function as children (render prop). It can access `triggerProps` to get required a11y attributes.",
+          'Any component can be used as a custom trigger when use as a function as children (render prop). It can access `triggerProps` to get required a11y attributes.',
       },
     },
   },

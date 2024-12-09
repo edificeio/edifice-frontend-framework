@@ -1,7 +1,7 @@
-import Highlight from "@tiptap/extension-highlight";
+import Highlight from '@tiptap/extension-highlight';
 
 export const CustomHighlight = Highlight.extend({
-  name: "customHighlight",
+  name: 'customHighlight',
 
   addOptions() {
     return {
@@ -15,7 +15,7 @@ export const CustomHighlight = Highlight.extend({
     return [
       {
         ...this.parent?.(),
-        style: "background-color",
+        style: 'background-color',
         getAttrs: (style) => {
           return {
             color: style,

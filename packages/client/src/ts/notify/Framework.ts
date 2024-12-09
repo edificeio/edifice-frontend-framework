@@ -1,16 +1,16 @@
-import { IGetConf, ITheme, IThemeOverrides } from "../configure/interfaces";
-import { IUserInfo } from "../session/interfaces";
-import { Subject } from "./Subject";
-import { IPromisified, INotifyFramework } from "./interfaces";
+import { IGetConf, ITheme, IThemeOverrides } from '../configure/interfaces';
+import { IUserInfo } from '../session/interfaces';
+import { Subject } from './Subject';
+import { IPromisified, INotifyFramework } from './interfaces';
 
 type PromiseRegistry = { [name: string]: Promisified<any> };
 
 const ASYNC_DATA_NAME = {
-  SESSION_READY: "sessionReady",
-  LANG_READY: "langReady",
-  SKIN_READY: "skinReady",
-  OVERRIDE_READY: "overrideReady",
-  APPCONF_READY: "appConfReady",
+  SESSION_READY: 'sessionReady',
+  LANG_READY: 'langReady',
+  SKIN_READY: 'skinReady',
+  OVERRIDE_READY: 'overrideReady',
+  APPCONF_READY: 'appConfReady',
 } as const;
 
 /** Utility class */
@@ -42,7 +42,7 @@ class NotifyFramework implements INotifyFramework {
   private subject: Subject = new Subject();
 
   private asyncData<T>(asyncDataName: string): Promisified<T> {
-    if (typeof this.promises[asyncDataName] === "undefined") {
+    if (typeof this.promises[asyncDataName] === 'undefined') {
       this.promises[asyncDataName] =
         new Promisified<T>() as unknown as Promisified<any>;
     }

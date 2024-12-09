@@ -1,34 +1,34 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import useToggle from "../../hooks/useToggle/useToggle";
-import { Button } from "../Button";
-import Modal from "./Modal";
-import ModalBody from "./ModalBody";
-import ModalFooter from "./ModalFooter";
-import ModalHeader from "./ModalHeader";
-import ModalSubtitle from "./ModalSubtitle";
+import useToggle from '../../hooks/useToggle/useToggle';
+import { Button } from '../Button';
+import Modal from './Modal';
+import ModalBody from './ModalBody';
+import ModalFooter from './ModalFooter';
+import ModalHeader from './ModalHeader';
+import ModalSubtitle from './ModalSubtitle';
 
 const meta: Meta<typeof Modal> = {
-  title: "Components/Modal",
+  title: 'Components/Modal',
   component: Modal,
-  decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
   args: {
-    id: "modal",
+    id: 'modal',
     viewport: false,
     scrollable: false,
-    size: "md",
+    size: 'md',
   },
   argTypes: {
     size: {
-      options: ["sm", "md", "lg"],
-      control: { type: "select" },
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
     },
   },
   parameters: {
     docs: {
       description: {
         component:
-          "Modal component for displaying content in an overlay dialog. Supports different sizes, scrollable content, and viewport mode. Includes header, subtitle, body, and footer sections with customizable content and close functionality.",
+          'Modal component for displaying content in an overlay dialog. Supports different sizes, scrollable content, and viewport mode. Includes header, subtitle, body, and footer sections with customizable content and close functionality.',
       },
     },
   },
@@ -276,8 +276,8 @@ export const Scrollable: Story = {
     );
   },
   args: {
-    id: "primaryModal",
-    size: "lg",
+    id: 'primaryModal',
+    size: 'lg',
     scrollable: true,
   },
 };
@@ -353,8 +353,8 @@ export const FullHeight: Story = {
     );
   },
   args: {
-    id: "primaryModal",
-    size: "lg",
+    id: 'primaryModal',
+    size: 'lg',
     scrollable: true,
   },
 };

@@ -1,33 +1,33 @@
-import { Meta, StoryObj } from "@storybook/react";
-import SearchBar, { SearchBarProps } from "./SearchBar";
+import { Meta, StoryObj } from '@storybook/react';
+import SearchBar, { SearchBarProps } from './SearchBar';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof SearchBar> = {
-  title: "Forms/SearchBar",
+  title: 'Forms/SearchBar',
   component: SearchBar,
   parameters: {
     docs: {
       description: {
         component:
-          "SearchBar component for creating search input fields with optional search button. Supports dynamic searching, different sizes, and disabled states. Can be used as a standalone search input or with an integrated search button for form submissions.",
+          'SearchBar component for creating search input fields with optional search button. Supports dynamic searching, different sizes, and disabled states. Can be used as a standalone search input or with an integrated search button for form submissions.',
       },
     },
   },
   argTypes: {
     size: {
-      options: ["md", "lg"],
-      control: { type: "select" },
+      options: ['md', 'lg'],
+      control: { type: 'select' },
     },
     isVariant: {
-      control: "boolean",
+      control: 'boolean',
     },
   },
   args: {
     isVariant: false,
     onClick: () => {},
     onChange: () => {},
-    size: "md",
-    placeholder: "Search something....",
+    size: 'md',
+    placeholder: 'Search something....',
   },
 };
 

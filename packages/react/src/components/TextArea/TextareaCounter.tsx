@@ -7,7 +7,7 @@ export const TextareaCounter = ({
 }) => {
   return (
     <p className="small text-gray-700 p-2 text-end">
-      {content ? `${content.length} / ${maxLength}` : ""}
+      {content ? `${content.length} / ${maxLength}` : ''}
     </p>
   );
 };

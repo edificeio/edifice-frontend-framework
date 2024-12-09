@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { ILinkedResource } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { ILinkedResource } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { Checkbox } from "../../../../components";
-import { useToggle } from "../../../../hooks";
-import InternalLinker from "../../Linker/InternalLinker/InternalLinker";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import { Checkbox } from '../../../../components';
+import { useToggle } from '../../../../hooks';
+import InternalLinker from '../../Linker/InternalLinker/InternalLinker';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export type InternalLinkTabProps = {
-  target?: "_blank" | null;
+  target?: '_blank' | null;
   appPrefix?: string | null;
   resourceId?: string | null;
 };
 
 export type InternalLinkTabResult = {
-  target?: "_blank";
+  target?: '_blank';
   resources?: ILinkedResource[];
 };
 
@@ -27,7 +27,7 @@ export const InternalLink = ({
   const { t } = useTranslation();
   const { setResult, setResultCounter, appCode, multiple } =
     useMediaLibraryContext();
-  const [isChecked, toggleChecked] = useToggle(target === "_blank");
+  const [isChecked, toggleChecked] = useToggle(target === '_blank');
   const [resources, setRessources] = useState<ILinkedResource[]>([]);
 
   const handleSelect = (resources: ILinkedResource[]) => {
@@ -36,7 +36,7 @@ export const InternalLink = ({
 
   useEffect(() => {
     setResult({
-      target: isChecked ? "_blank" : undefined,
+      target: isChecked ? '_blank' : undefined,
       resources,
     } as InternalLinkTabResult);
     if (resources && resources.length) {
@@ -59,7 +59,7 @@ export const InternalLink = ({
       <Checkbox
         className="align-items-center"
         checked={isChecked}
-        label={t("bbm.linker.open.tab")}
+        label={t('bbm.linker.open.tab')}
         onChange={toggleChecked}
       />
     </div>

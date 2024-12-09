@@ -1,6 +1,6 @@
-import { App } from "../globals";
-import { WidgetName } from "../widget/interfaces";
-import { session } from "./Framework";
+import { App } from '../globals';
+import { WidgetName } from '../widget/interfaces';
+import { session } from './Framework';
 
 //-------------------------------------
 export abstract class SessionFrameworkFactory {
@@ -108,8 +108,8 @@ export interface ISession {
 }
 
 export type Hobby = {
-  visibility: "PRIVE" | "PUBLIC";
-  category: "sport" | "cinema" | "animals" | "music" | "places" | "books";
+  visibility: 'PRIVE' | 'PUBLIC';
+  category: 'sport' | 'cinema' | 'animals' | 'music' | 'places' | 'books';
   values: string;
 };
 export type School = {
@@ -120,7 +120,7 @@ export type School = {
   exports: string[]; // ["GAR-P0"]
 };
 export type UserProfile = Array<
-  "Student" | "Teacher" | "Relative" | "Personnel" | "Guest"
+  'Student' | 'Teacher' | 'Relative' | 'Personnel' | 'Guest'
 >;
 //-------------------------------------
 export interface IUserDescription {
@@ -130,17 +130,17 @@ export interface IUserDescription {
   health: string; // "" ?
   hobbies: Array<Hobby>;
   mood:
-    | "default"
-    | "happy"
-    | "proud"
-    | "dreamy"
-    | "love"
-    | "tired"
-    | "angry"
-    | "worried"
-    | "sick"
-    | "joker"
-    | "sad";
+    | 'default'
+    | 'happy'
+    | 'proud'
+    | 'dreamy'
+    | 'love'
+    | 'tired'
+    | 'angry'
+    | 'worried'
+    | 'sick'
+    | 'joker'
+    | 'sad';
   motto: string; // "Carpe diem"
   oldPicture?: string; // "/workspace/document/aaaabbbb-ccdd-dead-beef-0123456789ab"
   picture: string; // "no-avatar.jpg"
@@ -212,7 +212,7 @@ export interface IUserInfo {
   sessionMetadata: { _id: string; userId: string };
   structureNames: Array<string>;
   structures: Array<string>;
-  type: "ENSEIGNANT" | "ELEVE" | "PERSRELELEVE" | "SUPERADMIN" | "PERSEDUCNAT";
+  type: 'ENSEIGNANT' | 'ELEVE' | 'PERSRELELEVE' | 'SUPERADMIN' | 'PERSEDUCNAT';
   uai: Array<any>;
   userId: string;
   username: string;
@@ -221,8 +221,8 @@ export interface IUserInfo {
 
 //-- Widgets position
 export const WIDGET_POSITION = {
-  LEFT: "left",
-  RIGHT: "right",
+  LEFT: 'left',
+  RIGHT: 'right',
   // TODO: position pourrait être étendu à d'autres valeurs: |“top” ou “bottom” ou “fixed”...
 } as const;
 export type WidgetPosition =
@@ -278,7 +278,7 @@ export interface IEmailValidationInfos {
 export interface IEmailValidationState {
   //-------------------------------------
   /** Validation state */
-  state: "unchecked" | "outdated" | "pending" | "valid";
+  state: 'unchecked' | 'outdated' | 'pending' | 'valid';
   /** Last known valid email address, or empty string. */
   valid: string;
   /** (optional) Current pending (or outdated) email address being checked. */
@@ -303,7 +303,7 @@ export interface IMobileValidationInfos {
 export interface IMobileValidationState {
   //-------------------------------------
   /** Validation state */
-  state: "unchecked" | "outdated" | "pending" | "valid";
+  state: 'unchecked' | 'outdated' | 'pending' | 'valid';
   /** Last known valid phone number, or empty string. */
   valid: string;
   /** (optional) Current pending (or outdated) phone number being checked. */
@@ -318,7 +318,7 @@ export interface IMobileValidationState {
 export interface IMfaInfos {
   //-------------------------------------
   /** The type of MFA used. */
-  type: "sms" | "email";
+  type: 'sms' | 'email';
   /** State of the generated MFA code. */
   state: IMfaCodeState | null;
   /** Suggested time to wait for the MFA code to be sent (platform configuration) */
@@ -328,7 +328,7 @@ export interface IMfaInfos {
 export interface IMfaCodeState {
   //-------------------------------------
   /** Validation state */
-  state: "outdated" | "pending" | "valid";
+  state: 'outdated' | 'pending' | 'valid';
   /** (optional) Seconds remaining for the user to type in the correct code. */
   ttl?: number;
   /** (optional) Remaining number of times a code can be typed in. */
@@ -345,6 +345,6 @@ export interface IGetSession {
 }
 
 export type PersonApiResult = {
-  status: "ok" | string;
+  status: 'ok' | string;
   result: Array<IUserDescription>;
 };

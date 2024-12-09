@@ -1,6 +1,6 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 export interface LogoProps {
   src: string;
@@ -10,11 +10,11 @@ export interface LogoProps {
 
 const Logo = forwardRef(
   (
-    { src, is1d, translate = "Retour accueil" }: LogoProps,
+    { src, is1d, translate = 'Retour accueil' }: LogoProps,
     ref: Ref<HTMLAnchorElement>,
   ) => {
-    const classes = clsx("navbar-brand d-none d-md-block");
-    const logo = `logo ${is1d ? "ONE" : "NEO"}`;
+    const classes = clsx('navbar-brand d-none d-md-block');
+    const logo = `logo ${is1d ? 'ONE' : 'NEO'}`;
     return (
       <a
         ref={ref}
@@ -28,6 +28,6 @@ const Logo = forwardRef(
   },
 );
 
-Logo.displayName = "Logo";
+Logo.displayName = 'Logo';
 
 export default Logo;

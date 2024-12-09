@@ -1,4 +1,4 @@
-import { odeServices } from "@edifice.io/ts-client";
+import { odeServices } from '@edifice.io/ts-client';
 
 export default function usePreferences(name: string) {
   const getPreference = async (): Promise<any> => {

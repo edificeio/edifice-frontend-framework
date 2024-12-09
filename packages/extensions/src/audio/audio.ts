@@ -1,11 +1,11 @@
-import { mergeAttributes, Node } from "@tiptap/core";
+import { mergeAttributes, Node } from '@tiptap/core';
 
 export interface AudioOptions {
   url: string;
   HTMLAttributes: Record<string, any>;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     audio: {
       /**
@@ -22,23 +22,23 @@ declare module "@tiptap/core" {
 }
 
 export const Audio = Node.create({
-  name: "audio",
+  name: 'audio',
 
-  group: "block",
+  group: 'block',
 
   addAttributes() {
     return {
       src: {
         default: null,
-        parseHTML: (el: any) => (el as HTMLSpanElement).getAttribute("src"),
+        parseHTML: (el: any) => (el as HTMLSpanElement).getAttribute('src'),
         renderHTML: (attrs: any) => ({ src: attrs.src }),
       },
       documentId: {
-        default: "",
+        default: '',
         renderHTML: (attributes: any) => {
-          return { "data-document-id": attributes.documentId };
+          return { 'data-document-id': attributes.documentId };
         },
-        parseHTML: (element: any) => element.getAttribute("data-document-id"),
+        parseHTML: (element: any) => element.getAttribute('data-document-id'),
       },
     };
   },
@@ -46,9 +46,9 @@ export const Audio = Node.create({
   parseHTML() {
     return [
       {
-        tag: "div.audio-wrapper>audio,audio",
+        tag: 'div.audio-wrapper>audio,audio',
         getAttrs: (el: any) => ({
-          src: (el as HTMLAudioElement).getAttribute("src"),
+          src: (el as HTMLAudioElement).getAttribute('src'),
         }),
       },
     ];
@@ -56,9 +56,9 @@ export const Audio = Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "div",
-      { class: "audio-wrapper" },
-      ["audio", mergeAttributes(HTMLAttributes)],
+      'div',
+      { class: 'audio-wrapper' },
+      ['audio', mergeAttributes(HTMLAttributes)],
     ];
   },
 

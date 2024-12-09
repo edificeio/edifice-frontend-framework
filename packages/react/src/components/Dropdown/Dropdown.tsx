@@ -1,18 +1,18 @@
-import { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from 'react';
 
-import { Placement } from "@floating-ui/react";
-import clsx from "clsx";
+import { Placement } from '@floating-ui/react';
+import clsx from 'clsx';
 
-import DropdownCheckboxItem from "./DropdownCheckboxItem";
-import { DropdownContext } from "./DropdownContext";
-import DropdownItem from "./DropdownItem";
-import DropdownMenu from "./DropdownMenu";
-import DropdownMenuGroup from "./DropdownMenuGroup";
-import DropdownRadioItem from "./DropdownRadioItem";
-import DropdownSeparator from "./DropdownSeparator";
-import DropdownTrigger from "./DropdownTrigger";
-import { useClickOutside } from "../../hooks";
-import useDropdown from "../../hooks/useDropdown/useDropdown";
+import DropdownCheckboxItem from './DropdownCheckboxItem';
+import { DropdownContext } from './DropdownContext';
+import DropdownItem from './DropdownItem';
+import DropdownMenu from './DropdownMenu';
+import DropdownMenuGroup from './DropdownMenuGroup';
+import DropdownRadioItem from './DropdownRadioItem';
+import DropdownSeparator from './DropdownSeparator';
+import DropdownTrigger from './DropdownTrigger';
+import { useClickOutside } from '../../hooks';
+import useDropdown from '../../hooks/useDropdown/useDropdown';
 
 export interface DropdownProps {
   /** Children Props */
@@ -69,14 +69,14 @@ export type DropdownMenuOptions =
       /**
        * Object type
        */
-      type: "divider";
+      type: 'divider';
     };
 
 const Root = ({
   children,
   block,
   overflow = true,
-  placement = "bottom-start",
+  placement = 'bottom-start',
   extraTriggerKeyDownHandler,
   onToggle,
   isTriggerHovered = false,
@@ -119,8 +119,8 @@ const Root = ({
     ],
   );
 
-  const dropdown = clsx("dropdown", {
-    "w-100": block,
+  const dropdown = clsx('dropdown', {
+    'w-100': block,
     overflow,
   });
 
@@ -132,7 +132,7 @@ const Root = ({
   return (
     <DropdownContext.Provider value={value}>
       <div ref={ref} className={dropdown}>
-        {typeof children === "function"
+        {typeof children === 'function'
           ? children(triggerProps, itemRefs, setVisible)
           : children}
       </div>
@@ -140,7 +140,7 @@ const Root = ({
   );
 };
 
-Root.displayName = "Dropdown";
+Root.displayName = 'Dropdown';
 
 /* Compound Components */
 const Dropdown = Object.assign(Root, {

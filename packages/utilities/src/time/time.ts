@@ -5,11 +5,11 @@ export const convertMsToMS = (milliseconds: number): string => {
     seconds = seconds % 60;
     minutes = minutes % 60;
 
-    return padTo2Digits(minutes) + ":" + padTo2Digits(seconds);
+    return padTo2Digits(minutes) + ':' + padTo2Digits(seconds);
   }
-  return "00:00";
+  return '00:00';
 };
 
 export const padTo2Digits = (val: number): string => {
-  return val.toString().padStart(2, "0");
+  return val.toString().padStart(2, '0');
 };

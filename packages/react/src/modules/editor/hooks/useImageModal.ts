@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { WorkspaceVisibility } from "@edifice.io/ts-client";
-import { Editor } from "@tiptap/react";
+import { WorkspaceVisibility } from '@edifice.io/ts-client';
+import { Editor } from '@tiptap/react';
 
-import { useToggle, useWorkspaceFile } from "../../../hooks";
-import { useImageSelection } from "./useImageSelection";
+import { useToggle, useWorkspaceFile } from '../../../hooks';
+import { useImageSelection } from './useImageSelection';
 
 type EditedImage = { src: string; alt?: string; title?: string } | undefined;
 
@@ -74,7 +74,7 @@ export const useImageModal = (
      * }
      */
     setAttributes({
-      url: typeof res === "object" ? res.src : res,
+      url: typeof res === 'object' ? res.src : res,
       alt,
       title: legend,
     });

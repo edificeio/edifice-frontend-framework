@@ -1,6 +1,6 @@
-import { UserProfile } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
-import { Badge } from "../../..";
+import { UserProfile } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
+import { Badge } from '../../..';
 
 export const BadgeProfile = ({ profile }: { profile: UserProfile[number] }) => {
   const { t } = useTranslation();
@@ -9,7 +9,7 @@ export const BadgeProfile = ({ profile }: { profile: UserProfile[number] }) => {
   return (
     <Badge
       variant={{
-        type: "user",
+        type: 'user',
         profile,
         background: true,
       }}

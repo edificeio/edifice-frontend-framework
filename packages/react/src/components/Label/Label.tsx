@@ -1,14 +1,14 @@
-import { forwardRef, ReactNode, Ref, useEffect } from "react";
+import { forwardRef, ReactNode, Ref, useEffect } from 'react';
 
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { useFormControl } from "../Form/FormContext";
+import { useFormControl } from '../Form/FormContext';
 
-export type OmitLabelProps = "htmlFor";
+export type OmitLabelProps = 'htmlFor';
 
 export interface LabelProps
-  extends Omit<React.ComponentPropsWithRef<"label">, OmitLabelProps> {
+  extends Omit<React.ComponentPropsWithRef<'label'>, OmitLabelProps> {
   /**
    * Display Icon to the left
    */
@@ -36,7 +36,7 @@ const Label = forwardRef(
     {
       leftIcon,
       optionalText,
-      requiredText = "*",
+      requiredText = '*',
       children,
       className,
     }: LabelProps,
@@ -47,9 +47,9 @@ const Label = forwardRef(
     const { t } = useTranslation();
 
     const classes = clsx(
-      "form-label",
+      'form-label',
       {
-        "has-icon": leftIcon,
+        'has-icon': leftIcon,
       },
       className,
     );
@@ -59,7 +59,7 @@ const Label = forwardRef(
 
     useEffect(() => {
       if (isOptional && isRequired) {
-        throw new Error("Cannot be optional and required at the same time");
+        throw new Error('Cannot be optional and required at the same time');
       }
     }, [isOptional, isRequired]);
 
@@ -69,7 +69,7 @@ const Label = forwardRef(
         {children}
         {optionalState && (
           <em className="optional">
-            - {optionalText ?? t("explorer.optional")}
+            - {optionalText ?? t('explorer.optional')}
           </em>
         )}
         {requiredState && <em className="required">{requiredText}</em>}
@@ -78,6 +78,6 @@ const Label = forwardRef(
   },
 );
 
-Label.displayName = "Label";
+Label.displayName = 'Label';
 
 export default Label;

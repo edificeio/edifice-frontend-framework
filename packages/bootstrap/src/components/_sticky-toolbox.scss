@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .sticky-toolbox {
   position: fixed;
@@ -64,12 +64,12 @@
     }
   }
 
-  [class*="buttons-"] {
+  [class*='buttons-'] {
     margin-right: -5px;
     margin-left: -5px;
 
     > .col,
-    > [class*="col-"] {
+    > [class*='col-'] {
       padding-right: 5px;
       padding-left: 5px;
       margin-bottom: 10px;

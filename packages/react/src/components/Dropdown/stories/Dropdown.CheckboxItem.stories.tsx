@@ -1,13 +1,13 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { useState } from "react";
-import { IconFilter } from "../../../modules/icons/components";
-import Dropdown from "../Dropdown";
+import { useState } from 'react';
+import { IconFilter } from '../../../modules/icons/components';
+import Dropdown from '../Dropdown';
 
 const meta: Meta<typeof Dropdown> = {
-  title: "Components/Dropdown/Dropdown Checkbox Item",
+  title: 'Components/Dropdown/Dropdown Checkbox Item',
   component: Dropdown,
-  decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
   args: {
     badgeContent: 0,
   },
@@ -15,7 +15,7 @@ const meta: Meta<typeof Dropdown> = {
     docs: {
       description: {
         component:
-          "The `Dropdown.CheckboxItem` component enables multi-selection functionality within dropdowns. When combined with `Dropdown.Trigger`, you can display a badge showing the count of selected items using the `badgeContent` prop. This pattern is useful for filters, bulk actions, or any scenario requiring users to select multiple options from a dropdown menu.",
+          'The `Dropdown.CheckboxItem` component enables multi-selection functionality within dropdowns. When combined with `Dropdown.Trigger`, you can display a badge showing the count of selected items using the `badgeContent` prop. This pattern is useful for filters, bulk actions, or any scenario requiring users to select multiple options from a dropdown menu.',
       },
     },
   },
@@ -48,9 +48,9 @@ export const CheckboxGroup: Story = {
     };
 
     const checkboxOptions = [
-      { label: "Choice 1", value: 1 },
-      { label: "Choice 2", value: 2 },
-      { label: "Choice 3", value: 3 },
+      { label: 'Choice 1', value: 1 },
+      { label: 'Choice 2', value: 2 },
+      { label: 'Choice 3', value: 3 },
     ];
 
     const count = selectedCheckboxes.length;
@@ -103,9 +103,9 @@ export const BadgeContent: Story = {
     };
 
     const checkboxOptions = [
-      { label: "Choice 1", value: 1 },
-      { label: "Choice 2", value: 2 },
-      { label: "Choice 3", value: 3 },
+      { label: 'Choice 1', value: 1 },
+      { label: 'Choice 2', value: 2 },
+      { label: 'Choice 3', value: 3 },
     ];
 
     const count = selectedCheckboxes.length;
@@ -136,7 +136,7 @@ export const BadgeContent: Story = {
     docs: {
       description: {
         story:
-          "A badge with the number of selected items is displayed. It is an optional prop",
+          'A badge with the number of selected items is displayed. It is an optional prop',
       },
     },
   },

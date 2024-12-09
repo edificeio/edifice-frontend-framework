@@ -1,4 +1,4 @@
-import { Editor, NodeViewWrapper } from "@tiptap/react";
+import { Editor, NodeViewWrapper } from '@tiptap/react';
 
 interface AudioProps {
   editor: Editor;

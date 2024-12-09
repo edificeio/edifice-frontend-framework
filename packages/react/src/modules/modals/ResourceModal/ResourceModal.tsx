@@ -1,4 +1,4 @@
-import { ReactNode, useId } from "react";
+import { ReactNode, useId } from 'react';
 
 import {
   CreateParameters,
@@ -8,11 +8,11 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from "@edifice.io/ts-client";
-import { UseMutationResult } from "@tanstack/react-query";
-import { createPortal } from "react-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+} from '@edifice.io/ts-client';
+import { UseMutationResult } from '@tanstack/react-query';
+import { createPortal } from 'react-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -23,14 +23,14 @@ import {
   LoadingScreen,
   Modal,
   TextArea,
-} from "../../../components";
-import { TextareaCounter } from "../../../components/TextArea/TextareaCounter";
-import { useMediaLibrary, useToast } from "../../../hooks";
-import { useResource } from "../../../hooks/useResource";
-import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { MediaLibrary } from "../../multimedia";
-import ImagePickerWorkspace from "../../multimedia/ImagePicker/ImagePicker";
-import { useThumb } from "./hooks/useThumb";
+} from '../../../components';
+import { TextareaCounter } from '../../../components/TextArea/TextareaCounter';
+import { useMediaLibrary, useToast } from '../../../hooks';
+import { useResource } from '../../../hooks/useResource';
+import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { MediaLibrary } from '../../multimedia';
+import ImagePickerWorkspace from '../../multimedia/ImagePicker/ImagePicker';
+import { useThumb } from './hooks/useThumb';
 
 export interface FormInputs {
   title: string;
@@ -49,7 +49,7 @@ interface BaseProps {
 }
 
 interface CreateProps extends BaseProps {
-  mode: "create";
+  mode: 'create';
   createResource?: UseMutationResult<
     CreateResult,
     Error,
@@ -60,7 +60,7 @@ interface CreateProps extends BaseProps {
 }
 
 interface UpdateProps extends BaseProps {
-  mode: "update";
+  mode: 'update';
   updateResource?: UseMutationResult<
     UpdateResult,
     unknown,
@@ -91,10 +91,10 @@ const ResourceModal = ({
   const toast = useToast();
   const formId = useId();
 
-  const isCreating = mode === "create";
-  const isUpdating = mode === "update";
+  const isCreating = mode === 'create';
+  const isUpdating = mode === 'update';
 
-  const resource = useResource(application, isUpdating ? props.resourceId : "");
+  const resource = useResource(application, isUpdating ? props.resourceId : '');
 
   const {
     watch,
@@ -103,12 +103,12 @@ const ResourceModal = ({
     setValue,
     formState: { isSubmitting, isValid },
   } = useForm<FormInputs>({
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      description: isUpdating ? resource?.description : "",
+      description: isUpdating ? resource?.description : '',
       enablePublic: isUpdating ? resource?.public : false,
-      title: isUpdating ? resource?.name : "",
-      formSlug: isUpdating ? resource?.slug : "",
+      title: isUpdating ? resource?.name : '',
+      formSlug: isUpdating ? resource?.slug : '',
     },
   });
 
@@ -123,17 +123,17 @@ const ResourceModal = ({
     selectedResource: isUpdating ? resource : undefined,
   });
 
-  const watchedDescription = watch("description");
+  const watchedDescription = watch('description');
 
   const onSubmit: SubmitHandler<FormInputs> = async function (
     formData: FormInputs,
   ) {
     try {
       const data = {
-        description: formData.description || "",
+        description: formData.description || '',
         name: formData.title,
         public: formData.enablePublic,
-        slug: formData.enablePublic ? formData.formSlug || "" : "",
+        slug: formData.enablePublic ? formData.formSlug || '' : '',
         thumbnail,
       };
 
@@ -142,9 +142,9 @@ const ResourceModal = ({
           ...data,
           folder:
             props.currentFolder === undefined || // Fix #WB2-1296: when searching, currentFolder is undefined
-            props.currentFolder?.id === "default"
+            props.currentFolder?.id === 'default'
               ? undefined
-              : parseInt(props.currentFolder?.id || ""),
+              : parseInt(props.currentFolder?.id || ''),
           application,
         };
 
@@ -172,22 +172,22 @@ const ResourceModal = ({
           <strong>
             {t(
               isCreating
-                ? "explorer.resource.created"
-                : "explorer.resource.updated",
+                ? 'explorer.resource.created'
+                : 'explorer.resource.updated',
             )}
           </strong>
           <p>
-            {t("title")} : {formData.title}
+            {t('title')} : {formData.title}
           </p>
           <p>
-            {t("description")} : {formData.description}
+            {t('description')} : {formData.description}
           </p>
-          {application === "blog" && (
+          {application === 'blog' && (
             <p>
               Public:
               {formData.enablePublic
-                ? t("explorer.enable.public.yes")
-                : t("explorer.enable.public.no")}
+                ? t('explorer.enable.public.yes')
+                : t('explorer.enable.public.no')}
             </p>
           )}
         </>,
@@ -210,14 +210,14 @@ const ResourceModal = ({
       <Modal.Header onModalClose={onCancel}>
         {t(
           `explorer.resource.editModal.header.${
-            isCreating ? "create" : "edit"
+            isCreating ? 'create' : 'edit'
           }`,
         )}
       </Modal.Header>
 
       <Modal.Body>
         <Heading headingStyle="h4" level="h3" className="mb-16">
-          {t("explorer.resource.editModal.heading.general")}
+          {t('explorer.resource.editModal.heading.general')}
         </Heading>
 
         <form id={formId} onSubmit={handleSubmit(onSubmit)}>
@@ -225,9 +225,9 @@ const ResourceModal = ({
             <div>
               <ImagePickerWorkspace
                 app={currentApp}
-                src={isUpdating ? resource?.thumbnail || "" : ""}
-                addButtonLabel={t("explorer.imagepicker.button.add")}
-                deleteButtonLabel={t("explorer.imagepicker.button.delete")}
+                src={isUpdating ? resource?.thumbnail || '' : ''}
+                addButtonLabel={t('explorer.imagepicker.button.add')}
+                deleteButtonLabel={t('explorer.imagepicker.button.delete')}
                 onUploadImage={handleUploadImage}
                 onDeleteImage={handleDeleteImage}
                 className="align-self-center mt-8"
@@ -237,20 +237,20 @@ const ResourceModal = ({
             </div>
             <div className="col">
               <FormControl id="title" className="mb-16" isRequired>
-                <Label>{t("title")}</Label>
+                <Label>{t('title')}</Label>
                 <Input
                   type="text"
-                  defaultValue={isUpdating ? resource?.name : ""}
-                  {...register("title", {
+                  defaultValue={isUpdating ? resource?.name : ''}
+                  {...register('title', {
                     required: true,
                     maxLength: inputMaxLength,
                     pattern: {
                       value: /[^ ]/,
-                      message: "invalid title",
+                      message: 'invalid title',
                     },
                   })}
                   placeholder={t(
-                    "explorer.resource.editModal.title.placeholder",
+                    'explorer.resource.editModal.title.placeholder',
                   )}
                   size="md"
                   aria-required={true}
@@ -258,15 +258,15 @@ const ResourceModal = ({
                 />
               </FormControl>
               <FormControl id="description" isOptional>
-                <Label>{t("description")}</Label>
+                <Label>{t('description')}</Label>
                 <TextArea
-                  defaultValue={resource?.description || ""}
-                  {...register("description", {
+                  defaultValue={resource?.description || ''}
+                  {...register('description', {
                     required: false,
                     maxLength: textareaMaxLength,
                   })}
                   placeholder={t(
-                    "explorer.resource.editModal.description.placeholder",
+                    'explorer.resource.editModal.description.placeholder',
                   )}
                   size="md"
                   maxLength={textareaMaxLength}
@@ -281,7 +281,7 @@ const ResourceModal = ({
             </div>
           </div>
 
-          {typeof children === "function"
+          {typeof children === 'function'
             ? children(resource, isUpdating, watch, setValue, register)
             : children}
         </form>
@@ -294,7 +294,7 @@ const ResourceModal = ({
           type="button"
           variant="ghost"
         >
-          {t("explorer.cancel")}
+          {t('explorer.cancel')}
         </Button>
         <Button
           form={formId}
@@ -304,7 +304,7 @@ const ResourceModal = ({
           variant="filled"
           disabled={!isValid || isSubmitting}
         >
-          {t(isCreating ? "explorer.create" : "save")}
+          {t(isCreating ? 'explorer.create' : 'save')}
         </Button>
       </Modal.Footer>
       <MediaLibrary
@@ -315,7 +315,7 @@ const ResourceModal = ({
         {...mediaLibraryHandlers}
       />
     </Modal>,
-    document.getElementById("portal") as HTMLElement,
+    document.getElementById('portal') as HTMLElement,
   );
 };
 

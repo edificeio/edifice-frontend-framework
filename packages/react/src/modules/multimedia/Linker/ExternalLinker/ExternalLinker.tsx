@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { StringUtils } from "@edifice.io/utilities";
-import { Checkbox, FormControl, Input, Label } from "../../../../components";
-import { useToggle } from "../../../../hooks";
+import { StringUtils } from '@edifice.io/utilities';
+import { Checkbox, FormControl, Input, Label } from '../../../../components';
+import { useToggle } from '../../../../hooks';
 
 /**
  * Properties for the ExternalLink.
@@ -15,7 +15,7 @@ export interface IExternalLink {
   /** Link text for the llink display */
   text?: string;
   /** Link target (default: _blank) */
-  target?: "_blank";
+  target?: '_blank';
 }
 
 /**
@@ -29,7 +29,7 @@ export type ExternalLinkerProps = {
    */
   multiNodeSelected?: boolean;
   /** Target */
-  target?: "_blank";
+  target?: '_blank';
   /** Notify when the user change any link information */
   onChange?: (link?: IExternalLink) => void;
 };
@@ -41,15 +41,15 @@ const ExternalLinker = ({
 }: ExternalLinkerProps) => {
   const { t } = useTranslation();
 
-  const [linkText, setLinkText] = useState<string>(link?.text || "");
-  const [linkURL, setLinkURL] = useState<string>(link?.url || "");
+  const [linkText, setLinkText] = useState<string>(link?.text || '');
+  const [linkURL, setLinkURL] = useState<string>(link?.url || '');
   const [isBlankTarget, toggleBlankTarget] = useToggle(
-    link ? link.target === "_blank" : true,
+    link ? link.target === '_blank' : true,
   );
 
   useEffect(() => {
     if (multiNodeSelected && link?.text) {
-      setLinkText(link.text.slice(0, 20) + "...");
+      setLinkText(link.text.slice(0, 20) + '...');
     }
   }, [multiNodeSelected, link]);
 
@@ -62,13 +62,13 @@ const ExternalLinker = ({
     const newLink: IExternalLink = {
       url: linkURL,
       text: !multiNodeSelected ? linkText || linkURL : link?.text,
-      target: isBlankTarget ? "_blank" : undefined,
+      target: isBlankTarget ? '_blank' : undefined,
     };
     if (
       !StringUtils.isLocalURL(linkURL) &&
       !StringUtils.startWithHttp(linkURL)
     ) {
-      newLink.url = "http://" + linkURL;
+      newLink.url = 'http://' + linkURL;
     }
     onChange?.(newLink);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,10 +78,10 @@ const ExternalLinker = ({
     <>
       <div className="d-flex flex-column flex-fill gap-24">
         <FormControl id="linkText" isOptional>
-          <Label>{t("bbm.linker.ext.text")}</Label>
+          <Label>{t('bbm.linker.ext.text')}</Label>
           <Input
             type="text"
-            placeholder={t("bbm.linker.ext.text.placeholder")}
+            placeholder={t('bbm.linker.ext.text.placeholder')}
             size="md"
             disabled={multiNodeSelected}
             value={linkText}
@@ -89,17 +89,17 @@ const ExternalLinker = ({
           />
         </FormControl>
         <FormControl id="linkUrl" isRequired>
-          <Label>{t("bbm.linker.ext.url")}</Label>
+          <Label>{t('bbm.linker.ext.url')}</Label>
           <Input
             type="text"
-            placeholder={t("bbm.linker.ext.url.placeholder")}
+            placeholder={t('bbm.linker.ext.url.placeholder')}
             size="md"
             value={linkURL}
             onChange={(e) => setLinkURL(e.target.value)}
           />
         </FormControl>
         <Checkbox
-          label={t("bbm.linker.open.tab")}
+          label={t('bbm.linker.open.tab')}
           onChange={() => toggleBlankTarget()}
           checked={isBlankTarget}
         />

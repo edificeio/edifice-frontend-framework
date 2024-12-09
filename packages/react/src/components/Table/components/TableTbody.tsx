@@ -6,4 +6,4 @@ export const TableTbody = (props: Props) => {
   return <tbody {...restProps}>{children}</tbody>;
 };
 
-TableTbody.displayName = "Table.Tbody";
+TableTbody.displayName = 'Table.Tbody';

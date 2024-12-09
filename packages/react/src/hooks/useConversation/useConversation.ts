@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { odeServices } from "@edifice.io/ts-client";
+import { odeServices } from '@edifice.io/ts-client';
 
-import { useHasWorkflow } from "../useHasWorkflow";
+import { useHasWorkflow } from '../useHasWorkflow';
 
 const useConversation = () => {
   const zimbraWorkflow = useHasWorkflow(
-    "fr.openent.zimbra.controllers.ZimbraController|view",
+    'fr.openent.zimbra.controllers.ZimbraController|view',
   );
   const zimbraPreauth = useHasWorkflow(
-    "fr.openent.zimbra.controllers.ZimbraController|preauth",
+    'fr.openent.zimbra.controllers.ZimbraController|preauth',
   );
 
   /**
    * Count conversation app
    */
   const [messages, setMessages] = useState<number>(0);
-  const [msgLink, setMsgLink] = useState<string>("");
+  const [msgLink, setMsgLink] = useState<string>('');
   /**
    * Get message count for zimbra or chat app
    */
@@ -24,8 +24,8 @@ const useConversation = () => {
 
   const refreshMails = async () => {
     const url = zimbraWorkflow
-      ? "/zimbra/count/INBOX"
-      : "/conversation/count/INBOX";
+      ? '/zimbra/count/INBOX'
+      : '/conversation/count/INBOX';
 
     try {
       const { count } = await odeServices.http().get(url, { queryParams });
@@ -39,18 +39,18 @@ const useConversation = () => {
   };
 
   const goToMessagerie = async () => {
-    const defaultLink = "/zimbra/zimbra";
+    const defaultLink = '/zimbra/zimbra';
 
     try {
       const { preference } = await odeServices
         .http()
-        .get("/userbook/preference/zimbra");
+        .get('/userbook/preference/zimbra');
       const isExpertMode = preference
         ? JSON.parse(preference).modeExpert
         : false;
       setMsgLink(
         isExpertMode && zimbraPreauth
-          ? "/zimbra/preauth"
+          ? '/zimbra/preauth'
           : window.location.origin + defaultLink,
       );
     } catch (error) {

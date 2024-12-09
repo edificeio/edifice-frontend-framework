@@ -3,12 +3,12 @@
  * @see WAI-ARIA https://www.w3.org/WAI/ARIA/apg/patterns/table/
  */
 
-import { forwardRef, ReactNode, Ref } from "react";
-import { TableTbody } from "./TableTbody";
-import { TableTd } from "./TableTd";
-import { TableTh } from "./TableTh";
-import { TableThead } from "./TableThead";
-import { TableTr } from "./TableTr";
+import { forwardRef, ReactNode, Ref } from 'react';
+import { TableTbody } from './TableTbody';
+import { TableTd } from './TableTd';
+import { TableTh } from './TableTh';
+import { TableThead } from './TableThead';
+import { TableTr } from './TableTr';
 export type TableRef = HTMLTableElement;
 
 export interface TableProps {
@@ -27,7 +27,7 @@ const Root = forwardRef(
   },
 );
 
-Root.displayName = "Table";
+Root.displayName = 'Table';
 
 const Table = Object.assign(Root, {
   Thead: TableThead,

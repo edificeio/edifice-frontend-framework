@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import SelectTrigger from "./SelectTrigger";
-import Dropdown, { DropdownProps } from "../Dropdown/Dropdown";
-import { DropdownTriggerProps } from "../Dropdown/DropdownTrigger";
+import SelectTrigger from './SelectTrigger';
+import Dropdown, { DropdownProps } from '../Dropdown/Dropdown';
+import { DropdownTriggerProps } from '../Dropdown/DropdownTrigger';
 
 export interface OptionsType {
   /**
@@ -22,8 +22,8 @@ export interface OptionsType {
 }
 
 export interface SelectProps
-  extends Omit<DropdownProps, "children">,
-    Omit<DropdownTriggerProps, "badgeContent"> {
+  extends Omit<DropdownProps, 'children'>,
+    Omit<DropdownTriggerProps, 'badgeContent'> {
   /**
    * Default select label
    */
@@ -61,15 +61,15 @@ const Select = ({
   useEffect(() => {
     if (localValue) {
       const value =
-        typeof localValue === "object" ? localValue.value : localValue;
+        typeof localValue === 'object' ? localValue.value : localValue;
       onValueChange?.(value);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue]);
 
-  const label = typeof localValue === "object" ? localValue.label : localValue;
+  const label = typeof localValue === 'object' ? localValue.label : localValue;
   const iconChange =
-    typeof localValue === "object" ? localValue.icon : undefined;
+    typeof localValue === 'object' ? localValue.icon : undefined;
 
   return (
     <Dropdown overflow={overflow} block={block}>
@@ -82,9 +82,9 @@ const Select = ({
       />
       <Dropdown.Menu role="listbox">
         {options?.map((option) => {
-          const value = typeof option === "object" ? option.value : option;
-          const label = typeof option === "object" ? option.label : option;
-          const icon = typeof option === "object" ? option.icon : undefined;
+          const value = typeof option === 'object' ? option.value : option;
+          const label = typeof option === 'object' ? option.label : option;
+          const icon = typeof option === 'object' ? option.icon : undefined;
           return (
             <Dropdown.Item
               type="action"
@@ -101,6 +101,6 @@ const Select = ({
   );
 };
 
-Select.displayName = "Select";
+Select.displayName = 'Select';
 
 export default Select;

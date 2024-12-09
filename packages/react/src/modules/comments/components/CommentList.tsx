@@ -1,6 +1,6 @@
-import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { useCommentsContext } from "../hooks/useCommentsContext";
-import { Comment } from "./Comment";
+import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useCommentsContext } from '../hooks/useCommentsContext';
+import { Comment } from './Comment';
 
 export function CommentList() {
   const { user } = useEdificeClient();
@@ -11,7 +11,7 @@ export function CommentList() {
     const { authorId } = comment;
 
     const profile =
-      profiles?.find((user) => user?.userId === authorId)?.profile ?? "Guest";
+      profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
 
     return (
       <Comment

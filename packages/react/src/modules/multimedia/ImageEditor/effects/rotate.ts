@@ -1,11 +1,11 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 import {
   createImageSettings,
   resizeStage,
   toBlob,
   updateImageFromBlob,
-} from "./misc";
+} from './misc';
 
 /**
  * This function rotate the sprite by adding PI/2
@@ -39,10 +39,10 @@ export async function rotate(
     let backupOldVisibility: string | undefined = undefined;
     const canvas = application.view as any as HTMLElement;
     if (canvas.style) {
-      backupOldMaxHeight = canvas.style.maxHeight ?? "";
-      backupOldVisibility = canvas.style.visibility ?? "";
+      backupOldMaxHeight = canvas.style.maxHeight ?? '';
+      backupOldVisibility = canvas.style.visibility ?? '';
       canvas.style.maxHeight = `${canvas.clientHeight}px`;
-      canvas.style.visibility = "hidden";
+      canvas.style.visibility = 'hidden';
     }
     // rotate
     mergedSprite.rotation += Math.PI / 2;

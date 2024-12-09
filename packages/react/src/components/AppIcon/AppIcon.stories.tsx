@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
-import AppIcon, { AppIconProps } from "./AppIcon";
+import { Meta, StoryObj } from '@storybook/react';
+import AppIcon, { AppIconProps } from './AppIcon';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof AppIcon> = {
-  title: "Components/AppIcon",
+  title: 'Components/AppIcon',
   component: AppIcon,
   parameters: {
     docs: {
@@ -14,20 +14,47 @@ const meta: Meta<typeof AppIcon> = {
     },
   },
   args: {
-    size: "40",
+    size: '40',
   },
   argTypes: {
+    app: {
+      control: { type: 'select' },
+      options: [
+        'blog',
+        'conversation',
+        'collaborative-wall',
+        'wiki',
+        'scrapbook',
+        'placeholder',
+        'mindmap',
+        'workspace',
+      ],
+      mapping: {
+        'blog': { icon: 'blog', displayName: 'Blog' },
+
+        'collaborative-wall': {
+          icon: 'collaborative-wall',
+          displayName: 'Collaborative Wall',
+        },
+        'conversation': { icon: 'conversation', displayName: 'Conversation' },
+        'mindmap': { icon: 'mindmap', displayName: 'Mindmap' },
+        'placeholder': { icon: 'placeholder', displayName: 'Placeholder' },
+        'scrap-book': { icon: 'scrapbook', displayName: 'Scrapbook' },
+        'wiki': { icon: 'wiki', displayName: 'Wiki' },
+        'workspace': { icon: 'workspace', displayName: 'Workspace' },
+      },
+    },
     variant: {
-      options: ["square", "rounded", "circle"],
-      control: { type: "inline-radio" },
+      options: ['square', 'rounded', 'circle'],
+      control: { type: 'inline-radio' },
     },
     iconFit: {
-      options: ["contain", "ratio"],
-      control: { type: "inline-radio" },
+      options: ['contain', 'ratio'],
+      control: { type: 'inline-radio' },
     },
     size: {
-      options: ["24", "40", "48", "80", "160"],
-      control: { type: "inline-radio" },
+      options: ['24', '40', '48', '80', '160'],
+      control: { type: 'inline-radio' },
     },
   },
 };
@@ -54,7 +81,7 @@ export const AppIconSizes: Story = {
     docs: {
       description: {
         story:
-          "App icon can take different size with the `size` prop attribute.",
+          'App icon can take different size with the `size` prop attribute.',
       },
     },
   },
@@ -63,12 +90,12 @@ export const AppIconSizes: Story = {
 export const AppIconAsImage: Story = {
   args: {
     app: {
-      address: "/form",
-      icon: "https://ent.l-educdenormandie.fr/formulaire/public/img/logo.svg",
-      name: "Formulaire",
+      address: '/form',
+      icon: 'https://ent.l-educdenormandie.fr/formulaire/public/img/logo.svg',
+      name: 'Formulaire',
       scope: [],
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
     },
   },
@@ -77,7 +104,7 @@ export const AppIconAsImage: Story = {
     docs: {
       description: {
         story:
-          "If the `icon` property is a `url`, AppIcon displays the image instead of an svg icon.",
+          'If the `icon` property is a `url`, AppIcon displays the image instead of an svg icon.',
       },
     },
   },
@@ -98,12 +125,12 @@ export const AppIconImageSizes: Story = {
 
   args: {
     app: {
-      address: "/form",
-      icon: "https://ent.l-educdenormandie.fr/formulaire/public/img/logo.svg",
-      name: "Formulaire",
+      address: '/form',
+      icon: 'https://ent.l-educdenormandie.fr/formulaire/public/img/logo.svg',
+      name: 'Formulaire',
       scope: [],
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
     },
   },
@@ -112,7 +139,7 @@ export const AppIconImageSizes: Story = {
     docs: {
       description: {
         story:
-          "Like the default AppIcon, the `size` prop attribute works on image too.",
+          'Like the default AppIcon, the `size` prop attribute works on image too.',
       },
     },
   },
@@ -121,22 +148,22 @@ export const AppIconImageSizes: Story = {
 export const AppIconWithRatio: Story = {
   args: {
     app: {
-      icon: "blog",
-      address: "",
+      icon: 'blog',
+      address: '',
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
-      name: "Blog",
+      name: 'Blog',
       scope: [],
     },
-    iconFit: "ratio",
+    iconFit: 'ratio',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Using the `iconFit` attribute with the `ratio` value will give a `backgroundColor` and some `padding` to the AppIcon. Default value is `contain`",
+          'Using the `iconFit` attribute with the `ratio` value will give a `backgroundColor` and some `padding` to the AppIcon. Default value is `contain`',
       },
     },
   },
@@ -156,31 +183,31 @@ export const AppIconRatioSizes: Story = {
   },
 
   args: {
-    iconFit: "ratio",
-    variant: "rounded",
+    iconFit: 'ratio',
+    variant: 'rounded',
   },
 };
 
 export const AppIconCircle: Story = {
   args: {
     app: {
-      icon: "blog",
-      address: "",
+      icon: 'blog',
+      address: '',
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
-      name: "Blog",
+      name: 'Blog',
       scope: [],
     },
-    iconFit: "ratio",
-    variant: "circle",
+    iconFit: 'ratio',
+    variant: 'circle',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Using the `variant` attribute with the `circle` value will change the shape of AppIcon. Default value is `square`",
+          'Using the `variant` attribute with the `circle` value will change the shape of AppIcon. Default value is `square`',
       },
     },
   },
@@ -203,23 +230,23 @@ export const AppIconCircleSizes: Story = {
 export const AppIconRounded: Story = {
   args: {
     app: {
-      icon: "blog",
-      address: "",
+      icon: 'blog',
+      address: '',
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
-      name: "Blog",
+      name: 'Blog',
       scope: [],
     },
-    iconFit: "ratio",
-    variant: "rounded",
+    iconFit: 'ratio',
+    variant: 'rounded',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Using the `variant` attribute with the `rounded` value will change the shape of AppIcon. Default value is `square`",
+          'Using the `variant` attribute with the `rounded` value will change the shape of AppIcon. Default value is `square`',
       },
     },
   },
@@ -240,12 +267,12 @@ export const AppIconRoundedSizes: Story = {
 
   args: {
     app: {
-      icon: "blog",
-      address: "",
+      icon: 'blog',
+      address: '',
       display: false,
-      displayName: "",
+      displayName: '',
       isExternal: false,
-      name: "Blog",
+      name: 'Blog',
       scope: [],
     },
   },

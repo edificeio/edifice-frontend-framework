@@ -1,24 +1,29 @@
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from 'react';
 
-import { App, odeServices } from "@edifice.io/ts-client";
+import { App, odeServices } from '@edifice.io/ts-client';
 /*
  * Augmented definition of a resource, until behaviours are dropped.
  * The path would otherwise be found by using `IWebResourceService.getViewUrl(resource)`
  */
-import { ILinkedResource } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { ILinkedResource } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { useDebounce } from "@uidotdev/usehooks";
+import {
+  AppKeys,
+  emptyScreenMapping,
+} from '../../../../utilities/emptyscreen-mapping';
+
+import { useDebounce } from '@uidotdev/usehooks';
 import {
   AppIcon,
   Dropdown,
   EmptyScreen,
   SearchBar,
-} from "../../../../components";
-import { useResourceSearch } from "../../../../hooks";
-import { useEdificeTheme } from "../../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
-import { IconApplications } from "../../../icons/components";
-import LinkerCard from "../../LinkerCard/LinkerCard";
+} from '../../../../components';
+import { useResourceSearch } from '../../../../hooks';
+import { useEdificeTheme } from '../../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import { IconApplications } from '../../../icons/components';
+import LinkerCard from '../../LinkerCard/LinkerCard';
 
 /**
  * Definition of an internal link.
@@ -81,7 +86,7 @@ const InternalLinker = ({
   >();
   // User search terms (typed in an input) and its debounced equivalent.
   const [searchTerms, setSearchTerms] = useState<string | undefined>();
-  const debounceSearch = useDebounce<string>(searchTerms || "", 500);
+  const debounceSearch = useDebounce<string>(searchTerms || '', 500);
 
   // List of resources to display.
   const [resources, setResources] = useState<ILinkedResource[] | undefined>([]);
@@ -89,7 +94,7 @@ const InternalLinker = ({
   const filterResources = useCallback(
     (resource: ILinkedResource, search?: string) => {
       if (!search) return true;
-      const searchParam = search?.toLowerCase() || "";
+      const searchParam = search?.toLowerCase() || '';
       return (
         resource.name?.toLowerCase().includes(searchParam) ||
         resource.creatorName?.toLowerCase().includes(searchParam) ||
@@ -271,7 +276,7 @@ const InternalLinker = ({
         (option) => safeDefaultAppCode === option.application,
       );
       setSelectedApplication(option);
-      loadAndDisplayResources("");
+      loadAndDisplayResources('');
     }
     /* Note : when options changes, `defaultAppCode` and `loadAndDisplayResources` are
      * already set at a correct value. So we remove them from the dependency array,
@@ -296,29 +301,6 @@ const InternalLinker = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resources]);
 
-  const [emptySearch, setEmptySearch] = useState("");
-  const [appEmptySearch, setAppEmptySearch] = useState("");
-
-  useEffect(() => {
-    const getImageLibrary = async () => {
-      const imageLibrary = await import(
-        `@edifice.io/bootstrap/dist/images/${theme?.bootstrapVersion}/illu-empty-search.svg`
-      );
-      setEmptySearch(imageLibrary.default);
-    };
-    getImageLibrary();
-  }, [theme]);
-
-  useEffect(() => {
-    const getImageLibrary = async () => {
-      const imageLibrary = await import(
-        `@edifice.io/bootstrap/dist/images/${theme?.bootstrapVersion}/illu-empty-search-${selectedApplication?.application}.svg`
-      );
-      setAppEmptySearch(imageLibrary.default);
-    };
-    getImageLibrary();
-  }, [selectedApplication, theme]);
-
   return (
     <div className="d-flex flex-column flex-fill overflow-hidden">
       <div className="search d-flex bg-light rounded-top border border-bottom-0">
@@ -332,7 +314,7 @@ const InternalLinker = ({
                   </div>
                 }
                 label={t(
-                  selectedApplication?.displayName || "bbm.linker.int.choose",
+                  selectedApplication?.displayName || 'bbm.linker.int.choose',
                 )}
                 variant="ghost"
                 size="md"
@@ -358,7 +340,7 @@ const InternalLinker = ({
           >
             <SearchBar
               isVariant
-              placeholder={t("search")}
+              placeholder={t('search')}
               size="lg"
               className="w-100"
               disabled={selectedApplication ? false : true}
@@ -391,8 +373,12 @@ const InternalLinker = ({
         {selectedApplication && resources && resources.length <= 0 && (
           <div className="d-flex justify-content-center mt-16">
             <EmptyScreen
-              imageSrc={appEmptySearch}
-              text={t("bbm.linker.int.notfound")}
+              imageSrc={
+                emptyScreenMapping[
+                  (theme?.bootstrapVersion as 'one' | 'neo') ?? 'one'
+                ][selectedApplication?.application as AppKeys]
+              }
+              text={t('bbm.linker.int.notfound')}
               className="mt-16"
             />
           </div>
@@ -401,8 +387,12 @@ const InternalLinker = ({
         {!selectedApplication && (
           <div className="d-flex justify-content-center mt-32">
             <EmptyScreen
-              imageSrc={emptySearch}
-              text={t("bbm.linker.int.empty")}
+              imageSrc={
+                emptyScreenMapping[
+                  (theme?.bootstrapVersion as 'one' | 'neo') ?? 'one'
+                ]['empty']
+              }
+              text={t('bbm.linker.int.empty')}
               className="mt-32"
             />
           </div>

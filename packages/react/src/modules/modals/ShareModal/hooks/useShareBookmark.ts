@@ -1,11 +1,11 @@
-import { Dispatch, useId, useRef, useState } from "react";
+import { Dispatch, useId, useRef, useState } from 'react';
 
-import { ShareRightWithVisibles, odeServices } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { ShareRightWithVisibles, odeServices } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { useToggle } from "@uidotdev/usehooks";
-import { useToast } from "../../../../hooks";
-import { ShareAction } from "./useShare";
+import { useToggle } from '@uidotdev/usehooks';
+import { useToast } from '../../../../hooks';
+import { ShareAction } from './useShare';
 
 interface UseShareBookmarkProps {
   shareRights: ShareRightWithVisibles;
@@ -27,7 +27,7 @@ export const useShareBookmark = ({
   const refBookmark = useRef<HTMLInputElement>(null);
 
   const [bookmark, setBookmark] = useState<BookmarkProps>({
-    name: "",
+    name: '',
     id: useId(),
   });
   const [showBookmark, setShowBookmark] = useToggle(false);
@@ -40,7 +40,7 @@ export const useShareBookmark = ({
   const handleBookmarkChange = () => {
     setBookmark((prev) => ({
       ...prev,
-      name: refBookmark.current?.value || "",
+      name: refBookmark.current?.value || '',
     }));
   };
 
@@ -48,20 +48,20 @@ export const useShareBookmark = ({
     try {
       const res = await odeServices.directory().saveBookmarks(name, {
         users: shareRights.rights
-          .filter((right: { type: string }) => right.type === "user")
+          .filter((right: { type: string }) => right.type === 'user')
           .map((u: { id: any }) => u.id),
         groups: shareRights.rights
-          .filter((right: { type: string }) => right.type === "group")
+          .filter((right: { type: string }) => right.type === 'group')
           .map((u: { id: any }) => u.id),
         bookmarks: shareRights.rights
-          .filter((right: { type: string }) => right.type === "sharebookmark")
+          .filter((right: { type: string }) => right.type === 'sharebookmark')
           .map((u: { id: any }) => u.id),
       });
 
-      toast.success(t("explorer.bookmarked.status.saved"));
+      toast.success(t('explorer.bookmarked.status.saved'));
 
       shareDispatch({
-        type: "updateShareRights",
+        type: 'updateShareRights',
         payload: {
           ...shareRights,
           visibleBookmarks: [
@@ -80,13 +80,13 @@ export const useShareBookmark = ({
       }));
       toggleBookmarkInput(false);
     } catch (e) {
-      console.error("Failed to save bookmark", e);
-      toast.error(t("explorer.bookmarked.status.error"));
+      console.error('Failed to save bookmark', e);
+      toast.error(t('explorer.bookmarked.status.error'));
     }
   };
 
   const handleOnSave = () => {
-    const inputValue = refBookmark.current?.value || "";
+    const inputValue = refBookmark.current?.value || '';
     saveBookmark(inputValue);
   };
 

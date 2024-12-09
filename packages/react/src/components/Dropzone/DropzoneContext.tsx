@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 export interface DropzoneContextType {
   inputRef: React.MutableRefObject<HTMLInputElement | null>;
@@ -13,7 +13,7 @@ export const DropzoneContext = createContext<DropzoneContextType | null>(null);
 export function useDropzoneContext() {
   const context = useContext(DropzoneContext);
   if (!context) {
-    throw new Error("Cannot be rendered outside Dropzone Provider");
+    throw new Error('Cannot be rendered outside Dropzone Provider');
   }
   return context;
 }

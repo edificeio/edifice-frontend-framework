@@ -1,26 +1,26 @@
-import { IWidgetModel, WidgetPosition } from "../session/interfaces";
-import { widgets } from "./Framework";
+import { IWidgetModel, WidgetPosition } from '../session/interfaces';
+import { widgets } from './Framework';
 
 //-- Widgets name
 export const WIDGET_NAME = {
-  LAST_INFOS: "last-infos-widget",
-  BIRTHDAY: "birthday",
-  CALENDAR: "calendar-widget",
-  CARNET: "carnet-de-bord",
-  RECORD: "record-me",
-  MOOD: "mood",
-  MY_APPS: "my-apps",
-  NOTES: "notes",
-  RSS: "rss-widget",
-  BOOKMARK: "bookmark-widget",
-  QWANT: "qwant",
-  QWANT_JUNIOR: "qwant-junior",
-  AGENDA: "agenda-widget",
-  CURSUS: "cursus-widget",
-  MAXICOURS: "maxicours-widget",
-  UNIVERSALIS: "universalis-widget",
-  BRIEFME: "briefme-widget",
-  SCHOOL: "school-widget",
+  LAST_INFOS: 'last-infos-widget',
+  BIRTHDAY: 'birthday',
+  CALENDAR: 'calendar-widget',
+  CARNET: 'carnet-de-bord',
+  RECORD: 'record-me',
+  MOOD: 'mood',
+  MY_APPS: 'my-apps',
+  NOTES: 'notes',
+  RSS: 'rss-widget',
+  BOOKMARK: 'bookmark-widget',
+  QWANT: 'qwant',
+  QWANT_JUNIOR: 'qwant-junior',
+  AGENDA: 'agenda-widget',
+  CURSUS: 'cursus-widget',
+  MAXICOURS: 'maxicours-widget',
+  UNIVERSALIS: 'universalis-widget',
+  BRIEFME: 'briefme-widget',
+  SCHOOL: 'school-widget',
 } as const;
 export type WidgetName = (typeof WIDGET_NAME)[keyof typeof WIDGET_NAME];
 
@@ -59,7 +59,7 @@ export interface IWidget {
 }
 
 //-------------------------------------
-export type WidgetSpecificUserPrefs = "schoolId"; // lastest selected school id, in school-widget
+export type WidgetSpecificUserPrefs = 'schoolId'; // lastest selected school id, in school-widget
 //-------------------------------------
 
 //-------------------------------------
@@ -78,4 +78,4 @@ export type WidgetUserPref = {
 //-------------------------------------
 // WIDGETS
 //-------------------------------------
-export * from "./LastInfos.widget";
+export * from './LastInfos.widget';

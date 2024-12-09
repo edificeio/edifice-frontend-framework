@@ -1,18 +1,18 @@
-import { RefAttributes, useEffect, useMemo, useState } from "react";
+import { RefAttributes, useEffect, useMemo, useState } from 'react';
 
 import {
   Editor,
   findParentNodeClosestToPos,
   FloatingMenu,
   FloatingMenuProps,
-} from "@tiptap/react";
-import { useTranslation } from "react-i18next";
+} from '@tiptap/react';
+import { useTranslation } from 'react-i18next';
 
-import { IconButtonProps, Toolbar } from "../../../../components";
-import { IconMergeCells, IconSplitCells } from "../../../icons/components";
-import { TableToolbarAddMenu } from "./TableToolbar.AddMenu";
-import { TableToolbarCellColor } from "./TableToolbar.CellColor";
-import { TableToolbarDelMenu } from "./TableToolbar.DelMenu";
+import { IconButtonProps, Toolbar } from '../../../../components';
+import { IconMergeCells, IconSplitCells } from '../../../icons/components';
+import { TableToolbarAddMenu } from './TableToolbar.AddMenu';
+import { TableToolbarCellColor } from './TableToolbar.CellColor';
+import { TableToolbarDelMenu } from './TableToolbar.DelMenu';
 
 interface TableToolbarProps {
   /**
@@ -28,7 +28,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
   const [isSpan, setSpan] = useState<boolean | undefined>(undefined);
 
   // Options need some computing
-  const tippyOptions: FloatingMenuProps["tippyOptions"] = useMemo(() => {
+  const tippyOptions: FloatingMenuProps['tippyOptions'] = useMemo(() => {
     // Adjust a DOMRect to make it visible at a correct place.
     function adjustRect(rect: DOMRect) {
       let yOffset = 0;
@@ -43,16 +43,16 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
     }
 
     return {
-      placement: "bottom",
+      placement: 'bottom',
       offset: [0, 0],
       zIndex: 999,
       // popperOptions: {modifiers: [ /*see popper v2 modifiers*/ ]},
       // Try to get the bounding rect of the table.
       getReferenceClientRect: () => {
-        const parentDiv = editor?.isActive("table")
+        const parentDiv = editor?.isActive('table')
           ? findParentNodeClosestToPos(
               editor.state.selection.$anchor,
-              (node) => node.type.name === "table",
+              (node) => node.type.name === 'table',
             )
           : null;
 
@@ -63,7 +63,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
             | undefined;
 
           const tableDomNode =
-            parentDomNode?.querySelector("table") || parentDomNode;
+            parentDomNode?.querySelector('table') || parentDomNode;
           if (tableDomNode) {
             return adjustRect(tableDomNode.getBoundingClientRect());
           }
@@ -76,14 +76,14 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
   }, [editor]);
 
   useEffect(() => {
-    const cellAttr = editor?.getAttributes("tableCell");
-    const headAttr = editor?.getAttributes("tableHeader");
-    if (typeof cellAttr !== "undefined" || typeof headAttr !== "undefined") {
+    const cellAttr = editor?.getAttributes('tableCell');
+    const headAttr = editor?.getAttributes('tableHeader');
+    if (typeof cellAttr !== 'undefined' || typeof headAttr !== 'undefined') {
       const newSpan =
-        cellAttr?.["colspan"] > 1 ||
-        cellAttr?.["rowspan"] > 1 ||
-        headAttr?.["colspan"] > 1 ||
-        headAttr?.["rowspan"] > 1;
+        cellAttr?.['colspan'] > 1 ||
+        cellAttr?.['rowspan'] > 1 ||
+        headAttr?.['colspan'] > 1 ||
+        headAttr?.['rowspan'] > 1;
       newSpan !== isSpan && setSpan(newSpan);
     } else {
       isSpan && setSpan(undefined);
@@ -91,7 +91,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
   }, [editor, editor?.state, isSpan]);
 
   const handleShouldShow = () =>
-    (editor?.isEditable && editor.isActive("table")) || false;
+    (editor?.isEditable && editor.isActive('table')) || false;
 
   return (
     <>
@@ -105,14 +105,14 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
             className="p-4"
             items={[
               {
-                type: "dropdown",
-                name: "bkg-col",
+                type: 'dropdown',
+                name: 'bkg-col',
                 // isEnable:
                 //   typeof editor?.getAttributes("tableCell") !== "undefined",
                 props: {
                   children: (
                     _triggerProps: JSX.IntrinsicAttributes &
-                      Omit<IconButtonProps, "ref"> &
+                      Omit<IconButtonProps, 'ref'> &
                       RefAttributes<HTMLButtonElement>,
                     itemRefs,
                   ) => (
@@ -124,38 +124,38 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
                 },
               },
               {
-                type: "icon",
-                name: "mergeorsplit",
+                type: 'icon',
+                name: 'mergeorsplit',
                 // isEnable: typeof isSpan !== "undefined",
                 props: {
-                  "icon": isSpan ? <IconSplitCells /> : <IconMergeCells />,
-                  "aria-label": isSpan
-                    ? t("tiptap.table.toolbar.split")
-                    : t("tiptap.table.toolbar.merge"),
-                  "onClick": () => editor?.chain().focus().mergeOrSplit().run(),
+                  'icon': isSpan ? <IconSplitCells /> : <IconMergeCells />,
+                  'aria-label': isSpan
+                    ? t('tiptap.table.toolbar.split')
+                    : t('tiptap.table.toolbar.merge'),
+                  'onClick': () => editor?.chain().focus().mergeOrSplit().run(),
                 },
                 tooltip: isSpan
-                  ? t("tiptap.table.toolbar.split")
-                  : t("tiptap.table.toolbar.merge"),
+                  ? t('tiptap.table.toolbar.split')
+                  : t('tiptap.table.toolbar.merge'),
               },
               {
-                type: "divider",
-                name: "add-d0",
+                type: 'divider',
+                name: 'add-d0',
               },
               {
-                type: "dropdown",
-                name: "add",
+                type: 'dropdown',
+                name: 'add',
                 props: {
                   children: () => <TableToolbarAddMenu editor={editor} />,
                 },
               },
               {
-                type: "divider",
-                name: "add-d1",
+                type: 'divider',
+                name: 'add-d1',
               },
               {
-                type: "dropdown",
-                name: "del",
+                type: 'dropdown',
+                name: 'del',
                 props: {
                   children: () => <TableToolbarDelMenu editor={editor} />,
                 },

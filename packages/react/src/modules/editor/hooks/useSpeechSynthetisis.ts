@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import { odeServices } from "@edifice.io/ts-client";
-import { Editor } from "@tiptap/react";
+import { odeServices } from '@edifice.io/ts-client';
+import { Editor } from '@tiptap/react';
 
 /**
  * Custom hook to manage speech synthetisis.
@@ -19,7 +19,7 @@ export const useSpeechSynthetisis = (editor: Editor | null) => {
       setActivated(false);
       return false;
     } else {
-      odeServices.data().trackSpeechAndText("TTS");
+      odeServices.data().trackSpeechAndText('TTS');
       const speech = editor?.commands.startSpeechSynthesis() || false;
       setActivated(speech);
       return speech;

@@ -1,38 +1,38 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from 'react';
 
-import { UserProfile } from "@edifice.io/ts-client";
-import clsx from "clsx";
+import { UserProfile } from '@edifice.io/ts-client';
+import clsx from 'clsx';
 
 export type BadgeRef = HTMLSpanElement;
 
 /** Badge variant : notification */
 export type NotificationBadgeVariant = {
-  type: "notification";
-  level: "success" | "warning" | "danger" | "info";
+  type: 'notification';
+  level: 'success' | 'warning' | 'danger' | 'info';
 };
 
 /** Badge variant : content */
 export type ContentBadgeVariant = {
-  type: "content";
-  level: "success" | "warning" | "danger" | "info";
+  type: 'content';
+  level: 'success' | 'warning' | 'danger' | 'info';
   background?: boolean;
 };
 
 /** Badge variant : profile = teacher, student, relative or personnel, guest */
 export type ProfileBadgeVariant = {
-  type: "user";
+  type: 'user';
   profile: UserProfile[number];
   background?: boolean;
 };
 
 /** Badge variant : chip */
 export type ChipBadgeVariant = {
-  type: "chip";
+  type: 'chip';
 };
 
 /** Badge variant : link */
 export type LinkBadgeVariant = {
-  type: "link";
+  type: 'link';
 };
 
 export type BadgeVariants =
@@ -42,7 +42,7 @@ export type BadgeVariants =
   | ChipBadgeVariant
   | LinkBadgeVariant;
 
-export interface BadgeProps extends React.ComponentPropsWithRef<"span"> {
+export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   /**
    * Badge variant : notification, link or profile (Teacher|Student|Relative|Personnel)
    * Defaults to notification.
@@ -65,34 +65,34 @@ const Badge = forwardRef(
   (
     {
       className,
-      variant = { type: "notification", level: "info" },
+      variant = { type: 'notification', level: 'info' },
       children,
       ...restProps
     }: BadgeProps,
     ref: Ref<BadgeRef>,
   ) => {
     const classes = clsx(
-      "badge rounded-pill",
-      (variant.type === "content" || variant.type === "user") &&
-        "background" in variant
-        ? "bg-gray-200"
-        : (variant.type === "content" || variant.type === "user") &&
-            !("background" in variant)
-          ? "border border-0"
-          : "",
-      variant.type === "content" && `text-${variant.level}`,
-      variant.type === "notification" &&
+      'badge rounded-pill',
+      (variant.type === 'content' || variant.type === 'user') &&
+        'background' in variant
+        ? 'bg-gray-200'
+        : (variant.type === 'content' || variant.type === 'user') &&
+            !('background' in variant)
+          ? 'border border-0'
+          : '',
+      variant.type === 'content' && `text-${variant.level}`,
+      variant.type === 'notification' &&
         `badge-notification bg-${variant.level} text-light border border-0`,
-      variant.type === "user" &&
+      variant.type === 'user' &&
         `badge-profile-${variant.profile.toLowerCase()}`,
-      variant.type === "link" && "badge-link border border-0",
-      variant.type === "chip" && "bg-gray-200",
+      variant.type === 'link' && 'badge-link border border-0',
+      variant.type === 'chip' && 'bg-gray-200',
       className,
     );
 
     return (
       <span ref={ref} className={classes} {...restProps}>
-        {variant.type === "chip" ? (
+        {variant.type === 'chip' ? (
           <div className="d-flex fw-800 align-items-center">{children}</div>
         ) : (
           children

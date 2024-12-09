@@ -1,7 +1,7 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { IconDeleteColor } from "../../modules/icons/components";
-import { ColorPaletteItem } from "./ColorPalette";
+import { IconDeleteColor } from '../../modules/icons/components';
+import { ColorPaletteItem } from './ColorPalette';
 
 export interface ColorPickerItemProps {
   /**
@@ -29,15 +29,15 @@ const ColorPickerItem = ({
     <div
       aria-label={model.description}
       className={clsx(
-        "color-picker-hue-color-item rounded-1",
+        'color-picker-hue-color-item rounded-1',
         className,
-        model.hue === "light" ? "light" : "dark",
-        selected && "selected",
+        model.hue === 'light' ? 'light' : 'dark',
+        selected && 'selected',
       )}
       style={{ backgroundColor: model.value }}
     />
   );
 
-ColorPickerItem.displayName = "ColorPickerItem";
+ColorPickerItem.displayName = 'ColorPickerItem';
 
 export default ColorPickerItem;

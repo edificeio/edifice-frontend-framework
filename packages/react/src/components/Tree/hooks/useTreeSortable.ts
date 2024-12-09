@@ -13,11 +13,11 @@ import {
   defaultDropAnimation,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
-import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { useEffect, useMemo, useState } from "react";
-import { FlattenedItem, TreeItem, UpdateTreeData } from "../types";
+} from '@dnd-kit/core';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import { useEffect, useMemo, useState } from 'react';
+import { FlattenedItem, TreeItem, UpdateTreeData } from '../types';
 import {
   buildTree,
   determineNewParentId,
@@ -27,7 +27,7 @@ import {
   getIndicesToUpdate,
   getProjection,
   updateParentIds,
-} from "../utilities/tree-sortable";
+} from '../utilities/tree-sortable';
 
 export const useTreeSortable = ({
   nodes,
@@ -166,7 +166,7 @@ export const useTreeSortable = ({
     overId?: UniqueIdentifier,
   ) {
     if (overId && projected) {
-      if (eventName !== "onDragEnd") {
+      if (eventName !== 'onDragEnd') {
         if (
           currentPosition &&
           projected.parentId === currentPosition.parentId &&
@@ -191,8 +191,8 @@ export const useTreeSortable = ({
       const previousItem = sortedItems[overIndex - 1];
 
       let announcement;
-      const movedVerb = eventName === "onDragEnd" ? "dropped" : "moved";
-      const nestedVerb = eventName === "onDragEnd" ? "dropped" : "nested";
+      const movedVerb = eventName === 'onDragEnd' ? 'dropped' : 'moved';
+      const nestedVerb = eventName === 'onDragEnd' ? 'dropped' : 'nested';
 
       if (!previousItem) {
         const nextItem = sortedItems[overIndex + 1];
@@ -228,13 +228,13 @@ export const useTreeSortable = ({
       return `Picked up ${active.id}.`;
     },
     onDragMove({ active, over }) {
-      return getMovementAnnouncement("onDragMove", active.id, over?.id);
+      return getMovementAnnouncement('onDragMove', active.id, over?.id);
     },
     onDragOver({ active, over }) {
-      return getMovementAnnouncement("onDragOver", active.id, over?.id);
+      return getMovementAnnouncement('onDragOver', active.id, over?.id);
     },
     onDragEnd({ active, over }) {
-      return getMovementAnnouncement("onDragEnd", active.id, over?.id);
+      return getMovementAnnouncement('onDragEnd', active.id, over?.id);
     },
     onDragCancel({ active }) {
       return `Moving was cancelled. ${active.id} was dropped in its original position.`;
@@ -255,7 +255,7 @@ export const useTreeSortable = ({
         },
       ];
     },
-    easing: "ease-out",
+    easing: 'ease-out',
     sideEffects({ active }) {
       active.node.animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: defaultDropAnimation.duration,

@@ -1,10 +1,10 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export interface SpeechRecognitionOptions {
   lang: string;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     SpeechRecognition: {
       startSpeechRecognition: () => ReturnType;
@@ -28,17 +28,17 @@ class SR_Node<O = any, S = any> extends Node<O, S> {
 }
 
 export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
-  name: "SpeechRecognition",
+  name: 'SpeechRecognition',
 
   addOptions() {
     return {
-      lang: "fr-FR",
+      lang: 'fr-FR',
     };
   },
 
   onCreate() {
     if (
-      !("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
+      !('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
     ) {
       console.warn(
         '"@edifice.io/tiptap-extensions/speechrecognition" requires a browser supporting the SpeechRecognition API".',
@@ -66,7 +66,7 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
           let { from, to } = this.editor.state.selection;
 
           this.recognition.onresult = (event: SpeechRecognitionEvent) => {
-            let currentResult = "";
+            let currentResult = '';
 
             // Add to the currentResult variable the content of the last recognized sentence
             for (let i = event.resultIndex; i < event.results.length; i++) {

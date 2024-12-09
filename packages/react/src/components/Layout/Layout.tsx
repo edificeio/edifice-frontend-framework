@@ -1,14 +1,14 @@
-import { ComponentPropsWithoutRef, type ReactNode } from "react";
+import { ComponentPropsWithoutRef, type ReactNode } from 'react';
 
-import clsx from "clsx";
-import { Toaster } from "react-hot-toast";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { Toaster } from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
-import { Alert, Button } from "..";
-import { useCantoo, useZendeskGuide } from "../../hooks";
-import { useCookiesConsent } from "../../hooks/useCookiesConsent";
-import { useEdificeTheme } from "../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
-import Header from "./components/Header";
+import { Alert, Button } from '..';
+import { useCantoo, useZendeskGuide } from '../../hooks';
+import { useCookiesConsent } from '../../hooks/useCookiesConsent';
+import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import Header from './components/Header';
 
 export interface LayoutProps extends ComponentPropsWithoutRef<any> {
   /**  Main content of an application */
@@ -36,10 +36,10 @@ export const Layout = ({
 
   useCantoo();
 
-  const classes = clsx("d-flex flex-column bg-white", {
-    "container-fluid": !headless,
-    "rounded-4 border": theme?.is1d && !headless,
-    "mt-24": theme?.is1d && !headless,
+  const classes = clsx('d-flex flex-column bg-white', {
+    'container-fluid': !headless,
+    'rounded-4 border': theme?.is1d && !headless,
+    'mt-24': theme?.is1d && !headless,
   });
 
   const renderHeader = !headless ? (
@@ -54,12 +54,12 @@ export const Layout = ({
       position="bottom-right"
       button={
         <Button color="tertiary" variant="ghost" onClick={handleConsultCookies}>
-          {t("rgpd.cookies.banner.button.consult")}
+          {t('rgpd.cookies.banner.button.consult')}
         </Button>
       }
       onClose={handleCloseCookiesConsent}
     >
-      {t("rgpd.cookies.banner.text1")}
+      {t('rgpd.cookies.banner.text1')}
     </Alert>
   );
 
@@ -67,7 +67,7 @@ export const Layout = ({
     <Toaster
       containerClassName="toaster-container"
       toastOptions={{
-        position: "top-right",
+        position: 'top-right',
       }}
     />
   );
@@ -86,6 +86,6 @@ export const Layout = ({
   );
 };
 
-Layout.displayName = "Layout";
+Layout.displayName = 'Layout';
 
 export default Layout;

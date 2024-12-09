@@ -1,14 +1,14 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import LinkerCard from "./LinkerCard";
+import LinkerCard from './LinkerCard';
 
 const baseResource = {
-  id: "1",
-  assetId: "1",
-  name: "resource title here",
-  creatorId: "john",
-  creatorName: "John Doe",
-  modifiedAt: "2000-01-01T01:00:00.000Z",
+  id: '1',
+  assetId: '1',
+  name: 'resource title here',
+  creatorId: 'john',
+  creatorName: 'John Doe',
+  modifiedAt: '2000-01-01T01:00:00.000Z',
   thumbnail: null as unknown as string,
   description: null as unknown as string,
   createdAt: null as unknown as string,
@@ -20,14 +20,14 @@ const baseResource = {
 };
 
 const meta: Meta<typeof LinkerCard> = {
-  title: "Components/Card/Linker Card",
+  title: 'Components/Card/Linker Card',
   component: LinkerCard,
   args: {
     isSelectable: false,
     isClickable: true,
     isSelected: false,
     doc: Object.assign({}, baseResource, {
-      application: "",
+      application: '',
     }),
   },
 };
@@ -43,13 +43,13 @@ export const Base: Story = {
 
 export const TimelineGenerator: Story = {
   render: (args) => {
-    args.doc.application = "timelinegenerator";
+    args.doc.application = 'timelinegenerator';
     return <LinkerCard {...args} />;
   },
   parameters: {
     docs: {
       description: {
-        story: "A timelinegenerator card",
+        story: 'A timelinegenerator card',
       },
     },
   },
@@ -57,13 +57,13 @@ export const TimelineGenerator: Story = {
 
 export const Blog: Story = {
   render: (args) => {
-    args.doc.application = "blog";
+    args.doc.application = 'blog';
     return <LinkerCard {...args} />;
   },
   parameters: {
     docs: {
       description: {
-        story: "A blog card",
+        story: 'A blog card',
       },
     },
   },

@@ -1,1 +1,1 @@
-export * from "./MockedDataProvider";
+export * from './MockedDataProvider';

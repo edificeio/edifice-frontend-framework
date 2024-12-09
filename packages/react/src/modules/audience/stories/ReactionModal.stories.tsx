@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { ReactionDetailsData } from "@edifice.io/ts-client";
-import { ReactionModal } from "..";
-import { Button } from "../../../components";
-import { useToggle } from "../../../hooks";
+import { ReactionDetailsData } from '@edifice.io/ts-client';
+import { ReactionModal } from '..';
+import { Button } from '../../../components';
+import { useToggle } from '../../../hooks';
 
 const mockedData: ReactionDetailsData = {
   reactionCounters: {
@@ -17,42 +17,42 @@ const mockedData: ReactionDetailsData = {
   },
   userReactions: [
     {
-      displayName: "Ramirez Noname",
-      userId: "toto-1",
-      profile: "Teacher",
-      reactionType: "REACTION_1",
+      displayName: 'Ramirez Noname',
+      userId: 'toto-1',
+      profile: 'Teacher',
+      reactionType: 'REACTION_1',
     },
     {
-      displayName: "Connor MacLeod",
-      userId: "toto-2",
-      profile: "Teacher",
-      reactionType: "REACTION_2",
+      displayName: 'Connor MacLeod',
+      userId: 'toto-2',
+      profile: 'Teacher',
+      reactionType: 'REACTION_2',
     },
     {
-      displayName: "Tom Saw-a-year",
-      userId: "toto-3",
-      profile: "Student",
-      reactionType: "REACTION_3",
+      displayName: 'Tom Saw-a-year',
+      userId: 'toto-3',
+      profile: 'Student',
+      reactionType: 'REACTION_3',
     },
     {
       displayName: "Jack o'Clubs",
-      userId: "toto-4",
-      profile: "Relative",
-      reactionType: "REACTION_4",
+      userId: 'toto-4',
+      profile: 'Relative',
+      reactionType: 'REACTION_4',
     },
     {
       displayName:
         'Richard "Le bien nommé" Lionheart, a.k.a. Richard Coeur-de-Lion en français, a.k.a. 🍚🛒💚➁🦁',
-      userId: "toto-5",
-      profile: "Personnel",
-      reactionType: "REACTION_1",
+      userId: 'toto-5',
+      profile: 'Personnel',
+      reactionType: 'REACTION_1',
     },
   ],
 };
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ReactionModal> = {
-  title: "Modules/Audience/Reactions modal",
+  title: 'Modules/Audience/Reactions modal',
   component: ReactionModal,
   // decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
   args: {
@@ -73,14 +73,14 @@ const meta: Meta<typeof ReactionModal> = {
   },
   argTypes: {
     pageSize: {
-      control: { type: "input" },
+      control: { type: 'input' },
     },
   },
   parameters: {
     docs: {
       description: {
         component:
-          "ReactionModal is a component that displays a paginated list of user reactions to a resource. It shows reaction counters and detailed user information including display names, profiles, and reaction types. The modal supports pagination with customizable page sizes and uses a loader function to fetch reaction details asynchronously.",
+          'ReactionModal is a component that displays a paginated list of user reactions to a resource. It shows reaction counters and detailed user information including display names, profiles, and reaction types. The modal supports pagination with customizable page sizes and uses a loader function to fetch reaction details asynchronously.',
       },
     },
   },

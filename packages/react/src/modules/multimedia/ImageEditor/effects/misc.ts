@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 // Define (in pixel) the minimal height the sprite should have
 const MIN_HEIGHT = 100;
@@ -12,7 +12,7 @@ const MODAL_HORIZONTAL_PADDING = 64;
 const DEFAULT_QUALITY = 0.5;
 
 // Define the default name of the sprite in the PIXI.Application context
-export const DEFAULT_SPRITE_NAME = "image";
+export const DEFAULT_SPRITE_NAME = 'image';
 
 /**
  * A structure that define all setting of an image
@@ -235,13 +235,13 @@ export function saveAsBlob(application: PIXI.Application): Promise<Blob> {
     if (application?.view?.toBlob) {
       application.view.toBlob(
         (blob) => {
-          blob ? resolve(blob) : reject("EXTRACT_FAILED");
+          blob ? resolve(blob) : reject('EXTRACT_FAILED');
         },
-        "image/jpeg",
+        'image/jpeg',
         DEFAULT_QUALITY,
       );
     } else {
-      reject("EXTRACT_FAILED");
+      reject('EXTRACT_FAILED');
     }
   });
 }
@@ -279,10 +279,10 @@ export function toBlob(application: PIXI.Application) {
         if (blob) {
           resolve(blob);
         } else {
-          reject("EXTRACT_FAIL");
+          reject('EXTRACT_FAIL');
         }
       },
-      "image/png",
+      'image/png',
       1,
     );
   });
