@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",
-    "axios": "^1.7.2",
+    "axios": "^1.7.7",
     "core-js": "^3.35.1"
   },
   "devDependencies": {
