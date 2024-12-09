@@ -1,16 +1,16 @@
-import { UserProfile } from "@edifice.io/ts-client";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Button } from "../../..";
-import { IconSave } from "../../icons/components";
-import { useAutosizeTextarea } from "../hooks/useAutosizeTextarea";
-import { useCommentsContext } from "../hooks/useCommentsContext";
-import { CommentProps } from "../types";
-import { BadgeProfile } from "./BadgeProfile";
-import { CommentAvatar } from "./CommentAvatar";
-import { CommentDate } from "./CommentDate";
-import { CommentTitle } from "./CommentTitle";
-import { TextCounter } from "./TextCounter";
+import { UserProfile } from '@edifice.io/ts-client';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button } from '../../..';
+import { IconSave } from '../../icons/components';
+import { useAutosizeTextarea } from '../hooks/useAutosizeTextarea';
+import { useCommentsContext } from '../hooks/useCommentsContext';
+import { CommentProps } from '../types';
+import { BadgeProfile } from './BadgeProfile';
+import { CommentAvatar } from './CommentAvatar';
+import { CommentDate } from './CommentDate';
+import { CommentTitle } from './CommentTitle';
+import { TextCounter } from './TextCounter';
 
 export const Comment = ({
   comment,
@@ -21,7 +21,7 @@ export const Comment = ({
   userId: string;
   profile: UserProfile[number];
 }) => {
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>('');
 
   const {
     id,
@@ -60,8 +60,8 @@ export const Comment = ({
       key={id}
       className={`${
         isEditing
-          ? "border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16"
-          : "border rounded-3 p-12 pb-8 d-flex gap-12 mt-16"
+          ? 'border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16'
+          : 'border rounded-3 p-12 pb-8 d-flex gap-12 mt-16'
       }`}
     >
       <CommentAvatar id={authorId} />
@@ -80,11 +80,11 @@ export const Comment = ({
                 ref={ref}
                 value={value}
                 className="form-control"
-                placeholder={t("comment.placeholder")}
+                placeholder={t('comment.placeholder')}
                 maxLength={options.maxCommentLength as number}
                 onChange={handleChangeContent}
                 rows={1}
-                style={{ resize: "none", overflow: "hidden" }}
+                style={{ resize: 'none', overflow: 'hidden' }}
                 onFocus={onFocus}
               />
             </div>
@@ -95,7 +95,7 @@ export const Comment = ({
                 size="sm"
                 onClick={handleReset}
               >
-                {t("comment.cancel")}
+                {t('comment.cancel')}
               </Button>
               <div className="d-flex justify-content-end align-items-center gap-4">
                 <TextCounter
@@ -110,7 +110,7 @@ export const Comment = ({
                   disabled={!content?.length}
                   onClick={() => handleUpdateComment(value)}
                 >
-                  {t("comment.save")}
+                  {t('comment.save')}
                 </Button>
               </div>
             </div>
@@ -119,7 +119,7 @@ export const Comment = ({
           <>
             <div className="mt-8 mb-4">{content}</div>
 
-            {userId === authorId && type === "edit" && (
+            {userId === authorId && type === 'edit' && (
               <div className="ms-n8">
                 <Button
                   variant="ghost"
@@ -130,7 +130,7 @@ export const Comment = ({
                     setValue(content);
                   }}
                 >
-                  {t("comment.edit")}
+                  {t('comment.edit')}
                 </Button>
                 <Button
                   variant="ghost"
@@ -138,7 +138,7 @@ export const Comment = ({
                   size="sm"
                   onClick={() => onDeleteComment(id)}
                 >
-                  {t("comment.remove")}
+                  {t('comment.remove')}
                 </Button>
               </div>
             )}

@@ -1,28 +1,28 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import FileCard from "./FileCard";
+import FileCard from './FileCard';
 
 const meta: Meta<typeof FileCard> = {
-  title: "Components/Card/File Card",
+  title: 'Components/Card/File Card',
   component: FileCard,
   args: {
     isSelectable: false,
     isClickable: true,
     isSelected: false,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
     },
   },
-  decorators: [(Story) => <div style={{ width: "16rem" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ width: '16rem' }}>{Story()}</div>],
 };
 
 export default meta;
@@ -41,25 +41,25 @@ export const AudioFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "audio/mp3",
+        'content-type': 'audio/mp3',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: mp3, wav, ...",
+        story: 'Formats supported: mp3, wav, ...',
       },
     },
   },
@@ -72,25 +72,25 @@ export const ImageFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "image/png",
+        'content-type': 'image/png',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: png, jpg, svg, tiff, ...",
+        story: 'Formats supported: png, jpg, svg, tiff, ...',
       },
     },
   },
@@ -103,25 +103,25 @@ export const VideoFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "video/mp4",
+        'content-type': 'video/mp4',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: mp4, avi, mov, webm ...",
+        story: 'Formats supported: mp4, avi, mov, webm ...',
       },
     },
   },
@@ -134,18 +134,18 @@ export const TextFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "text/plain",
+        'content-type': 'text/plain',
       },
     },
   },
@@ -158,18 +158,18 @@ export const DocFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "application/msword",
+        'content-type': 'application/msword',
       },
     },
   },
@@ -177,7 +177,7 @@ export const DocFile: Story = {
     docs: {
       description: {
         story:
-          "Formats supported: dot, docx, dotx, docm, dotm, odt, ott, oth, odm",
+          'Formats supported: dot, docx, dotx, docm, dotm, odt, ott, oth, odm',
       },
     },
   },
@@ -189,18 +189,18 @@ export const PptFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "application/vnd.ms-powerpoint",
+        'content-type': 'application/vnd.ms-powerpoint',
       },
     },
   },
@@ -208,7 +208,7 @@ export const PptFile: Story = {
     docs: {
       description: {
         story:
-          "Formats supported: ppt, pot, pps, ppa, pptx, potx, ppsx, ppam, pptm, potm, ppsm, odp, otp",
+          'Formats supported: ppt, pot, pps, ppa, pptx, potx, ppsx, ppam, pptm, potm, ppsm, odp, otp',
       },
     },
   },
@@ -221,18 +221,18 @@ export const PdfFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "application/pdf",
+        'content-type': 'application/pdf',
       },
     },
   },
@@ -245,25 +245,25 @@ export const ZipFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "application/zip",
+        'content-type': 'application/zip',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: zip, rar, tar, 7z",
+        story: 'Formats supported: zip, rar, tar, 7z',
       },
     },
   },
@@ -276,25 +276,25 @@ export const CsvFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "text/csv",
+        'content-type': 'text/csv',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: csv",
+        story: 'Formats supported: csv',
       },
     },
   },
@@ -307,18 +307,18 @@ export const XlsFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "application/vnd.ms-excel",
+        'content-type': 'application/vnd.ms-excel',
       },
     },
   },
@@ -326,7 +326,7 @@ export const XlsFile: Story = {
     docs: {
       description: {
         story:
-          "Formats supported: xls, xlt, xla, xlsx, xltx, xlsm, xltm, xlam, xlsb, ods, ots",
+          'Formats supported: xls, xlt, xla, xlsx, xltx, xlsm, xltm, xlam, xlsb, ods, ots',
       },
     },
   },
@@ -339,25 +339,25 @@ export const MdFile: Story = {
   args: {
     ...Base.args,
     doc: {
-      _id: "1",
+      _id: '1',
       name: "File's name",
-      eType: "file",
-      eParent: "",
+      eType: 'file',
+      eParent: '',
       _isShared: false,
       _shared: [],
       children: null!,
       created: null as any,
       owner: null as any,
-      ownerName: "Tom mate",
+      ownerName: 'Tom mate',
       metadata: {
-        "content-type": "text/markdown",
+        'content-type': 'text/markdown',
       },
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Formats supported: md",
+        story: 'Formats supported: md',
       },
     },
   },

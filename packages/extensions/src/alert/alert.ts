@@ -1,10 +1,10 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export const Alert = Node.create({
-  name: "alert",
-  content: "inline+",
-  marks: "",
-  group: "block",
+  name: 'alert',
+  content: 'inline+',
+  marks: '',
+  group: 'block',
 
   inline: false,
   selectable: true,
@@ -13,19 +13,19 @@ export const Alert = Node.create({
   parseHTML() {
     return [
       {
-        tag: "p.info",
+        tag: 'p.info',
         priority: 60,
       },
       {
-        tag: "p.warning",
+        tag: 'p.warning',
         priority: 60,
       },
       {
-        tag: "div.info",
+        tag: 'div.info',
         priority: 60,
       },
       {
-        tag: "div.warning",
+        tag: 'div.warning',
         priority: 60,
       },
     ];
@@ -33,14 +33,14 @@ export const Alert = Node.create({
   addAttributes() {
     return {
       class: {
-        default: "info",
+        default: 'info',
         parseHTML: (element) => {
-          return element.getAttribute("class");
+          return element.getAttribute('class');
         },
       },
     };
   },
   renderHTML({ HTMLAttributes }) {
-    return ["div", HTMLAttributes, 0];
+    return ['div', HTMLAttributes, 0];
   },
 });

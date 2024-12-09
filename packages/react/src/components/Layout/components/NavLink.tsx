@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
-import { VisuallyHidden } from "../..";
+import clsx from 'clsx';
+import { VisuallyHidden } from '../..';
 
 export interface NavLinkProps<T> {
   /**
@@ -33,7 +33,7 @@ export function NavLink({
   translate,
   ...restProps
 }: NavLinkProps<string>) {
-  const classes = clsx("nav-link", className);
+  const classes = clsx('nav-link', className);
 
   return (
     <a href={link} className={classes} {...restProps}>

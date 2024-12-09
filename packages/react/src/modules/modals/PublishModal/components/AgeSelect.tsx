@@ -1,8 +1,8 @@
-import { Control, Controller, FieldValues, Validate } from "react-hook-form";
+import { Control, Controller, FieldValues, Validate } from 'react-hook-form';
 
-import { Select } from "../../../../components";
-import { ageOptions } from "../constants/ageOptions";
-import { FormDataProps } from "../hooks/usePublishModal";
+import { Select } from '../../../../components';
+import { ageOptions } from '../constants/ageOptions';
+import { FormDataProps } from '../hooks/usePublishModal';
 
 export const AgeSelect = ({
   name,
@@ -10,7 +10,7 @@ export const AgeSelect = ({
   placeholderOption,
   validate,
 }: {
-  name: "ageMin" | "ageMax";
+  name: 'ageMin' | 'ageMax';
   control: Control<FormDataProps, any>;
   placeholderOption: string;
   validate:

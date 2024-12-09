@@ -1,2 +1,2 @@
-export { default as EmptyScreen } from "./EmptyScreen";
-export * from "./EmptyScreen";
+export { default as EmptyScreen } from './EmptyScreen';
+export * from './EmptyScreen';

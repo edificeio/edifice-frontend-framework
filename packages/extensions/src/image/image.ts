@@ -1,8 +1,8 @@
-import { WorkspaceElement } from "@edifice.io/ts-client";
-import { ImageResizer } from "@edifice.io/utilities";
-import { mergeAttributes, nodeInputRule } from "@tiptap/core";
-import TiptapImage from "@tiptap/extension-image";
-import { Plugin } from "prosemirror-state";
+import { WorkspaceElement } from '@edifice.io/ts-client';
+import { ImageResizer } from '@edifice.io/utilities';
+import { mergeAttributes, nodeInputRule } from '@tiptap/core';
+import TiptapImage from '@tiptap/extension-image';
+import { Plugin } from 'prosemirror-state';
 
 export const IMAGE_INPUT_REGEX =
   /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
@@ -19,7 +19,7 @@ interface AttributesProps {
   size: string;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     customImage: {
       setAttributes: (options: AttributesProps) => ReturnType;
@@ -33,7 +33,7 @@ declare module "@tiptap/core" {
 }
 
 export const Image = TiptapImage.extend<CustomImageOptions>({
-  name: "custom-image",
+  name: 'custom-image',
   draggable: true,
   selectable: true,
 
@@ -41,10 +41,10 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
     return {
       ...this.parent?.(),
       inline: true,
-      content: "inline*",
-      sizes: ["small", "medium", "large"],
+      content: 'inline*',
+      sizes: ['small', 'medium', 'large'],
       HTMLAttributes: {
-        class: "custom-image",
+        class: 'custom-image',
       },
       uploadFile: () => {
         return Promise.resolve(null);
@@ -56,7 +56,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
     return {
       ...this.parent?.(),
       size: {
-        default: "medium",
+        default: 'medium',
         rendered: false,
       },
       alt: {
@@ -65,7 +65,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             alt: attributes.alt,
           };
         },
-        parseHTML: (element) => element.getAttribute("alt"),
+        parseHTML: (element) => element.getAttribute('alt'),
       },
       title: {
         renderHTML: (attributes) => {
@@ -73,10 +73,10 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             title: attributes.title,
           };
         },
-        parseHTML: (element) => element.getAttribute("title"),
+        parseHTML: (element) => element.getAttribute('title'),
       },
       width: {
-        default: "350",
+        default: '350',
         renderHTML: (attributes) => {
           if (
             attributes.width !== null &&
@@ -89,7 +89,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
           }
           return {};
         },
-        parseHTML: (element) => element.getAttribute("width"),
+        parseHTML: (element) => element.getAttribute('width'),
       },
       height: {
         renderHTML: (attributes) => {
@@ -104,7 +104,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
           }
           return {};
         },
-        parseHTML: (element) => element.getAttribute("height"),
+        parseHTML: (element) => element.getAttribute('height'),
       },
       style: {
         renderHTML: (attributes) => {
@@ -115,8 +115,8 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             : {};
         },
         parseHTML: (element) => {
-          const style = element.getAttribute("style");
-          return style && typeof style === "string" && style.length > 0
+          const style = element.getAttribute('style');
+          return style && typeof style === 'string' && style.length > 0
             ? {}
             : null;
         },
@@ -129,41 +129,41 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
       {
         tag: 'img[src]:not([src^="data:"])',
         getAttrs: (el: HTMLImageElement) => {
-          const attr = { src: el.getAttribute("src") };
+          const attr = { src: el.getAttribute('src') };
           // Check old content format and get the width from the parent element
-          if (el.parentElement?.className.includes("image-container")) {
+          if (el.parentElement?.className.includes('image-container')) {
             if (el.parentElement.style?.width) {
-              attr["width"] = el.parentElement.style.width;
+              attr['width'] = el.parentElement.style.width;
             }
           }
           if (el.style?.width) {
-            attr["width"] = el.style.width;
+            attr['width'] = el.style.width;
           }
 
           // Check old content smiley
           const oldSmileyList = [
-            "happy",
-            "proud",
-            "dreamy",
-            "love",
-            "tired",
-            "angry",
-            "worried",
-            "sick",
-            "joker",
-            "sad",
+            'happy',
+            'proud',
+            'dreamy',
+            'love',
+            'tired',
+            'angry',
+            'worried',
+            'sick',
+            'joker',
+            'sad',
           ];
           if (
-            oldSmileyList.filter((smiley) => attr.src.includes(smiley + ".png"))
+            oldSmileyList.filter((smiley) => attr.src.includes(smiley + '.png'))
               .length > 0
           ) {
-            attr["style"] = {
-              width: "1.5em",
-              height: "1.5em",
+            attr['style'] = {
+              width: '1.5em',
+              height: '1.5em',
               fontSize: el.parentElement?.style?.fontSize,
             };
-            attr["width"] = "null";
-            attr["height"] = "null";
+            attr['width'] = 'null';
+            attr['height'] = 'null';
           }
           return attr;
         },
@@ -173,7 +173,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
 
   renderHTML({ HTMLAttributes }) {
     return [
-      "img",
+      'img',
       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
     ];
   },
@@ -246,7 +246,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
       /**
        * Get the image url
        */
-      const imageUrl = `/workspace/${image.public ? "pub/" : ""}document/${
+      const imageUrl = `/workspace/${image.public ? 'pub/' : ''}document/${
         image._id
       }?timestamp=${new Date().getTime()}`;
 

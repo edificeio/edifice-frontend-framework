@@ -1,5 +1,5 @@
-@use "../vendors/bootstrap";
-@use "../abstracts/" as *;
+@use '../vendors/bootstrap';
+@use '../abstracts/' as *;
 
 .actionbar {
   --#{$prefix}actionbar-background-color: var(--#{$prefix}primary);
@@ -29,7 +29,7 @@
     }
   }
 
-  @include data-product("one") {
+  @include data-product('one') {
     --#{$prefix}actionbar-background-color: var(--#{$prefix}primary);
     --#{$prefix}actionbar-font-size: 2.3rem;
     --#{$prefix}actionbar-font-size-mobile: 1.8rem;

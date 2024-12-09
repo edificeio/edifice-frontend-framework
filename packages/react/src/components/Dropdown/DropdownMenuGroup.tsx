@@ -1,4 +1,4 @@
-import { ReactNode, Ref, forwardRef } from "react";
+import { ReactNode, Ref, forwardRef } from 'react';
 
 export interface DropdownMenuGroupProps {
   /**
@@ -27,6 +27,6 @@ const DropdownMenuGroup = forwardRef(
   },
 );
 
-DropdownMenuGroup.displayName = "Dropdown.MenuGroup";
+DropdownMenuGroup.displayName = 'Dropdown.MenuGroup';
 
 export default DropdownMenuGroup;

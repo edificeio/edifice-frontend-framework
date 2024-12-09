@@ -1,5 +1,5 @@
-import { Canvas, Meta } from "@storybook/blocks";
-import * as useImageStories from "./useImage.stories";
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useImageStories from './useImage.stories';
 
 <Meta of={useImageStories} />
 
@@ -17,9 +17,9 @@ import * as useImageStories from "./useImage.stories";
 ## Hook usage
 
 ```jsx
-const src = "";
-const alt = "alternative text";
-const placeholder = "/assets/themes/ode-bootstrap/images/image-placeholder.png";
+const src = '';
+const alt = 'alternative text';
+const placeholder = '/assets/themes/ode-bootstrap/images/image-placeholder.png';
 const { imgSrc, onError } = useImage({ src, placeholder });
 
 return <img alt={alt} onError={onError} src={imgSrc} />;

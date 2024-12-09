@@ -1,7 +1,7 @@
-import { IUserInfo, IWebApp } from "@edifice.io/ts-client";
+import { IUserInfo, IWebApp } from '@edifice.io/ts-client';
 
-import { libraryMaps } from "@edifice.io/utilities";
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { libraryMaps } from '@edifice.io/utilities';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 /**
  * Search for Library app in userinfo apps and return Library URL as a string.
@@ -15,7 +15,7 @@ const useLibraryUrl = (): string | null => {
 
   // get library app from userinfo apps
   const libraryApp: IWebApp | undefined = (user as IUserInfo)?.apps.find(
-    (app) => app.isExternal && app.address.includes("library"),
+    (app) => app.isExternal && app.address.includes('library'),
   );
 
   if (!libraryApp) {
@@ -23,14 +23,14 @@ const useLibraryUrl = (): string | null => {
   }
 
   // libraryUrl from userinfo.apps is like: https://libraryhost?platformURL=userPlatformURL
-  const libraryUrlSplit = libraryApp.address?.split("?");
+  const libraryUrlSplit = libraryApp.address?.split('?');
   if (!libraryUrlSplit || libraryUrlSplit.length < 2) {
     return null;
   }
 
   let libraryHost = libraryUrlSplit[0];
   // add a "/" to library host if not already there
-  if (!libraryHost.endsWith("/")) {
+  if (!libraryHost.endsWith('/')) {
     libraryHost = `${libraryHost}/`;
   }
 

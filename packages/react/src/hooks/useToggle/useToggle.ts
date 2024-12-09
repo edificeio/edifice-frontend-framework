@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 // Hook
 // Parameter is the boolean, with default "false" value
 export default function useToggle(initialState = false): [boolean, any] {

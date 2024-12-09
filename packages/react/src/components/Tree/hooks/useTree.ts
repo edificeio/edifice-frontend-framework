@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import { TreeItem } from "../types";
-import { findNodeById, findPathById } from "../utilities/tree";
+import { useEffect, useRef, useState } from 'react';
+import { TreeItem } from '../types';
+import { findNodeById, findPathById } from '../utilities/tree';
 
 export const useTree = ({
   data,
@@ -93,7 +93,7 @@ export const useTree = ({
   }
 
   const expandAllNodes = (shouldExpandAllNodes: boolean | undefined) => {
-    const initExpandedNodes = new Set("");
+    const initExpandedNodes = new Set('');
     if (data && Array.isArray(data) && shouldExpandAllNodes) {
       data.forEach((node) => initExpandedNodes.add(node.id));
       setExpandedNodes(initExpandedNodes);
@@ -150,7 +150,7 @@ export const useTree = ({
       return;
     }
 
-    if (externalSelectedNodeId === "default") {
+    if (externalSelectedNodeId === 'default') {
       expandedNodes.forEach((node) => onTreeItemUnfold?.(node));
       return;
     }

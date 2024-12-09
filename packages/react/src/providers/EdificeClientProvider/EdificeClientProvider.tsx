@@ -1,12 +1,12 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo } from 'react';
 
-import { App } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
-import { useConf, useSession } from "../../hooks";
+import { App } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
+import { useConf, useSession } from '../../hooks';
 import {
   EdificeClientContext,
   EdificeClientProviderProps,
-} from "./EdificeClientProvider.context";
+} from './EdificeClientProvider.context';
 
 export interface OdeProviderParams {
   alternativeApp?: boolean;
@@ -29,24 +29,24 @@ export function EdificeClientProvider({
 
   const init = confQuery?.isSuccess && sessionQuery?.isSuccess;
 
-  const currentLanguage = sessionQuery?.data?.currentLanguage ?? "fr";
+  const currentLanguage = sessionQuery?.data?.currentLanguage ?? 'fr';
 
   useEffect(() => {
     const attributes = [
       {
-        data: "html",
+        data: 'html',
         value: currentLanguage,
       },
       // #WB-3137 Disable the translation of the content of the page which provoced issues
       {
-        data: "translate",
-        value: "no",
+        data: 'translate',
+        value: 'no',
       },
     ];
 
     attributes.forEach((attribute) => {
       return document
-        .querySelector("html")
+        .querySelector('html')
         ?.setAttribute(attribute.data, attribute.value as string);
     });
   }, [currentLanguage, sessionQuery.data]);

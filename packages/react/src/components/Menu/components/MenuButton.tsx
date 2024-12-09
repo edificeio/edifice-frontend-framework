@@ -1,10 +1,10 @@
-import clsx from "clsx";
-import { Button, ButtonProps } from "../../Button";
-import { useMenuContext } from "./MenuContext";
+import clsx from 'clsx';
+import { Button, ButtonProps } from '../../Button';
+import { useMenuContext } from './MenuContext';
 
 export type MenuButtonProps = Pick<
   ButtonProps,
-  "children" | "leftIcon" | "rightIcon" | "onClick"
+  'children' | 'leftIcon' | 'rightIcon' | 'onClick'
 > & {
   selected: boolean;
 };
@@ -18,7 +18,7 @@ export const MenuButton = (props: Partial<MenuButtonProps>) => {
     <Button
       variant="ghost"
       color="tertiary"
-      className={clsx("stack w-100", {
+      className={clsx('stack w-100', {
         selected: selected,
       })}
       leftIcon={leftIcon}

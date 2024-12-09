@@ -1,15 +1,15 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { useState } from "react";
-import { IconFilter } from "../../../modules/icons/components";
-import Dropdown from "../Dropdown";
+import { useState } from 'react';
+import { IconFilter } from '../../../modules/icons/components';
+import Dropdown from '../Dropdown';
 
 const meta: Meta<typeof Dropdown> = {
-  title: "Components/Dropdown/Dropdown Radio Item",
+  title: 'Components/Dropdown/Dropdown Radio Item',
   component: Dropdown,
-  decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
   args: {
-    label: "Dropdown",
+    label: 'Dropdown',
     icon: <IconFilter />,
   },
   parameters: {
@@ -27,7 +27,7 @@ type Story = StoryObj<typeof Dropdown>;
 
 export const RadioGroup: Story = {
   render: (args) => {
-    const [value, setValue] = useState<string>("");
+    const [value, setValue] = useState<string>('');
 
     const handleOnChangeRadio = (value: string) => {
       setValue(value);
@@ -35,16 +35,16 @@ export const RadioGroup: Story = {
 
     const radioOptions = [
       {
-        label: "Classe préparatoire",
-        value: "CP",
+        label: 'Classe préparatoire',
+        value: 'CP',
       },
       {
-        label: "Cours élémentaire 1",
-        value: "CM1",
+        label: 'Cours élémentaire 1',
+        value: 'CM1',
       },
       {
-        label: "Cours élémentaire 2",
-        value: "CM2",
+        label: 'Cours élémentaire 2',
+        value: 'CM2',
       },
     ];
 

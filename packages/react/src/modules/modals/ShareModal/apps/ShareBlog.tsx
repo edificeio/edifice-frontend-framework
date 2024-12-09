@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import {
   BlogResource,
@@ -7,14 +7,14 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from "@edifice.io/ts-client";
-import { UseMutationResult } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
-import { Heading, Radio } from "../../../../components";
-import { useResource } from "../../../../hooks/useResource";
-import { useEdificeClient } from "../../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+} from '@edifice.io/ts-client';
+import { UseMutationResult } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { Heading, Radio } from '../../../../components';
+import { useResource } from '../../../../hooks/useResource';
+import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
-export type PublicationType = "RESTRAINT" | "IMMEDIATE" | undefined;
+export type PublicationType = 'RESTRAINT' | 'IMMEDIATE' | undefined;
 
 export interface ShareBlogProps {
   resourceId: ID;
@@ -33,11 +33,11 @@ export default function ShareBlog({
   const { appCode } = useEdificeClient();
   const { t } = useTranslation(appCode);
 
-  const resource = useResource("blog", resourceId) as BlogResource;
-  const publishType = resource && resource["publish-type"];
+  const resource = useResource('blog', resourceId) as BlogResource;
+  const publishType = resource && resource['publish-type'];
 
   const [radioPublicationValue, setRadioPublicationValue] =
-    useState<PublicationType>(publishType ?? "RESTRAINT");
+    useState<PublicationType>(publishType ?? 'RESTRAINT');
 
   useEffect(() => {
     if (publishType) {
@@ -50,20 +50,20 @@ export default function ShareBlog({
   ) => {
     const value = event.target.value as PublicationType;
     const params = {
-      "description": resource.description || "",
-      "entId": resource.assetId,
-      "name": resource.name,
-      "public": !!resource.public,
-      "slug": resource.slug || "",
-      "thumbnail": resource.thumbnail,
-      "trashed": resource.trashed,
-      "publish-type": value,
+      'description': resource.description || '',
+      'entId': resource.assetId,
+      'name': resource.name,
+      'public': !!resource.public,
+      'slug': resource.slug || '',
+      'thumbnail': resource.thumbnail,
+      'trashed': resource.trashed,
+      'publish-type': value,
     } as BlogUpdate;
 
     if (updateResource) {
       await updateResource.mutateAsync(params);
     } else {
-      await odeServices.resource("blog").update(params);
+      await odeServices.resource('blog').update(params);
     }
 
     setRadioPublicationValue(value);
@@ -74,23 +74,23 @@ export default function ShareBlog({
       <hr />
 
       <Heading headingStyle="h4" level="h3" className="mb-16">
-        {t("explorer.publication.steps")}
+        {t('explorer.publication.steps')}
       </Heading>
       <Radio
-        label={t("explorer.immediat.publication")}
+        label={t('explorer.immediat.publication')}
         id="publication-now"
         name="publication"
-        value={"IMMEDIATE" as PublicationType}
+        value={'IMMEDIATE' as PublicationType}
         model={radioPublicationValue as string}
-        checked={radioPublicationValue === "IMMEDIATE"}
+        checked={radioPublicationValue === 'IMMEDIATE'}
         onChange={handleRadioPublicationChange}
       />
       <Radio
-        label={t("explorer.validate.publication")}
+        label={t('explorer.validate.publication')}
         id="publication-validate"
         name="publication"
-        value={"RESTRAINT" as PublicationType}
-        checked={radioPublicationValue === "RESTRAINT"}
+        value={'RESTRAINT' as PublicationType}
+        checked={radioPublicationValue === 'RESTRAINT'}
         model={radioPublicationValue as string}
         onChange={handleRadioPublicationChange}
       />

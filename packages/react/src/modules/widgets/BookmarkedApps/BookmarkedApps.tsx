@@ -1,5 +1,5 @@
-import { IWebApp } from "@edifice.io/ts-client";
-import { AppIcon } from "../../../components";
+import { IWebApp } from '@edifice.io/ts-client';
+import { AppIcon } from '../../../components';
 
 const BookmarkedApps = ({ data }: { data: IWebApp[] }) => {
   if (data.length > 0) {
@@ -18,6 +18,6 @@ const BookmarkedApps = ({ data }: { data: IWebApp[] }) => {
   );
 };
 
-BookmarkedApps.displayName = "BookmarkedApps";
+BookmarkedApps.displayName = 'BookmarkedApps';
 
 export default BookmarkedApps;

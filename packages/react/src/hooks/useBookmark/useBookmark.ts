@@ -1,6 +1,6 @@
-import { IWebApp } from "@edifice.io/ts-client";
+import { IWebApp } from '@edifice.io/ts-client';
 
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 export default function useBookmark(): IWebApp[] | undefined {
   const { sessionQuery } = useEdificeClient();

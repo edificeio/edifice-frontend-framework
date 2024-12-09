@@ -1,19 +1,19 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { Size } from "../../types";
-import { useFormControl } from "../Form/FormContext";
+import { Size } from '../../types';
+import { useFormControl } from '../Form/FormContext';
 
 export type OmitTextAreaProps =
-  | "disabled"
-  | "required"
-  | "size"
-  | "id"
-  | "readOnly";
+  | 'disabled'
+  | 'required'
+  | 'size'
+  | 'id'
+  | 'readOnly';
 
 export interface TextAreaProps
-  extends Omit<React.ComponentPropsWithRef<"textarea">, OmitTextAreaProps> {
+  extends Omit<React.ComponentPropsWithRef<'textarea'>, OmitTextAreaProps> {
   /**
    * Control size of TextArea
    */
@@ -49,8 +49,8 @@ const TextArea = forwardRef(
     {
       noValidationIcon,
       placeholder,
-      size = "md",
-      height = "md",
+      size = 'md',
+      height = 'md',
       className,
       ...restProps
     }: TextAreaProps,
@@ -60,16 +60,16 @@ const TextArea = forwardRef(
 
     const classes = clsx(
       {
-        "form-control": !isReadOnly,
-        "form-control-lg": size === "lg",
-        "form-control-sm": size === "sm",
-        "textarea-height-lg": height === "lg",
-        "textarea-height-md": height === "md",
-        "textarea-height-sm": height === "sm",
-        "is-invalid": status === "invalid",
-        "is-valid": status === "valid",
-        "form-control-plaintext": isReadOnly,
-        "no-validation-icon": noValidationIcon,
+        'form-control': !isReadOnly,
+        'form-control-lg': size === 'lg',
+        'form-control-sm': size === 'sm',
+        'textarea-height-lg': height === 'lg',
+        'textarea-height-md': height === 'md',
+        'textarea-height-sm': height === 'sm',
+        'is-invalid': status === 'invalid',
+        'is-valid': status === 'valid',
+        'form-control-plaintext': isReadOnly,
+        'no-validation-icon': noValidationIcon,
       },
       className,
     );
@@ -90,6 +90,6 @@ const TextArea = forwardRef(
   },
 );
 
-TextArea.displayName = "TextArea";
+TextArea.displayName = 'TextArea';
 
 export default TextArea;

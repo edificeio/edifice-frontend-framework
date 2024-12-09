@@ -1,8 +1,8 @@
-import { ReactNode, useMemo } from "react";
-import { useMenu } from "../hooks/useMenu";
-import { MenuButton } from "./MenuButton";
-import { MenuContext } from "./MenuContext";
-import { MenuItem } from "./MenuItem";
+import { ReactNode, useMemo } from 'react';
+import { useMenu } from '../hooks/useMenu';
+import { MenuButton } from './MenuButton';
+import { MenuContext } from './MenuContext';
+import { MenuItem } from './MenuItem';
 
 /**
  * Menu Component to navigate between routes with react-router-dom

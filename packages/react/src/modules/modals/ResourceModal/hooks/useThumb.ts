@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { IResource } from "@edifice.io/ts-client";
+import { IResource } from '@edifice.io/ts-client';
 
 interface UseThumbProps {
   isUpdating: boolean;
@@ -9,15 +9,15 @@ interface UseThumbProps {
 
 export const useThumb = ({ isUpdating, selectedResource }: UseThumbProps) => {
   const [thumbnail, setThumbnail] = useState<string | Blob | File>(
-    isUpdating ? selectedResource?.thumbnail || "" : "",
+    isUpdating ? selectedResource?.thumbnail || '' : '',
   );
 
   useEffect(() => {
-    setThumbnail(selectedResource?.thumbnail || "");
+    setThumbnail(selectedResource?.thumbnail || '');
   }, [selectedResource]);
 
   const handleUploadImage = (file: File | string) => setThumbnail(file);
-  const handleDeleteImage = () => setThumbnail("");
+  const handleDeleteImage = () => setThumbnail('');
 
   return {
     thumbnail,

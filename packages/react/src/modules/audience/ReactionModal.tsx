@@ -2,14 +2,14 @@ import {
   ReactionDetailsData,
   ReactionType,
   ReactionTypes,
-} from "@edifice.io/ts-client";
-import { StringUtils } from "@edifice.io/utilities";
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
-import { Button, Modal, Tabs, TabsItemProps } from "../../components";
-import { default as useReactionIcons } from "./hooks/useReactionIcons";
-import { ReactionModalCard } from "./ReactionModal.Card";
+} from '@edifice.io/ts-client';
+import { StringUtils } from '@edifice.io/utilities';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
+import { Button, Modal, Tabs, TabsItemProps } from '../../components';
+import { default as useReactionIcons } from './hooks/useReactionIcons';
+import { ReactionModalCard } from './ReactionModal.Card';
 
 export interface ReactionModalProps {
   /** Id of resource. */
@@ -32,7 +32,7 @@ export interface ReactionModalProps {
   ) => Promise<ReactionDetailsData | undefined>;
 }
 
-const ALL_TAB_ID = "all";
+const ALL_TAB_ID = 'all';
 type TabId = ReactionType | typeof ALL_TAB_ID;
 
 const ReactionModal = ({
@@ -51,7 +51,7 @@ const ReactionModal = ({
   });
   // Reactions details.
   const [reactions, setReactions] = useState<
-    ReactionDetailsData["userReactions"]
+    ReactionDetailsData['userReactions']
   >([]);
   // Currently displayed tab ID.
   const [currentTabId, setCurrentTabId] = useState<TabId>(ALL_TAB_ID);
@@ -102,7 +102,7 @@ const ReactionModal = ({
   // Displayed tabs list.
   const tabs = useMemo(() => {
     const items: TabsItemProps[] = ReactionTypes.filter(
-      (type) => typeof counters.countByType?.[type] === "number",
+      (type) => typeof counters.countByType?.[type] === 'number',
     ).map((type) => ({
       id: type,
       icon: getReactionIcon(type),
@@ -114,7 +114,7 @@ const ReactionModal = ({
       {
         id: ALL_TAB_ID,
         icon: null,
-        label: t("audience.reaction.tab.all"),
+        label: t('audience.reaction.tab.all'),
         content: panel,
       },
       ...items,
@@ -143,7 +143,7 @@ const ReactionModal = ({
       scrollable
     >
       <Modal.Header onModalClose={onModalClose}>
-        {t("audience.reaction.modal.header")}
+        {t('audience.reaction.modal.header')}
       </Modal.Header>
 
       <Modal.Body>
@@ -153,7 +153,7 @@ const ReactionModal = ({
       <Modal.Footer>
         {hasMore && (
           <Button color="tertiary" onClick={loadNextPage}>
-            {t("audience.reaction.modal.more")}
+            {t('audience.reaction.modal.more')}
           </Button>
         )}
         <Button
@@ -162,15 +162,15 @@ const ReactionModal = ({
           type="button"
           variant="filled"
         >
-          {t("close")}
+          {t('close')}
         </Button>
       </Modal.Footer>
     </Modal>,
-    document.getElementById("portal") as HTMLElement,
+    document.getElementById('portal') as HTMLElement,
   );
 };
 
-ReactionModal.displayName = "ReactionModal";
+ReactionModal.displayName = 'ReactionModal';
 ReactionModal.Card = ReactionModalCard;
 
 export default ReactionModal;

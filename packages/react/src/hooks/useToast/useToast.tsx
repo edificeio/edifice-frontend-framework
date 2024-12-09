@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import toast, { ToastPosition } from "react-hot-toast";
+import toast, { ToastPosition } from 'react-hot-toast';
 
-import Alert from "../../components/Alert/Alert";
+import Alert from '../../components/Alert/Alert';
 
 export interface CustomToastOptions {
   id?: string;
@@ -11,7 +11,7 @@ export interface CustomToastOptions {
   duration?: number;
 }
 
-const DEFAULT_POSITION = "top-right";
+const DEFAULT_POSITION = 'top-right';
 
 export default function useToast() {
   const toasts = {

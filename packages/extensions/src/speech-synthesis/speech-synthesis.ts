@@ -1,11 +1,11 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export interface SpeechSynthesisOptions {
   lang: string;
   pitch: number;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     speechSynthesis: {
       startSpeechSynthesis: () => ReturnType;
@@ -21,10 +21,10 @@ class SS_Node<O = any, S = any> extends Node<O, S> {
 }
 
 export const SpeechSynthesis = SS_Node.create<SpeechSynthesisOptions>({
-  name: "speechSynthesis",
+  name: 'speechSynthesis',
   addOptions() {
     return {
-      lang: "fr-FR",
+      lang: 'fr-FR',
       pitch: 1,
     };
   },

@@ -1,1 +1,1 @@
-export { default as useTrapFocus } from "./useTrapFocus";
+export { default as useTrapFocus } from './useTrapFocus';

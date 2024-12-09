@@ -1,26 +1,26 @@
-import { ComponentPropsWithRef, ReactNode, useState } from "react";
+import { ComponentPropsWithRef, ReactNode, useState } from 'react';
 
-import clsx from "clsx";
-import { usePopper } from "react-popper";
+import clsx from 'clsx';
+import { usePopper } from 'react-popper';
 
 export type Placement =
-  | "auto"
-  | "auto-start"
-  | "auto-end"
-  | "top"
-  | "top-start"
-  | "top-end"
-  | "bottom"
-  | "bottom-start"
-  | "bottom-end"
-  | "right"
-  | "right-start"
-  | "right-end"
-  | "left"
-  | "left-start"
-  | "left-end";
+  | 'auto'
+  | 'auto-start'
+  | 'auto-end'
+  | 'top'
+  | 'top-start'
+  | 'top-end'
+  | 'bottom'
+  | 'bottom-start'
+  | 'bottom-end'
+  | 'right'
+  | 'right-start'
+  | 'right-end'
+  | 'left'
+  | 'left-start'
+  | 'left-end';
 
-export interface TooltipProps extends ComponentPropsWithRef<"div"> {
+export interface TooltipProps extends ComponentPropsWithRef<'div'> {
   /**
    * Text to display inside tooltip
    */
@@ -43,7 +43,7 @@ const Tooltip = ({
   children,
   message,
   icon = null,
-  placement = "auto",
+  placement = 'auto',
   ...restProps
 }: TooltipProps) => {
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
@@ -58,7 +58,7 @@ const Tooltip = ({
     placement,
     modifiers: [
       {
-        name: "arrow",
+        name: 'arrow',
         options: {
           element: arrowElement,
         },
@@ -85,7 +85,7 @@ const Tooltip = ({
       </div>
       {visible && message && (
         <div
-          className={clsx("tooltip d-block show mb-12", `bs-tooltip-auto`)}
+          className={clsx('tooltip d-block show mb-12', `bs-tooltip-auto`)}
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}

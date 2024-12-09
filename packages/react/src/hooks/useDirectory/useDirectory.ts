@@ -1,11 +1,11 @@
-import { ID, odeServices } from "@edifice.io/ts-client";
+import { ID, odeServices } from '@edifice.io/ts-client';
 
 const useDirectory = () => {
-  function getAvatarURL(userId: ID, type: "user" | "group"): string {
+  function getAvatarURL(userId: ID, type: 'user' | 'group'): string {
     return odeServices.directory().getAvatarUrl(userId, type);
   }
 
-  function getUserbookURL(userId: ID, type: "user" | "group"): string {
+  function getUserbookURL(userId: ID, type: 'user' | 'group'): string {
     return odeServices.directory().getDirectoryUrl(userId, type);
   }
 

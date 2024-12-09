@@ -1,16 +1,16 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   App,
   GetContextParameters,
   odeServices,
   SnipletsService,
-} from "@edifice.io/ts-client";
+} from '@edifice.io/ts-client';
 /*
  * Augmented definition of a resource, until behaviours are dropped.
  * The path would otherwise be found by using `IWebResourceService.getViewUrl(resource)`
  */
-import { ILinkedResource } from "@edifice.io/ts-client";
+import { ILinkedResource } from '@edifice.io/ts-client';
 
 /**
  * A hook to search for resources produced by applications.

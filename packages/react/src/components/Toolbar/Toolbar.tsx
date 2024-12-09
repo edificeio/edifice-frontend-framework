@@ -7,14 +7,14 @@ import {
   useEffect,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { mergeRefs } from "../../utilities";
-import { Button, ButtonProps, IconButton, IconButtonProps } from "../Button";
-import { Dropdown, DropdownProps } from "../Dropdown";
-import { Placement, Tooltip } from "../Tooltip";
+import { mergeRefs } from '../../utilities';
+import { Button, ButtonProps, IconButton, IconButtonProps } from '../Button';
+import { Dropdown, DropdownProps } from '../Dropdown';
+import { Placement, Tooltip } from '../Tooltip';
 
 export interface ToolbarCommonItem {
   /** Object type */
@@ -22,7 +22,7 @@ export interface ToolbarCommonItem {
   /** Items should be named, except for dividers */
   name?: string;
   /** Set to "hide" to hide this item. Defaults to "show" when undefined. */
-  visibility?: "show" | "hide";
+  visibility?: 'show' | 'hide';
 }
 
 export interface ToolbarTooltipProps {
@@ -37,7 +37,7 @@ export interface ToolbarTooltipProps {
 export interface ToolbarButtonItem
   extends ToolbarCommonItem,
     ToolbarTooltipProps {
-  type: "button";
+  type: 'button';
   name: string;
   props: ButtonProps;
 }
@@ -45,13 +45,13 @@ export interface ToolbarButtonItem
 export interface ToolbarIconButtonItem
   extends ToolbarCommonItem,
     ToolbarTooltipProps {
-  type: "icon";
+  type: 'icon';
   name: string;
   props: IconButtonProps;
 }
 
 export interface ToolbarDropdownItem extends ToolbarCommonItem {
-  type: "dropdown";
+  type: 'dropdown';
   props: DropdownProps;
   overflow?: boolean;
 }
@@ -59,17 +59,17 @@ export interface ToolbarDropdownItem extends ToolbarCommonItem {
 export interface ToolbarPrimaryItem
   extends ToolbarCommonItem,
     ToolbarTooltipProps {
-  type: "primary";
+  type: 'primary';
   props: ButtonProps;
 }
 
 export interface ToolbarDividerItem extends ToolbarCommonItem {
-  type: "divider";
+  type: 'divider';
 }
 
 export type ToolbarRef = HTMLDivElement;
-export type ToolbarVariant = "default" | "no-shadow";
-export type ToolbarAlign = "left" | "center" | "space" | "right";
+export type ToolbarVariant = 'default' | 'no-shadow';
+export type ToolbarAlign = 'left' | 'center' | 'space' | 'right';
 export type ToolbarItem =
   | ToolbarButtonItem
   | ToolbarIconButtonItem
@@ -77,7 +77,7 @@ export type ToolbarItem =
   | ToolbarPrimaryItem
   | ToolbarDividerItem;
 
-export interface ToolbarProps extends React.ComponentPropsWithRef<"div"> {
+export interface ToolbarProps extends React.ComponentPropsWithRef<'div'> {
   /**
    * Toolbar data items
    */
@@ -112,8 +112,8 @@ export const Toolbar = forwardRef(
   (
     {
       items,
-      variant = "default",
-      align = "space",
+      variant = 'default',
+      align = 'space',
       isBlock = false,
       ariaControls,
       className,
@@ -132,22 +132,22 @@ export const Toolbar = forwardRef(
 
     const divToolbarRef = useRef<HTMLDivElement>();
 
-    const classes = clsx("toolbar z-1000 bg-white", className, {
-      "default": variant === "default",
-      "no-shadow": variant === "no-shadow",
-      "d-flex": isBlock,
-      "d-inline-flex": !isBlock,
-      "overflow-x-auto": isBlock,
-      "justify-content-start": align === "left",
-      "justify-content-between": align === "space",
-      "justify-content-center": align === "center",
-      "justify-content-end": align === "right",
+    const classes = clsx('toolbar z-1000 bg-white', className, {
+      'default': variant === 'default',
+      'no-shadow': variant === 'no-shadow',
+      'd-flex': isBlock,
+      'd-inline-flex': !isBlock,
+      'overflow-x-auto': isBlock,
+      'justify-content-start': align === 'left',
+      'justify-content-between': align === 'space',
+      'justify-content-center': align === 'center',
+      'justify-content-end': align === 'right',
     });
 
     useEffect(() => {
       // a11y: set first and last item for keyboard arrow navigation
       const buttons: NodeListOf<HTMLButtonElement> | undefined =
-        divToolbarRef.current?.querySelectorAll("button");
+        divToolbarRef.current?.querySelectorAll('button');
       const enabledItems: Array<HTMLElement> = [];
       let isfirstItemSet: boolean = false;
 
@@ -168,7 +168,7 @@ export const Toolbar = forwardRef(
       setFirstFocusableItemIndex(
         items.findIndex(
           (item) =>
-            (item.type === "button" || item.type === "icon") &&
+            (item.type === 'button' || item.type === 'icon') &&
             !item.props.disabled,
         ),
       );
@@ -176,12 +176,12 @@ export const Toolbar = forwardRef(
 
     const handleFocus = (event: FocusEvent<HTMLDivElement>) => {
       // focused button
-      event.target.classList.add("focus");
+      event.target.classList.add('focus');
     };
 
     const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
       // focused button
-      event.target.classList.remove("focus");
+      event.target.classList.remove('focus');
     };
 
     /**
@@ -190,7 +190,7 @@ export const Toolbar = forwardRef(
     const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
       const index = a11yNavigationItems.indexOf(event.currentTarget);
       switch (event.code) {
-        case "ArrowLeft":
+        case 'ArrowLeft':
           // switch to previous item
           if (event.currentTarget === firstA11yNavigationItem) {
             lastA11yNavigationItem?.focus();
@@ -198,7 +198,7 @@ export const Toolbar = forwardRef(
             a11yNavigationItems[index - 1]?.focus();
           }
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           // switch to next item
           if (event.currentTarget === lastA11yNavigationItem) {
             firstA11yNavigationItem?.focus();
@@ -214,7 +214,7 @@ export const Toolbar = forwardRef(
     const renderTooltipMessage = (
       item: Exclude<ToolbarItem, ToolbarDropdownItem | ToolbarDividerItem>,
     ) => {
-      return typeof item.tooltip === "string"
+      return typeof item.tooltip === 'string'
         ? item.tooltip
         : item.tooltip?.message;
     };
@@ -222,7 +222,7 @@ export const Toolbar = forwardRef(
     const renderTooltipPosition = (
       item: Exclude<ToolbarItem, ToolbarDropdownItem | ToolbarDividerItem>,
     ) => {
-      return typeof item.tooltip !== "string" ? item.tooltip?.position : "top";
+      return typeof item.tooltip !== 'string' ? item.tooltip?.position : 'top';
     };
 
     return (
@@ -236,15 +236,15 @@ export const Toolbar = forwardRef(
         onBlur={handleBlur}
       >
         {items.map((item, index) => {
-          if (item.visibility === "hide") return null;
+          if (item.visibility === 'hide') return null;
 
           switch (item.type) {
-            case "divider":
+            case 'divider':
               return (
                 <div key={item.name ?? index} className="toolbar-divider"></div>
               );
 
-            case "button":
+            case 'button':
               return (
                 <Tooltip
                   key={item.name ?? index}
@@ -254,7 +254,7 @@ export const Toolbar = forwardRef(
                   <Button
                     {...item.props}
                     key={item.name ?? index}
-                    color={item.props.color ? item.props.color : "tertiary"}
+                    color={item.props.color ? item.props.color : 'tertiary'}
                     variant="ghost"
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
@@ -262,7 +262,7 @@ export const Toolbar = forwardRef(
                 </Tooltip>
               );
 
-            case "icon":
+            case 'icon':
               return (
                 <Tooltip
                   key={item.name ?? index}
@@ -272,15 +272,15 @@ export const Toolbar = forwardRef(
                   <IconButton
                     {...item.props}
                     key={item.name ?? index}
-                    color={item.props.color ? item.props.color : "tertiary"}
-                    variant={item.props.variant ? item.props.variant : "ghost"}
+                    color={item.props.color ? item.props.color : 'tertiary'}
+                    variant={item.props.variant ? item.props.variant : 'ghost'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
                 </Tooltip>
               );
 
-            case "dropdown":
+            case 'dropdown':
               return (
                 <Dropdown
                   {...item.props}
@@ -292,7 +292,7 @@ export const Toolbar = forwardRef(
                 </Dropdown>
               );
 
-            case "primary":
+            case 'primary':
               return (
                 <Tooltip
                   key={item.name ?? index}
@@ -319,6 +319,6 @@ export const Toolbar = forwardRef(
   },
 );
 
-Toolbar.displayName = "Toolbar";
+Toolbar.displayName = 'Toolbar';
 
 export default Toolbar;

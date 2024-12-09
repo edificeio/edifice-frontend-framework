@@ -1,6 +1,6 @@
-import { IUserDescription, IUserInfo } from "@edifice.io/ts-client";
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
-import { useEdificeTheme } from "../../providers/EdificeThemeProvider/EdificeThemeProvider.hook";
+import { IUserDescription, IUserInfo } from '@edifice.io/ts-client';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 
 export interface useUserProps {
   user: IUserInfo | undefined;
@@ -14,7 +14,7 @@ export default function useUser(): useUserProps {
 
   function avatarUrl(): string {
     let avatar = userDescription?.picture;
-    if (!avatar || avatar === "no-avatar.jpg" || avatar === "no-avatar.svg") {
+    if (!avatar || avatar === 'no-avatar.jpg' || avatar === 'no-avatar.svg') {
       avatar = `${theme?.basePath}/img/illustrations/no-avatar.svg`;
     }
     return avatar;

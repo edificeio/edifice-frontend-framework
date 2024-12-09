@@ -1,17 +1,17 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { Loading, LoadingIcon, LoadingPosition } from "../Loading";
+import { Loading, LoadingIcon, LoadingPosition } from '../Loading';
 
 export type ButtonRef = HTMLButtonElement;
 
-export type ButtonTypes = "button" | "submit" | "reset";
-export type ButtonColors = "primary" | "secondary" | "tertiary" | "danger";
-export type ButtonVariants = "filled" | "outline" | "ghost";
-export type ButtonSizes = "sm" | "md" | "lg";
+export type ButtonTypes = 'button' | 'submit' | 'reset';
+export type ButtonColors = 'primary' | 'secondary' | 'tertiary' | 'danger';
+export type ButtonVariants = 'filled' | 'outline' | 'ghost';
+export type ButtonSizes = 'sm' | 'md' | 'lg';
 
-export interface ButtonProps extends React.ComponentPropsWithRef<"button"> {
+export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
   /**
    * `button`, `submit` or `reset`
    */
@@ -70,9 +70,9 @@ export interface ButtonProps extends React.ComponentPropsWithRef<"button"> {
 const Button = forwardRef(
   (
     {
-      color = "primary",
-      type = "button",
-      size = "md",
+      color = 'primary',
+      type = 'button',
+      size = 'md',
       children,
       isLoading,
       loadingIcon,
@@ -80,21 +80,21 @@ const Button = forwardRef(
       leftIcon,
       rightIcon,
       className,
-      variant = "filled",
+      variant = 'filled',
       ...restProps
     }: ButtonProps,
     ref: Ref<ButtonRef>,
   ) => {
     const classes = clsx(
-      "btn",
+      'btn',
       {
-        [`btn-filled btn-${color}`]: variant === "filled",
+        [`btn-filled btn-${color}`]: variant === 'filled',
         [`btn-${variant}-${color}`]:
-          variant === "outline" || variant === "ghost",
-        "btn-icon": !children,
-        "btn-loading": isLoading,
-        "btn-lg": size === "lg",
-        "btn-sm": size === "sm",
+          variant === 'outline' || variant === 'ghost',
+        'btn-icon': !children,
+        'btn-loading': isLoading,
+        'btn-lg': size === 'lg',
+        'btn-sm': size === 'sm',
       },
       className,
     );
@@ -121,6 +121,6 @@ const Button = forwardRef(
   },
 );
 
-Button.displayName = "Button";
+Button.displayName = 'Button';
 
 export default Button;

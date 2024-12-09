@@ -1,10 +1,10 @@
-import { IResource } from "@edifice.io/ts-client";
+import { IResource } from '@edifice.io/ts-client';
 import {
   UseFormRegister,
   UseFormSetValue,
   UseFormWatch,
-} from "react-hook-form";
-import { useTranslation } from "react-i18next";
+} from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import {
   Alert,
@@ -12,10 +12,10 @@ import {
   FormControl,
   Heading,
   Input,
-} from "../../../../components";
-import { IconCopy } from "../../../icons/components";
-import { useSlug } from "../hooks/useSlug";
-import { FormInputs } from "../ResourceModal";
+} from '../../../../components';
+import { IconCopy } from '../../../icons/components';
+import { useSlug } from '../hooks/useSlug';
+import { FormInputs } from '../ResourceModal';
 
 interface BlogPublicProps {
   appCode: string;
@@ -46,11 +46,11 @@ const BlogPublic = ({
   return (
     <>
       <Heading headingStyle="h4" level="h3" className="mb-16">
-        {t("explorer.resource.editModal.heading.access")}
+        {t('explorer.resource.editModal.heading.access')}
         {appCode}
       </Heading>
 
-      <Alert type="info">{t("explorer.resource.editModal.access.alert")}</Alert>
+      <Alert type="info">{t('explorer.resource.editModal.access.alert')}</Alert>
 
       <FormControl
         id="flexSwitchCheckDefault"
@@ -60,7 +60,7 @@ const BlogPublic = ({
           type="checkbox"
           role="switch"
           defaultChecked={isUpdating ? resource.public : false}
-          {...register("enablePublic", {
+          {...register('enablePublic', {
             disabled: !resourceName,
             onChange: (event) => {
               const checked = event.target.checked;
@@ -71,7 +71,7 @@ const BlogPublic = ({
           size="md"
         />
         <FormControl.Label className="form-check-label mb-0">
-          {t("explorer.resource.editModal.access.flexSwitchCheckDefault.label")}
+          {t('explorer.resource.editModal.access.flexSwitchCheckDefault.label')}
         </FormControl.Label>
       </FormControl>
 
@@ -81,8 +81,8 @@ const BlogPublic = ({
             <Input
               type="text"
               hidden
-              defaultValue={isUpdating ? slug : ""}
-              {...register("formSlug")}
+              defaultValue={isUpdating ? slug : ''}
+              {...register('formSlug')}
               size="sm"
             />
           </FormControl>
@@ -93,13 +93,13 @@ const BlogPublic = ({
             <Button
               color="primary"
               disabled={!isPublic}
-              onClick={() => onCopyToClipBoard("/blog")}
+              onClick={() => onCopyToClipBoard('/blog')}
               type="button"
               leftIcon={<IconCopy />}
               variant="ghost"
               className="text-nowrap"
             >
-              {t("explorer.resource.editModal.access.url.button")}
+              {t('explorer.resource.editModal.access.url.button')}
             </Button>
           </div>
         </>

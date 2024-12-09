@@ -1,5 +1,5 @@
-import { useTranslation } from "react-i18next";
-import { useDate } from "../../..";
+import { useTranslation } from 'react-i18next';
+import { useDate } from '../../..';
 
 export const CommentDate = ({
   createdAt,
@@ -12,12 +12,12 @@ export const CommentDate = ({
   const { t } = useTranslation();
 
   const getPublishedDate = (date: number) =>
-    t("comment.publish.date", {
+    t('comment.publish.date', {
       date: fromNow(date),
     });
 
   const getUpdatedDate = (date: number) =>
-    t("comment.update.date", {
+    t('comment.update.date', {
       date: fromNow(date),
     });
 

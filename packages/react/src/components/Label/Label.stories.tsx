@@ -1,20 +1,20 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { IconMail } from "../../modules/icons/components";
-import { FormControl } from "../Form";
-import Label from "./Label";
+import { Meta, StoryObj } from '@storybook/react';
+import { IconMail } from '../../modules/icons/components';
+import { FormControl } from '../Form';
+import Label from './Label';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Label> = {
-  title: "Forms/Label",
+  title: 'Forms/Label',
   component: Label,
   args: {
-    children: "Email",
+    children: 'Email',
   },
   parameters: {
     docs: {
       description: {
         component:
-          "The `Label` component is used to provide a descriptive label for form fields. It enhances accessibility by associating the label with the corresponding input element. The component supports optional text to indicate non-mandatory fields and can include icons for better visual representation.",
+          'The `Label` component is used to provide a descriptive label for form fields. It enhances accessibility by associating the label with the corresponding input element. The component supports optional text to indicate non-mandatory fields and can include icons for better visual representation.',
       },
     },
   },
@@ -46,7 +46,7 @@ export const OptionalField: Story = {
     docs: {
       description: {
         story:
-          "By passing `isOptional` through FormControl Component, we inform the user that this field is not required.",
+          'By passing `isOptional` through FormControl Component, we inform the user that this field is not required.',
       },
     },
   },
@@ -67,7 +67,7 @@ export const OptionalFieldCustomText: Story = {
     docs: {
       description: {
         story:
-          "You can custom the optional text with `optionalText` on Label Component.",
+          'You can custom the optional text with `optionalText` on Label Component.',
       },
     },
   },

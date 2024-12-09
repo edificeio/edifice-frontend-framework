@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { EdificeClientContext } from "./EdificeClientProvider.context";
+import { useContext } from 'react';
+import { EdificeClientContext } from './EdificeClientProvider.context';
 
 export function useEdificeClient() {
   const context = useContext(EdificeClientContext);

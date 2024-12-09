@@ -1,6 +1,6 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
-[data-product="neo"][data-theme="na"] {
+[data-product='neo'][data-theme='na'] {
   --#{$prefix}secondary: #e20037;
 
   .header {
@@ -10,7 +10,7 @@
   }
 }
 
-[data-product="neo"][data-theme="cg77"] {
+[data-product='neo'][data-theme='cg77'] {
   --#{$prefix}primary: #004899;
   --#{$prefix}secondary: #00ace9;
 

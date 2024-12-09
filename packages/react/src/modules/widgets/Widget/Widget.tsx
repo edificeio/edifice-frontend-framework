@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { type ReactNode } from 'react';
 
 const Footer = ({ children }: { children: ReactNode }) => {
   return (
@@ -37,4 +37,4 @@ Widget.Header = Header;
 Widget.Body = Body;
 Widget.Footer = Footer;
 
-Widget.displayName = "Widget";
+Widget.displayName = 'Widget';

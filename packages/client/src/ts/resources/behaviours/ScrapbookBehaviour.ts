@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type ScrapbookData = {
   _id: string;
@@ -22,21 +22,21 @@ type ScrapbookData = {
 };
 
 export class ScrapbookBehaviour extends AbstractBehaviourService {
-  APP = "scrapbook";
-  RESOURCE = "scrapbook";
+  APP = 'scrapbook';
+  RESOURCE = 'scrapbook';
 
   async loadResources() {
     const scrapbooks = await this.httpGet<ScrapbookData[]>(
-      "/scrapbook/list/all",
+      '/scrapbook/list/all',
     );
     return scrapbooks.map((data) => {
-      const icon = data.icon || "/img/illustrations/scrapbook.svg";
+      const icon = data.icon || '/img/illustrations/scrapbook.svg';
       return this.dataToResource({
         title: data.name,
         owner: data.owner.userId,
         ownerName: data.owner.displayName,
         icon: icon,
-        path: "/scrapbook#/view-scrapbook/" + data._id,
+        path: '/scrapbook#/view-scrapbook/' + data._id,
         _id: data._id,
         shared: data.shared && data.shared.length >= 0 ? true : false,
         modified: data.modified,

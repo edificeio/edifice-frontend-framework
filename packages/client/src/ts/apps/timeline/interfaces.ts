@@ -1,4 +1,4 @@
-import { TimelineApp } from "./Framework";
+import { TimelineApp } from './Framework';
 
 //-------------------------------------
 export abstract class ITimelineFactory {

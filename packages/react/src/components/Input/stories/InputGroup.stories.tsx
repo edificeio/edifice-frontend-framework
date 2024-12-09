@@ -1,23 +1,23 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { useMemo, useState } from "react";
-import Button from "../../Button/Button";
+import { Meta, StoryObj } from '@storybook/react';
+import { useMemo, useState } from 'react';
+import Button from '../../Button/Button';
 
-import { IconSearch } from "../../../modules/icons/components";
-import { Checkbox } from "../../Checkbox";
-import { Indeterminate } from "../../Checkbox/Checkbox.stories";
-import { FormControl } from "../../Form";
-import { Radio } from "../../Radio";
-import Input from "../Input";
+import { IconSearch } from '../../../modules/icons/components';
+import { Checkbox } from '../../Checkbox';
+import { Indeterminate } from '../../Checkbox/Checkbox.stories';
+import { FormControl } from '../../Form';
+import { Radio } from '../../Radio';
+import Input from '../Input';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof FormControl> = {
-  title: "Forms/Input Group",
+  title: 'Forms/Input Group',
   component: FormControl,
   parameters: {
     docs: {
       description: {
         component:
-          "The `Input Group` component allows you to add text, icons, or buttons directly adjacent to input fields. This creates cohesive form controls for common patterns like URL inputs with prefixes, search bars with icons, or inputs with action buttons. Features include:\n\n- Prefix and suffix text or elements\n- Border styling options including borderless variants\n- Support for icons and buttons\n- Consistent sizing and spacing\n- Disabled states",
+          'The `Input Group` component allows you to add text, icons, or buttons directly adjacent to input fields. This creates cohesive form controls for common patterns like URL inputs with prefixes, search bars with icons, or inputs with action buttons. Features include:\n\n- Prefix and suffix text or elements\n- Border styling options including borderless variants\n- Support for icons and buttons\n- Consistent sizing and spacing\n- Disabled states',
       },
     },
   },
@@ -75,10 +75,10 @@ export const BorderlessDisabledInputGroup: Story = {
 
 export const MultiInputGroup: Story = {
   render: (args) => {
-    const [username, setUsername] = useState<string>("");
-    const [server, setServer] = useState<string>("");
+    const [username, setUsername] = useState<string>('');
+    const [server, setServer] = useState<string>('');
     const serverUrl = useMemo(
-      () => username + "@" + server,
+      () => username + '@' + server,
       [username, server],
     );
     return (
@@ -105,7 +105,7 @@ export const MultiInputGroup: Story = {
         </FormControl>
         {
           <div className="py-8">
-            Your url is {serverUrl !== "@" && serverUrl}
+            Your url is {serverUrl !== '@' && serverUrl}
           </div>
         }
       </div>
@@ -115,7 +115,7 @@ export const MultiInputGroup: Story = {
 
 export const CheckboxRadio: Story = {
   render: (args) => {
-    const [value, setValue] = useState<string>("CM1");
+    const [value, setValue] = useState<string>('CM1');
     return (
       <div>
         <FormControl id="addline" className="input-group mb-12">

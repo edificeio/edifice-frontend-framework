@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { Stage } from "@pixi/react";
-import { useTranslation } from "react-i18next";
+import { Stage } from '@pixi/react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -10,9 +10,9 @@ import {
   Label,
   LoadingScreen,
   Modal,
-} from "../../../../components";
-import useImageEditor from "../hooks/useImageEditor";
-import ImageEditorToolbar, { ImageEditorAction } from "./ImageEditorToolbar";
+} from '../../../../components';
+import useImageEditor from '../hooks/useImageEditor';
+import ImageEditorToolbar, { ImageEditorAction } from './ImageEditorToolbar';
 
 interface ImageEditorProps {
   image: string;
@@ -56,9 +56,9 @@ const ImageEditor = ({
   // Whether we are saving or not
   const [isSaving, setSaving] = useState(false);
   // Store the alt text modofied by the input text
-  const [altText, setAltText] = useState(altTextParam ?? "");
+  const [altText, setAltText] = useState(altTextParam ?? '');
   // Store the legend text modofied by the input text
-  const [legend, setLegend] = useState(legendParam ?? "");
+  const [legend, setLegend] = useState(legendParam ?? '');
   // Whether the image has been edited or the text has been changed
   const [dirty, setDirty] = useState<boolean>(false);
   // Load Image Editor action
@@ -81,8 +81,8 @@ const ImageEditor = ({
   // A function to remove all opened controllers and backup changes if needed
   const stopAll = () => {
     stopBlur();
-    stopCrop(currentOperation === "CROP");
-    stopResize(currentOperation === "RESIZE");
+    stopCrop(currentOperation === 'CROP');
+    stopResize(currentOperation === 'RESIZE');
   };
   // A handle to save edited image as Blob
   const handleSave = async () => {
@@ -113,23 +113,23 @@ const ImageEditor = ({
     setDirty(true);
     // Call action according to the selected operation
     switch (operation) {
-      case "ROTATE": {
+      case 'ROTATE': {
         await rotate();
         break;
       }
-      case "UNDO": {
+      case 'UNDO': {
         await restore();
         break;
       }
-      case "CROP": {
+      case 'CROP': {
         startCrop();
         break;
       }
-      case "RESIZE": {
+      case 'RESIZE': {
         await startResize();
         break;
       }
-      case "BLUR": {
+      case 'BLUR': {
         await startBlur();
         break;
       }
@@ -143,7 +143,7 @@ const ImageEditor = ({
       size="lg"
     >
       <Modal.Header onModalClose={handleCancel}>
-        <span className="h2">{t("imageeditor.title")}</span>
+        <span className="h2">{t('imageeditor.title')}</span>
       </Modal.Header>
       <Modal.Body className="d-flex flex-column align-items-center">
         <div className="d-flex flex-column gap-12 w-100 flex-grow-1">
@@ -168,27 +168,27 @@ const ImageEditor = ({
           </div>
           <div className="d-flex flex-column flex-md-row m-10 gap-12 w-100">
             <FormControl id="alt" className="flex-grow-1">
-              <Label>{t("alttext")}</Label>
+              <Label>{t('alttext')}</Label>
               <Input
                 value={altText}
                 onChange={(e) => {
                   setDirty(true);
                   setAltText(e.target.value);
                 }}
-                placeholder={t("alttext.help")}
+                placeholder={t('alttext.help')}
                 size="md"
                 type="text"
               />
             </FormControl>
             <FormControl id="legend" className="flex-grow-1">
-              <Label>{t("legend")}</Label>
+              <Label>{t('legend')}</Label>
               <Input
                 value={legend}
                 onChange={(e) => {
                   setDirty(true);
                   setLegend(e.target.value);
                 }}
-                placeholder={t("legend.help")}
+                placeholder={t('legend.help')}
                 size="md"
                 type="text"
               />
@@ -203,7 +203,7 @@ const ImageEditor = ({
           type="button"
           variant="ghost"
         >
-          {t("imageeditor.cancel")}
+          {t('imageeditor.cancel')}
         </Button>
         <Button
           color="primary"
@@ -213,7 +213,7 @@ const ImageEditor = ({
           isLoading={isSaving}
           disabled={isSaving || !dirty}
         >
-          {t("imageeditor.save")}
+          {t('imageeditor.save')}
         </Button>
       </Modal.Footer>
     </Modal>

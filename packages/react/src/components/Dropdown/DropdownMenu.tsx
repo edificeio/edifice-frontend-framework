@@ -1,8 +1,8 @@
-import { ComponentPropsWithRef, ReactNode, Ref, forwardRef } from "react";
+import { ComponentPropsWithRef, ReactNode, Ref, forwardRef } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useDropdownContext } from "./DropdownContext";
+import { useDropdownContext } from './DropdownContext';
 
 interface Item {
   /**
@@ -27,12 +27,12 @@ interface Divider {
   /**
    * Object type
    */
-  type: "divider";
+  type: 'divider';
 }
 
 export type DropdownMenuOptions = Item | Divider;
 
-export interface DropdownMenuProps extends ComponentPropsWithRef<"div"> {
+export interface DropdownMenuProps extends ComponentPropsWithRef<'div'> {
   children: ReactNode;
   /** Use whole width ? */
   block?: boolean;
@@ -48,7 +48,7 @@ const DropdownMenu = forwardRef(
     const { menuProps, visible } = useDropdownContext();
 
     const className = clsx(
-      { "w-100": block, "bg-white shadow rounded-4 p-8": !unstyled },
+      { 'w-100': block, 'bg-white shadow rounded-4 p-8': !unstyled },
       menuProps.className,
       restProps.className,
     );
@@ -63,6 +63,6 @@ const DropdownMenu = forwardRef(
   },
 );
 
-DropdownMenu.displayName = "Dropdown.Menu";
+DropdownMenu.displayName = 'Dropdown.Menu';
 
 export default DropdownMenu;

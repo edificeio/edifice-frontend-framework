@@ -1,18 +1,18 @@
-import { useMemo } from "react";
-import { Button, EmptyScreen } from "../../..";
-import { CommentForm } from "../components/CommentForm";
-import { CommentHeader } from "../components/CommentHeader";
-import { CommentList } from "../components/CommentList";
+import { useMemo } from 'react';
+import { Button, EmptyScreen } from '../../..';
+import { CommentForm } from '../components/CommentForm';
+import { CommentHeader } from '../components/CommentHeader';
+import { CommentList } from '../components/CommentList';
 import {
   DEFAULT_ADD_COMMENTS,
   DEFAULT_MAX_COMMENTS,
   DEFAULT_MAX_COMMENT_LENGTH,
   DEFAULT_MAX_REPLIES,
   DEFAULT_MAX_REPLY_LENGTH,
-} from "../constants";
-import { CommentContext } from "../context/Context";
-import { useComments } from "../hooks/useComments";
-import { RootProps } from "../types";
+} from '../constants';
+import { CommentContext } from '../context/Context';
+import { useComments } from '../hooks/useComments';
+import { RootProps } from '../types';
 
 const CommentProvider = ({
   comments: defaultComments,
@@ -52,7 +52,7 @@ const CommentProvider = ({
   } = useComments({
     type,
     defaultComments,
-    callbacks: type == "edit" ? props.callbacks : null,
+    callbacks: type == 'edit' ? props.callbacks : null,
     options,
   });
 
@@ -94,19 +94,19 @@ const CommentProvider = ({
                   onClick={handleMoreComments}
                   className="my-16"
                 >
-                  {t("comment.more")}
+                  {t('comment.more')}
                 </Button>
               )}
             </>
           ) : null}
         </div>
 
-        {!commentsCount && type === "edit" && (
+        {!commentsCount && type === 'edit' && (
           <div className="comments-emptyscreen">
             <div className="comments-emptyscreen-wrapper">
               <EmptyScreen imageSrc={emptyscreenPath} size={150} />
             </div>
-            <p>{t("comment.emptyscreen")}</p>
+            <p>{t('comment.emptyscreen')}</p>
           </div>
         )}
       </div>

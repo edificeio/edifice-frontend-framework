@@ -1,1 +1,1 @@
-export { default as PublishModal } from "./PublishModal";
+export { default as PublishModal } from './PublishModal';

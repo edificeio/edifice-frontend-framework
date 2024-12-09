@@ -1,5 +1,5 @@
-import { Audio } from "./audio";
+import { Audio } from './audio';
 
-export * from "./audio";
+export * from './audio';
 
 export default Audio;

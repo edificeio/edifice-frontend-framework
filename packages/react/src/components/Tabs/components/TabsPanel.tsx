@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { useTabsContext } from "../context/TabsContext";
-import { TabsItemProps } from "./TabsItem";
+import { useTabsContext } from '../context/TabsContext';
+import { TabsItemProps } from './TabsItem';
 
 export interface TabsPanelProps {
   /**
@@ -21,7 +21,7 @@ const TabsPanel = ({ children, currentItem }: TabsPanelProps) => {
     <div className="tab-content d-flex flex-fill w-100">
       <div
         className={`tab-pane flex-fill w-100 fade ${
-          activeTab === currentItem?.id ? "show active" : ""
+          activeTab === currentItem?.id ? 'show active' : ''
         }`}
         id={`tabpanel-${currentItem?.id}`}
         role="tabpanel"
@@ -34,6 +34,6 @@ const TabsPanel = ({ children, currentItem }: TabsPanelProps) => {
   );
 };
 
-TabsPanel.displayName = "Tabs.Panel";
+TabsPanel.displayName = 'Tabs.Panel';
 
 export default TabsPanel;

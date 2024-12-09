@@ -1,9 +1,9 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
-import * as blurEffect from "../effects/blur";
-import * as cropEffect from "../effects/crop";
-import * as resizeEffect from "../effects/resize";
-import * as rotateEffect from "../effects/rotate";
+import * as blurEffect from '../effects/blur';
+import * as cropEffect from '../effects/crop';
+import * as resizeEffect from '../effects/resize';
+import * as rotateEffect from '../effects/rotate';
 
 export interface UseImageEffectsProps {
   spriteName: string;
@@ -47,7 +47,9 @@ export default function useImageEffects({
     if (!application) return;
     if (save) {
       const result = resizeEffect.save(application);
-      result && onSave(result);
+      if (result) {
+        onSave(result);
+      }
     }
     resizeEffect.stop(application);
   };

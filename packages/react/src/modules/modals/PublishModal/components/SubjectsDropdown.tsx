@@ -1,9 +1,9 @@
-import { Control, Controller } from "react-hook-form";
-import { useTranslation } from "react-i18next";
+import { Control, Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
-import { Dropdown } from "../../../../components";
-import { FormDataProps } from "../hooks/usePublishModal";
-import { useSubjectsOptions } from "../hooks/useSubjectsOptions";
+import { Dropdown } from '../../../../components';
+import { FormDataProps } from '../hooks/usePublishModal';
+import { useSubjectsOptions } from '../hooks/useSubjectsOptions';
 
 export const SubjectsDropdown = ({
   control,
@@ -30,7 +30,7 @@ export const SubjectsDropdown = ({
             <Dropdown block overflow>
               <Dropdown.Trigger
                 size="md"
-                label={t("bpr.form.publication.discipline")}
+                label={t('bpr.form.publication.discipline')}
                 badgeContent={selectedSubjectAreas?.length}
               />
               <Dropdown.Menu>

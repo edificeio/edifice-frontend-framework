@@ -1,10 +1,10 @@
-import Button from "../../components/Button/Button";
-import Heading from "../../components/Heading/Heading";
-import useToggle from "./useToggle";
-import { Meta, StoryObj } from "@storybook/react";
+import Button from '../../components/Button/Button';
+import Heading from '../../components/Heading/Heading';
+import useToggle from './useToggle';
+import { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof useToggle> = {
-  title: "Hooks/useToggle",
+  title: 'Hooks/useToggle',
 };
 
 export default meta;

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
 import {
   IconDelete,
@@ -7,62 +7,62 @@ import {
   IconRecordVideo,
   IconSave,
   IconWrite,
-} from "../../modules/icons/components";
-import { Dropdown } from "../Dropdown";
-import Toolbar from "./Toolbar";
+} from '../../modules/icons/components';
+import { Dropdown } from '../Dropdown';
+import Toolbar from './Toolbar';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Toolbar> = {
-  title: "Components/Toolbar",
+  title: 'Components/Toolbar',
   component: Toolbar,
   argTypes: {
     variant: {
-      options: ["default", "no-shadow"],
-      control: { type: "select" },
+      options: ['default', 'no-shadow'],
+      control: { type: 'select' },
     },
-    isBlock: { control: "boolean" },
+    isBlock: { control: 'boolean' },
     align: {
-      options: ["left", "center", "space", "right"],
-      control: { type: "select" },
+      options: ['left', 'center', 'space', 'right'],
+      control: { type: 'select' },
     },
   },
   args: {
     items: [
       {
-        type: "icon",
-        name: "record",
+        type: 'icon',
+        name: 'record',
         props: {
           icon: <IconRecordVideo />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
           disabled: true,
         },
       },
       {
-        type: "icon",
-        name: "save",
+        type: 'icon',
+        name: 'save',
         props: {
           icon: <IconSave />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "divider",
+        type: 'divider',
       },
       {
-        type: "icon",
-        name: "write",
+        type: 'icon',
+        name: 'write',
         props: {
           icon: <IconWrite />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
           disabled: true,
         },
       },
       {
-        type: "icon",
-        name: "delete",
+        type: 'icon',
+        name: 'delete',
         props: {
           icon: <IconDelete />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
     ],
@@ -71,7 +71,7 @@ const meta: Meta<typeof Toolbar> = {
     docs: {
       description: {
         component:
-          "Toolbar component allows you to create a customizable toolbar with various items such as icons and dividers. Each item can have its own properties and actions, and the toolbar can be aligned in different ways.",
+          'Toolbar component allows you to create a customizable toolbar with various items such as icons and dividers. Each item can have its own properties and actions, and the toolbar can be aligned in different ways.',
       },
     },
   },
@@ -90,39 +90,39 @@ export const Hidden: Story = {
   args: {
     items: [
       {
-        type: "icon",
-        name: "record",
+        type: 'icon',
+        name: 'record',
         props: {
           icon: <IconRecordVideo />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
-        visibility: "hide",
+        visibility: 'hide',
       },
       {
-        type: "icon",
-        name: "save",
+        type: 'icon',
+        name: 'save',
         props: {
           icon: <IconSave />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "divider",
+        type: 'divider',
       },
       {
-        type: "icon",
-        name: "write",
+        type: 'icon',
+        name: 'write',
         props: {
           icon: <IconWrite />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "icon",
-        name: "delete",
+        type: 'icon',
+        name: 'delete',
         props: {
           icon: <IconDelete />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
     ],
@@ -142,38 +142,38 @@ export const WithDivider: Story = {
   args: {
     items: [
       {
-        type: "icon",
-        name: "record",
+        type: 'icon',
+        name: 'record',
         props: {
           icon: <IconRecordVideo />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "icon",
-        name: "save",
+        type: 'icon',
+        name: 'save',
         props: {
           icon: <IconSave />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "divider",
+        type: 'divider',
       },
       {
-        type: "icon",
-        name: "write",
+        type: 'icon',
+        name: 'write',
         props: {
           icon: <IconWrite />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "icon",
-        name: "delete",
+        type: 'icon',
+        name: 'delete',
         props: {
           icon: <IconDelete />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
     ],
@@ -182,7 +182,7 @@ export const WithDivider: Story = {
     docs: {
       description: {
         story:
-          "To display a divider element, include a data object with only the `type` set to `divider`.",
+          'To display a divider element, include a data object with only the `type` set to `divider`.',
       },
     },
   },
@@ -193,8 +193,8 @@ export const WithPrimaryAction: Story = {
   args: {
     items: [
       {
-        type: "button",
-        name: "save",
+        type: 'button',
+        name: 'save',
         props: {
           children: (
             <>
@@ -202,20 +202,20 @@ export const WithPrimaryAction: Story = {
               <span>Delete</span>
             </>
           ),
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "icon",
-        name: "delete",
+        type: 'icon',
+        name: 'delete',
         props: {
           icon: <IconDelete />,
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "primary",
-        name: "plus",
+        type: 'primary',
+        name: 'plus',
         props: {
           children: (
             <>
@@ -223,7 +223,7 @@ export const WithPrimaryAction: Story = {
               <span>Add</span>
             </>
           ),
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
     ],
@@ -232,7 +232,7 @@ export const WithPrimaryAction: Story = {
     docs: {
       description: {
         story:
-          "A data object with `type` set to `primary` will be treated as a primary action and displayed at the end of the Toolbar. It will accept the same properties as other data objects.",
+          'A data object with `type` set to `primary` will be treated as a primary action and displayed at the end of the Toolbar. It will accept the same properties as other data objects.',
       },
     },
   },
@@ -242,7 +242,7 @@ export const WithDropdownAction: Story = {
   render: (args) => <Toolbar {...args} />,
   decorators: [
     (Story) => (
-      <div className="m-24" style={{ height: "300px" }}>
+      <div className="m-24" style={{ height: '300px' }}>
         {Story()}
       </div>
     ),
@@ -250,8 +250,8 @@ export const WithDropdownAction: Story = {
   args: {
     items: [
       {
-        type: "button",
-        name: "record",
+        type: 'button',
+        name: 'record',
         props: {
           disabled: false,
           children: (
@@ -260,12 +260,12 @@ export const WithDropdownAction: Story = {
               <span>Record</span>
             </>
           ),
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "button",
-        name: "save",
+        type: 'button',
+        name: 'save',
         props: {
           disabled: false,
           children: (
@@ -274,21 +274,21 @@ export const WithDropdownAction: Story = {
               <span>Delete</span>
             </>
           ),
-          onClick: () => console.log("on click"),
+          onClick: () => console.log('on click'),
         },
       },
       {
-        type: "dropdown",
-        name: "others",
+        type: 'dropdown',
+        name: 'others',
         props: {
           children: () => (
             <>
               <Dropdown.Trigger variant="ghost" label="More..." />
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => alert("click 1")}>
+                <Dropdown.Item onClick={() => alert('click 1')}>
                   Write something...
                 </Dropdown.Item>
-                <Dropdown.Item onClick={() => alert("click 2")}>
+                <Dropdown.Item onClick={() => alert('click 2')}>
                   Edit something...
                 </Dropdown.Item>
               </Dropdown.Menu>
@@ -302,7 +302,7 @@ export const WithDropdownAction: Story = {
     docs: {
       description: {
         story:
-          "For items of type `dropdown`, you must provide their children via the `props` attribute.",
+          'For items of type `dropdown`, you must provide their children via the `props` attribute.',
       },
     },
   },
@@ -314,7 +314,7 @@ export const WithoutShadow: Story = {
     docs: {
       description: {
         story:
-          "Setting the `variant` prop to `no-shadow` removes the box-shadow from the toolbar.",
+          'Setting the `variant` prop to `no-shadow` removes the box-shadow from the toolbar.',
       },
     },
   },

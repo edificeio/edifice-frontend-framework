@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { Editor } from "@tiptap/react";
+import { Editor } from '@tiptap/react';
 
 export interface MediaResizeProps {
   editor: Editor;
@@ -24,7 +24,7 @@ export const useResizeMedia = (
   const limitWidthOrHeight = (width: number) => width < MIN_WIDTH;
 
   useEffect(() => {
-    const proseMirrorContainerDiv = document.querySelector(".ProseMirror");
+    const proseMirrorContainerDiv = document.querySelector('.ProseMirror');
 
     if (proseMirrorContainerDiv)
       proseMirrorContainerWidth.current = proseMirrorContainerDiv?.clientWidth;
@@ -38,11 +38,11 @@ export const useResizeMedia = (
   }, []);
 
   const onVerticalResize = (
-    directionOfMouseMove: "right" | "left",
+    directionOfMouseMove: 'right' | 'left',
     diff: number,
   ) => {
     if (!refResizable) {
-      console.error("Media ref is undefined|null", {
+      console.error('Media ref is undefined|null', {
         refResizable: refResizable,
       });
       return;
@@ -59,7 +59,7 @@ export const useResizeMedia = (
     };
 
     if (currentMediaDimensions.width) {
-      if (directionOfMouseMove === "left") {
+      if (directionOfMouseMove === 'left') {
         newMediaDimensions.width =
           currentMediaDimensions.width - Math.abs(diff);
       } else {
@@ -93,7 +93,7 @@ export const useResizeMedia = (
 
     if (diff === 0) return;
 
-    const directionOfMouseMove: "left" | "right" = diff > 0 ? "left" : "right";
+    const directionOfMouseMove: 'left' | 'right' = diff > 0 ? 'left' : 'right';
 
     onVerticalResize(directionOfMouseMove, Math.abs(diff));
   };
@@ -104,16 +104,16 @@ export const useResizeMedia = (
     isVerticalResizeActive.current = true;
     lastCursorX.current = event.clientX;
 
-    document.addEventListener("mousemove", onVerticalMouseMove);
-    document.addEventListener("mouseup", stopVerticalResize);
+    document.addEventListener('mousemove', onVerticalMouseMove);
+    document.addEventListener('mouseup', stopVerticalResize);
   };
 
   const stopVerticalResize = () => {
     isVerticalResizeActive.current = false;
     lastCursorX.current = -1;
 
-    document.removeEventListener("mousemove", onVerticalMouseMove);
-    document.removeEventListener("mouseup", stopVerticalResize);
+    document.removeEventListener('mousemove', onVerticalMouseMove);
+    document.removeEventListener('mouseup', stopVerticalResize);
   };
 
   return {

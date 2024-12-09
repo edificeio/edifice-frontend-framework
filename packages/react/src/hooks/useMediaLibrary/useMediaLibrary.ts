@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef, useState } from 'react';
 
-import { WorkspaceElement } from "@edifice.io/ts-client";
-import { TabsItemProps } from "../../components";
-import { MediaLibraryRef, MediaLibraryResult } from "../../modules/multimedia";
-import { useWorkspaceFile } from "../useWorkspaceFile";
+import { WorkspaceElement } from '@edifice.io/ts-client';
+import { TabsItemProps } from '../../components';
+import { MediaLibraryRef, MediaLibraryResult } from '../../modules/multimedia';
+import { useWorkspaceFile } from '../useWorkspaceFile';
 
 const useMediaLibrary = () => {
   const mediaLibraryRef = useRef<MediaLibraryRef>(null);
@@ -21,31 +21,31 @@ const useMediaLibrary = () => {
     let updatedMedia;
 
     switch (mediaLibraryRef.current?.type) {
-      case "video": {
-        if (typeof result === "object") {
+      case 'video': {
+        if (typeof result === 'object') {
           updatedMedia = result[0];
         } else {
           const parser = new DOMParser();
-          const doc = parser.parseFromString(result, "text/html");
+          const doc = parser.parseFromString(result, 'text/html');
           const element = doc.body.firstChild as HTMLBodyElement;
 
-          const href = element?.getAttribute("src");
+          const href = element?.getAttribute('src');
           mediaLibraryRef.current?.hide();
           updatedMedia = href;
         }
         break;
       }
-      case "embedder": {
+      case 'embedder': {
         const parser = new DOMParser();
-        const doc = parser.parseFromString(result, "text/html");
+        const doc = parser.parseFromString(result, 'text/html');
         const element = doc.body.firstChild as HTMLBodyElement;
 
-        const href = element?.getAttribute("src");
+        const href = element?.getAttribute('src');
         mediaLibraryRef.current?.hide();
         updatedMedia = href;
         break;
       }
-      case "audio": {
+      case 'audio': {
         if (result.length === undefined) {
           updatedMedia = result;
         } else {
@@ -53,11 +53,11 @@ const useMediaLibrary = () => {
         }
         break;
       }
-      case "hyperlink": {
+      case 'hyperlink': {
         updatedMedia = result;
         break;
       }
-      case "image": {
+      case 'image': {
         const imagePath = `/workspace/document/${result[0]._id}`;
         updatedMedia = imagePath;
         break;

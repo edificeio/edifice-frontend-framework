@@ -1,5 +1,5 @@
-import { usePrevious } from "@uidotdev/usehooks";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { usePrevious } from '@uidotdev/usehooks';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export const useMenu = () => {
   const menuRef = useRef<HTMLUListElement | null>(null);
@@ -15,9 +15,9 @@ export const useMenu = () => {
 
       // https://www.w3.org/TR/wai-aria-practices/#kbd_roving_tabindex
       // @ts-ignore
-      previousNode?.setAttribute("tabindex", "-1");
+      previousNode?.setAttribute('tabindex', '-1');
       // @ts-ignore
-      currentNode?.setAttribute("tabindex", "0");
+      currentNode?.setAttribute('tabindex', '0');
       // @ts-ignore
       currentNode?.focus({ preventScroll: true });
     }
@@ -40,11 +40,11 @@ export const useMenu = () => {
     event.stopPropagation();
 
     switch (event.code) {
-      case "ArrowUp":
+      case 'ArrowUp':
         event.preventDefault();
         previous();
         break;
-      case "ArrowDown":
+      case 'ArrowDown':
         event.preventDefault();
         next();
         break;
@@ -52,11 +52,11 @@ export const useMenu = () => {
         break;
     }
     switch (event.code) {
-      case "End":
+      case 'End':
         event.preventDefault();
         last();
         break;
-      case "Home":
+      case 'Home':
         event.preventDefault();
         first();
         break;
@@ -67,8 +67,8 @@ export const useMenu = () => {
 
   const childProps = useMemo(
     () => ({
-      "data-menubar-menuitem": "",
-      "role": "menuitem",
+      'data-menubar-menuitem': '',
+      'role': 'menuitem',
     }),
     [],
   );

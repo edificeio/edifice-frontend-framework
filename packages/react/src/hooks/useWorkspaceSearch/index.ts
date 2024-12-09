@@ -1,1 +1,1 @@
-export { default as useWorkspaceSearch } from "./useWorkspaceSearch";
+export { default as useWorkspaceSearch } from './useWorkspaceSearch';

@@ -1,59 +1,59 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { Ref, useEffect, useRef } from "react";
-import { Button } from "../../Button";
+import { Meta, StoryObj } from '@storybook/react';
+import { Ref, useEffect, useRef } from 'react';
+import { Button } from '../../Button';
 
-import { FormControl, FormText } from "../../Form/index";
-import { Label } from "../../Label";
-import Input, { InputProps } from "../Input";
+import { FormControl, FormText } from '../../Form/index';
+import { Label } from '../../Label';
+import Input, { InputProps } from '../Input';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Input> = {
-  title: "Forms/Input",
+  title: 'Forms/Input',
   component: Input,
   argTypes: {
     size: {
-      options: ["sm", "md", "lg"],
-      control: { type: "select" },
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
     },
     type: {
       options: [
-        "button",
-        "checkbox",
-        "color",
-        "date",
-        "datetime-local",
-        "email",
-        "file",
-        "hidden",
-        "image",
-        "month",
-        "number",
-        "password",
-        "radio",
-        "range",
-        "reset",
-        "search",
-        "submit",
-        "tel",
-        "text",
-        "time",
-        "url",
-        "week",
+        'button',
+        'checkbox',
+        'color',
+        'date',
+        'datetime-local',
+        'email',
+        'file',
+        'hidden',
+        'image',
+        'month',
+        'number',
+        'password',
+        'radio',
+        'range',
+        'reset',
+        'search',
+        'submit',
+        'tel',
+        'text',
+        'time',
+        'url',
+        'week',
       ],
-      control: { type: "select" },
+      control: { type: 'select' },
     },
   },
   args: {
     disabled: false,
-    size: "md",
-    type: "text",
-    placeholder: "Text Placeholder",
+    size: 'md',
+    type: 'text',
+    placeholder: 'Text Placeholder',
   },
   parameters: {
     docs: {
       description: {
         component:
-          "The `Input` component is a foundational form element that allows users to enter and edit text or other data. It supports various input types (text, email, password, etc.), sizes, and states like disabled or readonly. The component can be combined with other form elements like labels and help text to create complete form controls.",
+          'The `Input` component is a foundational form element that allows users to enter and edit text or other data. It supports various input types (text, email, password, etc.), sizes, and states like disabled or readonly. The component can be combined with other form elements like labels and help text to create complete form controls.',
       },
     },
   },
@@ -74,9 +74,9 @@ export const Base: Story = {
   render: Template,
 
   args: {
-    type: "text",
-    size: "md",
-    placeholder: "Edifice",
+    type: 'text',
+    size: 'md',
+    placeholder: 'Edifice',
   },
 };
 
@@ -84,16 +84,16 @@ export const Small: Story = {
   render: Template,
 
   args: {
-    size: "sm",
-    type: "text",
-    placeholder: "Edifice",
+    size: 'sm',
+    type: 'text',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.",
+          'Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.',
       },
     },
   },
@@ -103,16 +103,16 @@ export const Medium: Story = {
   render: Template,
 
   args: {
-    type: "text",
-    size: "md",
-    placeholder: "Edifice",
+    type: 'text',
+    size: 'md',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when there are many information to fill on a page. We use the medium size to gain space on the page.",
+          'Used when there are many information to fill on a page. We use the medium size to gain space on the page.',
       },
     },
   },
@@ -122,16 +122,16 @@ export const Large: Story = {
   render: Template,
 
   args: {
-    size: "lg",
-    type: "text",
-    placeholder: "Edifice",
+    size: 'lg',
+    type: 'text',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.",
+          'Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.',
       },
     },
   },
@@ -144,7 +144,7 @@ export const InputWithValue: Story = {
     useEffect(() => {
       // Can be a type guard
       if (inputRef.current != null) {
-        inputRef.current.value = "This input has a value.";
+        inputRef.current.value = 'This input has a value.';
       }
     }, []);
 
@@ -163,7 +163,7 @@ export const InputWithValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: "When Input has a value, `border-color` changes.",
+        story: 'When Input has a value, `border-color` changes.',
       },
     },
   },
@@ -201,7 +201,7 @@ export const InputFocused: Story = {
     docs: {
       description: {
         story:
-          "When Input is focused, `border-color` changes depending on the theme.",
+          'When Input is focused, `border-color` changes depending on the theme.',
       },
     },
   },
@@ -320,7 +320,7 @@ export const StatusWithoutIcon: Story = {
     docs: {
       description: {
         story:
-          "You can add the `noValidationIcon` props to the Input Component to remove validation icon",
+          'You can add the `noValidationIcon` props to the Input Component to remove validation icon',
       },
     },
   },
@@ -331,8 +331,8 @@ export const DisabledStatus: Story = {
 
   args: {
     disabled: true,
-    size: "md",
-    type: "text",
-    placeholder: "Edifice",
+    size: 'md',
+    type: 'text',
+    placeholder: 'Edifice',
   },
 };

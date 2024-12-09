@@ -1,16 +1,16 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from "../Button";
-import ActionBar, { ActionBarProps } from "./ActionBar";
+import { Button } from '../Button';
+import ActionBar, { ActionBarProps } from './ActionBar';
 
 const meta: Meta<typeof ActionBar> = {
-  title: "Components/ActionBar",
+  title: 'Components/ActionBar',
   component: ActionBar,
   parameters: {
     docs: {
       description: {
         component:
-          "ActionBar is a component that displays an action bar containing buttons. It is typically used at the bottom of a page.",
+          'ActionBar is a component that displays an action bar containing buttons. It is typically used at the bottom of a page.',
       },
     },
   },

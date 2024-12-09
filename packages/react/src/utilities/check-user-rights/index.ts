@@ -1,1 +1,1 @@
-export * from "./check-user-rights";
+export * from './check-user-rights';

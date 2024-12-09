@@ -1,13 +1,13 @@
-import { Meta, StoryObj } from "@storybook/react";
-import Button from "../../components/Button/Button";
-import FormControl from "../../components/Form/FormControl";
-import { Input } from "../../components/Input";
-import { Label } from "../../components/Label";
-import { IconLock, IconMail } from "../../modules/icons/components";
-import useTrapFocus from "./useTrapFocus";
+import { Meta, StoryObj } from '@storybook/react';
+import Button from '../../components/Button/Button';
+import FormControl from '../../components/Form/FormControl';
+import { Input } from '../../components/Input';
+import { Label } from '../../components/Label';
+import { IconLock, IconMail } from '../../modules/icons/components';
+import useTrapFocus from './useTrapFocus';
 
 const meta: Meta<typeof useTrapFocus> = {
-  title: "Hooks/useTrapFocus",
+  title: 'Hooks/useTrapFocus',
 };
 
 export default meta;

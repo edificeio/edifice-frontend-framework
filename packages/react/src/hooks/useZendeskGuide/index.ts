@@ -1,1 +1,1 @@
-export { default as useZendeskGuide } from "./useZendeskGuide";
+export { default as useZendeskGuide } from './useZendeskGuide';

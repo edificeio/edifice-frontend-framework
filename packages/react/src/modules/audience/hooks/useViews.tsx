@@ -1,5 +1,5 @@
-import { odeServices } from "@edifice.io/ts-client";
-import { useRef } from "react";
+import { odeServices } from '@edifice.io/ts-client';
+import { useRef } from 'react';
 
 /**
  * This hook provides functions to easily call "audience" backend endpoints.

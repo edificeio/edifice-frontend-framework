@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { Toaster } from "react-hot-toast";
-import Button from "../../components/Button/Button";
-import useToast from "./useToast";
+import { Meta, StoryObj } from '@storybook/react';
+import { Toaster } from 'react-hot-toast';
+import Button from '../../components/Button/Button';
+import useToast from './useToast';
 
 const meta: Meta<typeof useToast> = {
-  title: "Hooks/useToast",
+  title: 'Hooks/useToast',
 };
 
 export default meta;
@@ -14,12 +14,12 @@ export const Example: Story = {
   render: (args) => {
     const toast = useToast();
 
-    const infoNotify = () => toast.info("This is an info message!");
+    const infoNotify = () => toast.info('This is an info message!');
 
     const warningNotify = () =>
       toast.warning(<h3>This is a warning message in a H3 tag</h3>);
 
-    const sucessNotify = () => toast.success("This is a success message!");
+    const sucessNotify = () => toast.success('This is a success message!');
 
     const errorNotify = () =>
       toast.error(<div>This is an error message in a DIV tag</div>);

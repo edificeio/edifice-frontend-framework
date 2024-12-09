@@ -1,14 +1,14 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState } from 'react';
 
 import {
   ID,
   PutShareResponse,
   RightStringified,
   ShareRight,
-} from "@edifice.io/ts-client";
-import { UseMutationResult } from "@tanstack/react-query";
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
+} from '@edifice.io/ts-client';
+import { UseMutationResult } from '@tanstack/react-query';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 import {
   Avatar,
@@ -20,17 +20,17 @@ import {
   Modal,
   Tooltip,
   VisuallyHidden,
-} from "../../../components";
+} from '../../../components';
 import {
   IconBookmark,
   IconInfoCircle,
   IconRafterDown,
-} from "../../icons/components";
-import { ShareBookmark } from "./ShareBookmark";
-import { ShareBookmarkLine } from "./ShareBookmarkLine";
-import { useSearch } from "./hooks/useSearch";
-import useShare from "./hooks/useShare";
-import { useShareBookmark } from "./hooks/useShareBookmark";
+} from '../../icons/components';
+import { ShareBookmark } from './ShareBookmark';
+import { ShareBookmarkLine } from './ShareBookmarkLine';
+import { useSearch } from './hooks/useSearch';
+import useShare from './hooks/useShare';
+import { useShareBookmark } from './hooks/useShareBookmark';
 
 export type ShareOptions = {
   resourceId: ID;
@@ -134,15 +134,15 @@ export default function ShareResourceModal({
   const { t } = useTranslation();
 
   const searchPlaceholder = showSearchAdmlHint()
-    ? t("explorer.search.adml.hint")
-    : t("explorer.modal.share.search.placeholder");
+    ? t('explorer.search.adml.hint')
+    : t('explorer.modal.share.search.placeholder');
 
   return createPortal(
     <Modal id="share_modal" size="lg" isOpen={isOpen} onModalClose={onCancel}>
-      <Modal.Header onModalClose={onCancel}>{t("share.title")}</Modal.Header>
+      <Modal.Header onModalClose={onCancel}>{t('share.title')}</Modal.Header>
       <Modal.Body>
         <Heading headingStyle="h4" level="h3" className="mb-16">
-          {t("explorer.modal.share.usersWithAccess")}
+          {t('explorer.modal.share.usersWithAccess')}
         </Heading>
         <div className="table-responsive">
           {isLoading ? (
@@ -153,12 +153,12 @@ export default function ShareResourceModal({
                 <tr>
                   <th scope="col" className="w-32">
                     <VisuallyHidden>
-                      {t("explorer.modal.share.avatar.shared.alt")}
+                      {t('explorer.modal.share.avatar.shared.alt')}
                     </VisuallyHidden>
                   </th>
                   <th scope="col">
                     <VisuallyHidden>
-                      {t("explorer.modal.share.search.placeholder")}
+                      {t('explorer.modal.share.search.placeholder')}
                     </VisuallyHidden>
                   </th>
                   {shareRightActions.map((shareRightAction) => (
@@ -171,7 +171,7 @@ export default function ShareResourceModal({
                     </th>
                   ))}
                   <th scope="col">
-                    <VisuallyHidden>{t("close")}</VisuallyHidden>
+                    <VisuallyHidden>{t('close')}</VisuallyHidden>
                   </th>
                 </tr>
               </thead>
@@ -180,17 +180,17 @@ export default function ShareResourceModal({
                   <tr>
                     <th scope="row">
                       <Avatar
-                        alt={t("explorer.modal.share.avatar.me.alt")}
+                        alt={t('explorer.modal.share.avatar.me.alt')}
                         size="xs"
                         src={myAvatar}
                         variant="circle"
                       />
                     </th>
-                    <td>{t("share.me")}</td>
+                    <td>{t('share.me')}</td>
                     {shareRightActions.map((shareRightAction) => (
                       <td
                         key={shareRightAction.displayName}
-                        style={{ width: "80px" }}
+                        style={{ width: '80px' }}
                         className="text-center text-white"
                       >
                         <Checkbox checked={true} disabled />
@@ -217,11 +217,11 @@ export default function ShareResourceModal({
             leftIcon={<IconBookmark />}
             rightIcon={
               <IconRafterDown
-                title={t("show")}
+                title={t('show')}
                 className="w-16 min-w-0"
                 style={{
-                  transition: "rotate 0.2s ease-out",
-                  rotate: showBookmarkInput ? "-180deg" : "0deg",
+                  transition: 'rotate 0.2s ease-out',
+                  rotate: showBookmarkInput ? '-180deg' : '0deg',
                 }}
               />
             }
@@ -230,7 +230,7 @@ export default function ShareResourceModal({
             className="fw-normal"
             onClick={() => toggleBookmarkInput(!showBookmarkInput)}
           >
-            {t("share.save.sharebookmark")}
+            {t('share.save.sharebookmark')}
           </Button>
           {showBookmarkInput && (
             <ShareBookmark
@@ -247,10 +247,10 @@ export default function ShareResourceModal({
           level="h3"
           className="mb-16 d-flex align-items-center"
         >
-          <div className="me-8">{t("explorer.modal.share.search")}</div>
+          <div className="me-8">{t('explorer.modal.share.search')}</div>
           <Tooltip
             message={
-              "Vos favoris de partage s’affichent en priorité dans votre liste lorsque vous recherchez un groupe ou une personne, vous pouvez les retrouver dans l’annuaire."
+              'Vos favoris de partage s’affichent en priorité dans votre liste lorsque vous recherchez un groupe ou une personne, vous pouvez les retrouver dans l’annuaire.'
             }
             placement="top"
           >
@@ -280,7 +280,7 @@ export default function ShareResourceModal({
           variant="ghost"
           onClick={onCancel}
         >
-          {t("explorer.cancel")}
+          {t('explorer.cancel')}
         </Button>
 
         <Button
@@ -291,10 +291,10 @@ export default function ShareResourceModal({
           onClick={handleShare}
           disabled={isSharing}
         >
-          {t("share")}
+          {t('share')}
         </Button>
       </Modal.Footer>
     </Modal>,
-    document.getElementById("portal") as HTMLElement,
+    document.getElementById('portal') as HTMLElement,
   );
 }

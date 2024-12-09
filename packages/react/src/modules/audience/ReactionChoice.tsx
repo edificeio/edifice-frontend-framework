@@ -1,8 +1,8 @@
-import { ReactionSummaryData, ReactionType } from "@edifice.io/ts-client";
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
-import { Dropdown, IconButton, Tooltip } from "../../components";
-import { default as useReactionIcons } from "./hooks/useReactionIcons";
+import { ReactionSummaryData, ReactionType } from '@edifice.io/ts-client';
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
+import { Dropdown, IconButton, Tooltip } from '../../components';
+import { default as useReactionIcons } from './hooks/useReactionIcons';
 
 export interface ReactionChoiceProps {
   availableReactions: ReactionType[];
@@ -20,7 +20,7 @@ const ReactionChoice = ({
 
   const { userReaction } = summary;
   const classes = clsx({
-    "fw-bold": !!userReaction,
+    'fw-bold': !!userReaction,
   });
 
   return (
@@ -63,6 +63,6 @@ const ReactionChoice = ({
   );
 };
 
-ReactionChoice.displayName = "ReactionChoice";
+ReactionChoice.displayName = 'ReactionChoice';
 
 export default ReactionChoice;

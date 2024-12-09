@@ -1,7 +1,7 @@
-import { ReactNode, forwardRef } from "react";
+import { ReactNode, forwardRef } from 'react';
 
-import { animated, useTransition } from "@react-spring/web";
-import clsx from "clsx";
+import { animated, useTransition } from '@react-spring/web';
+import clsx from 'clsx';
 
 export interface PopoverProps {
   /**
@@ -34,24 +34,24 @@ export interface PopoverElementProps {
 }
 
 export const PopoverHeader = ({ children, className }: PopoverProps) => {
-  const classes = clsx("popover-header", className);
+  const classes = clsx('popover-header', className);
   return <div className={classes}>{children}</div>;
 };
 
 export const PopoverBody = ({ children, className }: PopoverProps) => {
-  const classes = clsx("popover-body", className);
+  const classes = clsx('popover-body', className);
   return <div className={classes}>{children}</div>;
 };
 
 export const PopoverFooter = ({ children, className }: PopoverProps) => {
-  const classes = clsx("popover-footer p-8", className);
+  const classes = clsx('popover-footer p-8', className);
   return <div className={classes}>{children}</div>;
 };
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
   ({ children, className, id, isVisible, ...restProps }, ref) => {
     const classes = clsx(
-      "popover d-block position-absolute top-100 start-50 translate-middle-x",
+      'popover d-block position-absolute top-100 start-50 translate-middle-x',
       className,
     );
 
@@ -80,4 +80,4 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
   },
 );
 
-Popover.displayName = "Popover";
+Popover.displayName = 'Popover';

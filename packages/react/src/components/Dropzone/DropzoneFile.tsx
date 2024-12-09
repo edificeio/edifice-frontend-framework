@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { IconPlus } from "../../modules/icons/components";
-import Button from "../Button/Button";
-import { useDropzoneContext } from "./DropzoneContext";
+import { IconPlus } from '../../modules/icons/components';
+import Button from '../Button/Button';
+import { useDropzoneContext } from './DropzoneContext';
 
 const DropzoneFile = ({
   children,
@@ -19,9 +19,9 @@ const DropzoneFile = ({
 
   const hasFiles = files && files.length > 0;
 
-  const classes = clsx("drop-file-wrapper", {
-    "d-block": hasFiles,
-    "d-none": !hasFiles,
+  const classes = clsx('drop-file-wrapper', {
+    'd-block': hasFiles,
+    'd-none': !hasFiles,
   });
 
   return (
@@ -34,7 +34,7 @@ const DropzoneFile = ({
             disabled={!multiple}
             onClick={() => inputRef?.current?.click()}
           >
-            {t("dropzone.add.more")}
+            {t('dropzone.add.more')}
           </Button>
         </div>
       </div>
@@ -43,6 +43,6 @@ const DropzoneFile = ({
   );
 };
 
-DropzoneFile.displayName = "Dropzone.File";
+DropzoneFile.displayName = 'Dropzone.File';
 
 export default DropzoneFile;

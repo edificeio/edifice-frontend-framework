@@ -1,1 +1,1 @@
-export * from "./add-timestamp-to-url";
+export * from './add-timestamp-to-url';

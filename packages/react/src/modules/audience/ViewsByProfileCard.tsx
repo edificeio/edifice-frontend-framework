@@ -1,14 +1,14 @@
-import { ViewsDetailsProfile } from "@edifice.io/ts-client";
-import { StringUtils } from "@edifice.io/utilities";
-import { useTranslation } from "react-i18next";
-import { IconUsers } from "../icons/components";
+import { ViewsDetailsProfile } from '@edifice.io/ts-client';
+import { StringUtils } from '@edifice.io/utilities';
+import { useTranslation } from 'react-i18next';
+import { IconUsers } from '../icons/components';
 import {
   IconGuest,
   IconParent,
   IconPersonnel,
   IconStudent,
   IconTeacher,
-} from "../icons/components/audience";
+} from '../icons/components/audience';
 
 export interface ViewsCardProps {
   viewsByProfile: ViewsDetailsProfile;
@@ -21,15 +21,15 @@ const ViewsByProfileCard = ({ viewsByProfile }: ViewsCardProps) => {
 
   function getIcon(profile: string) {
     switch (profile) {
-      case "student":
+      case 'student':
         return <IconStudent />;
-      case "relative":
+      case 'relative':
         return <IconParent />;
-      case "teacher":
+      case 'teacher':
         return <IconTeacher />;
-      case "personnel":
+      case 'personnel':
         return <IconPersonnel />;
-      case "guest":
+      case 'guest':
         return <IconGuest />;
       default:
         return <IconUsers />;
@@ -45,6 +45,6 @@ const ViewsByProfileCard = ({ viewsByProfile }: ViewsCardProps) => {
   );
 };
 
-ViewsByProfileCard.displayName = "ViewsByProfileCard";
+ViewsByProfileCard.displayName = 'ViewsByProfileCard';
 
 export default ViewsByProfileCard;

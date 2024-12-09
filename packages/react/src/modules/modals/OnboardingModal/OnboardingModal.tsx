@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
-import { Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Button, Image, Modal } from "../../../components";
-import { useOnboardingModal } from "./useOnboardingModal";
+import { Button, Image, Modal } from '../../../components';
+import { useOnboardingModal } from './useOnboardingModal';
 interface ModalItemsProps {
   /**
    * /onboarding/*.svg
@@ -54,10 +54,10 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
     useOnboardingModal(id);
 
   useEffect(() => {
-    const link = document.createElement("link");
-    link.href = "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css";
-    link.rel = "stylesheet";
-    link.type = "text/css";
+    const link = document.createElement('link');
+    link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
 
     document.head.appendChild(link);
 
@@ -80,7 +80,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
           onModalClose={() => setIsOpen(false)}
         >
           <Modal.Header onModalClose={() => setIsOpen(false)}>
-            {t(title || "explorer.modal.onboarding.trash.title")}
+            {t(title || 'explorer.modal.onboarding.trash.title')}
           </Modal.Header>
           <Modal.Body>
             <Swiper
@@ -119,7 +119,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
               variant="ghost"
               onClick={() => setIsOpen(false)}
             >
-              {t("explorer.modal.onboarding.trash.later")}
+              {t('explorer.modal.onboarding.trash.later')}
             </Button>
 
             {swiperProgress > 0 && (
@@ -129,7 +129,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
                 variant="outline"
                 onClick={() => swiperInstance.slidePrev()}
               >
-                {t(prevText || "explorer.modal.onboarding.trash.prev")}
+                {t(prevText || 'explorer.modal.onboarding.trash.prev')}
               </Button>
             )}
             {swiperProgress < 1 && (
@@ -140,7 +140,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
                 variant="filled"
                 onClick={() => swiperInstance.slideNext()}
               >
-                {t(nextText || "explorer.modal.onboarding.trash.next")}
+                {t(nextText || 'explorer.modal.onboarding.trash.next')}
               </Button>
             )}
             {swiperProgress === 1 && (
@@ -150,16 +150,16 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
                 variant="filled"
                 onClick={handleSavePreference}
               >
-                {t(closeText || "explorer.modal.onboarding.trash.close")}
+                {t(closeText || 'explorer.modal.onboarding.trash.close')}
               </Button>
             )}
           </Modal.Footer>
         </Modal>,
-        document.getElementById("portal") as HTMLElement,
+        document.getElementById('portal') as HTMLElement,
       )
     : null;
 };
 
-OnboardingModal.displayName = "OnboardingModal";
+OnboardingModal.displayName = 'OnboardingModal';
 
 export default OnboardingModal;

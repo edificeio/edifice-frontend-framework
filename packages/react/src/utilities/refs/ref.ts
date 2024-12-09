@@ -1,4 +1,4 @@
-import { type MutableRefObject, type RefCallback } from "react";
+import { type MutableRefObject, type RefCallback } from 'react';
 
 type MutableRefList<T> = Array<
   RefCallback<T> | MutableRefObject<T> | undefined | null
@@ -12,7 +12,7 @@ export function mergeRefs<T>(...refs: MutableRefList<T>): RefCallback<T> {
 
 export function setRef<T>(val: T, ...refs: MutableRefList<T>): void {
   refs.forEach((ref) => {
-    if (typeof ref === "function") {
+    if (typeof ref === 'function') {
       ref(val);
     } else if (ref != null) {
       ref.current = val;

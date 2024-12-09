@@ -5,6 +5,6 @@
  */
 export function addTimestampToImageUrl(imageUrl: string) {
   const timestamp = new Date().getTime();
-  const separator = imageUrl.includes("?") ? "&" : "?";
+  const separator = imageUrl.includes('?') ? '&' : '?';
   return `${imageUrl}${separator}timestamp=${timestamp}`;
 }

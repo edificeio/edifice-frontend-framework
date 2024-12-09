@@ -1,4 +1,4 @@
-import { Paragraph as TiptapParagraph } from "@tiptap/extension-paragraph";
+import { Paragraph as TiptapParagraph } from '@tiptap/extension-paragraph';
 
 /**
  * Extends `Paragraph` extension from TipTap.
@@ -18,7 +18,7 @@ export const Paragraph = TiptapParagraph.extend({
     return [
       ...parentRules,
       {
-        tag: "div[style]:has(> span)",
+        tag: 'div[style]:has(> span)',
       },
     ];
   },

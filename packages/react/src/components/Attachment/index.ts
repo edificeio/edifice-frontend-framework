@@ -1,2 +1,2 @@
-export { default as Attachment } from "./Attachment";
-export * from "./Attachment";
+export { default as Attachment } from './Attachment';
+export * from './Attachment';

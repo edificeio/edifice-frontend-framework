@@ -1,13 +1,13 @@
-import "@tiptap/extension-text-style";
+import '@tiptap/extension-text-style';
 
-import { Extension } from "@tiptap/core";
+import { Extension } from '@tiptap/core';
 
 export const LineHeight = Extension.create({
-  name: "lineHeight",
+  name: 'lineHeight',
 
   addOptions() {
     return {
-      types: ["textStyle"],
+      types: ['textStyle'],
     };
   },
 
@@ -19,7 +19,7 @@ export const LineHeight = Extension.create({
           lineHeight: {
             default: null,
             parseHTML: (element) =>
-              element.style.lineHeight?.replace(/['"]+/g, ""),
+              element.style.lineHeight?.replace(/['"]+/g, ''),
             renderHTML: (attributes) => {
               if (!attributes.lineHeight) {
                 return {};

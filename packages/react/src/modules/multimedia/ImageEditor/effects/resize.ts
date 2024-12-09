@@ -1,4 +1,4 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
 //
 // Global constants used for crop effects
@@ -7,9 +7,9 @@ import * as PIXI from "pixi.js";
 // Define the radius (pixel) of the corner
 const POINT_RADIUS = 20;
 // Define the name of the graphical controls
-const CONTROL_NAME = "CONTROL_NAME";
+const CONTROL_NAME = 'CONTROL_NAME';
 // Union type to identify corners
-type CornerType = "TOP_LEFT" | "TOP_RIGHT" | "BOTTOM_LEFT" | "BOTTOM_RIGHT";
+type CornerType = 'TOP_LEFT' | 'TOP_RIGHT' | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT';
 
 //
 // Implementation
@@ -21,7 +21,7 @@ type CornerType = "TOP_LEFT" | "TOP_RIGHT" | "BOTTOM_LEFT" | "BOTTOM_RIGHT";
  * @returns A name identifying the corner object
  */
 function getCornerName(index: CornerType) {
-  return "RESIZE_CORNER_" + index;
+  return 'RESIZE_CORNER_' + index;
 }
 
 /**
@@ -37,10 +37,10 @@ function computeCornerPosition(position: CornerType, sprite: PIXI.Graphics) {
   const left = sprite.x;
   const top = sprite.y;
   switch (position) {
-    case "TOP_LEFT": {
+    case 'TOP_LEFT': {
       return { x: left, y: top, start: 0, end: Math.PI / 2 };
     }
-    case "TOP_RIGHT": {
+    case 'TOP_RIGHT': {
       return {
         x: left + sprite.width,
         y: top,
@@ -48,7 +48,7 @@ function computeCornerPosition(position: CornerType, sprite: PIXI.Graphics) {
         end: Math.PI,
       };
     }
-    case "BOTTOM_LEFT": {
+    case 'BOTTOM_LEFT': {
       return {
         x: left,
         y: top + sprite.height,
@@ -56,7 +56,7 @@ function computeCornerPosition(position: CornerType, sprite: PIXI.Graphics) {
         end: 2 * Math.PI,
       };
     }
-    case "BOTTOM_RIGHT": {
+    case 'BOTTOM_RIGHT': {
       return {
         x: left + sprite.width,
         y: top + sprite.height,
@@ -101,27 +101,27 @@ function resizeContainer(
   const spriteWidth = isRotated ? sprite.height : sprite.width;
   const spriteHeight = isRotated ? sprite.width : sprite.height;
   switch (cornerType) {
-    case "TOP_LEFT": {
+    case 'TOP_LEFT': {
       container.position = new PIXI.Point(position.x, position.y);
       container.width = spriteWidth - 2 * position.x;
       container.height = spriteHeight - 2 * position.y;
       break;
     }
-    case "TOP_RIGHT": {
+    case 'TOP_RIGHT': {
       const newX = spriteWidth - position.x;
       container.position = new PIXI.Point(newX, position.y);
       container.width = spriteWidth - 2 * newX;
       container.height = spriteHeight - 2 * position.y;
       break;
     }
-    case "BOTTOM_LEFT": {
+    case 'BOTTOM_LEFT': {
       const newY = spriteHeight - position.y;
       container.position = new PIXI.Point(position.x, newY);
       container.width = spriteWidth - 2 * position.x;
       container.height = spriteHeight - 2 * newY;
       break;
     }
-    case "BOTTOM_RIGHT": {
+    case 'BOTTOM_RIGHT': {
       const newY = spriteHeight - position.y;
       const newX = spriteWidth - position.x;
       container.position = new PIXI.Point(newX, newY);
@@ -192,7 +192,7 @@ function drawCorner(
   // Add listener to redraw container while moving corner
   corner.interactive = true;
   let enable = false;
-  application.stage.on("pointermove", (event: PIXI.FederatedMouseEvent) => {
+  application.stage.on('pointermove', (event: PIXI.FederatedMouseEvent) => {
     if (enable === false) return;
     const localPosition = application.stage.toLocal(event.global);
     resizeContainer(application, {
@@ -206,18 +206,18 @@ function drawCorner(
   const handlePointerUp = () => {
     enable = false;
   };
-  globalThis.addEventListener("pointerup", handlePointerUp);
+  globalThis.addEventListener('pointerup', handlePointerUp);
   // stop listening pointerup when corner is destroyed
-  corner.once("destroyed", () => {
+  corner.once('destroyed', () => {
     // cancel listener
-    corner.off("pointerdown");
-    globalThis.removeEventListener("pointerup", handlePointerUp);
+    corner.off('pointerdown');
+    globalThis.removeEventListener('pointerup', handlePointerUp);
   });
   // Enable tracking on pointerdown
   const handlePointerDown = () => {
     enable = true;
   };
-  corner.on("pointerdown", handlePointerDown);
+  corner.on('pointerdown', handlePointerDown);
   // add to sprite
   container.addChild(corner);
 }
@@ -280,10 +280,10 @@ function removeContainer(application: PIXI.Application): void {
  */
 function drawControl(application: PIXI.Application, spriteName: string): void {
   drawContainer(application, spriteName);
-  drawCorner(application, "BOTTOM_LEFT", { spriteName });
-  drawCorner(application, "BOTTOM_RIGHT", { spriteName });
-  drawCorner(application, "TOP_LEFT", { spriteName });
-  drawCorner(application, "TOP_RIGHT", { spriteName });
+  drawCorner(application, 'BOTTOM_LEFT', { spriteName });
+  drawCorner(application, 'BOTTOM_RIGHT', { spriteName });
+  drawCorner(application, 'TOP_LEFT', { spriteName });
+  drawCorner(application, 'TOP_RIGHT', { spriteName });
 }
 /**
  * Remove all control graphical objects if exists : container + 4 corners
@@ -292,11 +292,11 @@ function drawControl(application: PIXI.Application, spriteName: string): void {
  */
 function removeControl(application: PIXI.Application): void {
   removeContainer(application);
-  removeCorner(application, "BOTTOM_LEFT");
-  removeCorner(application, "BOTTOM_RIGHT");
-  removeCorner(application, "TOP_LEFT");
-  removeCorner(application, "TOP_RIGHT");
-  application.stage.off("pointermove");
+  removeCorner(application, 'BOTTOM_LEFT');
+  removeCorner(application, 'BOTTOM_RIGHT');
+  removeCorner(application, 'TOP_LEFT');
+  removeCorner(application, 'TOP_RIGHT');
+  application.stage.off('pointermove');
 }
 /**
  * Draw all graphical object to control the resize
@@ -317,7 +317,7 @@ export function start(application: PIXI.Application, spriteName: string): void {
  */
 export function stop(application: PIXI.Application): void {
   removeControl(application);
-  application.stage.off("pointermove");
+  application.stage.off('pointermove');
   application.render();
 }
 /**

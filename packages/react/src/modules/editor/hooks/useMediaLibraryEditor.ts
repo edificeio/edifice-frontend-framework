@@ -1,17 +1,17 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useRef } from 'react';
 
-import { WorkspaceElement } from "@edifice.io/ts-client";
-import { addTimestampToImageUrl } from "@edifice.io/utilities";
-import { Editor } from "@tiptap/react";
-import { TabsItemProps } from "../../../components";
-import { useWorkspaceFile } from "../../../hooks";
+import { WorkspaceElement } from '@edifice.io/ts-client';
+import { addTimestampToImageUrl } from '@edifice.io/utilities';
+import { Editor } from '@tiptap/react';
+import { TabsItemProps } from '../../../components';
+import { useWorkspaceFile } from '../../../hooks';
 import {
   IExternalLink,
   InternalLinkTabResult,
   MediaLibraryRef,
   MediaLibraryResult,
   MediaLibraryType,
-} from "../../multimedia";
+} from '../../multimedia';
 
 /**
  * Custom hook to manage MediaLibrary events in an editor.
@@ -39,12 +39,12 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
 
       switch (type) {
         // Image type => result is of type WorkspaceElement[]
-        case "image": {
+        case 'image': {
           const images = result as WorkspaceElement[];
           const imagesSize = images.length - 1;
 
           images.forEach((image, index) => {
-            const url = `/workspace/${image.public ? "pub/" : ""}document/${
+            const url = `/workspace/${image.public ? 'pub/' : ''}document/${
               image._id
             }`;
 
@@ -69,7 +69,7 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
         }
 
         // Audio type => result is of type WorkspaceElement[]
-        case "audio": {
+        case 'audio': {
           const sounds = Array.isArray(result)
             ? (result as WorkspaceElement[])
             : [result];
@@ -78,8 +78,8 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
           const { from } = editor.state.selection;
           sounds.reverse().forEach((sound: WorkspaceElement) => {
             editor?.commands.setAudio(
-              sound._id || "",
-              `/workspace/${sound.public ? "pub/" : ""}document/${sound._id}`,
+              sound._id || '',
+              `/workspace/${sound.public ? 'pub/' : ''}document/${sound._id}`,
             );
             editor?.commands.setTextSelection(from);
           });
@@ -87,8 +87,8 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
         }
 
         // Video type => result is of type WorkspaceElement[] or string
-        case "video": {
-          if (typeof result === "string") {
+        case 'video': {
+          if (typeof result === 'string') {
             // This is a video Embedded code (iframe from trusted media provider)
             editor?.commands.insertContentAt(
               editor.view.state.selection,
@@ -101,8 +101,8 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
             const { from } = editor.state.selection;
             videos.reverse().forEach((video) => {
               editor?.commands.setVideo(
-                video._id || "",
-                `/workspace/${video.public ? "pub/" : ""}document/${video._id}`,
+                video._id || '',
+                `/workspace/${video.public ? 'pub/' : ''}document/${video._id}`,
                 true,
               );
               editor?.commands.setTextSelection(from);
@@ -111,12 +111,12 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
           break;
         }
 
-        case "attachment": {
-          let innerHtml = "";
+        case 'attachment': {
+          let innerHtml = '';
           for (let i = 0; i < result.length; i++) {
             const link = (result as WorkspaceElement[])[i];
             innerHtml += `<a href="/workspace/${
-              link.public ? "pub/" : ""
+              link.public ? 'pub/' : ''
             }document/${link._id}">${link.name}
             </a>`;
           }
@@ -131,12 +131,12 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
           break;
         }
 
-        case "hyperlink": {
+        case 'hyperlink': {
           const resourceTabResult = result as InternalLinkTabResult;
           // Cancel any pre-selected link
-          if (editor?.isActive("linker")) editor.commands.unsetLinker();
-          if (editor?.isActive("hyperlink"))
-            editor.commands.toggleMark("hyperlink");
+          if (editor?.isActive('linker')) editor.commands.unsetLinker();
+          if (editor?.isActive('hyperlink'))
+            editor.commands.toggleMark('hyperlink');
 
           // Manage new links
           editor?.commands.focus();
@@ -147,11 +147,11 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
             // One or more internal link(s) are rendered as a Badge.
             resourceTabResult.resources.forEach((link) => {
               editor?.commands.setLinker({
-                "href": link.path,
-                "data-app-prefix": link.application,
-                "data-id": link.assetId,
-                "target": resourceTabResult.target ?? null,
-                "title": link.name,
+                'href': link.path,
+                'data-app-prefix': link.application,
+                'data-id': link.assetId,
+                'target': resourceTabResult.target ?? null,
+                'title': link.name,
               });
               // Add next links afterward.
               if (
@@ -236,7 +236,7 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
               }
               editor?.commands.setLink({
                 href: url,
-                title: "",
+                title: '',
                 target,
               });
             }
@@ -244,7 +244,7 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
           break;
         }
 
-        case "embedder": {
+        case 'embedder': {
           editor?.commands.insertContentAt(editor.view.state.selection, result);
           editor?.commands.enter();
           break;

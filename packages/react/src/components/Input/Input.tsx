@@ -1,19 +1,19 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { Size } from "../../types";
-import { useFormControl } from "../Form/FormContext";
+import { Size } from '../../types';
+import { useFormControl } from '../Form/FormContext';
 
 export type OmitInputProps =
-  | "disabled"
-  | "required"
-  | "size"
-  | "id"
-  | "readOnly";
+  | 'disabled'
+  | 'required'
+  | 'size'
+  | 'id'
+  | 'readOnly';
 
 export interface InputProps
-  extends Omit<React.ComponentPropsWithRef<"input">, OmitInputProps> {
+  extends Omit<React.ComponentPropsWithRef<'input'>, OmitInputProps> {
   /**
    * Control size of input
    */
@@ -49,8 +49,8 @@ const Input = forwardRef(
     {
       noValidationIcon,
       placeholder,
-      size = "md",
-      type = "text",
+      size = 'md',
+      type = 'text',
       className,
       ...restProps
     }: InputProps,
@@ -60,13 +60,13 @@ const Input = forwardRef(
 
     const classes = clsx(
       {
-        "form-control": !isReadOnly,
-        "form-control-lg": size === "lg",
-        "form-control-sm": size === "sm",
-        "is-invalid": status === "invalid",
-        "is-valid": status === "valid",
-        "form-control-plaintext": isReadOnly,
-        "no-validation-icon": noValidationIcon,
+        'form-control': !isReadOnly,
+        'form-control-lg': size === 'lg',
+        'form-control-sm': size === 'sm',
+        'is-invalid': status === 'invalid',
+        'is-valid': status === 'valid',
+        'form-control-plaintext': isReadOnly,
+        'no-validation-icon': noValidationIcon,
       },
       className,
     );
@@ -86,6 +86,6 @@ const Input = forwardRef(
   },
 );
 
-Input.displayName = "Input";
+Input.displayName = 'Input';
 
 export default Input;

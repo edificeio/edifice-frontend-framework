@@ -1,14 +1,14 @@
-import { useDroppable } from "@dnd-kit/core";
-import clsx from "clsx";
-import { useId } from "react";
-import { useTranslation } from "react-i18next";
+import { useDroppable } from '@dnd-kit/core';
+import clsx from 'clsx';
+import { useId } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   IconFolder,
   IconPlus,
   IconRafterDown,
   IconRafterRight,
-} from "../../modules/icons/components";
-import { TreeData } from "../../types";
+} from '../../modules/icons/components';
+import { TreeData } from '../../types';
 
 export interface TreeNodeProps_V1 {
   /**
@@ -75,17 +75,17 @@ export const TreeNode = ({
   const focused = draggedNodeId === node.id;
 
   const treeItemClasses = {
-    action: clsx("action-container d-flex align-items-center gap-8 px-2", {
-      "drag-focus": focused,
-      "py-4": !node.section,
+    action: clsx('action-container d-flex align-items-center gap-8 px-2', {
+      'drag-focus': focused,
+      'py-4': !node.section,
     }),
     arrow: clsx({
-      "py-4": !node.section,
-      "py-8": node.section,
-      "invisible": !Array.isArray(node.children) || node.children.length === 0,
+      'py-4': !node.section,
+      'py-8': node.section,
+      'invisible': !Array.isArray(node.children) || node.children.length === 0,
     }),
-    button: clsx("flex-fill d-flex align-items-center text-truncate gap-8", {
-      "py-8": node.section,
+    button: clsx('flex-fill d-flex align-items-center text-truncate gap-8', {
+      'py-8': node.section,
     }),
   };
 
@@ -99,7 +99,7 @@ export const TreeNode = ({
       id: node.id,
       name: node.name,
       isTreeview: true,
-      accepts: ["folder", "resource"],
+      accepts: ['folder', 'resource'],
     },
   });
 
@@ -109,7 +109,7 @@ export const TreeNode = ({
     handleItemAction?.(nodeId);
 
   const handleItemKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.code === "Enter" || event.code === "Space") {
+    if (event.code === 'Enter' || event.code === 'Space') {
       event.preventDefault();
       event.stopPropagation();
 
@@ -120,7 +120,7 @@ export const TreeNode = ({
   const handleItemToggleKeyDown = (
     event: React.KeyboardEvent<HTMLDivElement>,
   ) => {
-    if (event.code === "Enter" || event.code === "Space") {
+    if (event.code === 'Enter' || event.code === 'Space') {
       event.preventDefault();
       event.stopPropagation();
 
@@ -132,7 +132,7 @@ export const TreeNode = ({
     const RafterComponent = expanded ? IconRafterDown : IconRafterRight;
     return (
       <RafterComponent
-        title={t("foldUnfold")}
+        title={t('foldUnfold')}
         width={iconSize}
         height={iconSize}
       />
@@ -164,7 +164,7 @@ export const TreeNode = ({
             role="button"
             onClick={() => handleOnToggleNode(node.id)}
             onKeyDown={handleItemToggleKeyDown}
-            aria-label={t("foldUnfold")}
+            aria-label={t('foldUnfold')}
           >
             {shouldRenderRafterIcon() && renderRafterIcon(expanded)}
           </div>
@@ -176,7 +176,7 @@ export const TreeNode = ({
             onKeyDown={handleItemKeyDown}
           >
             {node.section && showIcon && (
-              <IconFolder title={t("folder")} width={20} height={20} />
+              <IconFolder title={t('folder')} width={20} height={20} />
             )}
             <span className="text-truncate">{node.name}</span>
           </div>

@@ -1,4 +1,4 @@
-import { Node } from "@tiptap/core";
+import { Node } from '@tiptap/core';
 
 export interface IframeOptions {
   allowFullscreen: boolean;
@@ -7,7 +7,7 @@ export interface IframeOptions {
   };
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     iframe: {
       /**
@@ -19,8 +19,8 @@ declare module "@tiptap/core" {
 }
 
 export const Iframe = Node.create<IframeOptions>({
-  name: "iframe",
-  group: "block",
+  name: 'iframe',
+  group: 'block',
   atom: true,
   draggable: true,
 
@@ -28,7 +28,7 @@ export const Iframe = Node.create<IframeOptions>({
     return {
       allowFullscreen: true,
       HTMLAttributes: {
-        class: "iframe-wrapper",
+        class: 'iframe-wrapper',
       },
     };
   },
@@ -50,13 +50,13 @@ export const Iframe = Node.create<IframeOptions>({
           return attributes.width
             ? {
                 width:
-                  attributes.width === "100%"
-                    ? "100%"
+                  attributes.width === '100%'
+                    ? '100%'
                     : parseInt(attributes.width),
               }
             : {};
         },
-        parseHTML: (element) => element.getAttribute("width"),
+        parseHTML: (element) => element.getAttribute('width'),
       },
       height: {
         renderHTML: (attributes) => {
@@ -66,7 +66,7 @@ export const Iframe = Node.create<IframeOptions>({
               }
             : {};
         },
-        parseHTML: (element) => element.getAttribute("height"),
+        parseHTML: (element) => element.getAttribute('height'),
       },
       style: {
         renderHTML: (attributes) => {
@@ -76,7 +76,7 @@ export const Iframe = Node.create<IframeOptions>({
               }
             : {};
         },
-        parseHTML: (element) => element.getAttribute("style"),
+        parseHTML: (element) => element.getAttribute('style'),
       },
     };
   },
@@ -84,13 +84,13 @@ export const Iframe = Node.create<IframeOptions>({
   parseHTML() {
     return [
       {
-        tag: "iframe",
+        tag: 'iframe',
       },
     ];
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ["div", this.options.HTMLAttributes, ["iframe", HTMLAttributes]];
+    return ['div', this.options.HTMLAttributes, ['iframe', HTMLAttributes]];
   },
 
   addCommands() {

@@ -1,4 +1,4 @@
-import { IAction } from "../services";
+import { IAction } from '../services';
 
 export const isActionAvailable = (
   workflow: string,

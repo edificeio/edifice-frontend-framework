@@ -1,5 +1,5 @@
-import { ERROR_CODE, odeServices, ReactionType } from "@edifice.io/ts-client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ERROR_CODE, odeServices, ReactionType } from '@edifice.io/ts-client';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
  * This hook implements some logic and provides functions to easily call "audience" backend endpoints.
@@ -67,16 +67,16 @@ export default function useReactions(module: string, resourceType: string) {
         return Promise.reject(ERROR_CODE.MALFORMED_DATA);
       }
 
-      let result: "+" | "-" | "=" = "+";
+      let result: '+' | '-' | '=' = '+';
       if (oldReaction) {
         if (newReaction === oldReaction) {
           // Reset the reaction
           await reactions.deleteReaction(resourceId);
-          result = "-";
+          result = '-';
         } else {
           // Change reaction
           await reactions.updateReaction(resourceId, newReaction);
-          result = "=";
+          result = '=';
         }
       } else {
         // Post a new reaction

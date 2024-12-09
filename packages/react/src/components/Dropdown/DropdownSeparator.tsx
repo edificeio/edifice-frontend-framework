@@ -6,6 +6,6 @@ const DropdownSeparator = () => {
   );
 };
 
-DropdownSeparator.displayName = "Dropdown.Separator";
+DropdownSeparator.displayName = 'Dropdown.Separator';
 
 export default DropdownSeparator;

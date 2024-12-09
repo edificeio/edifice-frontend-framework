@@ -1,1 +1,1 @@
-export { default as useXitiTrackPageLoad } from "./useXitiTrackPageLoad";
+export { default as useXitiTrackPageLoad } from './useXitiTrackPageLoad';

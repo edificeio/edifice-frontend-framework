@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
-import "@pixi/mixin-get-child-by-name";
-import useHistoryTool from "./useHistoryTool";
-import useImageEffects from "./useImageEffects";
+import '@pixi/mixin-get-child-by-name';
+import useHistoryTool from './useHistoryTool';
+import useImageEffects from './useImageEffects';
 import {
   DEFAULT_SPRITE_NAME,
   updateImage,
   saveAsBlob,
   saveAsDataURL,
   updateImageFromBlob,
-} from "../effects/misc";
+} from '../effects/misc';
 
 /**
  * This hook expose all the functions available for the pixi editor:

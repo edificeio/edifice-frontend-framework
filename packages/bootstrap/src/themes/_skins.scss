@@ -1,16 +1,16 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
-[data-product="neo"][data-skin="dyslexic"] {
-  --#{$prefix}family-primary: "OpenDyslexic";
-  --#{$prefix}font-sans-serif: "OpenDyslexic";
-  --#{$prefix}btn-font-family: "OpenDyslexic";
+[data-product='neo'][data-skin='dyslexic'] {
+  --#{$prefix}family-primary: 'OpenDyslexic';
+  --#{$prefix}font-sans-serif: 'OpenDyslexic';
+  --#{$prefix}btn-font-family: 'OpenDyslexic';
 
   button,
-  input[type="button"],
+  input[type='button'],
   a.button,
-  input[type="submit"],
-  input[type="search"],
-  input[type="file"],
+  input[type='submit'],
+  input[type='search'],
+  input[type='file'],
   .drop-down-button label,
   .drop-down-button.hidden label {
     font-family: OpenDyslexic, sans-serif;
@@ -24,8 +24,8 @@
   }
 }
 
-[data-product="one"][data-skin="default"] {
-  background-image: url("./images/backgrounds/hills.svg");
+[data-product='one'][data-skin='default'] {
+  background-image: url('./images/backgrounds/hills.svg');
   background-size: cover;
   background-color: #a6ce3a;
   background-repeat: no-repeat;
@@ -33,50 +33,50 @@
   background-attachment: fixed;
 }
 
-[data-skin="desert"] {
+[data-skin='desert'] {
   background-color: #d88316;
-  background-image: url("./images/backgrounds/desert.jpg");
+  background-image: url('./images/backgrounds/desert.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
 
-[data-skin="christmas"] {
+[data-skin='christmas'] {
   background-color: #3daede;
-  background-image: url("./images/backgrounds/christmas.png");
+  background-image: url('./images/backgrounds/christmas.png');
   background-repeat: no-repeat;
   background-position: top center;
   background-size: cover;
 }
 
-[data-skin="circus"] {
+[data-skin='circus'] {
   background-color: #a0864b;
-  background-image: url("./images/backgrounds/circus.jpg");
+  background-image: url('./images/backgrounds/circus.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
 
-[data-skin="neutre"] {
+[data-skin='neutre'] {
   background-color: #c2c2c2;
   background-image: none;
 }
 
-[data-skin="ocean"] {
+[data-skin='ocean'] {
   background-color: #797c5d;
-  background-image: url("./images/backgrounds/ocean.jpg");
+  background-image: url('./images/backgrounds/ocean.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
 
-[data-skin="panda-food"] {
+[data-skin='panda-food'] {
   background-color: #69bc26;
-  background-image: url("./images/backgrounds/panda.jpg");
+  background-image: url('./images/backgrounds/panda.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
 }
 
-[data-skin="sparkly"] {
+[data-skin='sparkly'] {
   background-color: #021826;
-  background-image: url("./images/backgrounds/sparkly.jpg");
+  background-image: url('./images/backgrounds/sparkly.jpg');
   background-repeat: no-repeat;
   background-size: 100% auto;
 }

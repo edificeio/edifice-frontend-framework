@@ -14,7 +14,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@images/*": ["node_modules/@edifice.io/bootstrap/dist/images/*"]
+    }
   },
   "include": ["src", "i18n.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

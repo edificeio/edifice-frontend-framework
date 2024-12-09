@@ -1,36 +1,36 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { Alert } from "@edifice.io/tiptap-extensions/alert";
-import { FontSize } from "@edifice.io/tiptap-extensions/font-size";
-import { CustomHeading } from "@edifice.io/tiptap-extensions/heading";
-import { CustomHighlight } from "@edifice.io/tiptap-extensions/highlight";
-import { Hyperlink } from "@edifice.io/tiptap-extensions/hyperlink";
-import { Iframe } from "@edifice.io/tiptap-extensions/iframe";
-import { SpeechRecognition } from "@edifice.io/tiptap-extensions/speech-recognition";
-import { SpeechSynthesis } from "@edifice.io/tiptap-extensions/speech-synthesis";
-import { TableCell } from "@edifice.io/tiptap-extensions/table-cell";
-import { Mathematics } from "@tiptap-pro/extension-mathematics";
-import Color from "@tiptap/extension-color";
-import Focus from "@tiptap/extension-focus";
-import FontFamily from "@tiptap/extension-font-family";
-import Placeholder from "@tiptap/extension-placeholder";
-import Subscript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import Table from "@tiptap/extension-table";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import TextAlign from "@tiptap/extension-text-align";
-import TextStyle from "@tiptap/extension-text-style";
-import Typography from "@tiptap/extension-typography";
-import Underline from "@tiptap/extension-underline";
-import { Content, FocusPosition, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { Alert } from '@edifice.io/tiptap-extensions/alert';
+import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
+import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
+import { CustomHighlight } from '@edifice.io/tiptap-extensions/highlight';
+import { Hyperlink } from '@edifice.io/tiptap-extensions/hyperlink';
+import { Iframe } from '@edifice.io/tiptap-extensions/iframe';
+import { SpeechRecognition } from '@edifice.io/tiptap-extensions/speech-recognition';
+import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis';
+import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
+import { Mathematics } from '@tiptap-pro/extension-mathematics';
+import Color from '@tiptap/extension-color';
+import Focus from '@tiptap/extension-focus';
+import FontFamily from '@tiptap/extension-font-family';
+import Placeholder from '@tiptap/extension-placeholder';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Table from '@tiptap/extension-table';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
+import TextAlign from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
+import Typography from '@tiptap/extension-typography';
+import Underline from '@tiptap/extension-underline';
+import { Content, FocusPosition, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { WorkspaceVisibility } from "@edifice.io/ts-client";
-import { useUpload } from "../../../hooks";
-import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { WorkspaceVisibility } from '@edifice.io/ts-client';
+import { useUpload } from '../../../hooks';
+import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import {
   AttachmentNodeView,
   AttachmentRenderer,
@@ -41,7 +41,7 @@ import {
   LinkerRenderer,
   MediaRenderer,
   VideoNodeView,
-} from "../components";
+} from '../components';
 
 /**
  * Hook that creates a tiptap editor instance.
@@ -57,7 +57,7 @@ export const useTipTapEditor = (
   focus?: FocusPosition,
   placeholder?: string,
   onContentChange?: ({ editor }: { editor: any }) => void,
-  visibility: WorkspaceVisibility = "protected",
+  visibility: WorkspaceVisibility = 'protected',
 ) => {
   const { currentLanguage } = useEdificeClient();
   const { t } = useTranslation();
@@ -72,11 +72,11 @@ export const useTipTapEditor = (
     extensions: [
       StarterKit,
       Focus.configure({
-        className: "has-focus",
-        mode: "all",
+        className: 'has-focus',
+        mode: 'all',
       }),
       Placeholder.configure({
-        placeholder: t(placeholder || "tiptap.placeholder"),
+        placeholder: t(placeholder || 'tiptap.placeholder'),
       }),
       CustomHighlight.configure({
         multicolor: true,
@@ -93,7 +93,7 @@ export const useTipTapEditor = (
       TableHeader,
       TableCell,
       TextAlign.configure({
-        types: ["heading", "paragraph", "custom-image", "video"],
+        types: ['heading', 'paragraph', 'custom-image', 'video'],
       }),
       CustomHeading.configure({
         levels: [1, 2],
@@ -105,7 +105,7 @@ export const useTipTapEditor = (
         lang:
           currentLanguage?.length === 2
             ? `${currentLanguage}-${currentLanguage.toUpperCase()}` // FIXME very dirty hack for demo
-            : "fr-FR",
+            : 'fr-FR',
       }),
       Iframe,
       Hyperlink,

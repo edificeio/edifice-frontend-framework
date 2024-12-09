@@ -1,11 +1,11 @@
-import { useId, useRef } from "react";
+import { useId, useRef } from 'react';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { FormControl, Popover, SearchButton } from "../../../components";
-import { useHover } from "../../../hooks";
-import IconSearch from "../../../modules/icons/components/nav/IconSearch";
-import { NavItem } from "../components/NavItem";
+import { FormControl, Popover, SearchButton } from '../../../components';
+import { useHover } from '../../../hooks';
+import IconSearch from '../../../modules/icons/components/nav/IconSearch';
+import { NavItem } from '../components/NavItem';
 
 const SearchEngine = () => {
   const [searchRef, isSearchHovered] = useHover<HTMLLIElement>();
@@ -30,7 +30,7 @@ const SearchEngine = () => {
     >
       <a href="/searchengine" className="nav-link dropdown-item">
         <IconSearch className="icon search" />
-        <span className="nav-text">{t("navbar.search")}</span>
+        <span className="nav-text">{t('navbar.search')}</span>
       </a>
       <Popover
         id={popoverSearchId}
@@ -52,7 +52,7 @@ const SearchEngine = () => {
             type="submit"
             size="sm"
             onClick={redirectToSearch}
-            aria-label={t("navbar.search")}
+            aria-label={t('navbar.search')}
           />
         </FormControl>
       </Popover>
@@ -60,6 +60,6 @@ const SearchEngine = () => {
   );
 };
 
-SearchEngine.displayName = "SearchEngine";
+SearchEngine.displayName = 'SearchEngine';
 
 export default SearchEngine;

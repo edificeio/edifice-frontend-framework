@@ -1,9 +1,9 @@
-import { RefObject, useCallback } from "react";
+import { RefObject, useCallback } from 'react';
 
-import { HyperlinkAttributes } from "@edifice.io/tiptap-extensions/hyperlink";
-import { LinkerAttributes } from "@edifice.io/tiptap-extensions/linker";
-import { Editor } from "@tiptap/react";
-import { MediaLibraryRef } from "../../multimedia";
+import { HyperlinkAttributes } from '@edifice.io/tiptap-extensions/hyperlink';
+import { LinkerAttributes } from '@edifice.io/tiptap-extensions/linker';
+import { Editor } from '@tiptap/react';
+import { MediaLibraryRef } from '../../multimedia';
 
 /**
  * Custom hook to handle LinkToolbar events.
@@ -25,24 +25,24 @@ export const useLinkToolbar = (
       // => Nothing to do, since the linkToolbar only appears when linker node is selected.
       // if (editor?.isActive("linker"))
       //   editor?.commands.setNodeSelection(editor?.state.selection.$from.pos);
-      if (editor?.isActive("hyperlink"))
-        editor.commands.extendMarkRange("hyperlink");
+      if (editor?.isActive('hyperlink'))
+        editor.commands.extendMarkRange('hyperlink');
 
       const attrsLinker = attrs as LinkerAttributes;
-      if (attrsLinker["data-id"] || attrsLinker["data-app-prefix"]) {
+      if (attrsLinker['data-id'] || attrsLinker['data-app-prefix']) {
         mediaLibraryRef.current?.showLink({
           target: attrs.target,
-          resourceId: attrsLinker["data-id"],
-          appPrefix: attrsLinker["data-app-prefix"],
+          resourceId: attrsLinker['data-id'],
+          appPrefix: attrsLinker['data-app-prefix'],
         });
       } else {
         const { href, target } = attrs as HyperlinkAttributes;
         mediaLibraryRef.current?.showLink({
           link: {
-            url: href || "",
+            url: href || '',
             target: target || undefined,
             text: editor?.state.selection.empty
-              ? ""
+              ? ''
               : editor?.state.selection.content().content.child(0).textContent,
           },
         });
@@ -52,7 +52,7 @@ export const useLinkToolbar = (
   );
 
   const onOpen = (attrs: LinkerAttributes) => {
-    window.open(attrs.href || "about:blank", "_blank");
+    window.open(attrs.href || 'about:blank', '_blank');
   };
 
   const onUnlink = (/*attrs: LinkerAttributes*/) => {

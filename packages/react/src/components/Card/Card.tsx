@@ -1,17 +1,17 @@
-import { forwardRef, ReactNode, Ref, useMemo } from "react";
+import { forwardRef, ReactNode, Ref, useMemo } from 'react';
 
-import { IWebApp } from "@edifice.io/ts-client";
-import clsx from "clsx";
+import { IWebApp } from '@edifice.io/ts-client';
+import clsx from 'clsx';
 
-import { useEdificeIcons } from "../../hooks/useEdificeIcons";
-import CardBody from "./CardBody";
-import { CardContext } from "./CardContext";
-import CardFooter from "./CardFooter";
-import CardHeader from "./CardHeader";
-import CardImage from "./CardImage";
-import CardText from "./CardText";
-import CardTitle from "./CardTitle";
-import CardUser from "./CardUser";
+import { useEdificeIcons } from '../../hooks/useEdificeIcons';
+import CardBody from './CardBody';
+import { CardContext } from './CardContext';
+import CardFooter from './CardFooter';
+import CardHeader from './CardHeader';
+import CardImage from './CardImage';
+import CardText from './CardText';
+import CardTitle from './CardTitle';
+import CardUser from './CardUser';
 
 export interface CardProps {
   /**
@@ -66,7 +66,7 @@ const Root = forwardRef(
     ref: Ref<HTMLDivElement>,
   ) => {
     const { getIconCode } = useEdificeIcons();
-    const appCode = app ? getIconCode(app) : "placeholder";
+    const appCode = app ? getIconCode(app) : 'placeholder';
 
     const values = useMemo(
       () => ({
@@ -84,24 +84,24 @@ const Root = forwardRef(
         <div
           ref={ref}
           className={clsx(
-            "card",
+            'card',
             {
-              "drag-focus": isFocused,
-              "is-selected": isSelected,
-              "c-pointer": isClickable,
+              'drag-focus': isFocused,
+              'is-selected': isSelected,
+              'c-pointer': isClickable,
             },
             className,
           )}
         >
           <Card.Header />
-          {typeof children === "function" ? children(appCode) : children}
+          {typeof children === 'function' ? children(appCode) : children}
         </div>
       </CardContext.Provider>
     );
   },
 );
 
-Root.displayName = "Card";
+Root.displayName = 'Card';
 
 const Card = Object.assign(Root, {
   Title: CardTitle,

@@ -1,5 +1,7 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["src", "svgr.config.cjs"],
-  "exclude": ["node_modules", "dist"]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.lib.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

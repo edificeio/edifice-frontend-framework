@@ -1,14 +1,14 @@
-import { Link } from "@tiptap/extension-link";
+import { Link } from '@tiptap/extension-link';
 
 /** Our own model of an hyperlink in a rich document. */
 export type HyperlinkAttributes = {
   href: string | null;
-  target: "_blank" | null;
+  target: '_blank' | null;
   title: string | null;
   text: string | null;
 };
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     hyperlink: {
       /**
@@ -37,7 +37,7 @@ declare module "@tiptap/core" {
  * The `target` attribute has to be sanitized, so it is overriden.
  */
 export const Hyperlink = Link.extend({
-  name: "hyperlink",
+  name: 'hyperlink',
 
   parseHTML() {
     return [
@@ -48,8 +48,8 @@ export const Hyperlink = Link.extend({
         getAttrs: (node: HTMLAnchorElement) => {
           // See https://prosemirror.net/docs/ref/version/0.18.0.html#model.ParseRule.getAttrs
           if (
-            node.getAttribute("data-id") &&
-            node.getAttribute("data-app-prefix")
+            node.getAttribute('data-id') &&
+            node.getAttribute('data-app-prefix')
           )
             return false;
         },
@@ -79,9 +79,9 @@ export const Hyperlink = Link.extend({
         default: this.options.HTMLAttributes.target,
         // Sanitize target value
         parseHTML: (element) =>
-          element.getAttribute("target") !== "_blank" ? null : "_blank",
+          element.getAttribute('target') !== '_blank' ? null : '_blank',
         renderHTML: (attributes) => ({
-          target: attributes["target"],
+          target: attributes['target'],
         }),
       },
       title: {

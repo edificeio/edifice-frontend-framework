@@ -1,3 +1,3 @@
-export { default as UploadCard } from "./UploadCard";
+export { default as UploadCard } from './UploadCard';
 
-export * from "./UploadCard";
+export * from './UploadCard';

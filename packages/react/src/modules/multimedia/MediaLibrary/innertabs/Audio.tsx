@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { useRef } from 'react';
 
-import { WorkspaceElement } from "@edifice.io/ts-client";
+import { WorkspaceElement } from '@edifice.io/ts-client';
 
-import { AudioRecorder } from "../../AudioRecorder";
-import { AudioRecorderRef } from "../../AudioRecorder/AudioRecorder";
-import { useMediaLibraryContext } from "../MediaLibraryContext";
+import { AudioRecorder } from '../../AudioRecorder';
+import { AudioRecorderRef } from '../../AudioRecorder/AudioRecorder';
+import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const Audio = () => {
   const { setResult, setPreSuccess, visibility } = useMediaLibraryContext();

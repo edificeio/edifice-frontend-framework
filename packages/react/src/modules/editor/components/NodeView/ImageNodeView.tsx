@@ -1,6 +1,6 @@
-import { Image } from "@edifice.io/tiptap-extensions/image";
-import { WorkspaceElement } from "@edifice.io/ts-client";
-import { ReactNodeViewRenderer } from "@tiptap/react";
+import { Image } from '@edifice.io/tiptap-extensions/image';
+import { WorkspaceElement } from '@edifice.io/ts-client';
+import { ReactNodeViewRenderer } from '@tiptap/react';
 
 const ImageNodeView = (
   Component: any,

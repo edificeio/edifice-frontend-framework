@@ -1,1 +1,1 @@
-export { default as useMediaLibrary } from "./useMediaLibrary";
+export { default as useMediaLibrary } from './useMediaLibrary';

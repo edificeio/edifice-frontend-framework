@@ -1,4 +1,4 @@
-import { StringUtils } from "../string-utils";
+import { StringUtils } from '../string-utils';
 
 /**
  * Get or generate a virtual ID for a blob object.
@@ -9,7 +9,7 @@ import { StringUtils } from "../string-utils";
  * @return the blog virtual ID
  */
 export const getOrGenerateBlobId = (blob: Blob | File, id?: string) => {
-  const KEY = "virtualID";
+  const KEY = 'virtualID';
   if (!Object.hasOwnProperty.apply(blob, [KEY])) {
     const value = id ?? `${StringUtils.generateVirtualId()}#${blob.size}`;
     Object.defineProperty(blob, KEY, {

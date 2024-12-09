@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { SVGProps } from 'react';
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -18,7 +18,10 @@ const SvgIconAccount = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <path d="M12.01 14.42c2.68 0 8.03 1.31 8.03 3.99v2.02H3.99V18.4c0-2.68 5.35-3.99 8.02-3.99zm0-2.02a4.02 4.02 0 0 1 0-8.02C14.21 4.38 16 6.2 16 8.4s-1.78 4-3.99 4" />
+    <path
+      fill="currentColor"
+      d="M12.01 14.42c2.68 0 8.03 1.31 8.03 3.99v2.02H3.99V18.4c0-2.68 5.35-3.99 8.02-3.99zm0-2.02a4.02 4.02 0 0 1 0-8.02C14.21 4.38 16 6.2 16 8.4s-1.78 4-3.99 4"
+    />
   </svg>
 );
 export default SvgIconAccount;

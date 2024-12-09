@@ -1,1 +1,1 @@
-export * from "./mime-type-utils";
+export * from './mime-type-utils';

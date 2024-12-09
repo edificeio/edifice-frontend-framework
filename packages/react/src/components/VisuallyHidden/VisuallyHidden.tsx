@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from 'react';
 
 export interface VisuallyHiddenProps {
   children: ReactNode;
@@ -14,6 +14,6 @@ const VisuallyHidden = forwardRef(
   },
 );
 
-VisuallyHidden.displayName = "VisuallyHidden";
+VisuallyHidden.displayName = 'VisuallyHidden';
 
 export default VisuallyHidden;

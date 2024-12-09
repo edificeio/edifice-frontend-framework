@@ -1,1 +1,1 @@
-export { default as useTrashedResource } from "./useTrashedResource";
+export { default as useTrashedResource } from './useTrashedResource';

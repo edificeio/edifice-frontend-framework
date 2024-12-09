@@ -1,5 +1,5 @@
-import { Attachment } from "./attachment";
-export { AttachmentTransformer } from "./attachment-transformer";
+import { Attachment } from './attachment';
+export { AttachmentTransformer } from './attachment-transformer';
 
-export * from "./attachment";
+export * from './attachment';
 export default Attachment;

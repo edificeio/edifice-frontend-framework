@@ -1,16 +1,16 @@
-import { DataServiceProps, IDataService, IEventBroker } from "./interface";
-import { WebBroker } from "./WebBroker";
-import { App } from "../globals";
-import { EVENT_NAME, IDataTrackEvent, LAYER_NAME } from "../notify/interfaces";
-import { IOdeServices } from "../services/OdeServices";
-import { IUserInfo, UserProfile } from "../session/interfaces";
+import { DataServiceProps, IDataService, IEventBroker } from './interface';
+import { WebBroker } from './WebBroker';
+import { App } from '../globals';
+import { EVENT_NAME, IDataTrackEvent, LAYER_NAME } from '../notify/interfaces';
+import { IOdeServices } from '../services/OdeServices';
+import { IUserInfo, UserProfile } from '../session/interfaces';
 
 /** A data event. */
-type IDataEvent = IDataTrackEvent["data"];
+type IDataEvent = IDataTrackEvent['data'];
 
 /** Public conf of an app with a DataService activated. See backend /conf/public */
 export interface PublicConfForDataService {
-  "data-service"?: DataServiceProps;
+  'data-service'?: DataServiceProps;
 }
 
 export class DataService implements IDataService {
@@ -38,11 +38,11 @@ export class DataService implements IDataService {
       this.profile = await this.odeServices.session().getUserProfile();
 
       // Instanciate a data broker depending on the current app conf, when known.
-      const { ["data-service"]: params } =
+      const { ['data-service']: params } =
         await this.conf.getPublicConf<PublicConfForDataService>(app);
       this._webBroker = new WebBroker(this.odeServices).initialize(params?.web);
     } catch {
-      console.log("DataService not initialized, usage data unavailable.");
+      console.log('DataService not initialized, usage data unavailable.');
     }
   }
 
@@ -64,10 +64,10 @@ export class DataService implements IDataService {
 
   private addUserInfos(base: IDataEvent) {
     if (this.user) {
-      base["userId"] = this.user.userId;
-      base["structure"] = this.user.structureNames[0];
+      base['userId'] = this.user.userId;
+      base['structure'] = this.user.structureNames[0];
     }
-    if (this.profile) base["profil"] = this.profile[0];
+    if (this.profile) base['profil'] = this.profile[0];
     return base;
   }
 
@@ -81,17 +81,17 @@ export class DataService implements IDataService {
     deviceType?: string,
   ) {
     const eventData = this.addUserInfos({
-      "event-type": "VIDEO_SAVE",
-      "module": "video",
+      'event-type': 'VIDEO_SAVE',
+      'module': 'video',
       video_id,
       browser,
-      "duration": Math.round(duration),
-      "weight": weight,
-      "source": isCaptation ? "CAPTURED" : "UPLOADED",
+      'duration': Math.round(duration),
+      'weight': weight,
+      'source': isCaptation ? 'CAPTURED' : 'UPLOADED',
       url,
     });
-    if (this.app) eventData["override-module"] = this.app;
-    if (deviceType) eventData["device_type"] = deviceType;
+    if (this.app) eventData['override-module'] = this.app;
+    if (deviceType) eventData['device_type'] = deviceType;
 
     this.trackWebEvent(eventData);
   }
@@ -104,34 +104,34 @@ export class DataService implements IDataService {
     deviceType?: string,
   ) {
     const eventData = this.addUserInfos({
-      "event-type": "VIDEO_READ",
-      "module": "video",
+      'event-type': 'VIDEO_READ',
+      'module': 'video',
       video_id,
       browser,
-      "source": isCaptation ? "CAPTURED" : "UPLOADED",
+      'source': isCaptation ? 'CAPTURED' : 'UPLOADED',
       url,
     });
-    if (this.app) eventData["override-module"] = this.app;
-    if (deviceType) eventData["device_type"] = deviceType;
+    if (this.app) eventData['override-module'] = this.app;
+    if (deviceType) eventData['device_type'] = deviceType;
 
     this.trackWebEvent(eventData);
   }
 
-  public trackSpeechAndText(direction: "STT" | "TTS") {
+  public trackSpeechAndText(direction: 'STT' | 'TTS') {
     const eventData = this.addUserInfos({
-      "event-type": "SPEECH_AND_TEXT",
-      "function": direction,
+      'event-type': 'SPEECH_AND_TEXT',
+      'function': direction,
     });
-    if (this.app) eventData["module"] = this.app;
+    if (this.app) eventData['module'] = this.app;
 
     this.trackWebEvent(eventData);
   }
 
   public trackAccessLibraryFromExplorer() {
     const eventData = this.addUserInfos({
-      "event-type": "ACCESS_LIBRARY_FROM_EXPLORER",
+      'event-type': 'ACCESS_LIBRARY_FROM_EXPLORER',
     });
-    if (this.app) eventData["module"] = this.app;
+    if (this.app) eventData['module'] = this.app;
 
     this.trackWebEvent(eventData);
   }

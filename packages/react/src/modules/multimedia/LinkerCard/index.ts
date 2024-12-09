@@ -1,2 +1,2 @@
-export { default as LinkerCard } from "./LinkerCard";
-export * from "./LinkerCard";
+export { default as LinkerCard } from './LinkerCard';
+export * from './LinkerCard';

@@ -8,7 +8,7 @@ import {
   useId,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
 import {
   Placement,
@@ -19,24 +19,24 @@ import {
   size,
   useFloating,
   useHover,
-} from "@floating-ui/react";
+} from '@floating-ui/react';
 
-import { mergeRefs } from "../../utilities/refs/ref";
+import { mergeRefs } from '../../utilities/refs/ref';
 
 export enum KEYS {
-  Enter = "Enter",
-  Space = "Space",
-  ArrowDown = "ArrowDown",
-  ArrowUp = "ArrowUp",
-  Down = "Down",
-  Up = "Up",
-  Tab = "Tab",
-  Esc = "Esc",
-  Escape = "Escape",
-  Home = "Home",
-  End = "End",
-  PageUp = "PageUp",
-  PageDown = "PageDown",
+  Enter = 'Enter',
+  Space = 'Space',
+  ArrowDown = 'ArrowDown',
+  ArrowUp = 'ArrowUp',
+  Down = 'Down',
+  Up = 'Up',
+  Tab = 'Tab',
+  Esc = 'Esc',
+  Escape = 'Escape',
+  Home = 'Home',
+  End = 'End',
+  PageUp = 'PageUp',
+  PageDown = 'PageDown',
 }
 
 export interface UseDropdownProps {
@@ -116,7 +116,7 @@ const useDropdown = (
       ] as HTMLElement;
 
       if (currentItem) {
-        const id = currentItem.getAttribute("id") as string;
+        const id = currentItem.getAttribute('id') as string;
         setIsFocused(id);
         currentItem.focus();
       }
@@ -169,7 +169,7 @@ const useDropdown = (
       let flag = false;
 
       switch (event.code) {
-        case " ":
+        case ' ':
         case KEYS.Space:
         case KEYS.Enter:
         case KEYS.ArrowDown:
@@ -201,7 +201,7 @@ const useDropdown = (
     const items: HTMLElement[] = Object.values(itemRefs.current);
 
     const index = items.findIndex(
-      (item) => item.id === event.currentTarget.getAttribute("id"),
+      (item) => item.id === event.currentTarget.getAttribute('id'),
     );
 
     setActiveIndex(index);
@@ -212,7 +212,7 @@ const useDropdown = (
       let flag = false;
 
       if (event.shiftKey) {
-        if (event.key === "Tab") {
+        if (event.key === 'Tab') {
           closeDropdown();
           flag = true;
         }
@@ -223,15 +223,15 @@ const useDropdown = (
             break;
           // FIX WB2-1334: Space event prevents user to insert Space during search, so we comment it to keep a trace.
           // case KEYS.Space:
-          case " ":
+          case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
               const currentItem = Object.values(itemRefs.current)[
                 activeIndex
               ] as HTMLElement;
-              const role = currentItem.getAttribute("role");
+              const role = currentItem.getAttribute('role');
 
-              if (role === "menuitem") {
+              if (role === 'menuitem') {
                 if (triggerRef.current) {
                   triggerRef.current.focus();
                   setVisible(false);
@@ -290,22 +290,22 @@ const useDropdown = (
     menuRef,
     /* TriggerProps to spread to any Trigger component */
     triggerProps: {
-      "ref": mergeRefs(triggerRef, refs.setReference),
-      "id": `dropdown-toggle-${id}`,
-      "aria-haspopup": "menu",
-      "aria-controls": `dropdown-${id}`,
-      "aria-expanded": visible ? true : false,
-      "className": `${visible ? "selected" : ""}`,
-      "onClick": onTriggerClick,
-      "onKeyDown": onTriggerKeyDown,
-      "aria-activedescendant": isFocused,
+      'ref': mergeRefs(triggerRef, refs.setReference),
+      'id': `dropdown-toggle-${id}`,
+      'aria-haspopup': 'menu',
+      'aria-controls': `dropdown-${id}`,
+      'aria-expanded': visible ? true : false,
+      'className': `${visible ? 'selected' : ''}`,
+      'onClick': onTriggerClick,
+      'onKeyDown': onTriggerKeyDown,
+      'aria-activedescendant': isFocused,
     },
     /* MenuProps to spread to any Menu Component */
     menuProps: {
-      "ref": mergeRefs(menuRef, refs.setFloating),
-      "className": "dropdown-menu",
-      "aria-labelledby": `dropdown-toggle-${id}`,
-      "style": { ...floatingStyles },
+      'ref': mergeRefs(menuRef, refs.setFloating),
+      'className': 'dropdown-menu',
+      'aria-labelledby': `dropdown-toggle-${id}`,
+      'style': { ...floatingStyles },
     },
     /* ItemProps to spread to any item Component */
     itemProps: {

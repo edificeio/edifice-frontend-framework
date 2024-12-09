@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
-import { ImageSettings, toBlob } from "../effects/misc";
+import { ImageSettings, toBlob } from '../effects/misc';
 
 // Define how much backup are stored in history
 const DEFAULT_MAX_HISTORY = 20;

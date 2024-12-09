@@ -1,10 +1,10 @@
-import { MouseEventHandler } from "react";
+import { MouseEventHandler } from 'react';
 
-import { Node } from "@tiptap/pm/model";
-import { Editor, NodeViewWrapper } from "@tiptap/react";
-import clsx from "clsx";
-import { AppIcon, Badge } from "../../../../components";
-import { useEdificeIcons } from "../../../../hooks";
+import { Node } from '@tiptap/pm/model';
+import { Editor, NodeViewWrapper } from '@tiptap/react';
+import clsx from 'clsx';
+import { AppIcon, Badge } from '../../../../components';
+import { useEdificeIcons } from '../../../../hooks';
 
 interface LinkerProps {
   selected: boolean;
@@ -16,17 +16,17 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
   const { getIconCode } = useEdificeIcons();
   const { editor, node } = props;
   const {
-    "class": className,
-    "data-app-prefix": appPrefix,
+    'class': className,
+    'data-app-prefix': appPrefix,
     title,
     href,
     target,
   } = node.attrs;
 
   const classes = clsx(
-    "align-middle badge-linker c-pointer mx-4 my-2",
+    'align-middle badge-linker c-pointer mx-4 my-2',
     className,
-    selected && "bg-secondary-200",
+    selected && 'bg-secondary-200',
   );
 
   const appCode = getIconCode(appPrefix);
@@ -35,14 +35,14 @@ const LinkerRenderer = ({ selected, ...props }: LinkerProps) => {
     // Clicking a linker badge in read mode opens the link
     if (editor && !editor.isEditable) {
       event.preventDefault();
-      window.open(href ?? "about:blank", target ?? "_self");
+      window.open(href ?? 'about:blank', target ?? '_self');
     }
   };
 
   return (
     <NodeViewWrapper as="span" contentEditable={false}>
       <Badge
-        variant={{ type: "chip" }}
+        variant={{ type: 'chip' }}
         className={classes}
         onClick={handleBadgeClick}
         data-drag-handle

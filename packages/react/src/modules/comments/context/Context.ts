@@ -1,10 +1,10 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 import {
   CommentOptions,
   CommentProps,
   CommentType,
   UserProfileResult,
-} from "../types";
+} from '../types';
 
 export const CommentContext = createContext<{
   comments: CommentProps[] | undefined;

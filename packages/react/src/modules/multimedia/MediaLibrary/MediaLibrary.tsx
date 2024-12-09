@@ -7,14 +7,14 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
+} from 'react';
 
 import {
   WorkspaceElement,
   WorkspaceVisibility,
   odeServices,
-} from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+} from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
 import {
   Button,
@@ -22,8 +22,8 @@ import {
   ModalElement,
   Tabs,
   TabsItemProps,
-} from "../../../components";
-import { useHasWorkflow, useHttpErrorToast } from "../../../hooks";
+} from '../../../components';
+import { useHasWorkflow, useHttpErrorToast } from '../../../hooks';
 import {
   IconApplications,
   IconCode,
@@ -32,28 +32,28 @@ import {
   IconMic,
   IconRecordVideo,
   IconSmartphone,
-} from "../../icons/components";
-import { InnerTabs } from "./innertabs";
-import { ExternalLinkTabProps } from "./innertabs/ExternalLink";
+} from '../../icons/components';
+import { InnerTabs } from './innertabs';
+import { ExternalLinkTabProps } from './innertabs/ExternalLink';
 import {
   InternalLinkTabProps,
   InternalLinkTabResult,
-} from "./innertabs/InternalLink";
-import { MediaLibraryContext } from "./MediaLibraryContext";
+} from './innertabs/InternalLink';
+import { MediaLibraryContext } from './MediaLibraryContext';
 
 //---------------------------------------------------
 // Tabs parameters
 //---------------------------------------------------
 /** Ordered list of tabs. */
 const orderedTabs = [
-  "audio-capture",
-  "video-capture",
-  "internal-link", // Link to a shared resource (previously known as "internal linker")
-  "external-link", // Link to an external website (previously known as "external linker")
-  "iframe", // Framed website
-  "upload", // Filesystem browser + drag'n'drop of files
-  "workspace", // Media browser
-  "video-embedder", // Link to a hosted video
+  'audio-capture',
+  'video-capture',
+  'internal-link', // Link to a shared resource (previously known as "internal linker")
+  'external-link', // Link to an external website (previously known as "external linker")
+  'iframe', // Framed website
+  'upload', // Filesystem browser + drag'n'drop of files
+  'workspace', // Media browser
+  'video-embedder', // Link to a hosted video
 ];
 
 /**
@@ -68,7 +68,7 @@ export type MediaLibraryTabProps = {
    * Media Library types where this tab should be displayed.
    * "*" for all types.
    */
-  availableFor: Array<MediaLibraryType | "*" | null>;
+  availableFor: Array<MediaLibraryType | '*' | null>;
 
   /** Required checks before using this feature. */
   isEnable: null | (() => boolean);
@@ -86,17 +86,17 @@ type AnyLinkProps = InternalLinkTabProps | ExternalLinkTabProps | undefined;
  */
 export type MediaLibraryType =
   /** Audio files */
-  | "audio"
+  | 'audio'
   /** Video files / streams / links */
-  | "video"
+  | 'video'
   /** Image files */
-  | "image"
+  | 'image'
   /** Attached files */
-  | "attachment"
+  | 'attachment'
   /** Embedded websites */
-  | "embedder"
+  | 'embedder'
   /** Hyperlinks */
-  | "hyperlink";
+  | 'hyperlink';
 
 type MediaLibraryTypeOptions = {
   /** I18n key describing this MediaLibrary type. */
@@ -128,20 +128,20 @@ const mediaLibraryTypes: { none: null } & {
 } = {
   none: null,
   audio: {
-    title: "bbm.audio.modal.title",
-    defaultTab: "audio-capture",
+    title: 'bbm.audio.modal.title',
+    defaultTab: 'audio-capture',
   },
   video: {
-    title: "bbm.video.modal.title",
-    defaultTab: "video-capture",
+    title: 'bbm.video.modal.title',
+    defaultTab: 'video-capture',
   },
-  image: { title: "bbm.image.modal.title", defaultTab: "workspace" },
+  image: { title: 'bbm.image.modal.title', defaultTab: 'workspace' },
   attachment: {
-    title: "bbm.attachment.modal.title",
-    defaultTab: "workspace",
+    title: 'bbm.attachment.modal.title',
+    defaultTab: 'workspace',
   },
-  hyperlink: { title: "bbm.link.modal.title", defaultTab: "linker" },
-  embedder: { title: "bbm.embed.modal.title", defaultTab: "iframe" },
+  hyperlink: { title: 'bbm.link.modal.title', defaultTab: 'linker' },
+  embedder: { title: 'bbm.embed.modal.title', defaultTab: 'iframe' },
 };
 
 /**
@@ -218,10 +218,10 @@ const MediaLibrary = forwardRef(
     const { t } = useTranslation();
 
     const workspaceCreateWorkflow = useHasWorkflow(
-      "org.entcore.workspace.controllers.WorkspaceController|addDocument",
+      'org.entcore.workspace.controllers.WorkspaceController|addDocument',
     );
     const videoCaptureWorkflow = useHasWorkflow(
-      "com.opendigitaleducation.video.controllers.VideoController|capture",
+      'com.opendigitaleducation.video.controllers.VideoController|capture',
     );
 
     const [type, setType] = useState<MediaLibraryType | null>(null);
@@ -229,76 +229,76 @@ const MediaLibrary = forwardRef(
     const availableTabs: {
       [tabname in AvailableTab]: TabsItemProps & MediaLibraryTabProps;
     } = {
-      "workspace": {
-        id: "workspace",
+      'workspace': {
+        id: 'workspace',
         icon: <IconFolder />,
-        label: t("bbm.workspace"),
+        label: t('bbm.workspace'),
         content: <InnerTabs.Workspace />,
-        availableFor: ["audio", "video", "image", "attachment"],
+        availableFor: ['audio', 'video', 'image', 'attachment'],
         isEnable: null,
       },
-      "upload": {
-        id: "upload",
+      'upload': {
+        id: 'upload',
         icon: <IconSmartphone />,
-        label: t("bbm.device"),
+        label: t('bbm.device'),
         content: <InnerTabs.Upload />,
-        availableFor: ["audio", "video", "image", "attachment"],
+        availableFor: ['audio', 'video', 'image', 'attachment'],
         isEnable: () => (workspaceCreateWorkflow ? true : false),
       },
-      "video-capture": {
-        id: "video-capture",
+      'video-capture': {
+        id: 'video-capture',
         icon: <IconRecordVideo />,
-        label: t("bbm.video"),
+        label: t('bbm.video'),
         content: <InnerTabs.Video />,
-        availableFor: ["video"],
+        availableFor: ['video'],
         isEnable: () => (videoCaptureWorkflow ? true : false),
       },
-      "audio-capture": {
-        id: "audio-capture",
+      'audio-capture': {
+        id: 'audio-capture',
         icon: <IconMic />,
-        label: t("bbm.audio"),
+        label: t('bbm.audio'),
         content: <InnerTabs.Audio />,
-        availableFor: ["audio"],
+        availableFor: ['audio'],
         isEnable: () => (workspaceCreateWorkflow ? true : false),
       },
-      "external-link": {
-        id: "external-link",
+      'external-link': {
+        id: 'external-link',
         icon: <IconGlobe />,
-        label: t("bbm.linker.ext"),
+        label: t('bbm.linker.ext'),
         content: (
           <InnerTabs.ExternalLink
             {...(linkTabProps.current as ExternalLinkTabProps)}
           />
         ),
-        availableFor: ["hyperlink"],
+        availableFor: ['hyperlink'],
         isEnable: null,
       },
-      "internal-link": {
-        id: "internal-link",
+      'internal-link': {
+        id: 'internal-link',
         icon: <IconApplications />,
-        label: t("bbm.linker.int"),
+        label: t('bbm.linker.int'),
         content: (
           <InnerTabs.InternalLink
             {...(linkTabProps.current as InternalLinkTabProps)}
           />
         ),
-        availableFor: ["hyperlink"],
+        availableFor: ['hyperlink'],
         isEnable: null,
       },
-      "iframe": {
-        id: "iframe",
+      'iframe': {
+        id: 'iframe',
         icon: <IconCode />,
-        label: t("bbm.embed"),
+        label: t('bbm.embed'),
         content: <InnerTabs.Iframe />,
-        availableFor: ["embedder"],
+        availableFor: ['embedder'],
         isEnable: null,
       },
-      "video-embedder": {
-        id: "iframe",
+      'video-embedder': {
+        id: 'iframe',
         icon: <IconCode />,
-        label: t("bbm.embed"),
+        label: t('bbm.embed'),
         content: <InnerTabs.VideoEmbedder />,
-        availableFor: ["video"],
+        availableFor: ['video'],
         isEnable: null,
       },
     };
@@ -340,9 +340,9 @@ const MediaLibrary = forwardRef(
 
     function setVisibleTab(tab: AvailableTab) {
       const index = tabs.findIndex((t) => t.id === tab);
-      if (index < 0) throw "tab.not.visible";
+      if (index < 0) throw 'tab.not.visible';
       // TODO améliorer le composant Tabs pour pouvoir le piloter depuis le parent.
-      throw "not.implemented.yet";
+      throw 'not.implemented.yet';
     }
 
     function switchType(type: MediaLibraryType) {
@@ -362,24 +362,26 @@ const MediaLibrary = forwardRef(
 
     const showLink = (props: InternalLinkTabProps | ExternalLinkTabProps) => {
       linkTabProps.current = props;
-      !("resourceId" in props || "appPrefix" in props) &&
-        setDefaultTabId("external-link");
-      setType("hyperlink");
+
+      if (!('resourceId' in props || 'appPrefix' in props)) {
+        setDefaultTabId('external-link');
+      }
+      setType('hyperlink');
     };
 
     // If not set before, determine which available tab to display when type change.
     useEffect(() => {
-      const typeKey = type || "none";
+      const typeKey = type || 'none';
       if (
         !defaultTabId &&
-        typeof mediaLibraryTypes[typeKey]?.defaultTab === "string"
+        typeof mediaLibraryTypes[typeKey]?.defaultTab === 'string'
       ) {
         setDefaultTabId(mediaLibraryTypes[typeKey]?.defaultTab);
       }
     }, [defaultTabId, type]);
 
     // --------------- Utility functions
-    const modalHeader = t(mediaLibraryTypes[type ?? "none"]?.title ?? "bbm");
+    const modalHeader = t(mediaLibraryTypes[type ?? 'none']?.title ?? 'bbm');
 
     const resetState = () => {
       linkTabProps.current = undefined;
@@ -400,11 +402,11 @@ const MediaLibrary = forwardRef(
         // Copy WorkspaceElement from shared/owner folder to protected/public folder
         if (
           result instanceof Array &&
-          ["protected", "public"].findIndex((v) => v === visibility) >= 0
+          ['protected', 'public'].findIndex((v) => v === visibility) >= 0
         ) {
           result = await odeServices
             .workspace()
-            .transferDocuments(result, appCode ?? "media-library", visibility);
+            .transferDocuments(result, appCode ?? 'media-library', visibility);
         }
         onSuccess(result);
       };
@@ -476,18 +478,18 @@ const MediaLibrary = forwardRef(
                 variant="ghost"
                 onClick={handleOnCancel}
               >
-                {t("cancel")}
+                {t('cancel')}
               </Button>
               <Button
                 type="button"
                 color="primary"
                 variant="filled"
-                disabled={typeof result === "undefined"}
+                disabled={typeof result === 'undefined'}
                 onClick={handleOnSuccess}
               >
                 {resultCounter && resultCounter > 1
-                  ? t("addMultiple", { number: resultCounter })
-                  : t("add")}
+                  ? t('addMultiple', { number: resultCounter })
+                  : t('add')}
               </Button>
             </Modal.Footer>
           </Modal>

@@ -1,4 +1,4 @@
-import { Heading } from "../../../components/Heading";
+import { Heading } from '../../../components/Heading';
 
 export const CommentHeader = ({ title }: { title: string }) => {
   return (

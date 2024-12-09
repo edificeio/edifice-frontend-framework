@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { odeServices } from "@edifice.io/ts-client";
+import { odeServices } from '@edifice.io/ts-client';
 
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 /** Apply XiTi tracking (navigation). */
 export default function useXitiTrackPageLoad() {
-  const [xitiStatus, setXitiStatus] = useState<string>("pending");
+  const [xitiStatus, setXitiStatus] = useState<string>('pending');
   const { currentApp } = useEdificeClient();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function useXitiTrackPageLoad() {
 
   const trackPageLoad = async () => {
     if (!currentApp) {
-      setXitiStatus("[Xiti] Error, currentApp is not defined.");
+      setXitiStatus('[Xiti] Error, currentApp is not defined.');
       return;
     }
     try {
@@ -26,7 +26,7 @@ export default function useXitiTrackPageLoad() {
       console.info(`[Xiti] Success tracking page ${window.location.pathname}`);
       setXitiStatus(`[Xiti] Success tracking page ${window.location.pathname}`);
     } catch (e) {
-      console.error("[Xiti] Error Tracking Page Load", e);
+      console.error('[Xiti] Error Tracking Page Load', e);
       setXitiStatus(`[Xiti] Error Tracking Page Load: ${e}`);
     }
   };

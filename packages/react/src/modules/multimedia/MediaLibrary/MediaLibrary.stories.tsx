@@ -1,35 +1,35 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { WorkspaceElement } from "@edifice.io/ts-client";
-import { useRef } from "react";
+import { WorkspaceElement } from '@edifice.io/ts-client';
+import { useRef } from 'react';
 
-import { Button } from "../../../components";
-import { MockedDataProvider } from "../../../providers/MockedDataProvider";
+import { Button } from '../../../components';
+import { MockedDataProvider } from '../../../providers/MockedDataProvider';
 import MediaLibrary, {
   MediaLibraryProps,
   MediaLibraryRef,
   MediaLibraryResult,
   MediaLibraryType,
-} from "./MediaLibrary";
+} from './MediaLibrary';
 
 const mockedDocuments: WorkspaceElement[] = [
   {
-    _id: "folder1",
-    name: "level 1 arborescence tree",
-    eType: "folder",
-    eParent: "",
+    _id: 'folder1',
+    name: 'level 1 arborescence tree',
+    eType: 'folder',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
     created: null as any,
     owner: null as any,
-    ownerName: "Tom Mate",
+    ownerName: 'Tom Mate',
   },
   {
-    _id: "folder2",
-    name: "level 1 arborescence tree",
-    eType: "folder",
-    eParent: "",
+    _id: 'folder2',
+    name: 'level 1 arborescence tree',
+    eType: 'folder',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
@@ -37,65 +37,65 @@ const mockedDocuments: WorkspaceElement[] = [
     owner: null as any,
   },
   {
-    _id: "file1",
-    name: "mp3 audio file",
-    eType: "file",
-    eParent: "",
+    _id: 'file1',
+    name: 'mp3 audio file',
+    eType: 'file',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
     created: null as any,
     owner: null as any,
     metadata: {
-      "content-type": "audio/mp3",
+      'content-type': 'audio/mp3',
     },
   },
   {
-    _id: "file2",
-    name: "mp4 video file",
-    eType: "file",
-    eParent: "",
+    _id: 'file2',
+    name: 'mp4 video file',
+    eType: 'file',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
     created: null as any,
     owner: null as any,
     metadata: {
-      "content-type": "video/mp4",
+      'content-type': 'video/mp4',
     },
   },
   {
-    _id: "file4",
-    name: "File 4",
-    eType: "file",
-    eParent: "",
+    _id: 'file4',
+    name: 'File 4',
+    eType: 'file',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
     created: null as any,
     owner: null as any,
     metadata: {
-      "content-type": "audio/ogg",
+      'content-type': 'audio/ogg',
     },
   },
   {
-    _id: "file3",
-    name: "File 3",
-    eType: "file",
-    eParent: "",
+    _id: 'file3',
+    name: 'File 3',
+    eType: 'file',
+    eParent: '',
     _isShared: false,
     _shared: [],
     children: null!,
     created: null as any,
     owner: null as any,
     metadata: {
-      "content-type": "text/plain",
+      'content-type': 'text/plain',
     },
   },
 ];
 
 const meta: Meta<typeof MediaLibrary> = {
-  title: "Modules/Multimedia/MediaLibrary",
+  title: 'Modules/Multimedia/MediaLibrary',
   component: MediaLibrary,
   args: {
     type: null,
@@ -103,14 +103,14 @@ const meta: Meta<typeof MediaLibrary> = {
   argTypes: {
     type: {
       options: [
-        "audio",
-        "video",
-        "image",
-        "attachment",
-        "embedder",
-        "hyperlink",
+        'audio',
+        'video',
+        'image',
+        'attachment',
+        'embedder',
+        'hyperlink',
       ],
-      control: { type: "select" },
+      control: { type: 'select' },
     },
   },
   decorators: [
@@ -118,10 +118,10 @@ const meta: Meta<typeof MediaLibrary> = {
       return (
         <div
           style={{
-            height: "40rem",
-            display: "grid",
-            placeItems: "center",
-            marginBottom: "10em",
+            height: '40rem',
+            display: 'grid',
+            placeItems: 'center',
+            marginBottom: '10em',
           }}
           className="position-relative"
         >
@@ -137,7 +137,7 @@ const meta: Meta<typeof MediaLibrary> = {
     args.onSuccess = (result: MediaLibraryResult) => {
       const text = Array.isArray(result)
         ? `${result.length} elements selected`
-        : "a link is ready";
+        : 'a link is ready';
       alert(`Success 👍 : ${text}`);
     };
 
@@ -145,9 +145,9 @@ const meta: Meta<typeof MediaLibrary> = {
       <MockedDataProvider
         mocks={{
           workflows: [
-            "org.entcore.workspace.controllers.WorkspaceController|listDocuments",
-            "org.entcore.workspace.controllers.WorkspaceController|listFolders",
-            "org.entcore.workspace.controllers.WorkspaceController|addDocument",
+            'org.entcore.workspace.controllers.WorkspaceController|listDocuments',
+            'org.entcore.workspace.controllers.WorkspaceController|listFolders',
+            'org.entcore.workspace.controllers.WorkspaceController|addDocument',
           ],
           workspaceDocuments: mockedDocuments,
         }}
@@ -173,36 +173,36 @@ type Story = StoryObj<typeof MediaLibrary>;
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 export const Base: Story = {
   args: {
-    type: "audio",
+    type: 'audio',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to choose or capture an audio file.",
+        story: 'Use to choose or capture an audio file.',
       },
     },
   },
 };
 export const Audio: Story = {
   args: {
-    type: "audio",
+    type: 'audio',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to choose or capture an audio file.",
+        story: 'Use to choose or capture an audio file.',
       },
     },
   },
 };
 export const Video: Story = {
   args: {
-    type: "video",
+    type: 'video',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to choose, embed or capture a video.",
+        story: 'Use to choose, embed or capture a video.',
       },
     },
   },
@@ -210,12 +210,12 @@ export const Video: Story = {
 
 export const Image: Story = {
   args: {
-    type: "image",
+    type: 'image',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to choose an image.",
+        story: 'Use to choose an image.',
       },
     },
   },
@@ -223,12 +223,12 @@ export const Image: Story = {
 
 export const Attachment: Story = {
   args: {
-    type: "attachment",
+    type: 'attachment',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to choose and attach a media file.",
+        story: 'Use to choose and attach a media file.',
       },
     },
   },
@@ -236,12 +236,12 @@ export const Attachment: Story = {
 
 export const Embedder: Story = {
   args: {
-    type: "embedder",
+    type: 'embedder',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to embed an external.",
+        story: 'Use to embed an external.',
       },
     },
   },
@@ -249,12 +249,12 @@ export const Embedder: Story = {
 
 export const Linker: Story = {
   args: {
-    type: "hyperlink",
+    type: 'hyperlink',
   },
   parameters: {
     docs: {
       description: {
-        story: "Use to link an internal resource, or an external website.",
+        story: 'Use to link an internal resource, or an external website.',
       },
     },
   },

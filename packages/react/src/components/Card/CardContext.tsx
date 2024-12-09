@@ -1,11 +1,11 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
-import { IWebApp } from "@edifice.io/ts-client";
+import { IWebApp } from '@edifice.io/ts-client';
 
-import { CardProps } from "./Card";
+import { CardProps } from './Card';
 
 export interface CardContextProps
-  extends Omit<CardProps, "children" | "className"> {
+  extends Omit<CardProps, 'children' | 'className'> {
   app?: IWebApp | undefined;
   appCode: string | undefined;
   isSelectable?: boolean;
@@ -16,7 +16,7 @@ export interface CardContextProps
 
 export const CardContext = createContext<CardContextProps | null>(null!);
 
-CardContext.displayName = "CardContext";
+CardContext.displayName = 'CardContext';
 
 export const useCardContext = () => {
   const context = useContext(CardContext);

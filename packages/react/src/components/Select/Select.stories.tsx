@@ -1,18 +1,18 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { IconListOrder } from "../../modules/icons/components";
-import Select, { OptionsType } from "./Select";
+import { IconListOrder } from '../../modules/icons/components';
+import Select, { OptionsType } from './Select';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Select> = {
-  title: "Forms/Select",
+  title: 'Forms/Select',
   component: Select,
-  decorators: [(Story) => <div style={{ height: "400px" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '400px' }}>{Story()}</div>],
   parameters: {
     docs: {
       description: {
         component:
-          "Select component for creating dropdown selection menus. Supports single and multiple selections, custom options formatting, search functionality, and disabled states. Ideal for when users need to choose one or more options from a predefined list.",
+          'Select component for creating dropdown selection menus. Supports single and multiple selections, custom options formatting, search functionality, and disabled states. Ideal for when users need to choose one or more options from a predefined list.',
       },
     },
   },
@@ -22,43 +22,43 @@ export default meta;
 type Story = StoryObj<typeof Select>;
 
 const subjectAreaOptions: OptionsType[] = [
-  { value: "artActivity", label: "Activités artistiques" },
-  { value: "readLearning", label: "Apprentissage de la lecture" },
-  { value: "chemistry", label: "Chimie" },
-  { value: "law", label: "Droit" },
-  { value: "worldDiscovery", label: "Découverte du monde" },
-  { value: "economy", label: "Economie" },
-  { value: "mediaEducation", label: "Education aux médias" },
-  { value: "musicEducation", label: "Education musicale" },
-  { value: "sportEducation", label: "Education physique et sportive" },
-  { value: "citizenshipEducation", label: "Enseignement civique" },
-  { value: "geography", label: "Géographie" },
-  { value: "history", label: "Histoire" },
-  { value: "artHistory", label: "Histoire des arts" },
-  { value: "ComputerScience", label: "Informatique" },
-  { value: "languages", label: "Langues" },
-  { value: "ancientLanguages", label: "Langues anciennes" },
-  { value: "literature", label: "Littérature" },
-  { value: "mathematics", label: "Mathématiques" },
-  { value: "vocationalGuidance", label: "Orientation" },
-  { value: "philosohppy", label: "Philosophie" },
-  { value: "physics", label: "Physique" },
-  { value: "politicalSscience", label: "Sciences politiques" },
-  { value: "sociology", label: "Sociologie" },
-  { value: "biology", label: "SVT - Biologie" },
-  { value: "geology", label: "SVT - Géologie" },
-  { value: "technology", label: "Technologie" },
-  { value: "german", label: "Allemand" },
-  { value: "english", label: "Anglais" },
-  { value: "arabian", label: "Arabe" },
-  { value: "spanish", label: "Espagnol" },
-  { value: "french", label: "Français" },
-  { value: "frensh", label: "Français" },
-  { value: "italian", label: "Italien" },
-  { value: "japanese", label: "Japonais" },
-  { value: "mandarinChinese", label: "Mandarin" },
-  { value: "portuguese", label: "Portuguais" },
-  { value: "russian", label: "Russe" },
+  { value: 'artActivity', label: 'Activités artistiques' },
+  { value: 'readLearning', label: 'Apprentissage de la lecture' },
+  { value: 'chemistry', label: 'Chimie' },
+  { value: 'law', label: 'Droit' },
+  { value: 'worldDiscovery', label: 'Découverte du monde' },
+  { value: 'economy', label: 'Economie' },
+  { value: 'mediaEducation', label: 'Education aux médias' },
+  { value: 'musicEducation', label: 'Education musicale' },
+  { value: 'sportEducation', label: 'Education physique et sportive' },
+  { value: 'citizenshipEducation', label: 'Enseignement civique' },
+  { value: 'geography', label: 'Géographie' },
+  { value: 'history', label: 'Histoire' },
+  { value: 'artHistory', label: 'Histoire des arts' },
+  { value: 'ComputerScience', label: 'Informatique' },
+  { value: 'languages', label: 'Langues' },
+  { value: 'ancientLanguages', label: 'Langues anciennes' },
+  { value: 'literature', label: 'Littérature' },
+  { value: 'mathematics', label: 'Mathématiques' },
+  { value: 'vocationalGuidance', label: 'Orientation' },
+  { value: 'philosohppy', label: 'Philosophie' },
+  { value: 'physics', label: 'Physique' },
+  { value: 'politicalSscience', label: 'Sciences politiques' },
+  { value: 'sociology', label: 'Sociologie' },
+  { value: 'biology', label: 'SVT - Biologie' },
+  { value: 'geology', label: 'SVT - Géologie' },
+  { value: 'technology', label: 'Technologie' },
+  { value: 'german', label: 'Allemand' },
+  { value: 'english', label: 'Anglais' },
+  { value: 'arabian', label: 'Arabe' },
+  { value: 'spanish', label: 'Espagnol' },
+  { value: 'french', label: 'Français' },
+  { value: 'frensh', label: 'Français' },
+  { value: 'italian', label: 'Italien' },
+  { value: 'japanese', label: 'Japonais' },
+  { value: 'mandarinChinese', label: 'Mandarin' },
+  { value: 'portuguese', label: 'Portuguais' },
+  { value: 'russian', label: 'Russe' },
 ];
 
 export const Base: Story = {

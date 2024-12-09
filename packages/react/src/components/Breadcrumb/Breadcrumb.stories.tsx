@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
-import Breadcrumb from "./Breadcrumb";
+import { Meta, StoryObj } from '@storybook/react';
+import Breadcrumb from './Breadcrumb';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Breadcrumb> = {
-  title: "Layout/Breadcrumb",
+  title: 'Layout/Breadcrumb',
   component: Breadcrumb,
   parameters: {
     docs: {
@@ -15,12 +15,12 @@ const meta: Meta<typeof Breadcrumb> = {
   },
   args: {
     app: {
-      address: "/blog",
-      icon: "",
-      name: "",
+      address: '/blog',
+      icon: '',
+      name: '',
       scope: [],
       display: false,
-      displayName: "Blog",
+      displayName: 'Blog',
       isExternal: false,
     },
   },
@@ -32,9 +32,9 @@ type Story = StoryObj<typeof Breadcrumb>;
 export const Base: Story = {};
 
 export const BreadcrumbStory: Story = {
-  name: "Current Page Breadcrumb with resource name",
+  name: 'Current Page Breadcrumb with resource name',
   args: {
-    name: "Mon nouveau blog",
+    name: 'Mon nouveau blog',
   },
   parameters: {
     docs: {

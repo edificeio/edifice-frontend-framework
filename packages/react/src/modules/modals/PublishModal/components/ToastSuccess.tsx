@@ -1,5 +1,5 @@
-import { PublishResult } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { PublishResult } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
 export function ToastSuccess({ result }: { result: PublishResult }) {
   const { t } = useTranslation();
@@ -7,13 +7,13 @@ export function ToastSuccess({ result }: { result: PublishResult }) {
   return (
     <>
       <h3 className="pt-24">
-        {t("bpr.form.publication.response.success.title")}
+        {t('bpr.form.publication.response.success.title')}
       </h3>
       <p className="pt-24">
-        {t("bpr.form.publication.response.success.content.1")}
+        {t('bpr.form.publication.response.success.content.1')}
       </p>
       <p className="pt-24">
-        {t("bpr.form.publication.response.success.content.2")}
+        {t('bpr.form.publication.response.success.content.2')}
       </p>
       {result.details.front_url && (
         <p className="pt-24 pb-24">
@@ -23,7 +23,7 @@ export function ToastSuccess({ result }: { result: PublishResult }) {
             target="_blank"
             rel="noreferrer"
           >
-            {t("bpr.form.publication.response.success.button")}
+            {t('bpr.form.publication.response.success.button')}
           </a>
         </p>
       )}

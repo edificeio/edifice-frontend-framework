@@ -1,13 +1,12 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-import { odeServices } from "@edifice.io/ts-client";
-import { NodeViewWrapper } from "@tiptap/react";
-import { useTranslation } from "react-i18next";
+import { odeServices } from '@edifice.io/ts-client';
+import { NodeViewWrapper } from '@tiptap/react';
+import { useTranslation } from 'react-i18next';
 
-import { Image } from "../../../../components";
-import { useBrowserInfo } from "../../../../hooks";
-import { MediaResizeProps, useResizeMedia } from "../../hooks";
+import { Image } from '../../../../components';
+import { useBrowserInfo } from '../../../../hooks';
+import { MediaResizeProps, useResizeMedia } from '../../hooks';
 
 const MediaRenderer = (props: MediaResizeProps) => {
   const { node } = props;
@@ -23,17 +22,17 @@ const MediaRenderer = (props: MediaResizeProps) => {
 
   const alignContent = (textalign: string) => {
     switch (textalign) {
-      case "center":
-      case "justify":
+      case 'center':
+      case 'justify':
         return {
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: "fit-content",
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          width: 'fit-content',
         };
-      case "left":
-        return { marginRight: "auto", width: "fit-content" };
-      case "right":
-        return { marginLeft: "auto", width: "fit-content" };
+      case 'left':
+        return { marginRight: 'auto', width: 'fit-content' };
+      case 'right':
+        return { marginLeft: 'auto', width: 'fit-content' };
       default:
         return {};
     }
@@ -44,7 +43,7 @@ const MediaRenderer = (props: MediaResizeProps) => {
       const videoElement: HTMLVideoElement = resizableMedia.current;
       const videoId = videoElement.dataset.documentId;
       const isCaptation =
-        (videoElement.dataset.documentIsCaptation || "false") == "true";
+        (videoElement.dataset.documentIsCaptation || 'false') == 'true';
 
       videoId &&
         odeServices
@@ -65,9 +64,9 @@ const MediaRenderer = (props: MediaResizeProps) => {
     const element = resizableMedia.current;
 
     // Track play event on HTMLVideoElement
-    element.addEventListener("play", onVideoPlay);
+    element.addEventListener('play', onVideoPlay);
     return () => {
-      element.removeEventListener("play", onVideoPlay);
+      element.removeEventListener('play', onVideoPlay);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -76,7 +75,7 @@ const MediaRenderer = (props: MediaResizeProps) => {
     <NodeViewWrapper style={alignContent(node.attrs.textAlign)}>
       <div className="media-node-view">
         <div data-drag-handle>
-          {node.type.name === "custom-image" ? (
+          {node.type.name === 'custom-image' ? (
             <>
               <Image
                 src={node.attrs.src}
@@ -96,10 +95,9 @@ const MediaRenderer = (props: MediaResizeProps) => {
               )}
             </>
           ) : (
-            // eslint-disable-next-line jsx-a11y/media-has-caption
             <video
               ref={resizableMedia as React.RefObject<HTMLVideoElement>}
-              controls={node.attrs.controls === "true"}
+              controls={node.attrs.controls === 'true'}
               src={node.attrs.src}
               width={node.attrs.width}
               height={node.attrs.height}
@@ -114,9 +112,9 @@ const MediaRenderer = (props: MediaResizeProps) => {
 
         <div
           className={`vertical-resize-handle ${
-            isVerticalResizeActive ? "vertical-resize-active" : ""
+            isVerticalResizeActive ? 'vertical-resize-active' : ''
           }`}
-          title={t("tiptap.media.resize")}
+          title={t('tiptap.media.resize')}
           onMouseDown={(e) => {
             e.stopPropagation();
             startVerticalResize(e);

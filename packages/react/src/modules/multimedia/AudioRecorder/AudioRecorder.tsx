@@ -1,13 +1,13 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from "@edifice.io/ts-client";
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { FormControl, Input, Toolbar } from "../../../components";
-import { IconMic } from "../../icons/components";
-import AudioRecorderTimer from "./AudioRecorderTimer";
-import useAudioRecorder from "./useAudioRecorder";
+import { FormControl, Input, Toolbar } from '../../../components';
+import { IconMic } from '../../icons/components';
+import AudioRecorderTimer from './AudioRecorderTimer';
+import useAudioRecorder from './useAudioRecorder';
 
 export interface AudioRecorderProps {
   onSaveSuccess?: (resource: WorkspaceElement) => void;
@@ -26,7 +26,7 @@ const AudioRecorder = forwardRef(
       onSaveSuccess,
       onRecordUpdated,
       hideSaveAction = false,
-      visibility = "protected",
+      visibility = 'protected',
     }: AudioRecorderProps,
     ref,
   ) => {
@@ -45,7 +45,7 @@ const AudioRecorder = forwardRef(
       onRecordUpdated,
       hideSaveAction,
       visibility,
-      "media-library",
+      'media-library',
     );
     const { t } = useTranslation();
 
@@ -57,8 +57,8 @@ const AudioRecorder = forwardRef(
     const [audioTime, setAudioTime] = useState<number>(0);
 
     const classColor = clsx({
-      "text-danger": recordState === "RECORDING",
-      "text-success": playState === "PLAYING",
+      'text-danger': recordState === 'RECORDING',
+      'text-success': playState === 'PLAYING',
     });
 
     const handleTimeUpdate = (event: any) => {
@@ -71,15 +71,15 @@ const AudioRecorder = forwardRef(
           id="recordName"
           className="mb-32"
           isRequired
-          isReadOnly={recordState === "SAVED" || recordState === "SAVING"}
+          isReadOnly={recordState === 'SAVED' || recordState === 'SAVING'}
         >
           <Input
             type="text"
-            size={"sm"}
-            placeholder={t("bbm.audio.recorder.name")}
+            size={'sm'}
+            placeholder={t('bbm.audio.recorder.name')}
             ref={audioNameRef}
             defaultValue={
-              t("bbm.audio.recorder.defaultName") +
+              t('bbm.audio.recorder.defaultName') +
               new Date().toLocaleDateString()
             }
           />

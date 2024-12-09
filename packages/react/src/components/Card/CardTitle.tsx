@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 const CardTitle = ({
   children,
@@ -10,7 +10,7 @@ const CardTitle = ({
   className?: string;
 }) => {
   const title = clsx(
-    "card-title body text-break text-truncate text-truncate-2",
+    'card-title body text-break text-truncate text-truncate-2',
     className,
   );
   return (
@@ -20,6 +20,6 @@ const CardTitle = ({
   );
 };
 
-CardTitle.displayName = "Card.Title";
+CardTitle.displayName = 'Card.Title';
 
 export default CardTitle;

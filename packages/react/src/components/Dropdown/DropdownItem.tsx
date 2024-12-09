@@ -1,14 +1,14 @@
-import { ReactNode, useId } from "react";
+import { ReactNode, useId } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useDropdownContext } from "./DropdownContext";
+import { useDropdownContext } from './DropdownContext';
 
 export interface DropdownItemProps {
   /**
    * Object type
    */
-  type?: "action" | "select";
+  type?: 'action' | 'select';
   /**
    * Icon component
    */
@@ -29,7 +29,7 @@ export interface DropdownItemProps {
 }
 
 const DropdownItem = ({
-  type = "action",
+  type = 'action',
   icon,
   onClick,
   children,
@@ -43,7 +43,7 @@ const DropdownItem = ({
   const handleOnClick = (event: React.MouseEvent) => {
     onClick?.(event);
 
-    if (type === "action") {
+    if (type === 'action') {
       onMenuItemClick();
       event.stopPropagation();
     }
@@ -52,7 +52,7 @@ const DropdownItem = ({
   const id = useId();
 
   const dropdownItem = clsx(
-    "dropdown-item",
+    'dropdown-item',
     {
       focus: isFocused === id,
     },
@@ -80,6 +80,6 @@ const DropdownItem = ({
   );
 };
 
-DropdownItem.displayName = "Dropdown.Item";
+DropdownItem.displayName = 'Dropdown.Item';
 
 export default DropdownItem;

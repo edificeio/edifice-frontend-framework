@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .dropzone {
   --#{$prefix}dropzone-border-radius: #{$border-radius-lg};
@@ -71,11 +71,11 @@
   }
 
   &.is-dragging {
-    @include data-product("one") {
+    @include data-product('one') {
       background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='%23ff8d2e26' rx='13' ry='13' stroke='%23ff8d2e' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
     }
 
-    @include data-product("neo") {
+    @include data-product('neo') {
       background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='%232a9cc826' rx='13' ry='13' stroke='%232a9cc8' stroke-width='2' stroke-dasharray='10' stroke-dashoffset='5' stroke-linecap='square'/%3e%3c/svg%3e");
     }
 

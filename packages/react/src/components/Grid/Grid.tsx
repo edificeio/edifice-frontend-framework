@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
 export interface GridProps {
   /**
@@ -13,7 +13,7 @@ export interface GridProps {
   className?: string;
 }
 
-export interface GridColProps extends React.ComponentPropsWithoutRef<"div"> {
+export interface GridColProps extends React.ComponentPropsWithoutRef<'div'> {
   /**
    * Size on Mobile
    */
@@ -49,7 +49,7 @@ export interface GridColProps extends React.ComponentPropsWithoutRef<"div"> {
  */
 
 export const Grid = ({ children, className, ...restProps }: GridProps) => {
-  const classes = clsx("grid", className);
+  const classes = clsx('grid', className);
   return (
     <div className={classes} {...restProps}>
       {children}
@@ -67,13 +67,13 @@ export const Column = ({
   as,
   ...restProps
 }: GridColProps) => {
-  const Component = as || "div";
+  const Component = as || 'div';
   const classes = clsx(
     {
       [`g-col-${sm}`]: sm,
-      [md ? `g-col-md-${md}` : ""]: md,
-      [lg ? `g-col-lg-${lg}` : ""]: lg,
-      [xl ? `g-col-xl-${xl}` : ""]: xl,
+      [md ? `g-col-md-${md}` : '']: md,
+      [lg ? `g-col-lg-${lg}` : '']: lg,
+      [xl ? `g-col-xl-${xl}` : '']: xl,
     },
     className,
   );
@@ -84,7 +84,7 @@ export const Column = ({
   );
 };
 
-Grid.displayName = "Grid";
-Column.displayName = "Grid.Col";
+Grid.displayName = 'Grid';
+Column.displayName = 'Grid.Col';
 
 Grid.Col = Column;

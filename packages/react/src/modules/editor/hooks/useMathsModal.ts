@@ -1,5 +1,5 @@
-import { Editor } from "@tiptap/react";
-import { useToggle } from "../../../hooks";
+import { Editor } from '@tiptap/react';
+import { useToggle } from '../../../hooks';
 
 /**
  * Custom hook to manage MathsModal events in an editor.

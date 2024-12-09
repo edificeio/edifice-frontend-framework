@@ -1,13 +1,13 @@
-import { ReactionDetailsData } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
-import { Avatar } from "../../components";
-import { useAvatar } from "../../hooks";
-import useReactionIcons from "./hooks/useReactionIcons";
+import { ReactionDetailsData } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
+import { Avatar } from '../../components';
+import { useAvatar } from '../../hooks';
+import useReactionIcons from './hooks/useReactionIcons';
 
 export function ReactionModalCard({
   reaction,
 }: {
-  reaction: ReactionDetailsData["userReactions"][number];
+  reaction: ReactionDetailsData['userReactions'][number];
 }) {
   const { t } = useTranslation();
   const { avatarURL } = useAvatar(reaction.userId, reaction.profile);

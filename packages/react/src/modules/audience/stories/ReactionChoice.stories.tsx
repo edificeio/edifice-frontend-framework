@@ -1,17 +1,17 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { ReactionSummaryData, ReactionType } from "@edifice.io/ts-client";
-import { useState } from "react";
-import { ReactionChoice, ReactionChoiceProps } from "..";
+import { ReactionSummaryData, ReactionType } from '@edifice.io/ts-client';
+import { useState } from 'react';
+import { ReactionChoice, ReactionChoiceProps } from '..';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ReactionChoice> = {
-  title: "Modules/Audience/Reactions choice",
+  title: 'Modules/Audience/Reactions choice',
   component: ReactionChoice,
   decorators: [
     (Story) => (
       <div>
-        <p style={{ height: "15em" }}>
+        <p style={{ height: '15em' }}>
           Here is a very informative and interesting paragraph.
         </p>
         {Story()}
@@ -19,9 +19,9 @@ const meta: Meta<typeof ReactionChoice> = {
     ),
   ],
   args: {
-    availableReactions: ["REACTION_2", "REACTION_3", "REACTION_4"],
+    availableReactions: ['REACTION_2', 'REACTION_3', 'REACTION_4'],
     summary: {
-      reactionTypes: ["REACTION_2", "REACTION_4"],
+      reactionTypes: ['REACTION_2', 'REACTION_4'],
       userReaction: undefined,
       totalReactionsCounter: 3,
     },

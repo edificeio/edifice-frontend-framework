@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
-import { Checkbox, Table } from "../..";
-import { useCheckable } from "./useCheckable";
+import { Meta, StoryObj } from '@storybook/react';
+import { Checkbox, Table } from '../..';
+import { useCheckable } from './useCheckable';
 
 const meta: Meta<typeof useCheckable> = {
-  title: "Hooks/useCheckable",
+  title: 'Hooks/useCheckable',
 };
 
 export default meta;
@@ -16,12 +16,12 @@ interface Data {
 
 const data: Data[] = [
   {
-    id: "ab60dbdb-f3f0-4c99-a239-64c8a2f50c77",
-    title: "Title 1",
+    id: 'ab60dbdb-f3f0-4c99-a239-64c8a2f50c77',
+    title: 'Title 1',
   },
   {
-    id: "a0d86fe6-909e-4c4a-8ceb-c15daee525a9",
-    title: "Title 2",
+    id: 'a0d86fe6-909e-4c4a-8ceb-c15daee525a9',
+    title: 'Title 2',
   },
 ];
 
@@ -58,10 +58,10 @@ export const Example: Story = {
             <Table.Td>
               <Checkbox
                 checked={selectedItems.includes(
-                  "ab60dbdb-f3f0-4c99-a239-64c8a2f50c77",
+                  'ab60dbdb-f3f0-4c99-a239-64c8a2f50c77',
                 )}
                 onChange={() => {
-                  handleOnSelectItem("ab60dbdb-f3f0-4c99-a239-64c8a2f50c77");
+                  handleOnSelectItem('ab60dbdb-f3f0-4c99-a239-64c8a2f50c77');
                 }}
               />
             </Table.Td>
@@ -73,10 +73,10 @@ export const Example: Story = {
             <Table.Td>
               <Checkbox
                 checked={selectedItems.includes(
-                  "a0d86fe6-909e-4c4a-8ceb-c15daee525a9",
+                  'a0d86fe6-909e-4c4a-8ceb-c15daee525a9',
                 )}
                 onChange={() => {
-                  handleOnSelectItem("a0d86fe6-909e-4c4a-8ceb-c15daee525a9");
+                  handleOnSelectItem('a0d86fe6-909e-4c4a-8ceb-c15daee525a9');
                 }}
               />
             </Table.Td>

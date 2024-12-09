@@ -1,9 +1,9 @@
-import { ReactNode, useId } from "react";
+import { ReactNode, useId } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-import { useDropdownContext } from "./DropdownContext";
-import { Radio } from "../Radio";
+import { useDropdownContext } from './DropdownContext';
+import { Radio } from '../Radio';
 
 export interface DropdownRadioItemProps {
   /**
@@ -47,7 +47,7 @@ const DropdownRadioItem = ({
     readOnly: true,
   };
 
-  const dropdownRadioItem = clsx("dropdown-item c-pointer", {
+  const dropdownRadioItem = clsx('dropdown-item c-pointer', {
     focus: isFocused === id,
   });
 
@@ -74,6 +74,6 @@ const DropdownRadioItem = ({
   );
 };
 
-DropdownRadioItem.displayName = "Dropdown.RadioItem";
+DropdownRadioItem.displayName = 'Dropdown.RadioItem';
 
 export default DropdownRadioItem;

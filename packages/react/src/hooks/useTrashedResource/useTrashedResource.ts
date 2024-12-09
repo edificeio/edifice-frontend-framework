@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { IResource, odeServices } from "@edifice.io/ts-client";
+import { IResource, odeServices } from '@edifice.io/ts-client';
 
-import { useUser } from "..";
-import { useEdificeClient } from "../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { useUser } from '..';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 /**
  * Router Params Id === ResourceId
@@ -48,9 +48,9 @@ const useTrashedResource = (id: UseTrashedResourceProps) => {
    */
   useEffect(() => {
     if (trashed) {
-      throw new Response("", {
+      throw new Response('', {
         status: 404,
-        statusText: "Not Found",
+        statusText: 'Not Found',
       });
     }
   }, [trashed]);

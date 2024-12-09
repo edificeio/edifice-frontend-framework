@@ -1,20 +1,20 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { IconMail } from "../../modules/icons/components";
-import { FormControl, FormControlProps, FormText } from "./index";
+import { IconMail } from '../../modules/icons/components';
+import { FormControl, FormControlProps, FormText } from './index';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof FormControl> = {
-  title: "Forms/Form Control",
+  title: 'Forms/Form Control',
   component: FormControl,
   argTypes: {
     status: {
-      options: ["valid", "invalid"],
-      control: { type: "select" },
+      options: ['valid', 'invalid'],
+      control: { type: 'select' },
     },
   },
   args: {
-    id: "uuid",
+    id: 'uuid',
     isOptional: false,
     isReadOnly: false,
     isRequired: false,
@@ -24,7 +24,7 @@ const meta: Meta<typeof FormControl> = {
     docs: {
       description: {
         component:
-          "The `FormControl` component is a foundational form element that provides a consistent structure for form inputs. It includes support for labels, input fields, help text, and validation states. Key features include:\n\n- Built-in support for labels with optional icons\n- Validation states (valid/invalid)\n- Optional and required field handling\n- Read-only state support\n- Help text integration\n- Consistent styling and spacing",
+          'The `FormControl` component is a foundational form element that provides a consistent structure for form inputs. It includes support for labels, input fields, help text, and validation states. Key features include:\n\n- Built-in support for labels with optional icons\n- Validation states (valid/invalid)\n- Optional and required field handling\n- Read-only state support\n- Help text integration\n- Consistent styling and spacing',
       },
     },
   },
@@ -81,7 +81,7 @@ export const WithLabelAndIcon: Story = {
 export const WithInformativeMessage: Story = {
   render: (args: FormControlProps) => {
     return (
-      <FormControl id="email" style={{ marginTop: "3px" }}>
+      <FormControl id="email" style={{ marginTop: '3px' }}>
         <FormControl.Label leftIcon={<IconMail />}>Email</FormControl.Label>
         <FormControl.Input
           type="text"

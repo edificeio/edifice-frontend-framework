@@ -1,9 +1,9 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import clsx from "clsx";
-import { useTranslation } from "react-i18next";
+import clsx from 'clsx';
+import { useTranslation } from 'react-i18next';
 
-import { useTabsContext } from "../context/TabsContext";
+import { useTabsContext } from '../context/TabsContext';
 
 export interface TabsItemProps {
   /**
@@ -34,8 +34,8 @@ const TabsItem = ({
   const { t } = useTranslation();
 
   const classes = clsx(
-    "nav-link d-inline-flex gap-8 border-0",
-    activeTab === id ? "selected" : "",
+    'nav-link d-inline-flex gap-8 border-0',
+    activeTab === id ? 'selected' : '',
   );
 
   return (
@@ -59,6 +59,6 @@ const TabsItem = ({
   );
 };
 
-TabsItem.displayName = "Tabs.Item";
+TabsItem.displayName = 'Tabs.Item';
 
 export default TabsItem;

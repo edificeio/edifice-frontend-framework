@@ -1,14 +1,14 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import Widget from "../Widget/Widget";
-import BookmarkedApps from "./BookmarkedApps";
+import Widget from '../Widget/Widget';
+import BookmarkedApps from './BookmarkedApps';
 
 const meta: Meta<typeof BookmarkedApps> = {
-  title: "Modules/Widgets/Bookmarked Apps",
+  title: 'Modules/Widgets/Bookmarked Apps',
   component: BookmarkedApps,
   decorators: [
     (Story) => (
-      <div style={{ width: "300px" }}>
+      <div style={{ width: '300px' }}>
         <Story />
       </div>
     ),
@@ -21,57 +21,57 @@ type Story = StoryObj<typeof BookmarkedApps>;
 
 const bookmarkedApps = [
   {
-    address: "/blog",
-    icon: "blog",
-    name: "",
+    address: '/blog',
+    icon: 'blog',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
   {
-    address: "/wiki",
-    icon: "wiki",
-    name: "",
+    address: '/wiki',
+    icon: 'wiki',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
   {
-    address: "/conversation",
-    icon: "conversation",
-    name: "",
+    address: '/conversation',
+    icon: 'conversation',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
   {
-    address: "/rack",
-    icon: "rack",
-    name: "",
+    address: '/rack',
+    icon: 'rack',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
   {
-    address: "/scrapbook",
-    icon: "scrapbook",
-    name: "",
+    address: '/scrapbook',
+    icon: 'scrapbook',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
   {
-    address: "/workspace",
-    icon: "workspace",
-    name: "",
+    address: '/workspace',
+    icon: 'workspace',
+    name: '',
     scope: [],
     display: false,
-    displayName: "",
+    displayName: '',
     isExternal: false,
   },
 ];

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { TabsItemProps } from "../components/TabsItem";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { TabsItemProps } from '../components/TabsItem';
 
 interface UseTabsProps {
   defaultId?: string;
@@ -8,7 +8,7 @@ interface UseTabsProps {
 }
 
 export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
-  const [activeTab, setActiveTab] = useState<string>(defaultId || "");
+  const [activeTab, setActiveTab] = useState<string>(defaultId || '');
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
 
@@ -31,7 +31,7 @@ export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
        * The focus on input element with a reponse device will cause the keyboard to be displayed and trigger the resize event.
        * Which will cause the tab to be focused again and the keyboard to be closed. #WB-2841
        */
-      if (document?.activeElement?.tagName !== "INPUT") {
+      if (document?.activeElement?.tagName !== 'INPUT') {
         const currentTabIndex = items.findIndex(
           (item) => item.id === activeTab,
         );
@@ -48,9 +48,9 @@ export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
     }
 
     setTabPosition();
-    window.addEventListener("resize", setTabPosition);
+    window.addEventListener('resize', setTabPosition);
 
-    return () => window.removeEventListener("resize", setTabPosition);
+    return () => window.removeEventListener('resize', setTabPosition);
   }, [activeTab, items, defaultId]);
 
   const moveFocusToPreviousTab = useCallback(
@@ -82,19 +82,19 @@ export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLButtonElement>) => {
       switch (event.code) {
-        case "ArrowLeft":
+        case 'ArrowLeft':
           moveFocusToPreviousTab(activeTab);
           break;
 
-        case "ArrowRight":
+        case 'ArrowRight':
           moveFocusToNextTab(activeTab);
           break;
 
-        case "Home":
+        case 'Home':
           setActiveTab(items[0]?.id);
           break;
 
-        case "End":
+        case 'End':
           setActiveTab(items[items.length - 1]?.id);
           break;
 

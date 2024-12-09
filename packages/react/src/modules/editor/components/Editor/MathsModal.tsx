@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import Mathematics from "@tiptap-pro/extension-mathematics";
-import { Editor, EditorContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
-import { Button, Modal } from "../../../../components";
+import Mathematics from '@tiptap-pro/extension-mathematics';
+import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
+import { Button, Modal } from '../../../../components';
 
 interface ModalProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ interface ModalProps {
 }
 
 const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
-  const FORMULA_PLACEHOLDER = "\\frac{-b + \\sqrt{b^2 - 4ac}}{2a}";
+  const FORMULA_PLACEHOLDER = '\\frac{-b + \\sqrt{b^2 - 4ac}}{2a}';
   const [formulaEditor, setFormulaEditor] = useState<string>(
     `$${FORMULA_PLACEHOLDER}$`,
   );
@@ -35,14 +35,14 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newFormulaTextarea: string = event.target.value;
-    const newFormulaEditor = newFormulaTextarea.replaceAll("\n", "$<br/>$");
+    const newFormulaEditor = newFormulaTextarea.replaceAll('\n', '$<br/>$');
     // replace editor content
     if (newFormulaEditor) {
       editor?.commands.setContent(`$${newFormulaEditor}$`);
       setFormulaEditor(`$${newFormulaEditor}$`);
     } else {
-      editor?.commands.setContent("");
-      setFormulaEditor("");
+      editor?.commands.setContent('');
+      setFormulaEditor('');
     }
     editor?.commands.enter();
   };
@@ -54,17 +54,17 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
   return createPortal(
     <Modal id="MathsModal" isOpen={isOpen} onModalClose={handleOnCancel}>
       <Modal.Header onModalClose={handleOnCancel}>
-        {t("tiptap.maths.title")}
+        {t('tiptap.maths.title')}
       </Modal.Header>
       <Modal.Subtitle>
-        {t("tiptap.maths.subtitle.1")}
+        {t('tiptap.maths.subtitle.1')}
         <a
           href={t(
-            "https://fr.wikibooks.org/wiki/LaTeX/%C3%89crire_des_math%C3%A9matiques",
+            'https://fr.wikibooks.org/wiki/LaTeX/%C3%89crire_des_math%C3%A9matiques',
           )}
           target="_blank"
         >
-          {t("tiptap.maths.subtitle.2")}
+          {t('tiptap.maths.subtitle.2')}
         </a>
       </Modal.Subtitle>
       <Modal.Body>
@@ -89,7 +89,7 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
           type="button"
           variant="ghost"
         >
-          {t("tiptap.maths.cancel")}
+          {t('tiptap.maths.cancel')}
         </Button>
         <Button
           color="primary"
@@ -97,11 +97,11 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
           type="button"
           variant="filled"
         >
-          {t("tiptap.maths.add")}
+          {t('tiptap.maths.add')}
         </Button>
       </Modal.Footer>
     </Modal>,
-    document.getElementById("portal") as HTMLElement,
+    document.getElementById('portal') as HTMLElement,
   );
 };
 

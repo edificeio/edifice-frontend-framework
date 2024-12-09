@@ -1,1 +1,1 @@
-export { default as BubbleMenuEditImage } from "./BubbleMenuEditImage";
+export { default as BubbleMenuEditImage } from './BubbleMenuEditImage';

@@ -1,7 +1,7 @@
-import { StringUtils } from "@edifice.io/utilities";
-import clsx from "clsx";
-import { Button } from "../../components";
-import { IconSee } from "../icons/components";
+import { StringUtils } from '@edifice.io/utilities';
+import clsx from 'clsx';
+import { Button } from '../../components';
+import { IconSee } from '../icons/components';
 
 export interface ViewsCounterProps {
   viewsCounter: number;
@@ -20,7 +20,7 @@ const ViewsCounter = ({
     onClick?.();
   };
 
-  className = clsx("text-gray-700 fw-normal py-4 px-8 btn-icon", className);
+  className = clsx('text-gray-700 fw-normal py-4 px-8 btn-icon', className);
 
   return (
     <Button
@@ -36,6 +36,6 @@ const ViewsCounter = ({
   );
 };
 
-ViewsCounter.displayName = "ViewsCounter";
+ViewsCounter.displayName = 'ViewsCounter';
 
 export default ViewsCounter;

@@ -1,16 +1,16 @@
-import { Meta, StoryObj } from "@storybook/react";
-import LoadingScreen from "./LoadingScreen";
+import { Meta, StoryObj } from '@storybook/react';
+import LoadingScreen from './LoadingScreen';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof LoadingScreen> = {
-  title: "Components/LoadingScreen",
+  title: 'Components/LoadingScreen',
   component: LoadingScreen,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   parameters: {
     docs: {
       description: {
         component:
-          "The `LoadingScreen` component provides a full-screen or positioned loading indicator with optional caption text. Features include:\n\n- Full-screen overlay mode or positioned display\n- Customizable loading caption\n- Centered loading animation\n- Consistent styling with the application theme",
+          'The `LoadingScreen` component provides a full-screen or positioned loading indicator with optional caption text. Features include:\n\n- Full-screen overlay mode or positioned display\n- Customizable loading caption\n- Centered loading animation\n- Consistent styling with the application theme',
       },
     },
   },
@@ -36,7 +36,7 @@ export const Position: Story = {
     docs: {
       description: {
         story:
-          "Position of the component is set to `true` per default. If set to `false`, LoadingScreen will take the whole screen and shows an overlay",
+          'Position of the component is set to `true` per default. If set to `false`, LoadingScreen will take the whole screen and shows an overlay',
       },
     },
   },
@@ -45,12 +45,12 @@ export const Position: Story = {
 export const Caption: Story = {
   render: (args) => <LoadingScreen {...args} />,
   args: {
-    caption: "Loading...",
+    caption: 'Loading...',
   },
   parameters: {
     docs: {
       description: {
-        story: "Caption will show text below the loading icon.",
+        story: 'Caption will show text below the loading icon.',
       },
     },
   },

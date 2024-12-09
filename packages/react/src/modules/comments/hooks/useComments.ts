@@ -1,15 +1,15 @@
-import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useEdificeClient } from "../../../providers/EdificeClientProvider/EdificeClientProvider.hook";
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import {
   CommentCallbacks,
   CommentOptions,
   CommentProps,
   CommentType,
-} from "../types";
-import { useProfileQueries } from "./useProfileQueries";
+} from '../types';
+import { useProfileQueries } from './useProfileQueries';
 
-import illuPad from "@edifice.io/bootstrap/dist/images/emptyscreen/illu-pad.svg";
+import illuPad from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-pad.svg';
 
 export const useComments = ({
   defaultComments,
@@ -22,7 +22,7 @@ export const useComments = ({
   type: CommentType;
   callbacks: CommentCallbacks | null;
 }) => {
-  const [content, setContent] = useState<string>("");
+  const [content, setContent] = useState<string>('');
   const [editCommentId, setEditCommentId] = useState<string | null>(null);
   const [commentLimit, setCommentLimit] = useState(options.maxComments);
 
@@ -37,7 +37,7 @@ export const useComments = ({
 
   const comments = useMemo(
     () => {
-      if (type === "edit") {
+      if (type === 'edit') {
         return (
           defaultComments
             ?.sort((a, b) => b.createdAt - a.createdAt)
@@ -56,8 +56,8 @@ export const useComments = ({
 
   const title =
     defaultCommentsCount && defaultCommentsCount > 1
-      ? t("comment.several", { number: defaultCommentsCount })
-      : t("comment.little", { number: defaultCommentsCount });
+      ? t('comment.several', { number: defaultCommentsCount })
+      : t('comment.little', { number: defaultCommentsCount });
 
   const handleMoreComments = () => {
     const newLimit = comments?.length + (options.additionalComments ?? 5);
@@ -74,20 +74,20 @@ export const useComments = ({
   };
 
   const handleReset = () => {
-    setContent("");
+    setContent('');
 
     if (editCommentId) setEditCommentId(null);
   };
 
   const handleDeleteComment = (id: string) => {
-    if (type === "edit") {
+    if (type === 'edit') {
       callbacks?.delete(id);
     }
   };
 
   const handleUpdateComment = (comment: string) => {
     if (editCommentId) {
-      if (type === "edit") {
+      if (type === 'edit') {
         callbacks?.put({ comment, commentId: editCommentId });
       }
 
@@ -96,10 +96,10 @@ export const useComments = ({
   };
 
   const handleCreateComment = (content: string) => {
-    if (type === "edit") {
+    if (type === 'edit') {
       callbacks?.post(content);
     }
-    setContent("");
+    setContent('');
   };
 
   const handleModifyComment = (commentId: string) => {

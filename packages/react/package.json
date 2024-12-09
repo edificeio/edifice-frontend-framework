@@ -79,16 +79,16 @@
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check .",
     "format:write": "npx prettier --write .",
-    "lint": "eslint \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
     "test": "vitest"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "@dnd-kit/sortable": "^8.0.0",
     "@dnd-kit/utilities": "^3.2.2",
+    "@edifice.io/bootstrap": "workspace:*",
     "@edifice.io/tiptap-extensions": "workspace:*",
     "@edifice.io/utilities": "workspace:*",
-    "@edifice.io/bootstrap": "workspace:*",
     "@floating-ui/react": "0.26.0",
     "@pixi/mixin-get-child-by-name": "7.4.2",
     "@pixi/react": "7.1.2",
@@ -121,6 +121,7 @@
     "clsx": "catalog:",
     "dayjs": "1.11.10",
     "emoji-picker-react": "4.5.2",
+    "globals": "^15.11.0",
     "html-react-parser": "4.2.1",
     "ohash": "1.1.3",
     "pako": "2.1.0",
@@ -132,12 +133,10 @@
     "swiper": "^10.1.0",
     "ua-parser-js": "^1.0.36"
   },
-  "optionalDependencies": {
-    "@tiptap-pro/extension-mathematics": "2.2.1"
-  },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "^7.23.3",
     "@edifice.io/ts-client": "workspace:*",
+    "@eslint/js": "^9.12.0",
     "@react-spring/web": "^9.7.5",
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "catalog:",
@@ -147,12 +146,16 @@
     "@types/react-dom": "catalog:",
     "@types/ua-parser-js": "^0.7.37",
     "@vitejs/plugin-react": "catalog:",
+    "eslint": "^9.12.0",
+    "eslint-plugin-react-hooks": "5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.12",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:",
     "rollup-plugin-pure": "^0.2.1",
     "rollup-plugin-visualizer": "catalog:",
+    "typescript-eslint": "^8.8.1",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:"
   },
@@ -163,6 +166,9 @@
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:"
+  },
+  "optionalDependencies": {
+    "@tiptap-pro/extension-mathematics": "2.2.1"
   },
   "publishConfig": {
     "access": "public"

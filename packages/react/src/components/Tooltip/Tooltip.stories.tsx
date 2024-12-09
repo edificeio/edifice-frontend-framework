@@ -1,17 +1,17 @@
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from '@storybook/react';
 
-import { IconAlertCircle } from "../../modules/icons/components";
-import { Button } from "../Button";
-import Tooltip, { TooltipProps } from "./Tooltip";
+import { IconAlertCircle } from '../../modules/icons/components';
+import { Button } from '../Button';
+import Tooltip, { TooltipProps } from './Tooltip';
 
 const meta: Meta<typeof Tooltip> = {
-  title: "Components/Tooltip",
+  title: 'Components/Tooltip',
   component: Tooltip,
   parameters: {
     docs: {
       description: {
         component:
-          "Tooltip component allows you to display additional information when users hover over or focus on an element. It supports various placements and can be customized with different messages and styles.",
+          'Tooltip component allows you to display additional information when users hover over or focus on an element. It supports various placements and can be customized with different messages and styles.',
       },
     },
   },
@@ -35,7 +35,7 @@ export const Base: Story = {
 
   args: {
     message:
-      "Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.",
+      'Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.',
     children: (
       <>
         <Button type="button" variant="filled" color="primary">
@@ -50,9 +50,9 @@ export const Bottom: Story = {
   render: Template,
 
   args: {
-    placement: "bottom",
+    placement: 'bottom',
     message:
-      "Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.",
+      'Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.',
     children: (
       <Button type="button" variant="filled" color="primary">
         Bottom Tooltip
@@ -65,9 +65,9 @@ export const Icon: Story = {
   render: Template,
 
   args: {
-    placement: "right",
+    placement: 'right',
     message:
-      "Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.",
+      'Optio minus varius reprehenderit ridiculus praesentium metus porttitor tellus.',
     icon: <IconAlertCircle />,
     children: (
       <Button type="button" variant="filled" color="primary">

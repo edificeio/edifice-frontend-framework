@@ -1,4 +1,4 @@
-import { UserProfile } from "@edifice.io/ts-client";
+import { UserProfile } from '@edifice.io/ts-client';
 
 export interface CommentProps {
   /**
@@ -63,7 +63,7 @@ interface BaseProps {
 }
 
 interface EditRootProps extends BaseProps {
-  type: "edit";
+  type: 'edit';
   /**
    * Callbacks to perform CRUD on comment
    */
@@ -71,7 +71,7 @@ interface EditRootProps extends BaseProps {
 }
 
 interface ReadRootProps extends BaseProps {
-  type: "read";
+  type: 'read';
 }
 
 export type RootProps = EditRootProps | ReadRootProps;
@@ -110,4 +110,4 @@ export interface UserProfileResult {
   profile: UserProfile[number];
 }
 
-export type CommentType = "read" | "edit";
+export type CommentType = 'read' | 'edit';

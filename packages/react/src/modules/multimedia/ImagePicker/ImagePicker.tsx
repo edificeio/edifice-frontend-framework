@@ -1,12 +1,12 @@
-import { ComponentPropsWithRef, useEffect, useState } from "react";
+import { ComponentPropsWithRef, useEffect, useState } from 'react';
 
-import { IWebApp } from "@edifice.io/ts-client";
+import { IWebApp } from '@edifice.io/ts-client';
 
-import clsx from "clsx";
-import { AppIcon, Avatar, IconButton } from "../../../components";
-import { IconDelete, IconEdit } from "../../icons/components";
+import clsx from 'clsx';
+import { AppIcon, Avatar, IconButton } from '../../../components';
+import { IconDelete, IconEdit } from '../../icons/components';
 
-export interface ImagePickerProps extends ComponentPropsWithRef<"input"> {
+export interface ImagePickerProps extends ComponentPropsWithRef<'input'> {
   /**
    * Accessible description of the add button
    */
@@ -48,8 +48,8 @@ export interface ImagePickerProps extends ComponentPropsWithRef<"input"> {
 }
 
 const ImagePicker = ({
-  addButtonLabel = "Add image",
-  deleteButtonLabel = "Delete image",
+  addButtonLabel = 'Add image',
+  deleteButtonLabel = 'Delete image',
   src,
   className,
   mediaLibraryRef,
@@ -58,7 +58,7 @@ const ImagePicker = ({
   onUploadImage,
   onDeleteImage,
 }: ImagePickerProps) => {
-  const [preview, setPreview] = useState<string>(src || "");
+  const [preview, setPreview] = useState<string>(src || '');
 
   useEffect(() => {
     if (libraryMedia) {
@@ -69,15 +69,15 @@ const ImagePicker = ({
   }, [libraryMedia]);
 
   const handleClick = () => {
-    mediaLibraryRef.current?.show("image");
+    mediaLibraryRef.current?.show('image');
   };
 
   const handleClean = () => {
-    setPreview("");
+    setPreview('');
     onDeleteImage();
   };
 
-  const classes = clsx("image-input", className);
+  const classes = clsx('image-input', className);
 
   return (
     <div id="image-input" className={classes}>
@@ -109,6 +109,6 @@ const ImagePicker = ({
   );
 };
 
-ImagePicker.displayName = "ImagePicker";
+ImagePicker.displayName = 'ImagePicker';
 
 export default ImagePicker;

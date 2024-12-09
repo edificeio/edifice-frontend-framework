@@ -1,1 +1,1 @@
-export { default as useDropzone } from "./useDropzone";
+export { default as useDropzone } from './useDropzone';

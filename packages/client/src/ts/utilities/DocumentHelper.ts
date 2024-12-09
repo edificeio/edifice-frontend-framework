@@ -1,5 +1,5 @@
-import { MimeTypeUtils } from "@edifice.io/utilities";
-import { WorkspaceElement } from "../services";
+import { MimeTypeUtils } from '@edifice.io/utilities';
+import { WorkspaceElement } from '../services';
 
 export type RoleMapperParams = {
   type: string;
@@ -17,7 +17,7 @@ const defaultMappers = {
       return true;
     }
     return (
-      type.indexOf("document") !== -1 && type.indexOf("wordprocessing") !== -1
+      type.indexOf('document') !== -1 && type.indexOf('wordprocessing') !== -1
     );
   },
   xls: function ({ type, extension }: RoleMapperParams) {
@@ -25,24 +25,24 @@ const defaultMappers = {
       return true;
     }
     return (
-      (type.indexOf("document") !== -1 && type.indexOf("spreadsheet") !== -1) ||
-      type.indexOf("ms-excel") !== -1
+      (type.indexOf('document') !== -1 && type.indexOf('spreadsheet') !== -1) ||
+      type.indexOf('ms-excel') !== -1
     );
   },
   img: function ({ type }: RoleMapperParams) {
-    return type.indexOf("image") !== -1;
+    return type.indexOf('image') !== -1;
   },
   pdf: function ({ type }: RoleMapperParams) {
-    return type.indexOf("pdf") !== -1 || type === "application/x-download";
+    return type.indexOf('pdf') !== -1 || type === 'application/x-download';
   },
   ppt: function ({ type, extension }: RoleMapperParams) {
     if (MimeTypeUtils.INSTANCE.isPowerpointLike(type, extension)) {
       return true;
     }
     return (
-      (type.indexOf("document") !== -1 &&
-        type.indexOf("presentation") !== -1) ||
-      type.indexOf("powerpoint") !== -1
+      (type.indexOf('document') !== -1 &&
+        type.indexOf('presentation') !== -1) ||
+      type.indexOf('powerpoint') !== -1
     );
   },
   txt: function ({ type, extension }: RoleMapperParams) {
@@ -52,17 +52,17 @@ const defaultMappers = {
     return MimeTypeUtils.INSTANCE.isMdLike(type, extension);
   },
   video: function ({ type }: RoleMapperParams) {
-    return type.indexOf("video") !== -1;
+    return type.indexOf('video') !== -1;
   },
   audio: function ({ type }: RoleMapperParams) {
-    return type.indexOf("audio") !== -1;
+    return type.indexOf('audio') !== -1;
   },
   zip: function ({ type }: RoleMapperParams) {
     return (
-      type.indexOf("zip") !== -1 ||
-      type.indexOf("rar") !== -1 ||
-      type.indexOf("tar") !== -1 ||
-      type.indexOf("7z") !== -1
+      type.indexOf('zip') !== -1 ||
+      type.indexOf('rar') !== -1 ||
+      type.indexOf('tar') !== -1 ||
+      type.indexOf('7z') !== -1
     );
   },
 } as const;
@@ -81,11 +81,11 @@ export abstract class DocumentHelper {
   ];
 
   /* Similar role notion as in infra-front > workspace > Model.ts */
-  static getRole(doc: WorkspaceElement): Role | "unknown" {
+  static getRole(doc: WorkspaceElement): Role | 'unknown' {
     return DocumentHelper.role(
-      doc.metadata?.["content-type"],
+      doc.metadata?.['content-type'],
       false,
-      doc.metadata?.["extension"],
+      doc.metadata?.['extension'],
     );
   }
 
@@ -94,11 +94,11 @@ export abstract class DocumentHelper {
     contentType: string | undefined,
     previewRole: boolean = false,
     extension?: string,
-  ): Role | "unknown" {
+  ): Role | 'unknown' {
     extension && (extension = extension.trim());
-    if (!contentType) return "unknown";
+    if (!contentType) return 'unknown';
     if (!this.roleMappers) {
-      console.warn("[DocumentHelper.role] should not have empty roles", this);
+      console.warn('[DocumentHelper.role] should not have empty roles', this);
     }
     const params = { type: contentType, previewRole, extension };
     for (const roleMapper of this.roleMappers) {
@@ -107,6 +107,6 @@ export abstract class DocumentHelper {
         return role;
       }
     }
-    return "unknown";
+    return 'unknown';
   }
 }

@@ -1,8 +1,8 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { forwardRef, ReactNode, Ref } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-export interface BreadcrumbItemProps extends React.ComponentPropsWithRef<"li"> {
+export interface BreadcrumbItemProps extends React.ComponentPropsWithRef<'li'> {
   /**
    * Link or text to display
    */
@@ -18,7 +18,7 @@ const BreadcrumbItem = forwardRef(
     { children, className, ...restProps }: BreadcrumbItemProps,
     forwardRef: Ref<HTMLLIElement>,
   ) => {
-    const classes = clsx("breadcrumb-item", className);
+    const classes = clsx('breadcrumb-item', className);
 
     return (
       <li ref={forwardRef} className={classes} {...restProps}>
@@ -28,6 +28,6 @@ const BreadcrumbItem = forwardRef(
   },
 );
 
-BreadcrumbItem.displayName = "BreadcrumbItem";
+BreadcrumbItem.displayName = 'BreadcrumbItem';
 
 export default BreadcrumbItem;

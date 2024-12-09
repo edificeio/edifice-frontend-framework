@@ -1,14 +1,14 @@
-import { forwardRef, Ref } from "react";
+import { forwardRef, Ref } from 'react';
 
-import { IWebApp } from "@edifice.io/ts-client";
-import { useTranslation } from "react-i18next";
+import { IWebApp } from '@edifice.io/ts-client';
+import { useTranslation } from 'react-i18next';
 
-import { IconRafterRight } from "../../modules/icons/components";
-import { AppIcon } from "../AppIcon";
-import Heading from "../Heading/Heading";
-import BreadcrumbItem from "./BreadcrumbItem";
-import BreadcrumbList from "./BreadcrumbList";
-import BreadcrumbNav from "./BreadcrumbNav";
+import { IconRafterRight } from '../../modules/icons/components';
+import { AppIcon } from '../AppIcon';
+import Heading from '../Heading/Heading';
+import BreadcrumbItem from './BreadcrumbItem';
+import BreadcrumbList from './BreadcrumbList';
+import BreadcrumbNav from './BreadcrumbNav';
 
 export interface BreadcrumbProps {
   /**
@@ -76,6 +76,6 @@ const Breadcrumb = forwardRef(
   },
 );
 
-Breadcrumb.displayName = "Breadcrumb";
+Breadcrumb.displayName = 'Breadcrumb';
 
 export default Breadcrumb;

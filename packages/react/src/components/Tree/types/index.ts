@@ -1,5 +1,5 @@
-import { UniqueIdentifier } from "@dnd-kit/core";
-import { ComponentPropsWithRef } from "react";
+import { UniqueIdentifier } from '@dnd-kit/core';
+import { ComponentPropsWithRef } from 'react';
 
 export type TreeItem = {
   id: string;
@@ -102,7 +102,7 @@ export interface SharedTreeProps {
 }
 
 export interface TreeNodeProps
-  extends ComponentPropsWithRef<"li">,
+  extends ComponentPropsWithRef<'li'>,
     SharedTreeProps {
   /**
    * Node data

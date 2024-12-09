@@ -1,5 +1,5 @@
-import { Canvas, Meta } from "@storybook/blocks";
-import * as useKeyPressStories from "./useKeyPress.stories";
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useKeyPressStories from './useKeyPress.stories';
 
 <Meta of={useKeyPressStories} />
 
@@ -19,7 +19,7 @@ import * as useKeyPressStories from "./useKeyPress.stories";
 const [isVisible, setIsVisible] = useState < boolean > true;
 useKeyPress(() => {
   setIsVisible(false);
-}, ["Escape"]);
+}, ['Escape']);
 
 return (
   <div>

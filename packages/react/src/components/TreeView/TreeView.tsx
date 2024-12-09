@@ -1,8 +1,8 @@
-import { Ref, forwardRef } from "react";
+import { Ref, forwardRef } from 'react';
 
-import { TreeData } from "../../types";
-import { TreeNode } from "./TreeNode";
-import { useTreeView } from "./hooks/useTreeView";
+import { TreeData } from '../../types';
+import { TreeNode } from './TreeNode';
+import { useTreeView } from './hooks/useTreeView';
 
 // @deprecated This interface is deprecated and will be removed in future versions.
 export interface TreeViewHandlers_V1 {
@@ -139,6 +139,6 @@ const TreeView = forwardRef(
   },
 );
 
-TreeView.displayName = "TreeView";
+TreeView.displayName = 'TreeView';
 
 export default TreeView;

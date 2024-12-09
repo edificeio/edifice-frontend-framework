@@ -1,6 +1,6 @@
-import * as PIXI from "pixi.js";
+import * as PIXI from 'pixi.js';
 
-import { getApplicationScale } from "./misc";
+import { getApplicationScale } from './misc';
 
 //
 // Global constants used for crop effects
@@ -8,25 +8,25 @@ import { getApplicationScale } from "./misc";
 
 // Union type to identify corners
 export type CornerType =
-  | "TOP_LEFT"
-  | "TOP_RIGHT"
-  | "BOTTOM_LEFT"
-  | "BOTTOM_RIGHT";
+  | 'TOP_LEFT'
+  | 'TOP_RIGHT'
+  | 'BOTTOM_LEFT'
+  | 'BOTTOM_RIGHT';
 // List of available corners
 const CORNERS: Array<CornerType> = [
-  "TOP_LEFT",
-  "TOP_RIGHT",
-  "BOTTOM_LEFT",
-  "BOTTOM_RIGHT",
+  'TOP_LEFT',
+  'TOP_RIGHT',
+  'BOTTOM_LEFT',
+  'BOTTOM_RIGHT',
 ];
 // Define initial padding (pixel) between anchors and image corners
 const PADDING = 0;
 // Define the radius (pixel) of the corner control
 const POINT_RADIUS = 20;
 // Define the name of the background backdrop applied while we are cropping
-const CROP_BACKGROUND_NAME = "CROP_BACKGROUND_NAME";
+const CROP_BACKGROUND_NAME = 'CROP_BACKGROUND_NAME';
 // Define the name of the mask (crop) applied to the final image
-const CROP_MASK_NAME = "CROP_MASK_NAME";
+const CROP_MASK_NAME = 'CROP_MASK_NAME';
 
 //
 // Implementation
@@ -38,7 +38,7 @@ const CROP_MASK_NAME = "CROP_MASK_NAME";
  * @returns A name identifying the corner object
  */
 function getCornerName(corner: CornerType) {
-  return "CROP_CORNER_" + corner;
+  return 'CROP_CORNER_' + corner;
 }
 /**
  * This function draw background having:
@@ -118,10 +118,10 @@ function computeCornerPosition(
   bounds: { x: number; y: number; width: number; height: number },
 ): { x: number; y: number; start: number; end: number } {
   switch (cornerType) {
-    case "TOP_LEFT": {
+    case 'TOP_LEFT': {
       return { x: bounds.x, y: bounds.y, start: 0, end: Math.PI / 2 };
     }
-    case "TOP_RIGHT": {
+    case 'TOP_RIGHT': {
       return {
         x: bounds.x + bounds.width,
         y: bounds.y,
@@ -129,7 +129,7 @@ function computeCornerPosition(
         end: Math.PI,
       };
     }
-    case "BOTTOM_LEFT": {
+    case 'BOTTOM_LEFT': {
       return {
         x: bounds.x,
         y: bounds.y + bounds.height,
@@ -137,7 +137,7 @@ function computeCornerPosition(
         end: 2 * Math.PI,
       };
     }
-    case "BOTTOM_RIGHT": {
+    case 'BOTTOM_RIGHT': {
       return {
         x: bounds.x + bounds.width,
         y: bounds.y + bounds.height,
@@ -236,7 +236,7 @@ function drawCorner(
   corner.interactive = true;
   // Add mouse event move => on corner move redraw mask
   let enable = false;
-  application.stage.on("pointermove", (event: PIXI.FederatedMouseEvent) => {
+  application.stage.on('pointermove', (event: PIXI.FederatedMouseEvent) => {
     if (enable === false) return;
     const localPosition = background.toLocal(event.global);
     corner.position.x = localPosition.x;
@@ -247,17 +247,17 @@ function drawCorner(
   const handlePointerDown = () => {
     enable = true;
   };
-  corner.on("pointerdown", handlePointerDown);
+  corner.on('pointerdown', handlePointerDown);
   // Add mouse up event => on pointer down stop moving mask
   const handlePointerUp = () => {
     enable = false;
   };
-  globalThis.addEventListener("pointerup", handlePointerUp);
+  globalThis.addEventListener('pointerup', handlePointerUp);
   // Remove listeners when corner destroyed
-  corner.once("destroyed", () => {
+  corner.once('destroyed', () => {
     // cancel listener
-    corner.off("pointerdown");
-    globalThis.removeEventListener("pointerup", handlePointerUp);
+    corner.off('pointerdown');
+    globalThis.removeEventListener('pointerup', handlePointerUp);
   });
   // Add corner
   background.addChild(corner);
@@ -283,26 +283,26 @@ function moveMask(
   const right = mask.position.x + mask.width;
   const bottom = mask.position.y + mask.height;
   switch (cornerType) {
-    case "TOP_LEFT": {
+    case 'TOP_LEFT': {
       mask.position.x = position.x;
       mask.position.y = position.y;
       mask.width = right - position.x;
       mask.height = bottom - position.y;
       break;
     }
-    case "TOP_RIGHT": {
+    case 'TOP_RIGHT': {
       mask.position.y = position.y;
       mask.width = position.x - mask.position.x;
       mask.height = bottom - position.y;
       break;
     }
-    case "BOTTOM_LEFT": {
+    case 'BOTTOM_LEFT': {
       mask.position.x = position.x;
       mask.width = right - position.x;
       mask.height = position.y - mask.position.y;
       break;
     }
-    case "BOTTOM_RIGHT": {
+    case 'BOTTOM_RIGHT': {
       mask.width = position.x - mask.position.x;
       mask.height = position.y - mask.position.y;
       break;
@@ -328,10 +328,10 @@ export function start(
   application.stage.interactive = true;
   application.stage.interactiveChildren = true;
   drawBackground(application, { spriteName });
-  drawCorner(application, "BOTTOM_LEFT", { spriteName });
-  drawCorner(application, "BOTTOM_RIGHT", { spriteName });
-  drawCorner(application, "TOP_LEFT", { spriteName });
-  drawCorner(application, "TOP_RIGHT", { spriteName });
+  drawCorner(application, 'BOTTOM_LEFT', { spriteName });
+  drawCorner(application, 'BOTTOM_RIGHT', { spriteName });
+  drawCorner(application, 'TOP_LEFT', { spriteName });
+  drawCorner(application, 'TOP_RIGHT', { spriteName });
 }
 /**
  * This function remove all graphics controls if exists. And it also remove any mouse event on this stage
@@ -340,7 +340,7 @@ export function start(
  */
 export function stop(application: PIXI.Application) {
   removeBackground(application);
-  application.stage.off("pointermove");
+  application.stage.off('pointermove');
   application.render();
 }
 /**

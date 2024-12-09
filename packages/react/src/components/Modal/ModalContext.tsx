@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 export interface ModalContextProps {
   ariaLabelId: string;
@@ -7,12 +7,12 @@ export interface ModalContextProps {
 }
 
 export const ModalContext = createContext<ModalContextProps>({
-  ariaLabelId: "",
-  ariaDescriptionId: "",
-  focusId: "",
+  ariaLabelId: '',
+  ariaDescriptionId: '',
+  focusId: '',
 });
 
-ModalContext.displayName = "ModalContext";
+ModalContext.displayName = 'ModalContext';
 
 export const useModalContext = () => {
   const context = useContext(ModalContext);

@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type ExercizerData = {
   id: number;
@@ -33,17 +33,17 @@ type ExercizerData = {
 };
 
 export class ExercizerBehaviour extends AbstractBehaviourService {
-  APP = "exercizer";
-  RESOURCE = "exercizer";
+  APP = 'exercizer';
+  RESOURCE = 'exercizer';
 
   async loadResources() {
     const exercices = await this.httpGet<ExercizerData[]>(
-      "/exercizer/subjects-scheduled",
+      '/exercizer/subjects-scheduled',
     );
     return exercices.map((data) => {
       const icon = data.picture
-        ? data.picture + "?thumbnail=48x48"
-        : "/img/illustrations/exercizer.svg";
+        ? data.picture + '?thumbnail=48x48'
+        : '/img/illustrations/exercizer.svg';
       let recipient;
       let shared = false;
       let scheduled_at = JSON.parse(data.scheduled_at);
@@ -54,18 +54,18 @@ export class ExercizerBehaviour extends AbstractBehaviourService {
         shared = true;
         recipient = scheduled_at.userList[0].name;
       } else {
-        recipient = "";
+        recipient = '';
       }
       if (scheduled_at.groupList.length + scheduled_at.userList.length > 1) {
-        recipient += "...";
+        recipient += '...';
       }
       return this.dataToResource({
         title: data.title,
         owner: data.owner,
         ownerName: recipient,
         icon,
-        path: "/exercizer#/linker/" + data.id,
-        _id: "" + data.id,
+        path: '/exercizer#/linker/' + data.id,
+        _id: '' + data.id,
         shared,
         modified: data.modified,
       });

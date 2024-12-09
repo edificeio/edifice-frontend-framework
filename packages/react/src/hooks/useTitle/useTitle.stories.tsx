@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
-import Heading from "../../components/Heading/Heading";
-import useTitle from "./useTitle";
+import { Meta, StoryObj } from '@storybook/react';
+import Heading from '../../components/Heading/Heading';
+import useTitle from './useTitle';
 
 const meta: Meta<typeof useTitle> = {
-  title: "Hooks/useTitle",
+  title: 'Hooks/useTitle',
 };
 
 export default meta;

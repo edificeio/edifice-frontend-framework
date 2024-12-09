@@ -1,32 +1,32 @@
-import { StoryObj } from "@storybook/react";
+import { StoryObj } from '@storybook/react';
 
-import { Ref, useEffect, useRef, useState } from "react";
-import { Button } from "../Button";
-import FormControl from "../Form/FormControl";
-import FormText from "../Form/FormText";
-import TextArea, { TextAreaProps } from "./TextArea";
-import { TextareaCounter } from "./TextareaCounter";
+import { Ref, useEffect, useRef, useState } from 'react';
+import { Button } from '../Button';
+import FormControl from '../Form/FormControl';
+import FormText from '../Form/FormText';
+import TextArea, { TextAreaProps } from './TextArea';
+import { TextareaCounter } from './TextareaCounter';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
-  title: "Forms/TextArea",
+  title: 'Forms/TextArea',
   component: TextArea,
   argTypes: {
     size: {
-      options: ["sm", "md", "lg"],
-      control: { type: "select" },
+      options: ['sm', 'md', 'lg'],
+      control: { type: 'select' },
     },
   },
   args: {
     disabled: false,
-    size: "md",
-    placeholder: "Text Placeholder",
+    size: 'md',
+    placeholder: 'Text Placeholder',
   },
   parameters: {
     docs: {
       description: {
         component:
-          "TextArea component allows users to input multi-line text. It supports different sizes, placeholder text, and can be disabled. It also integrates with form controls for validation and other functionalities.",
+          'TextArea component allows users to input multi-line text. It supports different sizes, placeholder text, and can be disabled. It also integrates with form controls for validation and other functionalities.',
       },
     },
   },
@@ -47,8 +47,8 @@ export const Base: Story = {
   render: Template,
 
   args: {
-    size: "md",
-    placeholder: "Edifice",
+    size: 'md',
+    placeholder: 'Edifice',
   },
 };
 
@@ -56,15 +56,15 @@ export const Small: Story = {
   render: Template,
 
   args: {
-    size: "sm",
-    placeholder: "Edifice",
+    size: 'sm',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.",
+          'Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.',
       },
     },
   },
@@ -74,15 +74,15 @@ export const Medium: Story = {
   render: Template,
 
   args: {
-    size: "md",
-    placeholder: "Edifice",
+    size: 'md',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when there are many information to fill on a page. We use the medium size to gain space on the page.",
+          'Used when there are many information to fill on a page. We use the medium size to gain space on the page.',
       },
     },
   },
@@ -92,15 +92,15 @@ export const Large: Story = {
   render: Template,
 
   args: {
-    size: "lg",
-    placeholder: "Edifice",
+    size: 'lg',
+    placeholder: 'Edifice',
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          "Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.",
+          'Used when the information to fill is within a block, for exemple on a calendar component to set the date interval.',
       },
     },
   },
@@ -113,7 +113,7 @@ export const TextAreaWithValue: Story = {
     useEffect(() => {
       // Can be a type guard
       if (textAreaRef.current != null) {
-        textAreaRef.current.value = "This textArea has a value.";
+        textAreaRef.current.value = 'This textArea has a value.';
       }
     }, []);
 
@@ -131,7 +131,7 @@ export const TextAreaWithValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: "When TextArea has a value, `border-color` changes.",
+        story: 'When TextArea has a value, `border-color` changes.',
       },
     },
   },
@@ -168,7 +168,7 @@ export const TextAreaFocused: Story = {
     docs: {
       description: {
         story:
-          "When TextArea is focused, `border-color` changes depending on the theme.",
+          'When TextArea is focused, `border-color` changes depending on the theme.',
       },
     },
   },
@@ -269,7 +269,7 @@ export const StatusWithoutIcon: Story = {
     docs: {
       description: {
         story:
-          "You can add the `noValidationIcon` props to the TextArea Component to remove validation icon",
+          'You can add the `noValidationIcon` props to the TextArea Component to remove validation icon',
       },
     },
   },
@@ -280,14 +280,14 @@ export const DisabledStatus: Story = {
 
   args: {
     disabled: true,
-    size: "md",
-    placeholder: "Edifice",
+    size: 'md',
+    placeholder: 'Edifice',
   },
 };
 
 export const MaxCount: Story = {
   render: (args) => {
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState('');
     return (
       <FormControl id="example-4">
         <TextArea

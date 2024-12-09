@@ -5,10 +5,10 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { TreeData } from "../../../types";
-import { TreeViewHandlers_V1 } from "../TreeView";
-import { findNodeById, findPathById } from "../utilities/treeview";
+} from 'react';
+import { TreeData } from '../../../types';
+import { TreeViewHandlers_V1 } from '../TreeView';
+import { findNodeById, findPathById } from '../utilities/treeview';
 
 export const useTreeView = ({
   data,
@@ -103,7 +103,7 @@ export const useTreeView = ({
   }
 
   const expandedAllNodes = (allExpandedNodes: boolean | undefined) => {
-    const initExpandedNodes = new Set("");
+    const initExpandedNodes = new Set('');
     if (data && Array.isArray(data) && allExpandedNodes) {
       data.forEach((node) => {
         initExpandedNodes.add(node.id);
@@ -183,7 +183,7 @@ export const useTreeView = ({
       return;
     }
 
-    if (externalSelectedNodeId === "default") {
+    if (externalSelectedNodeId === 'default') {
       expandedNodes.forEach((node) => onTreeItemUnfold?.(node));
       return;
     }

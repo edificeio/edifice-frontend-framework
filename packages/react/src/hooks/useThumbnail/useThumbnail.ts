@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import { IntersectionOptions, useInView } from "react-intersection-observer";
+import { IntersectionOptions, useInView } from 'react-intersection-observer';
 
 type LazyLoadOptions = {
   ref?: React.RefObject<HTMLElement>;

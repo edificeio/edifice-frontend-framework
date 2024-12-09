@@ -1,8 +1,8 @@
-import { ReactNode, forwardRef } from "react";
+import { ReactNode, forwardRef } from 'react';
 
-import clsx from "clsx";
+import clsx from 'clsx';
 
-export type HeadingElement = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+export type HeadingElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
 export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   /**
@@ -31,8 +31,8 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
 const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
   (
     {
-      level: Component = "h1",
-      headingStyle = "h1",
+      level: Component = 'h1',
+      headingStyle = 'h1',
       children,
       className,
       ...restProps
@@ -48,6 +48,6 @@ const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
   },
 );
 
-Heading.displayName = "Heading";
+Heading.displayName = 'Heading';
 
 export default Heading;
