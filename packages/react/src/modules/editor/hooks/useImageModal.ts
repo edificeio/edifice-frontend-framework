@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceVisibility } from '@edifice.io/client';
 import { Editor } from '@tiptap/react';
 
 import { useToggle, useWorkspaceFile } from '../../../hooks';

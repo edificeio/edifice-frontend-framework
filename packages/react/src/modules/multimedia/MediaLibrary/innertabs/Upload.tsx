@@ -1,4 +1,4 @@
-import { WorkspaceElement } from '@edifice.io/ts-client';
+import { WorkspaceElement } from '@edifice.io/client';
 
 import { Dropzone } from '../../../../components/Dropzone';
 import { UploadFiles } from '../../UploadFiles';

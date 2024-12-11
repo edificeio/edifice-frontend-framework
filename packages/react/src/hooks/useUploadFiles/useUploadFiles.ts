@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { ImageResizer, addTimestampToImageUrl } from '@edifice.io/utilities';
 
 import { useDropzoneContext } from '../../components';

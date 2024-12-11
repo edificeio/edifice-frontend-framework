@@ -8,7 +8,7 @@ import {
   IUserInfo,
   IWebApp,
   UserProfile,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { UseQueryResult } from '@tanstack/react-query';
 
 export interface EdificeClientParams {

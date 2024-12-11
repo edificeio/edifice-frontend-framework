@@ -1,4 +1,4 @@
-import { ReactionSummaryData } from '@edifice.io/ts-client';
+import { ReactionSummaryData } from '@edifice.io/client';
 import { StringUtils } from '@edifice.io/utilities';
 import { Button } from '../../components';
 import { default as useReactionIcons } from './hooks/useReactionIcons';

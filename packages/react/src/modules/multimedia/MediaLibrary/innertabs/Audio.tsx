@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-import { WorkspaceElement } from '@edifice.io/ts-client';
+import { WorkspaceElement } from '@edifice.io/client';
 
 import { AudioRecorder } from '../../AudioRecorder';
 import { AudioRecorderRef } from '../../AudioRecorder/AudioRecorder';

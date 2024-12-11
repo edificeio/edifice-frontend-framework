@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { ReactionSummaryData, ReactionType } from '@edifice.io/ts-client';
+import { ReactionSummaryData, ReactionType } from '@edifice.io/client';
 import { useState } from 'react';
 import { ReactionChoice, ReactionChoiceProps } from '..';
 

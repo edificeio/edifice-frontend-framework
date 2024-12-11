@@ -1,8 +1,4 @@
-import {
-  ResourceRight,
-  odeServices,
-  type RightRole,
-} from '@edifice.io/ts-client';
+import { ResourceRight, odeServices, type RightRole } from '@edifice.io/client';
 
 export interface IObjectWithRights {
   rights: string[];

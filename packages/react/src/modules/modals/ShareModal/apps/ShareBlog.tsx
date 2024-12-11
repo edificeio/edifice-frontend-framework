@@ -7,7 +7,7 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Heading, Radio } from '../../../../components';

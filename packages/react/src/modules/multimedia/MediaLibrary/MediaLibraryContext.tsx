@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 
 import {
   AvailableTab,

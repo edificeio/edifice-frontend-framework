@@ -7,7 +7,7 @@ import {
   type ShareRightAction,
   type ShareRightActionDisplayName,
   type ShareRightWithVisibles,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { useToast, useUser } from '../../../../hooks';

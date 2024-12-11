@@ -1,4 +1,4 @@
-import { ShareRight } from '@edifice.io/ts-client';
+import { ShareRight } from '@edifice.io/client';
 
 export const showShareRightLine = (
   shareRight: ShareRight,

@@ -2,7 +2,7 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import {
   UseMutationOptions,
   UseMutationResult,

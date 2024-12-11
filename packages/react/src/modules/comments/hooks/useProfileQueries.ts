@@ -1,4 +1,4 @@
-import { odeServices } from '@edifice.io/ts-client';
+import { odeServices } from '@edifice.io/client';
 import { useQueries } from '@tanstack/react-query';
 
 export const useProfileQueries = (usersIds: string[]) => {

@@ -1,4 +1,4 @@
-import { UserProfile } from '@edifice.io/ts-client';
+import { UserProfile } from '@edifice.io/client';
 
 export interface CommentProps {
   /**

@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { App } from '@edifice.io/ts-client';
+import { App } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { useConf, useSession } from '../../hooks';
 import {

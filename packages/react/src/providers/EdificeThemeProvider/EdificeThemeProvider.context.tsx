@@ -1,6 +1,6 @@
 import { createContext, type ReactNode } from 'react';
 
-import { IOdeTheme } from '@edifice.io/ts-client';
+import { IOdeTheme } from '@edifice.io/client';
 
 export interface EdificeThemeProps {
   children: ReactNode;

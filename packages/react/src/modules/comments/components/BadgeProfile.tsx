@@ -1,4 +1,4 @@
-import { UserProfile } from '@edifice.io/ts-client';
+import { UserProfile } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '../../..';
 

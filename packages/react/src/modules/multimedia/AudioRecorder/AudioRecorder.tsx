@@ -1,6 +1,6 @@
 import { forwardRef, useImperativeHandle, useState } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 

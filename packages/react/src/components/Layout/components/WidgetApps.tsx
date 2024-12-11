@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { type IWebApp } from '@edifice.io/ts-client';
+import { type IWebApp } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { AppIcon } from '../..';
 

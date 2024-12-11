@@ -1,4 +1,4 @@
-import { ID } from '@edifice.io/ts-client';
+import { ID } from '@edifice.io/client';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 

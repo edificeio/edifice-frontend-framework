@@ -1,7 +1,7 @@
 import React, { StrictMode } from 'react';
 
 import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
-import { ERROR_CODE } from '@edifice.io/ts-client';
+import { ERROR_CODE } from '@edifice.io/client';
 import {
   QueryCache,
   QueryClient,

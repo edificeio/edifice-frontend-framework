@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { ViewsDetails } from '@edifice.io/ts-client';
+import { ViewsDetails } from '@edifice.io/client';
 import { useToggle } from '../../../hooks';
 import ViewsCounter from '../ViewsCounter';
 import ViewsModal from '../ViewsModal';

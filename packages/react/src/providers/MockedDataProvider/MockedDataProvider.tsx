@@ -6,7 +6,7 @@ import {
   IResource,
   ResourceType,
   WorkspaceElement,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 
 export interface MockedDataProps {
   children: ReactNode;

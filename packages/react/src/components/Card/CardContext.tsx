@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { IWebApp } from '@edifice.io/ts-client';
+import { IWebApp } from '@edifice.io/client';
 
 import { CardProps } from './Card';
 

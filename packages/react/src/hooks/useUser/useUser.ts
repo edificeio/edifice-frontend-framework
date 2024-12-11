@@ -1,4 +1,4 @@
-import { IUserDescription, IUserInfo } from '@edifice.io/ts-client';
+import { IUserDescription, IUserInfo } from '@edifice.io/client';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 

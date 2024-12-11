@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { odeServices } from '@edifice.io/ts-client';
+import { odeServices } from '@edifice.io/client';
 
 import { useHasWorkflow } from '../useHasWorkflow';
 

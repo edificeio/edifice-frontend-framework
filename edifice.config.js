@@ -1,54 +1,54 @@
 // @ts-check
 
-import { fileURLToPath } from "node:url";
+import { fileURLToPath } from 'node:url';
 
 export const publishOptions = {
   packages: [
     {
-      name: "@edifice.io/ts-client",
-      packageDir: "packages/client",
+      name: '@edifice.io/client',
+      packageDir: 'packages/client',
     },
     {
-      name: "@edifice.io/bootstrap",
-      packageDir: "packages/bootstrap",
+      name: '@edifice.io/bootstrap',
+      packageDir: 'packages/bootstrap',
     },
     {
-      name: "@edifice.io/react",
-      packageDir: "packages/react",
+      name: '@edifice.io/react',
+      packageDir: 'packages/react',
     },
     {
-      name: "@edifice.io/utilities",
-      packageDir: "packages/utilities",
+      name: '@edifice.io/utilities',
+      packageDir: 'packages/utilities',
     },
     {
-      name: "@edifice.io/tiptap-extensions",
-      packageDir: "packages/extensions",
+      name: '@edifice.io/tiptap-extensions',
+      packageDir: 'packages/extensions',
     },
   ],
 
   branchConfigs: {
-    "main": {
+    'main': {
       prerelease: false,
     },
-    "develop": {
+    'develop': {
       prerelease: true,
     },
-    "develop-hotfix": {
+    'develop-hotfix': {
       prerelease: true,
     },
-    "develop-rc": {
+    'develop-rc': {
       prerelease: true,
     },
-    "develop-b2school": {
+    'develop-b2school': {
       prerelease: true,
     },
-    "develop-pedago": {
+    'develop-pedago': {
       prerelease: true,
     },
-    "develop-mozo": {
+    'develop-mozo': {
       prerelease: true,
     },
-    "develop-integration": {
+    'develop-integration': {
       prerelease: true,
     },
   },
@@ -56,5 +56,5 @@ export const publishOptions = {
   // eslint-disable-next-line no-undef
   ghToken: process.env.GH_TOKEN,
 
-  rootDir: fileURLToPath(new URL(".", import.meta.url)),
+  rootDir: fileURLToPath(new URL('.', import.meta.url)),
 };

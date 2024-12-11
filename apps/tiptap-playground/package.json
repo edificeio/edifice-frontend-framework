@@ -26,7 +26,7 @@
   "dependencies": {
     "@edifice.io/bootstrap": "workspace:*",
     "@edifice.io/react": "workspace:*",
-    "@edifice.io/ts-client": "workspace:*",
+    "@edifice.io/client": "workspace:*",
     "@react-spring/web": "catalog:",
     "@tanstack/react-query": "catalog:",
     "clsx": "catalog:",

@@ -7,7 +7,7 @@ import {
   useImperativeHandle,
 } from 'react';
 
-import { WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceVisibility } from '@edifice.io/client';
 import {
   Content,
   EditorContent,

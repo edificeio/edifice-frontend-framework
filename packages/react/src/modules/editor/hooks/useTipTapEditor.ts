@@ -28,7 +28,7 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { useTranslation } from 'react-i18next';
 
-import { WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceVisibility } from '@edifice.io/client';
 import { useUpload } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import {

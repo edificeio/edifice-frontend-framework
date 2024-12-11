@@ -22,7 +22,7 @@ pnpm run build
 
 ## Documentation
 
-As rule of thumb, **@edifice.io/ts-client never uses any browser-related technology** (no HTMLElement, Document, navigator...).
+As rule of thumb, **@edifice.io/client never uses any browser-related technology** (no HTMLElement, Document, navigator...).
 It focus exclusively on data exchange with the servers.
 
 - [IConfigurationFramework](docs/interfaces/iconfigurationframework.md) is composed of 3 layers

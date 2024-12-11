@@ -1,4 +1,4 @@
-import { ID, odeServices } from '@edifice.io/ts-client';
+import { ID, odeServices } from '@edifice.io/client';
 
 const useDirectory = () => {
   function getAvatarURL(userId: ID, type: 'user' | 'group'): string {

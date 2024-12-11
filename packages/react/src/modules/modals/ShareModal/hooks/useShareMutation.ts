@@ -1,8 +1,4 @@
-import {
-  PutShareResponse,
-  ShareRight,
-  odeServices,
-} from '@edifice.io/ts-client';
+import { PutShareResponse, ShareRight, odeServices } from '@edifice.io/client';
 import {
   UseMutationOptions,
   UseMutationResult,

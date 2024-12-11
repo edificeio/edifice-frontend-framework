@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import { LAYER_NAME, odeServices } from '@edifice.io/ts-client';
+import { LAYER_NAME, odeServices } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { useToast } from '../..';

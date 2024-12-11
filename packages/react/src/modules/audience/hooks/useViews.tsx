@@ -1,4 +1,4 @@
-import { odeServices } from '@edifice.io/ts-client';
+import { odeServices } from '@edifice.io/client';
 import { useRef } from 'react';
 
 /**

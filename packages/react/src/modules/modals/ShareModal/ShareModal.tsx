@@ -5,7 +5,7 @@ import {
   PutShareResponse,
   RightStringified,
   ShareRight,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';

@@ -63,7 +63,7 @@ export default defineConfig({
         ...Object.keys(peerDependencies),
         ...Object.keys(optionalDependencies),
         'react/jsx-runtime',
-        '@edifice.io/ts-client',
+        '@edifice.io/client',
         /^@edifice\.io\/tiptap-extensions\/.*/,
         /^@edifice\.io\/bootstrap\/.*/,
         /^dayjs\/plugin\/.+\.js$/,

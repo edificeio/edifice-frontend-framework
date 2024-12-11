@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react';
 
-import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/ts-client';
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { ToolbarItem } from '../../../components';

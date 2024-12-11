@@ -1,4 +1,4 @@
-import { Role } from '@edifice.io/ts-client';
+import { Role } from '@edifice.io/client';
 import clsx from 'clsx';
 import { IconPaperclip } from '../../icons/components';
 

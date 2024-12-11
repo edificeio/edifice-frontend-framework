@@ -2,7 +2,7 @@ import {
   WorkspaceElement,
   WorkspaceVisibility,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 
 const useWorkspaceFile = () => {
   /**

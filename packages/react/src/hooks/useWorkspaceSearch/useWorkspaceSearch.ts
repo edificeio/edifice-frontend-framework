@@ -7,7 +7,7 @@ import {
   WorkspaceElement,
   WorkspaceSearchFilter,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 
 import { findNodeById } from '../../components/TreeView/utilities/treeview';
 import { useMockedData } from '../../providers/MockedDataProvider';

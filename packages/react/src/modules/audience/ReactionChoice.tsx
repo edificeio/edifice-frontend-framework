@@ -1,4 +1,4 @@
-import { ReactionSummaryData, ReactionType } from '@edifice.io/ts-client';
+import { ReactionSummaryData, ReactionType } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, IconButton, Tooltip } from '../../components';

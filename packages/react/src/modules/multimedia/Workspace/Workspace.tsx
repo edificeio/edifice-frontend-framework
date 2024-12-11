@@ -4,7 +4,7 @@ import {
   Role,
   WorkspaceElement,
   WorkspaceSearchFilter,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import {

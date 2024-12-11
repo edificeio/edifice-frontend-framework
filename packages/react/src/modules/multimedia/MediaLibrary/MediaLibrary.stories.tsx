@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { WorkspaceElement } from '@edifice.io/ts-client';
+import { WorkspaceElement } from '@edifice.io/client';
 import { useRef } from 'react';
 
 import { Button } from '../../../components';

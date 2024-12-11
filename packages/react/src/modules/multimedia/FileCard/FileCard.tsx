@@ -5,7 +5,7 @@ import {
   Role,
   WorkspaceElement,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import clsx from 'clsx';
 
 import { Card, CardProps } from '../../../components';

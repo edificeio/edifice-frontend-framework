@@ -1,4 +1,4 @@
-import { ID, UserProfile, odeServices } from '@edifice.io/ts-client';
+import { ID, UserProfile, odeServices } from '@edifice.io/client';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Badge } from '../../components';

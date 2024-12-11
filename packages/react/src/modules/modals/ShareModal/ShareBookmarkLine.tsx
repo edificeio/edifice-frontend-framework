@@ -3,7 +3,7 @@ import {
   ShareRightAction,
   ShareRightActionDisplayName,
   ShareRightWithVisibles,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { Avatar, Button, Checkbox, IconButton } from '../../../components';

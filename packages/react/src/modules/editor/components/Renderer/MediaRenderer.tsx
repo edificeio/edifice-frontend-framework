@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { odeServices } from '@edifice.io/ts-client';
+import { odeServices } from '@edifice.io/client';
 import { NodeViewWrapper } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 

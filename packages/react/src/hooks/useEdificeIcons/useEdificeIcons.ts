@@ -1,4 +1,4 @@
-import { IWebApp, type IWidget, WidgetName } from '@edifice.io/ts-client';
+import { IWebApp, type IWidget, WidgetName } from '@edifice.io/client';
 
 export default function useEdificeIcons() {
   /**

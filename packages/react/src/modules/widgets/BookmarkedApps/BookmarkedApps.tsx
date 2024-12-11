@@ -1,4 +1,4 @@
-import { IWebApp } from '@edifice.io/ts-client';
+import { IWebApp } from '@edifice.io/client';
 import { AppIcon } from '../../../components';
 
 const BookmarkedApps = ({ data }: { data: IWebApp[] }) => {

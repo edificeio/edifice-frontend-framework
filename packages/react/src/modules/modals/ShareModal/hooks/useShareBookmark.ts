@@ -1,6 +1,6 @@
 import { Dispatch, useId, useRef, useState } from 'react';
 
-import { ShareRightWithVisibles, odeServices } from '@edifice.io/ts-client';
+import { ShareRightWithVisibles, odeServices } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { useToggle } from '@uidotdev/usehooks';

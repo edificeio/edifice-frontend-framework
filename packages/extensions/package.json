@@ -135,7 +135,7 @@
     "vite-plugin-dts": "catalog:"
   },
   "devDependencies": {
-    "@edifice.io/ts-client": "workspace:*",
+    "@edifice.io/client": "workspace:*",
     "@types/dom-speech-recognition": "^0.0.1"
   },
   "publishConfig": {

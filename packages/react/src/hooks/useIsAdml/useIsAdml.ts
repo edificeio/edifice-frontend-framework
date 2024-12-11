@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { odeServices } from '@edifice.io/ts-client';
+import { odeServices } from '@edifice.io/client';
 
 export default function useIsAdml() {
   const [isAdml, setIsAdml] = useState(false);

@@ -1,4 +1,4 @@
-import { ERROR_CODE, odeServices, ReactionType } from '@edifice.io/ts-client';
+import { ERROR_CODE, odeServices, ReactionType } from '@edifice.io/client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**

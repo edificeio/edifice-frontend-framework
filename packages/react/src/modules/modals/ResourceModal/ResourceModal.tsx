@@ -8,7 +8,7 @@ import {
   UpdateParameters,
   UpdateResult,
   odeServices,
-} from '@edifice.io/ts-client';
+} from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';

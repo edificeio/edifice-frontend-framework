@@ -1,4 +1,4 @@
-import { ViewsDetailsProfile } from '@edifice.io/ts-client';
+import { ViewsDetailsProfile } from '@edifice.io/client';
 import { StringUtils } from '@edifice.io/utilities';
 import { useTranslation } from 'react-i18next';
 import { IconUsers } from '../icons/components';

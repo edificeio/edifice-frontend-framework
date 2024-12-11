@@ -1,4 +1,4 @@
-import { App, IGetConf, odeServices } from '@edifice.io/ts-client';
+import { App, IGetConf, odeServices } from '@edifice.io/client';
 import { useQuery } from '@tanstack/react-query';
 
 export default function useConf({ appCode }: { appCode: App }) {

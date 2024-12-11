@@ -1,6 +1,6 @@
 import { useCallback, useId, useMemo, useState } from 'react';
 
-import { IUserInfo, odeServices } from '@edifice.io/ts-client';
+import { IUserInfo, odeServices } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { useHover } from '../../hooks';

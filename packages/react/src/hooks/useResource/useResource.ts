@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { IResource, odeServices } from '@edifice.io/ts-client';
+import { IResource, odeServices } from '@edifice.io/client';
 
 const useResource = (application: string, id: string) => {
   const [resource, setResource] = useState<IResource>(null!);

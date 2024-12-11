@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react';
 
-import { IResource } from '@edifice.io/ts-client';
+import { IResource } from '@edifice.io/client';
 import { hash } from 'ohash';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
