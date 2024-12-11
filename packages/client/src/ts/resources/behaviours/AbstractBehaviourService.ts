@@ -1,11 +1,11 @@
-import { ID, IHttpParams, ResourceType } from "../..";
-import { CacheService } from "../../cache/Service";
-import { IOdeServices } from "../../services/OdeServices";
+import { ID, IHttpParams, ResourceType } from '../..';
+import { CacheService } from '../../cache/Service';
+import { IOdeServices } from '../../services/OdeServices';
 import {
   GetContextParameters,
   IBehaviourService,
   IResource,
-} from "../interface";
+} from '../interface';
 
 export interface LinkerModel {
   _id: ID;
@@ -64,11 +64,11 @@ export abstract class AbstractBehaviourService implements IBehaviourService {
     ...resource
   }: LinkerModel): ILinkedResource {
     const modifiedAt =
-      typeof modified === "string"
+      typeof modified === 'string'
         ? modified
         : modified?.$date
-          ? "" + modified.$date
-          : "";
+          ? '' + modified.$date
+          : '';
     return {
       application: this.RESOURCE,
       name: resource.title,

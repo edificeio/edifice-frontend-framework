@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type FormulaireData = {
   picture: string;
@@ -14,17 +14,17 @@ type FormulaireData = {
 };
 
 export class FormulaireBehaviour extends AbstractBehaviourService {
-  APP = "formulaire";
-  RESOURCE = "formulaire";
+  APP = 'formulaire';
+  RESOURCE = 'formulaire';
 
   async loadResources() {
     const data = await this.httpGet<FormulaireData[]>(
-      "/formulaire/forms/linker",
+      '/formulaire/forms/linker',
     );
     return data.map((data) => {
-      if (!data.picture) data.picture = "/formulaire/public/img/logo.svg";
+      if (!data.picture) data.picture = '/formulaire/public/img/logo.svg';
       return this.dataToResource({
-        _id: "" + data.id,
+        _id: '' + data.id,
         icon: data.picture,
         title: data.title,
         ownerName: data.owner_name,
@@ -32,10 +32,10 @@ export class FormulaireBehaviour extends AbstractBehaviourService {
         path: data.is_public
           ? `${window.location.origin}/formulaire-public#/form/${data.public_key}`
           : `${window.location.origin}/formulaire#/form/${data.id}/${
-              data.rgpd ? "rgpd" : "new"
+              data.rgpd ? 'rgpd' : 'new'
             }`,
         shared: data.shared && data.shared.length >= 0 ? true : false,
-        modified: "" + data.date_modification,
+        modified: '' + data.date_modification,
       });
     });
   }

@@ -1,9 +1,9 @@
-import { App } from "../globals";
-import { IUserPreferences, UserPreferenceKey } from "./interfaces";
-import { transport } from "../transport/Framework";
-import { notify } from "../notify/Framework";
-import { IUserInfo, IWebApp } from "../session/interfaces";
-import { session } from "../session/Framework";
+import { App } from '../globals';
+import { IUserPreferences, UserPreferenceKey } from './interfaces';
+import { transport } from '../transport/Framework';
+import { notify } from '../notify/Framework';
+import { IUserInfo, IWebApp } from '../session/interfaces';
+import { session } from '../session/Framework';
 
 //-------------------------------------
 class UserPreferences implements IUserPreferences {
@@ -16,7 +16,7 @@ class UserPreferences implements IUserPreferences {
 
   load(key: UserPreferenceKey, defaultTo?: any): Promise<any> {
     return transport.http
-      .get("/userbook/preference/" + key)
+      .get('/userbook/preference/' + key)
       .then((data) => {
         try {
           return JSON.parse(data.preference);
@@ -41,7 +41,7 @@ class UserPreferences implements IUserPreferences {
   save(key: UserPreferenceKey): Promise<void> {
     //FIXME code review
     return transport.http.putJson(
-      "/userbook/preference/" + key,
+      '/userbook/preference/' + key,
       this.data[key],
     );
   }
@@ -84,7 +84,7 @@ export class User {
   }
 
   private loadPublicConf(): Promise<any> {
-    return transport.http.get<any>("/conf/public").then((publicConf) => {
+    return transport.http.get<any>('/conf/public').then((publicConf) => {
       this._keepOpenOnLogout = publicConf?.keepOpenOnLogout || false;
       return publicConf;
     });
@@ -92,7 +92,7 @@ export class User {
 
   /** Bookmarks : pinned apps */
   private async loadBookmarks() {
-    await transport.http.get("/userbook/preference/apps").then((data) => {
+    await transport.http.get('/userbook/preference/apps').then((data) => {
       if (!data.preference) {
         data.preference = null;
       }
@@ -105,13 +105,13 @@ export class User {
       };
 
       // If myApps is array
-      if (tmp && tmp.length && typeof tmp.concat === "function") {
+      if (tmp && tmp.length && typeof tmp.concat === 'function') {
         this._bookmarkedApps = tmp;
         myApps = {
           bookmarks: tmp.map((app) => app.name),
           applications: [],
         };
-        transport.http.putJson("/userbook/preference/apps", myApps);
+        transport.http.putJson('/userbook/preference/apps', myApps);
         return;
       } else {
         myApps = tmp as unknown as { bookmarks: string[]; applications: [] };
@@ -143,7 +143,7 @@ export class User {
         }
       });
       if (!upToDate) {
-        transport.http.putJson("/userbook/preference/apps", myApps);
+        transport.http.putJson('/userbook/preference/apps', myApps);
       }
     });
 
@@ -160,13 +160,13 @@ export class User {
 
   public loadLanguage(): Promise<string> {
     return this.preferences
-      .load("language", { "default-domain": session.session.currentLanguage })
-      .then((data) => data["default-domain"]);
+      .load('language', { 'default-domain': session.session.currentLanguage })
+      .then((data) => data['default-domain']);
   }
 
   public saveLanguage(lang: string): Promise<void> {
     return this.preferences
-      .update("language", { "default-domain": lang })
-      .save("language");
+      .update('language', { 'default-domain': lang })
+      .save('language');
   }
 }

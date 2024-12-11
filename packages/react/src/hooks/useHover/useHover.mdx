@@ -1,0 +1,26 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useHoverStories from './useHover.stories';
+
+<Meta of={useHoverStories} />
+
+# useHover
+
+## Usage
+
+- Give the ability to detect when an element is hovered.
+
+## Example
+
+<Canvas of={useHoverStories.Example} />
+
+## Hook usage
+
+```jsx
+const [ref, isHovered] = useHover<HTMLButtonElement>();
+return (
+  <>
+    <Button ref={ref}>Hover Me!</Button>
+    <div>{isHovered ? "😀" : "😭"}</div>
+  </>
+);
+```

@@ -1,16 +1,16 @@
 /**
  * Identify the type of "user"
  */
-export type RightSubject = "user" | "group" | "creator";
+export type RightSubject = 'user' | 'group' | 'creator';
 
 /**
  * Identify the role of the right
  */
 export type RightRole =
-  | "read"
-  | "contrib"
-  | "manager"
-  | "creator"
+  | 'read'
+  | 'contrib'
+  | 'manager'
+  | 'creator'
   | (string & {});
 
 /**

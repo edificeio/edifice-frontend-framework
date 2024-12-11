@@ -1,13 +1,13 @@
-import { IOdeServices } from "../services/OdeServices";
+import { IOdeServices } from '../services/OdeServices';
 import {
   IReactionsService,
   ReactionDetailsData,
   ReactionSummaryData,
   ReactionType,
-} from "./interface";
+} from './interface';
 
 type ReactionAvailableData = {
-  "reaction-types": ReactionType[];
+  'reaction-types': ReactionType[];
 };
 
 export type ReactionSummariesData = {
@@ -29,12 +29,12 @@ export class ReactionsService implements IReactionsService {
 
   async loadAvailableReactions() {
     try {
-      const { "reaction-types": reactions } = await this.context
+      const { 'reaction-types': reactions } = await this.context
         .conf()
-        .getPublicConf<ReactionAvailableData>("audience");
+        .getPublicConf<ReactionAvailableData>('audience');
       return Array.isArray(reactions) ? reactions : undefined;
     } catch (e) {
-      console.error("Audience configuration not found");
+      console.error('Audience configuration not found');
       return undefined;
     }
   }
@@ -43,7 +43,7 @@ export class ReactionsService implements IReactionsService {
     const summaries = await this.http.get<ReactionSummariesData>(
       `/audience/reactions/${this.module}/${
         this.resourceType
-      }?resourceIds=${resourceIds.join(",")}`,
+      }?resourceIds=${resourceIds.join(',')}`,
     );
     return this.http.isResponseError() ? {} : summaries.reactionsByResource;
   }

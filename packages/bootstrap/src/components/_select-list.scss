@@ -1,4 +1,4 @@
-@use "../abstracts/colors" as *;
+@use '../abstracts/colors' as *;
 
 .select-list {
   display: flex;
@@ -40,7 +40,7 @@
       display: block;
       width: 100%;
       height: 1px;
-      content: "";
+      content: '';
       background-color: $gray-300;
     }
 

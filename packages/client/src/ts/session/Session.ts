@@ -1,5 +1,5 @@
-import { transport } from "../transport/Framework";
-import { notify } from "../notify/Framework";
+import { transport } from '../transport/Framework';
+import { notify } from '../notify/Framework';
 import {
   IEmailValidationInfos,
   IEmailValidationState,
@@ -12,25 +12,25 @@ import {
   IUserDescription,
   IUserInfo,
   UserProfile,
-} from "./interfaces";
+} from './interfaces';
 
-import { configure } from "../configure/Framework";
-import { ConfigurationFrameworkFactory } from "../configure/interfaces";
-import { App, ERROR_CODE } from "../globals";
+import { configure } from '../configure/Framework';
+import { ConfigurationFrameworkFactory } from '../configure/interfaces';
+import { App, ERROR_CODE } from '../globals';
 
 const http = transport.http;
 
 /* TODO IResourceRight model */
 type IResourceRight = any;
 type PersonApiResult = {
-  status: "ok" | string;
+  status: 'ok' | string;
   result: Array<IUserDescription>;
 };
 
 export class Session implements ISession {
   private _me: IUserInfo = null as unknown as IUserInfo;
 
-  private _currentLanguage: string = "";
+  private _currentLanguage: string = '';
   private _notLoggedIn: boolean = true;
   private _description?: IUserDescription;
   private _profile?: UserProfile;
@@ -50,10 +50,10 @@ export class Session implements ISession {
 
   public get avatarUrl(): string {
     let avatar = this.description.photo;
-    if (!avatar || avatar === "no-avatar.jpg" || avatar === "no-avatar.svg") {
+    if (!avatar || avatar === 'no-avatar.jpg' || avatar === 'no-avatar.svg') {
       const basePath =
         ConfigurationFrameworkFactory.instance().Platform.theme.basePath;
-      avatar = basePath + "/img/illustrations/no-avatar.svg";
+      avatar = basePath + '/img/illustrations/no-avatar.svg';
     }
     return avatar;
   }
@@ -68,9 +68,9 @@ export class Session implements ISession {
 
   public async initialize(): Promise<void> {
     return http
-      .get<IUserInfo>("/auth/oauth2/userinfo")
+      .get<IUserInfo>('/auth/oauth2/userinfo')
       .then((u) => {
-        if (http.isResponseError() || typeof u === "string") {
+        if (http.isResponseError() || typeof u === 'string') {
           // Backend tries to redirect the user => not logged in !
           throw ERROR_CODE.NOT_LOGGED_IN;
         }
@@ -141,7 +141,7 @@ export class Session implements ISession {
   }
 
   hasRight(resource: any, right: any): boolean {
-    if (right === "owner") {
+    if (right === 'owner') {
       return resource.owner && resource.owner.userId === this._me.userId;
     }
     const rightName = right.right || right;
@@ -195,7 +195,7 @@ export class Session implements ISession {
 
   private loadDefaultLanguage(): Promise<string> {
     return http
-      .get<{ locale: string }>("/locale")
+      .get<{ locale: string }>('/locale')
       .then((response) => {
         return response.locale;
       })
@@ -210,13 +210,13 @@ export class Session implements ISession {
   private loadDescription(): Promise<IUserDescription> {
     return Promise.all([
       // FIXME The full user's description should be obtainable from a single endpoint in the backend.
-      http.get<PersonApiResult>("/userbook/api/person", {
-        requestName: "refreshAvatar",
+      http.get<PersonApiResult>('/userbook/api/person', {
+        requestName: 'refreshAvatar',
       }),
-      http.get<IUserDescription>("/directory/userbook/" + this._me.userId),
+      http.get<IUserDescription>('/directory/userbook/' + this._me.userId),
     ]).then((results) => {
       if (
-        results[0].status === "ok" &&
+        results[0].status === 'ok' &&
         results[0].result &&
         results[0].result.length > 0
       ) {
@@ -227,7 +227,7 @@ export class Session implements ISession {
       // "type" field from /userbook/api/person becomes "profiles"
       if (this._description.type && !this._description.profiles) {
         this._description.profiles = this._description.type as unknown as Array<
-          "Student" | "Teacher" | "Relative" | "Personnel" | "Guest"
+          'Student' | 'Teacher' | 'Relative' | 'Personnel' | 'Guest'
         >;
       }
       Object.assign(this._description, results[1]);
@@ -242,7 +242,7 @@ export class Session implements ISession {
 
   public getUserProfile(): Promise<UserProfile> {
     return http
-      .get<any>("/userbook/api/person")
+      .get<any>('/userbook/api/person')
       .then((data) => data.result)
       .then((user) => {
         return (this._profile = user[0].type);
@@ -251,10 +251,10 @@ export class Session implements ISession {
 
   private loadUserLanguage(): Promise<string> {
     return http
-      .get<any>("/userbook/preference/language")
+      .get<any>('/userbook/preference/language')
       .then((responseText) => {
         try {
-          return JSON.parse(responseText.preference)["default-domain"];
+          return JSON.parse(responseText.preference)['default-domain'];
         } catch (e) {
           return this.loadDefaultLanguage();
         }
@@ -267,15 +267,15 @@ export class Session implements ISession {
   ////////////////////////////////////////////////////////// Email management
 
   public getEmailValidationInfos(): Promise<IEmailValidationInfos> {
-    return http.get<IEmailValidationInfos>("/directory/user/mailstate");
+    return http.get<IEmailValidationInfos>('/directory/user/mailstate');
   }
 
   public checkEmail(email: String): Promise<void> {
-    return http.put<void>("/directory/user/mailstate", { email: email });
+    return http.put<void>('/directory/user/mailstate', { email: email });
   }
 
   public tryEmailValidation(code: String): Promise<IEmailValidationState> {
-    return http.post<IEmailValidationState>("/directory/user/mailstate", {
+    return http.post<IEmailValidationState>('/directory/user/mailstate', {
       key: code,
     });
   }
@@ -283,15 +283,15 @@ export class Session implements ISession {
   ////////////////////////////////////////////////////////// Mobile management
 
   public getMobileValidationInfos(): Promise<IMobileValidationInfos> {
-    return http.get<IMobileValidationInfos>("/directory/user/mobilestate");
+    return http.get<IMobileValidationInfos>('/directory/user/mobilestate');
   }
 
   public checkMobile(mobile: String): Promise<void> {
-    return http.put<void>("/directory/user/mobilestate", { mobile: mobile });
+    return http.put<void>('/directory/user/mobilestate', { mobile: mobile });
   }
 
   public tryMobileValidation(code: String): Promise<IMobileValidationState> {
-    return http.post<IMobileValidationState>("/directory/user/mobilestate", {
+    return http.post<IMobileValidationState>('/directory/user/mobilestate', {
       key: code,
     });
   }
@@ -299,10 +299,10 @@ export class Session implements ISession {
   ////////////////////////////////////////////////////////// MFA management
 
   public getMfaInfos(): Promise<IMfaInfos> {
-    return http.get<IMfaInfos>("/auth/user/mfa/code");
+    return http.get<IMfaInfos>('/auth/user/mfa/code');
   }
 
   public tryMfaCode(code: String): Promise<IMfaCodeState> {
-    return http.post<IMfaCodeState>("/auth/user/mfa/code", { key: code });
+    return http.post<IMfaCodeState>('/auth/user/mfa/code', { key: code });
   }
 }

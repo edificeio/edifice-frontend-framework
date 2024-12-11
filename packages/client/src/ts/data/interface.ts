@@ -1,5 +1,5 @@
 /** Joker value to permit sending all events. */
-export const SEND_ALL = "*";
+export const SEND_ALL = '*';
 
 /** Data tracking service. */
 export interface IDataService {
@@ -43,7 +43,7 @@ export interface IDataService {
    * Send a SPEECH_AND_TEXT event to the backend.
    * @param direction speech-to-text (voice recognition) or text-to-speech (voice generation)
    */
-  trackSpeechAndText(direction: "STT" | "TTS"): void;
+  trackSpeechAndText(direction: 'STT' | 'TTS'): void;
 
   /**
    * Send a ACCESS_LIBRARY_FROM_EXPLORER event to the backend.

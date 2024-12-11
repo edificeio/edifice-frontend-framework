@@ -1,10 +1,10 @@
 /* FONT PATHS */
-$fonts-path: "./fonts" !default;
-$dyslexic-font-path: "#{$fonts-path}/dyslexic" !default;
+$fonts-path: './fonts' !default;
+$dyslexic-font-path: '#{$fonts-path}/dyslexic' !default;
 
 /* Bootstrap Overrides */
-$font-family-sans-serif: "Roboto", sans-serif;
-$font-family-primary: "Comfortaa", cursive;
+$font-family-sans-serif: 'Roboto', sans-serif;
+$font-family-primary: 'Comfortaa', cursive;
 $font-family-secondary: $font-family-sans-serif;
 
 $font-size-root: 62.5% !default;

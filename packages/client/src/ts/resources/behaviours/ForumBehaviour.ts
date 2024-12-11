@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type ForumData = {
   _id: string;
@@ -18,17 +18,17 @@ type ForumData = {
 };
 
 export class ForumBehaviour extends AbstractBehaviourService {
-  APP = "forum";
-  RESOURCE = "forum";
+  APP = 'forum';
+  RESOURCE = 'forum';
 
   async loadResources() {
-    const categories = await this.httpGet<ForumData[]>("/forum/categories");
+    const categories = await this.httpGet<ForumData[]>('/forum/categories');
     return categories.map((data) =>
       this.dataToResource({
         _id: data._id,
         title: data.name,
-        icon: data.icon || "/img/illustrations/forum.svg",
-        path: "/forum#/view/" + data._id,
+        icon: data.icon || '/img/illustrations/forum.svg',
+        path: '/forum#/view/' + data._id,
         ownerName: data.owner.displayName,
         owner: data.owner.userId,
         shared: data.shared && data.shared.length >= 0 ? true : false,

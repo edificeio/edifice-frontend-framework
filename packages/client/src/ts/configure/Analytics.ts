@@ -4,15 +4,15 @@ import {
   IMatomoTrackingParams,
   ITrackingParams,
   TrackingType,
-} from "./interfaces";
-import { transport } from "../transport/Framework";
-import { ERROR_CODE, IPromisified } from "..";
-import { session } from "../session/Framework";
-import { notify } from "../notify/Framework";
-import { configure } from "./Framework";
+} from './interfaces';
+import { transport } from '../transport/Framework';
+import { ERROR_CODE, IPromisified } from '..';
+import { session } from '../session/Framework';
+import { notify } from '../notify/Framework';
+import { configure } from './Framework';
 
 export type ParamsByTrackingSystem = {
-  type: "none" | "internal" | "matomo" | "multiple";
+  type: 'none' | 'internal' | 'matomo' | 'multiple';
   internal?: ITrackingParams;
   matomo?: IMatomoTrackingParams;
   xiti?: IXitiTrackingParams;
@@ -42,7 +42,7 @@ export type XitiConf = {
 //-------------------------------------
 export class Analytics {
   //-------------------------------------
-  private _status: AnalyticStatus = "void";
+  private _status: AnalyticStatus = 'void';
   private _params?: IPromisified<ParamsByTrackingSystem>;
 
   get status(): AnalyticStatus {
@@ -51,7 +51,7 @@ export class Analytics {
 
   xiti(): Promise<IXitiTrackingParams | undefined> {
     // XiTi does not implement ITrackingParams but behaves like it does.
-    return this.parametersWithCheck("xiti" as TrackingType, false) as Promise<
+    return this.parametersWithCheck('xiti' as TrackingType, false) as Promise<
       IXitiTrackingParams | undefined
     >;
   }
@@ -67,7 +67,7 @@ export class Analytics {
     checkType: boolean,
   ): Promise<T | undefined> {
     return this.initialize().promise.then((params) => {
-      return !checkType || params.type === type || params.type === "multiple"
+      return !checkType || params.type === type || params.type === 'multiple'
         ? (params[type] as T)
         : undefined;
     });
@@ -82,11 +82,11 @@ export class Analytics {
   private initialize(): IPromisified<ParamsByTrackingSystem> {
     if (!this._params) {
       this._params = notify.promisify<ParamsByTrackingSystem>();
-      this._status = "pending";
+      this._status = 'pending';
       Promise.all([
-        transport.http.get<ParamsByTrackingSystem>("/analyticsConf"),
+        transport.http.get<ParamsByTrackingSystem>('/analyticsConf'),
         //FIXME change servers config to only keep the "all-in-one" query to /analyticsConf.
-        transport.http.get<XitiConf>("/xiti/config"),
+        transport.http.get<XitiConf>('/xiti/config'),
       ])
         .then(async (tuple) => {
           // Sanitize results
@@ -102,10 +102,10 @@ export class Analytics {
           }
 
           this._params?.resolve(tuple[0]);
-          this._status = "ready";
+          this._status = 'ready';
         })
         .catch((e) => {
-          this._status = "failed";
+          this._status = 'failed';
           this._params?.reject();
           throw e;
         });
@@ -143,7 +143,7 @@ export class Analytics {
 
     // ID_PERSO
     function pseudonymization(stringId: string): string {
-      let buffer = "";
+      let buffer = '';
       for (let i = 0; i < stringId.length; i++) {
         buffer += stringId.charCodeAt(i);
       }
@@ -152,17 +152,17 @@ export class Analytics {
 
     // PROFIL
     const profileMap = {
-      Student: "ELEVE",
-      Teacher: "ENSEIGNANT",
-      Relative: "PARENT",
-      Personnel: "ADMIN_VIE_SCOL_TECH",
-      Guest: "AUTRE",
+      Student: 'ELEVE',
+      Teacher: 'ENSEIGNANT',
+      Relative: 'PARENT',
+      Personnel: 'ADMIN_VIE_SCOL_TECH',
+      Guest: 'AUTRE',
     };
 
     return {
       LIBELLE_SERVICE: appXitiConf.LIBELLE_SERVICE, // Which property of LIBELLE_SERVICE to use depends on the frontend.
-      TYPE: appXitiConf.OUTIL ? "TIERS" : "NATIF",
-      OUTIL: appXitiConf.OUTIL ? appXitiConf.OUTIL : "",
+      TYPE: appXitiConf.OUTIL ? 'TIERS' : 'NATIF',
+      OUTIL: appXitiConf.OUTIL ? appXitiConf.OUTIL : '',
       STRUCT_ID: structure.collectiviteId,
       STRUCT_UAI: structure.UAI,
       PROJET: structure.projetId ? structure.projetId : xitiConf.ID_PROJET,
@@ -173,8 +173,8 @@ export class Analytics {
       ID_PERSO: pseudonymization(me.userId),
       PROFILE:
         desc.profiles && desc.profiles.length > 0
-          ? profileMap[desc.profiles[0]] ?? ""
-          : "",
+          ? (profileMap[desc.profiles[0]] ?? '')
+          : '',
     };
   }
 }

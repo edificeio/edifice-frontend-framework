@@ -1,7 +1,7 @@
-import { IOdeServices } from "../services/OdeServices";
-import { StringUtils } from "../utils/StringUtils";
+import { IOdeServices } from '../services/OdeServices';
+import { StringUtils } from '../utilities/StringUtils';
 
-import { Bookmark, Group, User } from "../directory/interface";
+import { Bookmark, Group, User } from '../directory/interface';
 import {
   GetResourceRightPayload,
   PutSharePayload,
@@ -13,7 +13,7 @@ import {
   ShareRightWithVisibles,
   ShareSubject,
   SharingRight,
-} from "./interface";
+} from './interface';
 
 export class ShareService {
   //
@@ -43,15 +43,15 @@ export class ShareService {
     const resUsers = response.users.visibles
       .filter(({ username, firstName, lastName, login }) => {
         const cleanLastName = StringUtils.removeAccents(
-          lastName || "",
+          lastName || '',
         ).toLowerCase();
         const cleanFirstName = StringUtils.removeAccents(
-          firstName || "",
+          firstName || '',
         ).toLowerCase();
         const cleanDisplayName = StringUtils.removeAccents(
-          username || "",
+          username || '',
         ).toLowerCase();
-        const cleanLogin = StringUtils.removeAccents(login || "").toLowerCase();
+        const cleanLogin = StringUtils.removeAccents(login || '').toLowerCase();
         return (
           cleanDisplayName.includes(cleanSearchText) ||
           cleanFirstName.includes(cleanSearchText) ||
@@ -61,26 +61,26 @@ export class ShareService {
       })
       .map((user) => {
         return {
-          avatarUrl: this.directory.getAvatarUrl(user.id, "user"),
-          directoryUrl: this.directory.getDirectoryUrl(user.id, "user"),
+          avatarUrl: this.directory.getAvatarUrl(user.id, 'user'),
+          directoryUrl: this.directory.getDirectoryUrl(user.id, 'user'),
           displayName: user.username,
           id: user.id,
           profile: user.profile,
-          type: "user",
+          type: 'user',
         } as ShareSubject;
       });
     const resGroups = response.groups.visibles
       .filter(({ name }) => {
-        const cleanName = StringUtils.removeAccents(name || "").toLowerCase();
+        const cleanName = StringUtils.removeAccents(name || '').toLowerCase();
         return cleanName.includes(cleanSearchText);
       })
       .map((group) => {
         return {
-          avatarUrl: this.directory.getAvatarUrl(group.id, "group"),
-          directoryUrl: this.directory.getDirectoryUrl(group.id, "group"),
+          avatarUrl: this.directory.getAvatarUrl(group.id, 'group'),
+          directoryUrl: this.directory.getDirectoryUrl(group.id, 'group'),
           displayName: group.name,
           id: group.id,
-          type: "group",
+          type: 'group',
           structureName: group.structureName,
         } as ShareSubject;
       });
@@ -88,18 +88,18 @@ export class ShareService {
     const resBookmarks = bookmarks
       .filter(({ displayName }) => {
         const cleanName = StringUtils.removeAccents(
-          displayName || "",
+          displayName || '',
         ).toLowerCase();
         return cleanName.includes(cleanSearchText);
       })
       .map((bookmark) => {
         return {
-          avatarUrl: "",
-          directoryUrl: "",
-          profile: "",
+          avatarUrl: '',
+          directoryUrl: '',
+          profile: '',
           displayName: bookmark.displayName,
           id: bookmark.id,
-          type: "sharebookmark",
+          type: 'sharebookmark',
         } as ShareSubject;
       });
 
@@ -112,8 +112,8 @@ export class ShareService {
     );
     //fix keys app.role => role
     for (const key of Object.keys(sharingMap)) {
-      if (key.includes(".")) {
-        const newKey = key.split(".")[1];
+      if (key.includes('.')) {
+        const newKey = key.split('.')[1];
         const value = (sharingMap as any)[key];
         delete (sharingMap as any)[key];
         (sharingMap as any)[newKey] = value;
@@ -123,13 +123,13 @@ export class ShareService {
   }
 
   getActionsAvailableFor(
-    { id, type }: { id: string; type: "user" | "group" },
+    { id, type }: { id: string; type: 'user' | 'group' },
     payload: GetResourceRightPayload,
     mapping: ShareMapping,
   ): ShareRightActionDisplayName[] {
     // get rights affected to this user or group
     const usafeRights =
-      type === "user" ? payload.users.checked[id] : payload.groups.checked[id];
+      type === 'user' ? payload.users.checked[id] : payload.groups.checked[id];
     const rights = usafeRights || [];
     // get normalized actions names
     const actions = Object.keys(mapping) as ShareRightActionDisplayName[];
@@ -161,7 +161,7 @@ export class ShareService {
     const sharingMap = await this.getShareMapping(app);
     // get normalized rights infos
     const sharingRights = await this.cache.httpGetJson<SharingRight>(
-      "/infra/public/json/sharing-rights.json",
+      '/infra/public/json/sharing-rights.json',
     );
     // generate rows for users
     const userRights = Object.keys(rightsPayload.users.checked)
@@ -179,18 +179,18 @@ export class ShareService {
       .map((user) => {
         // get normalized actions for user
         const actions = this.getActionsAvailableFor(
-          { id: user!.id, type: "user" },
+          { id: user!.id, type: 'user' },
           rightsPayload,
           sharingMap,
         );
         // generate ShareRight row
         const right: ShareRight = {
           id: user!.id,
-          type: "user",
+          type: 'user',
           displayName: user!.username,
           profile: user!.profile,
-          avatarUrl: this.directory.getAvatarUrl(user!.id, "user"),
-          directoryUrl: this.directory.getDirectoryUrl(user!.id, "user"),
+          avatarUrl: this.directory.getAvatarUrl(user!.id, 'user'),
+          directoryUrl: this.directory.getDirectoryUrl(user!.id, 'user'),
           actions: actions.map((action) => {
             const act = sharingRights[action];
             return {
@@ -204,7 +204,7 @@ export class ShareService {
       })
       .sort((a, b) => {
         // sort by user name ASC
-        return (a.displayName || "").localeCompare(b.displayName);
+        return (a.displayName || '').localeCompare(b.displayName);
       });
     // generate rows for groups
     const groupRights = Object.keys(rightsPayload.groups.checked)
@@ -222,17 +222,17 @@ export class ShareService {
       .map((group) => {
         // get normalized actions for group
         const actions = this.getActionsAvailableFor(
-          { id: group!.id, type: "group" },
+          { id: group!.id, type: 'group' },
           rightsPayload,
           sharingMap,
         );
         const right: ShareRight = {
           id: group!.id,
-          type: "group",
+          type: 'group',
           displayName: group!.name,
           profile: undefined,
-          avatarUrl: this.directory.getAvatarUrl(group!.id, "group"),
-          directoryUrl: this.directory.getDirectoryUrl(group!.id, "group"),
+          avatarUrl: this.directory.getAvatarUrl(group!.id, 'group'),
+          directoryUrl: this.directory.getDirectoryUrl(group!.id, 'group'),
           actions: actions.map((action) => {
             const act = sharingRights[action];
             return {
@@ -246,7 +246,7 @@ export class ShareService {
       })
       .sort((a, b) => {
         // sort by group name ASC
-        return (a.displayName || "").localeCompare(b.displayName);
+        return (a.displayName || '').localeCompare(b.displayName);
       });
     const rights = [...userRights, ...groupRights];
     // prepare list of visible groups
@@ -308,9 +308,9 @@ export class ShareService {
       const rights = [...new Set(duplicates)];
       // for each user/group/bookmark add a record
       if (rights.length > 0) {
-        if (right.type === "user") {
+        if (right.type === 'user') {
           payload.users[right.id] = rights;
-        } else if (right.type === "group") {
+        } else if (right.type === 'group') {
           payload.groups[right.id] = rights;
         } else {
           payload.bookmarks[right.id] = rights;
@@ -327,7 +327,7 @@ export class ShareService {
   async getActionsForApp(app: string): Promise<ShareRightAction[]> {
     // get normalized rights infos
     const sharingRights = await this.cache.httpGetJson<SharingRight>(
-      "/infra/public/json/sharing-rights.json",
+      '/infra/public/json/sharing-rights.json',
     );
     // get mapping for rights
     const sharingMap = await this.getShareMapping(app);

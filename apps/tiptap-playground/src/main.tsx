@@ -1,16 +1,16 @@
 import React, { StrictMode } from 'react';
 
-import { OdeClientProvider, ThemeProvider } from '@edifice-ui/react';
+import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
+import { ERROR_CODE } from '@edifice.io/client';
 import {
   QueryCache,
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { ERROR_CODE } from 'edifice-ts-client';
 import { createRoot } from 'react-dom/client';
 
-import 'edifice-bootstrap/dist/index.css';
+import '@edifice.io/bootstrap/dist/index.css';
 import Playground from './components/Playground';
 import './i18n';
 
@@ -43,15 +43,15 @@ const queryClient = new QueryClient({
 root.render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <OdeClientProvider
+      <EdificeClientProvider
         params={{
           app: 'blog',
         }}
       >
-        <ThemeProvider>
+        <EdificeThemeProvider>
           <Playground />
-        </ThemeProvider>
-      </OdeClientProvider>
+        </EdificeThemeProvider>
+      </EdificeClientProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>,

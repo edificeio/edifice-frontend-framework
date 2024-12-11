@@ -1,6 +1,6 @@
-@use "../abstracts/variables" as *;
-@use "../abstracts/colors";
-@use "../abstracts/transition";
+@use '../abstracts/variables' as *;
+@use '../abstracts/colors';
+@use '../abstracts/transition';
 
 .popover {
   --#{$prefix}popover-border-color: var(--#{$prefix}gray-200);
@@ -25,7 +25,7 @@
     font-family: none;
     font-size: 2rem;
     color: var(--#{$prefix}white);
-    content: "▲";
+    content: '▲';
     transform: translateX(-50%);
   }
 

@@ -3,10 +3,10 @@ import axios, {
   AxiosInstance,
   // AxiosRequestConfig,
   AxiosResponse,
-} from "axios";
-import { ConfigurationFrameworkFactory } from "..";
-import { ERROR_CODE } from "../globals";
-import { IHttp, IHttpParams, IHttpResponse } from "./interfaces";
+} from 'axios';
+import { ConfigurationFrameworkFactory } from '..';
+import { ERROR_CODE } from '../globals';
+import { IHttp, IHttpParams, IHttpResponse } from './interfaces';
 
 const loadedScripts: { [url: string]: boolean } = {};
 
@@ -24,15 +24,15 @@ export class Http implements IHttp {
     if (
       cdnUrl &&
       XMLHttpRequest &&
-      !(XMLHttpRequest.prototype as any)["cdnUrl"]
+      !(XMLHttpRequest.prototype as any)['cdnUrl']
     ) {
-      (XMLHttpRequest.prototype as any)["cdnUrl"] = cdnUrl;
+      (XMLHttpRequest.prototype as any)['cdnUrl'] = cdnUrl;
       (XMLHttpRequest.prototype as any).baseOpen =
         XMLHttpRequest.prototype.open;
       XMLHttpRequest.prototype.open = function () {
         const url = arguments[1] as string;
         //PUBLIC infra
-        if (url.startsWith("/infra/public")) {
+        if (url.startsWith('/infra/public')) {
           arguments[1] = cdnUrl + url;
         }
         //PUBLIC files (/.*/public)
@@ -41,15 +41,15 @@ export class Http implements IHttp {
           arguments[1] = cdnUrl + url;
         }
         //ASSETS files
-        if (url.startsWith("/assets")) {
+        if (url.startsWith('/assets')) {
           arguments[1] = cdnUrl + url;
         }
         //SKIP PUBLIC CONF
-        if (url == "/conf/public") {
+        if (url == '/conf/public') {
           arguments[1] = url;
         }
         //SKIP HTTP
-        if (url.startsWith("http")) {
+        if (url.startsWith('http')) {
           arguments[1] = url;
         }
         return (this as any).baseOpen.apply(this, arguments);
@@ -89,12 +89,12 @@ export class Http implements IHttp {
     const CDN_DOMAIN: string | undefined =
       ConfigurationFrameworkFactory.instance().Platform.cdnDomain;
     // If CDN domain is defined, and requested url is not /public/conf (SKIP PUBLIC CONF)
-    if (CDN_DOMAIN?.length > 0 && url !== "/conf/public") {
-      const originalURL = "" + url;
+    if (CDN_DOMAIN?.length > 0 && url !== '/conf/public') {
+      const originalURL = '' + url;
       //PUBLIC infra or ASSETS files
       if (
-        originalURL.startsWith("/infra/public") ||
-        originalURL.startsWith("/assets")
+        originalURL.startsWith('/infra/public') ||
+        originalURL.startsWith('/assets')
       ) {
         url = CDN_DOMAIN + originalURL;
       } else {
@@ -180,8 +180,8 @@ export class Http implements IHttp {
   }
   postFile<R = any>(url: string, data: any, params?: IHttpParams): Promise<R> {
     const p = this.toAxiosConfig(params);
-    if (p.headers && p.headers["Content-Type"]) {
-      delete p.headers["Content-Type"];
+    if (p.headers && p.headers['Content-Type']) {
+      delete p.headers['Content-Type'];
     }
     return this.axios
       .post<R>(url, data, p)
@@ -190,7 +190,7 @@ export class Http implements IHttp {
   }
   postJson<R = any>(url: string, json: any, params?: IHttpParams): Promise<R> {
     const p = this.toAxiosConfig();
-    if (p.headers) p.headers["Content-Type"] = "application/json";
+    if (p.headers) p.headers['Content-Type'] = 'application/json';
     return this.axios
       .post<R>(url, json, this.toAxiosConfig(params))
       .then((r) => this.mapAxiosResponse(r, params))
@@ -210,7 +210,7 @@ export class Http implements IHttp {
 */
   putJson<R = any>(url: string, json: any, params?: IHttpParams): Promise<R> {
     const p = this.toAxiosConfig(params);
-    if (p.headers) p.headers["Content-Type"] = "application/json";
+    if (p.headers) p.headers['Content-Type'] = 'application/json';
     return this.axios
       .put<R>(url, json, p)
       .then((r) => this.mapAxiosResponse(r, params))
@@ -234,16 +234,16 @@ export class Http implements IHttp {
     params?: IHttpParams,
     variableName?: string,
   ): Promise<R> {
-    const resultName = variableName ?? "exports";
+    const resultName = variableName ?? 'exports';
     const p = this.toAxiosConfig(params);
-    if (p.headers) p.headers["Accept"] = "application/javascript";
+    if (p.headers) p.headers['Accept'] = 'application/javascript';
     return this.axios
       .get<string>(this.toCdnUrl(url), p)
       .then((r) => this.mapAxiosResponse(r, params))
       .then((r) => {
         try {
           const securedScript = `"use strict";var ${
-            resultName.split(".")[0]
+            resultName.split('.')[0]
           }={};${r};return ${resultName};`;
           const result = Function(securedScript)();
           return result;

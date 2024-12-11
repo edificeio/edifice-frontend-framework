@@ -1,0 +1,42 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useClickOutsideStories from './useClickOutside.stories';
+
+<Meta of={useClickOutsideStories} />
+
+# useClickOutside
+
+## Usage
+
+- Handle click event outside target component.
+- Dropdown, modals, and other components with a "show/open" state should be dismissable by clicking outside.
+
+## Example
+
+<Canvas of={useClickOutsideStories.Example} />
+
+## Hook usage
+
+```jsx
+const [isOpen, setOpen] = useState < boolean > true;
+
+const ref = useClickOutside(() => setOpen(false));
+
+if (isOpen) {
+  return (
+    <Button ref={ref} type="button" color="primary" variant="filled">
+      Click outside of me
+    </Button>
+  );
+}
+
+return (
+  <Button
+    type="button"
+    color="secondary"
+    variant="filled"
+    onClick={() => setOpen(true)}
+  >
+    Restart
+  </Button>
+);
+```

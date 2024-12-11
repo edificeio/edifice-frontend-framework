@@ -1,7 +1,7 @@
-import { IGetConf, ITheme, IThemeOverrides } from "../configure/interfaces";
-import { IUserInfo } from "../session/interfaces";
-import { notify } from "./Framework";
-import { IHttpParams, IHttpResponse } from "../transport/interfaces";
+import { IGetConf, ITheme, IThemeOverrides } from '../configure/interfaces';
+import { IUserInfo } from '../session/interfaces';
+import { notify } from './Framework';
+import { IHttpParams, IHttpResponse } from '../transport/interfaces';
 
 //-------------------------------------
 export abstract class NotifyFrameworkFactory {
@@ -69,10 +69,10 @@ export interface IPromisified<T> {
 
 //-------------------------------------
 export const LAYER_NAME = {
-  WIDGETS: "widgets",
-  EXPLORER: "explorer",
-  TRANSPORT: "transport",
-  WEB_DATA: "webDataPipeline",
+  WIDGETS: 'widgets',
+  EXPLORER: 'explorer',
+  TRANSPORT: 'transport',
+  WEB_DATA: 'webDataPipeline',
 } as const;
 export type LayerName = (typeof LAYER_NAME)[keyof typeof LAYER_NAME];
 export type TransportLayer = typeof LAYER_NAME.TRANSPORT;
@@ -80,10 +80,10 @@ export type WebDataLayer = typeof LAYER_NAME.WEB_DATA;
 
 //-------------------------------------
 export const EVENT_NAME = {
-  USERPREF_CHANGED: "userprefChanged",
-  SEARCH_RESULTED: "searchResulted",
-  ERROR_OCCURED: "error",
-  DATA_TRACKED: "track",
+  USERPREF_CHANGED: 'userprefChanged',
+  SEARCH_RESULTED: 'searchResulted',
+  ERROR_OCCURED: 'error',
+  DATA_TRACKED: 'track',
 } as const;
 export type EventName = (typeof EVENT_NAME)[keyof typeof EVENT_NAME];
 
@@ -137,9 +137,9 @@ export declare interface ISubject {
 export interface IDataTrackEvent extends ISubjectMessage {
   name: typeof EVENT_NAME.DATA_TRACKED;
   data: {
-    "event-type": string;
-    "module"?: string;
-    "userId"?: string;
+    'event-type': string;
+    'module'?: string;
+    'userId'?: string;
     [key: string]: any;
   };
 }

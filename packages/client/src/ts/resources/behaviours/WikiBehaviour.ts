@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type WikiData = {
   _id: string;
@@ -25,29 +25,29 @@ type WikiData = {
 };
 
 export class WikiBehaviour extends AbstractBehaviourService {
-  APP = "wiki";
-  RESOURCE = "wiki";
+  APP = 'wiki';
+  RESOURCE = 'wiki';
 
   async loadResources() {
-    const wikis = await this.httpGet<WikiData[]>("/wiki/listallpages");
+    const wikis = await this.httpGet<WikiData[]>('/wiki/listallpages');
     return wikis
       .map((wiki) => {
         return wiki.pages.map((page) => {
           let wikiIcon;
-          if (typeof wiki.thumbnail === "undefined" || wiki.thumbnail === "") {
-            wikiIcon = "/img/icons/glyphicons_036_file.png";
+          if (typeof wiki.thumbnail === 'undefined' || wiki.thumbnail === '') {
+            wikiIcon = '/img/icons/glyphicons_036_file.png';
           } else {
-            wikiIcon = wiki.thumbnail + "?thumbnail=48x48";
+            wikiIcon = wiki.thumbnail + '?thumbnail=48x48';
           }
 
           return this.dataToResource({
-            title: page.title + " [" + wiki.title + "]",
+            title: page.title + ' [' + wiki.title + ']',
             ownerName: wiki.owner.displayName,
             owner: wiki.owner.userId,
             icon: wikiIcon,
-            path: "/wiki#/view/" + wiki._id + "/" + page._id,
+            path: '/wiki#/view/' + wiki._id + '/' + page._id,
             _id: `${wiki._id}#${page._id}`,
-            shared: typeof wiki.shared !== "undefined",
+            shared: typeof wiki.shared !== 'undefined',
             modified: page.modified,
           });
         });

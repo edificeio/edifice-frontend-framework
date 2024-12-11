@@ -1,0 +1,35 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useKeyPressStories from './useKeyPress.stories';
+
+<Meta of={useKeyPressStories} />
+
+# useKeyPress
+
+## Usage
+
+- Give the ability to use a Key or multiples Keys to perform an action.
+
+## Example
+
+<Canvas of={useKeyPressStories.Example} />
+
+## Hook usage
+
+```jsx
+const [isVisible, setIsVisible] = useState < boolean > true;
+useKeyPress(() => {
+  setIsVisible(false);
+}, ['Escape']);
+
+return (
+  <div>
+    {isVisible ? (
+      <Button type="button" color="primary" variant="filled">
+        Press the Escape key to hide me
+      </Button>
+    ) : (
+      <p className="body">You hide the button with the Escape Key</p>
+    )}
+  </div>
+);
+```
