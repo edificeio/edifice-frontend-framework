@@ -1,4 +1,4 @@
-import { transport } from "./Framework";
+import { transport } from './Framework';
 
 //-------------------------------------
 export abstract class TransportFrameworkFactory {
@@ -91,12 +91,12 @@ export interface IHttp {
 }
 
 export type IHttpParamsResponseType =
-  | "arraybuffer"
-  | "blob"
-  | "document"
-  | "json"
-  | "text"
-  | "stream";
+  | 'arraybuffer'
+  | 'blob'
+  | 'document'
+  | 'json'
+  | 'text'
+  | 'stream';
 
 //-------------------------------------
 export type IHttpParams = {

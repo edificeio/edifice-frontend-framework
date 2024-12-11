@@ -1,5 +1,5 @@
-import { ResourceType, App } from "..";
-import { IOdeServices } from "../services/OdeServices";
+import { ResourceType, App } from '..';
+import { IOdeServices } from '../services/OdeServices';
 
 export class ServiceRegistry<T> extends Map<
   string,
@@ -30,7 +30,7 @@ export class ServiceRegistry<T> extends Map<
     { application }: { application: App | string },
     context: IOdeServices,
   ): T {
-    return this.lookupService({ application, resourceType: "main" }, context);
+    return this.lookupService({ application, resourceType: 'main' }, context);
   }
 
   /** Check if a service is registered. */
@@ -39,7 +39,7 @@ export class ServiceRegistry<T> extends Map<
     resourceType,
   }: {
     application: App | string;
-    resourceType: ResourceType | "main";
+    resourceType: ResourceType | 'main';
   }): boolean {
     const found = this.get(`${application}:${resourceType}`);
     return found !== undefined;
@@ -50,12 +50,12 @@ export class ServiceRegistry<T> extends Map<
     {
       application,
       resourceType,
-    }: { application: App | string; resourceType: ResourceType | "main" },
+    }: { application: App | string; resourceType: ResourceType | 'main' },
     context: IOdeServices,
   ): T {
     const found = this.get(`${application}:${resourceType}`);
     if (found === undefined) {
-      throw "Service not found: " + `${application}:${resourceType}`;
+      throw 'Service not found: ' + `${application}:${resourceType}`;
     }
     return found(context);
   }

@@ -1,4 +1,4 @@
-import { UserProfile } from "../session/interfaces";
+import { UserProfile } from '../session/interfaces';
 
 export interface IAudienceService {
   readonly views: IViewsService;
@@ -95,10 +95,10 @@ export interface IReactionsService {
 
 /** Typing of a Reaction */
 export const ReactionTypes = [
-  "REACTION_1",
-  "REACTION_2",
-  "REACTION_3",
-  "REACTION_4",
+  'REACTION_1',
+  'REACTION_2',
+  'REACTION_3',
+  'REACTION_4',
 ] as const;
 export type ReactionType = (typeof ReactionTypes)[number];
 
@@ -119,7 +119,7 @@ export type ReactionDetailsData = {
   };
   userReactions: Array<{
     userId: string;
-    profile: "Teacher" | "Student" | "Relative" | "Personnel";
+    profile: 'Teacher' | 'Student' | 'Relative' | 'Personnel';
     reactionType: ReactionType;
     displayName: string;
   }>;

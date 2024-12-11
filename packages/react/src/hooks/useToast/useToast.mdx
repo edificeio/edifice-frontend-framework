@@ -1,0 +1,45 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useToastStories from './useToast.stories';
+
+<Meta of={useToastStories} />
+
+# useToast
+
+## Usage
+
+- Show notification messages.
+
+## Example
+
+<Canvas of={useToastStories.Example} />
+
+## Hook usage
+
+The hook is used in combination with the Alert component to display messages with Alert design.
+
+Options can be passed to useToast functions:
+
+- duration: `number` (use Infinity to set infinite duration)
+- position: `ToastPosition`,
+  allow a different position of the toast
+- isDismissible: `boolean` / allow user to click a close button to dismiss toast (when toast has a Infinite duration)
+
+Here an example of how to use the hook:
+
+```jsx
+const toast = useToast();
+
+const infoNotify = () =>
+  toast.info(`This is an info message with duration equal to ${Infinity}`, {
+    duration: Infinity,
+    isDismissible: true,
+  });
+
+const warningNotify = () =>
+  toast.warning(<h3>This is a warning message in a H3 tag</h3>);
+
+const sucessNotify = () => toast.success('This is a success message!');
+
+const errorNotify = () =>
+  toast.error(<div>This is an error message in a DIV tag</div>);
+```

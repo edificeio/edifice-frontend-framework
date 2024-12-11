@@ -22,55 +22,60 @@ pnpm run build
 
 ## Documentation
 
-As rule of thumb, **edifice-ts-client never uses any browser-related technology** (no HTMLElement, Document, navigator...). 
+As rule of thumb, **@edifice.io/client never uses any browser-related technology** (no HTMLElement, Document, navigator...).
 It focus exclusively on data exchange with the servers.
 
-* [IConfigurationFramework](docs/interfaces/iconfigurationframework.md) is composed of 3 layers
-  * Platform (apps, theme, analytics, i18n...)
-  * School
-  * User (preferences)
+- [IConfigurationFramework](docs/interfaces/iconfigurationframework.md) is composed of 3 layers
 
-* [ISession](docs/interfaces/isession.md) of the connected user
-  * user
-  * description
-  * currentLanguage
-  * notLoggedIn
-  * avatarUrl
-  * currentApp (the one which initialized the framework)
-  * hasWorkflow
-  * hasRight
+  - Platform (apps, theme, analytics, i18n...)
+  - School
+  - User (preferences)
 
-* [INotifyFramework](docs/interfaces/inotifyframework.md) for async messages
-  * onLangReady
-  * onSessionReady
-  * onSkinReady
-  * onOverridesReady
-  * promisify (generic for creating/resolving/rejecting a Promise)
-  * events (a publish/subscribe event broker)
+- [ISession](docs/interfaces/isession.md) of the connected user
 
-* [ITransportFramework](docs/interfaces/itransportframework.md) wraps the HTTP protocol
+  - user
+  - description
+  - currentLanguage
+  - notLoggedIn
+  - avatarUrl
+  - currentApp (the one which initialized the framework)
+  - hasWorkflow
+  - hasRight
 
-* [IExplorerFramework](docs/interfaces/iexplorerframework.md) to look for resources
+- [INotifyFramework](docs/interfaces/inotifyframework.md) for async messages
 
-* [IWidgetFramework](docs/interfaces/iwidgetframework.md) dedicated to widgets conf/prefs
+  - onLangReady
+  - onSessionReady
+  - onSkinReady
+  - onOverridesReady
+  - promisify (generic for creating/resolving/rejecting a Promise)
+  - events (a publish/subscribe event broker)
 
-* and specific app frameworks for modeling their data
-  * [ITimelineApp](docs/interfaces/itimelineapp.md)
-  * ...
+- [ITransportFramework](docs/interfaces/itransportframework.md) wraps the HTTP protocol
+
+- [IExplorerFramework](docs/interfaces/iexplorerframework.md) to look for resources
+
+- [IWidgetFramework](docs/interfaces/iwidgetframework.md) dedicated to widgets conf/prefs
+
+- and specific app frameworks for modeling their data
+  - [ITimelineApp](docs/interfaces/itimelineapp.md)
+  - ...
 
 [Browse the full API documentation here](docs/modules.md)
 
 ## Additional developers notes
 
-4 additional libs are installed by the ```pnpm install``` command.
-* [ViteJS](https://vitejs.dev/) as a Bundler
-* [Typedoc](https://typedoc.org/guides/doccomments/) to generate the markdown documentation, in **/docs**, from the Typescript comments in source code.
-* [husky](https://github.com/typicode/husky) to install a local [git pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks#_client_side_hooks), in order to run the unit-tests and update /docs before every commit.
+4 additional libs are installed by the `pnpm install` command.
+
+- [ViteJS](https://vitejs.dev/) as a Bundler
+- [Typedoc](https://typedoc.org/guides/doccomments/) to generate the markdown documentation, in **/docs**, from the Typescript comments in source code.
+- [husky](https://github.com/typicode/husky) to install a local [git pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks#_client_side_hooks), in order to run the unit-tests and update /docs before every commit.
   => **/docs will always be up-to-date on the git server**.
 
-The ```pnpm run build``` command will populate the **/dist** directory
-* **/dist/ts** contains the JS code and associated _.d.ts_ and _.js.map_ files, later packaged in NPM (done by our CI).
-* **/dist/bundle** contains the production-ready code/map.
+The `pnpm run build` command will populate the **/dist** directory
+
+- **/dist/ts** contains the JS code and associated _.d.ts_ and _.js.map_ files, later packaged in NPM (done by our CI).
+- **/dist/bundle** contains the production-ready code/map.
 
 So, **you'll just have to write nice documented code, and unit tests** where needed !
 

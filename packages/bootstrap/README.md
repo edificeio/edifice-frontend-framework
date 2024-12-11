@@ -1,45 +1,16 @@
 # Edifice Bootstrap
 
-Edifice Bootstrap is a CSS framework containing all the UI components used by our applications. This framework is based on the latest version of Bootstrap.
+Edifice Bootstrap is a comprehensive CSS framework that includes all the UI components utilized across our applications. It is built upon the latest version of Bootstrap.
 
 ## Install
 
 Install it by cloning the repository:
 
-```
-git clone https://github.com/opendigitaleducation/edifice-bootstrap.git
-pnpm install
-```
-
-## Build
-
-```
-pnpm build
+```bash
+pnpm add @edifice.io/bootstrap
 ```
 
-## Dev
-
-### Watch + Storybook
-
-Watch styles to `edifice-ui` when developing on Storybook.
-
-```
-pnpm watch:react
-```
-
-### Watch + SB
-
-Watch styles to `ode-dev-server` when local develop.
-
-```
-pnpm watch:sb
-```
-
-## Bootstrap 5.x
-
-If a component already exists in Bootstrap 5.x, we use it and override it if necessary. The same goes for utility classes.
-
-## Components
+## Override a component
 
 Based on Bootstrap 5.3, many components use CSS Variables (CSS Custom Properties). We adhere to this guideline to create our own components or to override Bootstrap components.
 
@@ -81,13 +52,3 @@ Overring style should be done in component file with data-attribute selector `[d
   --#{$prefix}input-focus-border-color: var(--#{$prefix}color);
 }
 ```
-
-### Push Force
-
-`git push --force` is not recommended!!
-
-```
-After a git history rewrite due to a git push --force, the git tags and notes referencing the commits that were rewritten are lost.
-```
-
-If it happens, read this troubleshooting section: [Troubleshooting](https://semantic-release.gitbook.io/semantic-release/support/troubleshooting#release-not-found-release-branch-after-git-push-force)

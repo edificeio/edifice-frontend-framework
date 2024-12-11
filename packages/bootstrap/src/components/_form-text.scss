@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .form-text {
   --#{$prefix}form-feedback-valid-color: #{$form-feedback-valid-color};

@@ -3,11 +3,11 @@ Personnalisation de certains paramètres de boostrap
 Ajouter l'option !default pour permettre la surcharge depuis les thèmes
 Ref : https://github.com/twbs/bootstrap/blob/main/scss/_variables.scss
 */
-@use "sass:color";
-@use "../abstracts/colors" as *;
-@use "../abstracts/type";
+@use 'sass:color';
+@use '../abstracts/colors' as *;
+@use '../abstracts/type';
 
-$prefix: "edifice-";
+$prefix: 'edifice-';
 
 /* Body */
 $body-bg: $gray-200 !default;
@@ -83,11 +83,11 @@ $container-max-widths: (
 ) !default;
 
 $container-spacings: (
-  "xs": 0,
-  "sm": 0,
-  "md": 2.4rem,
-  "lg": 2.4rem,
-  "xl": 2.4rem,
+  'xs': 0,
+  'sm': 0,
+  'md': 2.4rem,
+  'lg': 2.4rem,
+  'xl': 2.4rem,
 ) !default;
 
 $width-sizing: (
@@ -111,37 +111,37 @@ $enable-dark-mode: false !default;
 
 /* Buttons */
 $button-colors: (
-  "primary": (
+  'primary': (
     base: var(--#{$prefix}primary),
     pale: var(--#{$prefix}primary-200),
     light: var(--#{$prefix}primary-300),
     text: var(--#{$prefix}white),
     dark: var(--#{$prefix}primary-800),
-    "box-shadow": transparent,
+    'box-shadow': transparent,
   ),
-  "secondary": (
+  'secondary': (
     base: var(--#{$prefix}secondary),
     pale: var(--#{$prefix}secondary-200),
     light: var(--#{$prefix}secondary-300),
     text: var(--#{$prefix}white),
     dark: var(--#{$prefix}secondary-800),
-    "box-shadow": transparent,
+    'box-shadow': transparent,
   ),
-  "tertiary": (
+  'tertiary': (
     base: var(--#{$prefix}tertiary),
     pale: var(--#{$prefix}gray-200),
     light: var(--#{$prefix}gray-300),
     text: var(--#{$prefix}gray-800),
     dark: var(--#{$prefix}gray-400),
-    "box-shadow": transparent,
+    'box-shadow': transparent,
   ),
-  "danger": (
+  'danger': (
     base: var(--#{$prefix}danger),
     pale: var(--#{$prefix}danger-200),
     light: var(--#{$prefix}danger-300),
     text: var(--#{$prefix}white),
     dark: var(--#{$prefix}danger-800),
-    "box-shadow": transparent,
+    'box-shadow': transparent,
   ),
 );
 

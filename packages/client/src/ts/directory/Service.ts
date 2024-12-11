@@ -1,4 +1,4 @@
-import { IOdeServices } from "../services/OdeServices";
+import { IOdeServices } from '../services/OdeServices';
 import {
   Bookmark,
   BookmarkGetResponse,
@@ -7,7 +7,7 @@ import {
   BookmarkWithMembers,
   Group,
   User,
-} from "./interface";
+} from './interface';
 
 export class DirectoryService {
   constructor(private odeServices: IOdeServices) {}
@@ -18,14 +18,14 @@ export class DirectoryService {
     return this.odeServices.cache();
   }
 
-  getAvatarUrl(id: string, type: "user" | "group", size = "100x100") {
-    return type === "user"
+  getAvatarUrl(id: string, type: 'user' | 'group', size = '100x100') {
+    return type === 'user'
       ? `/userbook/avatar/${id}?thumbnail=${size}`
       : `/assets/img/illustrations/group-avatar.svg`;
   }
 
-  getDirectoryUrl(id: string, type: "user" | "group") {
-    return type === "user"
+  getDirectoryUrl(id: string, type: 'user' | 'group') {
+    return type === 'user'
       ? `/userbook/annuaire#/${id}`
       : `/userbook/annuaire#/group-view/${id}`;
   }
@@ -62,9 +62,9 @@ export class DirectoryService {
           profile,
           displayName,
           // these info are missing from api
-          firstName: "",
-          lastName: "",
-          login: "",
+          firstName: '',
+          lastName: '',
+          login: '',
           id,
         };
       }),
@@ -86,14 +86,14 @@ export class DirectoryService {
     this.cache.clearCache(`/directory/sharebookmark/all`);
     // get user ids
     const userIds = users.map((user) => {
-      return typeof user === "string" ? user : user.id;
+      return typeof user === 'string' ? user : user.id;
     });
     // get group ids
     const groupIds = groups.map((group) => {
-      return typeof group === "string" ? group : group.id;
+      return typeof group === 'string' ? group : group.id;
     });
     const bookmarkDetailPromises = bookmarks.map(async (bookmark) => {
-      if (typeof bookmark === "string") {
+      if (typeof bookmark === 'string') {
         const { displayName, groups, id, users } =
           await this.getBookMarkById(bookmark);
         const usersId = users.map((user) => user.id);
@@ -124,7 +124,7 @@ export class DirectoryService {
     };
 
     const { id } = await this.http.postJson<BookmarkSaveResponse>(
-      "/directory/sharebookmark",
+      '/directory/sharebookmark',
       data,
     );
     return {

@@ -1,5 +1,6 @@
-import { Meta, Story } from "@storybook/blocks";
-import { SvgIcon } from "../../components/SvgIcon";
+import * as icons from '@edifice.io/react/icons/apps';
+import { Meta, Story } from '@storybook/blocks';
+import { Icons } from '../../components/Icons';
 
 <Meta title="Design System/Icons/Apps and Connectors" />
 
@@ -12,18 +13,18 @@ This set of icons uses a SVG Sprite and should already be included with `bootstr
 Use this set of icons with the `AppIcon` Component.
 
 ```jsx
-import { AppIcon } from "@edifice-ui/react";
+import { AppIcon } from '@edifice.io/react';
 
 export default function App() {
   return (
     <AppIcon
       app={{
-        address: "/blog",
-        icon: "blog-large",
-        name: "Blog",
+        address: '/blog',
+        icon: 'blog-large',
+        name: 'Blog',
         scope: [],
         display: false,
-        displayName: "",
+        displayName: '',
         isExternal: false,
       }}
       size="48"
@@ -36,4 +37,4 @@ export default function App() {
 
 This set includes 116 icons.
 
-<SvgIcon />
+<Icons icons={icons} />

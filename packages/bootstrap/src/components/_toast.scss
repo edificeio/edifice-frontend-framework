@@ -1,7 +1,7 @@
-@use "sass:map";
-@use "../abstracts/variables" as *;
-@use "../abstracts/colors";
-@use "../vendors/bootstrap";
+@use 'sass:map';
+@use '../abstracts/variables' as *;
+@use '../abstracts/colors';
+@use '../vendors/bootstrap';
 
 .toast {
   --#{$prefix}toast-border-left-color: var(--#{$prefix}gray-800);
@@ -41,8 +41,8 @@
 
 @each $state, $key in colors.$support-colors {
   .toast-#{$state} {
-    --#{$prefix}toast-color: #{map.get($key, "base")};
-    --#{$prefix}toast-border-color: #{map.get($key, "pale")};
-    --#{$prefix}toast-border-left-color: #{map.get($key, "base")};
+    --#{$prefix}toast-color: #{map.get($key, 'base')};
+    --#{$prefix}toast-border-color: #{map.get($key, 'pale')};
+    --#{$prefix}toast-border-left-color: #{map.get($key, 'base')};
   }
 }

@@ -1,8 +1,8 @@
-import { transport } from "../transport/Framework";
-import { App } from "../globals";
-import { configure } from "./Framework";
-import { notify } from "../notify/Framework";
-import { IWebApp } from "../session/interfaces";
+import { transport } from '../transport/Framework';
+import { App } from '../globals';
+import { configure } from './Framework';
+import { notify } from '../notify/Framework';
+import { IWebApp } from '../session/interfaces';
 
 const http = transport?.http;
 
@@ -50,7 +50,7 @@ export class AppConf {
       );
       list.apps.forEach((conf) => {
         if (conf?.prefix) {
-          const a: App = conf.prefix.replace("/", "") as App;
+          const a: App = conf.prefix.replace('/', '') as App;
           this._appConf[a] = conf;
         } else if (conf?.name) {
           /* Try to extract name from another field than prefix. */

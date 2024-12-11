@@ -4,7 +4,7 @@ $feed-spacing: 20px !default;
   font-size: 14px;
 
   .filter-button {
-    @include append-icon("\f107", 1em, 0);
+    @include append-icon('\f107', 1em, 0);
 
     display: inline-block;
     margin-bottom: 0.5em;
@@ -85,7 +85,7 @@ $feed-spacing: 20px !default;
       }
 
       .control {
-        @include prepend-icon("\f053", 1.4em) {
+        @include prepend-icon('\f053', 1.4em) {
           position: relative;
           top: 0;
           display: flex;
@@ -175,7 +175,7 @@ $feed-spacing: 20px !default;
       }
     }
 
-    [class*="ic-mood"] {
+    [class*='ic-mood'] {
       font-size: 3rem;
     }
 
@@ -188,7 +188,7 @@ $feed-spacing: 20px !default;
 
   &.new {
     .date {
-      @include append-icon("\f111", 0.7em, 0, $orange);
+      @include append-icon('\f111', 0.7em, 0, $orange);
       @include set-icon-top(1em);
     }
   }

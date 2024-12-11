@@ -1,0 +1,27 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useTitleStories from './useTitle.stories';
+
+<Meta of={useTitleStories} />
+
+# useTitle
+
+## Usage
+
+- Give the ability to detect and use the current Document title.
+- Currently used in Responsive with our Header Component.
+
+## Example
+
+<Canvas of={useTitleStories.Example} />
+
+## Hook usage
+
+```jsx
+const title = useTitle();
+
+return (
+  <Heading level="h1" headingStyle="h3">
+    {title}
+  </Heading>
+);
+```

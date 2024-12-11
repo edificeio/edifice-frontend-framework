@@ -1,7 +1,7 @@
 import {
   AbstractBehaviourService,
   ILinkedResource,
-} from "./AbstractBehaviourService";
+} from './AbstractBehaviourService';
 
 type MongoDate = {
   $date: number;
@@ -18,7 +18,7 @@ type BlogData = {
   thumbnail: string;
   created: MongoDate;
   title: string;
-  visibility: "PUBLIC" | "OWNER";
+  visibility: 'PUBLIC' | 'OWNER';
   modified: MongoDate;
   author: { userId: string; username: string };
   trashed?: boolean;
@@ -27,26 +27,26 @@ type BlogData = {
 };
 
 export class BlogBehaviour extends AbstractBehaviourService {
-  APP = "blog";
-  RESOURCE = "blog";
+  APP = 'blog';
+  RESOURCE = 'blog';
 
   loadResources() {
     return new Promise<ILinkedResource[]>(async (resolve, reject) => {
       try {
-        const datas = await this.httpGet<BlogData[]>("/blog/linker");
+        const datas = await this.httpGet<BlogData[]>('/blog/linker');
         const resources: ILinkedResource[] = [];
         datas.forEach((data) => {
           if (data.thumbnail) {
-            data.thumbnail = data.thumbnail + "?thumbnail=48x48";
+            data.thumbnail = data.thumbnail + '?thumbnail=48x48';
           } else {
-            data.thumbnail = "/img/illustrations/blog.svg";
+            data.thumbnail = '/img/illustrations/blog.svg';
           }
 
           const addedPosts = data.fetchPosts.map((post) => {
             return this.dataToResource({
               owner: data.author.userId,
               ownerName: data.author.username,
-              title: post.title + " [" + data.title + "]",
+              title: post.title + ' [' + data.title + ']',
               _id: `${data._id}#${post._id}`,
               icon: data.thumbnail,
               path: `/blog/id/${data._id}/post/${post._id}`,

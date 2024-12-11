@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .input-group {
   --#{$prefix}input-filled-border-color: #{$input-filled-border-color};

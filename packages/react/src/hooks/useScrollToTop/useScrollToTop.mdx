@@ -1,0 +1,28 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useScrollToTopStories from './useScrollToTop.stories';
+
+<Meta of={useScrollToTopStories} />
+
+# useScrollToTop
+
+## Usage
+
+- Give the ability to return to the top of the page.
+- Currently used to return to the top of the page when a new page is loaded.
+
+## Example
+
+<Canvas of={useScrollToTopStories.Example} />
+
+## Hook usage
+
+```jsx
+const scrollTotop = useScrollToTop();
+return (
+  <>
+    <Button color="primary" variant="filled" onClick={scrollTotop}>
+      Go to Top
+    </Button>
+  </>
+);
+```

@@ -1,5 +1,5 @@
-@use "../abstracts/" as *;
-@use "../vendors/bootstrap";
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
 
 .nav-slide {
   position: absolute;
@@ -24,7 +24,7 @@
       position: relative;
 
       &::after {
-        content: "";
+        content: '';
         display: block;
         position: absolute;
         right: -#{$spacer-24};
@@ -37,7 +37,7 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       bottom: 0;

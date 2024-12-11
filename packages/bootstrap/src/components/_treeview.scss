@@ -1,11 +1,11 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 $selected-background-color: var(--#{$prefix}blue-200);
 
 .treeview {
   --#{$prefix}selected-background-color: #{$selected-background-color};
 
-  [data-product="one"] & {
+  [data-product='one'] & {
     --#{$prefix}selected-background-color: var(--#{$prefix}orange-200);
   }
 
@@ -26,7 +26,7 @@ $selected-background-color: var(--#{$prefix}blue-200);
     border-radius: $border-radius;
   }
 
-  [role="tree"] {
+  [role='tree'] {
     overflow-y: auto;
     list-style: none;
 
@@ -41,7 +41,7 @@ $selected-background-color: var(--#{$prefix}blue-200);
       }
     }
 
-    & > [role="treeitem"][aria-selected="true"] > div > .action-container {
+    & > [role='treeitem'][aria-selected='true'] > div > .action-container {
       font-weight: 700;
       background-color: var(--#{$prefix}selected-background-color);
       border-radius: $border-radius;
@@ -61,21 +61,21 @@ $selected-background-color: var(--#{$prefix}blue-200);
     padding-inline: $spacer-2;
   }
 
-  [role="group"] {
+  [role='group'] {
     padding-left: $spacer-0;
     padding-top: $spacer-8;
     margin-left: $spacer-8;
     font-size: 1.4rem;
     border-left: 1px solid var(--#{$prefix}gray-400);
 
-    & > [role="treeitem"] {
+    & > [role='treeitem'] {
       margin-left: $spacer-8;
 
-      + [role="treeitem"] {
+      + [role='treeitem'] {
         padding-top: $spacer-8;
       }
 
-      &[aria-selected="true"] > div > .action-container {
+      &[aria-selected='true'] > div > .action-container {
         font-weight: 700;
         color: var(--#{$prefix}secondary);
         background-color: initial;
@@ -84,16 +84,16 @@ $selected-background-color: var(--#{$prefix}blue-200);
   }
 
   .dropdown & {
-    [role="group"] {
+    [role='group'] {
       border-left: none;
     }
   }
 
-  [role="treeitem"][aria-expanded="false"] > div > [role="group"] {
+  [role='treeitem'][aria-expanded='false'] > div > [role='group'] {
     display: none;
   }
 
-  [role="treeitem"][aria-expanded="true"] > div > [role="group"] {
+  [role='treeitem'][aria-expanded='true'] > div > [role='group'] {
     display: block;
   }
 }

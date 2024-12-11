@@ -1,4 +1,4 @@
-import { AbstractBehaviourService } from "./AbstractBehaviourService";
+import { AbstractBehaviourService } from './AbstractBehaviourService';
 
 type MindmapData = {
   _id: string;
@@ -19,18 +19,18 @@ type MindmapData = {
 };
 
 export class MindmapBehaviour extends AbstractBehaviourService {
-  APP = "mindmap";
-  RESOURCE = "mindmap";
+  APP = 'mindmap';
+  RESOURCE = 'mindmap';
 
   async loadResources() {
-    const mindmaps = await this.httpGet<MindmapData[]>("/mindmap/list/all");
+    const mindmaps = await this.httpGet<MindmapData[]>('/mindmap/list/all');
     return mindmaps.map((data) =>
       this.dataToResource({
         title: data.name,
         ownerName: data.owner.displayName,
         owner: data.owner.userId,
-        icon: data.thumbnail || "/img/illustrations/mindmap-default.png",
-        path: "/mindmap#/view/" + data._id,
+        icon: data.thumbnail || '/img/illustrations/mindmap-default.png',
+        path: '/mindmap#/view/' + data._id,
         _id: data._id,
         shared: data.shared && data.shared.length >= 0 ? true : false,
         modified: data.modified,

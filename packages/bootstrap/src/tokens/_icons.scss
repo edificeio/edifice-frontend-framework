@@ -1,34 +1,34 @@
-@use "sass:color";
-@use "sass:map";
-@use "../abstracts/" as *;
+@use 'sass:color';
+@use 'sass:map';
+@use '../abstracts/' as *;
 
 .color-app {
   //applications
   @each $app, $data in $icons-applications {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
-        color: map.get($data, "neo");
+        color: map.get($data, 'neo');
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
-        color: map.get($data, "one");
+        color: map.get($data, 'one');
       }
     }
   }
 
   //connectors
   @each $app, $data in $icons-connectors {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
-        color: map.get($data, "neo");
+        color: map.get($data, 'neo');
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
-        color: map.get($data, "one");
+        color: map.get($data, 'one');
       }
     }
   }
@@ -37,30 +37,30 @@
 .bg-app {
   //applications
   @each $app, $data in $icons-applications {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
-        background-color: map.get($data, "neo");
+        background-color: map.get($data, 'neo');
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
-        background-color: map.get($data, "one");
+        background-color: map.get($data, 'one');
       }
     }
   }
 
   //connectors
   @each $app, $data in $icons-connectors {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
-        background-color: map.get($data, "neo");
+        background-color: map.get($data, 'neo');
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
-        background-color: map.get($data, "one");
+        background-color: map.get($data, 'one');
       }
     }
   }
@@ -69,20 +69,20 @@
 .bg-light {
   // applications
   @each $app, $data in $icons-applications {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
         background-color: color.scale(
-          map.get($data, "neo"),
+          map.get($data, 'neo'),
           $lightness: 90%,
           $saturation: 5%
         );
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
         background-color: color.scale(
-          map.get($data, "one"),
+          map.get($data, 'one'),
           $lightness: 90%,
           $saturation: 5%
         );
@@ -92,20 +92,20 @@
 
   //connectors
   @each $app, $data in $icons-connectors {
-    [data-product="neo"] & {
+    [data-product='neo'] & {
       &-#{$app} {
         background-color: color.scale(
-          map.get($data, "neo"),
+          map.get($data, 'neo'),
           $lightness: 90%,
           $saturation: 5%
         );
       }
     }
 
-    [data-product="one"] & {
+    [data-product='one'] & {
       &-#{$app} {
         background-color: color.scale(
-          map.get($data, "one"),
+          map.get($data, 'one'),
           $lightness: 90%,
           $saturation: 5%
         );

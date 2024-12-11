@@ -39,7 +39,7 @@
 }
 
 @mixin data-product($arg) {
-  @at-root [data-product="#{$arg}"] & {
+  @at-root [data-product='#{$arg}'] & {
     @content;
   }
 }

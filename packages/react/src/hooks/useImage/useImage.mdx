@@ -1,0 +1,26 @@
+import { Canvas, Meta } from '@storybook/blocks';
+import * as useImageStories from './useImage.stories';
+
+<Meta of={useImageStories} />
+
+# useImage
+
+## Usage
+
+- Use a placeholder if an error occured with the provided `src`
+- Used in the `<Image/>` Component
+
+## Example
+
+<Canvas of={useImageStories.Example} />
+
+## Hook usage
+
+```jsx
+const src = '';
+const alt = 'alternative text';
+const placeholder = '/assets/themes/ode-bootstrap/images/image-placeholder.png';
+const { imgSrc, onError } = useImage({ src, placeholder });
+
+return <img alt={alt} onError={onError} src={imgSrc} />;
+```

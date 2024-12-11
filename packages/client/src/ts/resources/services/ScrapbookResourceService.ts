@@ -1,18 +1,18 @@
-import { IResource, ResourceType } from "../..";
+import { IResource, ResourceType } from '../..';
 import {
   CreateParameters,
   CreateResult,
   ScrapbookUpdate,
   UpdateResult,
-} from "../interface";
-import { ResourceService } from "../ResourceService";
+} from '../interface';
+import { ResourceService } from '../ResourceService';
 
-const APP = "scrapbook";
-const RESOURCE = "scrapbook";
+const APP = 'scrapbook';
+const RESOURCE = 'scrapbook';
 
 export class ScrapbookResourceService extends ResourceService {
   create<T extends CreateParameters>(parameters: T): Promise<CreateResult> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   async update(parameters: ScrapbookUpdate): Promise<UpdateResult> {
     const thumbnail = await this.getThumbnailPath(parameters.thumbnail);

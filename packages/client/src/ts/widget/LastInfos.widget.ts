@@ -1,4 +1,4 @@
-import { transport } from "../transport/Framework";
+import { transport } from '../transport/Framework';
 
 export interface ILastInfosModel {
   date: string; // "2021-03-24T16:36:05.398"
@@ -13,12 +13,12 @@ export interface ILastInfosModel {
 
 export class LastInfosWidget {
   loadInfos(maxResults: number): Promise<ILastInfosModel[]> {
-    return transport.http.get("/actualites/infos/last/" + maxResults);
+    return transport.http.get('/actualites/infos/last/' + maxResults);
   }
 
   getMaxResults(): Promise<number> {
     return transport.http
-      .get("/userbook/preference/maxInfos")
+      .get('/userbook/preference/maxInfos')
       .then((maxInfos) => {
         return maxInfos.preference ? parseInt(maxInfos.preference) : 4;
       });
@@ -26,7 +26,7 @@ export class LastInfosWidget {
 
   setMaxResults(maxResults: number): Promise<void> {
     return transport.http.putJson(
-      "/userbook/preference/maxInfos",
+      '/userbook/preference/maxInfos',
       `"${maxResults}"`,
     );
   }

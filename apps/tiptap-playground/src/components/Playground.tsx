@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react';
 
-import { Editor, EditorRef } from '@edifice-ui/editor';
-import { Edit, TextToSpeech } from '@edifice-ui/icons';
 import {
   Layout,
   LoadingScreen,
   Toolbar,
   ToolbarItem,
-  useOdeClient,
-} from '@edifice-ui/react';
+  useEdificeClient,
+} from '@edifice.io/react';
+import { Editor, EditorRef } from '@edifice.io/react/editor';
+import { IconEdit, IconTextToSpeech } from '@edifice.io/react/icons';
 
 import defaultImage1 from '../assets/editeur-default-1.png';
 import defaultImage2 from '../assets/editeur-default-2.png';
@@ -82,7 +82,7 @@ const Playground = () => {
     {
       type: 'icon',
       props: {
-        'icon': <TextToSpeech />,
+        'icon': <IconTextToSpeech />,
         'className': editorRef.current?.isSpeeching() ? 'bg-primary' : '',
         'aria-label': 'Synthèse vocale',
         'onClick': () => console.log(''),
@@ -93,7 +93,7 @@ const Playground = () => {
     {
       type: 'icon',
       props: {
-        'icon': <Edit />,
+        'icon': <IconEdit />,
         'className': mode === 'edit' ? 'bg-primary' : '',
         'aria-label': 'Changer de mode',
         'onClick': () => setMode(mode === 'edit' ? 'read' : 'edit'),
@@ -102,7 +102,7 @@ const Playground = () => {
     },
   ];
 
-  const { init } = useOdeClient();
+  const { init } = useEdificeClient();
 
   if (!init) return <LoadingScreen position={false} />;
 

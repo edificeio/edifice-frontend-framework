@@ -1,6 +1,6 @@
-@use "sass:map";
-@use "../abstracts/" as *;
-@use "../vendors/bootstrap";
+@use 'sass:map';
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
 
 .alert {
   --#{$prefix}alert-border-left-color: var(--#{prefix}gray-800);
@@ -121,8 +121,8 @@
 
 @each $state, $key in $support-colors {
   .alert-#{$state} {
-    --#{$prefix}alert-color: #{map.get($key, "base")};
-    --#{$prefix}alert-border-color: #{map.get($key, "pale")};
-    --#{$prefix}alert-border-left-color: #{map.get($key, "base")};
+    --#{$prefix}alert-color: #{map.get($key, 'base')};
+    --#{$prefix}alert-border-color: #{map.get($key, 'pale')};
+    --#{$prefix}alert-border-left-color: #{map.get($key, 'base')};
   }
 }

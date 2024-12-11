@@ -1,34 +1,41 @@
 {
   "name": "@edifice.io/storybook",
+  "version": "2.0.0",
   "private": true,
-  "version": "1.6.0",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/apps/docs#readme",
+  "bugs": {
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "apps/docs"
+  },
   "exports": {
     ".": {
       "import": "./index.mjs",
       "require": "./index.js"
     }
   },
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "build": "storybook build --docs -o dist/",
+    "docs": "storybook dev -p 6006",
+    "preview": "npx http-server dist/"
+  },
   "dependencies": {
-    "@edifice-ui/icons": "workspace:*",
-    "@edifice-ui/react": "workspace:*",
-    "@tanstack/react-query": "^5.59.13",
+    "@edifice.io/bootstrap": "workspace:*",
+    "@edifice.io/react": "workspace:*",
+    "@tanstack/react-query": "catalog:",
     "i18next": "^23.15.1",
     "i18next-browser-languagedetector": "^8.0.0",
     "i18next-http-backend": "^2.6.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-i18next": "^14.1.0"
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-i18next": "catalog:"
   },
-  "scripts": {
-    "docs": "storybook dev -p 6006",
-    "build": "storybook build --docs -o dist/",
-    "preview": "npx http-server dist/"
-  },
-  "msw": {
-    "workerDirectory": [
-      "./public"
-    ]
+  "devDependencies": {
+    "vite": "catalog:"
   }
 }

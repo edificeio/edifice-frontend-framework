@@ -2,7 +2,7 @@ export type VideoEncodeResponse = {
   /** encoding process id, useful for check API */
   processid: string;
   /** encoding API state */
-  state: "running" | "succeed" | "error";
+  state: 'running' | 'succeed' | 'error';
 };
 
 export type VideoUploadParams = {
@@ -31,9 +31,9 @@ export type VideoUploadResponse = VideoEncodeResponse & {
 };
 
 export type VideoPublicConfResponse = {
-  "accept-videoupload-extensions": Array<string>;
-  "max-videoduration-minutes": number;
-  "max-videosize-mbytes": number;
+  'accept-videoupload-extensions': Array<string>;
+  'max-videoduration-minutes': number;
+  'max-videosize-mbytes': number;
 };
 
 export type VideoConf = {

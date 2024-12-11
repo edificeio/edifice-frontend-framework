@@ -1,28 +1,28 @@
-import { CacheService } from "../cache/Service";
-import { ConfService } from "../configure/Service";
-import { DirectoryService } from "../directory/Service";
-import { HttpService } from "../transport/Service";
-import { ResourceService } from "../resources/ResourceService";
-import { RightService } from "../rights/Service";
-import { SessionService } from "../session/Service";
-import { ShareService } from "../share/Service";
-import { WorkspaceService } from "../workspace/Service";
-import { IdiomService } from "../idiom/Service";
-import { AnalyticsService } from "../analytics/Service";
-import { IAudienceService } from "../audience/interface";
-import { VideoService } from "../video/Service";
-import { App, ResourceType } from "../globals";
+import { CacheService } from '../cache/Service';
+import { ConfService } from '../configure/Service';
+import { DirectoryService } from '../directory/Service';
+import { HttpService } from '../transport/Service';
+import { ResourceService } from '../resources/ResourceService';
+import { RightService } from '../rights/Service';
+import { SessionService } from '../session/Service';
+import { ShareService } from '../share/Service';
+import { WorkspaceService } from '../workspace/Service';
+import { IdiomService } from '../idiom/Service';
+import { AnalyticsService } from '../analytics/Service';
+import { IAudienceService } from '../audience/interface';
+import { VideoService } from '../video/Service';
+import { App, ResourceType } from '../globals';
 import {
   IBehaviourService,
   IResourceService,
   IWebResourceService,
-} from "../resources/interface";
-import { EmbedderService } from "../embedder/Service";
-import { INotifyFramework, NotifyFrameworkFactory } from "../notify/interfaces";
-import { SnipletsService } from "../resources/SnipletsService";
-import { DataService } from "../data/Service";
-import { IDataService } from "../data/interface";
-import { AudienceService } from "../audience/Service";
+} from '../resources/interface';
+import { EmbedderService } from '../embedder/Service';
+import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
+import { SnipletsService } from '../resources/SnipletsService';
+import { DataService } from '../data/Service';
+import { IDataService } from '../data/interface';
+import { AudienceService } from '../audience/Service';
 
 export interface IOdeServices {
   analytics(): AnalyticsService;

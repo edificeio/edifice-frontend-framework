@@ -1,4 +1,4 @@
-import { Group, Bookmark, User } from "../directory/interface";
+import { Group, Bookmark, User } from '../directory/interface';
 
 export interface ShareRight {
   id: string;
@@ -23,7 +23,7 @@ export interface ShareParameters {
 /**
  * Type of share right
  * */
-export type ShareRightType = "user" | "group" | "sharebookmark";
+export type ShareRightType = 'user' | 'group' | 'sharebookmark';
 
 /**
  * Type of action when sharing
@@ -39,16 +39,16 @@ export interface ShareRightAction {
  * Name of current action when sharing
  * */
 export type ShareRightActionDisplayName =
-  | "read"
-  | "contrib"
-  | "manage"
-  | "publish"
-  | "manager"
-  | "comment";
+  | 'read'
+  | 'contrib'
+  | 'manage'
+  | 'publish'
+  | 'manager'
+  | 'comment';
 
 export type ShareRightActionDisplayNameExt =
   | ShareRightActionDisplayName
-  | "creator";
+  | 'creator';
 
 export type SharingRight = Record<
   ShareRightActionDisplayName,
@@ -67,7 +67,7 @@ export interface GetResourceRightPayload {
   actions: Array<{
     name: string[];
     displayName: string; //'app.right'
-    type: "RESOURCE";
+    type: 'RESOURCE';
   }>;
   groups: {
     visibles: Array<{
@@ -104,7 +104,7 @@ export interface PutSharePayload {
  * Response of shared resource
  * */
 export interface PutShareResponse {
-  "notify-timeline-array": Array<{ groupId: string } | { userId: string }>;
+  'notify-timeline-array': Array<{ groupId: string } | { userId: string }>;
 }
 
 export interface ShareSubject {
@@ -113,7 +113,7 @@ export interface ShareSubject {
   profile?: string;
   avatarUrl: string;
   directoryUrl: string;
-  type: "user" | "group" | "sharebookmark";
+  type: 'user' | 'group' | 'sharebookmark';
   structureName?: string;
 }
 

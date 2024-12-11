@@ -1,5 +1,5 @@
-import { IOdeServices } from "../services/OdeServices";
-import { IViewsService, ViewsCounters, ViewsDetails } from "./interface";
+import { IOdeServices } from '../services/OdeServices';
+import { IViewsService, ViewsCounters, ViewsDetails } from './interface';
 
 export class ViewsService implements IViewsService {
   constructor(
@@ -16,7 +16,7 @@ export class ViewsService implements IViewsService {
     const result = await this.http.get<ViewsCounters>(
       `/audience/views/count/${this.module}/${
         this.resourceType
-      }?resourceIds=${resourceIds.join(",")}`,
+      }?resourceIds=${resourceIds.join(',')}`,
     );
     return this.http.isResponseError() ? {} : result;
   }

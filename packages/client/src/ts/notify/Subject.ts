@@ -4,7 +4,7 @@ import {
   ISubjectMessage,
   ISubscription,
   LayerName,
-} from "./interfaces";
+} from './interfaces';
 
 type RevokationFunction = () => void;
 
@@ -15,18 +15,18 @@ class Subscription<T extends ISubjectMessage> implements ISubscription {
     private _channel?: BroadcastChannel,
     handler?: (message: T) => void,
   ) {
-    this.revoke = this.setReceiver(
-      (message: MessageEvent<T>) => handler?.(message.data),
+    this.revoke = this.setReceiver((message: MessageEvent<T>) =>
+      handler?.(message.data),
     );
   }
 
   private setReceiver(
     receiver: (message: MessageEvent<T>) => void,
   ): RevokationFunction {
-    this._channel?.addEventListener("message", receiver);
+    this._channel?.addEventListener('message', receiver);
     return () => {
       if (this._channel) {
-        this._channel.removeEventListener("message", receiver);
+        this._channel.removeEventListener('message', receiver);
         // Close channel, then delete it since it is unusable.
         this._channel.close();
         delete this._channel;
@@ -49,7 +49,7 @@ export class Subject implements ISubject {
   >();
 
   private getChannelName(layer: string): string {
-    return "Subject:" + layer;
+    return 'Subject:' + layer;
   }
 
   private getPublishChannel(layer: string): BroadcastChannel {
@@ -65,12 +65,12 @@ export class Subject implements ISubject {
   public newChannel(layer: string): BroadcastChannel {
     const name = this.getChannelName(layer);
     const channel = new BroadcastChannel(name);
-    channel.addEventListener("messageerror", (ev) => console.log(ev.data));
+    channel.addEventListener('messageerror', (ev) => console.log(ev.data));
     return channel;
   }
 
   publish(layer: LayerName, message: ISubjectMessage | IHttpErrorEvent): void {
-    typeof layer === "string" &&
+    typeof layer === 'string' &&
       this.getPublishChannel(layer).postMessage(message);
   }
 
@@ -78,7 +78,7 @@ export class Subject implements ISubject {
     layer: LayerName,
     handler: (message: T) => void,
   ): ISubscription {
-    if (typeof layer === "string") {
+    if (typeof layer === 'string') {
       // Create a *receiving* channel for every subscription.
       const receiveChannel = this.newChannel(layer);
       return new Subscription(receiveChannel, handler);

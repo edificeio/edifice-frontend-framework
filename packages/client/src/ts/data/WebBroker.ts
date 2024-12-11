@@ -1,10 +1,10 @@
-import { DataServiceProps, IEventBroker, SEND_ALL } from "./interface";
+import { DataServiceProps, IEventBroker, SEND_ALL } from './interface';
 import {
   ISubscription,
   IDataTrackEvent,
   LAYER_NAME,
-} from "../notify/interfaces";
-import { IOdeServices } from "../services/OdeServices";
+} from '../notify/interfaces';
+import { IOdeServices } from '../services/OdeServices';
 
 export class WebBroker implements IEventBroker {
   private subscription?: ISubscription;
@@ -24,18 +24,18 @@ export class WebBroker implements IEventBroker {
   ) {
     const isAllowed =
       filter.findIndex(
-        (value) => SEND_ALL === value || message.data["event-type"] === value,
+        (value) => SEND_ALL === value || message.data['event-type'] === value,
       ) >= 0;
 
     if (isAllowed) {
       // 2024-04-18 : every data is now sent to /infra/event/web/store
-      this.http.post("/infra/event/web/store", message.data, {
+      this.http.post('/infra/event/web/store', message.data, {
         disableNotifications: true,
       });
     }
   }
 
-  public initialize(props: DataServiceProps["web"] | undefined) {
+  public initialize(props: DataServiceProps['web'] | undefined) {
     // Broke all events by default, or those authorized in props.
     if (
       props === undefined ||

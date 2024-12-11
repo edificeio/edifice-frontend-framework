@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
 .swiper {
   --swiper-theme-color: var(--#{$prefix}primary);

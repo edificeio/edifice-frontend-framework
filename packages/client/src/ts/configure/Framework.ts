@@ -1,24 +1,24 @@
-import { IConfigurationFramework } from "./interfaces";
-import { Theme } from "./Theme";
-import { Idiom } from "../idiom/Idiom";
-import { User } from "./User";
-import { AppConf } from "./AppConf";
-import { transport } from "../transport/Framework";
-import { Analytics } from "./Analytics";
-import { notify } from "../notify/Framework";
+import { IConfigurationFramework } from './interfaces';
+import { Theme } from './Theme';
+import { Idiom } from '../idiom/Idiom';
+import { User } from './User';
+import { AppConf } from './AppConf';
+import { transport } from '../transport/Framework';
+import { Analytics } from './Analytics';
+import { notify } from '../notify/Framework';
 
 //-------------------------------------
 export class ConfigurationFramework implements IConfigurationFramework {
   //-------------------------------------
   readonly Platform = {
-    deploymentTag: "",
-    cdnDomain: "",
+    deploymentTag: '',
+    cdnDomain: '',
     apps: new AppConf(),
     theme: new Theme(),
     analytics: new Analytics(),
     idiom: new Idiom(),
     listLanguages: () => {
-      return transport.http.get("/languages");
+      return transport.http.get('/languages');
     },
   };
   readonly School = {
@@ -33,7 +33,7 @@ export class ConfigurationFramework implements IConfigurationFramework {
     // If version is undefined, default to a new tag every day.
     if (!version) {
       const padWith0 = (val: number): string =>
-        (val < 10 ? "0" : "") + val.toFixed(0);
+        (val < 10 ? '0' : '') + val.toFixed(0);
       const now = new Date();
       const y = now.getFullYear();
       const m = now.getMonth() + 1;
@@ -44,7 +44,7 @@ export class ConfigurationFramework implements IConfigurationFramework {
     this.Platform.deploymentTag = version;
 
     // Don't overwrite the CDN domain with a null or empty value.
-    if (typeof cdnDomain === "string" && cdnDomain.length > 0) {
+    if (typeof cdnDomain === 'string' && cdnDomain.length > 0) {
       this.Platform.cdnDomain = cdnDomain;
     }
     transport.http.setCdn(this.Platform.cdnDomain);
@@ -54,7 +54,7 @@ export class ConfigurationFramework implements IConfigurationFramework {
       notify
         .onSessionReady()
         .promise.then((userInfo) =>
-          this.Platform.idiom.addBundlePromise("/i18n"),
+          this.Platform.idiom.addBundlePromise('/i18n'),
         ),
       //TODO this.School.initialize( v ),
       this.User.initialize(v),
