@@ -27,9 +27,9 @@ import {
 import { TextareaCounter } from '../../../components/TextArea/TextareaCounter';
 import { useMediaLibrary, useToast } from '../../../hooks';
 import { useResource } from '../../../hooks/useResource';
-import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useEdificeClient } from '../../../providers';
 import { MediaLibrary } from '../../multimedia';
-import ImagePickerWorkspace from '../../multimedia/ImagePicker/ImagePicker';
+import ImagePicker from '../../multimedia/ImagePicker/ImagePicker';
 import { useThumb } from './hooks/useThumb';
 
 export interface FormInputs {
@@ -75,7 +75,7 @@ type Props = CreateProps | UpdateProps;
 const DEFAULT_INPUT_MAX_LENGTH = 60;
 const DEFAULT_TEXTAREA_MAX_LENGTH = 400;
 
-const ResourceModal = ({
+export const ResourceModal = ({
   isOpen,
   onCancel,
   onSuccess,
@@ -223,7 +223,7 @@ const ResourceModal = ({
         <form id={formId} onSubmit={handleSubmit(onSubmit)}>
           <div className="d-block d-md-flex gap-16 mb-24">
             <div>
-              <ImagePickerWorkspace
+              <ImagePicker
                 app={currentApp}
                 src={isUpdating ? resource?.thumbnail || '' : ''}
                 addButtonLabel={t('explorer.imagepicker.button.add')}
