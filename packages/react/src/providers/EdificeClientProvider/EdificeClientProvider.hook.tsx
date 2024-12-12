@@ -5,7 +5,7 @@ export function useEdificeClient() {
   const context = useContext(EdificeClientContext);
 
   if (!context) {
-    throw new Error(`Cannot be used outside of OdeClientProvider`);
+    throw new Error(`Cannot be used outside of EdificeClientProvider`);
   }
   return context;
 }

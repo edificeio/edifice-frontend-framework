@@ -5,7 +5,7 @@ export function useEdificeTheme() {
   const context = useContext(EdificeThemeContext);
 
   if (!context) {
-    throw new Error(`Cannot be used outside of OdeClientProvider`);
+    throw new Error(`Cannot be used outside of EdificeThemeProvider`);
   }
   return context;
 }
