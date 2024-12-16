@@ -1,4 +1,5 @@
 import { Node } from '@tiptap/core';
+import { NodeSelection } from '@tiptap/pm/state';
 
 export interface AttachmentOptions {
   HTMLAttributes: Record<string, string>;
@@ -8,6 +9,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     attachment: {
       setAttachment: (attachment) => ReturnType;
+      removeAttachment: () => ReturnType;
     };
   }
 }
@@ -107,6 +109,18 @@ export const Attachment = Node.create<AttachmentOptions>({
         ) =>
         ({ chain }) => {
           return chain().insertContent({ type: this.name, attrs }).run();
+        },
+      removeAttachment:
+        () =>
+        ({ tr, state }) => {
+          const { selection } = state;
+          if (selection instanceof NodeSelection) {
+            const { node, from, to } = selection;
+            if (node.type.name === 'attachments') {
+              tr.delete(from, to).scrollIntoView();
+            }
+          }
+          return true;
         },
     };
   },

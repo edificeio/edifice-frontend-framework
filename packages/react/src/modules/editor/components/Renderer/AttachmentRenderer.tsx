@@ -22,7 +22,7 @@ interface AttachmentAttrsProps {
 const AttachmentRenderer = (props: AttachmentProps) => {
   const { t } = useTranslation();
 
-  const { node } = props;
+  const { node, editor } = props;
 
   const { editable } = useEditorContext();
 
@@ -31,6 +31,7 @@ const AttachmentRenderer = (props: AttachmentProps) => {
   >(node.attrs.links);
 
   const handleDelete = (index: any) => {
+    editor.commands.removeAttachment?.();
     setAttachmentArrayAttrs((oldAttachments) =>
       oldAttachments.filter((_, i) => i !== index),
     );
