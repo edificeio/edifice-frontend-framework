@@ -61,7 +61,6 @@ export const useTreeSortable = ({
 
   const flattenedTree: FlattenedItem[] = useMemo(
     () => flattenTree(items, null),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [items],
   );
 
