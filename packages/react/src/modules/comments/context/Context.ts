@@ -1,3 +1,4 @@
+import { RightRole } from '@edifice.io/client';
 import { createContext } from 'react';
 import {
   CommentOptions,
@@ -13,6 +14,7 @@ export const CommentContext = createContext<{
   profiles: (UserProfileResult | undefined)[];
   options: Partial<CommentOptions>;
   type: CommentType;
+  userRights?: Record<RightRole, boolean>;
   setEditCommentId: (value: string | null) => void;
   handleModifyComment: (commentId: string) => void;
   handleChangeContent: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;

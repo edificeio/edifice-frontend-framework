@@ -1,7 +1,7 @@
 import { UserProfile } from '@edifice.io/client';
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../..';
+import { Button, LoadingScreen } from '../../..';
 import { IconSave } from '../../icons/components';
 import { useAutosizeTextarea } from '../hooks/useAutosizeTextarea';
 import { useCommentsContext } from '../hooks/useCommentsContext';
@@ -10,7 +10,10 @@ import { BadgeProfile } from './BadgeProfile';
 import { CommentAvatar } from './CommentAvatar';
 import { CommentDate } from './CommentDate';
 import { CommentTitle } from './CommentTitle';
+//import { DeleteModal } from './DeleteModal';
 import { TextCounter } from './TextCounter';
+
+const DeleteModal = lazy(() => import('./DeleteModal'));
 
 export const Comment = ({
   comment,
@@ -33,6 +36,7 @@ export const Comment = ({
   } = comment;
 
   const [ref, onFocus, resizeTextarea] = useAutosizeTextarea(true);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const { t } = useTranslation();
 
@@ -40,6 +44,7 @@ export const Comment = ({
     editCommentId,
     options,
     type,
+    userRights,
     handleDeleteComment: onDeleteComment,
     handleModifyComment,
     handleReset,
@@ -65,6 +70,7 @@ export const Comment = ({
       }`}
     >
       <CommentAvatar id={authorId} />
+
       <div className="flex flex-fill">
         <div className="d-flex align-items-center gap-12">
           <CommentTitle>{authorName}</CommentTitle>
@@ -118,33 +124,46 @@ export const Comment = ({
         ) : (
           <>
             <div className="mt-8 mb-4">{content}</div>
-
-            {userId === authorId && type === 'edit' && (
+            {type === 'edit' && (
               <div className="ms-n8">
-                <Button
-                  variant="ghost"
-                  color="tertiary"
-                  size="sm"
-                  onClick={() => {
-                    handleModifyComment(comment.id);
-                    setValue(content);
-                  }}
-                >
-                  {t('comment.edit')}
-                </Button>
-                <Button
-                  variant="ghost"
-                  color="tertiary"
-                  size="sm"
-                  onClick={() => onDeleteComment(id)}
-                >
-                  {t('comment.remove')}
-                </Button>
+                {userId === authorId && (
+                  <Button
+                    variant="ghost"
+                    color="tertiary"
+                    size="sm"
+                    onClick={() => {
+                      handleModifyComment(comment.id);
+                      setValue(content);
+                    }}
+                  >
+                    {t('comment.edit')}
+                  </Button>
+                )}
+                {(userId === authorId || userRights?.manager) && (
+                  <Button
+                    variant="ghost"
+                    color="tertiary"
+                    size="sm"
+                    onClick={() => setIsDeleteModalOpen(true)}
+                  >
+                    {t('comment.remove')}
+                  </Button>
+                )}
               </div>
             )}
           </>
         )}
       </div>
+
+      <Suspense fallback={<LoadingScreen position={false} />}>
+        {isDeleteModalOpen && (
+          <DeleteModal
+            isOpen={isDeleteModalOpen}
+            onCancel={() => setIsDeleteModalOpen(false)}
+            onSuccess={() => onDeleteComment(id)}
+          />
+        )}
+      </Suspense>
     </div>
   );
 };

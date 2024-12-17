@@ -56,6 +56,8 @@ const CommentProvider = ({
     options,
   });
 
+  const userRights = type === 'edit' ? props.rights : undefined;
+
   const values = useMemo(
     () => ({
       comments,
@@ -64,6 +66,7 @@ const CommentProvider = ({
       editCommentId,
       options,
       type,
+      userRights,
       setEditCommentId,
       handleCreateComment,
       handleModifyComment,
