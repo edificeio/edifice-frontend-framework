@@ -80,13 +80,13 @@ export function flattenTree(
 ): FlattenedItem[] {
   return tree.reduce((acc, node) => {
     acc.push({
+      ...node,
       id: node.id,
       name: node.name,
       parentId: parentId ?? null,
       position: node.position ?? undefined,
       depth: depth ?? 0,
       children: node.children,
-      isVisible: node.isVisible,
     });
 
     if (node.children && node.children.length > 0) {
@@ -110,6 +110,7 @@ export function flattenNodes(
       const isExpanded =
         expandedNodes.has(node.id) && node.children && node.children.length > 0;
       acc.push({
+        ...node,
         id: node.id,
         name: node.name,
         isChild,
