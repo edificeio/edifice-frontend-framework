@@ -1,6 +1,6 @@
 import { IResource, ResourceType } from '../..';
 import {
-  CreateParameters,
+  HomeworksCreate,
   CreateResult,
   HomeworksUpdate,
   UpdateResult,
@@ -11,8 +11,18 @@ const APP = 'homeworks';
 const RESOURCE = 'homeworks';
 
 export class HomeworksResourceService extends ResourceService {
-  create<T extends CreateParameters>(parameters: T): Promise<CreateResult> {
-    throw new Error('Method not implemented.');
+  async create<T extends HomeworksCreate>(
+    parameters: T,
+  ): Promise<CreateResult> {
+    const thumbnail = await this.getThumbnailPath(parameters.thumbnail);
+    const res = await this.http.post<{ _id: string }>(`/homeworks`, {
+      title: parameters.name,
+      thumbnail,
+      description: parameters.description,
+      repeats: parameters.repeats,
+    });
+    this.checkHttpResponse(res);
+    return { thumbnail: thumbnail, entId: res._id } as CreateResult;
   }
   async update(parameters: HomeworksUpdate): Promise<UpdateResult> {
     const thumbnail = await this.getThumbnailPath(parameters.thumbnail);
