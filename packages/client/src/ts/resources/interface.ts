@@ -477,6 +477,10 @@ export interface CollaborativewallResource extends IResource {
   'publish-type': 'RESTRAINT' | 'IMMEDIATE';
 }
 
+export interface HomeworksUpdate extends UpdateParameters {
+  repeats?: any[];
+}
+
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ScrapbookUpdate extends UpdateParameters {}
 
