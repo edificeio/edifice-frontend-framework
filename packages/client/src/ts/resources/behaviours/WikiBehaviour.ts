@@ -29,7 +29,9 @@ export class WikiBehaviour extends AbstractBehaviourService {
   RESOURCE = 'wiki';
 
   async loadResources() {
-    const wikis = await this.httpGet<WikiData[]>('/wiki/listallpages?visible=true');
+    const wikis = await this.httpGet<WikiData[]>(
+      '/wiki/listallpages?visible=true',
+    );
     return wikis
       .map((wiki) => {
         return wiki.pages.map((page) => {
