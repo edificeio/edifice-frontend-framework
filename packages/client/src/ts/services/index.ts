@@ -1,5 +1,6 @@
 // TODO should be loaded from React app in future
 import '../resources/services/ScrapbookResourceService';
+import '../resources/services/HomeworksResourceService';
 
 import { IOdeServices, OdeServices } from './OdeServices';
 

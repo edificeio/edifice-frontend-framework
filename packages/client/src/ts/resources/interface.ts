@@ -476,6 +476,10 @@ export interface CollaborativewallResource extends IResource {
   'publish-type': 'RESTRAINT' | 'IMMEDIATE';
 }
 
+export interface HomeworksUpdate extends UpdateParameters {
+  repeats?: any[];
+}
+
 export interface ScrapbookUpdate extends UpdateParameters {}
 
 export interface ScrapbookResource extends IResource {}
