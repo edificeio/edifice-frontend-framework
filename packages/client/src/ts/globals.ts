@@ -34,6 +34,7 @@ export const APP = {
   WORKSPACE: 'workspace',
   // -- a few others commonly used apps
   EXPLORER: 'explorer',
+  HOMEWORKS: 'homeworks',
   VIDEO: 'video',
   MINDMAP: 'mindmap',
   SCRAPBOOK: 'scrapbook',
