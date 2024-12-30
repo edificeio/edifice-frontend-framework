@@ -487,3 +487,5 @@ export interface HomeworksUpdate extends UpdateParameters {
 export interface ScrapbookUpdate extends UpdateParameters {}
 
 export interface ScrapbookResource extends IResource {}
+
+export interface TimelineGeneratorUpdate extends UpdateParameters {}
