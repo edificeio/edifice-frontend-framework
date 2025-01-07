@@ -10,6 +10,10 @@ export type ListProps<T> = {
    */
   items?: ToolbarItem[];
   /**
+   * Checkable list
+   */
+  isCheckable?: boolean;
+  /**
    * Generic data
    */
   data: T[] | undefined;
@@ -25,6 +29,7 @@ export type ListProps<T> = {
 
 export const List = <T extends { _id: string }>({
   items,
+  isCheckable,
   data,
   renderNode,
   onSelectedItems,
@@ -45,11 +50,12 @@ export const List = <T extends { _id: string }>({
 
   return (
     <>
-      {items && (
+      {(items || isCheckable) && (
         <>
           <div
             className={clsx('d-flex align-items-center gap-8', {
               'px-12': items,
+              'px-12 py-12': !items?.length,
             })}
           >
             <>
@@ -61,15 +67,17 @@ export const List = <T extends { _id: string }>({
                 />
                 <span>({selectedItems.length})</span>
               </div>
-              <Toolbar
-                items={items}
-                isBlock
-                align="left"
-                variant="no-shadow"
-                className={clsx('gap-4 py-4', {
-                  'px-0 ms-auto': !isDesktopDevice,
-                })}
-              />
+              {items && (
+                <Toolbar
+                  items={items}
+                  isBlock
+                  align="left"
+                  variant="no-shadow"
+                  className={clsx('gap-4 py-4', {
+                    'px-0 ms-auto': !isDesktopDevice,
+                  })}
+                />
+              )}
             </>
           </div>
           <div className="border-top"></div>
