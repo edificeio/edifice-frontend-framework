@@ -22,7 +22,7 @@ interface AttachmentAttrsProps {
 const AttachmentRenderer = (props: AttachmentProps) => {
   const { t } = useTranslation();
 
-  const { node } = props;
+  const { node, editor } = props;
 
   const { editable } = useEditorContext();
 
@@ -30,7 +30,8 @@ const AttachmentRenderer = (props: AttachmentProps) => {
     AttachmentAttrsProps[]
   >(node.attrs.links);
 
-  const handleDelete = (index: any) => {
+  const handleDelete = (index: any, documentId: any) => {
+    editor.commands.unsetAttachment(documentId);
     setAttachmentArrayAttrs((oldAttachments) =>
       oldAttachments.filter((_, i) => i !== index),
     );
@@ -71,7 +72,9 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                           type="button"
                           icon={<IconDelete />}
                           variant="ghost"
-                          onClick={() => handleDelete(index)}
+                          onClick={() =>
+                            handleDelete(index, attachment.documentId)
+                          }
                         />
                       )}
                     </>
