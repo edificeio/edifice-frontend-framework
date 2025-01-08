@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-confusing-void-expression */
 /**
  * Modal Component
  *
@@ -84,7 +83,7 @@ const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
   const ariaDescriptionId = `aria_desc_${id}`;
 
   const modalRef = useClickOutside(onModalClose);
-  const trapRef = useTrapFocus();
+  const trapRef = useTrapFocus(isOpen);
 
   useKeyPress(onModalClose, ['Escape']);
 
