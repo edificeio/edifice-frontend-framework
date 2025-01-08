@@ -55,11 +55,14 @@ export const List = <T extends { _id: string }>({
           <div
             className={clsx('d-flex align-items-center gap-8', {
               'px-12': items,
-              'px-12 py-12': !items?.length,
             })}
           >
             <>
-              <div className="d-flex align-items-center gap-8">
+              <div
+                className={clsx('d-flex align-items-center gap-8', {
+                  'py-12': isCheckable,
+                })}
+              >
                 <Checkbox
                   checked={allItemsSelected}
                   indeterminate={isIndeterminate}
