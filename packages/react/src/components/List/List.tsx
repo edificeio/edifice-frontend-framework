@@ -29,7 +29,7 @@ export type ListProps<T> = {
 
 export const List = <T extends { _id: string }>({
   items,
-  isCheckable,
+  isCheckable = false,
   data,
   renderNode,
   onSelectedItems,
