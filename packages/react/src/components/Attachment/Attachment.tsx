@@ -22,7 +22,7 @@ const Attachment = forwardRef(
     ref: Ref<HTMLDivElement>,
   ) => {
     return (
-      <div ref={ref} className="attachment px-12 py-8" {...restProps}>
+      <div ref={ref} className="attachment px-12 py-8" {...restProps} tabIndex={0}>
         <Tooltip
           message={name}
           className="filename text-truncate d-flex align-items-center gap-8"
