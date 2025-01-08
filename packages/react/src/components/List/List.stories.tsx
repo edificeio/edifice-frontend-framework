@@ -20,7 +20,7 @@ const meta: Meta<typeof List> = {
     docs: {
       description: {
         component:
-          'The `List` component provides a flexible way to display collections of items with optional toolbar actions. It supports various item types and interactive elements like icons and tooltips. Features include:\n\n- Customizable list items with icons and text\n- Optional toolbar with action buttons\n- Tooltip support for actions\n- Flexible styling options\n- Support for selection and interaction states',
+          'The `List` component provides a flexible way to display collections of items with optional toolbar actions. It supports various item types and interactive elements like icons and tooltips. Features include:\n\n- Customizable list items with icons and text\n- Optional toolbar with action buttons\n- Optional checkbox for all data\n- Tooltip support for actions\n- Flexible styling options\n- Support for selection and interaction states',
       },
     },
   },
@@ -141,6 +141,32 @@ export const ListWithToolbar: Story = {
 };
 
 export const ListWithCheckboxes: Story = {
+  render: (args) => {
+    return (
+      <>
+        <List
+          isCheckable={true}
+          data={data}
+          renderNode={(node, checkbox, checked) => (
+            <div
+              className={clsx('grid gap-24 px-12 py-8 mb-2', {
+                'bg-secondary-200 rounded': checked,
+              })}
+              style={{ '--edifice-columns': 8 } as React.CSSProperties}
+            >
+              <div className="d-flex align-items-center gap-8 g-col-3">
+                {checkbox}
+                <p className="text-truncate text-truncate-2">{node.title}</p>
+              </div>
+            </div>
+          )}
+        />
+      </>
+    );
+  },
+};
+
+export const ListWithCheckboxesAndToolbar: Story = {
   render: (args) => {
     return (
       <>
