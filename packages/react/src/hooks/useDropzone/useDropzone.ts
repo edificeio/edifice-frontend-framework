@@ -68,6 +68,7 @@ const useDropzone = (props?: {
           type: file.type,
         }),
     );
+    filesToAdd.reverse();
     if (props?.forceFilters) {
       filesToAdd = applyInputFiltersOn(filesToAdd);
       if (filesToAdd && filesToAdd.length)
