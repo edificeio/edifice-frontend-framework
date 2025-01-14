@@ -36,6 +36,9 @@ export const publishOptions = {
     'develop-hotfix': {
       prerelease: true,
     },
+    'develop-enabling': {
+      prerelease: true,
+    },
     'develop-rc': {
       prerelease: true,
     },
