@@ -10,6 +10,10 @@ export type ListProps<T> = {
    */
   items?: ToolbarItem[];
   /**
+   * Checkable list
+   */
+  isCheckable?: boolean;
+  /**
    * Generic data
    */
   data: T[] | undefined;
@@ -21,13 +25,19 @@ export type ListProps<T> = {
    * Callback to get selected ids
    */
   onSelectedItems?: (selectedIds: string[]) => void;
+  /**
+   * Custom class name
+   */
+  className?: string;
 };
 
 export const List = <T extends { _id: string }>({
   items,
+  isCheckable = false,
   data,
   renderNode,
   onSelectedItems,
+  className,
 }: ListProps<T>) => {
   const {
     selectedItems,
@@ -45,15 +55,16 @@ export const List = <T extends { _id: string }>({
 
   return (
     <>
-      {items && (
+      {(items || isCheckable) && (
         <>
           <div
-            className={clsx('d-flex align-items-center gap-8', {
-              'px-12': items,
-            })}
+            className={clsx(
+              'list-header d-flex align-items-center gap-8 px-12',
+              className,
+            )}
           >
             <>
-              <div className="d-flex align-items-center gap-8">
+              <div className="d-flex align-items-center gap-8 py-12">
                 <Checkbox
                   checked={allItemsSelected}
                   indeterminate={isIndeterminate}
@@ -61,15 +72,17 @@ export const List = <T extends { _id: string }>({
                 />
                 <span>({selectedItems.length})</span>
               </div>
-              <Toolbar
-                items={items}
-                isBlock
-                align="left"
-                variant="no-shadow"
-                className={clsx('gap-4 py-4', {
-                  'px-0 ms-auto': !isDesktopDevice,
-                })}
-              />
+              {items && (
+                <Toolbar
+                  items={items}
+                  isBlock
+                  align="left"
+                  variant="no-shadow"
+                  className={clsx('gap-4 py-4', {
+                    'px-0 ms-auto': !isDesktopDevice,
+                  })}
+                />
+              )}
             </>
           </div>
           <div className="border-top"></div>
@@ -77,14 +90,15 @@ export const List = <T extends { _id: string }>({
       )}
       <div className="mt-8">
         {data?.map((node) => {
+          const checked = selectedItems.includes(node._id);
           const checkbox = (
             <Checkbox
-              checked={selectedItems.includes(node._id)}
+              checked={checked}
               onChange={() => handleOnSelectItem(node._id)}
+              onClick={(event) => event.stopPropagation()}
             />
           );
 
-          const checked = selectedItems.includes(node._id);
           return (
             <Fragment key={node._id}>
               {renderNode(node, checkbox, checked)}
