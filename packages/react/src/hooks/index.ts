@@ -1,4 +1,3 @@
-export * from './useAvatar';
 export * from './useBookmark';
 export * from './useBreakpoint';
 export * from './useBrowserInfo';
