@@ -55,12 +55,37 @@ const items: ToolbarItem[] = [
 
 ## renderNode with checkboxes
 
+By passing `isCheckable`, you make the list checkable. A checkbox will appear to the left of the Toolbar and will give you access to two new props in the `renderNode` prop: `checkbox` and `checked`.
+
+- `checkbox` is the Checkbox component that you can use to render anywhere in your JSX within the `renderNode` prop.
+- `checked` is the state of the currently selected checkbox, allowing you to style your code accordingly.
+
+<Canvas of={listStories.ListWithCheckboxes} />
+
+```jsx
+renderNode={(node, checkbox, checked) => (
+  <div
+    className={clsx("grid gap-24 px-12 py-8 mb-2", {
+      "bg-secondary-200 rounded": checked,
+    })}
+    style={{ "--edifice-columns": 8 } as React.CSSProperties}
+  >
+    <div className="d-flex align-items-center gap-8 g-col-3">
+      {checkbox}
+      <p className="text-truncate text-truncate-2">{node.title}</p>
+    </div>
+  </div>
+)}
+```
+
+## renderNode with checkboxes and toolbar
+
 By passing `items` to the List component, you provide actions to your component and make the list checkable. A checkbox will appear to the left of the Toolbar and will give you access to two new props in the `renderNode` prop: `checkbox` and `checked`.
 
 - `checkbox` is the Checkbox component that you can use to render anywhere in your JSX within the `renderNode` prop.
 - `checked` is the state of the currently selected checkbox, allowing you to style your code accordingly.
 
-<Canvas of={listStories.ListWithCheckboxes} sourceState="none" />
+<Canvas of={listStories.ListWithCheckboxesAndToolbar} sourceState="none" />
 
 ```jsx
 renderNode={(node, checkbox, checked) => (
