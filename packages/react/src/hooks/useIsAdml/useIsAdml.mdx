@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useIsAdml" />
+
+# useIsAdml
+
+This hook is used to determine if the current user has administrative privileges.
+
+## Usage
+
+```typescript
+import useIsAdml from './useIsAdml';
+
+function MyComponent() {
+  const { isAdml } = useIsAdml();
+
+  return (
+    <div>
+      {isAdml ? 'User is an admin' : 'User is not an admin'}
+    </div>
+  );
+}
+```
+
+## Return Value
+
+- **isAdml** (`boolean`): Indicates if the user is an admin.
+
+## Example
+
+```typescript
+    const { isAdml } = useIsAdml();
+    return <div>{isAdml ? 'User is an admin' : 'User is not an admin'}</div>;
+```

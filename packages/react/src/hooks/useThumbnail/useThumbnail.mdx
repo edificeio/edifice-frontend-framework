@@ -1,0 +1,38 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useThumbnail" />
+
+# useThumbnail
+
+The `useThumbnail` hook preloads a `src` URL and returns `true` if it is available.
+
+## Parameters
+
+- `src` (string): The URL to preload.
+- `options` (LazyLoadOptions, optional): If defined, lazy-load the `src` URL when ref is defined and visible, with respect to the [`intersectionOptions`](https://github.com/thebuilder/react-intersection-observer/tree/dceba7f52aebea4d62d539bc55a1db129226bb6c?tab=readme-ov-file#options).
+
+## Returns
+
+- `boolean | null`: `true` if `src` is available, `false` otherwise, or `null` while not tested.
+
+## Example
+
+```jsx
+import React, { useRef } from 'react';
+import useThumbnail from './useThumbnail';
+
+const ThumbnailComponent = ({ src }) => {
+  const ref = useRef(null);
+  const isThumbnailAvailable = useThumbnail(src, { ref });
+
+  return (
+    <div ref={ref}>
+      {isThumbnailAvailable === null && <p>Loading...</p>}
+      {isThumbnailAvailable === true && <img src={src} alt="Thumbnail" />}
+      {isThumbnailAvailable === false && <p>Thumbnail not available</p>}
+    </div>
+  );
+};
+
+export default ThumbnailComponent;
+```

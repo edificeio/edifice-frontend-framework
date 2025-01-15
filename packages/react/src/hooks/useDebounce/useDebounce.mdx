@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useDebounce" />
+
+# useDebounce
+
+The `useDebounce` hook delays updating the state until after a specified delay.
+
+## Usage
+
+```typescript
+import useDebounce from './useDebounce';
+
+function Component() {
+  const [value, setValue] = useState('');
+  const debouncedValue = useDebounce(value, 500);
+
+  useEffect(() => {
+    // Do something with debouncedValue
+  }, [debouncedValue]);
+
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+```
+
+## Parameters
+
+- `value` (T): The value to be debounced.
+- `delay` (number, optional): The delay in milliseconds. Defaults to 500ms.
+
+## Returns
+
+- `debouncedValue` (T): The debounced value.
+
+## Example
+
+```typescript
+import React, { useState } from 'react';
+import useDebounce from './useDebounce';
+
+function SearchInput() {
+  const [query, setQuery] = useState('');
+  const debouncedQuery = useDebounce(query, 300);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      // Fetch data or perform some action with debouncedQuery
+    }
+  }, [debouncedQuery]);
+
+  return (
+    <input
+      type="text"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+      placeholder="Search..."
+    />
+  );
+}
+```

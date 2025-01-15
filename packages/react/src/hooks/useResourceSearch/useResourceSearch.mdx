@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useResourceSearch" />
+
+# useResourceSearch
+
+A hook to search for resources produced by applications.
+
+## Warning
+
+⚠️ This hook is for internal use only and is not exported.
+
+## Parameters
+
+- `appCode` (App): Currently running application.
+
+## Returns
+
+An object with 2 fields:
+
+- `resourceApplications: Array<App>`: Resources-producing applications the user can use.
+- `loadResources: (filters: GetContextParameters) => Promise<ILinkedResource[]>`: A search method with filters.
+
+> **Warning**
+> This hook is for internal use only and is not exported from the library.
+
+## Example
+
+```typescript
+import { useResourceSearch } from 'path-to-hook';
+
+const { resourceApplications, loadResources } = useResourceSearch(appCode);
+
+// Use resourceApplications and loadResources as needed
+```

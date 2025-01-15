@@ -1,0 +1,56 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useEdificeIcons" />
+
+# useEdificeIcons
+
+This hook provides utility functions to get CSS classes for icons based on app or widget names.
+
+## Usage
+
+```typescript
+import useEdificeIcons from './useEdificeIcons';
+
+const {
+  getIconClass,
+  getBackgroundIconClass,
+  getBackgroundLightIconClass,
+  getIconCode,
+  getWidgetIconClass,
+  isIconUrl,
+} = useEdificeIcons();
+```
+
+## Functions
+
+- `getIconClass(app: IWebApp | string): string`
+
+Returns the CSS class used to style icons for the given app.
+
+- `getBackgroundIconClass(app: IWebApp | string): string`
+
+Returns the CSS class used to style background icons for the given app.
+
+- `getBackgroundLightIconClass(app: IWebApp | string): string`
+
+Returns the CSS class used to style light background icons for the given app.
+
+- `getIconCode(app: IWebApp | string): string`
+
+Returns the icon code for the given app.
+
+- `getWidgetIconClass(widget: IWidget): string`
+
+Returns the CSS class of a widget icon.
+
+- `isIconUrl(icon: string): string | boolean`
+
+Checks if the given icon string is a URL.
+
+## Example
+
+```typescript
+const { getIconClass } = useEdificeIcons();
+const iconClass = getIconClass('calendar-widget');
+console.log(iconClass); // Output: color-app-calendar-widget
+```

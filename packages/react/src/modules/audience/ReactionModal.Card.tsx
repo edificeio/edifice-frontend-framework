@@ -1,7 +1,7 @@
 import { ReactionDetailsData } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Avatar } from '../../components';
-import { useAvatar } from '../../hooks';
+import { useDirectory } from '../../hooks';
 import useReactionIcons from './hooks/useReactionIcons';
 
 export function ReactionModalCard({
@@ -10,7 +10,7 @@ export function ReactionModalCard({
   reaction: ReactionDetailsData['userReactions'][number];
 }) {
   const { t } = useTranslation();
-  const { avatarURL } = useAvatar(reaction.userId, reaction.profile);
+  const { getAvatarURL } = useDirectory();
   const { getReactionIcon, getReactionLabel } = useReactionIcons();
 
   return (
@@ -19,7 +19,7 @@ export function ReactionModalCard({
         <Avatar
           variant="circle"
           size="md"
-          src={avatarURL}
+          src={getAvatarURL(reaction.userId, 'user')}
           alt={reaction.displayName}
         />
         <div className="position-absolute end-0 bottom-0">

@@ -1,0 +1,54 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useZendeskGuide" />
+
+# useZendeskGuide
+
+The `useZendeskGuide` hook integrates the Zendesk Guide widget into your application. It configures the widget based on user roles, profiles, and themes, and dynamically updates the widget's settings based on the current page and user interactions.
+
+## Usage
+
+```tsx
+import useZendeskGuide from './useZendeskGuide';
+
+const MyComponent = () => {
+  useZendeskGuide();
+
+  return <div>My Component</div>;
+};
+```
+
+## Hook Details
+
+### Returns
+
+- `null`
+
+### Dependencies
+
+- `useEdificeClient`: Provides the current language.
+- `useUser`: Provides user description and profiles.
+- `useIsAdml`: Determines if the user has admin privileges.
+- `useEdificeTheme`: Provides the current theme.
+- `useHasWorkflow`: Checks if the user has access to specific workflows.
+
+### Effects
+
+- Loads the Zendesk Guide widget script.
+- Configures the widget based on the current language, user roles, profiles, and theme.
+- Updates the widget's settings dynamically based on the current page and user interactions.
+
+### Example
+
+```tsx
+import React from 'react';
+import useZendeskGuide from './useZendeskGuide';
+
+const ExampleComponent = () => {
+  useZendeskGuide();
+
+  return <div>Example Component with Zendesk Guide</div>;
+};
+
+export default ExampleComponent;
+```
