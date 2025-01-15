@@ -22,3 +22,4 @@ catalog:
   'turbo': ^2.3.1
   '@react-spring/web': ^9.7.5
   'clsx': ^2.1.1
+  '@tiptap/core': '2.11.0'
