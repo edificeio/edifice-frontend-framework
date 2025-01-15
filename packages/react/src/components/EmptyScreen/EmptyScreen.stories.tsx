@@ -6,6 +6,7 @@ import illuBlog from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-blog.sv
 import illuCollaborativeEditor from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-collaborativeeditor.svg';
 import illuCollaborativeWall from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-collaborativewall.svg';
 import illuExercizer from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-exercizer.svg';
+import illuMessagerie from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-messagerie.svg';
 import illuMindmap from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-mindmap.svg';
 import illuScrapbook from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-scrapbook.svg';
 import illuSearch from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-search.svg';
@@ -24,6 +25,7 @@ const meta: Meta<typeof EmptyScreen> = {
         'illu-collaborativeeditor',
         'illu-collaborativewall',
         'illu-exercizer',
+        'illu-messagerie',
         'illu-mindmap',
         'illu-scrapbook',
         'illu-search',
@@ -35,6 +37,7 @@ const meta: Meta<typeof EmptyScreen> = {
         'illu-collaborativeeditor': illuCollaborativeEditor,
         'illu-collaborativewall': illuCollaborativeWall,
         'illu-exercizer': illuExercizer,
+        'illu-messagerie': illuMessagerie,
         'illu-mindmap': illuMindmap,
         'illu-scrapbook': illuScrapbook,
         'illu-search': illuSearch,
@@ -85,6 +88,16 @@ export const Mindmap: Story = {
     imageSrc: 'illu-mindmap',
     title: 'Une carte pour faire grandir les idées !',
     text: 'Avec la carte mentale, les idées se transforment en schémas structurés. Fiches de lecture, prise de notes, présentations orales… on mémorise tout plus facilement.',
+  },
+};
+
+export const Messagerie: Story = {
+  render: Template,
+
+  args: {
+    imageSrc: 'illu-messagerie',
+    title: 'Pas l’ombre d’un message pour le moment...',
+    text: 'Avec la Messagerie, communiquez facilement avec la communauté de l’école. Vos messages prennent leur envol !',
   },
 };
 
