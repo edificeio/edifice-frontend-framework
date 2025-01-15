@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useResource" />
+
+# useResource
+
+The `useResource` hook is used to fetch a resource from the `odeServices` based on the provided application and id.
+
+## Warning
+
+⚠️ This hook is for internal use only and is not exported.
+
+## Usage
+
+```typescript
+import { useResource } from '@edifice.io/client';
+
+const MyComponent = () => {
+  const resource = useResource('myApplication', 'resourceId');
+
+  if (!resource) {
+    return <div>Loading...</div>;
+  }
+
+  return <div>{resource.name}</div>;
+};
+```
+
+## Parameters
+
+- `application` (string): The application name.
+- `id` (string): The resource ID.
+
+## Returns
+
+- `resource` (IResource | null): The fetched resource or null if not yet fetched.
+
+## Example
+
+```typescript
+const resource = useResource('myApplication', 'resourceId');
+return <div>{resource ? resource.name : 'Loading...'}</div>;
+```

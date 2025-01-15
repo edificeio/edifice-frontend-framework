@@ -10,12 +10,7 @@ import {
   PopoverFooter,
   VisuallyHidden,
 } from '../..';
-import {
-  useConversation,
-  useHasWorkflow,
-  useHeader,
-  useUser,
-} from '../../../hooks';
+import { useConversation, useHasWorkflow, useUser } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 
@@ -33,6 +28,7 @@ import {
   IconUserbook,
 } from '../../../modules/icons/components/nav';
 import { useHelp } from '../hooks';
+import useHeader from '../hooks/useHeader';
 import Help from './Help';
 import { Navbar } from './Navbar';
 import { NavBarNav } from './NavbarNav';

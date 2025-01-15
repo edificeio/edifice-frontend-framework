@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useUpload" />
+
+# useUpload
+
+The `useUpload` hook provides functionality to upload files and blobs, track their upload status, and handle video reencoding.
+
+## Usage
+
+```typescript
+import { useUpload } from '@edifice.io/react';
+
+const MyComponent = () => {
+  const {
+    getUploadStatus,
+    setUploadStatus,
+    clearUploadStatus,
+    uploadFile,
+    uploadAlternateFile,
+    uploadBlob,
+  } = useUpload();
+
+  // Example usage
+  const handleFileUpload = async (file: File) => {
+    const resource = await uploadFile(file);
+    console.log(resource);
+  };
+
+  return (
+    <input
+      type="file"
+      onChange={(e) => {
+        if (e.target.files) {
+          handleFileUpload(e.target.files[0]);
+        }
+      }}
+    />
+  );
+};
+```
+
+## API
+
+### `useUpload(visibility?: WorkspaceVisibility, application: string = 'media-library')`
+
+#### Parameters
+
+- `visibility` (optional): The visibility of the workspace element.
+- `application` (optional): The application context for the upload. Defaults to `'media-library'`.
+
+#### Returns
+
+- `getUploadStatus(upload: File | Blob): Status | undefined`: Get the status of a file or blob being uploaded.
+- `setUploadStatus(blob: File | Blob, status: Status): void`: Set the status of an uploaded file or blob.
+- `clearUploadStatus(blob: File | Blob): void`: Reset the status of an uploaded file or blob.
+- `uploadFile(file: File, metadata?: { duration: number }): Promise<WorkspaceElement | null>`: Upload a file.
+- `uploadAlternateFile(original: File, replacement: File, metadata?: { duration: number }): Promise<WorkspaceElement | null>`: Upload an alternate file.
+- `uploadBlob(blob: Blob, metadata?: { filename?: string; duration?: number }): Promise<WorkspaceElement | null>`: Upload a blob.

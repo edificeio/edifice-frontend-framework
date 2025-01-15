@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useCantoo" />
+
+# useCantoo
+
+Custom hook to load the Cantoo script if the workflow is available.
+
+## Usage
+
+```tsx
+import useCantoo from './useCantoo';
+
+const MyComponent = () => {
+  useCantoo();
+
+  return <div>My Component</div>;
+};
+```
+
+## Details
+
+This hook checks if the optional Cantoo feature is enabled by using the `useHasWorkflow` hook.
+If the feature is enabled and the Cantoo script is not already present in the document,
+it fetches the script path from the server and dynamically adds the script to the document.
+
+### Returns
+
+- `null`: This hook does not return any value.
+
+### Example
+
+```tsx
+import React from 'react';
+import useCantoo from './useCantoo';
+
+const ExampleComponent = () => {
+  useCantoo();
+
+  return <div>Example Component</div>;
+};
+
+export default ExampleComponent;
+```

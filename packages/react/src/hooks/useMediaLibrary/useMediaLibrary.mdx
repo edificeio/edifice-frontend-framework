@@ -1,0 +1,56 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useMediaLibrary" />
+
+# useMediaLibrary
+
+The `useMediaLibrary` hook provides functionalities to manage media library operations such as handling media uploads, cancellations, and tab changes.
+
+## Usage
+
+```typescript
+import useMediaLibrary from './useMediaLibrary';
+
+const MyComponent = () => {
+  const {
+    ref,
+    libraryMedia,
+    setLibraryMedia,
+    onCancel,
+    onSuccess,
+    onTabChange,
+  } = useMediaLibrary();
+
+  // ...component logic...
+
+  return (
+    // ...JSX...
+  );
+};
+```
+
+## API
+
+### `ref`
+
+A reference to the media library.
+
+### `libraryMedia`
+
+The current state of the media library.
+
+### `setLibraryMedia`
+
+A function to update the state of the media library.
+
+### `onCancel`
+
+A function to handle the cancellation of media uploads.
+
+### `onSuccess`
+
+A function to handle the successful upload of media.
+
+### `onTabChange`
+
+A function to handle tab changes in the media library.

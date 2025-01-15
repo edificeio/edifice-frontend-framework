@@ -1,0 +1,58 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useWorkspaceSearch" />
+
+# useWorkspaceSearch
+
+The `useWorkspaceSearch` hook is used to manage a tree of `TreeNodes` (which can be rendered in a `TreeView`), starting at its `root`. Each node is a folder, with its sub-folders as children (also `TreeNodes`) and an array of contained `files` (`WorkspaceElement[]`).
+
+## Parameters
+
+- `rootId: string` - The ID of the root node.
+- `rootName: string` - The name of the root node.
+- `filter: WorkspaceSearchFilter` - The filter to apply when searching for workspace elements.
+- `format: Role | Role[] | null` - The role or roles to filter the workspace elements by.
+
+## Returns
+
+- `root: FolderNode` - The root node of the tree.
+- `loadContent: (folderId?: ID) => void` - A function to load the content of a folder by its ID.
+
+## Example
+
+```typescript
+import useWorkspaceSearch from './useWorkspaceSearch';
+
+const { root, loadContent } = useWorkspaceSearch('rootId', 'rootName', filter, format);
+
+useEffect(() => {
+  loadContent();
+}, [loadContent]);
+
+return <TreeView data={root} />;
+```
+
+## Reducer
+
+The `treeReducer` function is used to update the state of the tree. It takes the current state and an action as parameters and returns the new state.
+
+### Action Types
+
+- `update` - Updates the subfolders and files of a folder.
+
+## Usage
+
+The `useWorkspaceSearch` hook is used to manage the state of a tree of workspace elements. It provides a `loadContent` function to load the content of a folder by its ID and updates the state of the tree accordingly.
+
+```typescript
+const { root, loadContent } = useWorkspaceSearch(
+  'rootId',
+  'rootName',
+  filter,
+  format,
+);
+
+useEffect(() => {
+  loadContent('folderId');
+}, [loadContent]);
+```

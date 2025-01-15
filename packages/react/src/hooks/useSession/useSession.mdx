@@ -1,0 +1,48 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useSession" />
+
+# useSession Hook
+
+The `useSession` hook is used to fetch the current session information using the `odeServices` client.
+
+## Warning
+
+⚠️ This hook is for internal use only and is not exported.
+
+## Usage
+
+```typescript
+import useSession from './useSession';
+
+function MyComponent() {
+  const { data, error, isLoading } = useSession();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return <div>Session Data: {JSON.stringify(data)}</div>;
+}
+```
+
+## Return Value
+
+The `useSession` hook returns the result of the `useQuery` hook from `@tanstack/react-query`, which includes:
+
+- `data`: The session data of type `IGetSession`.
+- `error`: Any error that occurred during the fetch.
+- `isLoading`: A boolean indicating if the query is currently loading.
+
+## Query Key
+
+The query key used for this hook is `['session']`.
+
+## Query Function
+
+The query function used for this hook is:
+
+```typescript
+async function getSession() {
+  return await odeServices.session().getSession();
+}
+```

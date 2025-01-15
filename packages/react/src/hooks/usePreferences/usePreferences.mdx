@@ -1,0 +1,68 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/usePreferences" />
+
+# usePreferences
+
+The `usePreferences` hook provides methods to get and save user preferences.
+
+## Usage
+
+```typescript
+import usePreferences from './usePreferences';
+
+const { getPreference, savePreference } = usePreferences('preferenceName');
+
+const fetchPreference = async () => {
+  const preference = await getPreference();
+  console.log(preference);
+};
+
+const storePreference = async (value: any) => {
+  await savePreference(value);
+};
+```
+
+## API
+
+### `usePreferences(name: string)`
+
+#### Parameters
+
+- `name` (`string`): The name of the preference to get or save.
+
+#### Returns
+
+- `getPreference` (`function`): An asynchronous function to get the preference.
+- `savePreference` (`function`): An asynchronous function to save the preference.
+
+### `getPreference(): Promise<any>`
+
+Fetches the preference value.
+
+### `savePreference(value: any): Promise<void>`
+
+Saves the preference value.
+
+## Example
+
+```typescript
+    const { getPreference, savePreference } = usePreferences('examplePreference');
+
+    // Example usage
+    const handleGetPreference = async () => {
+    const preference = await getPreference();
+    console.log(preference);
+    };
+
+    const handleSavePreference = async () => {
+    await savePreference({ key: 'value' });
+    };
+
+    return (
+    <div>
+        <button onClick={handleGetPreference}>Get Preference</button>
+        <button onClick={handleSavePreference}>Save Preference</button>
+    </div>
+    );
+```

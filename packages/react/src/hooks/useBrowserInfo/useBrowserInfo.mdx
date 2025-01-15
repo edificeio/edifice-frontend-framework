@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useBrowserInfo" />
+
+# useBrowserInfo
+
+The `useBrowserInfo` hook provides information about the user's browser, operating system, and device.
+
+## Usage
+
+```typescript
+import useBrowserInfo from './useBrowserInfo';
+
+const Component = () => {
+  const { os, device, browser, isIphone, isIpod, isIpad } = useBrowserInfo();
+
+  return (
+    <div>
+      <p>OS: {os.name} {os.version}</p>
+      <p>Device: {device.vendor} {device.model}</p>
+      <p>Browser: {browser.name} {browser.version}</p>
+      <p>Is iPhone: {isIphone ? 'Yes' : 'No'}</p>
+      <p>Is iPod: {isIpod ? 'Yes' : 'No'}</p>
+      <p>Is iPad: {isIpad ? 'Yes' : 'No'}</p>
+    </div>
+  );
+};
+```
+
+## Parameters
+
+- `userAgent` (optional): A string representing the user agent. If not provided, the hook will use the default user agent of the browser.
+
+## Returns
+
+An object containing the following properties:
+
+- `os`: An object with information about the operating system.
+- `device`: An object with information about the device.
+- `browser`: An object with information about the browser.
+- `isIphone`: A boolean indicating if the device is an iPhone.
+- `isIpod`: A boolean indicating if the device is an iPod.
+- `isIpad`: A boolean indicating if the device is an iPad.
