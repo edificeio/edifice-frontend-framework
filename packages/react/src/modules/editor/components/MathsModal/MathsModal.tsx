@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Mathematics from '@tiptap-pro/extension-mathematics';
 import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal } from '../../../../components';
 
@@ -51,7 +50,7 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
     onCancel?.();
   };
 
-  return createPortal(
+  return (
     <Modal id="MathsModal" isOpen={isOpen} onModalClose={handleOnCancel}>
       <Modal.Header onModalClose={handleOnCancel}>
         {t('tiptap.maths.title')}
@@ -100,8 +99,7 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
           {t('tiptap.maths.add')}
         </Button>
       </Modal.Footer>
-    </Modal>,
-    document.getElementById('portal') as HTMLElement,
+    </Modal>
   );
 };
 

@@ -106,6 +106,8 @@ i18n.use(initReactI18next).init({
         'tiptap.tooltip.upload.loaded': 'File loaded',
         'tiptap.upload.error': 'Error during upload',
         'tiptap.upload.retry': 'Retry',
+        'editor.option.undo': 'Undo',
+        'editor.option.redo': 'Redo',
         'comment.author.avatar': 'Author avatar',
         'comment.publish.date': 'Published [[date]]',
         'comment.update.date': 'Modified [[date]]',

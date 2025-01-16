@@ -34,7 +34,7 @@ import { useEdificeClient } from '../../../../providers/EdificeClientProvider/Ed
 import { MediaLibrary } from '../../../multimedia';
 import { useMathsStyles } from '../../hooks/useMathsStyles';
 
-const MathsModal = lazy(async () => await import('./MathsModal'));
+const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
 
 const ImageEditor = lazy(
   async () =>
