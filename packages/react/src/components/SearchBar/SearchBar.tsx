@@ -7,8 +7,10 @@ import { IconSearch } from '../../modules/icons/components';
 import { Size } from '../../types';
 import { SearchButton } from '../Button';
 import FormControl from '../Form/FormControl';
+import { InputProps } from '../Input';
 
-export interface BaseProps {
+export interface BaseProps
+  extends Omit<React.ComponentPropsWithoutRef<'input'>, 'size'> {
   /**
    * String or Template literal with React i18next namespace
    */
@@ -83,6 +85,13 @@ const SearchBar = ({
     onClick?.();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
     <FormControl id="search-bar" className={searchbar}>
       {isVariant && (
@@ -98,6 +107,7 @@ const SearchBar = ({
         className={input}
         onChange={onChange}
         disabled={disabled}
+        onKeyDown={handleKeyDown}
         {...restProps}
       />
       {!isVariant && (
