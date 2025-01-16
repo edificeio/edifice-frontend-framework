@@ -26,7 +26,8 @@ export const useCheckable = <T extends { _id: string }>(
     });
   };
 
-  const allItemsSelected = selectedItems?.length === data?.length;
+  const allItemsSelected =
+    selectedItems?.length === data?.length && data?.length > 0;
   const isIndeterminate = data
     ? selectedItems?.length > 0 && selectedItems?.length < data?.length
     : false;
