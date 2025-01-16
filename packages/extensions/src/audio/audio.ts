@@ -23,8 +23,11 @@ declare module '@tiptap/core' {
 
 export const Audio = Node.create({
   name: 'audio',
+  group: 'inline',
 
-  group: 'block',
+  inline: true,
+  selectable: true,
+  draggable: true,
 
   addAttributes() {
     return {
