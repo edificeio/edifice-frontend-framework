@@ -40,6 +40,7 @@ export const APP = {
   SCRAPBOOK: 'scrapbook',
   COLLABORATIVEWALL: 'collaborativewall',
   WIKI: 'wiki',
+  TIMELINEGENERATOR: 'timelinegenerator',
 
   // TODO compléter/trier les apps suivantes
   /*
