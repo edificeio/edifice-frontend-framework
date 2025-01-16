@@ -4,5 +4,6 @@ export * from './ImageEditor';
 export * from './ImagePicker';
 export * from './Linker';
 export * from './MediaLibrary';
+export * from './VideoEmbed';
 export * from './VideoRecorder';
 export * from './Workspace';
