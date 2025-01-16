@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import SearchBar, { SearchBarProps } from './SearchBar';
+import { useState } from 'react';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof SearchBar> = {
@@ -24,7 +25,7 @@ const meta: Meta<typeof SearchBar> = {
   },
   args: {
     isVariant: false,
-    onClick: () => {},
+    onClick: () => console.log('Search clicked'),
     onChange: () => {},
     size: 'md',
     placeholder: 'Search something....',
@@ -38,6 +39,31 @@ const Template = (args: SearchBarProps) => <SearchBar {...args} />;
 
 export const Base: Story = {
   render: Template,
+};
+
+export const SearchValue: Story = {
+  render: (args: SearchBarProps) => {
+    const [value, setValue] = useState('Search value');
+    return (
+      <SearchBar
+        {...args}
+        value={value}
+        onChange={(element) => setValue(element.target.value)}
+      />
+    );
+  },
+};
+
+export const SearchDefaultValue: Story = {
+  render: (args: SearchBarProps) => (
+    <SearchBar
+      {...args}
+      onChange={(element) => console.log(element.target.value)}
+    />
+  ),
+  args: {
+    defaultValue: 'Search default value',
+  },
 };
 
 export const DynamicSearch: Story = {
