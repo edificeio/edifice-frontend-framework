@@ -490,3 +490,5 @@ export interface ScrapbookUpdate extends UpdateParameters {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ScrapbookResource extends IResource {}
+
+export interface TimelineGeneratorUpdate extends UpdateParameters {}
