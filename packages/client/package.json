@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/client",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Edifice TypeScript Client",
   "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/client#readme",
   "bugs": {
