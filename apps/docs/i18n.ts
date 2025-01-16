@@ -180,6 +180,9 @@ i18n.use(initReactI18next).init({
         'sort.order.alpha.desc': 'Desc order',
         'defaultPalette': 'Default palette',
         'accessiblePalette': 'Accessible palette',
+        'explorer.emptyScreen.trash.title': "It's empty here!",
+        'workspace.empty.docSpace':
+          'No resource in the document space for the moment.',
       },
     },
   },
