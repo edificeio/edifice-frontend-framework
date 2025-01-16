@@ -10,8 +10,6 @@ const AudioRenderer = (props: AudioProps) => {
 
   return (
     <NodeViewWrapper
-      as="span"
-      contentEditable={false}
       style={{ display: 'inline-block', width: 'fit-content' }}
     >
       <div className="audio-wrapper" data-drag-handle>
