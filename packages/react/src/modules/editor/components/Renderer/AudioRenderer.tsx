@@ -9,8 +9,12 @@ const AudioRenderer = (props: AudioProps) => {
   const { node } = props;
 
   return (
-    <NodeViewWrapper>
-      <div className="audio-wrapper">
+    <NodeViewWrapper
+      as="span"
+      contentEditable={false}
+      style={{ display: 'inline-block', width: 'fit-content' }}
+    >
+      <div className="audio-wrapper" data-drag-handle>
         <audio src={node.attrs.src} controls data-document-id={node.attrs.src}>
           <track kind="captions" />
         </audio>
