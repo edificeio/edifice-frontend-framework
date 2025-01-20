@@ -152,7 +152,7 @@ export const UpdateComment: Story = {
       {
         id: 'a2b1-cdf3',
         comment: 'This is my first comment',
-        authorId: 'f6c5ea40',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
         authorName: 'John Doe',
         createdAt: 1726757643336,
         updatedAt: 1726757643336,
@@ -167,6 +167,8 @@ export const UpdateComment: Story = {
       updateComment.comment = comment;
       setComments([updateComment]);
     };
+
+    console.log({ comments });
 
     return (
       <CommentProvider
@@ -189,7 +191,7 @@ export const DeleteComment: Story = {
       {
         id: 'a2b1-cdf3',
         comment: 'This is my first comment',
-        authorId: 'f6c5ea40',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
         authorName: 'John Doe',
         createdAt: 1726757643336,
         updatedAt: 1726757643336,

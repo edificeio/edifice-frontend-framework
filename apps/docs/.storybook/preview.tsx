@@ -104,7 +104,7 @@ const preview: Preview = {
               status: 'ok',
               result: [
                 {
-                  id: 'user-id',
+                  id: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
                   login: 'user.login',
                   displayName: 'User Name',
                   type: ['Teacher'],
@@ -121,9 +121,10 @@ const preview: Preview = {
                   relatedName: null,
                   relatedId: null,
                   relatedType: null,
-                  userId: 'user-id',
+                  userId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
                   motto: '',
-                  photo: '/userbook/avatar/user-id',
+                  photo:
+                    '/userbook/avatar/91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
                   mood: 'default',
                   health: '',
                   address: '',
@@ -246,7 +247,7 @@ const preview: Preview = {
                   ancestors: [],
                   created: '2023-11-22 11:12.49.795',
                   modified: '2023-11-22 11:12.49.795',
-                  owner: 'user-id',
+                  owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
                   ownerName: 'User Name',
                   eType: 'file',
                 },
@@ -271,7 +272,7 @@ const preview: Preview = {
                   ancestors: [],
                   created: '2024-01-16 11:36.06.896',
                   modified: '2024-01-16 11:36.06.896',
-                  owner: 'user-id',
+                  owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
                   ownerName: 'User Name',
                   eType: 'file',
                   thumbnails: {
@@ -479,7 +480,7 @@ const preview: Preview = {
               groupsIds: ['group-id-1', 'group-id-2'],
               federatedIDP: null,
               optionEnabled: [],
-              userId: 'user-id',
+              userId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
               structures: ['structure-id'],
               structureNames: ['Structure Name'],
               uai: [],

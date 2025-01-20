@@ -55,6 +55,8 @@ export const Comment = ({
     setValue(event.target.value);
   };
 
+  console.log({ userId, authorId });
+
   return (
     <div
       key={id}
