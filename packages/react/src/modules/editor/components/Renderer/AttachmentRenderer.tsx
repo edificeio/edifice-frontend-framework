@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Editor, NodeViewWrapper } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
@@ -20,15 +20,19 @@ interface AttachmentAttrsProps {
 }
 
 const AttachmentRenderer = (props: AttachmentProps) => {
-  const { t } = useTranslation();
-
   const { node, editor } = props;
-
-  const { editable } = useEditorContext();
-
   const [attachmentArrayAttrs, setAttachmentArrayAttrs] = useState<
     AttachmentAttrsProps[]
   >(node.attrs.links);
+  const { t } = useTranslation();
+  const { editable } = useEditorContext();
+
+  // Fix #WB2-2243: update attachmentArrayAttrs state when props changes
+  useEffect(() => {
+    if (attachmentArrayAttrs !== node.attrs.links) {
+      setAttachmentArrayAttrs(node.attrs.links);
+    }
+  }, [node.attrs.links, attachmentArrayAttrs]);
 
   const handleDelete = (index: any, documentId: any) => {
     editor.commands.unsetAttachment(documentId);
@@ -38,7 +42,7 @@ const AttachmentRenderer = (props: AttachmentProps) => {
   };
 
   return (
-    attachmentArrayAttrs.length !== 0 && (
+    attachmentArrayAttrs?.length !== 0 && (
       <NodeViewWrapper>
         <div
           style={{
