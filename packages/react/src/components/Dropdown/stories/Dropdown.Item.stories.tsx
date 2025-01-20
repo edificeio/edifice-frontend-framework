@@ -54,3 +54,90 @@ export const Base: Story = {
     );
   },
 };
+
+export const WithTypeAction: Story = {
+  render: (args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger label="Action menu" />
+        <Dropdown.Menu>
+          <Dropdown.Item
+            type="action"
+            icon={<IconEdit />}
+            onClick={() => alert('edit')}
+          >
+            Edit
+          </Dropdown.Item>
+          <Dropdown.Item
+            type="action"
+            icon={<IconCopy />}
+            onClick={() => alert('copy')}
+          >
+            Copy
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The `type` prop determines the behavior of the `Dropdown.Item` component. When set to `action`, the item will trigger the `onMenuItemClick` event when clicked. This is the default behavior. ',
+      },
+    },
+  },
+};
+
+export const WithTypeSelect: Story = {
+  render: (args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger label="Select menu" />
+        <Dropdown.Menu>
+          <Dropdown.Item
+            type="select"
+            icon={<IconCut />}
+            onClick={() => alert('cut')}
+          >
+            Cut
+          </Dropdown.Item>
+          <Dropdown.Item
+            type="select"
+            icon={<IconPrint />}
+            onClick={() => alert('print')}
+          >
+            Print
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When the `type` prop is set to `select`, the item will not trigger the `onMenuItemClick` event when clicked. This is ideal for creating a menu of selectable items.',
+      },
+    },
+  },
+};
+
+export const WithAdditionalClassName: Story = {
+  render: (args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger label="Styled menu" />
+        <Dropdown.Menu>
+          <Dropdown.Item
+            className="custom-class"
+            icon={<IconDelete />}
+            onClick={() => alert('delete')}
+          >
+            Delete
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+};
