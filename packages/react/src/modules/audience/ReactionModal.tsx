@@ -11,20 +11,38 @@ import { Button, Modal, Tabs, TabsItemProps } from '../../components';
 import { default as useReactionIcons } from './hooks/useReactionIcons';
 import { ReactionModalCard } from './ReactionModal.Card';
 
+/**
+ * Props for the ReactionModal component.
+ */
 export interface ReactionModalProps {
-  /** Id of resource. */
+  /**
+   * The unique identifier for the resource.
+   */
   resourceId: string;
 
-  /** Number of results per page, defaults to 30. */
+  /**
+   * The number of items to display per page. Optional.
+   */
   pageSize?: number;
 
-  /** Display modal ? */
+  /**
+   * Indicates whether the modal is open.
+   */
   isOpen: boolean;
 
-  /** Close button handler. */
+  /**
+   * Callback function to handle the modal close event.
+   */
   onModalClose(): void;
 
-  /** Function for loading reactions to the resource. */
+  /**
+   * Function to load reaction details for a given resource.
+   *
+   * @param resourceId - The unique identifier for the resource.
+   * @param page - The current page number.
+   * @param size - The number of items to display per page.
+   * @returns A promise that resolves to the reaction details data or undefined.
+   */
   reactionDetailsLoader: (
     resourceId: string,
     page: number,
@@ -134,39 +152,48 @@ const ReactionModal = ({
 
   const hasMore = reactions.length < counters.allReactionsCounter;
 
-  return createPortal(
-    <Modal
-      id={id}
-      {...restProps}
-      onModalClose={onModalClose}
-      size="md"
-      scrollable
-    >
-      <Modal.Header onModalClose={onModalClose}>
-        {t('audience.reaction.modal.header')}
-      </Modal.Header>
-
-      <Modal.Body>
-        <Tabs items={tabs} defaultId={ALL_TAB_ID} onChange={handleTabChange} />
-      </Modal.Body>
-
-      <Modal.Footer>
-        {hasMore && (
-          <Button color="tertiary" onClick={loadNextPage}>
-            {t('audience.reaction.modal.more')}
-          </Button>
-        )}
-        <Button
-          color="primary"
-          onClick={onModalClose}
-          type="button"
-          variant="filled"
+  return (
+    // Using a fragment to ensure Storybook correctly interprets JSDoc comments: https://github.com/storybookjs/storybook/issues/27169
+    <>
+      {createPortal(
+        <Modal
+          id={id}
+          {...restProps}
+          onModalClose={onModalClose}
+          size="md"
+          scrollable
         >
-          {t('close')}
-        </Button>
-      </Modal.Footer>
-    </Modal>,
-    document.getElementById('portal') as HTMLElement,
+          <Modal.Header onModalClose={onModalClose}>
+            {t('audience.reaction.modal.header')}
+          </Modal.Header>
+
+          <Modal.Body>
+            <Tabs
+              items={tabs}
+              defaultId={ALL_TAB_ID}
+              onChange={handleTabChange}
+            />
+          </Modal.Body>
+
+          <Modal.Footer>
+            {hasMore && (
+              <Button color="tertiary" onClick={loadNextPage}>
+                {t('audience.reaction.modal.more')}
+              </Button>
+            )}
+            <Button
+              color="primary"
+              onClick={onModalClose}
+              type="button"
+              variant="filled"
+            >
+              {t('close')}
+            </Button>
+          </Modal.Footer>
+        </Modal>,
+        document.getElementById('portal') as HTMLElement,
+      )}
+    </>
   );
 };
 

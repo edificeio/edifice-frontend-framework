@@ -959,10 +959,13 @@ const preview: Preview = {
        */
       const app = context.globals.app;
 
+      const MockedPortal = () => <div id="portal" />;
+
       const StoryTheme = ({ themePath }: { themePath: string }) => {
         return (
           <div data-product={themePath} className="my-12">
             <Story />
+            <MockedPortal />
           </div>
         );
       };
