@@ -3,8 +3,18 @@ import { StringUtils } from '@edifice.io/utilities';
 import { Button } from '../../components';
 import { default as useReactionIcons } from './hooks/useReactionIcons';
 
+/**
+ * Props for the ReactionSummary component.
+ */
 export interface ReactionSummaryProps {
+  /**
+   * An optional summary of reaction data.
+   */
   summary?: ReactionSummaryData;
+
+  /**
+   * An optional click handler function.
+   */
   onClick?: () => void;
 }
 
