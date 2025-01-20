@@ -15,9 +15,10 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build --filter=./packages/**",
-    "check:editor": "package-check --cwd=packages/editor",
-    "check:icons": "package-check --cwd=packages/icons",
+    "check:client": "package-check --cwd=packages/client",
+    "check:extensions": "package-check --cwd=packages/extensions",
     "check:react": "package-check --cwd=packages/react",
+    "check:utilities": "package-check --cwd=packages/utilities",
     "clean": "rm -rf */**/node_modules && rm -rf node_modules && rm -f pnpm-lock.yaml && rm -rf */**/dist && rm -rf packages/**/.turbo",
     "clean:dist": "rm -rf */**/dist",
     "clean:lock": "rm -f pnpm-lock.yaml",
@@ -32,8 +33,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "turbo run lint --filter=./packages/**",
     "pre-commit": "pnpm run lint && pnpm run format",
-    "prepare": "husky install",
-    "publish-packages": "changeset version && changeset publish"
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.0",
