@@ -17,75 +17,37 @@ const meta: Meta<typeof Tree> = {
     },
   },
   args: {
-    nodes: {
-      id: 'default',
-      name: 'Section Element',
-      section: true,
-      children: [
-        {
-          id: '1',
-          name: 'level 1 arborescence tree',
-          children: [
-            {
-              id: '4',
-              name: 'level 2 arborescence tree',
-              children: [
-                {
-                  id: '8',
-                  name: 'level 3 arborescence tree',
-                  children: [
-                    {
-                      id: '12',
-                      name: 'level 4 arborescence tree',
-                    },
-                    {
-                      id: '13',
-                      name: 'level 4 arborescence tree',
-                    },
-                  ],
-                },
-                {
-                  id: '9',
-                  name: 'level 3 arborescence tree',
-                },
-              ],
-            },
-            {
-              id: '5',
-              name: 'level 2 arborescence tree',
-              children: [
-                {
-                  id: '10',
-                  name: 'level 3 arborescence tree',
-                },
-                {
-                  id: '11',
-                  name: 'level 3 arborescence tree',
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: '2',
-          name: 'level 1 arborescence tree',
-          children: [
-            {
-              id: '6',
-              name: 'level 2 arborescence tree',
-            },
-            {
-              id: '7',
-              name: 'level 2 arborescence tree',
-            },
-          ],
-        },
-        {
-          id: '3',
-          name: 'level 1 arborescence tree',
-        },
-      ],
-    },
+    nodes: [
+      {
+        id: '1',
+        name: 'First Element',
+        section: true,
+        children: [
+          {
+            id: '3',
+            name: 'level 1 arborescence tree',
+          },
+          {
+            id: '4',
+            name: 'level 2 arborescence tree',
+          },
+        ],
+      },
+      {
+        id: '2',
+        name: 'Second Element',
+        children: [
+          {
+            id: '6',
+            name: 'level 1 arborescence tree',
+          },
+          {
+            id: '7',
+            name: 'level 2 arborescence tree',
+          },
+        ],
+      },
+    ],
   },
 };
 
@@ -120,7 +82,7 @@ export const SyncTreeView: Story = {
       <>
         <div className="my-16">
           <Button onClick={() => setSelectedNodeId('7')}>Open node 7</Button>
-          <Button onClick={() => setSelectedNodeId('2')}>Open node 2</Button>
+          <Button onClick={() => setSelectedNodeId('4')}>Open node 4</Button>
         </div>
         <Tree {...args} selectedNodeId={selectedNodeId} />
       </>
@@ -136,30 +98,48 @@ export const SyncTreeView: Story = {
   },
 };
 
-/* export const SyncTreeViewWithRef: Story = {
+export const ExpandAllNodes: Story = {
+  render: (args) => <Tree {...args} shouldExpandAllNodes />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'This story demonstrates the Tree component with all nodes expanded by default using the `shouldExpandAllNodes` prop.',
+      },
+    },
+  },
+};
+
+export const TreeItemFoldUnfold: Story = {
   render: (args) => {
-    const treeViewRef = useRef<TreeViewHandlers>(null);
+    const [unfolded, setUnfolded] = useState('');
+
+    const handleFold = (nodeId: string) => {
+      console.log(`Node ${nodeId} folded`);
+    };
+
+    const handleUnfold = (nodeId: string) => {
+      console.log(`Node ${nodeId} unfolded`);
+      setUnfolded(nodeId);
+    };
 
     return (
-      <>
-        <div className="my-16">
-          <Button onClick={() => treeViewRef?.current.select("7")}>
-            Open node 7
-          </Button>
-          <Button onClick={() => treeViewRef?.current.select("2")}>
-            Open node 2
-          </Button>
-        </div>
-        <TreeView ref={treeViewRef} {...args} />
-      </>
+      <div className="d-flex align-items-center justify-content-between">
+        <Tree
+          {...args}
+          onTreeItemFold={handleFold}
+          onTreeItemUnfold={handleUnfold}
+        />
+        <div>Node unfolded : {unfolded}</div>
+      </div>
     );
   },
   parameters: {
     docs: {
       description: {
         story:
-          "If you need to open a specific node, you can do it with a `ref`. TreeView exposes its own handlers `TreeViewHandlers` ",
+          'This story demonstrates the Tree component with fold and unfold callbacks using the `onTreeItemFold` and `onTreeItemUnfold` props.',
       },
     },
   },
-}; */
+};

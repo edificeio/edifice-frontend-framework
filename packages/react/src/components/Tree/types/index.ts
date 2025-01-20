@@ -45,7 +45,9 @@ export interface TreeProps extends SharedTreeProps {
   onTreeItemUnfold?: (nodeId: string) => void;
   /**
    * Callback function to secondary action
+   * @deprecated Use `renderNode ` instead
    */
+  // @deprecated Use `renderNode ` instead
   onTreeItemAction?: (nodeId: string) => void;
 }
 

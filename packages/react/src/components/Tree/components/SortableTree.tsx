@@ -126,20 +126,23 @@ const SortableTree = ({
 };
 
 const TreeNode = forwardRef(
-  ({
-    node,
-    selectedNodeId,
-    showIcon = false,
-    expandedNodes,
-    focused,
-    disabled,
-    indentationWidth,
-    depth,
-    isChild,
-    renderNode,
-    onTreeItemClick,
-    onToggleNode,
-  }: SortableTreeNodeProps) => {
+  (
+    {
+      node,
+      selectedNodeId,
+      showIcon = false,
+      expandedNodes,
+      focused,
+      disabled,
+      indentationWidth,
+      depth,
+      isChild,
+      renderNode,
+      onTreeItemClick,
+      onToggleNode,
+    }: SortableTreeNodeProps,
+    ref: Ref<HTMLLIElement>,
+  ) => {
     const { t } = useTranslation();
 
     const selected = selectedNodeId === node.id;
