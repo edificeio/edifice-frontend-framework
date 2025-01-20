@@ -1,6 +1,6 @@
 {/* Menu.mdx */}
 
-import { Canvas, Meta, Controls} from '@storybook/blocks';
+import { Canvas, Controls, Meta } from '@storybook/blocks';
  
 import * as MenuStories from './Menu.stories';
  
@@ -15,38 +15,7 @@ Menu Component to navigate between routes with react-router-dom
 <Canvas of={MenuStories.Base} />
 <Controls />
 
-## Label
-
-Label should be your app name or resource/subresource. (Open Show code tab or inspect HTML to check it)
-
-<Canvas of={MenuStories.Label} />
-
-## Data
-
-You can have an array of objects and map it to render multiple `Menu.Item`
-
-<Canvas of={MenuStories.Data} />
-
-## Menu.Button
-
-`Menu.Button` component picks some props from the `ButtonProps` type and add a `selected` boolean value.
-
-```jsx
-export type MenuButtonProps = Pick<
-  ButtonProps,
-  "children" | "leftIcon" | "rightIcon" | "onClick"
-> & {
-  selected: boolean;
-};
-```
-
-## Selected State
-
-A selected value is expected if you match a route with react-router-dom. Create your own hook in your application to handle this case. (See example below)
-
-<Canvas of={MenuStories.SelectedState} />
-
-## Custom hook in your application
+## Usage
 
 To use this component with a data structure, you can do as below:
 
@@ -90,6 +59,37 @@ return (
   </Menu>
 );
 ```
+
+## Label
+
+Label should be your app name or resource/subresource. (Open Show code tab or inspect HTML to check it)
+
+<Canvas of={MenuStories.Label} />
+
+## Data
+
+You can have an array of objects and map it to render multiple `Menu.Item`
+
+<Canvas of={MenuStories.Data} />
+
+## Menu.Button
+
+`Menu.Button` component picks some props from the `ButtonProps` type and add a `selected` boolean value.
+
+```jsx
+export type MenuButtonProps = Pick<
+  ButtonProps,
+  "children" | "leftIcon" | "rightIcon" | "onClick"
+> & {
+  selected: boolean;
+};
+```
+
+## Selected State
+
+A selected value is expected if you match a route with react-router-dom. Create your own hook in your application to handle this case. (See example below)
+
+<Canvas of={MenuStories.SelectedState} />
 
 ## Custom Menu Element
 

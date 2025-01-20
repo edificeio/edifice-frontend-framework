@@ -27,6 +27,18 @@ export function findNodeById(
   return undefined;
 }
 
+export function getChildrenIds(data: TreeItem[], folderId: string): string[] {
+  const findItem = findNodeById(data, folderId);
+  if (findItem?.folder?.childrenIds) {
+    const nodes = findItem?.folder.childrenIds || [];
+    return [...nodes, folderId];
+  } else if (folderId === FOLDER.BIN) {
+    return [FOLDER.BIN];
+  } else {
+    return [FOLDER.DEFAULT];
+  }
+}
+
 export function addNode(
   node: TreeItem,
   { parentId, newFolder }: { parentId: string; newFolder: IFolder },
@@ -86,7 +98,7 @@ export const findParentNode = (
   return undefined;
 };
 
-export function getAncestors(data: TreeItem, folderId: string): string[] {
+export function getAncestors(data: TreeItem[], folderId: string): string[] {
   const findItem = findNodeById(data, folderId);
   if (findItem?.folder?.ancestors) {
     const nodes = findItem?.folder.ancestors || [];
