@@ -2,6 +2,12 @@
   "name": "@edifice.io/utilities",
   "version": "2.0.4",
   "description": "Edifice Utilities Package",
+  "keywords": [
+    "utilities",
+    "edifice",
+    "frontend",
+    "framework"
+  ],
   "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/utilities#readme",
   "bugs": {
     "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
