@@ -119,6 +119,7 @@ export class VideoService {
         if (checkResponse.state == 'error') {
           break;
         }
+        // eslint-disable-next-line no-constant-condition
       } while (true);
     }
     throw new Error('Video cannot be uploaded.');

@@ -54,9 +54,6 @@ export interface IConfigurationFramework {
     readonly idiom: IIdiom;
     listLanguages(): Promise<string[]>;
   };
-  readonly School: {
-    //apps; -> pinnedApps;
-  };
   readonly User: {
     /** User's preferences.*/
     readonly preferences: IUserPreferences;
@@ -157,7 +154,7 @@ export interface ITheme {
   listSkins(): Promise<IThemeConfOverriding[]>;
 
   /** Get the help path, which can be dedicated to 1D or 2D. */
-  getHelpPath(): Promise<String>;
+  getHelpPath(): Promise<string>;
 }
 
 //-------------------------------------

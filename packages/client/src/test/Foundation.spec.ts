@@ -10,14 +10,14 @@ import { Subscription } from "rxjs";
 
 /** Test the fundations of the framework. */
 describe("Foundation", function () {
-  var context: IExplorerContext | null = null;
+  const context: IExplorerContext | null = null;
   const userinfo = UserInfoData;
-  var subscription: Subscription | undefined;
-  var latestResult: ISearchResults | null = null;
+  let subscription: Subscription | undefined;
+  let latestResult: ISearchResults | null = null;
 
   /** Utility function */
-  let getModel = (): IContext => {
-    let model = context?.getContext();
+  const getModel = (): IContext => {
+    const model = context?.getContext();
     if (typeof model === "undefined")
       throw new Error("Context seems undefined.");
     return model;
@@ -81,7 +81,7 @@ describe("Foundation", function () {
     );
     expect(result).toBeDefined();
     expect(result?.name).toBe("Root folder 1");
-    if (!!result) getModel().folders.push(result);
+    if (result) getModel().folders.push(result);
   });
 
   it("should have access to folders of first level", () => {

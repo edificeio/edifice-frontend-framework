@@ -31,6 +31,7 @@ export class BlogBehaviour extends AbstractBehaviourService {
   RESOURCE = 'blog';
 
   loadResources() {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<ILinkedResource[]>(async (resolve, reject) => {
       try {
         const datas = await this.httpGet<BlogData[]>('/blog/linker');

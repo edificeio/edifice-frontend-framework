@@ -80,7 +80,7 @@ export interface IFlashMessageModel {
   //-------------------------------------
   readonly id: string;
   readonly title?: string;
-  readonly contents?: Object;
+  readonly contents?: object;
   readonly startDate?: string;
   readonly endDate?: string;
   readonly readCount?: number;

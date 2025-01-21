@@ -1,5 +1,5 @@
-import { IHttpParams, IHttpResponse } from '../transport/interfaces';
 import { IOdeServices } from '../services/OdeServices';
+import { IHttpParams, IHttpResponse } from '../transport/interfaces';
 
 const globalCache: Record<string, any> = {};
 const mutexPromise: Record<string, Promise<any>> = {};
@@ -16,7 +16,7 @@ export class CacheService {
     task: () => Promise<T>,
     shouldCache: (value: T) => boolean,
   ): Promise<T> {
-    if (!!mutexPromise[key]) {
+    if (mutexPromise[key] !== undefined) {
       await mutexPromise[key];
     }
     if (globalCache[key]) {
@@ -41,6 +41,7 @@ export class CacheService {
       delete globalCache[key];
     } else {
       for (const key in globalCache) {
+        // eslint-disable-next-line no-prototype-builtins
         if (globalCache.hasOwnProperty(key)) {
           delete globalCache[key];
         }

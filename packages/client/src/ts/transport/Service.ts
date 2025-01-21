@@ -1,3 +1,4 @@
+/* eslint-disable prefer-rest-params */
 import axios, {
   AxiosError,
   AxiosInstance,
@@ -68,6 +69,7 @@ export class HttpService implements IHttp {
           arguments[1] = cdnUrl + url;
         }
         //PUBLIC files (/.*/public)
+        // eslint-disable-next-line no-useless-escape
         const match = /^\/([^\/]*)\/public/.test(url);
         if (match) {
           arguments[1] = cdnUrl + url;
@@ -131,6 +133,7 @@ export class HttpService implements IHttp {
         url = CDN_DOMAIN + originalURL;
       } else {
         //PUBLIC files (/.*/public)
+        // eslint-disable-next-line no-useless-escape
         const match = /^\/([^\/]*)\/public/.test(originalURL);
         if (match) {
           url = CDN_DOMAIN + originalURL;
