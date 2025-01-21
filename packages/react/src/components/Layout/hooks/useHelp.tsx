@@ -12,6 +12,7 @@ export function useHelp() {
 
   const [html, setHtml] = useState<string>('');
   const [visibility, setVisibility] = useState<boolean>(true);
+  const [activeSection, setActiveSection] = useState<string>('présentation');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const helpPath = theme?.is1d ? '/help-1d' : '/help-2d';
@@ -90,13 +91,16 @@ export function useHelp() {
                             typedDomNode.attribs &&
                             typedDomNode.name === 'a'
                           ) {
+                            const sectionId = typedDomNode.attribs.href.replace('#', '');
                             return (
-                              <a {...attributesToProps(typedDomNode.attribs)}>
-                                <span
-                                  onClick={() => {
-                                    setVisibility(false);
-                                  }}
-                                >
+                              <a
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setActiveSection(sectionId);
+                                  setVisibility(false);
+                                }}
+                              >
+                                <span>
                                   {domToReact(typedDomNode.children)}
                                 </span>
                               </a>
@@ -123,8 +127,7 @@ export function useHelp() {
             {...props}
             className="section level2"
             style={{
-              display:
-                typedDomNode.attribs.id !== 'présentation' ? 'none' : 'block',
+              display: typedDomNode.attribs.id === activeSection ? 'block' : 'none',
             }}
           >
             {domToReact(typedDomNode.children, {
