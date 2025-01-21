@@ -87,9 +87,9 @@ export interface ISession {
    * Send a 6-digits code to an email address to validate it.
    * => when resolved successfully, the email validation infos will switch to the "pending" state.
    */
-  checkEmail(email: String): Promise<void>;
+  checkEmail(email: string): Promise<void>;
   /** Send a 6-digits code to the server to try validating the pending email address. */
-  tryEmailValidation(code: String): Promise<IEmailValidationState>;
+  tryEmailValidation(code: string): Promise<IEmailValidationState>;
 
   /** Verify if the logged-in user has a valid phone number. */
   getMobileValidationInfos(): Promise<IMobileValidationInfos>;
@@ -97,14 +97,14 @@ export interface ISession {
    * Send a 6-digits code to a phone number to validate it.
    * => when resolved successfully, the phone number infos will switch to the "pending" state.
    */
-  checkMobile(mobile: String): Promise<void>;
+  checkMobile(mobile: string): Promise<void>;
   /** Send a 6-digits code to the server to try validating the pending phone number. */
-  tryMobileValidation(code: String): Promise<IMobileValidationState>;
+  tryMobileValidation(code: string): Promise<IMobileValidationState>;
 
   /** Start an MFA for the logged-in user, unless already pending or done. */
   getMfaInfos(): Promise<IMfaInfos>;
   /** Send a 6-digits code to the server to validate a pending MFA. */
-  tryMfaCode(code: String): Promise<IMfaCodeState>;
+  tryMfaCode(code: string): Promise<IMfaCodeState>;
 }
 
 export type Hobby = {

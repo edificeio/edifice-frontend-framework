@@ -21,7 +21,7 @@ export class CommunityBehaviour extends AbstractBehaviourService {
       '/community/listallpages',
     );
     return communities.map((data) => {
-      var communityIcon;
+      let communityIcon;
       if (typeof data.thumbnail === 'undefined' || data.thumbnail === '') {
         communityIcon = '/img/icons/glyphicons_036_file.png';
       } else {

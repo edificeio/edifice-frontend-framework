@@ -123,7 +123,7 @@ export class Analytics {
     const desc = session.session.description;
 
     let structure;
-    for (let struc of me.structures) {
+    for (const struc of me.structures) {
       const s = xitiConf.structureMap[struc];
       if (s && s.collectiviteId && s.UAI) {
         structure = s;

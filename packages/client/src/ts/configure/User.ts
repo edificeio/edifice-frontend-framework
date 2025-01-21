@@ -129,7 +129,7 @@ export class User {
       myApps.bookmarks.forEach((appName, index) => {
         const foundApp = this._me.apps.find((app) => app.name === appName);
         if (foundApp) {
-          let app = Object.assign({}, foundApp);
+          const app = Object.assign({}, foundApp);
           this._bookmarkedApps.push(app);
         } else {
           remove.push(appName);
@@ -137,7 +137,7 @@ export class User {
         }
       });
       remove.forEach((appName) => {
-        let index = myApps.bookmarks.indexOf(appName);
+        const index = myApps.bookmarks.indexOf(appName);
         if (index !== -1) {
           myApps.bookmarks.splice(index, 1);
         }

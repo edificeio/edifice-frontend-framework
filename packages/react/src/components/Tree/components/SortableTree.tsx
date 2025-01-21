@@ -141,6 +141,7 @@ const TreeNode = forwardRef(
       onTreeItemClick,
       onToggleNode,
     }: SortableTreeNodeProps,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ref: Ref<HTMLLIElement>,
   ) => {
     const { t } = useTranslation();

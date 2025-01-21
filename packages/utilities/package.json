@@ -35,9 +35,11 @@
   ],
   "scripts": {
     "build": "vite build",
+    "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check \"src/**/*.ts\"",
-    "format:write": "npx prettier --write \"src/**/*.ts\""
+    "format:write": "npx prettier --write \"src/**/*.ts\"",
+    "lint": "eslint"
   },
   "devDependencies": {
     "@types/node": "catalog:",

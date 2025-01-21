@@ -52,8 +52,8 @@ src
 - Export everything if Component has types & interfaces
 
 ```jsx
-export { default as Component } from "./Component";
-export * from "./Component";
+export { default as Component } from './Component';
+export * from './Component';
 ```
 
 ### Component Guideline
@@ -102,7 +102,7 @@ export interface ButtonProps {
 - Import your component inside `index.ts` file.
 
 ```jsx
-export * from "./Button";
+export * from './Button';
 ```
 
 ## Dev

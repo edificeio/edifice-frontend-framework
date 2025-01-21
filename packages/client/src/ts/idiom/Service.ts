@@ -1,7 +1,7 @@
-import { notify, Promisified } from '../notify/Framework';
-import { AddBundleCallback, IIdiom } from './interfaces';
-import { IOdeServices } from '../services/OdeServices';
 import { App } from '../globals';
+import { notify, Promisified } from '../notify/Framework';
+import { IOdeServices } from '../services/OdeServices';
+import { AddBundleCallback, IIdiom } from './interfaces';
 
 const bundle: { [key: string]: string } = {};
 const promises: { [path: string]: Promise<void> } = {};
@@ -266,7 +266,7 @@ export class IdiomService implements IIdiom {
     key = key ?? '';
     let txt: string = bundle[key] === undefined ? key : bundle[key];
     if (params && typeof params === 'object') {
-      for (let member in params) {
+      for (const member in params) {
         if (typeof params[member] !== 'undefined') {
           txt = txt.replace(
             new RegExp('\\${' + member + '}', 'g'),
@@ -360,14 +360,14 @@ export class IdiomService implements IIdiom {
   }
 
   addKeys(keys: any): void {
-    for (var property in keys) {
+    for (const property in keys) {
       if (typeof bundle[property] !== 'string')
         bundle[property] = keys[property];
     }
   }
 
   removeAccents(str: string): string {
-    for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
+    for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
       str = str.replace(
         defaultDiacriticsRemovalMap[i].letters,
         defaultDiacriticsRemovalMap[i].base,
