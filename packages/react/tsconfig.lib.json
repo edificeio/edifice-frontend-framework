@@ -19,6 +19,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "preserveSymlinks": false,
     "types": [
       "node",
       "vite/client",

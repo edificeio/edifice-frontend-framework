@@ -19,7 +19,12 @@ export default defineConfig({
       external: [...Object.keys(dependencies)],
     },
   },
-  plugins: [dts(), visualizer() as PluginOption],
+  plugins: [
+    dts({
+      tsconfigPath: './tsconfig.build.json',
+    }),
+    visualizer() as PluginOption,
+  ],
 
   test: {
     watch: false,

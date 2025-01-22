@@ -140,6 +140,7 @@
     "@eslint/js": "catalog:",
     "@react-spring/web": "^9.7.5",
     "@svgr/cli": "^8.1.0",
+    "@tanstack/query-core": "5.62.7",
     "@tanstack/react-query": "catalog:",
     "@types/node": "catalog:",
     "@types/pako": "^2.0.3",

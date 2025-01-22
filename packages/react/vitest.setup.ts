@@ -9,17 +9,28 @@ import { setupServer } from 'msw/node';
 import { ReactElement } from 'react';
 import { MockedProvider } from './src/providers';
 
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import { afterAll, afterEach } from 'vitest';
 import '../../apps/docs/i18n';
+
+import { QueryCache } from '@tanstack/react-query';
+
+const queryCache = new QueryCache();
+
+afterEach(() => {
+  queryCache.clear();
+});
 
 const server = setupServer(...handlers);
 
 beforeAll(() =>
   server.listen({
-    onUnhandledRequest: 'bypass',
+    onUnhandledRequest: 'warn',
   }),
 );
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  queryCache.clear();
+  server.resetHandlers();
+});
 afterAll(() => server.close());
 
 const user = userEvent.setup();
