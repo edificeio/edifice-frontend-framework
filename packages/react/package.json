@@ -80,7 +80,8 @@
     "format:check": "npx prettier --check \"src/**/*.{ts,tsx}\"",
     "format:write": "npx prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest --watch"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
@@ -135,6 +136,7 @@
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "^7.23.3",
     "@edifice.io/client": "workspace:*",
+    "@edifice.io/config": "workspace:*",
     "@eslint/js": "catalog:",
     "@react-spring/web": "^9.7.5",
     "@svgr/cli": "^8.1.0",
@@ -156,7 +158,8 @@
     "rollup-plugin-visualizer": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-dts": "catalog:"
+    "vite-plugin-dts": "catalog:",
+    "vite-tsconfig-paths": "^5.0.1"
   },
   "peerDependencies": {
     "@react-spring/web": "catalog:",

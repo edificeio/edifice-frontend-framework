@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { CommentProvider } from '.';
 
-import { HttpResponse, http } from 'msw';
 import { useState } from 'react';
 import { CommentProps } from './types';
 
@@ -38,7 +37,7 @@ export const Base: Story = {
           {
             id: 'a2b1-cd2f',
             comment: 'This is my own comment',
-            authorId: '64bfd-30eab',
+            authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4b',
             authorName: 'Catherine Bailly',
             createdAt: 1726069313281,
             updatedAt: 1726069313281,
@@ -59,60 +58,6 @@ export const Base: Story = {
       />
     );
   },
-  parameters: {
-    msw: {
-      handlers: [
-        http.get(
-          '/userbook/api/person?id=91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
-          () => {
-            return HttpResponse.json({
-              status: 'ok',
-              result: [
-                {
-                  id: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
-                  login: 'John Doe',
-                  displayName: 'John Doe',
-                  type: ['Student'],
-                  visibleInfos: [],
-                  schools: [
-                    {
-                      exports: null,
-                      classes: [],
-                      name: 'School',
-                      id: 'bfaac2c1',
-                      UAI: null,
-                    },
-                  ],
-                  relatedName: null,
-                  relatedId: null,
-                  relatedType: null,
-                  userId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
-                  motto: '',
-                  photo: '/userbook/avatar/f6c5ea40',
-                  mood: 'default',
-                  health: '',
-                  address: '',
-                  email: '',
-                  tel: null,
-                  mobile: '',
-                  birthdate: '2023-09-25',
-                  hobbies: [],
-                },
-              ],
-            });
-          },
-        ),
-        http.get(
-          '/userbook/avatar/91c22b66-ba1b-4fde-a3fe-95219cc18d4a?thumbnail=100x100',
-          () => {
-            return HttpResponse.text(
-              'https://mdbcdn.b-cdn.net/img/new/avatars/2.webp',
-            );
-          },
-        ),
-      ],
-    },
-  },
 };
 
 export const CreateComment: Story = {
@@ -124,7 +69,7 @@ export const CreateComment: Story = {
         {
           id: 'a2b1-cdf3',
           comment,
-          authorId: 'f6c5ea40',
+          authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
           authorName: 'John Doe',
           createdAt: 1726757643336,
           updatedAt: 1726757643336,
@@ -163,12 +108,9 @@ export const UpdateComment: Story = {
       const updateComment = comments.find(
         (comment) => comment.id === commentId,
       );
-      console.log({ updateComment });
       updateComment.comment = comment;
       setComments([updateComment]);
     };
-
-    console.log({ comments });
 
     return (
       <CommentProvider
@@ -225,7 +167,7 @@ export const ReadComments: Story = {
           {
             id: 'a2b1-cdf3',
             comment: 'This is my first comment',
-            authorId: '64bfd-30eab',
+            authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
             authorName: 'John Doe',
             createdAt: 1726757643336,
             updatedAt: 1726757643336,
@@ -252,7 +194,7 @@ export const OptionsComments: Story = {
           {
             id: 'a2b1-cdf3',
             comment: 'This is my first comment',
-            authorId: '64bfd-30eab',
+            authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
             authorName: 'John Doe',
             createdAt: 1726757643336,
             updatedAt: 1726757643336,

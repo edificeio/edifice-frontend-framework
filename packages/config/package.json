@@ -1,0 +1,28 @@
+{
+  "name": "@edifice.io/config",
+  "version": "2.0.4",
+  "private": true,
+  "description": "Edifice Frontend Shared Config",
+  "keywords": [
+    "frontend",
+    "config",
+    "tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/config"
+  },
+  "files": [
+    "src"
+  ],
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
+  }
+}

@@ -1,4 +1,4 @@
-import { defaultDiacriticsRemovalMap } from '../idiom/Idiom';
+import { defaultDiacriticsRemovalMap } from '../idiom/Service';
 
 export class StringUtils {
   static removeAccents(str: string): string {
