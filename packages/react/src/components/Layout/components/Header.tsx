@@ -15,14 +15,15 @@ import { useEdificeClient } from '../../../providers/EdificeClientProvider/Edifi
 import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 
 import { IconRafterDown } from '../../../modules/icons/components';
-import { IconAssistance } from '../../../modules/icons/components/apps';
 import {
   IconCommunity,
   IconDisconnect,
   IconHome,
   IconMyApps,
+  IconNeoAssistance,
   IconNeoMessaging,
   IconNewRelease,
+  IconOneAssistance,
   IconOneMessaging,
   IconOneProfile,
   IconUserbook,
@@ -147,7 +148,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                         setIsHelpOpen(true);
                       }}
                     >
-                      <IconAssistance className="icon help" />
+                      <IconOneAssistance className="icon help" />
                       <VisuallyHidden>{t('navbar.help')}</VisuallyHidden>
                     </button>
 
@@ -317,7 +318,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       setIsHelpOpen(true);
                     }}
                   >
-                    <IconAssistance color="#fff" />
+                    <IconNeoAssistance color="#fff" />
                     <VisuallyHidden>{t('support')}</VisuallyHidden>
                   </button>
 
