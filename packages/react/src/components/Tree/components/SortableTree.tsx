@@ -11,6 +11,7 @@ import { CSSProperties, Ref, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
+import { mergeRefs } from '../../../utilities';
 import { useTree } from '../hooks/useTree';
 import { useTreeSortable } from '../hooks/useTreeSortable';
 import {
@@ -141,7 +142,7 @@ const TreeNode = forwardRef(
       onTreeItemClick,
       onToggleNode,
     }: SortableTreeNodeProps,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     ref: Ref<HTMLLIElement>,
   ) => {
     const { t } = useTranslation();
@@ -212,7 +213,7 @@ const TreeNode = forwardRef(
 
     return (
       <li
-        ref={setNodeRef}
+        ref={mergeRefs(setNodeRef, ref)}
         key={node.id}
         id={`treeitem-${node.id}`}
         role="treeitem"

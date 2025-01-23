@@ -1,12 +1,12 @@
-import { resolve } from 'path';
+/// <reference types="vitest/config" />
 
 import react from '@vitejs/plugin-react';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
-
+import { resolve } from 'path';
 import { PluginPure } from 'rollup-plugin-pure';
-import { PluginOption } from 'vite';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig, PluginOption } from 'vite';
+import dts from 'vite-plugin-dts';
+import tsconfigPaths from 'vite-tsconfig-paths';
 import { removeDsn } from '../../plugins/remove-display-name';
 import {
   dependencies,
@@ -75,6 +75,7 @@ export default defineConfig({
       includeExtensions: ['.ts', '.tsx'],
       excludeExtensions: ['.stories.tsx'],
     }),
+    tsconfigPaths(),
     dts({
       tsconfigPath: './tsconfig.build.json',
       compilerOptions: {
@@ -89,4 +90,13 @@ export default defineConfig({
     }) as PluginOption,
     visualizer() as PluginOption,
   ],
+
+  test: {
+    watch: false,
+    globals: true,
+    environment: 'jsdom',
+    include: ['src/**/*.spec.tsx'],
+    setupFiles: ['./vitest.setup.ts'],
+    reporters: ['default'],
+  },
 });

@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, PluginOption } from 'vite';
@@ -17,5 +19,19 @@ export default defineConfig({
       external: [...Object.keys(dependencies)],
     },
   },
-  plugins: [dts(), visualizer() as PluginOption],
+  plugins: [
+    dts({
+      tsconfigPath: './tsconfig.build.json',
+    }),
+    visualizer() as PluginOption,
+  ],
+
+  test: {
+    watch: false,
+    globals: true,
+    environment: 'jsdom',
+    include: ['src/**/*.spec.ts'],
+    setupFiles: ['./vitest.setup.ts'],
+    reporters: ['default'],
+  },
 });

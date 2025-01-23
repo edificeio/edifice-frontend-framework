@@ -1,8 +1,6 @@
 {
-  "extends": "./tsconfig.lib.json",
+  "extends": "./tsconfig.json",
   "exclude": [
-    "src/**/**/*.stories.tsx",
-    "src/**/**/*.mdx",
     "src/**/*.test.tsx",
     "src/**/*.test.ts",
     "src/**/*.spec.tsx",

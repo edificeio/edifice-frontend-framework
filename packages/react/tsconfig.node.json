@@ -12,6 +12,8 @@
     "moduleDetection": "force",
     "noEmit": true,
 
+    "preserveSymlinks": false,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,

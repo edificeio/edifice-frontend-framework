@@ -36,6 +36,7 @@
     "react-i18next": "catalog:"
   },
   "devDependencies": {
+    "@edifice.io/config": "workspace:*",
     "vite": "catalog:"
   }
 }
