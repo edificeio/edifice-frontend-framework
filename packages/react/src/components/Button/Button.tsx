@@ -102,10 +102,10 @@ const Button = forwardRef(
     return (
       <button
         ref={ref}
+        data-testid="button"
         className={classes}
         type={type}
         {...restProps}
-        data-testid="button"
       >
         {isLoading ? (
           <Loading
