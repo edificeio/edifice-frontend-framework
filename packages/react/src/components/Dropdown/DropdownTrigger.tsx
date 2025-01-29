@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { IconRafterUp } from '../../modules/icons/components';
 import { useDropdownContext } from './DropdownContext';
+import { Badge } from '../Badge';
 
 export interface DropdownTriggerProps
   extends React.ComponentPropsWithRef<'button'> {
@@ -84,9 +85,14 @@ const DropdownTrigger = forwardRef(
         {icon}
         {label}
         {badgeContent ? (
-          <span className="badge text-bg-secondary rounded-pill">
+          <Badge
+            variant={{
+              level: 'info',
+              type: 'notification',
+            }}
+          >
             {badgeContent}
-          </span>
+          </Badge>
         ) : (
           !hideCarret && (
             <IconRafterUp
