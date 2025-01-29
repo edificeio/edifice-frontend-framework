@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useHasWorkflow } from '../useHasWorkflow';
 
 const useConversation = () => {
@@ -15,27 +16,23 @@ const useConversation = () => {
   /**
    * Count conversation app
    */
-  const [messages, setMessages] = useState<number>(0);
   const [msgLink, setMsgLink] = useState<string>('');
   /**
    * Get message count for zimbra or chat app
    */
   const queryParams = { unread: true, _: new Date().getTime() };
 
-  const refreshMails = async () => {
-    const url = zimbraWorkflow
-      ? '/zimbra/count/INBOX'
-      : '/conversation/count/INBOX';
-
-    try {
-      const { count } = await odeServices.http().get(url, { queryParams });
-
-      setMessages(count ?? 0);
-    } catch (error) {
-      console.error(error);
-      setMessages(0);
-    }
-  };
+  const { data: messages } = useQuery({
+    queryKey: ['conversation-navbar-count'],
+    queryFn: async () =>
+      await odeServices
+        .http()
+        .get(
+          zimbraWorkflow ? '/zimbra/count/INBOX' : '/conversation/count/INBOX',
+          { queryParams },
+        ),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
   const goToMessagerie = async () => {
     const defaultLink = '/zimbra/zimbra';
@@ -59,16 +56,15 @@ const useConversation = () => {
   };
 
   useEffect(() => {
-    refreshMails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     goToMessagerie();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { messages, msgLink, zimbraWorkflow } as const;
+  return {
+    messages: messages ? messages.count : 0,
+    msgLink,
+    zimbraWorkflow,
+  } as const;
 };
 
 export default useConversation;

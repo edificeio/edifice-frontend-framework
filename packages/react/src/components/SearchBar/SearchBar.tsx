@@ -7,7 +7,6 @@ import { IconSearch } from '../../modules/icons/components';
 import { Size } from '../../types';
 import { SearchButton } from '../Button';
 import FormControl from '../Form/FormControl';
-import { InputProps } from '../Input';
 
 export interface BaseProps
   extends Omit<React.ComponentPropsWithoutRef<'input'>, 'size'> {
