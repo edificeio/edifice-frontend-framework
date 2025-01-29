@@ -93,7 +93,7 @@ export const useTipTapEditor = (
       TableHeader,
       TableCell,
       TextAlign.configure({
-        types: ['heading', 'paragraph', 'video'],
+        types: ['heading', 'paragraph', 'video', 'audio'],
       }),
       CustomHeading.configure({
         levels: [1, 2],
