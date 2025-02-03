@@ -42,6 +42,10 @@
       "import": "./dist/audio/audio.js",
       "require": "./dist/audio/audio.cjs"
     },
+    "./conversation-history": {
+      "import": "./dist/conversation-history/conversation-history.js",
+      "require": "./dist/conversation-history/conversation-history.cjs"
+    },
     "./font-size": {
       "import": "./dist/font-size/font-size.js",
       "require": "./dist/font-size/font-size.cjs"
