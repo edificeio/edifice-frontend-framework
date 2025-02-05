@@ -25,7 +25,7 @@ const ConversationHistoryRenderer = () => {
         data-testid="conversation-history-button"
         onClick={handleButtonClick}
         size="sm"
-        className="d-flex align-items-center gap-4 text-gray-800 fs-6"
+        className="d-flex align-items-center gap-4 text-gray-800 fs-6 mt-24"
       >
         {open ? (
           <>
