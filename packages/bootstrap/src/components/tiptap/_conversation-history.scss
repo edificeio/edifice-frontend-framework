@@ -1,0 +1,14 @@
+@use '../../abstracts/' as *;
+
+.conversation-history {
+  @include add-transitions(opacity, height);
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+
+  &.show {
+    height: auto;
+    opacity: 1;
+    display: block;
+  }
+}

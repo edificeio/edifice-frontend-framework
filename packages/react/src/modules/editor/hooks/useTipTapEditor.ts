@@ -42,6 +42,8 @@ import {
   MediaRenderer,
   VideoNodeView,
 } from '../components';
+import ConversationHistoryNodeView from '../components/NodeView/ConversationHistoryNodeView';
+import ConversationHistoryRenderer from '../components/Renderer/ConversationHistoryRenderer';
 
 /**
  * Hook that creates a tiptap editor instance.
@@ -63,7 +65,6 @@ export const useTipTapEditor = (
   const { t } = useTranslation();
 
   const { uploadFile } = useUpload(visibility);
-
   const editor = useEditor({
     // fix WB-2534
     // TipTap editor must be instantiated in editable mode for table columns to be resizable.
@@ -117,6 +118,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer, uploadFile),
       AttachmentNodeView(AttachmentRenderer),
+      ConversationHistoryNodeView(ConversationHistoryRenderer),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
