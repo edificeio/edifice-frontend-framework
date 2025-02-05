@@ -44,6 +44,7 @@ export { default as IconExternalLink } from './IconExternalLink';
 export { default as IconFiles } from './IconFiles';
 export { default as IconFilter } from './IconFilter';
 export { default as IconFlag } from './IconFlag';
+export { default as IconFolderAdd } from './IconFolderAdd';
 export { default as IconFolderMove } from './IconFolderMove';
 export { default as IconFolder } from './IconFolder';
 export { default as IconForgoing } from './IconForgoing';
