@@ -69,8 +69,11 @@ export const ConversationHistory = Node.create({
           let modified = false;
           const nodesAfterHr = [];
 
-          newState.doc.descendants((node, pos) => {
-            if (node.type.name === 'horizontalRule') {
+          newState.doc.descendants((node, pos, parent) => {
+            if (
+              node.type.name === 'horizontalRule' &&
+              parent.type.name === 'doc'
+            ) {
               const start = pos;
               const end = newState.doc.content.size;
 

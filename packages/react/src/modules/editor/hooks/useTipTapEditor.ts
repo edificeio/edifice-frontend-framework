@@ -23,12 +23,13 @@ import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import Underline from '@tiptap/extension-underline';
-import { Content, FocusPosition, useEditor } from '@tiptap/react';
+import { Content, Extensions, FocusPosition, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import { useTranslation } from 'react-i18next';
 
 import { WorkspaceVisibility } from '@edifice.io/client';
+import Blockquote from '@tiptap/extension-blockquote';
 import { useUpload } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import {
@@ -42,8 +43,6 @@ import {
   MediaRenderer,
   VideoNodeView,
 } from '../components';
-import ConversationHistoryNodeView from '../components/NodeView/ConversationHistoryNodeView';
-import ConversationHistoryRenderer from '../components/Renderer/ConversationHistoryRenderer';
 
 /**
  * Hook that creates a tiptap editor instance.
@@ -52,6 +51,10 @@ import ConversationHistoryRenderer from '../components/Renderer/ConversationHist
  * @param content default rich content
  * @param focus set focus position to the editor
  * @param placeholder editor placeholder content
+ * @param onContentChange callback to be called on content change
+ * @param visibility workspace visibility
+ * @param extensions extensions to add to the editor
+ * @returns the editor instance and the editable state
  */
 export const useTipTapEditor = (
   editable: boolean,
@@ -60,6 +63,7 @@ export const useTipTapEditor = (
   placeholder?: string,
   onContentChange?: ({ editor }: { editor: any }) => void,
   visibility: WorkspaceVisibility = 'protected',
+  extensions?: Extensions,
 ) => {
   const { currentLanguage } = useEdificeClient();
   const { t } = useTranslation();
@@ -71,6 +75,7 @@ export const useTipTapEditor = (
     // It will then be set in the correct editable mode, by a useEffect below.
     editable: true,
     extensions: [
+      Blockquote,
       StarterKit,
       Focus.configure({
         className: 'has-focus',
@@ -118,7 +123,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer, uploadFile),
       AttachmentNodeView(AttachmentRenderer),
-      ConversationHistoryNodeView(ConversationHistoryRenderer),
+      ...(extensions || []),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
