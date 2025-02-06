@@ -29,7 +29,6 @@ import StarterKit from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
 
 import { WorkspaceVisibility } from '@edifice.io/client';
-import Blockquote from '@tiptap/extension-blockquote';
 import { useUpload } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import {
@@ -75,7 +74,6 @@ export const useTipTapEditor = (
     // It will then be set in the correct editable mode, by a useEffect below.
     editable: true,
     extensions: [
-      Blockquote,
       StarterKit,
       Focus.configure({
         className: 'has-focus',
