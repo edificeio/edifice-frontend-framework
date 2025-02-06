@@ -11,6 +11,7 @@ import { WorkspaceVisibility } from '@edifice.io/client';
 import {
   Content,
   EditorContent,
+  Extensions,
   FocusPosition,
   JSONContent,
 } from '@tiptap/react';
@@ -83,6 +84,8 @@ export interface EditorProps {
   visibility?: WorkspaceVisibility;
   /** Function to listen if content change */
   onContentChange?: ({ editor }: { editor: any }) => void;
+  /** Extensions to add to the editor */
+  extensions?: Extensions;
 }
 
 const Editor = forwardRef(
@@ -97,6 +100,7 @@ const Editor = forwardRef(
       placeholder = '',
       visibility = 'protected',
       onContentChange,
+      extensions,
     }: EditorProps,
     ref: Ref<EditorRef>,
   ) => {
@@ -109,6 +113,7 @@ const Editor = forwardRef(
       placeholder,
       onContentChange,
       visibility,
+      extensions,
     );
     const { ref: mediaLibraryModalRef, ...mediaLibraryModalHandlers } =
       useMediaLibraryEditor(editor);
