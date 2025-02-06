@@ -1,8 +1,8 @@
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { useToggle } from 'src/hooks';
 import { Button } from '../../../../components';
+import { useToggle } from '../../../../hooks';
 import { IconRafterDown, IconRafterUp } from '../../../icons/components';
 
 /**
