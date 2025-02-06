@@ -23,7 +23,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import Underline from '@tiptap/extension-underline';
-import { Content, FocusPosition, useEditor } from '@tiptap/react';
+import { Content, Extensions, FocusPosition, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import { useTranslation } from 'react-i18next';
@@ -50,6 +50,10 @@ import {
  * @param content default rich content
  * @param focus set focus position to the editor
  * @param placeholder editor placeholder content
+ * @param onContentChange callback to be called on content change
+ * @param visibility workspace visibility
+ * @param extensions extensions to add to the editor
+ * @returns the editor instance and the editable state
  */
 export const useTipTapEditor = (
   editable: boolean,
@@ -58,12 +62,12 @@ export const useTipTapEditor = (
   placeholder?: string,
   onContentChange?: ({ editor }: { editor: any }) => void,
   visibility: WorkspaceVisibility = 'protected',
+  extensions?: Extensions,
 ) => {
   const { currentLanguage } = useEdificeClient();
   const { t } = useTranslation();
 
   const { uploadFile } = useUpload(visibility);
-
   const editor = useEditor({
     // fix WB-2534
     // TipTap editor must be instantiated in editable mode for table columns to be resizable.
@@ -117,6 +121,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer, uploadFile),
       AttachmentNodeView(AttachmentRenderer),
+      ...(extensions || []),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
