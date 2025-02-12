@@ -28,7 +28,11 @@ const AudioRenderer = (props: AudioProps) => {
 
   return (
     <NodeViewWrapper style={{ cursor: 'text' }}>
-      <div className="audio-wrapper" data-drag-handle style={alignContent(node.attrs.textAlign)}>
+      <div
+        className="audio-wrapper"
+        data-drag-handle
+        style={alignContent(node.attrs.textAlign)}
+      >
         <audio src={node.attrs.src} controls data-document-id={node.attrs.src}>
           <track kind="captions" />
         </audio>
