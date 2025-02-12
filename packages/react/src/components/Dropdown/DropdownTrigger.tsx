@@ -22,7 +22,7 @@ export interface DropdownTriggerProps
   /**
    * Set appearance
    */
-  variant?: 'ghost';
+  variant?: 'default' |'ghost' | 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info';
   /**
    * Button size
    */
@@ -39,6 +39,14 @@ export interface DropdownTriggerProps
    * Hide the carret
    */
   hideCarret?: boolean;
+  /**
+   * Make the dropdown trigger a pill
+   */
+  pill?: boolean;
+  /**
+   * Border width
+   */
+  borderWidth?: number;
 }
 
 export type DropdownTriggerType = React.ReactElement<DropdownTriggerProps>;
@@ -48,11 +56,13 @@ const DropdownTrigger = forwardRef(
     {
       label,
       icon,
-      variant,
+      variant = 'default',
       disabled = false,
       size,
       badgeContent,
       hideCarret = false,
+      pill = false,
+      borderWidth,
       ...restProps
     }: DropdownTriggerProps,
     forwardRef: Ref<HTMLButtonElement>,
@@ -66,12 +76,18 @@ const DropdownTrigger = forwardRef(
       { 'w-100': block },
       triggerProps.className,
       restProps.className,
+      { 'rounded-pill': pill },
     );
+
+    const style = { 
+      borderWidth: borderWidth ? `${borderWidth}px` : undefined,
+    };
 
     const mergedProps = {
       ...triggerProps,
       ...restProps,
       className,
+      style,
     };
 
     return (
