@@ -28,6 +28,14 @@ const meta: Meta<typeof Avatar> = {
       options: ['xs', 'sm', 'md', 'lg'],
       control: { type: 'inline-radio' },
     },
+    innerBorderColor: {
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      control: { type: 'select' },
+    },
+    outerBorderColor: {
+      options: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      control: { type: 'select' },
+    },
   },
 };
 
@@ -128,5 +136,38 @@ export const AvatarCustomFallback: Story = {
         story: 'You can override the default fallback with `imgPlaceholder`',
       },
     },
+  },
+};
+
+export const WithBorders: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/300',
+    alt: 'Avatar with borders',
+    innerBorderColor: 'info',
+    innerBorderWidth: 3,
+    outerBorderColor: 'black',
+    outerBorderWidth: 3,
+    outerBorderOffset: 1,
+    variant: 'circle',
+  },
+};
+export const WithInnerBorderOnly: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/300',
+    alt: 'Avatar with inner border',
+    innerBorderColor: 'success',
+    innerBorderWidth: 3,
+    variant: 'circle',
+  },
+};
+
+export const WithOuterBorderOnly: Story = {
+  args: {
+    src: 'https://i.pravatar.cc/300',
+    alt: 'Avatar with outer border',
+    outerBorderColor: 'danger',
+    outerBorderWidth: 4,
+    outerBorderOffset: 2,
+    variant: 'circle',
   },
 };
