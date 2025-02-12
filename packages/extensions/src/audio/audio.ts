@@ -41,7 +41,7 @@ export const Audio = Node.create({
           return { 'data-document-id': attributes.documentId };
         },
         parseHTML: (element: any) => element.getAttribute('data-document-id'),
-      }
+      },
     };
   },
 
