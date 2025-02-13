@@ -12,6 +12,7 @@ import { getOrGenerateBlobId } from '@edifice.io/utilities';
 import { useBrowserInfo } from '../../hooks';
 import { Status } from '../../types';
 import { useWorkspaceFile } from '../useWorkspaceFile';
+import { useTranslation } from 'react-i18next';
 
 const useUpload = (
   visibility?: WorkspaceVisibility,
@@ -21,6 +22,7 @@ const useUpload = (
 
   const { browser, device } = useBrowserInfo(navigator.userAgent);
   const { create } = useWorkspaceFile();
+  const { t } = useTranslation();
 
   /** Get the status of a file or blob being uploaded. */
   const getUploadStatus: (upload: File | Blob) => Status | undefined =
@@ -50,6 +52,20 @@ const useUpload = (
     });
   };
 
+  const getDefaultDate = () => {
+    const d = new Date();
+    return (
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+        2,
+        '0',
+      )}-${String(d.getDate()).padStart(2, '0')} ${String(
+        d.getHours(),
+      ).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')} ` +
+      ' ' +
+      t('bbm.video.recorder.defaultName')
+    );
+  }
+
   /** Upload a file. */
   async function uploadFile(file: File, metadata?: { duration: number }) {
     setUploadStatus(file, 'loading');
@@ -58,7 +74,7 @@ const useUpload = (
       if (application === 'media-library' && file.type.includes('video')) {
         // In media-library, video files are reencoded to streamable mp4.
         resource = await uploadVideo(file, {
-          filename: file.name,
+          filename: getDefaultDate(),
           ...metadata,
         });
       } else {
