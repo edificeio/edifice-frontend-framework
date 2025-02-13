@@ -64,7 +64,7 @@ const useUpload = (
       ' ' +
       t('bbm.video.recorder.defaultName')
     );
-  }
+  };
 
   /** Upload a file. */
   async function uploadFile(file: File, metadata?: { duration: number }) {
@@ -74,7 +74,7 @@ const useUpload = (
       if (application === 'media-library' && file.type.includes('video')) {
         // In media-library, video files are reencoded to streamable mp4.
         resource = await uploadVideo(file, {
-          filename: getDefaultDate(),
+          filename: file.name,
           ...metadata,
         });
       } else {
@@ -123,7 +123,7 @@ const useUpload = (
         browser: { name: browser.name, version: browser.version },
         url: window.location.hostname,
         file: blob,
-        filename: metadata?.filename ?? 'filename',
+        filename: getDefaultDate() ?? 'filename',
         weight: blob.size,
       },
       appCode: application,
