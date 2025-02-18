@@ -58,8 +58,8 @@ export default function useEdificeIcons() {
       case 'banques des savoirs':
         appCode = 'banquesavoir';
         break;
-      case 'collaborative-wall':
-        appCode = 'collaborativewall';
+      case 'collaborativewall':
+        appCode = 'collaborative-wall';
         break;
       case 'communautés':
         appCode = 'community';
