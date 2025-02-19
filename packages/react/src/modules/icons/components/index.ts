@@ -140,6 +140,7 @@ export { default as IconTextVanilla } from './IconTextVanilla';
 export { default as IconTool } from './IconTool';
 export { default as IconToolCenter } from './IconToolCenter';
 export { default as IconTrendingUp } from './IconTrendingUp';
+export { default as IconUndoAll } from './IconUndoAll';
 export { default as IconUndo } from './IconUndo';
 export { default as IconUndoAll } from './IconUndoAll';
 export { default as IconUnlink } from './IconUnlink';
