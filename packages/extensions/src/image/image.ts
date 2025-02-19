@@ -115,10 +115,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             : {};
         },
         parseHTML: (element) => {
-          const style = element.getAttribute('style');
-          return style && typeof style === 'string' && style.length === 0
-            ? null
-            : style;
+          return null;
         },
       },
     };
