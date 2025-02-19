@@ -114,12 +114,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
               }
             : {};
         },
-        parseHTML: (element) => {
-          const style = element.getAttribute('style');
-          return style && typeof style === 'string' && style.length > 0
-            ? null
-            : style;
-        },
+        parseHTML: (element) => element.getAttribute('style'),
       },
     };
   },
@@ -157,11 +152,9 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             oldSmileyList.filter((smiley) => attr.src.includes(smiley + '.png'))
               .length > 0
           ) {
-            attr['style'] = {
-              width: '1.5em',
-              height: '1.5em',
-              fontSize: el.parentElement?.style?.fontSize,
-            };
+            // FIX #WB2-2459: tiptap 2.11.0 support style attribute with string value only
+            attr['style'] =
+              `width: '1.5em'; height: '1.5em'; fontSize: ${el.parentElement?.style?.fontSize}`;
             attr['width'] = 'null';
             attr['height'] = 'null';
           }
