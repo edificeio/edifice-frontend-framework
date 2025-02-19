@@ -135,6 +135,7 @@ export { default as IconTextUnderline } from './IconTextUnderline';
 export { default as IconTextVanilla } from './IconTextVanilla';
 export { default as IconTool } from './IconTool';
 export { default as IconTrendingUp } from './IconTrendingUp';
+export { default as IconUndoAll } from './IconUndoAll';
 export { default as IconUndo } from './IconUndo';
 export { default as IconUnlink } from './IconUnlink';
 export { default as IconUnlock } from './IconUnlock';
