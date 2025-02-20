@@ -106,17 +106,37 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
         },
         parseHTML: (element) => element.getAttribute('height'),
       },
+      src: {
+        renderHTML(attributes) {
+          const attr = { src: attributes.src };
+          // Check old content smiley
+          const oldSmileyList = [
+            'happy',
+            'proud',
+            'dreamy',
+            'love',
+            'tired',
+            'angry',
+            'worried',
+            'sick',
+            'joker',
+            'sad',
+          ];
+          if (
+            oldSmileyList.filter((smiley) =>
+              attributes.src.includes(smiley + '.png'),
+            ).length > 0
+          ) {
+            attr['style'] =
+              `width: '1.5em'; height: '1.5em'; fontSize: '16px';`;
+            attr['width'] = 'null';
+            attr['height'] = 'null';
+          }
+          return attr;
+        },
+      },
       style: {
-        renderHTML: (attributes) => {
-          return attributes.style
-            ? {
-                style: attributes.style,
-              }
-            : {};
-        },
-        parseHTML: (element) => {
-          return null;
-        },
+        default: null,
       },
     };
   },
@@ -137,29 +157,6 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             attr['width'] = el.style.width;
           }
 
-          // Check old content smiley
-          const oldSmileyList = [
-            'happy',
-            'proud',
-            'dreamy',
-            'love',
-            'tired',
-            'angry',
-            'worried',
-            'sick',
-            'joker',
-            'sad',
-          ];
-          if (
-            oldSmileyList.filter((smiley) => attr.src.includes(smiley + '.png'))
-              .length > 0
-          ) {
-            // FIX #WB2-2459: tiptap 2.11.0 support style attribute with string value only
-            attr['style'] =
-              `width: '1.5em'; height: '1.5em'; fontSize: ${el.parentElement?.style?.fontSize}`;
-            attr['width'] = 'null';
-            attr['height'] = 'null';
-          }
           return attr;
         },
       },
