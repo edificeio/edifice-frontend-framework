@@ -106,37 +106,17 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
         },
         parseHTML: (element) => element.getAttribute('height'),
       },
-      src: {
-        renderHTML(attributes) {
-          const attr = { src: attributes.src };
-          // Check old content smiley
-          const oldSmileyList = [
-            'happy',
-            'proud',
-            'dreamy',
-            'love',
-            'tired',
-            'angry',
-            'worried',
-            'sick',
-            'joker',
-            'sad',
-          ];
-          if (
-            oldSmileyList.filter((smiley) =>
-              attributes.src.includes(smiley + '.png'),
-            ).length > 0
-          ) {
-            attr['style'] =
-              `width: '1.5em'; height: '1.5em'; fontSize: '16px';`;
-            attr['width'] = 'null';
-            attr['height'] = 'null';
-          }
-          return attr;
-        },
-      },
       style: {
-        default: null,
+        renderHTML: (attributes) => {
+          return attributes.style
+            ? {
+                style: attributes.style,
+              }
+            : {};
+        },
+        parseHTML: (element) => {
+          return null;
+        },
       },
     };
   },
@@ -155,6 +135,32 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
           }
           if (el.style?.width) {
             attr['width'] = el.style.width;
+          }
+
+          // Check old content smiley
+          const oldSmileyList = [
+            'happy',
+            'proud',
+            'dreamy',
+            'love',
+            'tired',
+            'angry',
+            'worried',
+            'sick',
+            'joker',
+            'sad',
+          ];
+          if (
+            oldSmileyList.filter((smiley) => attr.src.includes(smiley + '.png'))
+              .length > 0
+          ) {
+            attr['style'] = {
+              width: '1.5em',
+              height: '1.5em',
+              fontSize: '16px',
+            };
+            attr['width'] = 'null';
+            attr['height'] = 'null';
           }
 
           return attr;
