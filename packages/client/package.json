@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/client",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Edifice TypeScript Client",
   "keywords": [
     "typescript",
