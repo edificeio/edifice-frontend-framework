@@ -35,12 +35,30 @@ export const Base: Story = {
             createdAt: 1726757643336,
           },
           {
+            id: 'a2b1-cdf4',
+            comment: 'This is a reply to John Doe comment',
+            authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4d',
+            authorName: 'Leo Messi',
+            createdAt: 1726069313283,
+            updatedAt: 1726069313283,
+            replyTo: 'a2b1-cdf3',
+          },
+          {
             id: 'a2b1-cd2f',
             comment: 'This is my own comment',
             authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4b',
             authorName: 'Catherine Bailly',
             createdAt: 1726069313281,
             updatedAt: 1726069313281,
+          },
+          {
+            id: 'a2b1-cdf5',
+            comment: 'This is a reply to Catherine Bailly comment',
+            authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4c',
+            authorName: 'David Caudeli',
+            createdAt: 1726069313282,
+            updatedAt: 1726069313282,
+            replyTo: 'a2b1-cd2f',
           },
         ]}
         options={{

@@ -13,13 +13,30 @@ export function CommentList() {
     const profile =
       profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
 
+    const replies = comments.filter((comm) => comm.replyTo === comment.id);
+
     return (
-      <Comment
-        key={comment.id}
-        comment={comment}
-        profile={profile}
-        userId={user?.userId as string}
-      />
+      <div key={comment.id}>
+        {!comment.replyTo && (
+          <Comment
+            comment={comment}
+            profile={profile}
+            userId={user?.userId as string}
+          />
+        )}
+        {replies &&
+          replies.map((reply) => {
+            return (
+              <div key={reply.id} className={'ps-48'}>
+                <Comment
+                  comment={reply}
+                  profile={profile}
+                  userId={user?.userId as string}
+                />
+              </div>
+            );
+          })}
+      </div>
     );
   });
 }

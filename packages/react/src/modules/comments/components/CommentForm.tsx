@@ -6,7 +6,13 @@ import { useCommentsContext } from '../hooks/useCommentsContext';
 import { CommentAvatar } from './CommentAvatar';
 import { TextCounter } from './TextCounter';
 
-export const CommentForm = ({ userId }: { userId: string }) => {
+export const CommentForm = ({
+  userId,
+  replyTo,
+}: {
+  userId: string;
+  replyTo?: string;
+}) => {
   const { t } = useTranslation();
   const { content, handleChangeContent, handleCreateComment, options, type } =
     useCommentsContext();
@@ -42,7 +48,7 @@ export const CommentForm = ({ userId }: { userId: string }) => {
                 size="sm"
                 leftIcon={<IconSend />}
                 disabled={!content?.length}
-                onClick={() => handleCreateComment(content)}
+                onClick={() => handleCreateComment(content, replyTo)}
               >
                 {t('comment.post')}
               </Button>

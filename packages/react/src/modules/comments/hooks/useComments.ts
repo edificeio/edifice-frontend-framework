@@ -98,9 +98,11 @@ export const useComments = ({
     }
   };
 
-  const handleCreateComment = (content: string) => {
+  const handleCreateComment = (content: string, replyTo: string) => {
+    console.log(replyTo);
+
     if (type === 'edit') {
-      callbacks?.post(content);
+      callbacks?.post(content, replyTo);
     }
     setContent('');
   };
