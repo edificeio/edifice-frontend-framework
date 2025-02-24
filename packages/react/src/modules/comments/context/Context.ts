@@ -9,7 +9,6 @@ import {
 
 export const CommentContext = createContext<{
   comments: CommentProps[] | undefined;
-  content: string;
   editCommentId: string | null;
   profiles: (UserProfileResult | undefined)[];
   options: Partial<CommentOptions>;
@@ -17,8 +16,7 @@ export const CommentContext = createContext<{
   userRights?: Record<RightRole, boolean>;
   setEditCommentId: (value: string | null) => void;
   handleModifyComment: (commentId: string) => void;
-  handleChangeContent: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleCreateComment: (content: string) => void;
+  handleCreateComment: (content: string, replyTo?: string) => void;
   handleUpdateComment: (comment: string) => void;
   handleDeleteComment: (id: string) => void;
   handleReset: () => void;

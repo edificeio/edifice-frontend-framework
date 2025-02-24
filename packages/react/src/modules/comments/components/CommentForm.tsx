@@ -5,13 +5,30 @@ import { useAutosizeTextarea } from '../hooks/useAutosizeTextarea';
 import { useCommentsContext } from '../hooks/useCommentsContext';
 import { CommentAvatar } from './CommentAvatar';
 import { TextCounter } from './TextCounter';
+import { useState } from 'react';
 
-export const CommentForm = ({ userId }: { userId: string }) => {
-  const { t } = useTranslation();
-  const { content, handleChangeContent, handleCreateComment, options, type } =
-    useCommentsContext();
-
+export const CommentForm = ({
+  userId,
+  replyTo,
+}: {
+  userId: string;
+  replyTo?: string;
+}) => {
+  const [content, setContent] = useState<string>('');
+  const { handleCreateComment, options, type } = useCommentsContext();
   const [ref, onFocus] = useAutosizeTextarea();
+  const { t } = useTranslation();
+
+  const handleChangeContent = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setContent(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    handleCreateComment(content, replyTo);
+    setContent('');
+  };
 
   return (
     <>
@@ -42,7 +59,7 @@ export const CommentForm = ({ userId }: { userId: string }) => {
                 size="sm"
                 leftIcon={<IconSend />}
                 disabled={!content?.length}
-                onClick={() => handleCreateComment(content)}
+                onClick={handleSubmit}
               >
                 {t('comment.post')}
               </Button>

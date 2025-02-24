@@ -22,7 +22,6 @@ export const useComments = ({
   type: CommentType;
   callbacks: CommentCallbacks | null;
 }) => {
-  const [content, setContent] = useState<string>('');
   const [editCommentId, setEditCommentId] = useState<string | null>(null);
   const [commentLimit, setCommentLimit] = useState(options.maxComments);
 
@@ -67,15 +66,7 @@ export const useComments = ({
     setCommentLimit(newLimit);
   };
 
-  const handleChangeContent = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setContent(event.target.value);
-  };
-
   const handleReset = () => {
-    setContent('');
-
     if (editCommentId) setEditCommentId(null);
   };
 
@@ -98,11 +89,10 @@ export const useComments = ({
     }
   };
 
-  const handleCreateComment = (content: string) => {
+  const handleCreateComment = (content: string, replyTo?: string) => {
     if (type === 'edit') {
-      callbacks?.post(content);
+      callbacks?.post(content, replyTo);
     }
-    setContent('');
   };
 
   const handleModifyComment = (commentId: string) => {
@@ -111,7 +101,6 @@ export const useComments = ({
 
   return {
     profilesQueries,
-    content,
     title,
     user,
     emptyscreenPath: illuPad,
@@ -122,7 +111,6 @@ export const useComments = ({
     commentsCount,
     t,
     handleMoreComments,
-    handleChangeContent,
     handleDeleteComment,
     handleCreateComment,
     handleModifyComment,
