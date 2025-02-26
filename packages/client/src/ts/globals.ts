@@ -41,6 +41,7 @@ export const APP = {
   COLLABORATIVEWALL: 'collaborativewall',
   WIKI: 'wiki',
   TIMELINEGENERATOR: 'timelinegenerator',
+  COLLABORATIVEEDITOR: 'collaborativeeditor',
 
   // TODO compléter/trier les apps suivantes
   /*
