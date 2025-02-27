@@ -98,7 +98,7 @@ export const useComments = ({
     }
   };
 
-  const handleCreateComment = (content: string, replyTo: string) => {
+  const handleCreateComment = (content: string, replyTo?: string) => {
     console.log(replyTo);
 
     if (type === 'edit') {

@@ -1,19 +1,24 @@
+import { useState } from 'react';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useCommentsContext } from '../hooks/useCommentsContext';
 import { Comment } from './Comment';
+import { CommentReplies } from './CommentReplies';
 
 export function CommentList() {
-  const { user } = useEdificeClient();
+  const [replyFormCommentId, setReplyFormCommentId] = useState('');
 
+  const { user } = useEdificeClient();
   const { comments, profiles } = useCommentsContext();
+
+  const handleReply = (commentId: string) => {
+    setReplyFormCommentId(commentId);
+  };
 
   return comments?.map((comment) => {
     const { authorId } = comment;
 
     const profile =
       profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
-
-    const replies = comments.filter((comm) => comm.replyTo === comment.id);
 
     return (
       <div key={comment.id}>
@@ -22,20 +27,13 @@ export function CommentList() {
             comment={comment}
             profile={profile}
             userId={user?.userId as string}
+            onReply={handleReply}
           />
         )}
-        {replies &&
-          replies.map((reply) => {
-            return (
-              <div key={reply.id} className={'ps-48'}>
-                <Comment
-                  comment={reply}
-                  profile={profile}
-                  userId={user?.userId as string}
-                />
-              </div>
-            );
-          })}
+        <CommentReplies
+          parent={comment}
+          replyFormCommentId={replyFormCommentId}
+        />
       </div>
     );
   });

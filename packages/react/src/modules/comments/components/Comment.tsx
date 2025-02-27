@@ -20,14 +20,14 @@ export const Comment = ({
   comment,
   userId,
   profile,
+  onReply,
 }: {
   comment: CommentProps;
   userId: string;
   profile: UserProfile[number];
+  onReply?: (commentId: string) => void;
 }) => {
   const [value, setValue] = useState<string>('');
-  const [showReplyForm, setShowReplyForm] = useState(false);
-  const [replyToCommentId, setReplyToCommentId] = useState('');
 
   const {
     id,
@@ -61,16 +61,6 @@ export const Comment = ({
   ) => {
     resizeTextarea();
     setValue(event.target.value);
-  };
-
-  const handleReplyComment = (commentId: string) => {
-    if (!replyToCommentId) {
-      setReplyToCommentId(commentId);
-      setShowReplyForm(true);
-    } else {
-      setReplyToCommentId('');
-      setShowReplyForm(false);
-    }
   };
 
   return (
@@ -145,7 +135,7 @@ export const Comment = ({
                       variant="ghost"
                       color="tertiary"
                       size="sm"
-                      onClick={() => handleReplyComment(comment.id)}
+                      onClick={() => onReply?.(comment.id)}
                     >
                       {t('comment.reply')}
                     </Button>
@@ -179,11 +169,6 @@ export const Comment = ({
           )}
         </div>
       </div>
-      {showReplyForm && replyToCommentId === comment.id && (
-        <div className="ps-48 mt-16">
-          <CommentForm userId={userId} replyTo={replyToCommentId} />
-        </div>
-      )}
       <Suspense fallback={<LoadingScreen position={false} />}>
         {isDeleteModalOpen && (
           <DeleteModal
