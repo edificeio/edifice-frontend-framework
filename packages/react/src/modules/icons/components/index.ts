@@ -50,6 +50,7 @@ export { default as IconFolder } from './IconFolder';
 export { default as IconForgoing } from './IconForgoing';
 export { default as IconFullScreen } from './IconFullScreen';
 export { default as IconGlobe } from './IconGlobe';
+export { default as IconGroupAvatar } from './IconGroupAvatar';
 export { default as IconHeadphone } from './IconHeadphone';
 export { default as IconHide } from './IconHide';
 export { default as IconHighlightColumn } from './IconHighlightColumn';
