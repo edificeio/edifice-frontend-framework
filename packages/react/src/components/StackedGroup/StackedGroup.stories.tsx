@@ -128,16 +128,17 @@ export const WithAvatarAndDropdown: Story = {
           pill={true}
           baseShade={true}
           variant="primary"
+          className="bold"
           innerBorderColor="primary"
           innerBorderWidth={2}
           outerBorderColor="white"
           outerBorderWidth={2}
           size="sm"
-          label="12 users online"
+          label={<b>12 users online</b>}
         ></Dropdown.Trigger>
         <Dropdown.Menu unselectable="on">
           <Dropdown.Item>
-            <Card.Body space="8">
+            <Card.Body space="8" padding="0">
               <PreventPropagation>
                 <Switch
                   label="Display user's cursors"
@@ -150,7 +151,7 @@ export const WithAvatarAndDropdown: Story = {
           {['Isabelle Polonio', 'Justin Roland', 'Thomas Zata'].map(
             (name, index) => (
               <Dropdown.Item minWidth={340} key={index}>
-                <Card.Body space="8">
+                <Card.Body space="8" padding="0">
                   <div className="card-image ps-8 pe-4">
                     <Avatar
                       variant="circle"

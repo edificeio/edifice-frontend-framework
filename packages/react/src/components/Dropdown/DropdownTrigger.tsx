@@ -11,7 +11,7 @@ export interface DropdownTriggerProps
   /**
    * Dropdown trigger title
    */
-  label?: string;
+  label?: React.ReactNode;
   /**
    * Add an icon in dropdown trigger
    */
