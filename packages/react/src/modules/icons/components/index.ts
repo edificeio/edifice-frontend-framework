@@ -88,6 +88,7 @@ export { default as IconPlus } from './IconPlus';
 export { default as IconPointerDefault } from './IconPointerDefault';
 export { default as IconPointerHand } from './IconPointerHand';
 export { default as IconPrint } from './IconPrint';
+export { default as IconQuestionMark } from './IconQuestionMark';
 export { default as IconQuestion } from './IconQuestion';
 export { default as IconRafterDown } from './IconRafterDown';
 export { default as IconRafterLeft } from './IconRafterLeft';
