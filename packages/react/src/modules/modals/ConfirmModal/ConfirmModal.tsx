@@ -1,28 +1,50 @@
-import { Button, Modal } from '@edifice.io/react';
+import { Button, Modal } from '../../../components';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const Variant = {
-  YES_NO: 'yes/no',
-  OK_CANCEL: 'ok/cancel',
-} as const;
-
-export type ConfirmModalVariant = (typeof Variant)[keyof typeof Variant];
+export type ConfirmModalVariant = 'yes/no' | 'ok/cancel';
 
 interface ConfirmModalProps {
+  /**
+   * Variant of text buttons content
+   */
   variant?: ConfirmModalVariant;
-  id?: string;
+  /**
+   * Modal id (useful when multiple modal on the same page)
+   */
+  id: string;
+  /**
+   * Is Modal Open
+   */
   isOpen: boolean;
-  header: ReactNode;
-  body: ReactNode;
+  /**
+   * Content of header modal's
+   */
+  header?: ReactNode;
+  /**
+   * Content of body modal's
+   */
+  body?: ReactNode;
+  /**
+   * Key text translation of confirm button (useTranslation('common'))
+   */
   okText?: string;
+  /**
+   * Key text translation of cancel button (useTranslation('common'))
+   */
   koText?: string;
+  /**
+   * Function to call when success button proceed
+   */
   onSuccess?: () => void;
+  /**
+   * Function to call when closing modal
+   */
   onCancel?: () => void;
 }
 
 export default function ConfirmModal({
-  variant = Variant.YES_NO,
+  variant = 'yes/no',
   id,
   isOpen,
   header,
@@ -33,12 +55,11 @@ export default function ConfirmModal({
   onCancel = () => ({}),
 }: ConfirmModalProps) {
   const { t } = useTranslation('common');
-  const modalId = id ?? "modal-confirm";
   const ok = { 'yes/no': t('yes'), 'ok/cancel': t('ok') };
   const ko = { 'yes/no': t('no'), 'ok/cancel': t('cancel') };
 
   return (
-    <Modal isOpen={isOpen} onModalClose={onCancel} id={modalId}>
+    <Modal isOpen={isOpen} onModalClose={onCancel} id={id}>
       <Modal.Header onModalClose={onCancel}>{header}</Modal.Header>
       <Modal.Body>{body}</Modal.Body>
       <Modal.Footer>
