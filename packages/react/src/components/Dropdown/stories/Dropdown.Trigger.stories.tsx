@@ -45,7 +45,7 @@ export const Base: Story = {
 };
 
 export const WithIcon: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <Dropdown>
         <Dropdown.Trigger icon={<IconFilter />} />
@@ -66,7 +66,7 @@ export const WithIcon: Story = {
 };
 
 export const WithLabel: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Dropdown Trigger" />
@@ -87,7 +87,7 @@ export const WithLabel: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Dropdown Trigger" disabled />
@@ -108,7 +108,7 @@ export const Disabled: Story = {
 };
 
 export const Size: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <div className="d-flex flex-column gap-24">
         <Dropdown>
@@ -146,7 +146,7 @@ export const Size: Story = {
 };
 
 export const GhostVariant: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Dropdown" variant="ghost" />
@@ -166,7 +166,7 @@ export const GhostVariant: Story = {
 };
 
 export const CustomTrigger: Story = {
-  render: (args) => {
+  render: (_args) => {
     return (
       <Dropdown>
         {(
@@ -223,6 +223,81 @@ export const CustomTrigger: Story = {
           </>
         )}
       </Dropdown>`,
+      },
+    },
+  },
+};
+
+export const WithInnerBorder: Story = {
+  render: (_args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger
+          label="Dropdown"
+          innerBorderColor="secondary"
+          innerBorderWidth={2}
+        />
+        <Dropdown.Menu>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`Dropdown.Trigger` accepts `innerBorderColor` and `innerBorderWidth` props to customize inner border',
+      },
+    },
+  },
+};
+
+export const WithOuterBorder: Story = {
+  render: (_args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger
+          label="Dropdown"
+          outerBorderColor="primary"
+          outerBorderWidth={2}
+          outerBorderOffset={2}
+        />
+        <Dropdown.Menu>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`Dropdown.Trigger` accepts `outerBorderColor`, `outerBorderWidth` and `outerBorderOffset` props to customize outer border',
+      },
+    },
+  },
+};
+
+export const WithBaseShade: Story = {
+  render: (_args) => {
+    return (
+      <Dropdown>
+        <Dropdown.Trigger label="Dropdown" variant="primary" baseShade />
+        <Dropdown.Menu>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+          <Dropdown.Item>Dropdown Item</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          '`Dropdown.Trigger` accepts a `baseShade` prop to use base color instead of shade-800',
       },
     },
   },

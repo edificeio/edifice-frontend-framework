@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { IconRafterUp } from '../../modules/icons/components';
 import { useDropdownContext } from './DropdownContext';
+import { Color } from 'src/types';
 
 export interface DropdownTriggerProps
   extends React.ComponentPropsWithRef<'button'> {
@@ -22,7 +23,15 @@ export interface DropdownTriggerProps
   /**
    * Set appearance
    */
-  variant?: 'ghost';
+  variant?:
+    | 'default'
+    | 'ghost'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info';
   /**
    * Button size
    */
@@ -39,6 +48,37 @@ export interface DropdownTriggerProps
    * Hide the carret
    */
   hideCarret?: boolean;
+  /**
+   * Make the dropdown trigger a pill
+   */
+  pill?: boolean;
+  /**
+   * Inner border color
+   */
+  innerBorderColor?: Color;
+  /**
+   * Inner border width in pixels
+   */
+  innerBorderWidth?: number;
+
+  /**
+   * Outer border color
+   */
+  outerBorderColor?: Color;
+
+  /**
+   * Outer border width in pixels
+   */
+  outerBorderWidth?: number;
+
+  /**
+   * Outer border offset in pixels
+   */
+  outerBorderOffset?: number;
+  /**
+   * Use base shade color
+   */
+  baseShade?: boolean;
 }
 
 export type DropdownTriggerType = React.ReactElement<DropdownTriggerProps>;
@@ -48,11 +88,18 @@ const DropdownTrigger = forwardRef(
     {
       label,
       icon,
-      variant,
+      variant = 'default',
       disabled = false,
       size,
       badgeContent,
       hideCarret = false,
+      pill = false,
+      innerBorderColor,
+      innerBorderWidth,
+      outerBorderColor,
+      outerBorderWidth,
+      outerBorderOffset,
+      baseShade,
       ...restProps
     }: DropdownTriggerProps,
     forwardRef: Ref<HTMLButtonElement>,
@@ -66,12 +113,25 @@ const DropdownTrigger = forwardRef(
       { 'w-100': block },
       triggerProps.className,
       restProps.className,
+      { 'rounded-pill': pill },
+      { 'base-shade': baseShade },
     );
+
+    const style = {
+      ...(outerBorderColor && {
+        outline: `${outerBorderWidth}px solid var(--edifice-${outerBorderColor})`,
+        outlineOffset: outerBorderOffset,
+      }),
+      ...(innerBorderColor && {
+        border: `${innerBorderWidth}px solid var(--edifice-${innerBorderColor})`,
+      }),
+    };
 
     const mergedProps = {
       ...triggerProps,
       ...restProps,
       className,
+      style,
     };
 
     return (

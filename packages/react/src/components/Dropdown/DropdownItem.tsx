@@ -26,6 +26,10 @@ export interface DropdownItemProps {
    * Additional class name
    */
   className?: string;
+  /**
+   * Set minimum width in pixels
+   */
+  minWidth?: number;
 }
 
 const DropdownItem = ({
@@ -34,6 +38,7 @@ const DropdownItem = ({
   onClick,
   children,
   className,
+  minWidth,
   ...restProps
 }: DropdownItemProps) => {
   const { itemProps, itemRefs, isFocused } = useDropdownContext();
@@ -59,10 +64,15 @@ const DropdownItem = ({
     className,
   );
 
+  const style = {
+    ...(minWidth && { minWidth: `${minWidth}px` }),
+  };
+
   return (
     <div
       id={id}
       role="menuitem"
+      style={style}
       ref={(el) => (itemRefs.current[id] = el)}
       tabIndex={isFocused === id ? 0 : -1}
       className={dropdownItem}

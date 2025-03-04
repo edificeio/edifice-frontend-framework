@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import noAvatar from '@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg';
 import { Image } from '../Image';
+import { Color } from 'src/types/color';
 
 export type AvatarVariants = 'square' | 'rounded' | 'circle';
 export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -34,6 +35,29 @@ export interface AvatarProps extends React.ComponentPropsWithRef<'img'> {
    * Optional class for styling purpose
    */
   className?: string;
+  /**
+   * Inner border color
+   */
+  innerBorderColor?: Color;
+  /**
+   * Inner border width in pixels
+   */
+  innerBorderWidth?: number;
+
+  /**
+   * Outer border color
+   */
+  outerBorderColor?: Color;
+
+  /**
+   * Outer border width in pixels
+   */
+  outerBorderWidth?: number;
+
+  /**
+   * Outer border offset in pixels
+   */
+  outerBorderOffset?: number;
 }
 
 const Avatar = forwardRef(
@@ -45,6 +69,11 @@ const Avatar = forwardRef(
       src,
       imgPlaceholder,
       className,
+      innerBorderColor,
+      innerBorderWidth,
+      outerBorderColor,
+      outerBorderWidth,
+      outerBorderOffset,
       ...restProps
     }: AvatarProps,
     ref: Ref<HTMLDivElement>,
@@ -78,8 +107,18 @@ const Avatar = forwardRef(
       className,
     );
 
+    const style = {
+      ...(outerBorderColor && {
+        outline: `${outerBorderWidth}px solid var(--edifice-${outerBorderColor})`,
+        outlineOffset: outerBorderOffset,
+      }),
+      ...(innerBorderColor && {
+        border: `${innerBorderWidth}px solid var(--edifice-${innerBorderColor})`,
+      }),
+    };
+
     return (
-      <div ref={ref} className={classes}>
+      <div ref={ref} className={classes} style={style}>
         <Image
           src={src || placeholder}
           alt={alt}
