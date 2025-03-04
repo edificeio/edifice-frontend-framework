@@ -285,4 +285,6 @@ $vars-colors: (
   'info-800': $info-800,
 ) !default;
 
+$variants: ('primary', 'secondary', 'success', 'danger', 'warning', 'info');
+
 $extra-colors: map.merge($accessible-colors, $vars-colors);

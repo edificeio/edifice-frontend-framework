@@ -46,6 +46,11 @@
     }
   }
 
+  &-nowrap {
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
   &-menu {
     position: absolute;
     top: 100%;
@@ -144,6 +149,36 @@
 
       &.selected {
         background-color: $dropdown-toggle-selected-bg-color;
+      }
+    }
+
+    @each $variant in $variants {
+      &.base-shade.#{$variant} {
+        color: var(--#{$prefix}#{$variant});
+        border-color: var(--#{$prefix}#{$variant});
+      }
+
+      &.#{$variant} {
+        background-color: var(--#{$prefix}white);
+        color: var(--#{$prefix}#{$variant}-800);
+        border-color: var(--#{$prefix}#{$variant}-800);
+
+        &:hover,
+        &.selected {
+          background-color: var(--#{$prefix}#{$variant}-200);
+        }
+
+        &.focus,
+        &:focus {
+          background-color: var(--#{$prefix}#{$variant}-200);
+          outline: none;
+        }
+
+        &:focus-visible {
+          background-color: var(--#{$prefix}#{$variant}-200);
+          outline: 2px solid var(--#{$prefix}#{$variant});
+          outline-offset: 2px;
+        }
       }
     }
 
