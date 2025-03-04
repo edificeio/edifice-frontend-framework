@@ -3,6 +3,10 @@ import StackedGroup from './StackedGroup';
 
 import { AvatarGroup } from '../AvatarGroup';
 import { Dropdown } from '../Dropdown';
+import { Card } from '../Card';
+import { Avatar } from '../Avatar';
+import { Switch } from '../Switch';
+import { PreventPropagation } from '../PreventPropagation';
 
 const meta = {
   title: 'Components/StackedGroup',
@@ -94,6 +98,13 @@ export const LargeOverlap: Story = {
 };
 
 export const WithAvatarAndDropdown: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ height: '350px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   args: {
     children: [
       <AvatarGroup
@@ -112,7 +123,7 @@ export const WithAvatarAndDropdown: Story = {
         outerBorderColor="white"
         outerBorderWidth={2}
       />,
-      <Dropdown key="dropdown">
+      <Dropdown key="dropdown" placement="bottom-end">
         <Dropdown.Trigger
           pill={true}
           baseShade={true}
@@ -122,12 +133,43 @@ export const WithAvatarAndDropdown: Story = {
           outerBorderColor="white"
           outerBorderWidth={2}
           size="sm"
-          label="12 users"
+          label="12 users online"
         ></Dropdown.Trigger>
-        <Dropdown.Menu>
-          <Dropdown.Item>User 1</Dropdown.Item>
-          <Dropdown.Item>User 2</Dropdown.Item>
-          <Dropdown.Item>User 3</Dropdown.Item>
+        <Dropdown.Menu unselectable="on">
+          <Dropdown.Item>
+            <Card.Body space="8">
+              <PreventPropagation>
+                <Switch
+                  label="Display user's cursors"
+                  labelClassName="small"
+                ></Switch>
+              </PreventPropagation>
+            </Card.Body>
+          </Dropdown.Item>
+          <Dropdown.Separator />
+          {['Isabelle Polonio', 'Justin Roland', 'Thomas Zata'].map(
+            (name, index) => (
+              <Dropdown.Item minWidth={340} key={index}>
+                <Card.Body space="8">
+                  <div className="card-image ps-8 pe-4">
+                    <Avatar
+                      variant="circle"
+                      key="avatars"
+                      alt={name}
+                      src={'https://i.pravatar.cc/300?img=' + (index + 1)}
+                      size="sm"
+                    />
+                  </div>
+                  <div className="w-75">
+                    <Card.Text>{index == 0 ? <b>Me</b> : name}</Card.Text>
+                    <Card.Text className="text-black-50">
+                      <i>Manager</i>
+                    </Card.Text>
+                  </div>
+                </Card.Body>
+              </Dropdown.Item>
+            ),
+          )}
         </Dropdown.Menu>
       </Dropdown>,
     ],

@@ -46,6 +46,11 @@
     }
   }
 
+  &-nowrap {
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
   &-menu {
     position: absolute;
     top: 100%;

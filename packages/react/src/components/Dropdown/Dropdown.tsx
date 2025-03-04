@@ -28,6 +28,10 @@ export interface DropdownProps {
    */
   placement?: Placement;
   /**
+   * If true, the text will not wrap
+   */
+  noWrap?: boolean;
+  /**
    * Extra keydown handler for the Dropdown Trigger.
    * Useful for a11y keyboard navigation between a Dropdown element and other elements,
    * for example in the Toolbar component.
@@ -76,6 +80,7 @@ const Root = ({
   children,
   block,
   overflow = true,
+  noWrap,
   placement = 'bottom-start',
   extraTriggerKeyDownHandler,
   onToggle,
@@ -121,6 +126,7 @@ const Root = ({
 
   const dropdown = clsx('dropdown', {
     'w-100': block,
+    'dropdown-nowrap': noWrap,
     overflow,
   });
 
