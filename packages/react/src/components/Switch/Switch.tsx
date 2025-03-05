@@ -23,6 +23,18 @@ export interface SwitchProps
    * Additional class name for the label
    */
   labelClassName?: string;
+  /**
+   * Switch color variant
+   */
+  variant?:
+    | 'default'
+    | 'ghost'
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info';
 }
 
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
@@ -33,6 +45,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       value,
       disabled,
       size = 'md',
+      variant = 'default',
       labelClassName,
       ...restProps
     },
@@ -42,6 +55,7 @@ const Switch = forwardRef<HTMLInputElement, SwitchProps>(
       'switch',
       {
         [`switch-${size}`]: size,
+        [`switch-${variant}`]: variant,
         'switch-disabled': disabled,
       },
       className,
