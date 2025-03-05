@@ -72,6 +72,18 @@
     }
   }
 
+  @each $variant in $variants {
+    &.switch-#{$variant} {
+      input:checked + .slider {
+        background-color: var(--#{$prefix}#{$variant});
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 1px var(--#{$prefix}#{$variant});
+      }
+    }
+  }
+
   &-label {
     font-size: $font-size-base;
     line-height: $line-height-base;
