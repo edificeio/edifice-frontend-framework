@@ -5,6 +5,7 @@ import { CommentHeader } from '../components/CommentHeader';
 import { CommentList } from '../components/CommentList';
 import {
   DEFAULT_ADD_COMMENTS,
+  DEFAULT_ADD_REPLIES,
   DEFAULT_MAX_COMMENTS,
   DEFAULT_MAX_COMMENT_LENGTH,
   DEFAULT_MAX_REPLIES,
@@ -25,6 +26,7 @@ const CommentProvider = ({
     maxComments: DEFAULT_MAX_COMMENTS,
     additionalComments: DEFAULT_ADD_COMMENTS,
     maxReplies: DEFAULT_MAX_REPLIES,
+    additionalReplies: DEFAULT_ADD_REPLIES,
     ...commentOptions,
   };
 
@@ -32,7 +34,6 @@ const CommentProvider = ({
 
   const {
     profilesQueries,
-    content,
     title,
     user,
     emptyscreenPath,
@@ -43,7 +44,6 @@ const CommentProvider = ({
     commentsCount,
     t,
     handleMoreComments,
-    handleChangeContent,
     handleDeleteComment,
     handleCreateComment,
     handleModifyComment,
@@ -61,7 +61,6 @@ const CommentProvider = ({
   const values = useMemo(
     () => ({
       comments,
-      content,
       profiles: profilesQueries.data,
       editCommentId,
       options,
@@ -73,10 +72,9 @@ const CommentProvider = ({
       handleUpdateComment,
       handleDeleteComment,
       handleReset,
-      handleChangeContent,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [comments, content, editCommentId, profilesQueries, options],
+    [comments, editCommentId, profilesQueries, options],
   );
 
   return (

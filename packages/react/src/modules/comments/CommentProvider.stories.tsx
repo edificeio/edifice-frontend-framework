@@ -51,9 +51,10 @@ export const Base: Story = {
           additionalComments: 5,
         }}
         callbacks={{
-          post: (comment) => console.log(comment),
-          put: ({ comment, commentId }) => console.log({ comment, commentId }),
-          delete: (commentId) => console.log(commentId),
+          post: async (comment) => console.log(comment),
+          put: async ({ comment, commentId }) =>
+            console.log({ comment, commentId }),
+          delete: async (commentId) => console.log(commentId),
         }}
       />
     );
@@ -64,7 +65,7 @@ export const CreateComment: Story = {
   render: (_args) => {
     const [comments, setComments] = useState<CommentProps[]>([]);
 
-    const handleOnPostComment = async (comment) => {
+    const handleOnPostComment = async (comment: string) => {
       setComments([
         {
           id: 'a2b1-cdf3',
@@ -83,8 +84,9 @@ export const CreateComment: Story = {
         comments={comments}
         callbacks={{
           post: (comment) => handleOnPostComment(comment),
-          put: ({ comment, commentId }) => console.log({ comment, commentId }),
-          delete: (commentId) => console.log(commentId),
+          put: async ({ comment, commentId }) =>
+            console.log({ comment, commentId }),
+          delete: async (commentId) => console.log(commentId),
         }}
       />
     );
@@ -104,10 +106,17 @@ export const UpdateComment: Story = {
       },
     ]);
 
-    const handleOnPutcomment = async ({ comment, commentId }) => {
+    const handleOnPutcomment = async ({
+      comment,
+      commentId,
+    }: {
+      comment: string;
+      commentId: string;
+    }) => {
       const updateComment = comments.find(
         (comment) => comment.id === commentId,
       );
+      if (!updateComment) return;
       updateComment.comment = comment;
       setComments([updateComment]);
     };
@@ -117,10 +126,10 @@ export const UpdateComment: Story = {
         type="edit"
         comments={comments}
         callbacks={{
-          post: (comment) => console.log(comment),
-          put: ({ comment, commentId }) =>
+          post: async (comment) => console.log(comment),
+          put: async ({ comment, commentId }) =>
             handleOnPutcomment({ comment, commentId }),
-          delete: (commentId) => console.log(commentId),
+          delete: async (commentId) => console.log(commentId),
         }}
       />
     );
@@ -140,7 +149,7 @@ export const DeleteComment: Story = {
       },
     ]);
 
-    const handleOnDeleteComment = async ({ commentId }) => {
+    const handleOnDeleteComment = async () => {
       setComments([]);
     };
 
@@ -149,9 +158,10 @@ export const DeleteComment: Story = {
         type="edit"
         comments={comments}
         callbacks={{
-          post: (comment) => console.log(comment),
-          put: ({ comment, commentId }) => console.log({ comment, commentId }),
-          delete: (commentId) => handleOnDeleteComment(commentId),
+          post: async (comment) => console.log(comment),
+          put: async ({ comment, commentId }) =>
+            console.log({ comment, commentId }),
+          delete: () => handleOnDeleteComment(),
         }}
       />
     );
@@ -201,9 +211,10 @@ export const OptionsComments: Story = {
           },
         ]}
         callbacks={{
-          post: (comment) => console.log(comment),
-          put: ({ comment, commentId }) => console.log({ comment, commentId }),
-          delete: (commentId) => handleOnDeleteComment(commentId),
+          post: async (comment) => console.log(comment),
+          put: async ({ comment, commentId }) =>
+            console.log({ comment, commentId }),
+          delete: async (commentId) => console.log(commentId),
         }}
       />
     );
@@ -296,9 +307,165 @@ export const ReadMoreComments: Story = {
           },
         ]}
         callbacks={{
-          post: (comment) => console.log(comment),
-          put: ({ comment, commentId }) => console.log({ comment, commentId }),
-          delete: (commentId) => handleOnDeleteComment(commentId),
+          post: async (comment) => console.log(comment),
+          put: async ({ comment, commentId }) =>
+            console.log({ comment, commentId }),
+          delete: async (commentId) => console.log(commentId),
+        }}
+      />
+    );
+  },
+};
+
+export const Replies: Story = {
+  render: (_args) => {
+    const [comments, setComments] = useState([
+      {
+        id: 'a2b1-cdf3',
+        comment: 'This component is amazing!! 🔥',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
+        authorName: 'John Doe',
+        createdAt: 1726757643336,
+      },
+      {
+        id: 'a2b1-cdf4',
+        comment: '@John Doe, Yes I agree with you bro',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4d',
+        authorName: 'Leo Messi',
+        createdAt: 1726069313283,
+        updatedAt: 1726069313283,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cdf5',
+        comment: 'True!!',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4e',
+        authorName: 'Luis Suarez',
+        createdAt: 1726069313284,
+        updatedAt: 1726069313284,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cdf6',
+        comment: "You're right! @John Doe",
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4f',
+        authorName: 'Andres Iniesta',
+        createdAt: 1726069313285,
+        updatedAt: 1726069313285,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cdf7',
+        comment:
+          '@John Doe, yeah one of the best component of this amazing lib!',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4g',
+        authorName: 'Neymar Jr',
+        createdAt: 1726069313286,
+        updatedAt: 1726069313286,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cdf8',
+        comment: 'Amazing component yeaaaah!',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4g',
+        authorName: 'Ronaldo Nazario',
+        createdAt: 1726069313286,
+        updatedAt: 1726069313286,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cdf9',
+        comment: '@John Doe, for sure!!!',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4g',
+        authorName: 'Iker Casillas',
+        createdAt: 1726069313286,
+        updatedAt: 1726069313286,
+        replyTo: 'a2b1-cdf3',
+      },
+      {
+        id: 'a2b1-cd2f',
+        comment: "I'm so glad I can now add a comment! ❤️",
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4b',
+        authorName: 'Catherine Bailly',
+        createdAt: 1726069313281,
+        updatedAt: 1726069313281,
+      },
+      {
+        id: 'a2b1-cd3f',
+        comment: 'Yes me too @Catherine!',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4c',
+        authorName: 'David Caudeli',
+        createdAt: 1726069313282,
+        updatedAt: 1726069313282,
+        replyTo: 'a2b1-cd2f',
+      },
+    ]);
+
+    // Function to generate unique IDs
+    const generateUniqueId = () => {
+      return (
+        '_' +
+        Math.random().toString(36).substring(2, 11) +
+        '-' +
+        new Date().getTime().toString(36)
+      );
+    };
+
+    const handlePostAnswer = async (comment: string, replyTo?: string) => {
+      const currentTimestamp = Date.now();
+      console.log('currentTimestamp', currentTimestamp);
+
+      setComments([
+        ...comments,
+        {
+          id: generateUniqueId(),
+          comment,
+          authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
+          authorName: 'John Doe',
+          createdAt: currentTimestamp,
+          updatedAt: currentTimestamp,
+          replyTo,
+        },
+      ]);
+    };
+
+    const handlePutComment = async ({
+      comment,
+      commentId,
+    }: {
+      comment: string;
+      commentId: string;
+    }) => {
+      const updateComment = comments.find(
+        (comment) => comment.id === commentId,
+      );
+      if (!updateComment) return;
+      updateComment.comment = comment;
+      setComments(comments);
+    };
+
+    const handleDeleteComment = async (commentId: string) => {
+      setComments(comments.filter((comment) => comment.id !== commentId));
+    };
+
+    return (
+      <CommentProvider
+        type="edit"
+        comments={comments}
+        options={{
+          maxCommentLength: 800,
+          maxReplyLength: 200,
+          maxComments: 10,
+          maxReplies: 2,
+          additionalComments: 5,
+          additionalReplies: 2,
+        }}
+        callbacks={{
+          post: async (comment, replyTo) =>
+            await handlePostAnswer(comment, replyTo),
+          put: async ({ comment, commentId }) =>
+            await handlePutComment({ comment, commentId }),
+          delete: async (commentId) => await handleDeleteComment(commentId),
         }}
       />
     );
