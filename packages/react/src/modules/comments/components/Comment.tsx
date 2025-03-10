@@ -19,10 +19,12 @@ export const Comment = ({
   comment,
   userId,
   profile,
+  onReply,
 }: {
   comment: CommentProps;
   userId: string;
   profile: UserProfile[number];
+  onReply?: (commentId: string) => void;
 }) => {
   const [value, setValue] = useState<string>('');
 
@@ -61,100 +63,111 @@ export const Comment = ({
   };
 
   return (
-    <div
-      key={id}
-      className={`${
-        isEditing
-          ? 'border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16'
-          : 'border rounded-3 p-12 pb-8 d-flex gap-12 mt-16'
-      }`}
-    >
-      <CommentAvatar id={authorId} />
+    <>
+      <div
+        key={id}
+        className={`${
+          isEditing
+            ? 'border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16'
+            : 'border rounded-3 p-12 pb-8 d-flex gap-12 mt-16'
+        }`}
+      >
+        <CommentAvatar id={authorId} />
 
-      <div className="flex flex-fill">
-        <div className="d-flex align-items-center gap-12">
-          <CommentTitle>{authorName}</CommentTitle>
-          <BadgeProfile profile={profile} />
-          <CommentDate createdAt={createdAt} updatedAt={updatedAt} />
-        </div>
+        <div className="flex flex-fill">
+          <div className="d-flex align-items-center gap-12">
+            <CommentTitle>{authorName}</CommentTitle>
+            <BadgeProfile profile={profile} />
+            <CommentDate createdAt={createdAt} updatedAt={updatedAt} />
+          </div>
 
-        {isEditing ? (
-          <>
-            <div className="mt-8 mb-4">
-              <textarea
-                id="update-comment"
-                ref={ref}
-                value={value}
-                className="form-control"
-                placeholder={t('comment.placeholder')}
-                maxLength={options.maxCommentLength as number}
-                onChange={handleChangeContent}
-                rows={1}
-                style={{ resize: 'none', overflow: 'hidden' }}
-                onFocus={onFocus}
-              />
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-              <Button
-                variant="ghost"
-                color="tertiary"
-                size="sm"
-                onClick={handleReset}
-              >
-                {t('comment.cancel')}
-              </Button>
-              <div className="d-flex justify-content-end align-items-center gap-4">
-                <TextCounter
-                  content={value}
+          {isEditing ? (
+            <>
+              <div className="mt-8 mb-4">
+                <textarea
+                  id="update-comment"
+                  ref={ref}
+                  value={value}
+                  className="form-control"
+                  placeholder={t('comment.placeholder')}
                   maxLength={options.maxCommentLength as number}
+                  onChange={handleChangeContent}
+                  rows={1}
+                  style={{ resize: 'none', overflow: 'hidden' }}
+                  onFocus={onFocus}
                 />
+              </div>
+              <div className="d-flex justify-content-between align-items-center">
                 <Button
-                  type="submit"
                   variant="ghost"
+                  color="tertiary"
                   size="sm"
-                  leftIcon={<IconSave />}
-                  disabled={!content?.length}
-                  onClick={() => handleUpdateComment(value)}
+                  onClick={handleReset}
                 >
-                  {t('comment.save')}
+                  {t('comment.cancel')}
                 </Button>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="mt-8 mb-4">{content}</div>
-            {type === 'edit' && (
-              <div className="ms-n8">
-                {userId === authorId && (
+                <div className="d-flex justify-content-end align-items-center gap-4">
+                  <TextCounter
+                    content={value}
+                    maxLength={options.maxCommentLength as number}
+                  />
                   <Button
+                    type="submit"
                     variant="ghost"
-                    color="tertiary"
                     size="sm"
-                    onClick={() => {
-                      handleModifyComment(comment.id);
-                      setValue(content);
-                    }}
+                    leftIcon={<IconSave />}
+                    disabled={!content?.length}
+                    onClick={() => handleUpdateComment(value)}
                   >
-                    {t('comment.edit')}
+                    {t('comment.save')}
                   </Button>
-                )}
-                {(userId === authorId || userRights?.manager) && (
-                  <Button
-                    variant="ghost"
-                    color="tertiary"
-                    size="sm"
-                    onClick={() => setIsDeleteModalOpen(true)}
-                  >
-                    {t('comment.remove')}
-                  </Button>
-                )}
+                </div>
               </div>
-            )}
-          </>
-        )}
+            </>
+          ) : (
+            <>
+              <div className="mt-8 mb-4">{content}</div>
+              {type === 'edit' && (
+                <div className="ms-n8">
+                  {!comment.replyTo && (
+                    <Button
+                      variant="ghost"
+                      color="tertiary"
+                      size="sm"
+                      onClick={() => onReply?.(comment.id)}
+                    >
+                      {t('comment.reply')}
+                    </Button>
+                  )}
+                  {userId === authorId && (
+                    <Button
+                      variant="ghost"
+                      color="tertiary"
+                      size="sm"
+                      onClick={() => {
+                        handleModifyComment(comment.id);
+                        setValue(content);
+                      }}
+                    >
+                      {t('comment.edit')}
+                    </Button>
+                  )}
+                  {(userId === authorId || userRights?.manager) && (
+                    <Button
+                      variant="ghost"
+                      color="tertiary"
+                      size="sm"
+                      onClick={() => setIsDeleteModalOpen(true)}
+                    >
+                      {t('comment.remove')}
+                    </Button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
-
       <Suspense fallback={<LoadingScreen position={false} />}>
         {isDeleteModalOpen && (
           <DeleteModal
@@ -164,6 +177,6 @@ export const Comment = ({
           />
         )}
       </Suspense>
-    </div>
+    </>
   );
 };
