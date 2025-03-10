@@ -7,7 +7,7 @@ import * as commentStories from './CommentProvider.stories';
 
 # Comments
 
-The `CommentProvider` component allows you to add a comments section to your app. It provides a complete comments system with the ability to create, edit, and delete comments. The component can be used in read-only or edit mode and includes configurable options for maximum comment length, number of comments displayed, and number of replies allowed. All comment actions (post, edit, delete) can be customized through callback functions.
+The `CommentProvider` component allows you to add a comments section to your app. It provides a complete comments system with the ability to create, edit, delete comments and reply. The component can be used in read-only or edit mode and includes configurable options for maximum comment length, number of comments displayed, and number of replies allowed. All comment actions (post, edit, delete) can be customized through callback functions.
 
 <Canvas of={commentStories.Base} />
 
@@ -139,3 +139,15 @@ Configure `maxComments` with a number to limit the list of comments displayed an
 By passing `type='read'` to the `CommentProvider`, it displays the comments and disables any interaction.
 
 <Canvas of={commentStories.ReadComments} />
+
+## Replies
+
+You can reply to a comment by clicking on the Reply button.
+
+You can limit the number of replies displayed by setting the `maxReplies` option.
+
+You can also load more replies by clicking on the Load More button. The number of replies loaded is determined by the `additionalReplies` option.
+
+Only one level of replies is supported.
+
+<Canvas of={commentStories.Replies} />

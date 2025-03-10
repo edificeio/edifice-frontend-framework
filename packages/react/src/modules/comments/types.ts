@@ -25,14 +25,19 @@ export interface CommentProps {
    * Date when comment was updated
    */
   updatedAt?: number;
+  /**
+   * The comment parent ID.
+   */
+  replyTo?: string;
 }
 
 export interface CommentCallbacks {
   /**
    * Method to create a new comment
    * Get the new comment in the callback function
+   * If replyTo is provided, it is a reply to a comment
    */
-  post: (comment: string) => Promise<void>;
+  post: (comment: string, replyTo?: string) => Promise<void>;
   /**
    * Method to update a comment
    * Get the comment and commentId in the callback function
@@ -101,6 +106,10 @@ export type CommentOptions = {
    * Limit on displaying replies to a comment
    */
   maxReplies: number;
+  /**
+   * Number of replies to load additionally in the limited list
+   */
+  additionalReplies: number;
 };
 
 export interface UserProfileResult {
