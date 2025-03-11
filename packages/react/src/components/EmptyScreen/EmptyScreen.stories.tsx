@@ -11,6 +11,7 @@ import illuScrapbook from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-sc
 import illuSearch from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-search.svg';
 import illuTimelineGenerator from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-timelinegenerator.svg';
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
+import illuHomeworks from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-homeworks.svg';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof EmptyScreen> = {
@@ -29,6 +30,7 @@ const meta: Meta<typeof EmptyScreen> = {
         'illu-search',
         'illu-timelinegenerator',
         'illu-trash',
+        'illu-homeworks',
       ],
       mapping: {
         'illu-blog': illuBlog,
@@ -40,6 +42,7 @@ const meta: Meta<typeof EmptyScreen> = {
         'illu-search': illuSearch,
         'illu-timelinegenerator': illuTimelineGenerator,
         'illu-trash': illuTrash,
+        'illu-homeworks': illuHomeworks,
       },
     },
   },
