@@ -31,6 +31,7 @@ export class HomeworksResourceService extends ResourceService {
       {
         title: parameters.name,
         thumbnail,
+        description: parameters.description,
         repeats: parameters.repeats,
       },
     );
