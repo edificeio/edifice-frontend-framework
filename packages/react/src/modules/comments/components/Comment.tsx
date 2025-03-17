@@ -12,6 +12,7 @@ import { CommentDate } from './CommentDate';
 import { CommentTitle } from './CommentTitle';
 //import { DeleteModal } from './DeleteModal';
 import { TextCounter } from './TextCounter';
+import { CommentDeleted } from './CommentDeleted';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 
@@ -64,119 +65,124 @@ export const Comment = ({
 
   return (
     <>
-      <div
-        key={id}
-        className={`${
-          isEditing
-            ? 'border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16'
-            : 'border rounded-3 p-12 pb-8 d-flex gap-12 mt-16'
-        }`}
-      >
-        <CommentAvatar id={authorId} />
+      {comment.deleted && <CommentDeleted />}
+      {!comment.deleted && (
+        <>
+          <div
+            key={id}
+            className={`${
+              isEditing
+                ? 'border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200  my-16'
+                : 'border rounded-3 p-12 pb-8 d-flex gap-12 mt-16'
+            }`}
+          >
+            <CommentAvatar id={authorId} />
 
-        <div className="flex flex-fill">
-          <div className="d-flex align-items-center gap-12">
-            <CommentTitle>{authorName}</CommentTitle>
-            <BadgeProfile profile={profile} />
-            <CommentDate createdAt={createdAt} updatedAt={updatedAt} />
-          </div>
+            <div className="flex flex-fill">
+              <div className="d-flex align-items-center gap-12">
+                <CommentTitle>{authorName}</CommentTitle>
+                <BadgeProfile profile={profile} />
+                <CommentDate createdAt={createdAt} updatedAt={updatedAt} />
+              </div>
 
-          {isEditing ? (
-            <>
-              <div className="mt-8 mb-4">
-                <textarea
-                  id="update-comment"
-                  ref={ref}
-                  value={value}
-                  className="form-control"
-                  placeholder={t('comment.placeholder')}
-                  maxLength={options.maxCommentLength as number}
-                  onChange={handleChangeContent}
-                  rows={1}
-                  style={{ resize: 'none', overflow: 'hidden' }}
-                  onFocus={onFocus}
-                />
-              </div>
-              <div className="d-flex justify-content-between align-items-center">
-                <Button
-                  variant="ghost"
-                  color="tertiary"
-                  size="sm"
-                  onClick={handleReset}
-                >
-                  {t('comment.cancel')}
-                </Button>
-                <div className="d-flex justify-content-end align-items-center gap-4">
-                  <TextCounter
-                    content={value}
-                    maxLength={options.maxCommentLength as number}
-                  />
-                  <Button
-                    type="submit"
-                    variant="ghost"
-                    size="sm"
-                    leftIcon={<IconSave />}
-                    disabled={!content?.length}
-                    onClick={() => handleUpdateComment(value)}
-                  >
-                    {t('comment.save')}
-                  </Button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="mt-8 mb-4">{content}</div>
-              {type === 'edit' && (
-                <div className="ms-n8">
-                  {!comment.replyTo && (
+              {isEditing ? (
+                <>
+                  <div className="mt-8 mb-4">
+                    <textarea
+                      id="update-comment"
+                      ref={ref}
+                      value={value}
+                      className="form-control"
+                      placeholder={t('comment.placeholder')}
+                      maxLength={options.maxCommentLength as number}
+                      onChange={handleChangeContent}
+                      rows={1}
+                      style={{ resize: 'none', overflow: 'hidden' }}
+                      onFocus={onFocus}
+                    />
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center">
                     <Button
                       variant="ghost"
                       color="tertiary"
                       size="sm"
-                      onClick={() => onReply?.(comment.id)}
+                      onClick={handleReset}
                     >
-                      {t('comment.reply')}
+                      {t('comment.cancel')}
                     </Button>
+                    <div className="d-flex justify-content-end align-items-center gap-4">
+                      <TextCounter
+                        content={value}
+                        maxLength={options.maxCommentLength as number}
+                      />
+                      <Button
+                        type="submit"
+                        variant="ghost"
+                        size="sm"
+                        leftIcon={<IconSave />}
+                        disabled={!content?.length}
+                        onClick={() => handleUpdateComment(value)}
+                      >
+                        {t('comment.save')}
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="mt-8 mb-4">{content}</div>
+                  {type === 'edit' && (
+                    <div className="ms-n8">
+                      {!comment.replyTo && (
+                        <Button
+                          variant="ghost"
+                          color="tertiary"
+                          size="sm"
+                          onClick={() => onReply?.(comment.id)}
+                        >
+                          {t('comment.reply')}
+                        </Button>
+                      )}
+                      {userId === authorId && (
+                        <Button
+                          variant="ghost"
+                          color="tertiary"
+                          size="sm"
+                          onClick={() => {
+                            handleModifyComment(comment.id);
+                            setValue(content);
+                          }}
+                        >
+                          {t('comment.edit')}
+                        </Button>
+                      )}
+                      {(userId === authorId || userRights?.manager) && (
+                        <Button
+                          variant="ghost"
+                          color="tertiary"
+                          size="sm"
+                          onClick={() => setIsDeleteModalOpen(true)}
+                        >
+                          {t('comment.remove')}
+                        </Button>
+                      )}
+                    </div>
                   )}
-                  {userId === authorId && (
-                    <Button
-                      variant="ghost"
-                      color="tertiary"
-                      size="sm"
-                      onClick={() => {
-                        handleModifyComment(comment.id);
-                        setValue(content);
-                      }}
-                    >
-                      {t('comment.edit')}
-                    </Button>
-                  )}
-                  {(userId === authorId || userRights?.manager) && (
-                    <Button
-                      variant="ghost"
-                      color="tertiary"
-                      size="sm"
-                      onClick={() => setIsDeleteModalOpen(true)}
-                    >
-                      {t('comment.remove')}
-                    </Button>
-                  )}
-                </div>
+                </>
               )}
-            </>
-          )}
-        </div>
-      </div>
-      <Suspense fallback={<LoadingScreen position={false} />}>
-        {isDeleteModalOpen && (
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onCancel={() => setIsDeleteModalOpen(false)}
-            onSuccess={() => onDeleteComment(id)}
-          />
-        )}
-      </Suspense>
+            </div>
+          </div>
+          <Suspense fallback={<LoadingScreen position={false} />}>
+            {isDeleteModalOpen && (
+              <DeleteModal
+                isOpen={isDeleteModalOpen}
+                onCancel={() => setIsDeleteModalOpen(false)}
+                onSuccess={() => onDeleteComment(id)}
+              />
+            )}
+          </Suspense>
+        </>
+      )}
     </>
   );
 };
