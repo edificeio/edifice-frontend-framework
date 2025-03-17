@@ -60,6 +60,7 @@ export function useHelp() {
   const options = {
     replace: (domNode: any) => {
       const typedDomNode = domNode as any;
+      const isActive = typedDomNode.attribs.id === activeSection;
 
       if (typedDomNode.attribs && typedDomNode.attribs.id === 'TOC') {
         return (
@@ -93,17 +94,15 @@ export function useHelp() {
                           ) {
                             const sectionId = typedDomNode.attribs.href.replace('#', '');
                             return (
-                              <a
+                              <span
                                 onClick={(e) => {
                                   e.preventDefault();
                                   setActiveSection(sectionId);
                                   setVisibility(false);
                                 }}
                               >
-                                <span>
-                                  {domToReact(typedDomNode.children)}
-                                </span>
-                              </a>
+                                {domToReact(typedDomNode.children)}
+                              </span>
                             );
                           }
                         },
@@ -126,9 +125,7 @@ export function useHelp() {
           <div
             {...props}
             className="section level2"
-            style={{
-              display: typedDomNode.attribs.id === activeSection ? 'block' : 'none',
-            }}
+            hidden={!isActive}
           >
             {domToReact(typedDomNode.children, {
               replace: (domNode: any) => {
