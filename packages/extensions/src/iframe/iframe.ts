@@ -1,4 +1,5 @@
 import { Node } from '@tiptap/core';
+import { iframeTransformer } from './transformers';
 
 export interface IframeOptions {
   allowFullscreen: boolean;
@@ -90,6 +91,8 @@ export const Iframe = Node.create<IframeOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
+    // Call the onRenderHTML method from the iframeTransformer before rendering the iframe
+    iframeTransformer.onRenderHTML({ HTMLAttributes });
     return ['div', this.options.HTMLAttributes, ['iframe', HTMLAttributes]];
   },
 
