@@ -27,11 +27,13 @@ The structure of a comment object must conform to this interface. If not, you mu
 ```
 interface CommentProps {
   id: string; // Comment ID
-  comment: string; // Comment text
-  authorId: string; // Author ID
-  authorName: string; // Name of the author of the comment
+  comment?: string; // Comment text
+  authorId?: string; // Author ID
+  authorName?: string; // Name of the author of the comment
   createdAt: number; // Date when the comment was created
   updatedAt?: number; // Date when the comment was updated
+  deleted?: boolean; // Flag to indicate if the comment is deleted
+  replyTo?: string; // ID of the comment to which this comment is a reply
 }
 ```
 
@@ -81,14 +83,32 @@ You need to pass an event handler to the `delete` key in the `callbacks` prop to
 delete: (commentId: string) => Promise<void>;
 ```
 
+## Reply to a comment
+
+You can reply to a comment by clicking on the Reply button.
+
+You can limit the number of replies displayed by setting the `maxReplies` option.
+
+You can also load more replies by clicking on the Load More button. The number of replies loaded is determined by the `additionalReplies` option.
+
+Only one level of replies is supported.
+
+<Canvas of={commentStories.ReplyComment} />
+
+You need to pass an event handler to the `post` key in the `callbacks` prop, with the replyTo parameter set to the ID of the comment to which you are replying.
+
+```
+post: (comment: string, replyTo?: string) => Promise<void>
+```
+
 ## Callbacks
 
 As mentioned above, the `callbacks` prop needs three keys/methods to work: `post`, `put`, and `delete` to create, update, or remove a comment.
 
-- The post method returns the newly created comment.
+- The post method returns the newly created comment. In case of a comment reply, use the replyTo parameter to specify the comment to which the new comment is a reply.
 
 ```
-post: (comment: string) => Promise<void>
+post: (comment: string, replyTo?: string) => Promise<void>
 ```
 
 - The put method returns the updated comment along with its ID.
@@ -139,15 +159,3 @@ Configure `maxComments` with a number to limit the list of comments displayed an
 By passing `type='read'` to the `CommentProvider`, it displays the comments and disables any interaction.
 
 <Canvas of={commentStories.ReadComments} />
-
-## Replies
-
-You can reply to a comment by clicking on the Reply button.
-
-You can limit the number of replies displayed by setting the `maxReplies` option.
-
-You can also load more replies by clicking on the Load More button. The number of replies loaded is determined by the `additionalReplies` option.
-
-Only one level of replies is supported.
-
-<Canvas of={commentStories.Replies} />

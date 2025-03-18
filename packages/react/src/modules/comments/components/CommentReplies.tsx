@@ -15,10 +15,12 @@ export const CommentReplies = ({
   const { comments, profiles, options } = useCommentsContext();
   const { t, user, profile, slicedReplies, defaultReplies, handleMoreReplies } =
     useCommentReplies({ parentComment, comments, profiles, options });
+  const showCommentForm =
+    replyFormCommentId === parentComment.id && !parentComment.deleted;
 
   return (
     <div className="comments-replies-container">
-      {replyFormCommentId === parentComment.id && (
+      {showCommentForm && (
         <div className="comments-replies-form">
           <CommentForm
             userId={user?.userId as string}

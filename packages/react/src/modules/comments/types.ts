@@ -29,6 +29,10 @@ export interface CommentProps {
    * The comment parent ID.
    */
   replyTo?: string;
+  /**
+   * If the comment is deleted.
+   */
+  deleted?: boolean;
 }
 
 export interface CommentCallbacks {
