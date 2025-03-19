@@ -47,6 +47,7 @@ export { default as IconFilter } from './IconFilter';
 export { default as IconFlag } from './IconFlag';
 export { default as IconFolder } from './IconFolder';
 export { default as IconFolderAdd } from './IconFolderAdd';
+export { default as IconFolderDelete } from './IconFolderDelete';
 export { default as IconFolderMove } from './IconFolderMove';
 export { default as IconForgoing } from './IconForgoing';
 export { default as IconFullScreen } from './IconFullScreen';
