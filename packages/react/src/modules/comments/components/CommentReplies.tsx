@@ -7,16 +7,15 @@ import { useCommentReplies } from '../hooks/useCommentReplies';
 
 export const CommentReplies = ({
   parentComment,
-  replyFormCommentId,
 }: {
   parentComment: CommentProps;
-  replyFormCommentId: string;
 }) => {
-  const { comments, profiles, options } = useCommentsContext();
+  const { comments, profiles, options, replyToCommentId } =
+    useCommentsContext();
   const { t, user, profile, slicedReplies, defaultReplies, handleMoreReplies } =
     useCommentReplies({ parentComment, comments, profiles, options });
   const showCommentForm =
-    replyFormCommentId === parentComment.id && !parentComment.deleted;
+    replyToCommentId === parentComment.id && !parentComment.deleted;
 
   return (
     <div className="comments-replies-container">
@@ -30,15 +29,19 @@ export const CommentReplies = ({
       )}
 
       <div className="comments-replies-list">
-        {slicedReplies.map((reply) => (
-          <div key={reply.id} className="comments-replies-reply">
-            <Comment
-              comment={reply}
-              profile={profile}
-              userId={user?.userId as string}
-            />
-          </div>
-        ))}
+        {slicedReplies.map((reply) => {
+          if (!reply.deleted) {
+            return (
+              <div key={reply.id} className="comments-replies-reply">
+                <Comment
+                  comment={reply}
+                  profile={profile}
+                  userId={user?.userId as string}
+                />
+              </div>
+            );
+          }
+        })}
       </div>
 
       {slicedReplies.length < defaultReplies?.length && (

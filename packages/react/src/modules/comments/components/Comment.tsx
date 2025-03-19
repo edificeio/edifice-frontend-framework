@@ -13,6 +13,7 @@ import { CommentTitle } from './CommentTitle';
 //import { DeleteModal } from './DeleteModal';
 import { TextCounter } from './TextCounter';
 import { CommentDeleted } from './CommentDeleted';
+import { CommentReplies } from './CommentReplies';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 
@@ -20,12 +21,10 @@ export const Comment = ({
   comment,
   userId,
   profile,
-  onReply,
 }: {
   comment: CommentProps;
   userId: string;
   profile: UserProfile[number];
-  onReply?: (commentId: string) => void;
 }) => {
   const [value, setValue] = useState<string>('');
 
@@ -36,6 +35,7 @@ export const Comment = ({
     createdAt,
     updatedAt,
     comment: content,
+    replyTo,
   } = comment;
 
   const [ref, onFocus, resizeTextarea] = useAutosizeTextarea(true);
@@ -44,6 +44,7 @@ export const Comment = ({
   const { t } = useTranslation();
 
   const {
+    comments,
     editCommentId,
     options,
     type,
@@ -52,7 +53,13 @@ export const Comment = ({
     handleModifyComment,
     handleReset,
     handleUpdateComment,
+    handleReplyToComment,
   } = useCommentsContext();
+
+  const replies = comments?.filter((comm) => comm.replyTo === comment.id) ?? [];
+
+  const hasReplies = replies.length > 0;
+  const hasAllDeletedReplies = replies.every((reply) => reply.deleted);
 
   const isEditing = editCommentId === comment.id;
 
@@ -65,7 +72,12 @@ export const Comment = ({
 
   return (
     <>
-      {comment.deleted && <CommentDeleted />}
+      {comment.deleted && hasReplies && !hasAllDeletedReplies && (
+        <>
+          <CommentDeleted />
+          <CommentReplies parentComment={comment} />
+        </>
+      )}
       {!comment.deleted && (
         <>
           <div
@@ -133,12 +145,12 @@ export const Comment = ({
                   <div className="mt-8 mb-4">{content}</div>
                   {type === 'edit' && (
                     <div className="ms-n8">
-                      {!comment.replyTo && (
+                      {!replyTo && (
                         <Button
                           variant="ghost"
                           color="tertiary"
                           size="sm"
-                          onClick={() => onReply?.(comment.id)}
+                          onClick={() => handleReplyToComment(comment.id)}
                         >
                           {t('comment.reply')}
                         </Button>
@@ -172,6 +184,9 @@ export const Comment = ({
               )}
             </div>
           </div>
+
+          <CommentReplies parentComment={comment} />
+
           <Suspense fallback={<LoadingScreen position={false} />}>
             {isDeleteModalOpen && (
               <DeleteModal

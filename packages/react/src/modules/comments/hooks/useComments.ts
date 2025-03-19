@@ -23,6 +23,7 @@ export const useComments = ({
   callbacks: CommentCallbacks | null;
 }) => {
   const [editCommentId, setEditCommentId] = useState<string | null>(null);
+  const [replyToCommentId, setReplyToCommentId] = useState<string | null>(null);
   const [commentLimit, setCommentLimit] = useState(options.maxComments);
 
   const { t } = useTranslation();
@@ -50,8 +51,10 @@ export const useComments = ({
     [commentLimit, defaultComments],
   );
 
-  const commentsCount = comments?.length ?? 0;
-  const defaultCommentsCount = defaultComments?.length ?? 0;
+  const commentsCount =
+    comments?.filter((comment) => !comment.deleted)?.length ?? 0;
+  const defaultCommentsCount =
+    defaultComments?.filter((comment) => !comment.deleted)?.length ?? 0;
 
   const title =
     defaultCommentsCount && defaultCommentsCount > 1
@@ -93,10 +96,18 @@ export const useComments = ({
     if (type === 'edit') {
       callbacks?.post(content, replyTo);
     }
+
+    if (replyTo) {
+      setReplyToCommentId(null);
+    }
   };
 
   const handleModifyComment = (commentId: string) => {
     setEditCommentId(commentId);
+  };
+
+  const handleReplyToComment = (commentId: string) => {
+    setReplyToCommentId(commentId);
   };
 
   return {
@@ -108,6 +119,8 @@ export const useComments = ({
     comments,
     editCommentId,
     setEditCommentId,
+    replyToCommentId,
+    setReplyToCommentId,
     commentsCount,
     t,
     handleMoreComments,
@@ -115,6 +128,7 @@ export const useComments = ({
     handleCreateComment,
     handleModifyComment,
     handleUpdateComment,
+    handleReplyToComment,
     handleReset,
   };
 };
