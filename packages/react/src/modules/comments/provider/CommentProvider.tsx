@@ -37,13 +37,12 @@ const CommentProvider = ({
     title,
     user,
     emptyscreenPath,
-    defaultParentCommentsCount,
-    limitedSortedParentComments,
+    displayedComments,
+    showMoreComments,
     editCommentId,
     setEditCommentId,
     replyToCommentId,
     setReplyToCommentId,
-    limitedSortedParentCommentsCount,
     t,
     handleMoreComments,
     handleDeleteComment,
@@ -63,7 +62,7 @@ const CommentProvider = ({
 
   const values = useMemo(
     () => ({
-      limitedSortedParentComments,
+      displayedComments,
       defaultComments,
       profiles: profilesQueries.data,
       editCommentId,
@@ -81,7 +80,7 @@ const CommentProvider = ({
       handleReset,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [limitedSortedParentComments, editCommentId, profilesQueries, options],
+    [displayedComments, editCommentId, profilesQueries, options],
   );
 
   return (
@@ -95,8 +94,7 @@ const CommentProvider = ({
             <>
               <CommentList />
 
-              {limitedSortedParentCommentsCount !==
-                defaultParentCommentsCount && (
+              {showMoreComments && (
                 <Button
                   variant="ghost"
                   color="tertiary"
@@ -110,7 +108,7 @@ const CommentProvider = ({
           ) : null}
         </div>
 
-        {!limitedSortedParentCommentsCount && type === 'edit' && (
+        {!displayedComments.length && type === 'edit' && (
           <div className="comments-emptyscreen">
             <div className="comments-emptyscreen-wrapper">
               <EmptyScreen imageSrc={emptyscreenPath} size={150} />

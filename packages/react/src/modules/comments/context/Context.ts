@@ -8,7 +8,7 @@ import {
 } from '../types';
 
 export const CommentContext = createContext<{
-  limitedSortedParentComments: CommentProps[] | undefined;
+  displayedComments: CommentProps[] | undefined;
   defaultComments: CommentProps[] | undefined;
   editCommentId: string | null;
   replyToCommentId: string | null;
