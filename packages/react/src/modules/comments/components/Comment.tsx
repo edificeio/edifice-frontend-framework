@@ -44,7 +44,7 @@ export const Comment = ({
   const { t } = useTranslation();
 
   const {
-    comments,
+    defaultComments,
     editCommentId,
     options,
     type,
@@ -56,7 +56,8 @@ export const Comment = ({
     handleReplyToComment,
   } = useCommentsContext();
 
-  const replies = comments?.filter((comm) => comm.replyTo === comment.id) ?? [];
+  const replies =
+    defaultComments?.filter((comm) => comm.replyTo === comment.id) ?? [];
 
   const hasReplies = replies.length > 0;
   const hasAllDeletedReplies = replies.every((reply) => reply.deleted);

@@ -35,36 +35,41 @@ export const useComments = ({
 
   const profilesQueries = useProfileQueries(usersIds);
 
-  const comments = useMemo(
+  const limitedSortedParentComments = useMemo(
     () => {
+      const filteredAndSortedComments =
+        defaultComments
+          ?.filter((comment) => !comment.replyTo)
+          ?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
+
       if (type === 'edit') {
-        return (
-          defaultComments
-            ?.sort((a, b) => b.createdAt - a.createdAt)
-            .slice(0, commentLimit) ?? []
-        );
-      } else {
-        return defaultComments?.sort((a, b) => b.createdAt - a.createdAt) ?? [];
+        return filteredAndSortedComments.slice(0, commentLimit) ?? [];
       }
+      return filteredAndSortedComments;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [commentLimit, defaultComments],
   );
 
-  const commentsCount =
-    comments?.filter((comment) => !comment.deleted)?.length ?? 0;
-  const defaultCommentsCount =
-    defaultComments?.filter((comment) => !comment.deleted)?.length ?? 0;
+  const limitedSortedParentCommentsCount =
+    limitedSortedParentComments?.length ?? 0;
+  const defaultParentCommentsCount =
+    defaultComments?.filter((comment) => !comment.replyTo)?.length ?? 0;
 
   const title =
-    defaultCommentsCount && defaultCommentsCount > 1
-      ? t('comment.several', { number: defaultCommentsCount })
-      : t('comment.little', { number: defaultCommentsCount });
+    defaultComments?.length && defaultComments?.length > 1
+      ? t('comment.several', { number: defaultComments?.length })
+      : t('comment.little', { number: defaultComments?.length });
 
   const handleMoreComments = () => {
-    const newLimit = comments?.length + (options.additionalComments ?? 5);
+    const filteredComments = limitedSortedParentComments?.filter(
+      (comment) => !comment.replyTo,
+    );
 
-    if (newLimit === comments.length) return;
+    const newLimit =
+      filteredComments?.length + (options.additionalComments ?? 5);
+
+    if (newLimit === filteredComments?.length) return;
 
     setCommentLimit(newLimit);
   };
@@ -115,13 +120,13 @@ export const useComments = ({
     title,
     user,
     emptyscreenPath: illuPad,
-    defaultCommentsCount,
-    comments,
+    defaultParentCommentsCount,
+    limitedSortedParentComments,
     editCommentId,
     setEditCommentId,
     replyToCommentId,
     setReplyToCommentId,
-    commentsCount,
+    limitedSortedParentCommentsCount,
     t,
     handleMoreComments,
     handleDeleteComment,

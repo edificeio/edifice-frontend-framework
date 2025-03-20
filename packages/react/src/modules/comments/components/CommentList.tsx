@@ -4,9 +4,9 @@ import { Comment } from './Comment';
 
 export function CommentList() {
   const { user } = useEdificeClient();
-  const { comments, profiles } = useCommentsContext();
+  const { limitedSortedParentComments, profiles } = useCommentsContext();
 
-  return comments?.map((comment) => {
+  return limitedSortedParentComments?.map((comment) => {
     const { authorId } = comment;
 
     const profile =
@@ -14,13 +14,11 @@ export function CommentList() {
 
     return (
       <div key={comment.id}>
-        {!comment.replyTo && (
-          <Comment
-            comment={comment}
-            profile={profile}
-            userId={user?.userId as string}
-          />
-        )}
+        <Comment
+          comment={comment}
+          profile={profile}
+          userId={user?.userId as string}
+        />
       </div>
     );
   });

@@ -10,10 +10,9 @@ export const CommentReplies = ({
 }: {
   parentComment: CommentProps;
 }) => {
-  const { comments, profiles, options, replyToCommentId } =
-    useCommentsContext();
+  const { profiles, options, replyToCommentId } = useCommentsContext();
   const { t, user, profile, slicedReplies, defaultReplies, handleMoreReplies } =
-    useCommentReplies({ parentComment, comments, profiles, options });
+    useCommentReplies({ parentComment, profiles, options });
   const showCommentForm =
     replyToCommentId === parentComment.id && !parentComment.deleted;
 
