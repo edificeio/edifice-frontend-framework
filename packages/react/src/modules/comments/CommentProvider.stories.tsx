@@ -51,9 +51,10 @@ export const Base: Story = {
         options={{
           maxCommentLength: 800,
           maxReplyLength: 200,
-          maxComments: 10,
-          maxReplies: 5,
-          additionalComments: 5,
+          maxComments: 5,
+          additionalComments: 10,
+          maxReplies: 2,
+          additionalReplies: 10,
         }}
         callbacks={getCallbacks(setComments)}
       />
@@ -112,6 +113,13 @@ export const ReplyComment: Story = {
         authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
         authorName: 'John Doe',
         createdAt: 1726757643336,
+      },
+      {
+        id: 'a2b1-cdg3',
+        comment: 'Good job! 👏',
+        authorId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
+        authorName: 'John Doe',
+        createdAt: 1726757643337,
       },
       {
         id: 'a2b1-cdf4',
@@ -177,10 +185,10 @@ export const ReplyComment: Story = {
         options={{
           maxCommentLength: 800,
           maxReplyLength: 200,
-          maxComments: 10,
-          maxReplies: 5,
-          additionalComments: 5,
-          additionalReplies: 5,
+          maxComments: 5,
+          maxReplies: 2,
+          additionalComments: 10,
+          additionalReplies: 10,
         }}
         callbacks={getCallbacks(setComments)}
       />

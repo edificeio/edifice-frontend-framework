@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { CommentOptions, CommentProps, UserProfileResult } from '../types';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useCommentsContext } from './useCommentsContext';
 
 export const useCommentReplies = ({
   parentComment,
-  comments,
   profiles,
   options,
 }: {
   parentComment: CommentProps;
-  comments: CommentProps[] | undefined;
   profiles: (UserProfileResult | undefined)[];
   options: Partial<CommentOptions>;
 }) => {
   const { maxReplies, additionalReplies } = options;
   const [repliesLimit, setRepliesLimit] = useState(maxReplies);
+  const { defaultComments } = useCommentsContext();
   const { user } = useEdificeClient();
   const { t } = useTranslation();
 
@@ -24,18 +24,14 @@ export const useCommentReplies = ({
     profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
 
   const defaultReplies =
-    comments?.filter((comment) => comment.replyTo === parentComment.id) ?? [];
+    defaultComments?.filter(
+      (comment) => comment.replyTo === parentComment.id,
+    ) ?? [];
 
   const slicedReplies =
     defaultReplies
       ?.sort((a, b) => b.createdAt - a.createdAt)
       .slice(0, repliesLimit) ?? [];
-
-  const orphanReplies =
-    comments?.filter(
-      (comment) =>
-        comment.replyTo && !comments.find((c) => c.id === comment.replyTo),
-    ) ?? [];
 
   const handleMoreReplies = () => {
     const newLimit = slicedReplies.length + (additionalReplies ?? 2);
@@ -49,7 +45,6 @@ export const useCommentReplies = ({
     profile,
     slicedReplies,
     defaultReplies,
-    orphanReplies,
     handleMoreReplies,
   };
 };
