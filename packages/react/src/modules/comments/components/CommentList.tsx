@@ -4,9 +4,9 @@ import { Comment } from './Comment';
 
 export function CommentList() {
   const { user } = useEdificeClient();
-  const { limitedSortedParentComments, profiles } = useCommentsContext();
+  const { displayedComments, profiles } = useCommentsContext();
 
-  return limitedSortedParentComments?.map((comment) => {
+  return displayedComments?.map((comment) => {
     const { authorId } = comment;
 
     const profile =
