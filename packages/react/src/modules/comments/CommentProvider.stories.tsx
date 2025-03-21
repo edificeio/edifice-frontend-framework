@@ -138,6 +138,7 @@ export const ReplyComment: Story = {
         createdAt: 1726069313284,
         updatedAt: 1726069313284,
         replyTo: 'a2b1-cdf3',
+        deleted: true,
       },
       {
         id: 'a2b1-cdf6',
@@ -147,6 +148,7 @@ export const ReplyComment: Story = {
         createdAt: 1726069313285,
         updatedAt: 1726069313285,
         replyTo: 'a2b1-cdf3',
+        deleted: true,
       },
       {
         id: 'a2b1-cdf7',
@@ -157,6 +159,7 @@ export const ReplyComment: Story = {
         createdAt: 1726069313286,
         updatedAt: 1726069313286,
         replyTo: 'a2b1-cdf3',
+        deleted: true,
       },
       {
         id: 'a2b1-cdf8',

@@ -25,17 +25,19 @@ export const useCommentReplies = ({
 
   const defaultReplies =
     defaultComments?.filter(
-      (comment) => comment.replyTo === parentComment.id,
+      (comment) => comment.replyTo === parentComment.id && !comment.deleted,
     ) ?? [];
 
-  const slicedReplies =
+  const displayedReplies =
     defaultReplies
-      ?.sort((a, b) => b.createdAt - a.createdAt)
+      ?.sort((a, b) => a.createdAt - b.createdAt)
       .slice(0, repliesLimit) ?? [];
 
+  const showMoreReplies = displayedReplies.length < defaultReplies.length;
+
   const handleMoreReplies = () => {
-    const newLimit = slicedReplies.length + (additionalReplies ?? 2);
-    if (newLimit === slicedReplies.length) return;
+    const newLimit = displayedReplies.length + (additionalReplies ?? 2);
+    if (newLimit === displayedReplies.length) return;
     setRepliesLimit(newLimit);
   };
 
@@ -43,8 +45,8 @@ export const useCommentReplies = ({
     t,
     user,
     profile,
-    slicedReplies,
-    defaultReplies,
+    displayedReplies,
+    showMoreReplies,
     handleMoreReplies,
   };
 };
