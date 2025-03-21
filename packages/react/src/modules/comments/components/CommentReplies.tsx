@@ -11,8 +11,14 @@ export const CommentReplies = ({
   parentComment: CommentProps;
 }) => {
   const { profiles, options, replyToCommentId } = useCommentsContext();
-  const { t, user, profile, slicedReplies, defaultReplies, handleMoreReplies } =
-    useCommentReplies({ parentComment, profiles, options });
+  const {
+    t,
+    user,
+    profile,
+    displayedReplies,
+    showMoreReplies,
+    handleMoreReplies,
+  } = useCommentReplies({ parentComment, profiles, options });
   const showCommentForm =
     replyToCommentId === parentComment.id && !parentComment.deleted;
 
@@ -28,7 +34,7 @@ export const CommentReplies = ({
       )}
 
       <div className="comments-replies-list">
-        {slicedReplies.map((reply) => {
+        {displayedReplies.map((reply) => {
           if (!reply.deleted) {
             return (
               <div key={reply.id} className="comments-replies-reply">
@@ -43,7 +49,7 @@ export const CommentReplies = ({
         })}
       </div>
 
-      {slicedReplies.length < defaultReplies?.length && (
+      {showMoreReplies && (
         <Button
           variant="ghost"
           color="tertiary"
