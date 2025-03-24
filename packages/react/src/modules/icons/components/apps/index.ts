@@ -64,6 +64,7 @@ export { default as IconMonstageenligne } from './IconMonstageenligne';
 export { default as IconMoodle } from './IconMoodle';
 export { default as IconMuseefrancaisphoto } from './IconMuseefrancaisphoto';
 export { default as IconMyNetwork } from './IconMyNetwork';
+export { default as IconNabook } from './IconNabook';
 export { default as IconNetvibes } from './IconNetvibes';
 export { default as IconNote } from './IconNote';
 export { default as IconNotebook } from './IconNotebook';
