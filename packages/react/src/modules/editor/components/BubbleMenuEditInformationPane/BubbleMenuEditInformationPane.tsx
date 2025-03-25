@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { BubbleMenu, Editor } from '@tiptap/react';
+import { BubbleMenu, BubbleMenuProps, Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
@@ -136,49 +136,53 @@ const BubbleMenuEditInformationPane = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, selectedNode]);
 
+  const tippyOptions: BubbleMenuProps['tippyOptions'] = useMemo(() => {
+    return {
+      placement: 'bottom',
+      offset: [0, 0],
+      zIndex: 999,
+      duration: 100,
+      getReferenceClientRect: () => {
+        const { state } = editor;
+        const { $anchor } = state.selection;
+
+        let informationPanePos: number | null = null;
+        for (let depth = $anchor.depth; depth >= 0; depth--) {
+          const node = $anchor.node(depth);
+          if (node.type.name === 'information-pane') {
+            informationPanePos = $anchor.before(depth);
+            break;
+          }
+        }
+
+        if (informationPanePos !== null) {
+          let domNode = editor.view.nodeDOM(informationPanePos);
+
+          while (
+            domNode &&
+            domNode instanceof HTMLElement &&
+            !domNode.classList.contains('information-pane')
+          ) {
+            domNode = domNode.children[0];
+          }
+
+          if (domNode instanceof HTMLElement) {
+            return domNode.getBoundingClientRect();
+          }
+        }
+
+        return new DOMRect(0, 0, 0, 0);
+      },
+    };
+  }, [editor]);
+
   return (
     <BubbleMenu
       shouldShow={({ editor }) => {
         return editor.isActive('information-pane');
       }}
       editor={editor}
-      tippyOptions={{
-        placement: 'bottom',
-        offset: [0, 0],
-        zIndex: 999,
-        duration: 100,
-        getReferenceClientRect: () => {
-          const { state } = editor;
-          const { $anchor } = state.selection;
-
-          let informationPanePos: number | null = null;
-          for (let depth = $anchor.depth; depth >= 0; depth--) {
-            const node = $anchor.node(depth);
-            if (node.type.name === 'information-pane') {
-              informationPanePos = $anchor.before(depth);
-              break;
-            }
-          }
-
-          if (informationPanePos !== null) {
-            let domNode = editor.view.nodeDOM(informationPanePos);
-
-            while (
-              domNode &&
-              domNode instanceof HTMLElement &&
-              !domNode.classList.contains('information-pane')
-            ) {
-              domNode = domNode.children[0];
-            }
-
-            if (domNode instanceof HTMLElement) {
-              return domNode.getBoundingClientRect();
-            }
-          }
-
-          return new DOMRect(0, 0, 0, 0);
-        },
-      }}
+      tippyOptions={tippyOptions}
     >
       {editable && <Toolbar className="p-8" items={InformationPaneTypeItems} />}
     </BubbleMenu>

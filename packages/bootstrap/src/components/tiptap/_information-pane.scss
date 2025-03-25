@@ -9,17 +9,17 @@
   }
   
   .information-pane-info {
-    background-color: #E5F5FF;
+    background-color: $blue-200;
   }
   
   .information-pane-warning {
-    background-color: #FDECD2;
+    background-color: $warning-200;
   }
 
   .information-pane-question {
-    background-color: #F6ECF9;
+    background-color: $purple-200;
   }
 
   .information-pane-success {
-    background-color: #DAF1DD;
+    background-color: $success-200;
   }

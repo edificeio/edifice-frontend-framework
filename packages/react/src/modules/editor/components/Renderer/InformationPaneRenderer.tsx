@@ -3,7 +3,7 @@ import {
   IconInfoCircle,
   IconQuestion,
   IconSuccessOutline,
-} from 'src/modules/icons/components';
+} from '../../../../modules/icons/components';
 import { MediaResizeProps } from '../../hooks';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 
