@@ -11,6 +11,7 @@ import { IconButtonProps, Toolbar, ToolbarItem } from '../../../../components';
 import {
   IconAlignLeft,
   IconBulletList,
+  IconInfoRectangle,
   IconLandscape,
   IconLink,
   IconMic,
@@ -249,6 +250,18 @@ export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
         name: 'highlight',
         visibility: showIf(hasMark('customHighlight', editor)),
         tooltip: t('tiptap.toolbar.highlight.back'),
+      },
+      //--------------- INFORMATION PANE ---------------//
+      {
+        type: 'icon',
+        props: {
+          'icon': <IconInfoRectangle />,
+          'aria-label': t('tiptap.toolbar.information.pane'),
+          'onClick': () =>
+            editor?.chain().focus().setInformationPane('info').run(),
+        },
+        name: 'information-pane',
+        tooltip: t('tiptap.toolbar.information.pane'),
       },
       //-------------------------------------//
       {

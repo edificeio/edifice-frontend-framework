@@ -41,6 +41,8 @@ import {
   LinkerRenderer,
   MediaRenderer,
   VideoNodeView,
+  InformationPaneNodeView,
+  InformationPaneRenderer,
 } from '../components';
 
 /**
@@ -117,6 +119,7 @@ export const useTipTapEditor = (
       LinkerNodeView(LinkerRenderer),
       ImageNodeView(MediaRenderer, uploadFile),
       AttachmentNodeView(AttachmentRenderer),
+      InformationPaneNodeView(InformationPaneRenderer),
     ],
     content,
     // If the onContentChange callback is provided, we call it on every content change.
