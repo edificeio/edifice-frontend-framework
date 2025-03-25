@@ -1,27 +1,25 @@
 import { useState } from 'react';
-import { CommentOptions, CommentProps, UserProfileResult } from '../types';
+import { CommentProps } from '../types';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useCommentsContext } from './useCommentsContext';
 
 export const useCommentReplies = ({
   parentComment,
-  profiles,
-  options,
 }: {
   parentComment: CommentProps;
-  profiles: (UserProfileResult | undefined)[];
-  options: Partial<CommentOptions>;
 }) => {
+  const { profiles, options, replyToCommentId, defaultComments } =
+    useCommentsContext();
   const { maxReplies, additionalReplies } = options;
+
   const [repliesLimit, setRepliesLimit] = useState(maxReplies);
-  const { defaultComments } = useCommentsContext();
+
   const { user } = useEdificeClient();
   const { t } = useTranslation();
 
-  const { authorId } = parentComment;
-  const profile =
-    profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
+  const showCommentForm =
+    replyToCommentId === parentComment.id && !parentComment.deleted;
 
   const defaultReplies =
     defaultComments?.filter(
@@ -43,8 +41,9 @@ export const useCommentReplies = ({
 
   return {
     t,
+    profiles,
     user,
-    profile,
+    showCommentForm,
     displayedReplies,
     showMoreReplies,
     handleMoreReplies,

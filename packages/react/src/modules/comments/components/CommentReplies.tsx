@@ -1,4 +1,3 @@
-import { useCommentsContext } from '../hooks/useCommentsContext';
 import { CommentProps } from '../types';
 import { Comment } from './Comment';
 import { CommentForm } from './CommentForm';
@@ -10,17 +9,15 @@ export const CommentReplies = ({
 }: {
   parentComment: CommentProps;
 }) => {
-  const { profiles, options, replyToCommentId } = useCommentsContext();
   const {
     t,
+    profiles,
     user,
-    profile,
     displayedReplies,
+    showCommentForm,
     showMoreReplies,
     handleMoreReplies,
-  } = useCommentReplies({ parentComment, profiles, options });
-  const showCommentForm =
-    replyToCommentId === parentComment.id && !parentComment.deleted;
+  } = useCommentReplies({ parentComment });
 
   return (
     <div className="comments-replies-container">
@@ -35,6 +32,10 @@ export const CommentReplies = ({
 
       <div className="comments-replies-list">
         {displayedReplies.map((reply) => {
+          const profile =
+            profiles?.find((user) => user?.userId === reply.authorId)
+              ?.profile ?? 'Guest';
+
           if (!reply.deleted) {
             return (
               <div key={reply.id} className="comments-replies-reply">
