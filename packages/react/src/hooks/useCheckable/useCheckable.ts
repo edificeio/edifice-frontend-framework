@@ -28,7 +28,7 @@ export const useCheckable = <T extends { _id: string }>(
 
   useEffect(() => {
     // If data changes, check if selected items are still valid
-    if (data && selectedItems.length > 0) {
+    if (data) {
       const validSelectedItems = selectedItems.filter((id) =>
         data.some((item) => item._id === id),
       );
