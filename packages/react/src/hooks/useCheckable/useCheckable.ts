@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useCheckable = <T extends { _id: string }>(
   /**
@@ -19,6 +19,18 @@ export const useCheckable = <T extends { _id: string }>(
       return newSelection;
     });
   };
+
+  useEffect(() => {
+    // If data changes, check if selected items are still valid
+    if (data) {
+      const validSelectedItems = selectedItems.filter((id) =>
+        data.some((item) => item._id === id),
+      );
+      if (validSelectedItems.length !== selectedItems.length) {
+        setSelectedItems(validSelectedItems);
+      }
+    }
+  }, [data]);
 
   const handleOnSelectAllItems = (deselect: boolean) => {
     setSelectedItems(() => {
