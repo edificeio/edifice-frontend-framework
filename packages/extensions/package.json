@@ -101,6 +101,10 @@
     "./video": {
       "import": "./dist/video/video.js",
       "require": "./dist/video/video.cjs"
+    },
+    "./information-pane": {
+      "import": "./dist/information-pane/information-pane.js",
+      "require": "./dist/information-pane/information-pane.cjs"
     }
   },
   "main": "dist/index.cjs",

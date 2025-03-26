@@ -61,6 +61,7 @@ export { default as IconImageSizeMedium } from './IconImageSizeMedium';
 export { default as IconImageSizeSmall } from './IconImageSizeSmall';
 export { default as IconInbox } from './IconInbox';
 export { default as IconInfoCircle } from './IconInfoCircle';
+export { default as IconInfoRectangle } from './IconInfoRectangle';
 export { default as IconLandscape } from './IconLandscape';
 export { default as IconLink } from './IconLink';
 export { default as IconListOrder } from './IconListOrder';

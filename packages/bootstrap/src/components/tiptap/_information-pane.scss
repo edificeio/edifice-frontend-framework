@@ -1,0 +1,25 @@
+@use '../../abstracts/' as *;
+
+.information-pane {
+    border-radius: $border-radius;
+    padding: $spacer-12;
+    display: flex;
+    gap: $spacer-12;
+    margin: 1em 0;
+  }
+  
+  .information-pane-info {
+    background-color: $blue-200;
+  }
+  
+  .information-pane-warning {
+    background-color: $warning-200;
+  }
+
+  .information-pane-question {
+    background-color: $purple-200;
+  }
+
+  .information-pane-success {
+    background-color: $success-200;
+  }

@@ -33,6 +33,7 @@ import { LoadingScreen } from '../../../../components';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { MediaLibrary } from '../../../multimedia';
 import { useMathsStyles } from '../../hooks/useMathsStyles';
+import { BubbleMenuEditInformationPane } from '../BubbleMenuEditInformationPane';
 
 const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
 
@@ -173,12 +174,18 @@ const Editor = forwardRef(
         <TableToolbar editor={editor} />
 
         {editor && (
-          <BubbleMenuEditImage
-            editor={editor}
-            onEditImage={imageModal.handleEdit}
-            openEditImage={imageModal.isOpen}
-            editable={editable}
-          />
+          <>
+            <BubbleMenuEditImage
+              editor={editor}
+              onEditImage={imageModal.handleEdit}
+              openEditImage={imageModal.isOpen}
+              editable={editable}
+            />
+            <BubbleMenuEditInformationPane
+              editor={editor}
+              editable={editable}
+            />
+          </>
         )}
 
         <Suspense fallback={<LoadingScreen />}>
