@@ -1,4 +1,4 @@
-import { ChangeEvent, ReactNode, useEffect } from 'react';
+import { ChangeEvent, MouseEvent, ReactNode, useEffect } from 'react';
 
 import clsx from 'clsx';
 import { useDropdownContext } from '../Dropdown/DropdownContext';
@@ -57,17 +57,17 @@ const ComboboxTrigger = ({
       renderInputGroup ? 'input-group' : '',
       triggerProps.className,
     ),
+    onClick: (event: MouseEvent) => {
+      event.stopPropagation();
+    },
+  };
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    handleSearchInputChange(event);
+    setVisible(event.target.value.length >= searchMinLength);
   };
   const inputProps: Record<string, any> = {
     role: 'combobox',
-    onClick: () => {
-      if (value.length >= searchMinLength) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-    },
-    onChange: handleSearchInputChange,
+    onChange: handleSearch,
   };
 
   const classNameVariant = variant === 'ghost' ? ' border-0' : '';

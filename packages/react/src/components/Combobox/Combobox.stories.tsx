@@ -118,6 +118,33 @@ export const ComboboxNoResult: Story = {
   },
 };
 
+export const ComboboxRenderNoResult: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      console.log(model);
+    };
+    return (
+      <Combobox
+        {...args}
+        noResult
+        value={value}
+        options={args.options}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+        renderNoResult={
+          <div className="p-4">
+            Désolé nous avons trouvé aucun résultat pour votre recherche
+          </div>
+        }
+      />
+    );
+  },
+};
+
 export const ComboboxWithoutSeparator: Story = {
   render: (args: ComboboxProps) => {
     const [value, setValue] = useState<string>('');
@@ -253,24 +280,32 @@ export const ComboboxRenderListItem: Story = {
 
 export const ComboboxFull: Story = {
   render: (args: ComboboxProps) => {
-    const [value, setValue] = useState<string>('');
-
-    const [options, setOptions] = useState(
-      args.options.map((option) => ({
-        ...option,
-        withSeparator: false,
-      })),
-    );
+    const originalOptions = args.options.map((option) => ({
+      ...option,
+      withSeparator: false,
+    }));
+    const [options, setOptions] = useState<OptionListItemType[]>([]);
     const [selectedItems, setSelectedItems] = useState<OptionListItemType[]>(
       [],
     );
+    const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setValue(event.target.value);
+      const options = originalOptions.filter((option) =>
+        (option.value as string)
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase()),
+      );
+      setOptions(options);
+      setIsEmpty(options.length === 0);
     };
     const handleSearchResultsChange = async (model: (string | number)[]) => {
       const item = args.options.find((option) => option.value === model[0]);
-      setOptions(options.filter((option) => option.value !== model[0]));
+      setOptions(
+        options.filter(
+          (option: OptionListItemType) => option.value !== model[0],
+        ),
+      );
       if (item) {
         setSelectedItems((prev) => [...prev, item]);
       }
@@ -288,8 +323,8 @@ export const ComboboxFull: Story = {
     return (
       <Combobox
         {...args}
-        value={value}
         options={options}
+        noResult={isEmpty}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
         variant="ghost"
@@ -317,6 +352,11 @@ export const ComboboxFull: Story = {
             </div>
           );
         }}
+        renderNoResult={
+          <div className="p-4">
+            Désolé nous avons trouvé aucun résultat pour votre recherche
+          </div>
+        }
       />
     );
   },
