@@ -21,6 +21,7 @@ export interface ComboboxProps
   renderListItem?: (item: OptionListItemType) => ReactNode;
   renderSelectedItems?: ReactNode;
   renderNoResult?: ReactNode;
+  hasDefault?: boolean;
 }
 
 export interface OptionListItemType {
@@ -71,6 +72,7 @@ export interface OptionListItemType {
  * @param props.renderListItem - Custom render function for each option item
  * @param props.renderSelectedItems - Custom render function for selected items
  * @param props.renderNoResult - Custom render function for no results message
+ * @param props.hasDefault - Whether to show default options
  *
  * @extends {React.InputHTMLAttributes<HTMLInputElement>}
  */
@@ -88,6 +90,7 @@ const Combobox = ({
   renderListItem,
   renderSelectedItems,
   renderNoResult,
+  hasDefault,
 }: ComboboxProps) => {
   const { t } = useTranslation();
 
@@ -144,6 +147,7 @@ const Combobox = ({
         variant={variant}
         renderInputGroup={renderInputGroup}
         renderSelectedItems={renderSelectedItems}
+        hasDefault={hasDefault}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
     </Dropdown>
