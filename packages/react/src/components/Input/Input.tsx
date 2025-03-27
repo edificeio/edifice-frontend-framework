@@ -70,6 +70,7 @@ const Input = forwardRef(
       },
       className,
     );
+    console.log('InputProps', restProps);
 
     return (
       <input

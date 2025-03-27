@@ -1,10 +1,10 @@
-import { ChangeEvent, Fragment, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, ReactNode, useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import ComboboxTrigger from './ComboboxTrigger';
 import { Dropdown } from '../Dropdown';
 import { Loading } from '../Loading';
+import ComboboxTrigger from './ComboboxTrigger';
 
 export interface ComboboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -16,6 +16,10 @@ export interface ComboboxProps
   noResult: boolean;
   searchMinLength?: number;
   placeholder?: string;
+  variant?: 'outline' | 'ghost';
+  renderInputGroup?: ReactNode;
+  renderListItem?: (item: OptionListItemType) => ReactNode;
+  renderSelectedItems?: ReactNode;
 }
 
 export interface OptionListItemType {
@@ -26,11 +30,15 @@ export interface OptionListItemType {
   /**
    * Label
    */
-  label: string;
+  label?: string;
   /**
    * Add an icon
    */
   icon?: any;
+  /**
+   * Display Separator or not
+   */
+  withSeparator?: boolean;
 }
 
 const Combobox = ({
@@ -42,6 +50,10 @@ const Combobox = ({
   noResult,
   searchMinLength,
   placeholder,
+  variant = 'outline',
+  renderInputGroup,
+  renderListItem,
+  renderSelectedItems,
 }: ComboboxProps) => {
   const { t } = useTranslation();
 
@@ -77,10 +89,11 @@ const Combobox = ({
           icon={option.icon}
           onClick={() => handleOptionClick(option.value)}
         >
-          {option.label}
+          {renderListItem ? renderListItem(option) : option.label}
         </Dropdown.Item>
 
-        {index < options.length - 1 && <Dropdown.Separator />}
+        {(option.withSeparator || option.withSeparator === undefined) &&
+          index < options.length - 1 && <Dropdown.Separator />}
       </Fragment>
     ));
   };
@@ -92,6 +105,9 @@ const Combobox = ({
         searchMinLength={searchMinLength}
         handleSearchInputChange={onSearchInputChange}
         value={value}
+        renderInputGroup={renderInputGroup}
+        variant={variant}
+        renderSelectedItems={renderSelectedItems}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
     </Dropdown>

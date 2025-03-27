@@ -1,7 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { IconBookmark } from '../../modules/icons/components';
+import { IconBookmark, IconClose } from '../../modules/icons/components';
+import { IconButton } from '../Button';
 import Combobox, { ComboboxProps } from './Combobox';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -112,6 +113,139 @@ export const ComboboxNoResult: Story = {
         options={args.options}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
+      />
+    );
+  },
+};
+
+export const ComboboxWithoutSeparator: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+    const options = args.options.map((option) => ({
+      ...option,
+      withSeparator: false,
+    }));
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      console.log(model);
+    };
+    return (
+      <Combobox
+        {...args}
+        value={value}
+        options={options}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+      />
+    );
+  },
+};
+
+export const ComboboxRenderInputGroup: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      console.log(model);
+    };
+    return (
+      <Combobox
+        {...args}
+        value={value}
+        renderInputGroup={<span>Destinataires : </span>}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+      />
+    );
+  },
+};
+
+export const ComboboxRenderSelectedItems: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+    const [selectedItems, setSelectedItems] = useState<any[]>([]);
+
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      const item = args.options.find((option) => option.value === model[0]);
+      args.options = args.options.filter((option) => option.value !== model[0]);
+      if (item) {
+        setSelectedItems((prev) => [...prev, item]);
+      }
+    };
+
+    const handleRemoveItem = (item: any) => {
+      setSelectedItems((prev) =>
+        prev.filter((prevItem) => prevItem.value !== item.value),
+      );
+      args.options = [...args.options, item];
+    };
+    return (
+      <Combobox
+        {...args}
+        value={value}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+        variant="ghost"
+        renderSelectedItems={selectedItems.map((item) => {
+          return (
+            <div
+              className="d-flex align-items-center text-nowrap me-8"
+              key={item.value}
+            >
+              {item.label}
+              <IconButton
+                variant="ghost"
+                icon={<IconClose />}
+                onClick={() => handleRemoveItem(item)}
+              />
+            </div>
+          );
+        })}
+      />
+    );
+  },
+};
+
+export const ComboboxRenderListItem: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+
+    const [options, setOptions] = useState(
+      args.options.map((option) => ({
+        ...option,
+        withSeparator: false,
+      })),
+    );
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      setOptions(options.filter((option) => option.value !== model[0]));
+    };
+
+    return (
+      <Combobox
+        {...args}
+        value={value}
+        options={options}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+        variant="ghost"
+        renderListItem={(item) => {
+          return (
+            <div className="d-flex flex-column ms-4">
+              <strong>{item.label}</strong>
+              <span className="small text-gray-700">{item.label}</span>
+            </div>
+          );
+        }}
       />
     );
   },
