@@ -1,0 +1,7 @@
+@use '../abstracts/' as *;
+
+.combobox-trigger {
+  input {
+    min-width: 300px;
+  }
+}
