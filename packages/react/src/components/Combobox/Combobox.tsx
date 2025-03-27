@@ -40,7 +40,38 @@ export interface OptionListItemType {
    */
   withSeparator?: boolean;
 }
-
+/**
+ * A component that combines an input field with a dropdown list of selectable options.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Combobox
+ *   onSearchResultsChange={(values) => console.log(values)}
+ *   onSearchInputChange={(e) => console.log(e.target.value)}
+ *   options={[{ value: '1', label: 'Option 1' }]}
+ *   value=""
+ *   isLoading={false}
+ *   noResult={false}
+ * />
+ * ```
+ *
+ * @param props - The component props
+ * @param props.onSearchResultsChange - Callback fired when the selected values change
+ * @param props.onSearchInputChange - Callback fired when the search input value changes
+ * @param props.options - Array of options to display in the dropdown
+ * @param props.value - Current value of the search input
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.noResult - Whether to show a "no results" message
+ * @param props.searchMinLength - Minimum number of characters required to trigger search
+ * @param props.placeholder - Placeholder text for the input field
+ * @param props.variant - Visual variant of the input ('outline' or 'ghost')
+ * @param props.renderInputGroup - Custom render function for the input group
+ * @param props.renderListItem - Custom render function for each option item
+ * @param props.renderSelectedItems - Custom render function for selected items
+ *
+ * @extends {React.InputHTMLAttributes<HTMLInputElement>}
+ */
 const Combobox = ({
   onSearchResultsChange,
   onSearchInputChange,

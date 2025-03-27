@@ -15,7 +15,30 @@ export interface ComboboxTriggerProps
   variant?: 'outline' | 'ghost';
   renderSelectedItems?: ReactNode;
 }
-
+/**
+ * A trigger component for the Combobox that handles user input and displays selected items.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ComboboxTrigger
+ *   value={searchValue}
+ *   handleSearchInputChange={(e) => setSearchValue(e.target.value)}
+ *   placeholder="Search..."
+ * />
+ * ```
+ *
+ * @param {object} props - Component props
+ * @param {string} [props.placeholder] - Placeholder text for the search input
+ * @param {string} [props.value=''] - Current value of the search input
+ * @param {number} [props.searchMinLength=3] - Minimum number of characters required before showing dropdown
+ * @param {(event: ChangeEvent<HTMLInputElement>) => void} props.handleSearchInputChange - Handler for input change events
+ * @param {ReactNode} [props.renderInputGroup] - Optional content to render in the input group (e.g., icons)
+ * @param {'outline' | 'ghost'} [props.variant='outline'] - Visual variant of the input
+ * @param {ReactNode} [props.renderSelectedItems] - Optional content to render selected items
+ *
+ * @returns {JSX.Element} A form control containing an input field with optional input group and selected items
+ */
 const ComboboxTrigger = ({
   placeholder,
   value = '',
