@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 import { IconBookmark, IconClose } from '../../modules/icons/components';
 import { IconButton } from '../Button';
-import Combobox, { ComboboxProps } from './Combobox';
+import Combobox, { ComboboxProps, OptionListItemType } from './Combobox';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Combobox> = {
@@ -238,6 +238,77 @@ export const ComboboxRenderListItem: Story = {
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
         variant="ghost"
+        renderListItem={(item) => {
+          return (
+            <div className="d-flex flex-column ms-4">
+              <strong>{item.label}</strong>
+              <span className="small text-gray-700">{item.label}</span>
+            </div>
+          );
+        }}
+      />
+    );
+  },
+};
+
+export const ComboboxFull: Story = {
+  render: (args: ComboboxProps) => {
+    const [value, setValue] = useState<string>('');
+
+    const [options, setOptions] = useState(
+      args.options.map((option) => ({
+        ...option,
+        withSeparator: false,
+      })),
+    );
+    const [selectedItems, setSelectedItems] = useState<OptionListItemType[]>(
+      [],
+    );
+
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setValue(event.target.value);
+    };
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      const item = args.options.find((option) => option.value === model[0]);
+      setOptions(options.filter((option) => option.value !== model[0]));
+      if (item) {
+        setSelectedItems((prev) => [...prev, item]);
+      }
+    };
+
+    const handleRemoveItem = (item: OptionListItemType, event: MouseEvent) => {
+      setSelectedItems((prev) =>
+        prev.filter((prevItem) => prevItem.value !== item.value),
+      );
+      setOptions([...options, { ...item, withSeparator: false }]);
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    return (
+      <Combobox
+        {...args}
+        value={value}
+        options={options}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+        variant="ghost"
+        renderInputGroup={<span>Destinataires : </span>}
+        renderSelectedItems={selectedItems.map((item) => {
+          return (
+            <div
+              className="d-flex align-items-center text-nowrap ms-8"
+              key={item.value}
+            >
+              {item.label}
+              <IconButton
+                variant="ghost"
+                icon={<IconClose />}
+                onClick={(event) => handleRemoveItem(item, event)}
+              />
+            </div>
+          );
+        })}
         renderListItem={(item) => {
           return (
             <div className="d-flex flex-column ms-4">
