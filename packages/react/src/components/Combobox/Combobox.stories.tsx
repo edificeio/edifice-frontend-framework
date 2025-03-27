@@ -183,7 +183,7 @@ export const ComboboxRenderInputGroup: Story = {
       <Combobox
         {...args}
         value={value}
-        renderInputGroup={<span>Destinataires : </span>}
+        renderInputGroup={<span>Destinataires </span>}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
       />
@@ -328,7 +328,7 @@ export const ComboboxFull: Story = {
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
         variant="ghost"
-        renderInputGroup={<span>Destinataires : </span>}
+        renderInputGroup={<span>Destinataires </span>}
         renderSelectedItems={selectedItems.map((item) => {
           return (
             <div
