@@ -284,7 +284,9 @@ export const ComboboxFull: Story = {
       ...option,
       withSeparator: false,
     }));
-    const [options, setOptions] = useState<OptionListItemType[]>([]);
+    const [options, setOptions] = useState<OptionListItemType[]>([
+      { ...args.options[0], withSeparator: false },
+    ]);
     const [selectedItems, setSelectedItems] = useState<OptionListItemType[]>(
       [],
     );
@@ -357,6 +359,7 @@ export const ComboboxFull: Story = {
             Désolé nous avons trouvé aucun résultat pour votre recherche
           </div>
         }
+        hasDefault={true}
       />
     );
   },
