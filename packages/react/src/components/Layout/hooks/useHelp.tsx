@@ -6,7 +6,9 @@ import { useEdificeClient } from '../../../providers/EdificeClientProvider/Edifi
 import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { Button } from '../../Button';
 
-export function useHelp() {
+export function useHelp(
+  hasOldHelpEnableWorkflow: boolean | Record<string, boolean>,
+) {
   const { appCode } = useEdificeClient();
   const { theme } = useEdificeTheme();
 
@@ -18,6 +20,10 @@ export function useHelp() {
   const helpPath = theme?.is1d ? '/help-1d' : '/help-2d';
 
   useEffect(() => {
+    if (!hasOldHelpEnableWorkflow) {
+      return;
+    }
+
     (async () => {
       let helpURL = '';
       helpURL = helpPath + '/application/' + appCode + '/';
@@ -60,7 +66,7 @@ export function useHelp() {
   const options = {
     replace: (domNode: any) => {
       const typedDomNode = domNode as any;
-      const isActive = typedDomNode.attribs.id === activeSection;
+      const isActive = typedDomNode.attribs?.id === activeSection;
 
       if (typedDomNode.attribs && typedDomNode.attribs.id === 'TOC') {
         return (
@@ -92,7 +98,10 @@ export function useHelp() {
                             typedDomNode.attribs &&
                             typedDomNode.name === 'a'
                           ) {
-                            const sectionId = typedDomNode.attribs.href.replace('#', '');
+                            const sectionId = typedDomNode.attribs.href.replace(
+                              '#',
+                              '',
+                            );
                             return (
                               <span
                                 onClick={(e) => {
@@ -122,11 +131,7 @@ export function useHelp() {
       ) {
         const props = attributesToProps(domNode.attribs);
         return (
-          <div
-            {...props}
-            className="section level2"
-            hidden={!isActive}
-          >
+          <div {...props} className="section level2" hidden={!isActive}>
             {domToReact(typedDomNode.children, {
               replace: (domNode: any) => {
                 const typedDomNode = domNode as any;

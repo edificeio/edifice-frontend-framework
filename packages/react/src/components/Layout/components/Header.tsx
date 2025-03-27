@@ -59,7 +59,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
     parsedContent,
     parsedHeadline,
     error,
-  } = useHelp();
+  } = useHelp(hasOldHelpEnableWorkflow);
 
   const classes = clsx('header', {
     'no-2d': is1d,
