@@ -20,6 +20,7 @@ export interface ComboboxProps
   renderInputGroup?: ReactNode;
   renderListItem?: (item: OptionListItemType) => ReactNode;
   renderSelectedItems?: ReactNode;
+  renderNoResult?: ReactNode;
 }
 
 export interface OptionListItemType {
@@ -69,6 +70,7 @@ export interface OptionListItemType {
  * @param props.renderInputGroup - Custom render function for the input group
  * @param props.renderListItem - Custom render function for each option item
  * @param props.renderSelectedItems - Custom render function for selected items
+ * @param props.renderNoResult - Custom render function for no results message
  *
  * @extends {React.InputHTMLAttributes<HTMLInputElement>}
  */
@@ -85,6 +87,7 @@ const Combobox = ({
   renderInputGroup,
   renderListItem,
   renderSelectedItems,
+  renderNoResult,
 }: ComboboxProps) => {
   const { t } = useTranslation();
 
@@ -110,9 +113,11 @@ const Combobox = ({
     }
 
     if (noResult) {
+      if (renderNoResult) {
+        return renderNoResult;
+      }
       return <div className="p-4">{t('portal.no.result')}</div>;
     }
-
     return options.map((option, index) => (
       <Fragment key={index}>
         <Dropdown.Item
@@ -136,8 +141,8 @@ const Combobox = ({
         searchMinLength={searchMinLength}
         handleSearchInputChange={onSearchInputChange}
         value={value}
-        renderInputGroup={renderInputGroup}
         variant={variant}
+        renderInputGroup={renderInputGroup}
         renderSelectedItems={renderSelectedItems}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
