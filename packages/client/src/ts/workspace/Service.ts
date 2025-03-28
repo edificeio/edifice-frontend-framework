@@ -290,4 +290,22 @@ export class WorkspaceService {
       }
     }
   }
+
+  async listFolder(
+    filter?: WorkspaceSearchFilter,
+    parentId?: ID,
+  ): Promise<WorkspaceElement[]> {
+    const params = {
+      filter,
+      hierarchical: false,
+      parentId,
+    };
+    const result = await this.http.get<WorkspaceElement[]>(
+      '/workspace/folders/list',
+      {
+        queryParams: { ...params, _: new Date().getTime() },
+      },
+    );
+    return result;
+  }
 }
