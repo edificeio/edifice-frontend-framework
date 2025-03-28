@@ -70,6 +70,7 @@ export { default as IconLink } from './IconLink';
 export { default as IconListOrder } from './IconListOrder';
 export { default as IconLoader } from './IconLoader';
 export { default as IconLock } from './IconLock';
+export { default as IconMailRecall } from './IconMailRecall';
 export { default as IconMail } from './IconMail';
 export { default as IconMergeCells } from './IconMergeCells';
 export { default as IconMessageInfo } from './IconMessageInfo';
