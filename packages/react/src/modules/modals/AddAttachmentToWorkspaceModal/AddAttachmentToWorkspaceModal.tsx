@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Modal } from '../../../components';
 import WorkspaceFoldersTree from './components/WorkspaceFoldersTree';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface AddAttachmentToWorkspaceModalProps {
   /**
@@ -30,10 +30,16 @@ export default function AddAttachmentToWorkspaceModal({
 }: AddAttachmentToWorkspaceModalProps) {
   const { t } = useTranslation();
   const [selectedFolderId, setSelectedFolderId] = useState<string>('');
+  const [disabled, setDisabled] = useState(false);
 
   const handleFolderSelected = (folderId: string) => {
     setSelectedFolderId(folderId);
   };
+
+  // Make the button accessible when is disabled change to false
+  useEffect(() => {
+    setDisabled(!selectedFolderId);
+  }, [selectedFolderId]);
 
   return (
     <Modal isOpen={isOpen} onModalClose={onCancel} id={id} size="md">
@@ -57,7 +63,7 @@ export default function AddAttachmentToWorkspaceModal({
           color="primary"
           variant="filled"
           onClick={onSuccess}
-          disabled={!selectedFolderId} // TODO accessibility not working
+          disabled={disabled}
         >
           {t('add')}
         </Button>
