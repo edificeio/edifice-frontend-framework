@@ -293,19 +293,17 @@ export class WorkspaceService {
 
   async listFolder(
     filter?: WorkspaceSearchFilter,
+    withChildren: boolean = false,
     parentId?: ID,
   ): Promise<WorkspaceElement[]> {
-    const params = {
+    const queryParams = {
       filter,
-      hierarchical: false,
+      hierarchical: withChildren,
       parentId,
     };
-    const result = await this.http.get<WorkspaceElement[]>(
-      '/workspace/folders/list',
-      {
-        queryParams: { ...params, _: new Date().getTime() },
-      },
-    );
+    const result = await this.http.get('/workspace/folders/list', {
+      queryParams,
+    });
     return result;
   }
 }
