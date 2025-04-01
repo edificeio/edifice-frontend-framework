@@ -29,7 +29,9 @@ export default function AddAttachmentToWorkspaceModal({
   onCancel = () => ({}),
 }: AddAttachmentToWorkspaceModalProps) {
   const { t } = useTranslation();
-  const [selectedFolderId, setSelectedFolderId] = useState<string>('');
+  const [selectedFolderId, setSelectedFolderId] = useState<
+    string | undefined
+  >();
   const [disabled, setDisabled] = useState(false);
 
   const handleFolderSelected = (folderId: string) => {
@@ -44,7 +46,7 @@ export default function AddAttachmentToWorkspaceModal({
   return (
     <Modal isOpen={isOpen} onModalClose={onCancel} id={id} size="md">
       <Modal.Header onModalClose={onCancel}>
-        {t('attachments.add.to.folder')}
+        {t('attachments.add.to.folder.modal')}
       </Modal.Header>
       <Modal.Body>
         <WorkspaceFoldersTree onFolderSelected={handleFolderSelected} />
