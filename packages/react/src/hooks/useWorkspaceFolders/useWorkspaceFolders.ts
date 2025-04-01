@@ -18,11 +18,13 @@ function useWorkspaceFolders() {
 
   const userfolders = useMemo(() => {
     const buildWorkspaceTree = (data: FolderTreeNode[]) => {
-      return {
-        id: 'my-documents',
-        name: t('workspace.myDocuments'),
-        children: data,
-      };
+      return [
+        {
+          id: 'my-documents',
+          name: t('workspace.myDocuments'),
+          children: data,
+        },
+      ];
     };
 
     if (!folderData) return buildWorkspaceTree([]);

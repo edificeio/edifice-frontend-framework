@@ -24,7 +24,7 @@ export default function WorkspaceFoldersTree({ onFolderSelected }: Props) {
           <Tree
             nodes={folderTree}
             onTreeItemClick={handleFolderClick}
-            shouldExpandAllNodes={true} // => TODO fonctionne pas ?
+            shouldExpandAllNodes={true}
           />
         </div>
       </div>

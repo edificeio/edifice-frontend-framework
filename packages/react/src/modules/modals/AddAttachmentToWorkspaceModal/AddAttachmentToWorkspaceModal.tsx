@@ -57,7 +57,7 @@ export default function AddAttachmentToWorkspaceModal({
           color="primary"
           variant="filled"
           onClick={onSuccess}
-          disabled={!selectedFolderId}
+          disabled={!selectedFolderId} // TODO accessibility not working
         >
           {t('add')}
         </Button>
