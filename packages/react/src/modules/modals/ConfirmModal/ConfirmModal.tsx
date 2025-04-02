@@ -54,7 +54,7 @@ export default function ConfirmModal({
   onSuccess = () => ({}),
   onCancel = () => ({}),
 }: ConfirmModalProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const ok = { 'yes/no': t('yes'), 'ok/cancel': t('ok') };
   const ko = { 'yes/no': t('no'), 'ok/cancel': t('cancel') };
 
