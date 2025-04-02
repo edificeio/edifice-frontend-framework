@@ -29,6 +29,7 @@ export * from './useUpload';
 export * from './useUploadFiles';
 export * from './useUser';
 export * from './useWorkspaceFile';
+export * from './useWorkspaceFolders';
 export * from './useWorkspaceSearch';
 export * from './useXitiTrackPageLoad';
 export * from './useZendeskGuide';
