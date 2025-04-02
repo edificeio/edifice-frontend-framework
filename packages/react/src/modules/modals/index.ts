@@ -1,3 +1,4 @@
+export * from './AddAttachmentToWorkspaceModal';
 export * from './ConfirmModal';
 export * from './OnboardingModal';
 export * from './PublishModal';
