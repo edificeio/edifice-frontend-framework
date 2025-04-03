@@ -399,6 +399,44 @@ export const ComboboxListSection: Story = {
       );
     };
 
+    const renderList = (options: OptionListItemType[]) => {
+      return (
+        <>
+          {searchValue.length === 0 ? (
+            <Dropdown.MenuGroup label="Favoris">
+              {options.map((option, index) => (
+                <Fragment key={index}>
+                  <Dropdown.Item
+                    type="select"
+                    icon={option.icon}
+                    onClick={() => alert(option.value)}
+                    disabled={option.disabled}
+                  >
+                    {option.label}
+                  </Dropdown.Item>
+                </Fragment>
+              ))}
+            </Dropdown.MenuGroup>
+          ) : (
+            <>
+              {options.map((option, index) => (
+                <Fragment key={index}>
+                  <Dropdown.Item
+                    type="select"
+                    icon={option.icon}
+                    onClick={() => alert(option.value)}
+                    disabled={option.disabled}
+                  >
+                    {option.label}
+                  </Dropdown.Item>
+                </Fragment>
+              ))}
+            </>
+          )}
+        </>
+      );
+    };
+
     return (
       <Combobox
         {...args}
@@ -406,43 +444,7 @@ export const ComboboxListSection: Story = {
         noResult={options.length === 0}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
-        renderList={(options) => {
-          return (
-            <>
-              {searchValue.length === 0 ? (
-                <Dropdown.MenuGroup label="Favoris">
-                  {options.map((option, index) => (
-                    <Fragment key={index}>
-                      <Dropdown.Item
-                        type="select"
-                        icon={option.icon}
-                        onClick={() => alert(option.value)}
-                        disabled={option.disabled}
-                      >
-                        {option.label}
-                      </Dropdown.Item>
-                    </Fragment>
-                  ))}
-                </Dropdown.MenuGroup>
-              ) : (
-                <>
-                  {options.map((option, index) => (
-                    <Fragment key={index}>
-                      <Dropdown.Item
-                        type="select"
-                        icon={option.icon}
-                        onClick={() => alert(option.value)}
-                        disabled={option.disabled}
-                      >
-                        {option.label}
-                      </Dropdown.Item>
-                    </Fragment>
-                  ))}
-                </>
-              )}
-            </>
-          );
-        }}
+        renderList={renderList}
       />
     );
   },
