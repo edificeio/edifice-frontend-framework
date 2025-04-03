@@ -20,6 +20,7 @@ export class HomeworksResourceService extends ResourceService {
       thumbnail,
       description: parameters.description,
       repeats: parameters.repeats,
+      folder: parameters.folder,
     });
     this.checkHttpResponse(res);
     return { thumbnail: thumbnail, entId: res._id } as CreateResult;
