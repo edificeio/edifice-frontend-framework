@@ -1,8 +1,9 @@
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 import { IconBookmark, IconClose } from '../../modules/icons/components';
 import { IconButton } from '../Button';
+import { Dropdown } from '../Dropdown';
 import Combobox, { ComboboxProps, OptionListItemType } from './Combobox';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -166,6 +167,44 @@ export const ComboboxWithoutSeparator: Story = {
   },
 };
 
+export const ComboboxDisabledOption: Story = {
+  render: (args: ComboboxProps) => {
+    const originalOptions = args.options.map((option) => ({
+      ...option,
+      withSeparator: false,
+    }));
+    const [options, setOptions] = useState<OptionListItemType[]>([]);
+
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const options = originalOptions.map((option) =>
+        (option.value as string)
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase())
+          ? option
+          : { ...option, disabled: true },
+      );
+      setOptions(options);
+    };
+
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      const item = originalOptions.find((option) => option.value === model[0]);
+      if (item) {
+        alert('Click on ' + item);
+      }
+    };
+
+    return (
+      <Combobox
+        {...args}
+        options={options}
+        noResult={options.length === 0}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+      />
+    );
+  },
+};
+
 export const ComboboxRenderInputGroup: Story = {
   render: (args: ComboboxProps) => {
     return (
@@ -306,8 +345,8 @@ export const ComboboxDefaultOptions: Story = {
       );
       setOptions(options);
     };
+
     const handleSearchResultsChange = async (model: (string | number)[]) => {
-      const item = args.options.find((option) => option.value === model[0]);
       setOptions(
         options.filter(
           (option: OptionListItemType) => option.value !== model[0],
@@ -322,7 +361,88 @@ export const ComboboxDefaultOptions: Story = {
         noResult={options.length === 0}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
-        hasDefault={true}
+      />
+    );
+  },
+};
+
+export const ComboboxListSection: Story = {
+  render: (args: ComboboxProps) => {
+    const originalOptions = args.options.map((option) => ({
+      ...option,
+      withSeparator: false,
+    }));
+    const [searchValue, setSearchValue] = useState<string>([]);
+    const [options, setOptions] = useState<OptionListItemType[]>([
+      { ...args.options[0], withSeparator: false },
+    ]);
+
+    const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value);
+      if (event.target.value.length > 0) {
+        const options = originalOptions.filter((option) =>
+          (option.value as string)
+            .toLowerCase()
+            .includes(event.target.value.toLowerCase()),
+        );
+        setOptions(options);
+      } else {
+        setOptions([originalOptions[0]]);
+      }
+    };
+
+    const handleSearchResultsChange = async (model: (string | number)[]) => {
+      setOptions(
+        options.filter(
+          (option: OptionListItemType) => option.value !== model[0],
+        ),
+      );
+    };
+
+    return (
+      <Combobox
+        {...args}
+        options={options}
+        noResult={options.length === 0}
+        onSearchInputChange={handleSearchInputChange}
+        onSearchResultsChange={handleSearchResultsChange}
+        renderList={(options) => {
+          return (
+            <>
+              {searchValue.length === 0 ? (
+                <Dropdown.MenuGroup label="Favoris">
+                  {options.map((option, index) => (
+                    <Fragment key={index}>
+                      <Dropdown.Item
+                        type="select"
+                        icon={option.icon}
+                        onClick={() => alert(option.value)}
+                        disabled={option.disabled}
+                      >
+                        {option.label}
+                      </Dropdown.Item>
+                    </Fragment>
+                  ))}
+                </Dropdown.MenuGroup>
+              ) : (
+                <>
+                  {options.map((option, index) => (
+                    <Fragment key={index}>
+                      <Dropdown.Item
+                        type="select"
+                        icon={option.icon}
+                        onClick={() => alert(option.value)}
+                        disabled={option.disabled}
+                      >
+                        {option.label}
+                      </Dropdown.Item>
+                    </Fragment>
+                  ))}
+                </>
+              )}
+            </>
+          );
+        }}
       />
     );
   },
@@ -336,18 +456,23 @@ export const ComboboxFull: Story = {
     }));
     const [options, setOptions] = useState<OptionListItemType[]>([
       { ...args.options[0], withSeparator: false },
+      { ...args.options[1], withSeparator: false, disabled: true },
     ]);
     const [selectedItems, setSelectedItems] = useState<OptionListItemType[]>(
       [],
     );
 
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      const options = originalOptions.filter((option) =>
-        (option.value as string)
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase()),
-      );
-      setOptions(options);
+      if (event.target.value.length > 0) {
+        const options = originalOptions.filter((option) =>
+          (option.value as string)
+            .toLowerCase()
+            .includes(event.target.value.toLowerCase()),
+        );
+        setOptions(options);
+      } else {
+        setOptions([originalOptions[0]]);
+      }
     };
     const handleSearchResultsChange = async (model: (string | number)[]) => {
       const item = args.options.find((option) => option.value === model[0]);

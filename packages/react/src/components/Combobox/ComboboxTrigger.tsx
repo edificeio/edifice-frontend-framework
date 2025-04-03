@@ -75,6 +75,7 @@ const ComboboxTrigger = ({
         (event.target as HTMLInputElement).value.length >= searchMinLength ||
           !!hasDefault,
       );
+      (event.target as HTMLInputElement).focus();
     },
   };
 

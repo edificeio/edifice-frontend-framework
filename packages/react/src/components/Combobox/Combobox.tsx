@@ -18,6 +18,7 @@ export interface ComboboxProps
   placeholder?: string;
   variant?: 'outline' | 'ghost';
   renderInputGroup?: ReactNode;
+  renderList?: (items: OptionListItemType[]) => ReactNode;
   renderListItem?: (item: OptionListItemType) => ReactNode;
   renderSelectedItems?: ReactNode;
   renderNoResult?: ReactNode;
@@ -41,6 +42,10 @@ export interface OptionListItemType {
    * Display Separator or not
    */
   withSeparator?: boolean;
+  /**
+   * Disable option
+   */
+  disabled?: boolean;
 }
 /**
  * A component that combines an input field with a dropdown list of selectable options.
@@ -69,6 +74,7 @@ export interface OptionListItemType {
  * @param props.placeholder - Placeholder text for the input field
  * @param props.variant - Visual variant of the input ('outline' or 'ghost')
  * @param props.renderInputGroup - Custom render function for the input group
+ * @param props.renderList - Custom render function for the dropdown list
  * @param props.renderListItem - Custom render function for each option item
  * @param props.renderSelectedItems - Custom render function for selected items
  * @param props.renderNoResult - Custom render function for no results message
@@ -87,10 +93,10 @@ const Combobox = ({
   placeholder,
   variant = 'outline',
   renderInputGroup,
+  renderList,
   renderListItem,
   renderSelectedItems,
   renderNoResult,
-  hasDefault,
 }: ComboboxProps) => {
   const { t } = useTranslation();
 
@@ -122,12 +128,17 @@ const Combobox = ({
       return <div className="p-4">{t('portal.no.result')}</div>;
     }
 
+    if (renderList) {
+      return renderList(options);
+    }
+
     return options.map((option, index) => (
       <Fragment key={index}>
         <Dropdown.Item
           type="select"
           icon={option.icon}
           onClick={() => handleOptionClick(option.value)}
+          disabled={option.disabled}
         >
           {renderListItem ? renderListItem(option) : option.label}
         </Dropdown.Item>
@@ -139,7 +150,7 @@ const Combobox = ({
   };
 
   return (
-    <Dropdown block>
+    <Dropdown block focusOnVisible={false}>
       <Combobox.Trigger
         placeholder={placeholder}
         searchMinLength={searchMinLength}
@@ -148,7 +159,7 @@ const Combobox = ({
         variant={variant}
         renderInputGroup={renderInputGroup}
         renderSelectedItems={renderSelectedItems}
-        hasDefault={hasDefault}
+        hasDefault={!!options.length}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
     </Dropdown>
