@@ -121,6 +121,7 @@ const Combobox = ({
       }
       return <div className="p-4">{t('portal.no.result')}</div>;
     }
+
     return options.map((option, index) => (
       <Fragment key={index}>
         <Dropdown.Item

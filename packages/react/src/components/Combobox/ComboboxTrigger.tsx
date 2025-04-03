@@ -37,7 +37,6 @@ export interface ComboboxTriggerProps
  * @param {ReactNode} [props.renderInputGroup] - Optional content to render in the input group (e.g., icons)
  * @param {'outline' | 'ghost'} [props.variant='outline'] - Visual variant of the input
  * @param {ReactNode} [props.renderSelectedItems] - Optional content to render selected items
- * @param {boolean} [props.hasDefault] - Whether the component has a default value
  *
  * @returns {JSX.Element} A form control containing an input field with optional input group and selected items
  */
@@ -64,13 +63,13 @@ const ComboboxTrigger = ({
       event.stopPropagation();
     },
   };
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     handleSearchInputChange(event);
     setVisible(event.target.value.length >= searchMinLength);
   };
   const inputProps: Record<string, any> = {
     role: 'combobox',
-    onChange: handleSearch,
+    onChange: handleSearchChange,
     onClick: (event: MouseEvent<HTMLInputElement>) => {
       setVisible(
         (event.target as HTMLInputElement).value.length >= searchMinLength ||
@@ -80,12 +79,15 @@ const ComboboxTrigger = ({
   };
 
   const classNameVariant = variant === 'ghost' ? ' border-0' : '';
-  const classNameInput =
-    (renderSelectedItems ? ' w-auto ' : '') + classNameVariant;
+  const classNameInput = clsx(
+    classNameVariant,
+    renderSelectedItems ? ' w-auto ' : '',
+  );
 
   useEffect(() => {
     setVisible(value.length >= searchMinLength);
-  }, [setVisible, value, searchMinLength]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, searchMinLength]);
 
   return (
     <FormControl id="search" {...containerProps}>
