@@ -1,13 +1,17 @@
-import { useWorkspaceFolders } from '../../../../hooks';
-
-import { Tree } from '../../../../components';
+import { useWorkspaceFolders } from '../../../hooks';
+import { Tree } from '../../../components';
 import { useTranslation } from 'react-i18next';
 
-type Props = {
+interface WorkspaceFoldersProps {
+  /**
+   * Function called when a folder is selected
+   */
   onFolderSelected: (folderId: string) => void;
-};
+}
 
-export default function WorkspaceFoldersTree({ onFolderSelected }: Props) {
+export default function WorkspaceFolders({
+  onFolderSelected,
+}: WorkspaceFoldersProps) {
   const { t } = useTranslation();
   const { folderTree } = useWorkspaceFolders();
 
@@ -17,11 +21,7 @@ export default function WorkspaceFoldersTree({ onFolderSelected }: Props) {
 
       <div className="border border-gray-400 rounded">
         <div className="p-12">
-          <Tree
-            nodes={folderTree}
-            onTreeItemClick={onFolderSelected}
-            shouldExpandAllNodes={true}
-          />
+          <Tree nodes={folderTree} onTreeItemClick={onFolderSelected} />
         </div>
       </div>
     </div>
