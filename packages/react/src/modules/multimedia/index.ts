@@ -7,3 +7,4 @@ export * from './MediaLibrary';
 export * from './VideoEmbed';
 export * from './VideoRecorder';
 export * from './Workspace';
+export * from './WorkspaceFolders';
