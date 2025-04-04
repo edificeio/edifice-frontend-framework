@@ -71,11 +71,9 @@ const ComboboxTrigger = ({
     role: 'combobox',
     onChange: handleSearchChange,
     onClick: (event: MouseEvent<HTMLInputElement>) => {
-      setVisible(
-        (event.target as HTMLInputElement).value.length >= searchMinLength ||
-          !!hasDefault,
-      );
-      (event.target as HTMLInputElement).focus();
+      const input = event.target as HTMLInputElement;
+      setVisible(input.value.length >= searchMinLength || !!hasDefault);
+      input.focus();
     },
   };
 
@@ -92,11 +90,11 @@ const ComboboxTrigger = ({
 
   return (
     <FormControl id="search" {...containerProps}>
-      {renderInputGroup ? (
+      {!!renderInputGroup && (
         <span className={'input-group-text pe-0' + classNameVariant}>
           {renderInputGroup}
         </span>
-      ) : null}
+      )}
       {renderSelectedItems}
       <Input
         {...inputProps}
