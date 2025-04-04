@@ -57,6 +57,7 @@ const useDropdown = (
     event: React.KeyboardEvent<HTMLButtonElement>,
   ) => void,
   isTriggerHovered: boolean = false,
+  focusOnVisible: boolean = true,
 ): UseDropdownProps => {
   /* Unique Dropdown Id */
   const id = useId();
@@ -72,7 +73,7 @@ const useDropdown = (
     onOpenChange: setVisible,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(4),
+      offset(0),
       size({
         apply({ rects, elements }) {
           elements.floating.style.minWidth = `${rects.reference.width}px`;
@@ -101,7 +102,9 @@ const useDropdown = (
     if (visible) {
       if (menuRef.current) {
         menuRef.current.focus();
-        setActiveIndex(0);
+        if (focusOnVisible) {
+          setActiveIndex(0);
+        }
       }
     } else {
       setActiveIndex(-1);

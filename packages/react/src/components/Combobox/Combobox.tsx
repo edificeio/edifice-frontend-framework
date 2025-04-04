@@ -1,10 +1,10 @@
-import { ChangeEvent, Fragment, useEffect, useState } from 'react';
+import { ChangeEvent, Fragment, ReactNode, useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import ComboboxTrigger from './ComboboxTrigger';
 import { Dropdown } from '../Dropdown';
 import { Loading } from '../Loading';
+import ComboboxTrigger from './ComboboxTrigger';
 
 export interface ComboboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -16,6 +16,13 @@ export interface ComboboxProps
   noResult: boolean;
   searchMinLength?: number;
   placeholder?: string;
+  variant?: 'outline' | 'ghost';
+  renderInputGroup?: ReactNode;
+  renderList?: (items: OptionListItemType[]) => ReactNode;
+  renderListItem?: (item: OptionListItemType) => ReactNode;
+  renderSelectedItems?: ReactNode;
+  renderNoResult?: ReactNode;
+  hasDefault?: boolean;
 }
 
 export interface OptionListItemType {
@@ -26,13 +33,55 @@ export interface OptionListItemType {
   /**
    * Label
    */
-  label: string;
+  label?: string;
   /**
    * Add an icon
    */
   icon?: any;
+  /**
+   * Display Separator or not
+   */
+  withSeparator?: boolean;
+  /**
+   * Disable option
+   */
+  disabled?: boolean;
 }
-
+/**
+ * A component that combines an input field with a dropdown list of selectable options.
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <Combobox
+ *   onSearchResultsChange={(values) => console.log(values)}
+ *   onSearchInputChange={(e) => console.log(e.target.value)}
+ *   options={[{ value: '1', label: 'Option 1' }]}
+ *   value=""
+ *   isLoading={false}
+ *   noResult={false}
+ * />
+ * ```
+ *
+ * @param props - The component props
+ * @param props.onSearchResultsChange - Callback fired when the selected values change
+ * @param props.onSearchInputChange - Callback fired when the search input value changes
+ * @param props.options - Array of options to display in the dropdown
+ * @param props.value - Current value of the search input
+ * @param props.isLoading - Whether the component is in a loading state
+ * @param props.noResult - Whether to show a "no results" message
+ * @param props.searchMinLength - Minimum number of characters required to trigger search
+ * @param props.placeholder - Placeholder text for the input field
+ * @param props.variant - Visual variant of the input ('outline' or 'ghost')
+ * @param props.renderInputGroup - Custom render function for the input group
+ * @param props.renderList - Custom render function for the dropdown list
+ * @param props.renderListItem - Custom render function for each option item
+ * @param props.renderSelectedItems - Custom render function for selected items
+ * @param props.renderNoResult - Custom render function for no results message
+ * @param props.hasDefault - Whether to show default options
+ *
+ * @extends {React.InputHTMLAttributes<HTMLInputElement>}
+ */
 const Combobox = ({
   onSearchResultsChange,
   onSearchInputChange,
@@ -42,6 +91,12 @@ const Combobox = ({
   noResult,
   searchMinLength,
   placeholder,
+  variant = 'outline',
+  renderInputGroup,
+  renderList,
+  renderListItem,
+  renderSelectedItems,
+  renderNoResult,
 }: ComboboxProps) => {
   const { t } = useTranslation();
 
@@ -67,7 +122,14 @@ const Combobox = ({
     }
 
     if (noResult) {
+      if (renderNoResult) {
+        return renderNoResult;
+      }
       return <div className="p-4">{t('portal.no.result')}</div>;
+    }
+
+    if (renderList) {
+      return renderList(options);
     }
 
     return options.map((option, index) => (
@@ -76,22 +138,28 @@ const Combobox = ({
           type="select"
           icon={option.icon}
           onClick={() => handleOptionClick(option.value)}
+          disabled={option.disabled}
         >
-          {option.label}
+          {renderListItem ? renderListItem(option) : option.label}
         </Dropdown.Item>
 
-        {index < options.length - 1 && <Dropdown.Separator />}
+        {(option.withSeparator || option.withSeparator === undefined) &&
+          index < options.length - 1 && <Dropdown.Separator />}
       </Fragment>
     ));
   };
 
   return (
-    <Dropdown block>
+    <Dropdown block focusOnVisible={false}>
       <Combobox.Trigger
         placeholder={placeholder}
         searchMinLength={searchMinLength}
         handleSearchInputChange={onSearchInputChange}
         value={value}
+        variant={variant}
+        renderInputGroup={renderInputGroup}
+        renderSelectedItems={renderSelectedItems}
+        hasDefault={!!options.length}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
     </Dropdown>

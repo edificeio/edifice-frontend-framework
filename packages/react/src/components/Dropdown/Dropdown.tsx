@@ -3,6 +3,8 @@ import { ReactNode, useEffect, useMemo } from 'react';
 import { Placement } from '@floating-ui/react';
 import clsx from 'clsx';
 
+import { useClickOutside } from '../../hooks';
+import useDropdown from '../../hooks/useDropdown/useDropdown';
 import DropdownCheckboxItem from './DropdownCheckboxItem';
 import { DropdownContext } from './DropdownContext';
 import DropdownItem from './DropdownItem';
@@ -11,8 +13,6 @@ import DropdownMenuGroup from './DropdownMenuGroup';
 import DropdownRadioItem from './DropdownRadioItem';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
-import { useClickOutside } from '../../hooks';
-import useDropdown from '../../hooks/useDropdown/useDropdown';
 
 export interface DropdownProps {
   /** Children Props */
@@ -48,6 +48,10 @@ export interface DropdownProps {
    * Whether the trigger is hovered or not.
    */
   isTriggerHovered?: boolean;
+  /**
+   * Whether to focus the first element when the dropdown is opened.
+   */
+  focusOnVisible?: boolean;
 }
 
 export type DropdownMenuOptions =
@@ -85,6 +89,7 @@ const Root = ({
   extraTriggerKeyDownHandler,
   onToggle,
   isTriggerHovered = false,
+  focusOnVisible = true,
 }: DropdownProps) => {
   const {
     visible,
@@ -94,7 +99,12 @@ const Root = ({
     itemProps,
     itemRefs,
     setVisible,
-  } = useDropdown(placement, extraTriggerKeyDownHandler, isTriggerHovered);
+  } = useDropdown(
+    placement,
+    extraTriggerKeyDownHandler,
+    isTriggerHovered,
+    focusOnVisible,
+  );
 
   /* Ref to close dropdown when clicking outside */
   const ref = useClickOutside(() => {
