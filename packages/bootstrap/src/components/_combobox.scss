@@ -1,0 +1,12 @@
+@use '../abstracts/' as *;
+
+.combobox-trigger {
+  input,
+  &.input-group > .form-control {
+    min-width: 30rem;
+  }
+
+  .input-group-text {
+    line-height: 2.2rem;
+  }
+}
