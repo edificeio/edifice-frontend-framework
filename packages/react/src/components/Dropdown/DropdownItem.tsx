@@ -30,6 +30,10 @@ export interface DropdownItemProps {
    * Set minimum width in pixels
    */
   minWidth?: number;
+  /**
+   * Disabled status
+   */
+  disabled?: boolean;
 }
 
 const DropdownItem = ({
@@ -39,6 +43,7 @@ const DropdownItem = ({
   children,
   className,
   minWidth,
+  disabled,
   ...restProps
 }: DropdownItemProps) => {
   const { itemProps, itemRefs, isFocused } = useDropdownContext();
@@ -46,6 +51,9 @@ const DropdownItem = ({
     itemProps;
 
   const handleOnClick = (event: React.MouseEvent) => {
+    if (disabled) {
+      return;
+    }
     onClick?.(event);
 
     if (type === 'action') {
@@ -61,6 +69,7 @@ const DropdownItem = ({
     {
       focus: isFocused === id,
     },
+    { 'text-gray-600': disabled },
     className,
   );
 
