@@ -15,7 +15,7 @@ export default function WorkspaceFolders({
 }: WorkspaceFoldersProps) {
   const { t } = useTranslation();
   const { folderTree, setSearchValue } = useWorkspaceFolders();
-  const [shouldExpandAllNodes, setShouldExpandAllNodes] = useState(true);
+  const [shouldExpandAllNodes, setShouldExpandAllNodes] = useState(false);
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const searchValue = e.target.value;
