@@ -16,7 +16,7 @@ function useWorkspaceFolders() {
     queryFn: () => odeServices.workspace().listFolder('owner', true),
   });
 
-  const [searchValue, setSearchValue] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filterTree = (
     nodes: FolderTreeNode[],
@@ -68,11 +68,11 @@ function useWorkspaceFolders() {
       }
     });
     return buildWorkspaceTree(
-      searchValue ? filterTree(fullTree, searchValue) : fullTree,
+      searchQuery ? filterTree(fullTree, searchQuery) : fullTree,
     );
-  }, [folderData, searchValue]);
+  }, [folderData, searchQuery]);
 
-  return { folderTree: userfolders, setSearchValue };
+  return { folderTree: userfolders, setSearchQuery };
 }
 
 export default useWorkspaceFolders;
