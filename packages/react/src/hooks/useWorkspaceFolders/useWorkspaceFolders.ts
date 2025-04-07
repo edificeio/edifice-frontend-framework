@@ -16,11 +16,12 @@ function useWorkspaceFolders() {
     queryFn: () => odeServices.workspace().listFolder('owner', true),
   });
 
+  const myFolderId = '';
   const userfolders = useMemo(() => {
     const buildWorkspaceTree = (data: FolderTreeNode[]) => {
       return [
         {
-          id: 'my-documents',
+          id: myFolderId,
           name: t('workspace.myDocuments'),
           children: data,
         },
