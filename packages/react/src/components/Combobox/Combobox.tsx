@@ -8,12 +8,12 @@ import ComboboxTrigger from './ComboboxTrigger';
 
 export interface ComboboxProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-  onSearchResultsChange: (model: (string | number)[]) => void;
   onSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   options: OptionListItemType[];
   value: string;
   isLoading: boolean;
   noResult: boolean;
+  onSearchResultsChange?: (model: (string | number)[]) => void;
   searchMinLength?: number;
   placeholder?: string;
   variant?: 'outline' | 'ghost';
@@ -103,7 +103,7 @@ const Combobox = ({
   const [localValue, setLocalValue] = useState<(string | number)[]>([]);
 
   useEffect(() => {
-    onSearchResultsChange(localValue);
+    onSearchResultsChange?.(localValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue]);
 
