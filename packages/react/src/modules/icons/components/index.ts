@@ -51,6 +51,7 @@ export { default as IconFolderMove } from './IconFolderMove';
 export { default as IconFolder } from './IconFolder';
 export { default as IconForgoing } from './IconForgoing';
 export { default as IconFullScreen } from './IconFullScreen';
+export { default as IconGlobe2 } from './IconGlobe2';
 export { default as IconGlobe } from './IconGlobe';
 export { default as IconGroupAvatar } from './IconGroupAvatar';
 export { default as IconHandMove } from './IconHandMove';
