@@ -140,8 +140,10 @@ export class ConfService {
 
     // Fix #WB2-2660:
     // If public access => get the default skin
-    // Else get the skin from the user preference
-    const skinName = publicTheme ? 'default' : theme?.skinName;
+    // Else get the skin from the user preference (if the user preference is not set => get the first skin)
+    const skinName = publicTheme
+      ? 'default'
+      : theme?.skinName || themeOverride.skins[0];
 
     const themeUrl =
       theme?.skin || `/assets/themes/${themeOverride.child}/skins/${skinName}/`;
