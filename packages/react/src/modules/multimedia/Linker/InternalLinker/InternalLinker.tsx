@@ -219,14 +219,31 @@ export const InternalLinker = ({
     [getSelectedResourceIndex, selectResource, selectedDocuments],
   );
 
+  // Helper function to process application options
+  const processApplicationOptions = (
+    applications: ApplicationOption[],
+    t: (key: string) => string,
+  ) => {
+    return applications.map((option) => ({
+      ...option,
+      displayName:
+        option.displayName === 'Exercice' || option.application === 'exercizer'
+          ? `${t('bbm.linker.int.app.exercizer')}`
+          : option.displayName,
+    }));
+  };
+
   // Update dropdown when available applications list is updated.
   useEffect(() => {
     (async () => {
       // If applications are provided, use them directly.
       if (applicationList) {
         setOptions(
-          applicationList.sort((app1, app2) =>
-            app1.displayName.localeCompare(app2.displayName),
+          processApplicationOptions(
+            applicationList.sort((app1, app2) =>
+              app1.displayName.localeCompare(app2.displayName),
+            ),
+            t,
           ),
         );
         return;
@@ -240,17 +257,21 @@ export const InternalLinker = ({
 
       // Set options to display.
       setOptions(
-        resourceApplications
-          .map((application, index) => {
-            return {
-              application,
-              displayName: t(webApps[index]?.displayName ?? application),
-              icon: <AppIcon app={webApps[index]} size="24" />,
-            } as ApplicationOption;
-          })
-          .sort((app1, app2) =>
-            app1.displayName.localeCompare(app2.displayName),
-          ),
+        processApplicationOptions(
+          resourceApplications
+            .map((application, index) => {
+              const displayName = webApps[index]?.displayName ?? application;
+              return {
+                application,
+                displayName,
+                icon: <AppIcon app={webApps[index]} size="24" />,
+              } as ApplicationOption;
+            })
+            .sort((app1, app2) =>
+              app1.displayName.localeCompare(app2.displayName),
+            ),
+          t,
+        ),
       );
     })();
   }, [resourceApplications, t, applicationList]);

@@ -146,6 +146,7 @@ i18n.use(initReactI18next).init({
           'Select, at the top left, the application in which the resource you want to add is located!',
         'bbm.linker.int.notfound':
           'The resource you are looking for does not exist.',
+        'bbm.linker.int.app.exercizer': 'Exercises distributed',
         'dropzone.text': 'Upload files',
         'dropzone.import': 'Add from computer',
         'dropzone.drop': 'Move files here',
