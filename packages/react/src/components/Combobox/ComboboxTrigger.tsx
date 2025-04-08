@@ -50,13 +50,16 @@ const ComboboxTrigger = ({
   renderSelectedItems,
   hasDefault,
 }: ComboboxTriggerProps) => {
-  const { triggerProps, itemProps, setVisible } = useDropdownContext();
+  const { triggerProps, itemProps, menuProps, setVisible } =
+    useDropdownContext();
 
   const containerProps: Record<string, any> = {
     ...triggerProps,
     className: clsx(
-      'd-flex align-items-center flex-wrap combobox-trigger',
-      renderInputGroup ? 'input-group' : '',
+      'd-flex combobox-trigger',
+      renderInputGroup
+        ? 'input-group flex-nowrap align-items-start'
+        : 'flex-wrap align-items-center',
       triggerProps.className,
     ),
     onClick: (event: MouseEvent) => {
@@ -80,7 +83,7 @@ const ComboboxTrigger = ({
   const classNameVariant = variant === 'ghost' ? ' border-0' : '';
   const classNameInput = clsx(
     classNameVariant,
-    renderSelectedItems ? ' w-auto ' : '',
+    renderSelectedItems ? 'flex-fill w-auto ' : '',
   );
 
   useEffect(() => {
@@ -91,20 +94,25 @@ const ComboboxTrigger = ({
   return (
     <FormControl id="search" {...containerProps}>
       {!!renderInputGroup && (
-        <span className={'input-group-text pe-0' + classNameVariant}>
+        <label
+          className={'input-group-text pe-0' + classNameVariant}
+          htmlFor={triggerProps.id}
+        >
           {renderInputGroup}
-        </span>
+        </label>
       )}
-      {renderSelectedItems}
-      <Input
-        {...inputProps}
-        className={classNameInput}
-        noValidationIcon
-        placeholder={placeholder}
-        size="md"
-        type="search"
-        onKeyDown={itemProps.onMenuItemKeyDown}
-      />
+      <div className="d-flex align-items-center flex-wrap flex-fill">
+        {renderSelectedItems}
+        <Input
+          {...inputProps}
+          className={classNameInput}
+          noValidationIcon
+          placeholder={placeholder}
+          size="md"
+          type="search"
+          onKeyDown={itemProps.onMenuItemKeyDown}
+        />
+      </div>
     </FormControl>
   );
 };
