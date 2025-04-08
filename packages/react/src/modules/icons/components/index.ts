@@ -116,6 +116,7 @@ export { default as IconSend } from './IconSend';
 export { default as IconSetBackground } from './IconSetBackground';
 export { default as IconSettings } from './IconSettings';
 export { default as IconShare } from './IconShare';
+export { default as IconSignature } from './IconSignature';
 export { default as IconSmartphone } from './IconSmartphone';
 export { default as IconSmiley } from './IconSmiley';
 export { default as IconSortAscendingLetters } from './IconSortAscendingLetters';
