@@ -1,6 +1,6 @@
 import { odeServices } from '@edifice.io/client';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface FolderTreeNode {
@@ -16,11 +16,33 @@ function useWorkspaceFolders() {
     queryFn: () => odeServices.workspace().listFolder('owner', true),
   });
 
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filterTree = (
+    nodes: FolderTreeNode[],
+    search: string,
+  ): FolderTreeNode[] => {
+    return nodes
+      .map((node) => {
+        const filteredChildren = node.children
+          ? filterTree(node.children, search)
+          : [];
+        if (
+          node.name.toLowerCase().includes(search.toLowerCase()) ||
+          filteredChildren.length > 0
+        ) {
+          return { ...node, children: filteredChildren };
+        }
+        return null;
+      })
+      .filter((node) => node !== null);
+  };
+
   const userfolders = useMemo(() => {
     const buildWorkspaceTree = (data: FolderTreeNode[]) => {
       return [
         {
-          id: 'my-documents',
+          id: '',
           name: t('workspace.myDocuments'),
           children: data,
         },
@@ -30,7 +52,7 @@ function useWorkspaceFolders() {
     if (!folderData) return buildWorkspaceTree([]);
 
     const nodes = new Map();
-    const tree: FolderTreeNode[] = [];
+    const fullTree: FolderTreeNode[] = [];
 
     // 1 - list all folders with empty children
     folderData.forEach((item) => {
@@ -42,13 +64,15 @@ function useWorkspaceFolders() {
       if (item.eParent && nodes.has(item.eParent)) {
         nodes.get(item.eParent).children.push(nodes.get(item._id));
       } else {
-        tree.push(nodes.get(item._id));
+        fullTree.push(nodes.get(item._id));
       }
     });
-    return buildWorkspaceTree(tree);
-  }, [folderData]);
+    return buildWorkspaceTree(
+      searchQuery ? filterTree(fullTree, searchQuery) : fullTree,
+    );
+  }, [folderData, searchQuery]);
 
-  return { folderTree: userfolders };
+  return { folderTree: userfolders, setSearchQuery };
 }
 
 export default useWorkspaceFolders;
