@@ -372,7 +372,7 @@ export const ComboboxListSection: Story = {
       ...option,
       withSeparator: false,
     }));
-    const [searchValue, setSearchValue] = useState<string>([]);
+    const [searchValue, setSearchValue] = useState<string>('');
     const [options, setOptions] = useState<OptionListItemType[]>([
       { ...args.options[0], withSeparator: false },
     ]);
