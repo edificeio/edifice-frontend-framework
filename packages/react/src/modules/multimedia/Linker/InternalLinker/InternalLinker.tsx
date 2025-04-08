@@ -227,9 +227,11 @@ export const InternalLinker = ({
     return applications.map((option) => ({
       ...option,
       displayName:
-        option.displayName === 'Exercice' || option.application === 'exercizer'
+        option.application === 'exercizer'
           ? `${t('bbm.linker.int.app.exercizer')}`
-          : option.displayName,
+          : option.application === 'forms'
+            ? `${t('bbm.linker.int.app.forms')}`
+            : option.displayName,
     }));
   };
 

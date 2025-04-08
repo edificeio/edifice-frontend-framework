@@ -147,6 +147,7 @@ i18n.use(initReactI18next).init({
         'bbm.linker.int.notfound':
           'The resource you are looking for does not exist.',
         'bbm.linker.int.app.exercizer': 'Exercises distributed',
+        'bbm.linker.int.app.forms': 'Forms distributed',
         'dropzone.text': 'Upload files',
         'dropzone.import': 'Add from computer',
         'dropzone.drop': 'Move files here',
