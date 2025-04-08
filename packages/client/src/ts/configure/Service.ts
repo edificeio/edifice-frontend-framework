@@ -127,7 +127,7 @@ export class ConfService {
 
     const theme = await this.http.get<IOdeTheme>('/theme');
 
-    const themeOverride = conf?.overriding.find(
+    const themeOverride = conf?.overriding?.find(
       (item: { child: string; parent: string; bootstrapVersion: string }) =>
         // Fix #WB2-2660:
         // If Public access => get the neo theme
@@ -135,16 +135,16 @@ export class ConfService {
         publicTheme
           ? item.parent === 'theme-open-ent' &&
             item.bootstrapVersion === 'ode-bootstrap-neo'
-          : item.child === theme.themeName,
+          : item.child === theme?.themeName,
     );
 
     // Fix #WB2-2660:
     // If public access => get the default skin
     // Else get the skin from the user preference
-    const skinName = publicTheme ? 'default' : theme.skinName;
+    const skinName = publicTheme ? 'default' : theme?.skinName;
 
     const themeUrl =
-      theme.skin || `/assets/themes/${themeOverride.child}/skins/${skinName}/`;
+      theme?.skin || `/assets/themes/${themeOverride.child}/skins/${skinName}/`;
     const skins = themeOverride.skins;
     const bootstrapVersion = themeOverride.bootstrapVersion
       .split('-')
@@ -155,7 +155,7 @@ export class ConfService {
       basePath: `${this.cdnDomain}${themeUrl}../../`,
       bootstrapVersion,
       is1d,
-      logoutCallback: theme.logoutCallback || '/',
+      logoutCallback: theme?.logoutCallback || '/',
       skin: themeOverride.child,
       skinName,
       skins,
