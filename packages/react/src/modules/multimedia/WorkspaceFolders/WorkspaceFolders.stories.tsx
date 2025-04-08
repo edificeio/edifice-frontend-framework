@@ -15,17 +15,13 @@ type Story = StoryObj<typeof Workspace>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 export const Base: Story = {
-  args: {
-    onFolderSelected: (folderId: string) => {
-      console.log('Selected folder ID:', folderId);
-    },
-  },
+  args: {},
   argTypes: {},
   parameters: {
     docs: {
       description: {
         story:
-          'The Workspace component listing folders and allowing selection of a folder.',
+          'The Workspace component displays a list of folders and allows users to select one.',
       },
     },
   },

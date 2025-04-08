@@ -9,7 +9,7 @@ interface FolderTreeNode {
   children?: FolderTreeNode[];
 }
 
-export const WORKSPACE_OWNER_FOLDER_ID = 'workspace-owner-folder-id';
+const WORKSPACE_OWNER_FOLDER_ID = 'workspace-owner-folder-id';
 export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 
 function useWorkspaceFolders() {

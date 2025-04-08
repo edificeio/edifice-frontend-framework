@@ -1,69 +1,44 @@
 import { http, HttpResponse } from 'msw';
 
-const owner = {
-  id: 'b92e3d37-16b0-4ed9-b4c3-992091687132',
-  displayName: 'LOISON Stéphane',
-};
 export const handlers = [
-  http.get('/workspace/folders/list', () => {
-    return HttpResponse.json([
-      {
-        _id: '0576e0dd-129b-4244-b36a-49bda713d273',
-        created: '2015-08-07 15:35.44.834',
-        modified: '2015-08-07 15:35.44.834',
-        owner: owner.id,
-        ownerName: owner.displayName,
-        name: 'Travaux en classe',
-        application: 'WORKSPACE',
-        ancestors: [],
-        deleted: false,
-        eParent: null,
-        eType: 'folder',
-        inheritedShares: [],
-        isShared: false,
-        shared: [],
-      },
-      {
-        _id: '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
-        externalId: 'edumedia',
-        owner: owner.id,
-        application: 'media-library',
-        created: '2019-09-12 12:00.38.266',
-        eType: 'folder',
-        modified: '2019-09-12 12:00.38.266',
-        name: 'Edumedia',
-        ownerName: owner.displayName,
-      },
-      {
-        _id: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
-        name: 'Test',
-        application: 'media-library',
-        shared: [],
-        inheritedShares: [],
-        isShared: false,
-        ancestors: [],
-        created: '2025-03-28 17:11.01.368',
-        modified: '2025-03-28 17:11.01.368',
-        owner: owner.id,
-        ownerName: owner.displayName,
-        eType: 'folder',
-      },
-      {
-        _id: 'd1ce8d21-0c5f-4c2b-bdf4-b5da1b8b3b2e',
-        name: 'Sub Test',
-        application: 'media-library',
-        eParent: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
-        ancestors: ['a1aac5c0-6bfe-4308-8c43-812378e2d9bf'],
-        inheritedShares: [],
-        isShared: false,
-        created: '2025-03-28 17:11.12.772',
-        modified: '2025-03-28 17:11.12.772',
-        owner: owner.id,
-        ownerName: owner.displayName,
-        eType: 'folder',
-      },
-    ]);
+  http.get('/workspace/folders/list', ({ request }) => {
+    const url = new URL(request.url);
+    const filter = url.searchParams.get('filter');
+    if (filter === 'owner') {
+      return HttpResponse.json([
+        {
+          _id: '0576e0dd-129b-4244-b36a-49bda713d273',
+          name: 'Travaux en classe',
+        },
+        {
+          _id: '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
+          name: 'Edumedia',
+        },
+        {
+          _id: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
+          name: 'Test',
+        },
+        {
+          _id: 'd1ce8d21-0c5f-4c2b-bdf4-b5da1b8b3b2e',
+          name: 'Sub Test',
+        },
+      ]);
+    }
+
+    if (filter === 'shared') {
+      return HttpResponse.json([
+        {
+          _id: '0d9ec0ee-97b5-4d33-b636-a4ca2ad1d332',
+          name: 'Périscolaire',
+        },
+        {
+          _id: 'a574b9c0-f6eb-4e8a-8bab-5f1113921364',
+          name: 'Les images sur le Brésil',
+        },
+      ]);
+    }
   }),
+
   http.get('/workspace/quota/user/91c22b66-ba1b-4fde-a3fe-95219cc18d4a', () => {
     return HttpResponse.json({ quota: 104857600, storage: 27683216 });
   }),

@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WORKSPACE_SHARED_FOLDER_ID } from 'src/hooks/useWorkspaceFolders/useWorkspaceFolders';
+import { WORKSPACE_SHARED_FOLDER_ID } from '../../../hooks/useWorkspaceFolders';
 import { SearchBar, Tree } from '../../../components';
 import { useWorkspaceFolders } from '../../../hooks';
 
