@@ -1,13 +1,14 @@
-import { useWorkspaceFolders } from '../../../hooks';
-import { SearchBar, Tree } from '../../../components';
-import { useTranslation } from 'react-i18next';
 import { ChangeEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { WORKSPACE_SHARED_FOLDER_ID } from 'src/hooks/useWorkspaceFolders/useWorkspaceFolders';
+import { SearchBar, Tree } from '../../../components';
+import { useWorkspaceFolders } from '../../../hooks';
 
 interface WorkspaceFoldersProps {
   /**
    * Function called when a folder is selected
    */
-  onFolderSelected: (folderId: string) => void;
+  onFolderSelected: (folderId: string | undefined) => void;
 }
 
 export default function WorkspaceFolders({
@@ -27,6 +28,11 @@ export default function WorkspaceFolders({
     setShouldExpandAllNodes(searchValue !== '');
   };
 
+  const handleFolderSelected = (folderId: string) => {
+    if (folderId === WORKSPACE_SHARED_FOLDER_ID) onFolderSelected(undefined);
+    else onFolderSelected(folderId);
+  };
+
   return (
     <div className="d-flex flex-column gap-12">
       <p>{t('attachments.add.to.folder.modal.description')}</p>
@@ -40,7 +46,7 @@ export default function WorkspaceFolders({
         <div className="p-12">
           <Tree
             nodes={folderTree}
-            onTreeItemClick={onFolderSelected}
+            onTreeItemClick={handleFolderSelected}
             shouldExpandAllNodes={shouldExpandAllNodes}
           />
         </div>
