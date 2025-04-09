@@ -122,13 +122,13 @@ const BubbleMenuEditInformationPane = ({
         props: {
           'size': 'lg',
           'leftIcon': <IconDelete />,
-          'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.delete'),
+          'aria-label': t('tiptap.bubblemenu.delete'),
           'children': t('tiptap.bubblemenu.delete'),
           'onClick': () =>
             editor.chain().focus().deleteNode('information-pane').run(),
         },
         tooltip: {
-          message: t('tiptap.tooltip.bubblemenu.information.pane.delete'),
+          message: t('tiptap.bubblemenu.delete'),
           position: 'top',
         },
       },
