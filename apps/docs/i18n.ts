@@ -107,7 +107,7 @@ i18n.use(initReactI18next).init({
         'tiptap.tooltip.bubblemenu.information.pane.success': 'Success pane',
         'tiptap.tooltip.bubblemenu.information.pane.warning': 'Warning pane',
         'tiptap.tooltip.bubblemenu.information.pane.question': 'Question pane',
-        'tiptap.tooltip.bubblemenu.information.pane.delete': 'Delete pane',
+        'tiptap.tooltip.bubblemenu.information.pane.delete': 'Delete',
         'tiptap.tooltip.upload.edit': 'Edit image',
         'tiptap.tooltip.upload.delete': 'Delete file',
         'tiptap.tooltip.upload.loading': 'Loading',
