@@ -15,9 +15,9 @@ It abstracts repetitive d-flex markup into a reusable component, allowing consis
   argTypes: {
     direction: {
       description:
-        'Controls the flex direction: row, column, row-reverse or column-reverse.',
+        'Controls the flex direction: row, column, row-reverse, column-reverse, or fill.',
       control: 'select',
-      options: ['row', 'row-reverse', 'column', 'column-reverse'],
+      options: ['row', 'row-reverse', 'column', 'column-reverse', 'fill'],
     },
     align: {
       description:
@@ -37,9 +37,9 @@ It abstracts repetitive d-flex markup into a reusable component, allowing consis
       control: 'text',
     },
     wrap: {
-      description:
-        'If true, applies flex-wrap to allow children to wrap to the next line.',
-      control: 'boolean',
+      description: 'Controls if the items wrap: wrap, nowrap, or reverse.',
+      control: 'select',
+      options: ['wrap', 'nowrap', 'reverse'],
     },
     className: {
       description: 'Additional custom class names to apply to the container.',
@@ -61,6 +61,15 @@ export const Default: Story = {
     <Flex {...args}>
       <div className="p-2 bg-primary text-white">Box 1</div>
       <div className="p-2 bg-secondary text-white">Box 2</div>
+    </Flex>
+  ),
+};
+
+export const FillDirection: Story = {
+  render: (args) => (
+    <Flex {...args} direction="fill" className="bg-light p-3 border">
+      <div className="flex-grow-1 p-2 bg-primary text-white">Box 1</div>
+      <div className="flex-grow-1 p-2 bg-secondary text-white">Box 2</div>
     </Flex>
   ),
 };
