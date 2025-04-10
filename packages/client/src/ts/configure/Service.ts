@@ -125,36 +125,46 @@ export class ConfService {
       queryParams: { _: version },
     }); */
 
-    const value = await this.http.get<IOdeTheme>('/theme');
+    const theme = await this.http.get<IOdeTheme>('/theme');
 
-    const theme = !publicTheme ? value : null;
-
-    const themeOverride = conf?.overriding.find(
-      (item: { child: any }) =>
-        // Public access => simply use the 1st override
-        theme === null || item.child === theme.themeName,
+    const themeOverride = conf?.overriding?.find(
+      (item: { child: string; parent: string; bootstrapVersion: string }) =>
+        // Fix #WB2-2660:
+        // If Public access => get the neo theme
+        // Else get the theme from the user preference
+        publicTheme
+          ? item.parent === 'theme-open-ent' &&
+            item.bootstrapVersion === 'ode-bootstrap-neo'
+          : item.child === theme?.themeName,
     );
 
-    const skinName = theme?.skinName || themeOverride.skins[0];
+    // Fix #WB2-2660:
+    // If public access => get the default skin
+    // Else get the skin from the user preference (if the user preference is not set => get the first skin)
+    const skinName = publicTheme
+      ? 'default'
+      : theme?.skinName || themeOverride?.skins[0];
+
     const themeUrl =
-      theme?.skin || `/assets/themes/${themeOverride.child}/skins/${skinName}/`;
-    const skins = themeOverride.skins;
-    const bootstrapVersion = themeOverride.bootstrapVersion
+      theme?.skin ||
+      `/assets/themes/${themeOverride?.child}/skins/${skinName}/`;
+    const skins = themeOverride?.skins;
+    const bootstrapVersion = themeOverride?.bootstrapVersion
       .split('-')
       .slice(-1)[0];
-    const is1d = themeOverride.parent === 'panda';
+    const is1d = themeOverride?.parent === 'panda';
 
     return {
       basePath: `${this.cdnDomain}${themeUrl}../../`,
       bootstrapVersion,
       is1d,
       logoutCallback: theme?.logoutCallback || '/',
-      skin: themeOverride.child,
+      skin: themeOverride?.child,
       skinName,
       skins,
-      themeName: themeOverride.child,
+      themeName: themeOverride?.child,
       themeUrl,
-      npmTheme: themeOverride.npmTheme ?? undefined,
+      npmTheme: themeOverride?.npmTheme ?? undefined,
     };
   }
 
