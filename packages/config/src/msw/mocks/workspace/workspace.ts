@@ -1,4 +1,11 @@
 import { http, HttpResponse } from 'msw';
+import { userInfo } from '../../data/userinfo';
+import {
+  folderOfOtherWithGroupContribRights,
+  folderOfOtherWithoutContribRights,
+  folderOfOtherWithUserContribRights,
+  folderOfUser,
+} from './sharedFolders';
 
 export const handlers = [
   http.get('/workspace/folders/list', ({ request }) => {
@@ -9,32 +16,32 @@ export const handlers = [
         {
           _id: '0576e0dd-129b-4244-b36a-49bda713d273',
           name: 'Travaux en classe',
+          owner: userInfo.userId,
         },
         {
           _id: '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
           name: 'Edumedia',
+          owner: userInfo.userId,
         },
         {
           _id: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
           name: 'Test',
+          owner: userInfo.userId,
         },
         {
           _id: 'd1ce8d21-0c5f-4c2b-bdf4-b5da1b8b3b2e',
           name: 'Sub Test',
+          owner: userInfo.userId,
         },
       ]);
     }
 
     if (filter === 'shared') {
       return HttpResponse.json([
-        {
-          _id: '0d9ec0ee-97b5-4d33-b636-a4ca2ad1d332',
-          name: 'Périscolaire',
-        },
-        {
-          _id: 'a574b9c0-f6eb-4e8a-8bab-5f1113921364',
-          name: 'Les images sur le Brésil',
-        },
+        folderOfUser,
+        folderOfOtherWithoutContribRights,
+        folderOfOtherWithUserContribRights,
+        folderOfOtherWithGroupContribRights,
       ]);
     }
   }),
