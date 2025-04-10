@@ -50,8 +50,7 @@ const ComboboxTrigger = ({
   renderSelectedItems,
   hasDefault,
 }: ComboboxTriggerProps) => {
-  const { triggerProps, itemProps, menuProps, setVisible } =
-    useDropdownContext();
+  const { triggerProps, itemProps, setVisible } = useDropdownContext();
 
   const containerProps: Record<string, any> = {
     ...triggerProps,
