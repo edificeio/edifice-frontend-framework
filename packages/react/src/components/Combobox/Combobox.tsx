@@ -150,7 +150,7 @@ const Combobox = ({
   };
 
   return (
-    <Dropdown block focusOnVisible={false}>
+    <Dropdown block focusOnVisible={false} openOnSpace={false}>
       <Combobox.Trigger
         placeholder={placeholder}
         searchMinLength={searchMinLength}
