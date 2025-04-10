@@ -143,27 +143,28 @@ export class ConfService {
     // Else get the skin from the user preference (if the user preference is not set => get the first skin)
     const skinName = publicTheme
       ? 'default'
-      : theme?.skinName || themeOverride.skins[0];
+      : theme?.skinName || themeOverride?.skins[0];
 
     const themeUrl =
-      theme?.skin || `/assets/themes/${themeOverride.child}/skins/${skinName}/`;
-    const skins = themeOverride.skins;
-    const bootstrapVersion = themeOverride.bootstrapVersion
+      theme?.skin ||
+      `/assets/themes/${themeOverride?.child}/skins/${skinName}/`;
+    const skins = themeOverride?.skins;
+    const bootstrapVersion = themeOverride?.bootstrapVersion
       .split('-')
       .slice(-1)[0];
-    const is1d = themeOverride.parent === 'panda';
+    const is1d = themeOverride?.parent === 'panda';
 
     return {
       basePath: `${this.cdnDomain}${themeUrl}../../`,
       bootstrapVersion,
       is1d,
       logoutCallback: theme?.logoutCallback || '/',
-      skin: themeOverride.child,
+      skin: themeOverride?.child,
       skinName,
       skins,
-      themeName: themeOverride.child,
+      themeName: themeOverride?.child,
       themeUrl,
-      npmTheme: themeOverride.npmTheme ?? undefined,
+      npmTheme: themeOverride?.npmTheme ?? undefined,
     };
   }
 
