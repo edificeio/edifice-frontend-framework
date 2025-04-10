@@ -49,6 +49,7 @@ export interface UseDropdownProps {
   menuProps: Record<string, any>;
   itemProps: Record<string, any>;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  openOnSpace?: boolean;
 }
 
 const useDropdown = (
@@ -58,6 +59,7 @@ const useDropdown = (
   ) => void,
   isTriggerHovered: boolean = false,
   focusOnVisible: boolean = true,
+  openOnSpace: boolean = true,
 ): UseDropdownProps => {
   /* Unique Dropdown Id */
   const id = useId();
@@ -99,13 +101,9 @@ const useDropdown = (
   const itemRefs = useRef({});
 
   useEffect(() => {
-    if (visible) {
-      if (menuRef.current) {
-        menuRef.current.focus();
-        if (focusOnVisible) {
-          setActiveIndex(0);
-        }
-      }
+    if (visible && menuRef.current && focusOnVisible) {
+      menuRef.current.focus();
+      setActiveIndex(0);
     } else {
       setActiveIndex(-1);
       itemRefs.current = {};
@@ -174,6 +172,10 @@ const useDropdown = (
       switch (event.code) {
         case ' ':
         case KEYS.Space:
+          if (!openOnSpace) {
+            break;
+          }
+        // intentional fallthrough
         case KEYS.Enter:
         case KEYS.ArrowDown:
         case KEYS.Down:
