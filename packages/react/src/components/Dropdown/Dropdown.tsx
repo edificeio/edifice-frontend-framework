@@ -52,6 +52,10 @@ export interface DropdownProps {
    * Whether to focus the first element when the dropdown is opened.
    */
   focusOnVisible?: boolean;
+  /**
+   * Whether to open the dropdown on space key press.
+   */
+  openOnSpace?: boolean;
 }
 
 export type DropdownMenuOptions =
@@ -90,6 +94,7 @@ const Root = ({
   onToggle,
   isTriggerHovered = false,
   focusOnVisible = true,
+  openOnSpace = true,
 }: DropdownProps) => {
   const {
     visible,
@@ -104,6 +109,7 @@ const Root = ({
     extraTriggerKeyDownHandler,
     isTriggerHovered,
     focusOnVisible,
+    openOnSpace,
   );
 
   /* Ref to close dropdown when clicking outside */
