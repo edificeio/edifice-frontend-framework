@@ -1,6 +1,9 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WORKSPACE_SHARED_FOLDER_ID } from '../../../hooks/useWorkspaceFolders';
+import {
+  WORKSPACE_OWNER_FOLDER_ID,
+  WORKSPACE_SHARED_FOLDER_ID,
+} from '../../../hooks/useWorkspaceFolders';
 import { SearchBar, Tree } from '../../../components';
 import { useWorkspaceFolders } from '../../../hooks';
 
@@ -8,7 +11,7 @@ interface WorkspaceFoldersProps {
   /**
    * Function called when a folder is selected
    */
-  onFolderSelected: (folderId: string | undefined) => void;
+  onFolderSelected: (folderId: string, canCopyFileInto: boolean) => void;
 }
 
 export default function WorkspaceFolders({
@@ -29,8 +32,10 @@ export default function WorkspaceFolders({
   };
 
   const handleFolderSelected = (folderId: string) => {
-    if (folderId === WORKSPACE_SHARED_FOLDER_ID) onFolderSelected(undefined);
-    else onFolderSelected(folderId);
+    const selectedFolderId =
+      folderId === WORKSPACE_OWNER_FOLDER_ID ? '' : folderId;
+    const canCopyFileInto = folderId != WORKSPACE_SHARED_FOLDER_ID;
+    onFolderSelected(selectedFolderId, canCopyFileInto);
   };
 
   return (

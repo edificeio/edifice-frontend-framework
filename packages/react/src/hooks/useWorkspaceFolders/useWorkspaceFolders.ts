@@ -8,9 +8,11 @@ interface FolderTreeNode {
   id: string;
   name: string;
   children?: FolderTreeNode[];
+  canCopyFileInto: boolean;
+  disabled?: boolean;
 }
 
-const WORKSPACE_OWNER_FOLDER_ID = 'workspace-owner-folder-id';
+export const WORKSPACE_OWNER_FOLDER_ID = 'workspace-owner-folder-id';
 export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 
 function useWorkspaceFolders() {
@@ -38,11 +40,14 @@ function useWorkspaceFolders() {
           id: WORKSPACE_OWNER_FOLDER_ID,
           name: t('workspace.myDocuments'),
           children: ownerTree,
+          canCopyFileInto: true,
         },
         {
           id: WORKSPACE_SHARED_FOLDER_ID,
           name: t('workspace.sharedDocuments'),
           children: sharedTree,
+          canCopyFileInto: false,
+          disabled: true,
         },
       ];
     };

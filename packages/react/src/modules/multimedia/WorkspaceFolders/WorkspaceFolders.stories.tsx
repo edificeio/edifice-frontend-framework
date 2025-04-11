@@ -26,8 +26,13 @@ export const Base: Story = {
     },
   },
   render: (args: any) => {
-    const handleFolderSelected = (folderId: string) => {
-      alert(`Selected folder ID: ${folderId}`);
+    const handleFolderSelected = (
+      folderId: string,
+      canCopyFileInto: boolean,
+    ) => {
+      alert(
+        `Selected folderId: '${folderId}' and canCopyFileInto: ${canCopyFileInto}`,
+      );
     };
     return (
       <WorkspaceFolders {...args} onFolderSelected={handleFolderSelected} />
