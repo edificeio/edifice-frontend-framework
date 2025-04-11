@@ -292,18 +292,33 @@ export class WorkspaceService {
   }
 
   async listFolder(
-    filter?: WorkspaceSearchFilter,
+    filter: WorkspaceSearchFilter,
     withChildren: boolean = false,
     parentId?: ID,
+    directShared?: boolean,
   ): Promise<WorkspaceElement[]> {
     const queryParams = {
       filter,
       hierarchical: withChildren,
       parentId,
+      directShared,
     };
-    const result = await this.http.get('/workspace/folders/list', {
+    return this.http.get('/workspace/folders/list', {
       queryParams,
     });
-    return result;
+  }
+
+  async listOwnerFolders(
+    withChildren?: boolean,
+    parentId?: ID,
+  ): Promise<WorkspaceElement[]> {
+    return this.listFolder('owner', withChildren, parentId);
+  }
+
+  async listSharedFolders(
+    withChildren?: boolean,
+    parentId?: ID,
+  ): Promise<WorkspaceElement[]> {
+    return this.listFolder('shared', withChildren, parentId, true);
   }
 }

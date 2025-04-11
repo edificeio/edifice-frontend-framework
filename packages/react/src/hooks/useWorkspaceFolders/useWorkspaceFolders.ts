@@ -1,78 +1,133 @@
-import { odeServices } from '@edifice.io/client';
+import { IUserInfo, odeServices, WorkspaceElement } from '@edifice.io/client';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 interface FolderTreeNode {
   id: string;
   name: string;
   children?: FolderTreeNode[];
+  canCopyFileInto: boolean;
+  disabled?: boolean;
 }
+
+export const WORKSPACE_OWNER_FOLDER_ID = 'workspace-owner-folder-id';
+export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 
 function useWorkspaceFolders() {
   const { t } = useTranslation();
-  const { data: folderData } = useQuery({
-    queryKey: ['workspace-folders'],
-    queryFn: () => odeServices.workspace().listFolder('owner', true),
+  const { user } = useEdificeClient();
+
+  const { data: ownerWorkspaceData = [] } = useQuery({
+    queryKey: ['workspace-owner-folders'],
+    queryFn: () => odeServices.workspace().listOwnerFolders(true),
+  });
+  const { data: sharedWorkspaceData = [] } = useQuery({
+    queryKey: ['workspace-shared-folders'],
+    queryFn: () => odeServices.workspace().listSharedFolders(true),
   });
 
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filterTree = (
-    nodes: FolderTreeNode[],
-    search: string,
-  ): FolderTreeNode[] => {
-    return nodes
-      .map((node) => {
-        const filteredChildren = node.children
-          ? filterTree(node.children, search)
-          : [];
-        if (
-          node.name.toLowerCase().includes(search.toLowerCase()) ||
-          filteredChildren.length > 0
-        ) {
-          return { ...node, children: filteredChildren };
-        }
-        return null;
-      })
-      .filter((node) => node !== null);
-  };
-
   const userfolders = useMemo(() => {
-    const buildWorkspaceTree = (data: FolderTreeNode[]) => {
+    const buildWorkspaceTree = (
+      ownerTree: FolderTreeNode[],
+      sharedTree: FolderTreeNode[],
+    ) => {
       return [
         {
-          id: '',
+          id: WORKSPACE_OWNER_FOLDER_ID,
           name: t('workspace.myDocuments'),
-          children: data,
+          children: ownerTree,
+          canCopyFileInto: true,
+        },
+        {
+          id: WORKSPACE_SHARED_FOLDER_ID,
+          name: t('workspace.sharedDocuments'),
+          children: sharedTree,
+          canCopyFileInto: false,
+          disabled: true,
         },
       ];
     };
 
-    if (!folderData) return buildWorkspaceTree([]);
+    const ownerFolders = buildTree(ownerWorkspaceData, user);
+    const sharedFolders = buildTree(sharedWorkspaceData, user);
 
-    const nodes = new Map();
-    const fullTree: FolderTreeNode[] = [];
-
-    // 1 - list all folders with empty children
-    folderData.forEach((item) => {
-      nodes.set(item._id, { id: item._id, name: item.name, children: [] });
-    });
-
-    // 2 - assign children to their parents
-    folderData.forEach((item) => {
-      if (item.eParent && nodes.has(item.eParent)) {
-        nodes.get(item.eParent).children.push(nodes.get(item._id));
-      } else {
-        fullTree.push(nodes.get(item._id));
-      }
-    });
     return buildWorkspaceTree(
-      searchQuery ? filterTree(fullTree, searchQuery) : fullTree,
+      searchQuery ? filterTree(ownerFolders, searchQuery) : ownerFolders,
+      searchQuery ? filterTree(sharedFolders, searchQuery) : sharedFolders,
     );
-  }, [folderData, searchQuery]);
+  }, [ownerWorkspaceData, sharedWorkspaceData, searchQuery, user]);
 
-  return { folderTree: userfolders, setSearchQuery };
+  return { folderTree: userfolders, setSearchQuery, user };
 }
+
+const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {
+  const nodes = new Map();
+  const fullTree: FolderTreeNode[] = [];
+
+  // 1 - list all folders with empty children
+  workspaceData.forEach((item) => {
+    const canCopyFileInto =
+      user && canWriteOnFolder(item, user.userId, user.groupsIds);
+    nodes.set(item._id, {
+      id: item._id,
+      name: item.name,
+      children: [],
+      canCopyFileInto,
+    });
+  });
+
+  // 2 - assign children to their parents
+  workspaceData.forEach((item) => {
+    const nodeItem = nodes.get(item._id);
+    if (!nodeItem.canCopyFileInto) return;
+
+    if (item.eParent && nodes.has(item.eParent)) {
+      nodes.get(item.eParent)?.children.push(nodeItem);
+    } else {
+      fullTree.push(nodeItem);
+    }
+  });
+  return fullTree;
+};
+
+const filterTree = (
+  nodes: FolderTreeNode[],
+  search: string,
+): FolderTreeNode[] => {
+  return nodes
+    .map((node) => {
+      const filteredChildren = node.children
+        ? filterTree(node.children, search)
+        : [];
+      if (
+        node.name.toLowerCase().includes(search.toLowerCase()) ||
+        filteredChildren.length > 0
+      ) {
+        return { ...node, children: filteredChildren };
+      }
+      return null;
+    })
+    .filter((node) => node !== null);
+};
+
+const canWriteOnFolder = (
+  folderData: WorkspaceElement,
+  userId: string,
+  userGroupsIds: string[],
+) => {
+  if (folderData.owner === userId) return true;
+
+  const userRights = folderData.inheritedShares?.filter(
+    (right) => right.userId === userId || userGroupsIds.includes(right.groupId),
+  );
+  const contrib =
+    'org-entcore-workspace-controllers-WorkspaceController|updateDocument';
+  const hasContribRights = !!userRights?.find((right) => right[contrib]);
+  return hasContribRights;
+};
 
 export default useWorkspaceFolders;
