@@ -15,6 +15,7 @@ export * from './Combobox';
 export * from './Dropdown';
 export * from './Dropzone';
 export * from './EmptyScreen';
+export * from './Flex';
 export * from './Form';
 export * from './Grid';
 export * from './Heading';
