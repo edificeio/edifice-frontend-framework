@@ -1,4 +1,4 @@
-import { Button, Modal } from '../../../components';
+import { Button, Modal, ModalSize } from '../../../components';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,6 +34,10 @@ interface ConfirmModalProps {
    */
   koText?: string;
   /**
+   * Size of the modal (width)
+   */
+  size?: ModalSize;
+  /**
    * Function to call when success button proceed
    */
   onSuccess?: () => void;
@@ -51,6 +55,7 @@ export default function ConfirmModal({
   body,
   okText,
   koText,
+  size = 'md',
   onSuccess = () => ({}),
   onCancel = () => ({}),
 }: ConfirmModalProps) {
@@ -58,8 +63,9 @@ export default function ConfirmModal({
   const ok = { 'yes/no': t('yes'), 'ok/cancel': t('ok') };
   const ko = { 'yes/no': t('no'), 'ok/cancel': t('cancel') };
 
+  console.log('size:', size);
   return (
-    <Modal isOpen={isOpen} onModalClose={onCancel} id={id}>
+    <Modal isOpen={isOpen} onModalClose={onCancel} id={id} size={size}>
       <Modal.Header onModalClose={onCancel}>{header}</Modal.Header>
       <Modal.Body>{body}</Modal.Body>
       <Modal.Footer>
