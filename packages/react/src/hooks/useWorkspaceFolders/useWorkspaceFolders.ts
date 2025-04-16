@@ -1,5 +1,5 @@
 import { IUserInfo, odeServices, WorkspaceElement } from '@edifice.io/client';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
@@ -27,6 +27,29 @@ function useWorkspaceFolders() {
     queryKey: ['workspace-shared-folders'],
     queryFn: () => odeServices.workspace().listSharedFolders(true),
   });
+
+  const createFolderMutation = useMutation({
+    mutationFn: ({
+      folderName,
+      folderParentId,
+    }: {
+      folderName: string;
+      folderParentId?: string;
+    }) => odeServices.workspace().createFolder(folderName, folderParentId),
+    onSuccess: () => {
+      console.log('Folder created successfully');
+    },
+    onError: (error) => {
+      console.error('Error creating folder:', error);
+    },
+  });
+
+  const createFolder = async (
+    folderName: string,
+    folderParentId: string | undefined,
+  ) => {
+    await createFolderMutation.mutate({ folderName, folderParentId });
+  };
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -61,7 +84,7 @@ function useWorkspaceFolders() {
     );
   }, [ownerWorkspaceData, sharedWorkspaceData, searchQuery, user]);
 
-  return { folderTree: userfolders, setSearchQuery, user };
+  return { folderTree: userfolders, setSearchQuery, user, createFolder };
 }
 
 const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {
@@ -129,5 +152,4 @@ const canWriteOnFolder = (
   const hasContribRights = !!userRights?.find((right) => right[contrib]);
   return hasContribRights;
 };
-
 export default useWorkspaceFolders;
