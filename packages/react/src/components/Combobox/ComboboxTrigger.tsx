@@ -1,4 +1,10 @@
-import { ChangeEvent, MouseEvent, ReactNode, useEffect } from 'react';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  MouseEvent,
+  ReactNode,
+  useEffect,
+} from 'react';
 
 import clsx from 'clsx';
 import { useDropdownContext } from '../Dropdown/DropdownContext';
@@ -8,13 +14,14 @@ import Input from '../Input/Input';
 export interface ComboboxTriggerProps
   extends React.ComponentPropsWithRef<'button'> {
   handleSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  handleSearchInputKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   value: string;
   searchMinLength?: number;
   placeholder?: string;
   renderInputGroup?: React.ReactNode;
   variant?: 'outline' | 'ghost';
   renderSelectedItems?: ReactNode;
-  hasDefault?: boolean;
+  hasDefault: boolean;
 }
 /**
  * A trigger component for the Combobox that handles user input and displays selected items.
@@ -45,6 +52,7 @@ const ComboboxTrigger = ({
   value = '',
   searchMinLength = 3,
   handleSearchInputChange,
+  handleSearchInputKeyUp,
   renderInputGroup,
   variant = 'outline',
   renderSelectedItems,
@@ -65,17 +73,22 @@ const ComboboxTrigger = ({
       event.stopPropagation();
     },
   };
+
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     handleSearchInputChange(event);
     setVisible(event.target.value.length >= searchMinLength);
   };
+
   const inputProps: Record<string, any> = {
     role: 'combobox',
     onChange: handleSearchChange,
     onClick: (event: MouseEvent<HTMLInputElement>) => {
       const input = event.target as HTMLInputElement;
-      setVisible(input.value.length >= searchMinLength || !!hasDefault);
+      setVisible(input.value.length >= searchMinLength || hasDefault);
       input.focus();
+    },
+    onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
+      handleSearchInputKeyUp?.(event);
     },
   };
 
