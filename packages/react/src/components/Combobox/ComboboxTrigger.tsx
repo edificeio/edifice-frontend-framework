@@ -21,7 +21,7 @@ export interface ComboboxTriggerProps
   renderInputGroup?: React.ReactNode;
   variant?: 'outline' | 'ghost';
   renderSelectedItems?: ReactNode;
-  hasDefault?: boolean;
+  hasDefault: boolean;
 }
 /**
  * A trigger component for the Combobox that handles user input and displays selected items.
@@ -84,7 +84,7 @@ const ComboboxTrigger = ({
     onChange: handleSearchChange,
     onClick: (event: MouseEvent<HTMLInputElement>) => {
       const input = event.target as HTMLInputElement;
-      setVisible(input.value.length >= searchMinLength || !!hasDefault);
+      setVisible(input.value.length >= searchMinLength || hasDefault);
       input.focus();
     },
     onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {

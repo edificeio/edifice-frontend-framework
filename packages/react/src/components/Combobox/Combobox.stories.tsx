@@ -216,7 +216,7 @@ export const ComboboxRenderInputGroup: Story = {
     return (
       <Combobox
         {...args}
-        renderInputGroup={<span className="pe-8">Destinataires</span>}
+        renderInputGroup={<span className="pe-8">Recipients</span>}
         onSearchResultsChange={() => {}}
         onSearchInputChange={() => {}}
       />
@@ -458,7 +458,7 @@ export const ComboboxListSection: Story = {
 
 export const ComboboxFull: Story = {
   render: (args: ComboboxProps) => {
-    const searchMinLength = 3;
+    const searchMinLength = 1;
     const originalOptions = args.options.map((option) => ({
       ...option,
       withSeparator: false,
@@ -470,9 +470,8 @@ export const ComboboxFull: Story = {
     const [selectedItems, setSelectedItems] = useState<OptionListItemType[]>(
       [],
     );
-    const [searchValue, setSearchValue] = useState<string>('');
 
-    const search = () => {
+    const search = (searchValue: string) => {
       const options = originalOptions.filter((option) =>
         (option.value as string)
           .toLowerCase()
@@ -482,9 +481,8 @@ export const ComboboxFull: Story = {
     };
 
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.value.length > searchMinLength) {
-        setSearchValue(event.target.value);
-        search();
+      if (event.target.value.length >= 3) {
+        search(event.target.value);
       } else {
         setOptions([originalOptions[0]]);
       }
@@ -492,7 +490,7 @@ export const ComboboxFull: Story = {
 
     const handleSearchInputKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
-        search();
+        search(event.currentTarget.value);
       }
     };
 
@@ -523,11 +521,12 @@ export const ComboboxFull: Story = {
         options={options}
         placeholder="Enter at least 3 letters to start the search or press enter"
         noResult={options.length === 0}
+        searchMinLength={searchMinLength}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
         onSearchInputKeyUp={handleSearchInputKeyUp}
         variant="ghost"
-        renderInputGroup={<span>Destinataires </span>}
+        renderInputGroup={<span>Recipients </span>}
         renderSelectedItems={selectedItems.map((item) => {
           return (
             <div
