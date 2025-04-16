@@ -1,4 +1,10 @@
-import { ChangeEvent, Fragment, MouseEvent, useState } from 'react';
+import {
+  ChangeEvent,
+  Fragment,
+  KeyboardEvent,
+  MouseEvent,
+  useState,
+} from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
 import { IconBookmark, IconClose } from '../../modules/icons/components';
@@ -210,7 +216,7 @@ export const ComboboxRenderInputGroup: Story = {
     return (
       <Combobox
         {...args}
-        renderInputGroup={<span className="pe-8">Destinataires</span>}
+        renderInputGroup={<span className="pe-8">Recipients</span>}
         onSearchResultsChange={() => {}}
         onSearchInputChange={() => {}}
       />
@@ -452,6 +458,7 @@ export const ComboboxListSection: Story = {
 
 export const ComboboxFull: Story = {
   render: (args: ComboboxProps) => {
+    const searchMinLength = 1;
     const originalOptions = args.options.map((option) => ({
       ...option,
       withSeparator: false,
@@ -464,18 +471,29 @@ export const ComboboxFull: Story = {
       [],
     );
 
+    const search = (searchValue: string) => {
+      const options = originalOptions.filter((option) =>
+        (option.value as string)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()),
+      );
+      setOptions(options);
+    };
+
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      if (event.target.value.length > 0) {
-        const options = originalOptions.filter((option) =>
-          (option.value as string)
-            .toLowerCase()
-            .includes(event.target.value.toLowerCase()),
-        );
-        setOptions(options);
+      if (event.target.value.length >= 3) {
+        search(event.target.value);
       } else {
         setOptions([originalOptions[0]]);
       }
     };
+
+    const handleSearchInputKeyUp = (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        search(event.currentTarget.value);
+      }
+    };
+
     const handleSearchResultsChange = async (model: (string | number)[]) => {
       const item = args.options.find((option) => option.value === model[0]);
       setOptions(
@@ -501,11 +519,14 @@ export const ComboboxFull: Story = {
       <Combobox
         {...args}
         options={options}
+        placeholder="Enter at least 3 letters to start the search or press enter"
         noResult={options.length === 0}
+        searchMinLength={searchMinLength}
         onSearchInputChange={handleSearchInputChange}
         onSearchResultsChange={handleSearchResultsChange}
+        onSearchInputKeyUp={handleSearchInputKeyUp}
         variant="ghost"
-        renderInputGroup={<span>Destinataires </span>}
+        renderInputGroup={<span>Recipients </span>}
         renderSelectedItems={selectedItems.map((item) => {
           return (
             <div
