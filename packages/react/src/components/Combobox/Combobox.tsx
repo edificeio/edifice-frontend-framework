@@ -1,4 +1,11 @@
-import { ChangeEvent, Fragment, ReactNode, useEffect, useState } from 'react';
+import {
+  ChangeEvent,
+  Fragment,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +21,7 @@ export interface ComboboxProps
   isLoading: boolean;
   noResult: boolean;
   onSearchResultsChange?: (model: (string | number)[]) => void;
+  onSearchInputKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
   searchMinLength?: number;
   placeholder?: string;
   variant?: 'outline' | 'ghost';
@@ -85,6 +93,7 @@ export interface OptionListItemType {
 const Combobox = ({
   onSearchResultsChange,
   onSearchInputChange,
+  onSearchInputKeyUp,
   options,
   value,
   isLoading,
@@ -155,6 +164,9 @@ const Combobox = ({
         placeholder={placeholder}
         searchMinLength={searchMinLength}
         handleSearchInputChange={onSearchInputChange}
+        handleSearchInputKeyUp={(event) => {
+          onSearchInputKeyUp?.(event);
+        }}
         value={value}
         variant={variant}
         renderInputGroup={renderInputGroup}
