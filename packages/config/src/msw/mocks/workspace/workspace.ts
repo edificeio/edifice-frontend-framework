@@ -1,39 +1,24 @@
-import { http, HttpResponse } from 'msw';
-import { userInfo } from '../../data/userinfo';
+import { delay, http, HttpResponse } from 'msw';
+import { folders } from './data/folders';
 import {
   folderOfOtherWithGroupContribRights,
   folderOfOtherWithoutContribRights,
   folderOfOtherWithUserContribRights,
   folderOfUser,
-} from './sharedFolders';
+} from './data/sharedFolders';
+import { userInfo } from '../../data/userinfo';
+
+const RESPONSE_DELAY = 2000;
 
 export const handlers = [
-  http.get('/workspace/folders/list', ({ request }) => {
+  http.all('/workspace/*', async () => {
+    await delay(RESPONSE_DELAY);
+  }),
+  http.get('/workspace/folders/list', async ({ request }) => {
     const url = new URL(request.url);
     const filter = url.searchParams.get('filter');
     if (filter === 'owner') {
-      return HttpResponse.json([
-        {
-          _id: '0576e0dd-129b-4244-b36a-49bda713d273',
-          name: 'Travaux en classe',
-          owner: userInfo.userId,
-        },
-        {
-          _id: '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
-          name: 'Edumedia',
-          owner: userInfo.userId,
-        },
-        {
-          _id: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
-          name: 'Test',
-          owner: userInfo.userId,
-        },
-        {
-          _id: 'd1ce8d21-0c5f-4c2b-bdf4-b5da1b8b3b2e',
-          name: 'Sub Test',
-          owner: userInfo.userId,
-        },
-      ]);
+      return HttpResponse.json(folders);
     }
 
     if (filter === 'shared') {
@@ -284,5 +269,21 @@ export const handlers = [
     } else {
       return HttpResponse.json([]);
     }
+  }),
+
+  http.post('/workspace/folder', async ({ request }) => {
+    const { name, parentFolderId } = (await request.json()) as {
+      name: string;
+      parentFolderId: string;
+    };
+    const newFolder = {
+      _id: `new-folder-${Date.now()}`,
+      name,
+      parentFolderId,
+      owner: userInfo.userId,
+      eParent: parentFolderId,
+    };
+    folders.push(newFolder);
+    return HttpResponse.json({}, { status: 201 });
   }),
 ];

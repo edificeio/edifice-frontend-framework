@@ -1,5 +1,5 @@
 import { IUserInfo, odeServices, WorkspaceElement } from '@edifice.io/client';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
@@ -18,15 +18,19 @@ export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 function useWorkspaceFolders() {
   const { t } = useTranslation();
   const { user } = useEdificeClient();
+  const queryClient = useQueryClient();
 
-  const { data: ownerWorkspaceData = [] } = useQuery({
-    queryKey: ['workspace-owner-folders'],
-    queryFn: () => odeServices.workspace().listOwnerFolders(true),
-  });
-  const { data: sharedWorkspaceData = [] } = useQuery({
-    queryKey: ['workspace-shared-folders'],
-    queryFn: () => odeServices.workspace().listSharedFolders(true),
-  });
+  const { data: ownerWorkspaceData = [], isLoading: isLoadingOwner } = useQuery(
+    {
+      queryKey: ['workspace-folders', 'owner'],
+      queryFn: () => odeServices.workspace().listOwnerFolders(true),
+    },
+  );
+  const { data: sharedWorkspaceData = [], isLoading: isLoadingShared } =
+    useQuery({
+      queryKey: ['workspace-folders', 'shared'],
+      queryFn: () => odeServices.workspace().listSharedFolders(true),
+    });
 
   const createFolderMutation = useMutation({
     mutationFn: ({
@@ -37,19 +41,15 @@ function useWorkspaceFolders() {
       folderParentId?: string;
     }) => odeServices.workspace().createFolder(folderName, folderParentId),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['workspace-folders'],
+      });
       console.log('Folder created successfully');
     },
     onError: (error) => {
       console.error('Error creating folder:', error);
     },
   });
-
-  const createFolder = async (
-    folderName: string,
-    folderParentId: string | undefined,
-  ) => {
-    await createFolderMutation.mutate({ folderName, folderParentId });
-  };
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -84,7 +84,13 @@ function useWorkspaceFolders() {
     );
   }, [ownerWorkspaceData, sharedWorkspaceData, searchQuery, user]);
 
-  return { folderTree: userfolders, setSearchQuery, user, createFolder };
+  return {
+    folderTree: userfolders,
+    setSearchQuery,
+    user,
+    createFolderMutation,
+    isLoading: isLoadingOwner && isLoadingShared,
+  };
 }
 
 const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {

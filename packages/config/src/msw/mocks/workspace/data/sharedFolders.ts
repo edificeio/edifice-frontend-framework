@@ -1,4 +1,4 @@
-import { userInfo } from '../../data/userinfo';
+import { userInfo } from '../../../data/userinfo';
 
 export const folderOfUser = {
   _id: 'cdfc982f-421a-462f-9045-90f292bb3f33',
