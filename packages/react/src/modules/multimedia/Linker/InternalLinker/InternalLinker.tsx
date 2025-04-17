@@ -219,20 +219,14 @@ export const InternalLinker = ({
     [getSelectedResourceIndex, selectResource, selectedDocuments],
   );
 
-  // Helper function to process application options
-  const processApplicationOptions = (
-    applications: ApplicationOption[],
-    t: (key: string) => string,
-  ) => {
-    return applications.map((option) => ({
-      ...option,
-      displayName:
-        option.application === 'exercizer'
-          ? `${t('bbm.linker.int.app.exercizer')}`
-          : option.application === 'forms'
-            ? `${t('bbm.linker.int.app.forms')}`
-            : option.displayName,
-    }));
+  // Helper function to process a single application option
+  const processApplicationDisplayName = (option: ApplicationOption) => {
+    if (option.application === 'exercizer') {
+      return `${t('bbm.linker.int.app.exercizer')}`;
+    } else if (option.application === 'form') {
+      return `${t('bbm.linker.int.app.forms')}`;
+    }
+    return option.displayName;
   };
 
   // Update dropdown when available applications list is updated.
@@ -241,11 +235,8 @@ export const InternalLinker = ({
       // If applications are provided, use them directly.
       if (applicationList) {
         setOptions(
-          processApplicationOptions(
-            applicationList.sort((app1, app2) =>
-              app1.displayName.localeCompare(app2.displayName),
-            ),
-            t,
+          applicationList.sort((app1, app2) =>
+            app1.displayName.localeCompare(app2.displayName),
           ),
         );
         return;
@@ -259,21 +250,18 @@ export const InternalLinker = ({
 
       // Set options to display.
       setOptions(
-        processApplicationOptions(
-          resourceApplications
-            .map((application, index) => {
-              const displayName = webApps[index]?.displayName ?? application;
-              return {
-                application,
-                displayName,
-                icon: <AppIcon app={webApps[index]} size="24" />,
-              } as ApplicationOption;
-            })
-            .sort((app1, app2) =>
-              app1.displayName.localeCompare(app2.displayName),
-            ),
-          t,
-        ),
+        resourceApplications
+          .map((application, index) => {
+            const displayName = webApps[index]?.displayName ?? application;
+            return {
+              application,
+              displayName,
+              icon: <AppIcon app={webApps[index]} size="24" />,
+            } as ApplicationOption;
+          })
+          .sort((app1, app2) =>
+            app1.displayName.localeCompare(app2.displayName),
+          ),
       );
     })();
   }, [resourceApplications, t, applicationList]);
@@ -350,7 +338,7 @@ export const InternalLinker = ({
                     icon={option.icon}
                     onClick={() => handleOptionClick(option)}
                   >
-                    {option.displayName}
+                    {processApplicationDisplayName(option)}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
