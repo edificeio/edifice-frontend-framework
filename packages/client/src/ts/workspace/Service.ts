@@ -350,12 +350,11 @@ export class WorkspaceService {
    * @returns void
    */
   createFolder(name: string, parentId?: string) {
-    const params = {
-      name,
-      parentFolderId: parentId,
-    };
-    return this.http.post(`/workspace/folder`, {
-      ...params,
-    });
+    const formData = new FormData();
+    formData.append('name', name);
+    if (parentId) {
+      formData.append('parentFolderId', parentId);
+    }
+    return this.http.postFile(`/workspace/folder`, formData);
   }
 }
