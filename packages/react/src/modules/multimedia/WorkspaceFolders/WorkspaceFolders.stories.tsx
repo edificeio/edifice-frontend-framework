@@ -30,7 +30,7 @@ export const Base: Story = {
       folderId: string,
       canCopyFileInto: boolean,
     ) => {
-      alert(
+      console.log(
         `Selected folderId: '${folderId}' and canCopyFileInto: ${canCopyFileInto}`,
       );
     };
