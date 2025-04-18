@@ -13,7 +13,7 @@ export interface WorkspaceElement {
   //shared
   _shared: any[];
   inheritedShares?: any[];
-  _isShared: boolean;
+  _isShared: boolean; //Wrong property name, should be isShared ?
   //
   showComments?: boolean;
   editing?: boolean;
@@ -22,7 +22,7 @@ export interface WorkspaceElement {
   comment?: string;
   //
   ownerName?: string;
-  owner: { userId: string; displayName: string };
+  owner: { userId: string; displayName: string }; // Wrong type, should be owner:string ?
   //upload
   uploadStatus?: 'loading' | 'loaded' | 'failed' | 'abort';
   uploadXhr?: XMLHttpRequest;

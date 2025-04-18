@@ -50,10 +50,9 @@ export const handlers = [
   }),
 
   http.post('/workspace/folder', async ({ request }) => {
-    const { name, parentFolderId } = (await request.json()) as {
-      name: string;
-      parentFolderId: string;
-    };
+    const formData = await request.formData();
+    const name = formData.get('name') as string;
+    const parentFolderId = formData.get('parentFolderId') as string;
 
     const newFolder = {
       _id: `new-folder-${Date.now()}`,
