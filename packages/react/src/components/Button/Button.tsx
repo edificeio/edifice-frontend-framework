@@ -31,7 +31,7 @@ export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
   /**
    * Does it has a text ?
    */
-  children: ReactNode;
+  children?: ReactNode;
   /**
    * Display Icon Component to the left
    */
