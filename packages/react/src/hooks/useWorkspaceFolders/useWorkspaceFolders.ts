@@ -1,5 +1,5 @@
 import { IUserInfo, odeServices, WorkspaceElement } from '@edifice.io/client';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
@@ -18,14 +18,33 @@ export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 function useWorkspaceFolders() {
   const { t } = useTranslation();
   const { user } = useEdificeClient();
+  const queryClient = useQueryClient();
 
-  const { data: ownerWorkspaceData = [] } = useQuery({
-    queryKey: ['workspace-owner-folders'],
-    queryFn: () => odeServices.workspace().listOwnerFolders(true),
-  });
-  const { data: sharedWorkspaceData = [] } = useQuery({
-    queryKey: ['workspace-shared-folders'],
-    queryFn: () => odeServices.workspace().listSharedFolders(true),
+  const { data: ownerWorkspaceData = [], isLoading: isLoadingOwner } = useQuery(
+    {
+      queryKey: ['workspace', 'folders', 'owner'],
+      queryFn: () => odeServices.workspace().listOwnerFolders(true),
+    },
+  );
+  const { data: sharedWorkspaceData = [], isLoading: isLoadingShared } =
+    useQuery({
+      queryKey: ['workspace', 'folders', 'shared'],
+      queryFn: () => odeServices.workspace().listSharedFolders(true),
+    });
+
+  const createFolderMutation = useMutation({
+    mutationFn: ({
+      folderName,
+      folderParentId,
+    }: {
+      folderName: string;
+      folderParentId?: string;
+    }) => odeServices.workspace().createFolder(folderName, folderParentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['workspace', 'folders'],
+      });
+    },
   });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -61,7 +80,13 @@ function useWorkspaceFolders() {
     );
   }, [ownerWorkspaceData, sharedWorkspaceData, searchQuery, user]);
 
-  return { folderTree: userfolders, setSearchQuery, user };
+  return {
+    folderTree: userfolders,
+    setSearchQuery,
+    user,
+    createFolderMutation,
+    isLoading: isLoadingOwner || isLoadingShared,
+  };
 }
 
 const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {
@@ -77,6 +102,11 @@ const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {
       name: item.name,
       children: [],
       canCopyFileInto,
+      expandedNodes: [
+        '0576e0dd-129b-4244-b36a-49bda713d273',
+        '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
+        'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
+      ],
     });
   });
 
@@ -129,5 +159,4 @@ const canWriteOnFolder = (
   const hasContribRights = !!userRights?.find((right) => right[contrib]);
   return hasContribRights;
 };
-
 export default useWorkspaceFolders;
