@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TreeItem } from '../types';
 import { findNodeById, findPathById } from '../utilities/tree';
 
@@ -36,61 +36,11 @@ export const useTree = ({
     string | undefined
   >(undefined);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
-  const siblingsNodes = useRef<Set<string>>(new Set());
   const [draggedNodeId, setDraggedNodeId] = useState<string | undefined>(
     undefined,
   );
 
   const selectedNodeId = internalSelectedNodeId ?? externalSelectedNodeId;
-
-  function addNodesWithSiblingHavingChildren(data: TreeItem | TreeItem[]) {
-    if (Array.isArray(data)) {
-      data.forEach((node) => {
-        const resultSet = new Set(siblingsNodes.current);
-        const siblings = data.filter(({ id }) => id !== node.id);
-        const hasSiblingWithChildren = siblings.some(
-          (sibling) => sibling.children && sibling.children.length > 0,
-        );
-
-        if (hasSiblingWithChildren) {
-          resultSet.add(node.id);
-        }
-
-        if (node.children && node.children.length > 0) {
-          node.children.forEach((child) => {
-            const childSiblings = node.children?.filter(
-              ({ id }) => id !== child.id,
-            );
-            const hasChildSiblingWithChildren = childSiblings?.some(
-              (sibling) => sibling.children && sibling.children.length > 0,
-            );
-
-            if (hasChildSiblingWithChildren) {
-              resultSet.add(child.id);
-            }
-
-            addNodesWithSiblingHavingChildren(child);
-          });
-        }
-      });
-    } else {
-      data.children?.forEach((child) => {
-        const resultSet = new Set(siblingsNodes.current);
-        const siblings = data.children?.filter((c) => c.id !== child.id);
-
-        const hasSiblingWithChildren = siblings?.some(
-          (sibling) => sibling.children && sibling.children.length > 0,
-        );
-
-        if (hasSiblingWithChildren) {
-          resultSet.add(child.id);
-          siblingsNodes.current = resultSet;
-        }
-
-        addNodesWithSiblingHavingChildren(child);
-      });
-    }
-  }
 
   const expandAllNodes = (shouldExpandAllNodes: boolean | undefined) => {
     const initExpandedNodes = new Set('');
@@ -99,13 +49,6 @@ export const useTree = ({
       setExpandedNodes(initExpandedNodes);
     }
   };
-
-  useEffect(() => {
-    if (data) {
-      addNodesWithSiblingHavingChildren(data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
   useEffect(() => {
     if (draggedNode?.isOver && draggedNode.isTreeview) {
@@ -245,7 +188,6 @@ export const useTree = ({
   return {
     selectedNodeId,
     expandedNodes,
-    siblingsNodes,
     draggedNodeId,
     handleItemClick,
     handleFoldUnfold,
