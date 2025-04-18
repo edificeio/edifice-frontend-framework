@@ -291,7 +291,16 @@ export class WorkspaceService {
     }
   }
 
-  async listFolder(
+  /**
+   * Get the URL of the file of a workspace element (or its URL),
+   * or `null` if none exists or can be created.
+   * @param filter - The filter to apply to the workspace element.
+   * @param withChildren - If true, include all children folders.
+   * @param parentId - The ID of the parent folder to list.
+   * @param directShared - If true, include only elements directly shared with the user.
+   *
+   */
+  listFolder(
     filter: WorkspaceSearchFilter,
     withChildren: boolean = false,
     parentId?: ID,
@@ -308,17 +317,45 @@ export class WorkspaceService {
     });
   }
 
-  async listOwnerFolders(
+  /**
+   * List all folders in the workspace.
+   * @param withChildren - If true, include all children folders.
+   * @param parentId - The ID of the parent folder to list.
+   * @returns A promise that resolves to an array of WorkspaceElement objects.
+   */
+  listOwnerFolders(
     withChildren?: boolean,
     parentId?: ID,
   ): Promise<WorkspaceElement[]> {
     return this.listFolder('owner', withChildren, parentId);
   }
 
-  async listSharedFolders(
+  /**
+   * List all shared folders in the workspace.
+   * @param withChildren - If true, include all children folders.
+   * @param parentId - The ID of the parent folder to list.
+   * @returns A promise that resolves to an array of WorkspaceElement objects.
+   */
+  listSharedFolders(
     withChildren?: boolean,
     parentId?: ID,
   ): Promise<WorkspaceElement[]> {
     return this.listFolder('shared', withChildren, parentId, true);
+  }
+
+  /**
+   * Create a new folder in the workspace.
+   * @param name - The name of the new folder.
+   * @param parentId - The ID of the parent folder where the new folder will be created.
+   * @returns void
+   */
+  createFolder(name: string, parentId?: string) {
+    const params = {
+      name,
+      parentFolderId: parentId,
+    };
+    return this.http.post(`/workspace/folder`, {
+      ...params,
+    });
   }
 }
