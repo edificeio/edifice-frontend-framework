@@ -85,7 +85,7 @@ function useWorkspaceFolders() {
     setSearchQuery,
     user,
     createFolderMutation,
-    isLoading: isLoadingOwner && isLoadingShared,
+    isLoading: isLoadingOwner || isLoadingShared,
   };
 }
 

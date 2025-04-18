@@ -60,7 +60,6 @@ export default function NewFolderForm({ onClose, folderParentId }: Props) {
           variant="ghost"
           isLoading={createFolderMutation.isPending}
           leftIcon={<IconSave />}
-          children
         />
       </div>
     </form>

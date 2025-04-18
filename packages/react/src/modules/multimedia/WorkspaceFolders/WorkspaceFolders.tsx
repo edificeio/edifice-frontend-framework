@@ -46,7 +46,6 @@ export default function WorkspaceFolders({
   };
 
   const handleNewFolderClick = () => {
-    console.log('New folder clicked', selectedFolderId);
     setShowNewFolderForm(true);
   };
 
