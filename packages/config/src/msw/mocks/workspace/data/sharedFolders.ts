@@ -4,12 +4,13 @@ export const folderOfUser = {
   _id: 'cdfc982f-421a-462f-9045-90f292bb3f33',
   owner: userInfo.userId,
   name: 'Images',
-  inheritedShares: [
-    {
-      groupId: '59620-1434377022316',
-    },
-  ],
-  isShared: true,
+};
+
+export const subFolderOfUser = {
+  _id: 'ddfc982f-421a-462f-9045-90f292bb3f34',
+  owner: userInfo.userId,
+  name: 'Sub Images',
+  eParent: 'cdfc982f-421a-462f-9045-90f292bb3f33',
 };
 
 export const folderOfOtherWithoutContribRights = {
@@ -17,11 +18,6 @@ export const folderOfOtherWithoutContribRights = {
   owner: '1493a7fb-fb90-4acb-a1d8-7c579eba7583',
   ownerName: 'Jeanne Martin',
   name: 'Périscolaire',
-  inheritedShares: [
-    {
-      groupId: '76566-1434728361488',
-    },
-  ],
 };
 
 export const folderOfOtherWithUserContribRights = {
@@ -29,7 +25,7 @@ export const folderOfOtherWithUserContribRights = {
   name: "Lettres d'informations",
   inheritedShares: [
     {
-      'groupId': userInfo.groupsIds[0],
+      'userId': userInfo.userId,
       'org-entcore-workspace-controllers-WorkspaceController|updateDocument':
         true,
     },
@@ -45,9 +41,15 @@ export const folderOfOtherWithGroupContribRights = {
       'groupId': userInfo.groupsIds[1],
       'org-entcore-workspace-controllers-WorkspaceController|updateDocument':
         true,
-      'org-entcore-workspace-controllers-WorkspaceController|commentFolder':
-        true,
     },
   ],
   owner: 'b92e3d37-16b0-4ed9-b4c3-992091687132',
 };
+
+export const sharedFolders = [
+  folderOfUser,
+  subFolderOfUser,
+  folderOfOtherWithoutContribRights,
+  folderOfOtherWithUserContribRights,
+  folderOfOtherWithGroupContribRights,
+];

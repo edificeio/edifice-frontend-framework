@@ -22,13 +22,13 @@ function useWorkspaceFolders() {
 
   const { data: ownerWorkspaceData = [], isLoading: isLoadingOwner } = useQuery(
     {
-      queryKey: ['workspace-folders', 'owner'],
+      queryKey: ['workspace', 'folders', 'owner'],
       queryFn: () => odeServices.workspace().listOwnerFolders(true),
     },
   );
   const { data: sharedWorkspaceData = [], isLoading: isLoadingShared } =
     useQuery({
-      queryKey: ['workspace-folders', 'shared'],
+      queryKey: ['workspace', 'folders', 'shared'],
       queryFn: () => odeServices.workspace().listSharedFolders(true),
     });
 
@@ -42,12 +42,8 @@ function useWorkspaceFolders() {
     }) => odeServices.workspace().createFolder(folderName, folderParentId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['workspace-folders'],
+        queryKey: ['workspace', 'folders'],
       });
-      console.log('Folder created successfully');
-    },
-    onError: (error) => {
-      console.error('Error creating folder:', error);
     },
   });
 
@@ -106,6 +102,11 @@ const buildTree = (workspaceData: WorkspaceElement[], user?: IUserInfo) => {
       name: item.name,
       children: [],
       canCopyFileInto,
+      expandedNodes: [
+        '0576e0dd-129b-4244-b36a-49bda713d273',
+        '50c1b81b-d8b7-4474-9d69-b5e441b31a8c',
+        'a1aac5c0-6bfe-4308-8c43-812378e2d9bf',
+      ],
     });
   });
 

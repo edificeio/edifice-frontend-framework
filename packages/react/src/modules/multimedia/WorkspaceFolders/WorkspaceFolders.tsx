@@ -84,7 +84,7 @@ export default function WorkspaceFolders({
                   selectedFolderId,
                 )}
               >
-                {t('new.folder')}
+                {t('workspace.folder.create')}
               </Button>
             )}
 

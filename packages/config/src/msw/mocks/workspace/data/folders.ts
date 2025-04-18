@@ -1,6 +1,6 @@
 import { userInfo } from '../../../data/userinfo';
 
-export const folders = [
+export const userFolders = [
   {
     _id: '0576e0dd-129b-4244-b36a-49bda713d273',
     name: 'Travaux en classe',
