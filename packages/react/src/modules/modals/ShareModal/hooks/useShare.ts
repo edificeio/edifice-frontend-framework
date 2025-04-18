@@ -264,6 +264,13 @@ export default function useShare({
     } catch (error) {
       if (typeof error === 'string')
         toast.error(t('explorer.shared.status.error'));
+      if (typeof error === 'object')
+        toast.error(
+          t(
+            (error as { error?: string })?.error ||
+              'explorer.shared.status.error',
+          ),
+        );
       console.error('Failed to save share', error);
     } finally {
       dispatch({
