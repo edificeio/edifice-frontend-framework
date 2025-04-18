@@ -38,11 +38,11 @@ export default function WorkspaceFolders({
   };
 
   const handleFolderSelected = (folderId: string) => {
-    const selectedFolderId =
+    const newSelectedFolderId =
       folderId === WORKSPACE_OWNER_FOLDER_ID ? '' : folderId;
     const canCopyFileInto = folderId != WORKSPACE_SHARED_FOLDER_ID;
-    onFolderSelected(selectedFolderId, canCopyFileInto);
-    setSelectedFolderId(selectedFolderId);
+    onFolderSelected(newSelectedFolderId, canCopyFileInto);
+    setSelectedFolderId(newSelectedFolderId);
   };
 
   const handleNewFolderClick = () => {
