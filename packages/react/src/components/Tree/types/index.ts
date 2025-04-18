@@ -127,10 +127,6 @@ export interface TreeNodeProps
    */
   expandedNodes: Set<string>;
   /**
-   * Siblings nodes
-   */
-  siblingsNodes?: React.MutableRefObject<Set<string>>;
-  /**
    * Node is a child
    */
   isChild?: boolean;

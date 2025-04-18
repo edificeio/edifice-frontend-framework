@@ -16,21 +16,16 @@ const Tree = ({
   onTreeItemUnfold,
   onTreeItemClick,
 }: TreeProps) => {
-  const {
-    selectedNodeId,
-    expandedNodes,
-    siblingsNodes,
-    handleItemClick,
-    handleFoldUnfold,
-  } = useTree({
-    data: nodes,
-    externalSelectedNodeId,
-    draggedNode,
-    shouldExpandAllNodes,
-    onTreeItemClick,
-    onTreeItemFold,
-    onTreeItemUnfold,
-  });
+  const { selectedNodeId, expandedNodes, handleItemClick, handleFoldUnfold } =
+    useTree({
+      data: nodes,
+      externalSelectedNodeId,
+      draggedNode,
+      shouldExpandAllNodes,
+      onTreeItemClick,
+      onTreeItemFold,
+      onTreeItemUnfold,
+    });
 
   return (
     <div className="treeview">
@@ -44,7 +39,6 @@ const Tree = ({
                 showIcon={showIcon}
                 selectedNodeId={selectedNodeId}
                 expandedNodes={expandedNodes}
-                siblingsNodes={siblingsNodes}
                 onTreeItemClick={handleItemClick}
                 onToggleNode={handleFoldUnfold}
                 renderNode={renderNode}
@@ -56,7 +50,6 @@ const Tree = ({
             node={nodes}
             selectedNodeId={selectedNodeId}
             expandedNodes={expandedNodes}
-            siblingsNodes={siblingsNodes}
             showIcon={showIcon}
             onTreeItemClick={handleItemClick}
             onToggleNode={handleFoldUnfold}
