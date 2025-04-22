@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Loading, SearchBar, Tree } from '../../../components';
-import { useWorkspaceFolders } from '../../../hooks';
+import { useWorkspaceFolders, useWorkspaceFoldersTree } from '../../../hooks';
 import {
-  WORKSPACE_OWNER_FOLDER_ID,
+  WORKSPACE_USER_FOLDER_ID,
   WORKSPACE_SHARED_FOLDER_ID,
 } from '../../../hooks/useWorkspaceFolders';
 import { IconFolderAdd } from '../../icons/components';
@@ -20,31 +20,49 @@ export default function WorkspaceFolders({
   onFolderSelected,
 }: WorkspaceFoldersProps) {
   const { t } = useTranslation();
-  const { folderTree, setSearchQuery, isLoading } = useWorkspaceFolders();
+  const { folders, isLoading, canCopyFileIntoFolder } = useWorkspaceFolders();
+  const { foldersTree, filterTree } = useWorkspaceFoldersTree(folders);
   const [shouldExpandAllNodes, setShouldExpandAllNodes] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [selectedFolderId, setSelectedFolderId] = useState<string | undefined>(
     undefined,
   );
   const [showNewFolderForm, setShowNewFolderForm] = useState(false);
+  const [
+    canCreateFolderIntoSelectedFolder,
+    setCanCreateFolderIntoSelectedFolder,
+  ] = useState(false);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
   const handleSearchSubmit = () => {
-    setSearchQuery(searchValue);
+    filterTree(searchValue);
     setShouldExpandAllNodes(searchValue !== '');
   };
 
   const handleFolderSelected = (folderId: string) => {
+    setShowNewFolderForm(false);
+
+    // the user folder Id have to be an empty string to match with the API (parentId property)
     const newSelectedFolderId =
-      folderId === WORKSPACE_OWNER_FOLDER_ID ? '' : folderId;
-    const canCopyFileInto = folderId != WORKSPACE_SHARED_FOLDER_ID;
-    onFolderSelected(newSelectedFolderId, canCopyFileInto);
+      folderId === WORKSPACE_USER_FOLDER_ID ? '' : folderId;
     setSelectedFolderId(newSelectedFolderId);
+
+    const canCopyFileInto =
+      folderId === WORKSPACE_USER_FOLDER_ID ||
+      (canCopyFileIntoFolder(folderId) &&
+        folderId !== WORKSPACE_SHARED_FOLDER_ID);
+    setCanCreateFolderIntoSelectedFolder(canCopyFileInto);
+
+    onFolderSelected(newSelectedFolderId, canCopyFileInto);
   };
 
+  console.log(
+    'canCreateFolderIntoSelectedFolder:',
+    canCreateFolderIntoSelectedFolder,
+  );
   const handleNewFolderClick = () => {
     setShowNewFolderForm(true);
   };
@@ -65,7 +83,7 @@ export default function WorkspaceFolders({
               <Loading isLoading className="justify-content-center" />
             ) : (
               <Tree
-                nodes={folderTree}
+                nodes={foldersTree}
                 onTreeItemClick={handleFolderSelected}
                 shouldExpandAllNodes={shouldExpandAllNodes}
               />
@@ -79,15 +97,13 @@ export default function WorkspaceFolders({
                 variant="ghost"
                 leftIcon={<IconFolderAdd />}
                 onClick={handleNewFolderClick}
-                disabled={[WORKSPACE_SHARED_FOLDER_ID, undefined].includes(
-                  selectedFolderId,
-                )}
+                disabled={!canCreateFolderIntoSelectedFolder}
               >
                 {t('workspace.folder.create')}
               </Button>
             )}
 
-            {selectedFolderId != undefined && showNewFolderForm && (
+            {showNewFolderForm && selectedFolderId !== undefined && (
               <NewFolderForm
                 onClose={() => setShowNewFolderForm(false)}
                 folderParentId={selectedFolderId}
