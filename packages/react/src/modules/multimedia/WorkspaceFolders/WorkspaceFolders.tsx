@@ -43,19 +43,26 @@ export default function WorkspaceFolders({
   };
 
   const handleFolderSelected = (folderId: string) => {
+    setShowNewFolderForm(false);
+
+    // the user folder Id have to be an empty string to match with the API (parentId property)
     const newSelectedFolderId =
       folderId === WORKSPACE_USER_FOLDER_ID ? '' : folderId;
+    setSelectedFolderId(newSelectedFolderId);
 
     const canCopyFileInto =
       folderId === WORKSPACE_USER_FOLDER_ID ||
       (canCopyFileIntoFolder(folderId) &&
         folderId !== WORKSPACE_SHARED_FOLDER_ID);
-
     setCanCreateFolderIntoSelectedFolder(canCopyFileInto);
-    setSelectedFolderId(newSelectedFolderId);
+
     onFolderSelected(newSelectedFolderId, canCopyFileInto);
   };
 
+  console.log(
+    'canCreateFolderIntoSelectedFolder:',
+    canCreateFolderIntoSelectedFolder,
+  );
   const handleNewFolderClick = () => {
     setShowNewFolderForm(true);
   };
@@ -96,7 +103,7 @@ export default function WorkspaceFolders({
               </Button>
             )}
 
-            {showNewFolderForm && selectedFolderId && (
+            {showNewFolderForm && selectedFolderId !== undefined && (
               <NewFolderForm
                 onClose={() => setShowNewFolderForm(false)}
                 folderParentId={selectedFolderId}

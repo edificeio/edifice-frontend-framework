@@ -52,8 +52,7 @@ function useWorkspaceFolders() {
       );
       const contrib =
         'org-entcore-workspace-controllers-WorkspaceController|updateDocument';
-      const hasContribRights = !!userRights?.find((right) => right[contrib]);
-      return hasContribRights;
+      return !!userRights?.find((right) => right[contrib]);
     },
     [folders, user],
   );
