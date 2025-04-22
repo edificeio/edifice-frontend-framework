@@ -62,7 +62,7 @@ const buildTree = (
 
     if (item.eParent && nodes.has(item.eParent)) {
       nodes.get(item.eParent)?.children.push(nodeItem);
-    } else if (item.isShared || item.inheritedShares) {
+    } else if (item.isShared) {
       sharedTree.push(nodeItem);
     } else {
       userTree.push(nodeItem);
