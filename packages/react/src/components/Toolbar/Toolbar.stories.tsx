@@ -308,6 +308,50 @@ export const WithDropdownAction: Story = {
   },
 };
 
+export const HideLabelOnMobile: Story = {
+  render: (args) => <Toolbar {...args} />,
+  decorators: [
+    (Story) => (
+      <div className="m-24 w-100" style={{ height: '300px' }}>
+        {Story()}
+      </div>
+    ),
+  ],
+  args: {
+    shouldHideLabelsOnMobile: true,
+    items: [
+      {
+        type: 'button',
+        name: 'Label',
+        props: {
+          disabled: false,
+          leftIcon: <IconRecord />,
+          children: 'Record',
+          onClick: () => console.log('on click'),
+        },
+      },
+      {
+        type: 'button',
+        name: 'Label',
+        props: {
+          disabled: false,
+          leftIcon: <IconSave />,
+          children: 'Save',
+          onClick: () => console.log('on click'),
+        },
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'For items of type `button`, you can hide labels of the toolbar item when the screen is smaller than 1024px with the property `shouldHideLabelsOnMobile`.',
+      },
+    },
+  },
+};
+
 export const WithoutShadow: Story = {
   render: (args) => <Toolbar {...args} variant="no-shadow" />,
   parameters: {

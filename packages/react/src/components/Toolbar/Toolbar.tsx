@@ -10,6 +10,7 @@ import {
 
 import clsx from 'clsx';
 
+import { useBreakpoint } from '../../hooks';
 import { mergeRefs } from '../../utilities';
 import { Button, ButtonProps, IconButton, IconButtonProps } from '../Button';
 import { Dropdown, DropdownProps } from '../Dropdown';
@@ -105,6 +106,10 @@ export interface ToolbarProps extends React.ComponentPropsWithRef<'div'> {
    * Accept optional children
    */
   children?: ReactNode;
+  /**
+   * Hide labels on mobile
+   */
+  shouldHideLabelsOnMobile?: boolean;
 }
 
 export const Toolbar = forwardRef(
@@ -116,6 +121,7 @@ export const Toolbar = forwardRef(
       isBlock = false,
       ariaControls,
       className,
+      shouldHideLabelsOnMobile = false,
     }: ToolbarProps,
     ref: Ref<ToolbarRef>,
   ) => {
@@ -130,6 +136,7 @@ export const Toolbar = forwardRef(
       useState<HTMLElement>();
 
     const divToolbarRef = useRef<HTMLDivElement>();
+    const { lg } = useBreakpoint();
 
     const classes = clsx('toolbar z-1000 bg-white', className, {
       'default': variant === 'default',
@@ -236,6 +243,7 @@ export const Toolbar = forwardRef(
       >
         {items.map((item, index) => {
           if (item.visibility === 'hide') return null;
+          const hideLabel = shouldHideLabelsOnMobile && !lg;
 
           switch (item.type) {
             case 'divider':
@@ -247,11 +255,13 @@ export const Toolbar = forwardRef(
               return (
                 <Tooltip
                   key={item.name ?? index}
-                  message={renderTooltipMessage(item)}
+                  message={hideLabel ? renderTooltipMessage(item) : undefined}
                   placement={renderTooltipPosition(item)}
                 >
                   <Button
                     {...item.props}
+                    children={hideLabel ? undefined : item.props.children}
+                    aria-label={hideLabel ? item.name : undefined}
                     key={item.name ?? index}
                     color={item.props.color ? item.props.color : 'tertiary'}
                     variant="ghost"
