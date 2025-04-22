@@ -63,7 +63,6 @@ export default function ConfirmModal({
   const ok = { 'yes/no': t('yes'), 'ok/cancel': t('ok') };
   const ko = { 'yes/no': t('no'), 'ok/cancel': t('cancel') };
 
-  console.log('size:', size);
   return (
     <Modal isOpen={isOpen} onModalClose={onCancel} id={id} size={size}>
       <Modal.Header onModalClose={onCancel}>{header}</Modal.Header>
