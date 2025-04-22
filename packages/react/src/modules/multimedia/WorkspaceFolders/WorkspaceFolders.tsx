@@ -59,10 +59,6 @@ export default function WorkspaceFolders({
     onFolderSelected(newSelectedFolderId, canCopyFileInto);
   };
 
-  console.log(
-    'canCreateFolderIntoSelectedFolder:',
-    canCreateFolderIntoSelectedFolder,
-  );
   const handleNewFolderClick = () => {
     setShowNewFolderForm(true);
   };
