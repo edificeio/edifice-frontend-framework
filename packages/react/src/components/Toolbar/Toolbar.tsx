@@ -260,10 +260,10 @@ export const Toolbar = forwardRef(
                 >
                   <Button
                     {...item.props}
-                    children={hideLabel ? undefined : item.props.children}
+                    children={!hideLabel && item.props.children}
                     aria-label={item.name}
                     key={item.name ?? index}
-                    color={item.props.color ? item.props.color : 'tertiary'}
+                    color={item.props.color || 'tertiary'}
                     variant="ghost"
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
