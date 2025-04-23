@@ -1,6 +1,6 @@
 import { userInfo } from '../../../data/userinfo';
 
-const userContribRightInheritedShare = {
+export const userContribRightInheritedShare = {
   'userId': userInfo.userId,
   'org-entcore-workspace-controllers-WorkspaceController|updateDocument': true,
 };

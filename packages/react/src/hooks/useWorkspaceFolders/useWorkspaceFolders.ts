@@ -1,4 +1,4 @@
-import { odeServices } from '@edifice.io/client';
+import { odeServices, WorkspaceElement } from '@edifice.io/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
@@ -19,18 +19,24 @@ function useWorkspaceFolders() {
       queryFn: () => odeServices.workspace().listSharedFolders(true),
     });
 
+  interface CreateFolderParams {
+    folderName: string;
+    folderParentId?: string;
+  }
   const createFolderMutation = useMutation({
-    mutationFn: ({
-      folderName,
-      folderParentId,
-    }: {
-      folderName: string;
-      folderParentId?: string;
-    }) => odeServices.workspace().createFolder(folderName, folderParentId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['workspace', 'folders'],
-      });
+    mutationFn: ({ folderName, folderParentId }: CreateFolderParams) =>
+      odeServices.workspace().createFolder(folderName, folderParentId),
+
+    onSuccess: (newFolder) => {
+      const queryKey = [
+        'workspace',
+        'folders',
+        newFolder.isShared ? 'shared' : 'owner',
+      ];
+      queryClient.setQueryData(queryKey, (old: WorkspaceElement[]) => [
+        ...old,
+        newFolder,
+      ]);
     },
   });
 

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, FormControl } from '../../../../components';
 import { useWorkspaceFolders } from '../../../../hooks';
 import { IconSave } from '../../../icons/components';
+import { WorkspaceElement } from '@edifice.io/client';
 
 type Props = {
   /**
@@ -13,9 +14,17 @@ type Props = {
    * Parent folder ID where the new folder will be created
    */
   folderParentId: string;
+  /**
+   * Function called when the new folder is created
+   */
+  onFolderCreated: (folderId: string) => void;
 };
 
-export default function NewFolderForm({ onClose, folderParentId }: Props) {
+export default function NewFolderForm({
+  onClose,
+  folderParentId,
+  onFolderCreated,
+}: Props) {
   const { t } = useTranslation();
   const refInputName = useRef<HTMLInputElement>(null);
   const { createFolderMutation } = useWorkspaceFolders();
@@ -36,7 +45,10 @@ export default function NewFolderForm({ onClose, folderParentId }: Props) {
     createFolderMutation.mutate(
       { folderName, folderParentId },
       {
-        onSuccess: () => {
+        onSuccess: (newFolder: WorkspaceElement) => {
+          if (newFolder._id) {
+            onFolderCreated(newFolder._id);
+          }
           onClose();
         },
       },
