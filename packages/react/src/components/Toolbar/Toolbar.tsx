@@ -261,7 +261,7 @@ export const Toolbar = forwardRef(
                   <Button
                     {...item.props}
                     children={hideLabel ? undefined : item.props.children}
-                    aria-label={hideLabel ? item.name : undefined}
+                    aria-label={item.name}
                     key={item.name ?? index}
                     color={item.props.color ? item.props.color : 'tertiary'}
                     variant="ghost"
