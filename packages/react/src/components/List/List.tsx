@@ -1,8 +1,7 @@
-import { useMediaQuery } from '@uidotdev/usehooks';
 import clsx from 'clsx';
 import { Fragment, ReactNode, useEffect } from 'react';
 import { Checkbox, Toolbar, ToolbarItem } from '..';
-import { useCheckable } from '../..';
+import { useBreakpoint, useCheckable } from '../..';
 
 export type ListProps<T> = {
   /**
@@ -29,6 +28,12 @@ export type ListProps<T> = {
    * Custom class name
    */
   className?: string;
+  /**
+   * Toolbar options
+   */
+  toolbarOptions?: {
+    shouldHideLabelsOnMobile?: boolean;
+  };
 };
 
 export const List = <T extends { _id: string }>({
@@ -38,6 +43,7 @@ export const List = <T extends { _id: string }>({
   renderNode,
   onSelectedItems,
   className,
+  toolbarOptions,
 }: ListProps<T>) => {
   const {
     selectedItems,
@@ -47,7 +53,7 @@ export const List = <T extends { _id: string }>({
     handleOnSelectItem,
   } = useCheckable<T>(data);
 
-  const isDesktopDevice = useMediaQuery('only screen and (min-width: 1024px)');
+  const { lg } = useBreakpoint();
 
   useEffect(() => {
     if (selectedItems) onSelectedItems?.(selectedItems);
@@ -75,11 +81,14 @@ export const List = <T extends { _id: string }>({
               {items && (
                 <Toolbar
                   items={items}
+                  shouldHideLabelsOnMobile={
+                    toolbarOptions?.shouldHideLabelsOnMobile
+                  }
                   isBlock
                   align="left"
                   variant="no-shadow"
                   className={clsx('gap-4 py-4', {
-                    'px-0 ms-auto': !isDesktopDevice,
+                    'px-0 ms-auto': !lg,
                   })}
                 />
               )}
