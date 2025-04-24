@@ -9,6 +9,15 @@ import { protectedDocuments, userDocuments } from './data/documents';
 
 const RESPONSE_DELAY = 500;
 
+export interface WorkspaceFolder {
+  _id: string;
+  name: string;
+  owner: string;
+  eParent?: string;
+  isShared?: boolean;
+  inheritedShares?: Record<string, boolean | string>[];
+}
+
 export const handlers = [
   http.all('/workspace/*', async () => {
     await delay(RESPONSE_DELAY);
@@ -57,7 +66,14 @@ export const handlers = [
     const name = formData.get('name') as string;
     const parentFolderId = formData.get('parentFolderId') as string;
 
-    const newFolder: any = {
+    if (!name.trim()) {
+      return HttpResponse.json(
+        { error: 'Folder name is required' },
+        { status: 400 },
+      );
+    }
+
+    const newFolder: WorkspaceFolder = {
       _id: `new-folder-${Date.now()}`,
       name,
       owner: userInfo.userId,

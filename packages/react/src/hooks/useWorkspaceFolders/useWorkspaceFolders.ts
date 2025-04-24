@@ -2,10 +2,14 @@ import { odeServices, WorkspaceElement } from '@edifice.io/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useToast } from '../useToast';
+import { useTranslation } from 'react-i18next';
 
 function useWorkspaceFolders() {
   const queryClient = useQueryClient();
   const { user } = useEdificeClient();
+  const toast = useToast();
+  const { t } = useTranslation();
 
   const { data: ownerWorkspaceData = [], isLoading: isLoadingOwner } = useQuery(
     {
@@ -33,10 +37,13 @@ function useWorkspaceFolders() {
         'folders',
         newFolder.isShared ? 'shared' : 'owner',
       ];
-      queryClient.setQueryData(queryKey, (old: WorkspaceElement[]) => [
-        ...old,
+      queryClient.setQueryData(queryKey, (oldFolders: WorkspaceElement[]) => [
+        ...oldFolders,
         newFolder,
       ]);
+    },
+    onError: () => {
+      toast.error(t('e400'));
     },
   });
 

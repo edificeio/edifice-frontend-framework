@@ -70,6 +70,7 @@ export default function NewFolderForm({
           type="submit"
           color="primary"
           variant="ghost"
+          disabled={createFolderMutation.isPending}
           isLoading={createFolderMutation.isPending}
           leftIcon={<IconSave />}
         />

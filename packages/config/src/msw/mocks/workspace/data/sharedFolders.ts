@@ -1,4 +1,5 @@
 import { userInfo } from '../../../data/userinfo';
+import { WorkspaceFolder } from '../workspace';
 
 export const userContribRightInheritedShare = {
   'userId': userInfo.userId,
@@ -68,7 +69,7 @@ export const folderOfOtherWithGroupContribRights = {
   isShared: true,
 };
 
-export const sharedFolders = [
+export const sharedFolders: WorkspaceFolder[] = [
   folderOfUser,
   subFolderOfUser,
   folderOfOtherWithoutContribRights,
