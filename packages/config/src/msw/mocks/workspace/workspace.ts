@@ -1,10 +1,22 @@
 import { delay, http, HttpResponse } from 'msw';
 import { userInfo } from '../../data/userinfo';
 import { userFolders } from './data/folders';
-import { sharedFolders } from './data/sharedFolders';
+import {
+  sharedFolders,
+  userContribRightInheritedShare,
+} from './data/sharedFolders';
 import { protectedDocuments, userDocuments } from './data/documents';
 
 const RESPONSE_DELAY = 500;
+
+export interface WorkspaceFolder {
+  _id: string;
+  name: string;
+  owner: string;
+  eParent?: string;
+  isShared?: boolean;
+  inheritedShares?: Record<string, boolean | string>[];
+}
 
 export const handlers = [
   http.all('/workspace/*', async () => {
@@ -54,20 +66,31 @@ export const handlers = [
     const name = formData.get('name') as string;
     const parentFolderId = formData.get('parentFolderId') as string;
 
-    const newFolder = {
+    if (!name.trim()) {
+      return HttpResponse.json(
+        { error: 'Folder name is required' },
+        { status: 400 },
+      );
+    }
+
+    const newFolder: WorkspaceFolder = {
       _id: `new-folder-${Date.now()}`,
       name,
-      parentFolderId,
       owner: userInfo.userId,
       eParent: parentFolderId,
+      isShared: false,
+      inheritedShares: [],
     };
     const inSharedFolder = sharedFolders.find(
       (folder) => folder._id === parentFolderId,
     );
-
+    if (inSharedFolder) {
+      newFolder.isShared = true;
+      newFolder.inheritedShares = [userContribRightInheritedShare];
+    }
     const folderToFeed = inSharedFolder ? sharedFolders : userFolders;
 
     folderToFeed.push(newFolder);
-    return HttpResponse.json({}, { status: 201 });
+    return HttpResponse.json(newFolder, { status: 201 });
   }),
 ];
