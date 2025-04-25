@@ -1,6 +1,7 @@
 import { userInfo } from '../../../data/userinfo';
+import { WorkspaceFolder } from '../workspace';
 
-const userContribRightInheritedShare = {
+export const userContribRightInheritedShare = {
   'userId': userInfo.userId,
   'org-entcore-workspace-controllers-WorkspaceController|updateDocument': true,
 };
@@ -68,7 +69,7 @@ export const folderOfOtherWithGroupContribRights = {
   isShared: true,
 };
 
-export const sharedFolders = [
+export const sharedFolders: WorkspaceFolder[] = [
   folderOfUser,
   subFolderOfUser,
   folderOfOtherWithoutContribRights,
