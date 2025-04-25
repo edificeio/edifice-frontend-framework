@@ -1,6 +1,7 @@
 import { userInfo } from '../../../data/userinfo';
+import { WorkspaceFolder } from '../workspace';
 
-export const userFolders = [
+export const userFolders: WorkspaceFolder[] = [
   {
     _id: '0576e0dd-129b-4244-b36a-49bda713d273',
     name: 'Travaux en classe',
