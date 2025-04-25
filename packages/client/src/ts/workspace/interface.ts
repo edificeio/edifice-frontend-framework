@@ -13,16 +13,14 @@ export interface WorkspaceElement {
   //shared
   _shared: any[];
   inheritedShares?: any[];
-  _isShared: boolean; //Wrong property name, should be isShared ?
-  //
+  isShared: boolean;
   showComments?: boolean;
   editing?: boolean;
   //comments
   comments?: Comment[];
   comment?: string;
-  //
   ownerName?: string;
-  owner: { userId: string; displayName: string }; // Wrong type, should be owner:string ?
+  owner: string;
   //upload
   uploadStatus?: 'loading' | 'loaded' | 'failed' | 'abort';
   uploadXhr?: XMLHttpRequest;
