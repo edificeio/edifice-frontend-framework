@@ -75,7 +75,6 @@ export default function WorkspaceFolders({
   return (
     <>
       <div className="d-flex flex-column gap-12">
-        <p>{t('attachments.add.to.folder.modal.description')}</p>
         <SearchBar
           onChange={handleSearchChange}
           isVariant={false}
