@@ -63,7 +63,7 @@ export default function NewFolderForm({
             ref={refInputName}
             size="md"
             type="text"
-            placeholder={t('folder.new.name.label')}
+            placeholder={t('workspace.folder.new.placeholder')}
           />
         </FormControl>
         <Button
