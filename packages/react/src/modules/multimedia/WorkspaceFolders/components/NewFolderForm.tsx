@@ -1,9 +1,9 @@
+import { WorkspaceElement } from '@edifice.io/client';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, FormControl } from '../../../../components';
+import { FormControl, IconButton } from '../../../../components';
 import { useWorkspaceFolders } from '../../../../hooks';
 import { IconSave } from '../../../icons/components';
-import { WorkspaceElement } from '@edifice.io/client';
 
 type Props = {
   /**
@@ -66,13 +66,14 @@ export default function NewFolderForm({
             placeholder={t('workspace.folder.new.placeholder')}
           />
         </FormControl>
-        <Button
+        <IconButton
           type="submit"
           color="primary"
           variant="ghost"
+          title={t('workspace.folder.new.create')}
           disabled={createFolderMutation.isPending}
           isLoading={createFolderMutation.isPending}
-          leftIcon={<IconSave />}
+          icon={<IconSave />}
         />
       </div>
     </form>
