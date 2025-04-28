@@ -26,11 +26,7 @@ const IconButton = forwardRef(
       },
     };
 
-    return (
-      <Button ref={ref} {...buttonProps}>
-        {icon}
-      </Button>
-    );
+    return <Button ref={ref} {...buttonProps} leftIcon={icon} />;
   },
 );
 
