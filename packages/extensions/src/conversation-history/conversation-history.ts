@@ -34,12 +34,15 @@ import { Plugin } from 'prosemirror-state';
 export const ConversationHistory = Node.create({
   name: 'converstationHistory',
   group: 'block',
-  content: 'block',
+  content: 'block+',
 
   parseHTML() {
     return [
       {
         tag: 'div.conversation-history',
+      },
+      {
+        tag: 'p.conversation-history',
       },
     ];
   },
