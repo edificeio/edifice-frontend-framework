@@ -17,8 +17,7 @@ const ConversationHistoryRenderer = () => {
   // const appCode = getIconCode(appPrefix);
   const [open, toggleOpen] = useToggle(false);
 
-  const classes = clsx('conversation-history ps-16', { show: open });
-
+  const classes = clsx('conversation-history ps-16 pt-4', { show: open });
   return (
     <NodeViewWrapper as="div" contentEditable={false}>
       <Button
