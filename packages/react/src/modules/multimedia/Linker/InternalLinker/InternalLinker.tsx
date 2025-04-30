@@ -230,9 +230,9 @@ export const InternalLinker = ({
               ...app,
               displayName:
                 app.application === 'exercizer'
-                  ? 'Mon Exercizer Perso'
+                  ? `${t('bbm.linker.int.app.exercizer')}`
                   : app.application === 'form'
-                    ? 'Mon Formulaire Perso'
+                    ? `${t('bbm.linker.int.app.forms')}`
                     : app.displayName,
             }))
             .sort((a, b) => a.displayName.localeCompare(b.displayName)),
