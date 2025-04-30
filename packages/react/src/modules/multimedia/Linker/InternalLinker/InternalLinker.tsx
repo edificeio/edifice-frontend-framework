@@ -219,25 +219,23 @@ export const InternalLinker = ({
     [getSelectedResourceIndex, selectResource, selectedDocuments],
   );
 
-  // Helper function to process a single application option
-  const processApplicationDisplayName = (option: ApplicationOption) => {
-    if (option.application === 'exercizer') {
-      return `${t('bbm.linker.int.app.exercizer')}`;
-    } else if (option.application === 'form') {
-      return `${t('bbm.linker.int.app.forms')}`;
-    }
-    return option.displayName;
-  };
-
   // Update dropdown when available applications list is updated.
   useEffect(() => {
     (async () => {
       // If applications are provided, use them directly.
       if (applicationList) {
         setOptions(
-          applicationList.sort((app1, app2) =>
-            app1.displayName.localeCompare(app2.displayName),
-          ),
+          applicationList
+            .map((app) => ({
+              ...app,
+              displayName:
+                app.application === 'exercizer'
+                  ? 'Mon Exercizer Perso'
+                  : app.application === 'form'
+                    ? 'Mon Formulaire Perso'
+                    : app.displayName,
+            }))
+            .sort((a, b) => a.displayName.localeCompare(b.displayName)),
         );
         return;
       }
@@ -248,21 +246,23 @@ export const InternalLinker = ({
       // Wait for all promises to resolve.
       const webApps = await Promise.all(appPromises);
 
-      // Set options to display.
-      setOptions(
-        resourceApplications
-          .map((application, index) => {
-            const displayName = webApps[index]?.displayName ?? application;
-            return {
-              application,
-              displayName,
-              icon: <AppIcon app={webApps[index]} size="24" />,
-            } as ApplicationOption;
-          })
-          .sort((app1, app2) =>
-            app1.displayName.localeCompare(app2.displayName),
-          ),
-      );
+      const opts = resourceApplications
+        .map((application, index) => {
+          let displayName = webApps[index]?.displayName ?? application;
+          if (application === 'exercizer') {
+            displayName = `${t('bbm.linker.int.app.exercizer')}`;
+          } else if (application === 'form') {
+            displayName = `${t('bbm.linker.int.app.forms')}`;
+          }
+          return {
+            application,
+            displayName,
+            icon: <AppIcon app={webApps[index]} size="24" />,
+          } as ApplicationOption;
+        })
+        .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
+      setOptions(opts);
     })();
   }, [resourceApplications, t, applicationList]);
 
@@ -338,7 +338,7 @@ export const InternalLinker = ({
                     icon={option.icon}
                     onClick={() => handleOptionClick(option)}
                   >
-                    {processApplicationDisplayName(option)}
+                    {option.displayName}
                   </Dropdown.Item>
                 ))}
               </Dropdown.Menu>
