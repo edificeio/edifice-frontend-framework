@@ -3,6 +3,7 @@ export * from './alert';
 export * from './attachment';
 export * from './audio';
 export * from './conversation-history';
+export * from './conversation-history-body';
 export * from './font-size';
 export * from './heading';
 export * from './highlight';
