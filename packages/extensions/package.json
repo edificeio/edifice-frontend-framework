@@ -46,6 +46,10 @@
       "import": "./dist/conversation-history/conversation-history.js",
       "require": "./dist/conversation-history/conversation-history.cjs"
     },
+    "./conversation-history-body": {
+      "import": "./dist/conversation-history-body/conversation-history-body.js",
+      "require": "./dist/conversation-history-body/conversation-history-body.cjs"
+    },
     "./font-size": {
       "import": "./dist/font-size/font-size.js",
       "require": "./dist/font-size/font-size.cjs"
