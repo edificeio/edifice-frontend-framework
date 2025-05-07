@@ -1,36 +1,34 @@
+/**
+ * A Tiptap Node extension that creates a conversation history container.
+ * This extension groups content blocks that appear after a horizontal rule
+ * into a conversation history section.
+ *
+ * @extends Node
+ *
+ * @remarks
+ * The node is rendered as a div element with the class 'conversation-history'.
+ * It can parse HTML elements that match the same structure.
+ *
+ * For retrocompatibility, this extension also includes a ProseMirror plugin
+ * that handles the grouping all the content after an horizontal rules into the
+ * conversation-history children block.
+ *
+ * Usage:
+ * ```
+ * // Add to your Tiptap editor extensions
+ * import { ConversationHistory } from './conversation-history'
+ *
+ * new Editor({
+ *   extensions: [
+ *     ConversationHistory,
+ *     // ... other extensions
+ *   ],
+ * })
+ * ```
+ */
 import { mergeAttributes, Node } from '@tiptap/core';
 import { Plugin } from 'prosemirror-state';
 
-/**
- * The `ConversationHistory` node is a custom ProseMirror node that represents a block-level
- * container for conversation history. It is implemented using the `@tiptap/core` library.
- *
- * @name ConversationHistory
- * @group block
- * @content block
- *
- * @parseHTML
- * This method defines how to parse the HTML representation of the node. It looks for a `div`
- * element with the class `conversation-history`.
- *
- * @renderHTML
- * This method defines how to render the node as HTML. It creates a `div` element with the class
- * `conversation-history`.
- *
- * @addProseMirrorPlugins
- * This method adds a ProseMirror plugin to the node. The plugin appends a transaction that groups
- * all nodes after a horizontal rule (`horizontalRule`) into a single `conversationHistory` node.
- *
- * @plugin
- * The plugin's `appendTransaction` method is called whenever a transaction is appended. It checks
- * for nodes after a horizontal rule and groups them into a `conversationHistory` node if any are
- * found.
- *
- * @param transactions - The list of transactions that have been applied.
- * @param oldState - The previous editor state.
- * @param newState - The new editor state.
- * @returns A new transaction if modifications were made, otherwise `null`.
- */
 export const ConversationHistory = Node.create({
   name: 'converstationHistory',
   group: 'block',
@@ -40,9 +38,6 @@ export const ConversationHistory = Node.create({
     return [
       {
         tag: 'div.conversation-history',
-      },
-      {
-        tag: 'p.conversation-history',
       },
     ];
   },
