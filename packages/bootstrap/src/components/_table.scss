@@ -23,9 +23,15 @@
   thead {
     color: var(--#{$prefix}gray-800);
     background-color: $table-main-color;
+    position: sticky;
+    top: 0;
   }
 
   tbody > tr:nth-of-type(even) > * {
     background-color: var(--#{$prefix}gray-200);
+  }
+
+  tbody > tr:nth-of-type(odd) > * {
+    background-color: $white;
   }
 }
