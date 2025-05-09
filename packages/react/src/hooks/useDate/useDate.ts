@@ -87,6 +87,39 @@ export default function useDate() {
     [currentLanguage, parseDate],
   );
 
+  const formatTimeAgo = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      const computedDate = toComputedDate(date);
+
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs();
+
+      if (computedDate.isSame(now, 'date')) {
+        if (now.diff(computedDate, 'hours') <= 3) {
+          return computedDate.fromNow();
+        } else {
+          return computedDate.format('HH:mm');
+        }
+      }
+
+      if (computedDate.isSame(now.subtract(1, 'day'), 'date')) {
+        return 'Yesterday';
+      }
+
+      if (now.diff(computedDate, 'days') <= 7) {
+        return computedDate.format('dddd');
+      }
+
+      if (computedDate.isSame(now, 'year')) {
+        return computedDate.format('D MMM');
+      }
+
+      return computedDate.format('D MMM YYYY');
+    },
+    [currentLanguage, parseDate],
+  );
+
   /** Compute a user-friendly elapsed duration, between now and a date. */
   const fromNow = useCallback(
     (date: CoreDate | NumberDate): string => {
@@ -125,5 +158,6 @@ export default function useDate() {
   return {
     fromNow,
     formatDate,
+    formatTimeAgo,
   };
 }
