@@ -90,7 +90,7 @@ export default function useDate() {
   /** Compute a user-friendly elapsed duration, between now and a date. */
   const fromNow = useCallback(
     (date: CoreDate | NumberDate): string => {
-      let computedDate = toComputedDate(date);
+      const computedDate = toComputedDate(date);
       return computedDate.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
@@ -98,7 +98,7 @@ export default function useDate() {
 
   const formatDate = useCallback(
     (date: CoreDate, format = 'short'): string => {
-      let computedDate = toComputedDate(date);
+      const computedDate = toComputedDate(date);
 
       let dayjsFormat = '';
       switch (format) {
