@@ -62,11 +62,11 @@ export default function useDate() {
   );
 
   const toComputedDate = useCallback(
-    (date: CoreDate | NumberDate): Dayjs => {
+    (date: CoreDate | NumberDate): Dayjs | undefined => {
       let computedDate: Dayjs = dayjs();
       try {
         if ('undefined' === typeof date) {
-          return dayjs();
+          return undefined;
         } else if ('string' === typeof date) {
           computedDate = parseDate(date);
         } else if ('number' === typeof date) {
@@ -91,7 +91,7 @@ export default function useDate() {
   const fromNow = useCallback(
     (date: CoreDate | NumberDate): string => {
       const computedDate = toComputedDate(date);
-      return computedDate.isValid() ? computedDate.fromNow() : '';
+      return computedDate?.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
   );
@@ -115,7 +115,7 @@ export default function useDate() {
           dayjsFormat = format;
       }
 
-      return computedDate.isValid()
+      return computedDate?.isValid()
         ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
         : '';
     },
