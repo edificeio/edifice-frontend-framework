@@ -147,7 +147,7 @@ type Story = StoryObj<typeof Table>;
 export const Base: Story = {
   render: (args) => {
     return (
-      <Table>
+      <Table {...args}>
         <Table.Thead>
           <Table.Tr>
             {['Nom de la ressource', 'Création', 'Rôle'].map((theadItem) => (
@@ -205,7 +205,7 @@ export const TableWithRowSelection: Story = {
       selectedItems?.length > 0 && selectedItems?.length < data.length;
 
     return (
-      <Table>
+      <Table {...args}>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>
