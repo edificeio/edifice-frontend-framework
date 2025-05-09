@@ -61,13 +61,12 @@ export default function useDate() {
     [currentLanguage],
   );
 
-  /** Compute a user-friendly elapsed duration, between now and a date. */
-  const fromNow = useCallback(
-    (date: CoreDate | NumberDate): string => {
+  const toComputedDate = useCallback(
+    (date: CoreDate | NumberDate): Dayjs | undefined => {
       let computedDate: Dayjs = dayjs();
       try {
         if ('undefined' === typeof date) {
-          return '';
+          return undefined;
         } else if ('string' === typeof date) {
           computedDate = parseDate(date);
         } else if ('number' === typeof date) {
@@ -79,57 +78,79 @@ export default function useDate() {
         } else if ('string' === typeof date.$date) {
           computedDate = parseDate(date.$date);
         }
-
-        return computedDate.isValid() ? computedDate.fromNow() : '';
+        return computedDate;
       } catch (error) {
         console.error(error);
-        return '';
       }
+      return computedDate;
+    },
+    [currentLanguage, parseDate],
+  );
+
+  const formatTimeAgo = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      const computedDate = toComputedDate(date);
+
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs();
+
+      if (computedDate.isSame(now, 'date')) {
+        if (now.diff(computedDate, 'hours') <= 3) {
+          return computedDate.fromNow();
+        } else {
+          return computedDate.format('HH:mm');
+        }
+      }
+
+      if (computedDate.isSame(now.subtract(1, 'day'), 'date')) {
+        return 'Yesterday';
+      }
+
+      if (now.diff(computedDate, 'days') <= 7) {
+        return computedDate.format('dddd');
+      }
+
+      if (computedDate.isSame(now, 'year')) {
+        return computedDate.format('D MMM');
+      }
+
+      return computedDate.format('D MMM YYYY');
+    },
+    [currentLanguage, parseDate],
+  );
+
+  /** Compute a user-friendly elapsed duration, between now and a date. */
+  const fromNow = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
   );
 
   const formatDate = useCallback(
     (date: CoreDate, format = 'short'): string => {
-      let computedDate: Dayjs = dayjs();
+      const computedDate = toComputedDate(date);
 
-      try {
-        if ('undefined' === typeof date) {
-          return '';
-        } else if ('string' === typeof date) {
-          computedDate = parseDate(date);
-        } else if ('number' === typeof date) {
-          computedDate = dayjs(date).locale(currentLanguage as string);
-        } else if ('number' === typeof date.$date) {
-          computedDate = dayjs(new Date(date.$date)).locale(
-            currentLanguage as string,
-          );
-        } else if ('string' === typeof date.$date) {
-          computedDate = parseDate(date.$date);
-        }
-
-        let dayjsFormat = '';
-        switch (format) {
-          case 'short':
-            dayjsFormat = 'L';
-            break;
-          case 'long':
-            dayjsFormat = 'LL';
-            break;
-          case 'abbr':
-            dayjsFormat = 'll';
-            break;
-          default:
-            dayjsFormat = format;
-        }
-
-        return computedDate.isValid()
-          ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
-          : '';
-      } catch (error) {
-        console.error(error);
-        return '';
+      let dayjsFormat = '';
+      switch (format) {
+        case 'short':
+          dayjsFormat = 'L';
+          break;
+        case 'long':
+          dayjsFormat = 'LL';
+          break;
+        case 'abbr':
+          dayjsFormat = 'll';
+          break;
+        default:
+          dayjsFormat = format;
       }
+
+      return computedDate?.isValid()
+        ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
+        : '';
     },
     [currentLanguage, parseDate],
   );
@@ -137,5 +158,6 @@ export default function useDate() {
   return {
     fromNow,
     formatDate,
+    formatTimeAgo,
   };
 }
