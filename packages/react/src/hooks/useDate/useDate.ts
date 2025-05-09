@@ -61,13 +61,12 @@ export default function useDate() {
     [currentLanguage],
   );
 
-  /** Compute a user-friendly elapsed duration, between now and a date. */
-  const fromNow = useCallback(
-    (date: CoreDate | NumberDate): string => {
+  const toComputedDate = useCallback(
+    (date: CoreDate | NumberDate): Dayjs => {
       let computedDate: Dayjs = dayjs();
       try {
         if ('undefined' === typeof date) {
-          return '';
+          return dayjs();
         } else if ('string' === typeof date) {
           computedDate = parseDate(date);
         } else if ('number' === typeof date) {
@@ -79,57 +78,46 @@ export default function useDate() {
         } else if ('string' === typeof date.$date) {
           computedDate = parseDate(date.$date);
         }
-
-        return computedDate.isValid() ? computedDate.fromNow() : '';
+        return computedDate;
       } catch (error) {
         console.error(error);
-        return '';
       }
+      return computedDate;
+    },
+    [currentLanguage, parseDate],
+  );
+
+  /** Compute a user-friendly elapsed duration, between now and a date. */
+  const fromNow = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      let computedDate = toComputedDate(date);
+      return computedDate.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
   );
 
   const formatDate = useCallback(
     (date: CoreDate, format = 'short'): string => {
-      let computedDate: Dayjs = dayjs();
+      let computedDate = toComputedDate(date);
 
-      try {
-        if ('undefined' === typeof date) {
-          return '';
-        } else if ('string' === typeof date) {
-          computedDate = parseDate(date);
-        } else if ('number' === typeof date) {
-          computedDate = dayjs(date).locale(currentLanguage as string);
-        } else if ('number' === typeof date.$date) {
-          computedDate = dayjs(new Date(date.$date)).locale(
-            currentLanguage as string,
-          );
-        } else if ('string' === typeof date.$date) {
-          computedDate = parseDate(date.$date);
-        }
-
-        let dayjsFormat = '';
-        switch (format) {
-          case 'short':
-            dayjsFormat = 'L';
-            break;
-          case 'long':
-            dayjsFormat = 'LL';
-            break;
-          case 'abbr':
-            dayjsFormat = 'll';
-            break;
-          default:
-            dayjsFormat = format;
-        }
-
-        return computedDate.isValid()
-          ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
-          : '';
-      } catch (error) {
-        console.error(error);
-        return '';
+      let dayjsFormat = '';
+      switch (format) {
+        case 'short':
+          dayjsFormat = 'L';
+          break;
+        case 'long':
+          dayjsFormat = 'LL';
+          break;
+        case 'abbr':
+          dayjsFormat = 'll';
+          break;
+        default:
+          dayjsFormat = format;
       }
+
+      return computedDate.isValid()
+        ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
+        : '';
     },
     [currentLanguage, parseDate],
   );
