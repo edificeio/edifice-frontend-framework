@@ -137,7 +137,7 @@ export default function useDate() {
   );
 
   const formatDate = useCallback(
-    (date: CoreDate, format = 'short'): string => {
+    (date: CoreDate, format = 'short', showTime = false): string => {
       const computedDate = toComputedDate(date);
 
       let dayjsFormat = '';
@@ -146,7 +146,7 @@ export default function useDate() {
           dayjsFormat = 'L';
           break;
         case 'long':
-          dayjsFormat = 'LL';
+          dayjsFormat = showTime ? 'LLL' : 'LL';
           break;
         case 'abbr':
           dayjsFormat = 'll';
