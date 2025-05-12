@@ -15,6 +15,7 @@ import 'dayjs/locale/fr.js';
 import 'dayjs/locale/it.js';
 import 'dayjs/locale/pt.js';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useTranslation } from 'react-i18next';
 
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
@@ -36,6 +37,7 @@ export type CoreDate = IsoDate | MongoDate | NumberDate;
 export default function useDate() {
   // Current language
   const { currentLanguage } = useEdificeClient();
+  const { t } = useTranslation();
 
   /* Utility function */
   const parseDate = useCallback(
@@ -61,13 +63,12 @@ export default function useDate() {
     [currentLanguage],
   );
 
-  /** Compute a user-friendly elapsed duration, between now and a date. */
-  const fromNow = useCallback(
-    (date: CoreDate | NumberDate): string => {
+  const toComputedDate = useCallback(
+    (date: CoreDate | NumberDate): Dayjs | undefined => {
       let computedDate: Dayjs = dayjs();
       try {
         if ('undefined' === typeof date) {
-          return '';
+          return undefined;
         } else if ('string' === typeof date) {
           computedDate = parseDate(date);
         } else if ('number' === typeof date) {
@@ -79,57 +80,84 @@ export default function useDate() {
         } else if ('string' === typeof date.$date) {
           computedDate = parseDate(date.$date);
         }
-
-        return computedDate.isValid() ? computedDate.fromNow() : '';
+        return computedDate;
       } catch (error) {
         console.error(error);
-        return '';
       }
+      return computedDate;
+    },
+    [currentLanguage, parseDate],
+  );
+
+  const formatTimeAgo = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      const computedDate = toComputedDate(date);
+
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs();
+
+      if (computedDate.isSame(now, 'date')) {
+        if (now.diff(computedDate, 'hours') <= 3) {
+          return computedDate.fromNow();
+        } else {
+          // format HH:mm
+          return computedDate.format(t('date.format.currentDay'));
+        }
+      }
+
+      if (computedDate.isSame(now.subtract(1, 'day'), 'date')) {
+        // format "Yesterday"
+        return t('date.format.yesterday');
+      }
+
+      if (now.diff(computedDate, 'days') <= 7) {
+        // format dddd
+        return computedDate.format(t('date.format.currentWeek'));
+      }
+
+      if (computedDate.isSame(now, 'year')) {
+        // format D MMM
+        return computedDate.format(t('date.format.currentYear'));
+      }
+
+      // format D MMM YYYY
+      return computedDate.format(t('date.format.previousYear'));
+    },
+    [currentLanguage, parseDate],
+  );
+
+  /** Compute a user-friendly elapsed duration, between now and a date. */
+  const fromNow = useCallback(
+    (date: CoreDate | NumberDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
   );
 
   const formatDate = useCallback(
     (date: CoreDate, format = 'short'): string => {
-      let computedDate: Dayjs = dayjs();
+      const computedDate = toComputedDate(date);
 
-      try {
-        if ('undefined' === typeof date) {
-          return '';
-        } else if ('string' === typeof date) {
-          computedDate = parseDate(date);
-        } else if ('number' === typeof date) {
-          computedDate = dayjs(date).locale(currentLanguage as string);
-        } else if ('number' === typeof date.$date) {
-          computedDate = dayjs(new Date(date.$date)).locale(
-            currentLanguage as string,
-          );
-        } else if ('string' === typeof date.$date) {
-          computedDate = parseDate(date.$date);
-        }
-
-        let dayjsFormat = '';
-        switch (format) {
-          case 'short':
-            dayjsFormat = 'L';
-            break;
-          case 'long':
-            dayjsFormat = 'LL';
-            break;
-          case 'abbr':
-            dayjsFormat = 'll';
-            break;
-          default:
-            dayjsFormat = format;
-        }
-
-        return computedDate.isValid()
-          ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
-          : '';
-      } catch (error) {
-        console.error(error);
-        return '';
+      let dayjsFormat = '';
+      switch (format) {
+        case 'short':
+          dayjsFormat = 'L';
+          break;
+        case 'long':
+          dayjsFormat = 'LL';
+          break;
+        case 'abbr':
+          dayjsFormat = 'll';
+          break;
+        default:
+          dayjsFormat = format;
       }
+
+      return computedDate?.isValid()
+        ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
+        : '';
     },
     [currentLanguage, parseDate],
   );
@@ -137,5 +165,6 @@ export default function useDate() {
   return {
     fromNow,
     formatDate,
+    formatTimeAgo,
   };
 }
