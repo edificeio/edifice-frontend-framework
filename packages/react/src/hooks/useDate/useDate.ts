@@ -122,7 +122,7 @@ export default function useDate() {
       }
 
       // format D MMM YYYY
-      return computedDate.format(t('date.formatpreviousYear'));
+      return computedDate.format(t('date.format.previousYear'));
     },
     [currentLanguage, parseDate],
   );
