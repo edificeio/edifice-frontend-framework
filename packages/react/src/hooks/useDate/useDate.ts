@@ -15,6 +15,7 @@ import 'dayjs/locale/fr.js';
 import 'dayjs/locale/it.js';
 import 'dayjs/locale/pt.js';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useTranslation } from 'react-i18next';
 
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
@@ -36,6 +37,7 @@ export type CoreDate = IsoDate | MongoDate | NumberDate;
 export default function useDate() {
   // Current language
   const { currentLanguage } = useEdificeClient();
+  const { t } = useTranslation();
 
   /* Utility function */
   const parseDate = useCallback(
@@ -99,23 +101,28 @@ export default function useDate() {
         if (now.diff(computedDate, 'hours') <= 3) {
           return computedDate.fromNow();
         } else {
-          return computedDate.format('HH:mm');
+          // format HH:mm
+          return computedDate.format(t('date.format.currentDay'));
         }
       }
 
       if (computedDate.isSame(now.subtract(1, 'day'), 'date')) {
-        return 'Yesterday';
+        // format "Yesterday"
+        return t('date.format.yesterday');
       }
 
       if (now.diff(computedDate, 'days') <= 7) {
-        return computedDate.format('dddd');
+        // format dddd
+        return computedDate.format(t('date.format.currentWeek'));
       }
 
       if (computedDate.isSame(now, 'year')) {
-        return computedDate.format('D MMM');
+        // format D MMM
+        return computedDate.format(t('date.format.currentYear'));
       }
 
-      return computedDate.format('D MMM YYYY');
+      // format D MMM YYYY
+      return computedDate.format(t('date.formatpreviousYear'));
     },
     [currentLanguage, parseDate],
   );
