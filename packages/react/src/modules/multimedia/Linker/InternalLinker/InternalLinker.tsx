@@ -225,17 +225,9 @@ export const InternalLinker = ({
       // If applications are provided, use them directly.
       if (applicationList) {
         setOptions(
-          applicationList
-            .map((app) => ({
-              ...app,
-              displayName:
-                app.application === 'exercizer'
-                  ? `${t('bbm.linker.int.app.exercizer')}`
-                  : app.application === 'form'
-                    ? `${t('bbm.linker.int.app.forms')}`
-                    : app.displayName,
-            }))
-            .sort((a, b) => a.displayName.localeCompare(b.displayName)),
+          applicationList.sort((app1, app2) =>
+            app1.displayName.localeCompare(app2.displayName),
+          ),
         );
         return;
       }
@@ -251,12 +243,12 @@ export const InternalLinker = ({
           let displayName = webApps[index]?.displayName ?? application;
           if (application === 'exercizer') {
             displayName = `${t('bbm.linker.int.app.exercizer')}`;
-          } else if (application === 'form') {
-            displayName = `${t('bbm.linker.int.app.forms')}`;
+          } else if (application === 'formulaire') {
+            displayName = `${t('bbm.linker.int.app.formulaire')}`;
           }
           return {
             application,
-            displayName,
+            displayName: t(displayName ?? application),
             icon: <AppIcon app={webApps[index]} size="24" />,
           } as ApplicationOption;
         })
