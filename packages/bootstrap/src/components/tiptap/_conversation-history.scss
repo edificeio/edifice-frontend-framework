@@ -11,4 +11,11 @@
     opacity: 1;
     display: block;
   }
+
+  &-body {
+    margin-left: $spacer-12;
+    margin-top: $spacer-4;
+    padding-left: $spacer-16;
+    border-left: 1px solid $gray-500;
+  }
 }
