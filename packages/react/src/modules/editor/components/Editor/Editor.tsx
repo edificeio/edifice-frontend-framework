@@ -55,6 +55,11 @@ export interface EditorRef {
   isSpeeching: () => boolean;
   /** [De]activate speech synthetisis */
   toogleSpeechSynthetisis: () => boolean;
+  /**
+   * Set focus to the editor
+   * @param position
+   */
+  setFocus: (position: FocusPosition) => void;
 }
 
 /**
@@ -147,6 +152,11 @@ const Editor = forwardRef(
       },
       toogleSpeechSynthetisis: speechSynthetisis.toggle,
       isSpeeching: () => speechSynthetisis.isActivated,
+      setFocus: (position: FocusPosition) => {
+        if (editor) {
+          editor.commands.focus(position);
+        }
+      },
     }));
 
     const contooEditor = useCantooEditor(editor, cantooParam);
