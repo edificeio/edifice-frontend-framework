@@ -10,3 +10,4 @@ export * from './useResizeMedia';
 export * from './useSpeechRecognition';
 export * from './useSpeechSynthetisis';
 export * from './useTipTapEditor';
+export * from './useCantooEditor';

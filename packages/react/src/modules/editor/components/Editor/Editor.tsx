@@ -22,6 +22,7 @@ import {
   EditorToolbar,
   LinkToolbar,
   TableToolbar,
+  useCantooEditor,
   useImageModal,
   useLinkToolbar,
   useMathsModal,
@@ -29,11 +30,12 @@ import {
   useSpeechSynthetisis,
   useTipTapEditor,
 } from '../..';
-import { LoadingScreen } from '../../../../components';
+import { Flex, LoadingScreen } from '../../../../components';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { MediaLibrary } from '../../../multimedia';
 import { useMathsStyles } from '../../hooks/useMathsStyles';
 import { BubbleMenuEditInformationPane } from '../BubbleMenuEditInformationPane';
+import CantooAdaptTextBoxView from './CantooAdaptTextBoxView';
 
 const MathsModal = lazy(async () => await import('../MathsModal/MathsModal'));
 
@@ -84,6 +86,8 @@ export interface EditorProps {
   visibility?: WorkspaceVisibility;
   /** Function to listen if content change */
   onContentChange?: ({ editor }: { editor: any }) => void;
+
+  cantooParam?: 'simplify' | 'none';
 }
 
 const Editor = forwardRef(
@@ -98,6 +102,7 @@ const Editor = forwardRef(
       placeholder = '',
       visibility = 'protected',
       onContentChange,
+      cantooParam = 'none',
     }: EditorProps,
     ref: Ref<EditorRef>,
   ) => {
@@ -139,6 +144,8 @@ const Editor = forwardRef(
       isSpeeching: () => speechSynthetisis.isActivated,
     }));
 
+    const contooEditor = useCantooEditor(editor, cantooParam);
+
     if (!editor) return null;
 
     const borderClass = clsx(variant === 'outline' && 'border rounded-3');
@@ -159,14 +166,24 @@ const Editor = forwardRef(
               {...{
                 mediaLibraryRef: mediaLibraryModalRef,
                 toggleMathsModal: toggleMathsModal,
+                cantooEditor: contooEditor,
               }}
             />
           )}
-          <EditorContent
-            id={id ?? editorId}
-            editor={editor}
-            className={contentClass}
-          />
+          <Flex direction="row">
+            <EditorContent
+              id={id ?? editorId}
+              editor={editor}
+              className={contentClass}
+              style={{ flex: 1 }}
+            />
+
+            {editable && contooEditor.openPositionAdaptText.right && (
+              <CantooAdaptTextBoxView
+                openPosition={contooEditor.openPositionAdaptText}
+              />
+            )}
+          </Flex>
         </div>
 
         <LinkToolbar editor={editor} {...linkToolbarHandlers} />
@@ -212,6 +229,12 @@ const Editor = forwardRef(
               onCancel={imageModal.handleCancel}
               onSave={imageModal.handleSave}
               onError={console.error}
+            />
+          )}
+
+          {editable && contooEditor.openPositionAdaptText.bottom && (
+            <CantooAdaptTextBoxView
+              openPosition={contooEditor.openPositionAdaptText}
             />
           )}
         </Suspense>
