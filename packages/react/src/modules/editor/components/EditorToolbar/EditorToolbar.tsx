@@ -3,7 +3,6 @@ import { RefAttributes, RefObject, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
-  CantooEditor,
   useActionOptions,
   useEditorContext,
   useSpeechRecognition,
@@ -36,23 +35,15 @@ import { EditorToolbarPlusMenu } from './EditorToolbar.PlusMenu';
 import { EditorToolbarTextColor } from './EditorToolbar.TextColor';
 import { EditorToolbarTextSize } from './EditorToolbar.TextSize';
 import { EditorToolbarTypography } from './EditorToolbar.Typography';
-import { EditorToolbarCantoo } from './EditorToolbar.Cantoo.tsx';
 
 interface Props {
   /** Ref to a MediaLibrary instance */
   mediaLibraryRef: RefObject<MediaLibraryRef>;
   /** API to open/close a Math modal. */
   toggleMathsModal: () => void;
-
-  /** Ref to a Cantoo editor instance */
-  cantooEditor: CantooEditor;
 }
 
-export const EditorToolbar = ({
-  mediaLibraryRef,
-  toggleMathsModal,
-  cantooEditor,
-}: Props) => {
+export const EditorToolbar = ({ mediaLibraryRef, toggleMathsModal }: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
 
@@ -183,31 +174,11 @@ export const EditorToolbar = ({
         name: 'speechtotext',
         tooltip: t('tiptap.toolbar.stt'),
       },
-      //------------- CANTOO ---------------//
-      {
-        type: 'dropdown',
-        props: {
-          children: (
-            triggerProps: JSX.IntrinsicAttributes &
-              Omit<IconButtonProps, 'ref'> &
-              RefAttributes<HTMLButtonElement>,
-          ) => (
-            <EditorToolbarCantoo
-              triggerProps={triggerProps}
-              cantooEditor={cantooEditor}
-            />
-          ),
-        },
-        name: 'cantoo',
-        visibility: cantooEditor.isAvailable ? 'show' : 'hide',
-        tooltip: t('tiptap.toolbar.cantoo.choice'),
-      },
       //------------------------------------//
       {
         type: 'divider',
         name: 'div-speech',
-        visibility:
-          canRecognizeSpeech || cantooEditor.isAvailable ? 'show' : 'hide',
+        visibility: canRecognizeSpeech ? 'show' : 'hide',
       },
       //--------------- TYPOGRAPHY ---------------//
       {
