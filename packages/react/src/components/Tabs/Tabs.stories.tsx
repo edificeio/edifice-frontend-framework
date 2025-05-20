@@ -209,7 +209,7 @@ export const WithBadge: Story = {
       {
         id: '1',
         icon: <IconLandscape />,
-        label: 'Tab item eljfsvdnlkjn',
+        label: 'Tab item',
         badge: (
           <Badge
             variant={{
