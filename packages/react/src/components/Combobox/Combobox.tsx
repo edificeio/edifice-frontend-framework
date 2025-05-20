@@ -20,6 +20,8 @@ export interface ComboboxProps
   value: string;
   isLoading: boolean;
   noResult: boolean;
+  onFocus?: (event: ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: ChangeEvent<HTMLInputElement>) => void;
   onSearchResultsChange?: (model: (string | number)[]) => void;
   onSearchInputKeyUp?: (event: KeyboardEvent<HTMLInputElement>) => void;
   searchMinLength?: number;
@@ -72,6 +74,8 @@ export interface OptionListItemType {
  * ```
  *
  * @param props - The component props
+ * @param props.onFocus - Callback fired when the input is focused
+ * @param props.onBlur - Callback fired when the input is blured
  * @param props.onSearchResultsChange - Callback fired when the selected values change
  * @param props.onSearchInputChange - Callback fired when the search input value changes
  * @param props.options - Array of options to display in the dropdown
@@ -91,6 +95,8 @@ export interface OptionListItemType {
  * @extends {React.InputHTMLAttributes<HTMLInputElement>}
  */
 const Combobox = ({
+  onFocus,
+  onBlur,
   onSearchResultsChange,
   onSearchInputChange,
   onSearchInputKeyUp,
@@ -172,6 +178,8 @@ const Combobox = ({
         renderInputGroup={renderInputGroup}
         renderSelectedItems={renderSelectedItems}
         hasDefault={!!options.length}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
       <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
     </Dropdown>
