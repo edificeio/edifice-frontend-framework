@@ -242,9 +242,9 @@ export const InternalLinker = ({
         .map((application, index) => {
           let displayName = webApps[index]?.displayName ?? application;
           if (application === 'exercizer') {
-            displayName = "bbm.linker.int.app.exercizer";
+            displayName = 'bbm.linker.int.app.exercizer';
           } else if (application === 'formulaire') {
-            displayName = "bbm.linker.int.app.forms";
+            displayName = 'bbm.linker.int.app.forms';
           }
           return {
             application,
