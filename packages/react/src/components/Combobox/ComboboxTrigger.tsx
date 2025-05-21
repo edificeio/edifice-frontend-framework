@@ -12,7 +12,7 @@ import { FormControl } from '../Form';
 import Input from '../Input/Input';
 
 export interface ComboboxTriggerProps
-  extends React.ComponentPropsWithRef<'button'> {
+  extends React.ComponentPropsWithRef<'input'> {
   handleSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleSearchInputKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   value: string;
@@ -22,6 +22,8 @@ export interface ComboboxTriggerProps
   variant?: 'outline' | 'ghost';
   renderSelectedItems?: ReactNode;
   hasDefault: boolean;
+  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 /**
  * A trigger component for the Combobox that handles user input and displays selected items.
@@ -51,6 +53,8 @@ const ComboboxTrigger = ({
   placeholder,
   value = '',
   searchMinLength = 3,
+  onFocus,
+  onBlur,
   handleSearchInputChange,
   handleSearchInputKeyUp,
   renderInputGroup,
@@ -118,6 +122,8 @@ const ComboboxTrigger = ({
         <Input
           {...inputProps}
           className={classNameInput}
+          onFocus={onFocus}
+          onBlur={onBlur}
           noValidationIcon
           placeholder={placeholder}
           size="md"
