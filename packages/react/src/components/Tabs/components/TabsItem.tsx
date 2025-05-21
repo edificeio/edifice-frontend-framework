@@ -15,6 +15,10 @@ export interface TabsItemProps {
    */
   icon: ReactNode;
   /**
+   * Item badge
+   */
+  badge?: ReactNode;
+  /**
    * Item label
    */
   label: string;
@@ -26,6 +30,7 @@ export interface TabsItemProps {
 
 const TabsItem = ({
   icon,
+  badge,
   label,
   id,
   order,
@@ -53,7 +58,9 @@ const TabsItem = ({
         tabIndex={activeTab === id ? 0 : -1}
       >
         {icon}
-        <small>{t(label)}</small>
+        <small>
+          {t(label)} {badge}
+        </small>
       </button>
     </li>
   );

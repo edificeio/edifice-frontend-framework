@@ -3,6 +3,7 @@ import { IconLandscape } from '../../modules/icons/components';
 import Tabs from './components/Tabs';
 import TabsItem, { TabsItemProps } from './components/TabsItem';
 import TabsPanel from './components/TabsPanel';
+import { Badge } from '../Badge';
 
 const meta: Meta<typeof Tabs> = {
   title: 'Components/Tabs',
@@ -184,6 +185,84 @@ export const Scroll: Story = {
         content: (
           <div className="p-24">
             <p>Panel 10</p>
+          </div>
+        ),
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Tabs become horizontally scrollable when the layout is too small and the content starts to overflow.',
+      },
+    },
+  },
+};
+
+export const WithBadge: Story = {
+  render: (args) => {
+    return <Tabs {...args} />;
+  },
+  args: {
+    items: [
+      {
+        id: '1',
+        icon: <IconLandscape />,
+        label: 'Tab item',
+        badge: (
+          <Badge
+            variant={{
+              level: 'danger',
+              type: 'notification',
+            }}
+          >
+            9
+          </Badge>
+        ),
+        content: (
+          <div className="p-24">
+            <p>Panel 1</p>
+          </div>
+        ),
+      },
+      {
+        id: '2',
+        icon: <IconLandscape />,
+        label: 'Tab item',
+        badge: (
+          <Badge
+            variant={{
+              level: 'danger',
+              type: 'notification',
+            }}
+          >
+            9
+          </Badge>
+        ),
+        content: (
+          <div className="p-24">
+            <p>Panel 2</p>
+          </div>
+        ),
+      },
+      {
+        id: '3',
+        icon: <IconLandscape />,
+        label: 'Tab item',
+        badge: (
+          <Badge
+            variant={{
+              level: 'danger',
+              type: 'notification',
+            }}
+          >
+            9
+          </Badge>
+        ),
+        content: (
+          <div className="p-24">
+            <p>Panel 3</p>
           </div>
         ),
       },
