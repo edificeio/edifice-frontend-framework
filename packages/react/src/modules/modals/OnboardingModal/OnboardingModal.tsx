@@ -47,10 +47,10 @@ interface ModalOptionsProps {
 interface OnboardingProps {
   id: string;
   items: ModalItemsProps[];
-  modalOptions: ModalOptionsProps;
+  modalOptions?: ModalOptionsProps;
 }
 
-const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
+const OnboardingModal = ({ id, items, modalOptions = {} }: OnboardingProps) => {
   const [swiperInstance, setSwiperInstance] = useState<any>();
   const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
