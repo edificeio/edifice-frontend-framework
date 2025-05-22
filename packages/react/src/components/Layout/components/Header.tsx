@@ -61,7 +61,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
     error,
   } = useHelp(hasOldHelpEnableWorkflow);
 
-  const classes = clsx('header', {
+  const classes = clsx('header d-print-none', {
     'no-2d': is1d,
     'no-1d': !is1d,
   });
