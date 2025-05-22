@@ -1,11 +1,11 @@
-import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 import illuSearch from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-search.svg';
+import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 
+import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from '../../../components/Button';
 import OnboardingModal from './OnboardingModal';
-import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
 
 const meta: Meta<typeof OnboardingModal> = {
   title: 'Modules/Modals/OnboardingModal',
@@ -64,20 +64,20 @@ export const Default: Story = {
     items: [
       {
         src: illuTrash,
-        alt: "Illustration de l'onboarding",
+        alt: "Onboarding Illustration 1",
         text: 'Aliquam eu velit massa. Pellentesque finibus semper nisl sed eleifend. Maecenas maximus cursus ipsum. Curabitur a pretium ex. Cras aliquet malesuada nisi eget consequat. In vitae ligula urna. Nunc gravida lectus diam, vel congue velit pretium vel.',
       },
       {
+        title: 'Second onboarding title',
         src: illuSearch,
-        alt: "Illustration de l'onboarding",
+        alt: "Onboarding Illustration 2",
         text: 'Vestibulum bibendum orci magna, et pellentesque lectus feugiat vitae. Phasellus accumsan sagittis quam, eget pharetra velit condimentum sed.',
       },
     ],
     modalOptions: {
-      title: "Titre de l'onboarding",
-      prevText: 'Précédent',
-      nextText: 'Suivant',
-      closeText: 'Fermer',
+      prevText: 'Previous',
+      nextText: 'Next',
+      closeText: 'Close',
     },
   },
   render: (args) => {
@@ -95,7 +95,7 @@ export const Default: Story = {
           color="primary"
           onClick={handleOpenModal}
         >
-          Ouvrir l'onboarding
+          Open onboarding
         </Button>
         {isOpen && <OnboardingModal {...args} />}
       </>
@@ -104,7 +104,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Modal d'onboarding avec navigation par étapes",
+        story: "Onboarding modal with step navigation",
       },
     },
   },
