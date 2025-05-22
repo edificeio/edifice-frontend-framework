@@ -74,7 +74,8 @@ const OnboardingModal = ({ id, items, modalOptions = {} }: OnboardingProps) => {
 
   const { title, prevText, closeText, nextText } = modalOptions;
   const currentTitle =
-    swiperInstance?.activeIndex && items[swiperInstance?.activeIndex]?.title
+    swiperInstance?.activeIndex != undefined &&
+    items[swiperInstance?.activeIndex]?.title
       ? items[swiperInstance.activeIndex].title
       : title;
   return isOnboarding
