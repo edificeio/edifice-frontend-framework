@@ -64,13 +64,13 @@ export const Default: Story = {
     items: [
       {
         src: illuTrash,
-        alt: "Onboarding Illustration 1",
+        alt: 'Onboarding Illustration 1',
         text: 'Aliquam eu velit massa. Pellentesque finibus semper nisl sed eleifend. Maecenas maximus cursus ipsum. Curabitur a pretium ex. Cras aliquet malesuada nisi eget consequat. In vitae ligula urna. Nunc gravida lectus diam, vel congue velit pretium vel.',
       },
       {
         title: 'Second onboarding title',
         src: illuSearch,
-        alt: "Onboarding Illustration 2",
+        alt: 'Onboarding Illustration 2',
         text: 'Vestibulum bibendum orci magna, et pellentesque lectus feugiat vitae. Phasellus accumsan sagittis quam, eget pharetra velit condimentum sed.',
       },
     ],
@@ -104,7 +104,7 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Onboarding modal with step navigation",
+        story: 'Onboarding modal with step navigation',
       },
     },
   },
