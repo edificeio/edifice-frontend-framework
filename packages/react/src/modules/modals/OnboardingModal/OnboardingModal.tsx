@@ -20,33 +20,37 @@ interface ModalItemsProps {
    * Text below image
    */
   text: string;
+  /**
+   * Title of the item
+   */
+  title?: string;
 }
 
 interface ModalOptionsProps {
   /**
    * Modal title
    */
-  title: string;
+  title?: string;
   /**
    * Prev button text
    */
-  prevText: string;
+  prevText?: string;
   /**
    * Next button text
    */
-  nextText: string;
+  nextText?: string;
   /**
    * Close button text
    */
-  closeText: string;
+  closeText?: string;
 }
 interface OnboardingProps {
   id: string;
   items: ModalItemsProps[];
-  modalOptions: ModalOptionsProps;
+  modalOptions?: ModalOptionsProps;
 }
 
-const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
+const OnboardingModal = ({ id, items, modalOptions = {} }: OnboardingProps) => {
   const [swiperInstance, setSwiperInstance] = useState<any>();
   const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
@@ -69,7 +73,11 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
   const { t } = useTranslation();
 
   const { title, prevText, closeText, nextText } = modalOptions;
-
+  const currentTitle =
+    swiperInstance?.activeIndex != undefined &&
+    items[swiperInstance?.activeIndex]?.title
+      ? items[swiperInstance.activeIndex].title
+      : title;
   return isOnboarding
     ? createPortal(
         <Modal
@@ -80,7 +88,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
           onModalClose={() => setIsOpen(false)}
         >
           <Modal.Header onModalClose={() => setIsOpen(false)}>
-            {t(title || 'explorer.modal.onboarding.trash.title')}
+            {t(currentTitle || 'explorer.modal.onboarding.trash.title')}
           </Modal.Header>
           <Modal.Body>
             <Swiper
@@ -106,7 +114,7 @@ const OnboardingModal = ({ id, items, modalOptions }: OnboardingProps) => {
                       src={item.src}
                       alt={t(item.alt)}
                     />
-                    <p>{t(item.text)}</p>
+                    <p className="text-center">{t(item.text)}</p>
                   </SwiperSlide>
                 );
               })}
