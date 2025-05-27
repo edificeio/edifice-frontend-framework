@@ -33,8 +33,8 @@ const ModalHeader = (props: ModalHeaderProps) => {
   }, [focusId]);
 
   return (
-    <div className="modal-header">
-      <h2 id={ariaLabelId} className="modal-title" tabIndex={-1}>
+    <div className="modal-header align-self-center">
+      <h2 id={ariaLabelId} className="modal-title text-center" tabIndex={-1}>
         {children}
       </h2>
       <IconButton
