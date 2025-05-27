@@ -184,6 +184,8 @@ export default function useZendeskGuide() {
                   '*': 'Assistance ENT',
                   'es-419': 'Asistencia ENT',
                 },
+                originalArticleButton:
+                  zendeskGuideConfig.articleRedirectButton ?? true,
               },
             },
           });
