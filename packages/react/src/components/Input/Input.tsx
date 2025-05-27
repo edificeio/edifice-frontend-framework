@@ -75,6 +75,7 @@ const Input = forwardRef(
         'is-valid': status === 'valid',
         'form-control-plaintext': isReadOnly,
         'no-validation-icon': noValidationIcon,
+        'pe-64': showCounter,
       },
       className,
     );
@@ -97,8 +98,8 @@ const Input = forwardRef(
           {...restProps}
           onChange={handleChange}
         />
-        {showCounter && (
-          <span className="caption text-gray-700 text-end float-end mt-n40 h-40 py-12 px-12 ">
+        {showCounter && !status && (
+          <span className="input-counter caption text-gray-700 text-end float-end mt-n32 py-2 px-12 ">
             {currentLength} / {restProps.maxLength}
           </span>
         )}
