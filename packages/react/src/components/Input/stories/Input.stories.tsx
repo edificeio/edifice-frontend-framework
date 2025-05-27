@@ -336,3 +336,24 @@ export const DisabledStatus: Story = {
     placeholder: 'Edifice',
   },
 };
+
+export const CharacterCount: Story = {
+  render: Template,
+
+  args: {
+    size: 'md',
+    type: 'text',
+    placeholder: 'Enter text',
+    showCounter: true,
+    maxLength: 100,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The Input component can display a character count when `showCounter` is enabled. Use `maxLength` to set the maximum number of characters allowed.',
+      },
+    },
+  },
+};
