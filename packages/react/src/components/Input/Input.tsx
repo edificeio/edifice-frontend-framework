@@ -75,7 +75,7 @@ const Input = forwardRef(
         'is-valid': status === 'valid',
         'form-control-plaintext': isReadOnly,
         'no-validation-icon': noValidationIcon,
-        'pe-64': showCounter,
+        'pe-64': showCounter && !status,
       },
       className,
     );
