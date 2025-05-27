@@ -99,7 +99,12 @@ const Input = forwardRef(
           onChange={handleChange}
         />
         {showCounter && !status && (
-          <span className="input-counter caption text-gray-700 text-end float-end mt-n32 py-2 px-12 ">
+          <span
+            className={clsx('caption text-end float-end mt-n32 py-2 px-12 ', {
+              'text-danger': currentLength === restProps.maxLength,
+              'text-gray-700': currentLength !== restProps.maxLength,
+            })}
+          >
             {currentLength} / {restProps.maxLength}
           </span>
         )}
