@@ -61,7 +61,8 @@ const useDropzone = (props?: {
   };
 
   const addFiles = (files: File[]) => {
-    let filesToAdd = files.map(
+    const sortedFiles = files.sort((a, b) => b.lastModified - a.lastModified);
+    let filesToAdd = sortedFiles.map(
       (file) =>
         // #WB-3377: Remove special characters from the file name. (it can cause issues with vertx which replace it or remove it)
         new File([file], file.name.replace(/[!:,;="']/g, ''), {
