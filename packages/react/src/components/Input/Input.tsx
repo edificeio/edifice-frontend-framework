@@ -65,7 +65,7 @@ const Input = forwardRef(
     const [currentLength, setCurrentLength] = useState(
       restProps.value?.toString().length || 0,
     );
-    // ... existing code ...
+
     const classes = clsx(
       {
         'form-control': !isReadOnly,
