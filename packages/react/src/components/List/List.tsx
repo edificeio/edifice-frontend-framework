@@ -66,7 +66,7 @@ export const List = <T extends { _id: string }>({
         <>
           <div
             className={clsx(
-              'list-header d-flex align-items-center gap-8 px-12 border-bottom',
+              'list-header d-flex align-items-center gap-8 px-12 bg-white border-bottom',
               className,
               {
                 'sticky-top': toolbarOptions?.sticky,
