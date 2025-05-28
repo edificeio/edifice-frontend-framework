@@ -86,7 +86,7 @@ const Input = forwardRef(
     };
 
     return (
-      <div>
+      <>
         <input
           ref={ref}
           id={id}
@@ -108,7 +108,7 @@ const Input = forwardRef(
             {currentLength} / {restProps.maxLength}
           </span>
         )}
-      </div>
+      </>
     );
   },
 );
