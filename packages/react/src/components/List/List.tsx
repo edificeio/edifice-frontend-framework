@@ -33,6 +33,7 @@ export type ListProps<T> = {
    */
   toolbarOptions?: {
     shouldHideLabelsOnMobile?: boolean;
+    sticky?: boolean;
   };
 };
 
@@ -65,8 +66,11 @@ export const List = <T extends { _id: string }>({
         <>
           <div
             className={clsx(
-              'list-header d-flex align-items-center gap-8 px-12',
+              'list-header d-flex align-items-center gap-8 px-12 border-bottom',
               className,
+              {
+                'sticky-top': toolbarOptions?.sticky,
+              },
             )}
           >
             <>
@@ -94,7 +98,6 @@ export const List = <T extends { _id: string }>({
               )}
             </>
           </div>
-          <div className="border-top"></div>
         </>
       )}
       <div className="mt-8">
