@@ -60,19 +60,19 @@ export const List = <T extends { _id: string }>({
     if (selectedItems) onSelectedItems?.(selectedItems);
   }, [onSelectedItems, selectedItems]);
 
+  const toolbarClassName = clsx(
+    'list-header d-flex align-items-center gap-8 px-12 bg-white border-bottom',
+    className,
+    {
+      'sticky-top': toolbarOptions?.sticky,
+    },
+  );
+
   return (
     <>
       {(items || isCheckable) && (
         <>
-          <div
-            className={clsx(
-              'list-header d-flex align-items-center gap-8 px-12 bg-white border-bottom',
-              className,
-              {
-                'sticky-top': toolbarOptions?.sticky,
-              },
-            )}
-          >
+          <div className={toolbarClassName}>
             <>
               <div className="d-flex align-items-center gap-8 py-12">
                 <Checkbox
