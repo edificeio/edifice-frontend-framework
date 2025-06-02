@@ -79,6 +79,11 @@
     --#{$prefix}btn-padding-y: #{$btn-padding-y};
   }
 
+  &.btn-lg {
+    --#{$prefix}btn-padding-x: #{$spacer-12};
+    --#{$prefix}btn-padding-y: #{$spacer-12};
+  }
+
   &.btn-loading {
     pointer-events: none;
   }
