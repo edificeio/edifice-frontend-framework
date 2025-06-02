@@ -100,7 +100,7 @@ export const List = <T extends { _id: string }>({
           </div>
         </>
       )}
-      <div className="mt-8">
+      <div>
         {data?.map((node) => {
           const checked = selectedItems.includes(node._id);
           const checkbox = (
