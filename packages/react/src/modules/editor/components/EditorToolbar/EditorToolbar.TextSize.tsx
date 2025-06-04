@@ -31,7 +31,12 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
       label: t('tiptap.toolbar.size.h1'),
       className: 'fs-2 fw-bold text-secondary',
       action: () =>
-        editor?.chain().focus().setCustomHeading({ level: 1 }).run(),
+        editor
+          ?.chain()
+          .focus()
+          .scrollIntoView()
+          .setCustomHeading({ level: 1 })
+          .run(),
       visibility: hasExtension('customHeading', editor),
     },
     {
@@ -93,9 +98,11 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
               {option.type === 'divider' && option.visibility ? (
                 <Dropdown.Separator />
               ) : option.visibility ? (
-                <Dropdown.Item onClick={option.action}>
-                  <span className={option.className}>{option.label}</span>
-                </Dropdown.Item>
+                <div onMouseDown={(e) => e.preventDefault()}>
+                  <Dropdown.Item onClick={option.action}>
+                    <span className={option.className}>{option.label}</span>
+                  </Dropdown.Item>
+                </div>
               ) : null}
             </Fragment>
           );

@@ -19,6 +19,39 @@ interface Props {
 export const TableToolbarDelMenu = ({ editor }: Props) => {
   const { t } = useTranslation();
 
+  const delOptions = [
+    {
+      key: 'del-row',
+      icon: <IconDeleteRow />,
+      onClick: () => editor?.chain().focus().deleteRow().run(),
+      label: t('tiptap.table.toolbar.del.line'),
+    },
+    {
+      key: 'del-col',
+      icon: <IconDeleteColumn />,
+      onClick: () => editor?.chain().focus().deleteColumn().run(),
+      label: t('tiptap.table.toolbar.del.col'),
+    },
+    {
+      key: 'del-header-row',
+      icon: <IconDeleteRowHighlight />,
+      onClick: () => editor?.chain().focus().toggleHeaderRow().run(),
+      label: t('tiptap.table.toolbar.del.line.head'),
+    },
+    {
+      key: 'del-header-col',
+      icon: <IconDeleteColumnHighlight />,
+      onClick: () => editor?.chain().focus().toggleHeaderColumn().run(),
+      label: t('tiptap.table.toolbar.del.col.head'),
+    },
+    {
+      key: 'del-table',
+      icon: <IconDelete />,
+      onClick: () => editor?.chain().focus().deleteTable().run(),
+      label: t('tiptap.table.toolbar.del.array'),
+    },
+  ];
+
   return (
     <>
       <Tooltip message={t('tiptap.table.toolbar.tooltip.del')} placement="top">
@@ -28,43 +61,17 @@ export const TableToolbarDelMenu = ({ editor }: Props) => {
         />
       </Tooltip>
       <Dropdown.Menu>
-        <Dropdown.Item
-          key="del-row"
-          icon={<IconDeleteRow />}
-          onClick={() => editor?.chain().focus().deleteRow().run()}
-        >
-          {t('tiptap.table.toolbar.del.line')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="del-col"
-          icon={<IconDeleteColumn />}
-          onClick={() => editor?.chain().focus().deleteColumn().run()}
-        >
-          {t('tiptap.table.toolbar.del.col')}
-        </Dropdown.Item>
-        <Dropdown.Separator />
-        <Dropdown.Item
-          key="del-header-row"
-          icon={<IconDeleteRowHighlight />}
-          onClick={() => editor?.chain().focus().toggleHeaderRow().run()}
-        >
-          {t('tiptap.table.toolbar.del.line.head')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="del-header-col"
-          icon={<IconDeleteColumnHighlight />}
-          onClick={() => editor?.chain().focus().toggleHeaderColumn().run()}
-        >
-          {t('tiptap.table.toolbar.del.col.head')}
-        </Dropdown.Item>
-        <Dropdown.Separator />
-        <Dropdown.Item
-          key="del-table"
-          icon={<IconDelete />}
-          onClick={() => editor?.chain().focus().deleteTable().run()}
-        >
-          {t('tiptap.table.toolbar.del.array')}
-        </Dropdown.Item>
+        {delOptions.map((option) => (
+          <div onMouseDown={(e) => e.preventDefault()}>
+            <Dropdown.Item
+              key={option.key}
+              icon={option.icon}
+              onClick={option.onClick}
+            >
+              {option.label}
+            </Dropdown.Item>
+          </div>
+        ))}
       </Dropdown.Menu>
     </>
   );
