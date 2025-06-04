@@ -98,12 +98,7 @@ export default function useDate() {
       const now = dayjs();
 
       if (computedDate.isSame(now, 'date')) {
-        if (now.diff(computedDate, 'hours') <= 3) {
-          return computedDate.fromNow();
-        } else {
-          // format HH:mm
-          return computedDate.format(t('date.format.currentDay'));
-        }
+        return computedDate.fromNow();
       }
 
       if (computedDate.isSame(now.subtract(1, 'day'), 'date')) {
