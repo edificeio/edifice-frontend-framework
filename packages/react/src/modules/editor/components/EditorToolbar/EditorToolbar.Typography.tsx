@@ -82,21 +82,23 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
         {options.map((option) => {
           return (
             <Fragment key={option.label}>
-              <Dropdown.RadioItem
-                value={option.value}
-                model={value}
-                onChange={(value: string) => {
-                  if (typeof value === 'string' && value.length > 0) {
-                    editor?.chain().focus().setFontFamily(value).run();
-                    setValue(value);
-                  } else {
-                    editor?.chain().focus().unsetFontFamily().run();
-                    setValue('');
-                  }
-                }}
-              >
-                <span className={option.className}>{option.label}</span>
-              </Dropdown.RadioItem>
+              <div onMouseDown={(e) => e.preventDefault()}>
+                <Dropdown.RadioItem
+                  value={option.value}
+                  model={value}
+                  onChange={(value: string) => {
+                    if (typeof value === 'string' && value.length > 0) {
+                      editor?.chain().focus().setFontFamily(value).run();
+                      setValue(value);
+                    } else {
+                      editor?.chain().focus().unsetFontFamily().run();
+                      setValue('');
+                    }
+                  }}
+                >
+                  <span className={option.className}>{option.label}</span>
+                </Dropdown.RadioItem>
+              </div>
             </Fragment>
           );
         })}

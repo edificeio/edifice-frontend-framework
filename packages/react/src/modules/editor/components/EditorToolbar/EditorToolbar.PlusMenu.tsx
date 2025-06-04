@@ -28,12 +28,14 @@ export const EditorToolbarPlusMenu = ({ options }: Props) => {
               {option.type === 'divider' ? (
                 <Dropdown.Separator />
               ) : (
-                <Dropdown.Item
-                  icon={option.icon}
-                  onClick={() => option.action(null)}
-                >
-                  {option.label}
-                </Dropdown.Item>
+                <div onMouseDown={(e) => e.preventDefault()}>
+                  <Dropdown.Item
+                    icon={option.icon}
+                    onClick={() => option.action(null)}
+                  >
+                    {option.label}
+                  </Dropdown.Item>
+                </div>
               )}
             </Fragment>
           );

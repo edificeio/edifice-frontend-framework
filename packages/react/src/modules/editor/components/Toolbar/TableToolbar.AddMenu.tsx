@@ -20,6 +20,45 @@ interface Props {
 export const TableToolbarAddMenu = ({ editor }: Props) => {
   const { t } = useTranslation();
 
+  const addOptions = [
+    {
+      key: 'add-above',
+      icon: <IconArrowUp />,
+      onClick: () => editor?.chain().focus().addRowBefore().run(),
+      label: t('tiptap.table.toolbar.line.above'),
+    },
+    {
+      key: 'add-below',
+      icon: <IconArrowDown />,
+      onClick: () => editor?.chain().focus().addRowAfter().run(),
+      label: t('tiptap.table.toolbar.line.below'),
+    },
+    {
+      key: 'add-left',
+      icon: <IconArrowLeft />,
+      onClick: () => editor?.chain().focus().addColumnBefore().run(),
+      label: t('tiptap.table.toolbar.col.left'),
+    },
+    {
+      key: 'add-right',
+      icon: <IconArrowRight />,
+      onClick: () => editor?.chain().focus().addColumnAfter().run(),
+      label: t('tiptap.table.toolbar.col.right'),
+    },
+    {
+      key: 'header-row',
+      icon: <IconHighlightRow />,
+      onClick: () => editor?.chain().focus().toggleHeaderRow().run(),
+      label: t('tiptap.table.toolbar.line.head'),
+    },
+    {
+      key: 'header-col',
+      icon: <IconHighlightColumn />,
+      onClick: () => editor?.chain().focus().toggleHeaderColumn().run(),
+      label: t('tiptap.table.toolbar.col.head'),
+    },
+  ];
+
   return (
     <>
       <Tooltip message={t('tiptap.table.toolbar.tooltip.add')} placement="top">
@@ -29,50 +68,17 @@ export const TableToolbarAddMenu = ({ editor }: Props) => {
         />
       </Tooltip>
       <Dropdown.Menu>
-        <Dropdown.Item
-          key="add-above"
-          icon={<IconArrowUp />}
-          onClick={() => editor?.chain().focus().addRowBefore().run()}
-        >
-          {t('tiptap.table.toolbar.line.above')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="add-below"
-          icon={<IconArrowDown />}
-          onClick={() => editor?.chain().focus().addRowAfter().run()}
-        >
-          {t('tiptap.table.toolbar.line.below')}
-        </Dropdown.Item>
-        <Dropdown.Separator />
-        <Dropdown.Item
-          key="add-left"
-          icon={<IconArrowLeft />}
-          onClick={() => editor?.chain().focus().addColumnBefore().run()}
-        >
-          {t('tiptap.table.toolbar.col.left')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="add-right"
-          icon={<IconArrowRight />}
-          onClick={() => editor?.chain().focus().addColumnAfter().run()}
-        >
-          {t('tiptap.table.toolbar.col.right')}
-        </Dropdown.Item>
-        <Dropdown.Separator />
-        <Dropdown.Item
-          key="header-row"
-          icon={<IconHighlightRow />}
-          onClick={() => editor?.chain().focus().toggleHeaderRow().run()}
-        >
-          {t('tiptap.table.toolbar.line.head')}
-        </Dropdown.Item>
-        <Dropdown.Item
-          key="header-col"
-          icon={<IconHighlightColumn />}
-          onClick={() => editor?.chain().focus().toggleHeaderColumn().run()}
-        >
-          {t('tiptap.table.toolbar.col.head')}
-        </Dropdown.Item>
+        {addOptions.map((option) => (
+          <div onMouseDown={(e) => e.preventDefault()}>
+            <Dropdown.Item
+              key={option.key}
+              icon={option.icon}
+              onClick={option.onClick}
+            >
+              {option.label}
+            </Dropdown.Item>
+          </div>
+        ))}
       </Dropdown.Menu>
     </>
   );
