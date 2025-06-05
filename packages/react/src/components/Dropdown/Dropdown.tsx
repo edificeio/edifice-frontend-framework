@@ -56,6 +56,10 @@ export interface DropdownProps {
    * Whether to open the dropdown on space key press.
    */
   openOnSpace?: boolean;
+  /**
+   * Whether to focus the element on mouse enter.
+   */
+  focusOnMouseEnter?: boolean;
 }
 
 export type DropdownMenuOptions =
@@ -95,6 +99,7 @@ const Root = ({
   isTriggerHovered = false,
   focusOnVisible = true,
   openOnSpace = true,
+  focusOnMouseEnter = true,
 }: DropdownProps) => {
   const {
     visible,
@@ -110,6 +115,7 @@ const Root = ({
     isTriggerHovered,
     focusOnVisible,
     openOnSpace,
+    focusOnMouseEnter,
   );
 
   /* Ref to close dropdown when clicking outside */

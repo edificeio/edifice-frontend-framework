@@ -405,7 +405,10 @@ export const ComboboxListSection: Story = {
       );
     };
 
-    const renderList = (options: OptionListItemType[]) => {
+    const renderList = (
+      options: OptionListItemType[],
+      onItemClick: (value: string | number) => void,
+    ) => {
       return (
         <>
           {searchValue.length === 0 ? (
@@ -415,7 +418,10 @@ export const ComboboxListSection: Story = {
                   <Dropdown.Item
                     type="select"
                     icon={option.icon}
-                    onClick={() => alert(option.value)}
+                    onClick={() => {
+                      onItemClick(option.value);
+                      alert(option.value);
+                    }}
                     disabled={option.disabled}
                   >
                     {option.label}
@@ -430,7 +436,10 @@ export const ComboboxListSection: Story = {
                   <Dropdown.Item
                     type="select"
                     icon={option.icon}
-                    onClick={() => alert(option.value)}
+                    onClick={() => {
+                      onItemClick(option.value);
+                      alert(option.value);
+                    }}
                     disabled={option.disabled}
                   >
                     {option.label}
