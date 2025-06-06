@@ -23,7 +23,7 @@ const useConversation = () => {
   const queryParams = { unread: true, _: new Date().getTime() };
 
   const { data: messages } = useQuery({
-    queryKey: ['folder', 'inbox', 'count', { unread: true }],
+    queryKey: ['folder', 'count', 'inbox', { unread: true }],
     queryFn: async () =>
       await odeServices
         .http()
