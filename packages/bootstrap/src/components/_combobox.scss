@@ -4,6 +4,8 @@
   input,
   &.input-group > .form-control {
     min-width: 30rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   .input-group-text {

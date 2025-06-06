@@ -60,6 +60,7 @@ const useDropdown = (
   isTriggerHovered: boolean = false,
   focusOnVisible: boolean = true,
   openOnSpace: boolean = true,
+  focusOnMouseEnter: boolean = true,
 ): UseDropdownProps => {
   /* Unique Dropdown Id */
   const id = useId();
@@ -203,13 +204,15 @@ const useDropdown = (
   );
 
   const onMenuItemMouseEnter = (event: React.MouseEvent) => {
-    const items: HTMLElement[] = Object.values(itemRefs.current);
+    if (focusOnMouseEnter) {
+      const items: HTMLElement[] = Object.values(itemRefs.current);
 
-    const index = items.findIndex(
-      (item) => item.id === event.currentTarget.getAttribute('id'),
-    );
+      const index = items.findIndex(
+        (item) => item.id === event.currentTarget.getAttribute('id'),
+      );
 
-    setActiveIndex(index);
+      setActiveIndex(index);
+    }
   };
 
   const onMenuItemKeyDown = useCallback(

@@ -1,9 +1,12 @@
 import {
   ChangeEvent,
+  forwardRef,
   Fragment,
   KeyboardEvent,
   ReactNode,
   useEffect,
+  useImperativeHandle,
+  useRef,
   useState,
 } from 'react';
 
@@ -33,6 +36,10 @@ export interface ComboboxProps
   renderSelectedItems?: ReactNode;
   renderNoResult?: ReactNode;
   hasDefault?: boolean;
+}
+
+export interface ComboboxRef {
+  focus: () => void;
 }
 
 export interface OptionListItemType {
@@ -94,99 +101,123 @@ export interface OptionListItemType {
  *
  * @extends {React.InputHTMLAttributes<HTMLInputElement>}
  */
-const Combobox = ({
-  onFocus,
-  onBlur,
-  onSearchResultsChange,
-  onSearchInputChange,
-  onSearchInputKeyUp,
-  options,
-  value,
-  isLoading,
-  noResult,
-  searchMinLength,
-  placeholder,
-  variant = 'outline',
-  renderInputGroup,
-  renderList,
-  renderListItem,
-  renderSelectedItems,
-  renderNoResult,
-}: ComboboxProps) => {
-  const { t } = useTranslation();
+const ComboboxComponent = forwardRef<ComboboxRef, ComboboxProps>(
+  (
+    {
+      onFocus,
+      onBlur,
+      onSearchResultsChange,
+      onSearchInputChange,
+      onSearchInputKeyUp,
+      options,
+      value,
+      isLoading,
+      noResult,
+      searchMinLength,
+      placeholder,
+      variant = 'outline',
+      renderInputGroup,
+      renderList,
+      renderListItem,
+      renderSelectedItems,
+      renderNoResult,
+    }: ComboboxProps,
+    ref,
+  ) => {
+    const { t } = useTranslation();
+    const inputRef = useRef<HTMLInputElement>(null);
 
-  const [localValue, setLocalValue] = useState<(string | number)[]>([]);
+    const [localValue, setLocalValue] = useState<(string | number)[]>([]);
 
-  useEffect(() => {
-    onSearchResultsChange?.(localValue);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localValue]);
+    useEffect(() => {
+      onSearchResultsChange?.(localValue);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [localValue]);
 
-  const handleOptionClick = (value: string | number) => {
-    setLocalValue([value]);
-  };
+    const focusInput = () => {
+      inputRef.current?.focus();
+    };
 
-  const renderContent = () => {
-    if (isLoading) {
-      return (
-        <div className="d-flex align-items-center p-4">
-          <Loading isLoading={isLoading} />
-          <span className="ps-4">{t('explorer.search.pending')}</span>
-        </div>
-      );
-    }
+    const handleOptionClick = (value: string | number) => {
+      setLocalValue([value]);
+      focusInput();
+    };
 
-    if (noResult) {
-      if (renderNoResult) {
-        return renderNoResult;
+    useImperativeHandle(ref, () => ({
+      focus: focusInput,
+    }));
+
+    const renderContent = () => {
+      if (isLoading) {
+        return (
+          <div className="d-flex align-items-center p-4">
+            <Loading isLoading={isLoading} />
+            <span className="ps-4">{t('explorer.search.pending')}</span>
+          </div>
+        );
       }
-      return <div className="p-4">{t('portal.no.result')}</div>;
-    }
 
-    if (renderList) {
-      return renderList(options);
-    }
+      if (noResult) {
+        if (renderNoResult) {
+          return renderNoResult;
+        }
+        return <div className="p-4">{t('portal.no.result')}</div>;
+      }
 
-    return options.map((option, index) => (
-      <Fragment key={index}>
-        <Dropdown.Item
-          type="select"
-          icon={option.icon}
-          onClick={() => handleOptionClick(option.value)}
-          disabled={option.disabled}
-        >
-          {renderListItem ? renderListItem(option) : option.label}
-        </Dropdown.Item>
+      if (renderList) {
+        return renderList(options);
+      }
 
-        {(option.withSeparator || option.withSeparator === undefined) &&
-          index < options.length - 1 && <Dropdown.Separator />}
-      </Fragment>
-    ));
-  };
+      return options.map((option, index) => (
+        <Fragment key={index}>
+          <Dropdown.Item
+            type="select"
+            icon={option.icon}
+            onClick={() => handleOptionClick(option.value)}
+            disabled={option.disabled}
+          >
+            {renderListItem ? renderListItem(option) : option.label}
+          </Dropdown.Item>
 
-  return (
-    <Dropdown block focusOnVisible={false} openOnSpace={false}>
-      <Combobox.Trigger
-        placeholder={placeholder}
-        searchMinLength={searchMinLength}
-        handleSearchInputChange={onSearchInputChange}
-        handleSearchInputKeyUp={(event) => {
-          onSearchInputKeyUp?.(event);
-        }}
-        value={value}
-        variant={variant}
-        renderInputGroup={renderInputGroup}
-        renderSelectedItems={renderSelectedItems}
-        hasDefault={!!options.length}
-        onFocus={onFocus}
-        onBlur={onBlur}
-      />
-      <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
-    </Dropdown>
-  );
-};
+          {(option.withSeparator || option.withSeparator === undefined) &&
+            index < options.length - 1 && <Dropdown.Separator />}
+        </Fragment>
+      ));
+    };
 
-Combobox.Trigger = ComboboxTrigger;
+    return (
+      <Dropdown
+        block
+        focusOnVisible={false}
+        openOnSpace={false}
+        focusOnMouseEnter={false}
+      >
+        <Combobox.Trigger
+          placeholder={placeholder}
+          searchMinLength={searchMinLength}
+          handleSearchInputChange={onSearchInputChange}
+          handleSearchInputKeyUp={(event) => {
+            onSearchInputKeyUp?.(event);
+          }}
+          value={value}
+          variant={variant}
+          renderInputGroup={renderInputGroup}
+          renderSelectedItems={renderSelectedItems}
+          hasDefault={!!options.length}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          inputRef={inputRef}
+        />
+        <Dropdown.Menu>{renderContent()}</Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+);
+
+// Create the Combobox object with Trigger
+const Combobox = Object.assign(ComboboxComponent, {
+  Trigger: ComboboxTrigger,
+});
 Combobox.displayName = 'Combobox';
 
 export default Combobox;
