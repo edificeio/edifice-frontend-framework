@@ -24,6 +24,7 @@ export interface ComboboxTriggerProps
   hasDefault: boolean;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  inputRef?: React.Ref<HTMLInputElement>;
 }
 /**
  * A trigger component for the Combobox that handles user input and displays selected items.
@@ -61,6 +62,7 @@ const ComboboxTrigger = ({
   variant = 'outline',
   renderSelectedItems,
   hasDefault,
+  inputRef,
 }: ComboboxTriggerProps) => {
   const { triggerProps, itemProps, setVisible } = useDropdownContext();
 
@@ -94,6 +96,7 @@ const ComboboxTrigger = ({
     onKeyUp: (event: KeyboardEvent<HTMLInputElement>) => {
       handleSearchInputKeyUp?.(event);
     },
+    ref: inputRef,
   };
 
   const classNameVariant = variant === 'ghost' ? ' border-0' : '';

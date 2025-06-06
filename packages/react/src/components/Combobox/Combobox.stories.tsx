@@ -3,6 +3,7 @@ import {
   Fragment,
   KeyboardEvent,
   MouseEvent,
+  useRef,
   useState,
 } from 'react';
 
@@ -10,7 +11,11 @@ import { Meta, StoryObj } from '@storybook/react';
 import { IconBookmark, IconClose } from '../../modules/icons/components';
 import { IconButton } from '../Button';
 import { Dropdown } from '../Dropdown';
-import Combobox, { ComboboxProps, OptionListItemType } from './Combobox';
+import Combobox, {
+  ComboboxProps,
+  ComboboxRef,
+  OptionListItemType,
+} from './Combobox';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Combobox> = {
@@ -382,6 +387,7 @@ export const ComboboxListSection: Story = {
     const [options, setOptions] = useState<OptionListItemType[]>([
       { ...args.options[0], withSeparator: false },
     ]);
+    const comboboxRef = useRef<ComboboxRef>(null);
 
     const handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value);
@@ -415,7 +421,10 @@ export const ComboboxListSection: Story = {
                   <Dropdown.Item
                     type="select"
                     icon={option.icon}
-                    onClick={() => alert(option.value)}
+                    onClick={() => {
+                      alert(option.value);
+                      comboboxRef.current?.focus();
+                    }}
                     disabled={option.disabled}
                   >
                     {option.label}
@@ -430,7 +439,10 @@ export const ComboboxListSection: Story = {
                   <Dropdown.Item
                     type="select"
                     icon={option.icon}
-                    onClick={() => alert(option.value)}
+                    onClick={() => {
+                      alert(option.value);
+                      comboboxRef.current?.focus();
+                    }}
                     disabled={option.disabled}
                   >
                     {option.label}
@@ -446,6 +458,7 @@ export const ComboboxListSection: Story = {
     return (
       <Combobox
         {...args}
+        ref={comboboxRef}
         options={options}
         noResult={options.length === 0}
         onSearchInputChange={handleSearchInputChange}
