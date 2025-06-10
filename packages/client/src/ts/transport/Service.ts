@@ -336,6 +336,60 @@ export class HttpService implements IHttp {
       throw error;
     }
   }
+
+  async patch<R = any>(
+    url: string,
+    data?: any,
+    params?: IHttpParams,
+  ): Promise<R> {
+    try {
+      const r = await this.axios.patch<R>(
+        this.fixBaseUrl(url),
+        data,
+        this.toAxiosConfig(params),
+      );
+      return this.mapAxiosResponse(r, params);
+    } catch (e) {
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
+    }
+  }
+
+  async patchFile<R = any>(url: string, data: FormData, params?: IHttpParams) {
+    try {
+      const p = this.toAxiosConfig(params);
+      if (p.headers && p.headers['Content-Type']) {
+        delete p.headers['Content-Type'];
+      }
+      const res = await this.axios.patch(this.fixBaseUrl(url), data, {
+        ...p,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return this.mapAxiosResponse(res, params);
+    } catch (e) {
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
+    }
+  }
+
+  async patchJson<R = any>(
+    url: string,
+    json: any,
+    params?: IHttpParams,
+  ): Promise<R> {
+    const p = this.toAxiosConfig(params);
+    if (p.headers) p.headers['Content-Type'] = 'application/json';
+    try {
+      const r = await this.axios.patch<R>(this.fixBaseUrl(url), json, p);
+      return this.mapAxiosResponse(r, params);
+    } catch (e) {
+      const error = this.mapAxiosError(e as AxiosError, params) as R;
+      throw error;
+    }
+  }
+
   async delete<R = any>(url: string, params?: IHttpParams): Promise<R> {
     try {
       const r = await this.axios.delete<R>(
