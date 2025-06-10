@@ -191,6 +191,11 @@ const ComboboxComponent = forwardRef<ComboboxRef, ComboboxProps>(
         focusOnVisible={false}
         openOnSpace={false}
         focusOnMouseEnter={false}
+        onToggle={(open) => {
+          if (!open && inputRef.current) {
+            inputRef.current.value = '';
+          }
+        }}
       >
         <Combobox.Trigger
           placeholder={placeholder}
