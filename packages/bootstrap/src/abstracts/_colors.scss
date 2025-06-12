@@ -285,4 +285,26 @@ $vars-colors: (
   'info-800': $info-800,
 ) !default;
 
+$main-colors: (
+  'blue': $blue,
+  'indigo': $indigo,
+  'purple': $purple,
+  'pink': $pink,
+  'red': $red,
+  'orange': $orange,
+  'yellow': $yellow,
+  'green': $green,
+  'teal': $teal,
+  'cyan': $cyan,
+  'one-blue': $one-blue,
+  'one-indigo': $one-indigo,
+  'one-purple': $one-purple,
+  'one-pink': $one-pink,
+  'one-red': $one-red,
+  'one-orange': $one-orange,
+  'one-yellow': $one-yellow,
+  'one-green': $one-green,
+  'one-teal': $one-teal,
+) !default;
+
 $extra-colors: map.merge($accessible-colors, $vars-colors);
