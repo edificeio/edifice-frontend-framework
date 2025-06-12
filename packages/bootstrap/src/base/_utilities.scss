@@ -38,3 +38,15 @@
     background-color: var(--#{$prefix}#{$value}) !important;
   }
 }
+
+@each $value, $color in $extend-theme-colors {
+  .border-#{$value} {
+    background-color: var(--#{$prefix}#{$value}) !important;
+  }
+}
+
+@each $value, $color in $main-colors {
+  .bg-#{$value} {
+    background-color: var(--#{$prefix}#{$value}) !important;
+  }
+}
