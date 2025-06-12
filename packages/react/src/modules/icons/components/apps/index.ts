@@ -4,6 +4,7 @@ export { default as IconAdminPortal } from './IconAdminPortal';
 export { default as IconAdmin } from './IconAdmin';
 export { default as IconAdmissionPostBac } from './IconAdmissionPostBac';
 export { default as IconAgenda } from './IconAgenda';
+export { default as IconAppointments } from './IconAppointments';
 export { default as IconArchive } from './IconArchive';
 export { default as IconAssistance } from './IconAssistance';
 export { default as IconAssr } from './IconAssr';

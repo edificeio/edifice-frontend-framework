@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useCookiesConsent" />
+
+# useCookiesConsent
+
+The `useCookiesConsent` hook is used to manage the display of a cookies consent banner and handle user interactions with it.
+
+## Usage
+
+```typescript
+import useCookiesConsent from './useCookiesConsent';
+
+const {
+  showCookiesConsent,
+  handleConsultCookies,
+  handleCloseCookiesConsent,
+} = useCookiesConsent();
+
+return (
+  {showCookiesConsent && (
+    <div>
+      <p>We use cookies to improve your experience.</p>
+      <button onClick={handleConsultCookies}>Consult Cookies</button>
+      <button onClick={handleCloseCookiesConsent}>Close</button>
+    </div>
+  )}
+);
+```
+
+## Return Value
+
+The hook returns an object with the following properties:
+
+- `showCookiesConsent`: A boolean indicating whether the cookies consent banner should be displayed.
+- `handleConsultCookies`: A function to handle the action when the user wants to consult cookies.
+- `handleCloseCookiesConsent`: A function to handle the action when the user wants to close the cookies consent banner.

@@ -1,4 +1,4 @@
-import { UserProfile } from '@edifice.io/client';
+import { RightRole, UserProfile } from '@edifice.io/client';
 
 export interface CommentProps {
   /**
@@ -68,6 +68,10 @@ interface EditRootProps extends BaseProps {
    * Callbacks to perform CRUD on comment
    */
   callbacks: CommentCallbacks;
+  /**
+   * Rights to perform CRUD on comment
+   */
+  rights?: Record<RightRole, boolean>;
 }
 
 interface ReadRootProps extends BaseProps {

@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useHasWorkflow" />
+
+# useHasWorkflow
+
+The `useHasWorkflow` hook checks if the current session has the specified workflow rights.
+
+## Usage
+
+```typescript
+import useHasWorkflow from './useHasWorkflow';
+
+const hasWorkflow = useHasWorkflow('workflowName');
+```
+
+## Parameters
+
+- `workflow` (string | string[]): The workflow or workflows to check.
+
+## Returns
+
+- `(boolean | undefined) | Record<string, boolean>`: The state indicating whether the session has the specified workflow rights.
+
+## Example
+
+```typescript
+import React from 'react';
+import useHasWorkflow from './useHasWorkflow';
+
+const MyComponent = () => {
+  const hasWorkflow = useHasWorkflow('exampleWorkflow');
+
+  if (hasWorkflow === undefined) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div>
+      {hasWorkflow ? 'Workflow is available' : 'Workflow is not available'}
+    </div>
+  );
+};
+
+export default MyComponent;
+```

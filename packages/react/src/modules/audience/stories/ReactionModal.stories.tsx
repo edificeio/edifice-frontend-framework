@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ReactionDetailsData } from '@edifice.io/client';
-import { ReactionModal } from '..';
 import { Button } from '../../../components';
 import { useToggle } from '../../../hooks';
+import ReactionModal from '../ReactionModal';
 
 const mockedData: ReactionDetailsData = {
   reactionCounters: {
@@ -54,7 +54,7 @@ const mockedData: ReactionDetailsData = {
 const meta: Meta<typeof ReactionModal> = {
   title: 'Modules/Audience/Reactions modal',
   component: ReactionModal,
-  // decorators: [(Story) => <div style={{ height: "25em" }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '50em' }}>{Story()}</div>],
   args: {
     pageSize: 2,
     async reactionDetailsLoader(_resourceId, page, size) {
@@ -73,7 +73,9 @@ const meta: Meta<typeof ReactionModal> = {
   },
   argTypes: {
     pageSize: {
-      control: { type: 'input' },
+      control: {
+        type: 'number',
+      },
     },
   },
   parameters: {
@@ -102,7 +104,7 @@ export const Base: Story = {
     }
 
     return (
-      <div id="portal">
+      <>
         <Button
           type="button"
           variant="filled"
@@ -119,7 +121,20 @@ export const Base: Story = {
             onModalClose={handleCloseModal}
           />
         )}
-      </div>
+      </>
     );
+  },
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        <ReactionModal
+  isOpen={isOpen}
+  resourceId="DEAD-BEEF"
+  pageSize={2}
+  reactionDetailsLoader={() => {}} onModalClose={handleCloseModal}
+/>`,
+      },
+    },
   },
 };

@@ -1,0 +1,89 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useDropdown" />
+
+# useDropdown
+
+The `useDropdown` hook provides functionality to manage dropdown menus, including handling visibility, keyboard navigation, and hover interactions.
+
+## Usage
+
+```tsx
+import useDropdown from './useDropdown';
+
+const MyComponent = () => {
+  const {
+    isFocused,
+    visible,
+    itemRefs,
+    triggerRef,
+    menuRef,
+    triggerProps,
+    menuProps,
+    itemProps,
+    setVisible,
+  } = useDropdown('bottom-start');
+
+  return (
+    <div>
+      <button {...triggerProps}>Toggle Dropdown</button>
+      {visible && (
+        <ul {...menuProps}>
+          <li {...itemProps}>Item 1</li>
+          <li {...itemProps}>Item 2</li>
+          <li {...itemProps}>Item 3</li>
+        </ul>
+      )}
+    </div>
+  );
+};
+```
+
+## Parameters
+
+- `placement` (optional): The placement of the dropdown menu. It can be any valid `Placement` value from `@floating-ui/react`.
+- `extraTriggerKeyDownHandler` (optional): A function to handle additional key down events on the trigger element.
+- `isTriggerHovered` (optional): A boolean to enable or disable hover interaction for the dropdown trigger.
+
+## Return Value
+
+The `useDropdown` hook returns an object with the following properties:
+
+- `isFocused`: The id of the currently focused item.
+- `visible`: A boolean indicating whether the dropdown menu is visible.
+- `itemRefs`: A ref object containing references to the dropdown items.
+- `triggerRef`: A ref object for the trigger element.
+- `menuRef`: A ref object for the menu element.
+- `triggerProps`: Props to spread onto the trigger element.
+- `menuProps`: Props to spread onto the menu element.
+- `itemProps`: Props to spread onto each item element.
+- `setVisible`: A function to set the visibility of the dropdown menu.
+
+## Example
+
+```tsx
+const {
+  isFocused,
+  visible,
+  itemRefs,
+  triggerRef,
+  menuRef,
+  triggerProps,
+  menuProps,
+  itemProps,
+  setVisible,
+} = useDropdown('bottom-start');
+
+return (
+  <div>
+    <button {...triggerProps}>Toggle Dropdown</button>
+    {visible && (
+      <ul {...menuProps}>
+        <li {...itemProps}>Item 1</li>
+        <li {...itemProps}>Item 2</li>
+        <li {...itemProps}>Item 3</li>
+      </ul>
+    )}
+  </div>
+);
+```

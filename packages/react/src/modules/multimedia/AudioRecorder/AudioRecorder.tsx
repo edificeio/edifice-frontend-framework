@@ -49,6 +49,20 @@ const AudioRecorder = forwardRef(
     );
     const { t } = useTranslation();
 
+    function getDefaultDate() {
+      const d = new Date();
+      return (
+        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+          2,
+          '0',
+        )}-${String(d.getDate()).padStart(2, '0')} ${String(
+          d.getHours(),
+        ).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')} ` +
+        ' ' +
+        t('bbm.audio.recorder.defaultName')
+      );
+    }
+
     // We add one methods to handle save action from parent component
     useImperativeHandle(ref, () => ({
       save: handleSave,
@@ -78,10 +92,7 @@ const AudioRecorder = forwardRef(
             size={'sm'}
             placeholder={t('bbm.audio.recorder.name')}
             ref={audioNameRef}
-            defaultValue={
-              t('bbm.audio.recorder.defaultName') +
-              new Date().toLocaleDateString()
-            }
+            defaultValue={getDefaultDate()}
           />
         </FormControl>
         <div className="audio-recorder-icon mx-auto">

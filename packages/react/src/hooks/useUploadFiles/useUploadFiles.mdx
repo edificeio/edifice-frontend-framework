@@ -1,0 +1,85 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useUploadFiles" />
+
+# useUploadFiles
+
+The `useUploadFiles` hook provides functionality to upload files, manage their upload status, and handle image editing within a workspace.
+
+## Usage
+
+```typescript
+import useUploadFiles from './useUploadFiles';
+
+const {
+  files,
+  getUploadStatus,
+  clearUploadStatus,
+  uploadedFiles,
+  editingImage,
+  setEditingImage,
+  getUrl,
+  updateImage,
+  uploadFile,
+  removeFile,
+} = useUploadFiles({
+  handleOnChange: (uploadedFiles) => {
+    console.log(uploadedFiles);
+  },
+  visibility: 'public',
+  application: 'myApp',
+});
+```
+
+## Parameters
+
+- `handleOnChange`: A callback function that is called when the uploaded files change.
+- `visibility`: (Optional) The visibility of the uploaded files.
+- `application`: (Optional) The application context for the upload.
+
+## Return Values
+
+- `files`: List of files added from the device.
+- `getUploadStatus`: Function to get the upload status of a file.
+- `clearUploadStatus`: Function to clear the upload status of a file.
+- `uploadedFiles`: List of uploaded files.
+- `editingImage`: The image currently being edited.
+- `setEditingImage`: Function to set the image currently being edited.
+- `getUrl`: Function to get the URL of a resource.
+- `updateImage`: Function to update an image.
+- `uploadFile`: Function to upload a file.
+- `removeFile`: Function to remove a file.
+
+## Example
+
+```typescript
+const MyComponent = () => {
+  const {
+    files,
+    uploadedFiles,
+    removeFile,
+    updateImage,
+  } = useUploadFiles({
+    handleOnChange: (uploadedFiles) => {
+      console.log('Uploaded files:', uploadedFiles);
+    },
+  });
+
+  return (
+    <div>
+      <h1>Upload Files</h1>
+      <ul>
+        {files.map((file) => (
+          <li key={file.name}>{file.name}</li>
+        ))}
+      </ul>
+      <ul>
+        {uploadedFiles.map((file) => (
+          <li key={file._id}>{file.name}</li>
+        ))}
+      </ul>
+      {/* Add more UI elements to handle file uploads, removals, and updates */}
+    </div>
+  );
+};
+```

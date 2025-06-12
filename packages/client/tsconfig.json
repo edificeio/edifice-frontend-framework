@@ -13,8 +13,9 @@
     "noUnusedParameters": false,
     "noImplicitReturns": false,
     "skipLibCheck": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["vite/client", "vitest/globals", "vitest/importMeta", "vitest"]
   },
   "include": ["src"],
-  "exclude": ["node_modules", "src/test"]
+  "exclude": ["node_modules"]
 }

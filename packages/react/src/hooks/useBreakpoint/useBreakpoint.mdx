@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useBreakpoint" />
+
+# useBreakpoint
+
+The `useBreakpoint` hook is used to determine the current breakpoint of the screen size.
+
+## Usage
+
+```tsx
+import useBreakpoint from './useBreakpoint';
+
+const { xs, sm, md, lg, xl, xxl } = useBreakpoint();
+```
+
+## Returns
+
+- `breakpoints` (object): An object containing the current breakpoints.
+  - `xs` (boolean): True if the screen width is at least 0px.
+  - `sm` (boolean): True if the screen width is at least 375px.
+  - `md` (boolean): True if the screen width is at least 768px.
+  - `lg` (boolean): True if the screen width is at least 1024px.
+  - `xl` (boolean): True if the screen width is at least 1280px.
+  - `xxl` (boolean): True if the screen width is at least 1400px.
+
+## Example
+
+```tsx
+const { xs, sm, md, lg, xl, xxl } = useBreakpoint();
+return (
+  <div>
+    <p>Extra Small: {xs ? 'Yes' : 'No'}</p>
+    <p>Small: {sm ? 'Yes' : 'No'}</p>
+    <p>Medium: {md ? 'Yes' : 'No'}</p>
+    <p>Large: {lg ? 'Yes' : 'No'}</p>
+    <p>Extra Large: {xl ? 'Yes' : 'No'}</p>
+    <p>Extra Extra Large: {xxl ? 'Yes' : 'No'}</p>
+  </div>
+);
+```

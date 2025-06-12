@@ -23,14 +23,16 @@ declare module '@tiptap/core' {
 
 export const Audio = Node.create({
   name: 'audio',
-
   group: 'block',
+
+  selectable: true,
+  draggable: true,
 
   addAttributes() {
     return {
       src: {
         default: null,
-        parseHTML: (el: any) => (el as HTMLSpanElement).getAttribute('src'),
+        parseHTML: (el: any) => (el as HTMLAudioElement).getAttribute('src'),
         renderHTML: (attrs: any) => ({ src: attrs.src }),
       },
       documentId: {

@@ -20,7 +20,7 @@ import {
   EmptyScreen,
   SearchBar,
 } from '../../../../components';
-import { useResourceSearch } from '../../../../hooks';
+import { useResourceSearch } from '../../../../hooks/useResourceSearch';
 import { useEdificeTheme } from '../../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { IconApplications } from '../../../icons/components';
 import LinkerCard from '../../LinkerCard/LinkerCard';

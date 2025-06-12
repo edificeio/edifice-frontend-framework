@@ -20,3 +20,14 @@
     }
   }
 }
+
+[data-product='neo'][data-theme='monlycee'] {
+  --#{$prefix}primary: #2a327b;
+  --#{$prefix}secondary: #d71302;
+
+  .header {
+    .navbar {
+      background: var(--#{$prefix}primary);
+    }
+  }
+}

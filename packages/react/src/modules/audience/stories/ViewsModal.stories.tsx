@@ -36,7 +36,7 @@ const viewsDetailsMockedData: ViewsDetails = {
 const meta: Meta<typeof ViewsModal> = {
   title: 'Modules/Audience/Views modal',
   component: ViewsModal,
-  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ height: '50em' }}>{Story()}</div>],
   args: {
     viewsDetails: viewsDetailsMockedData,
   },
@@ -66,7 +66,7 @@ export const Base: Story = {
     }
 
     return (
-      <div id="portal">
+      <>
         <ViewsCounter
           viewsCounter={viewsDetails.viewsCounter}
           onClick={handleOpenModal}
@@ -78,7 +78,7 @@ export const Base: Story = {
             onModalClose={handleCloseModal}
           />
         )}
-      </div>
+      </>
     );
   },
 };

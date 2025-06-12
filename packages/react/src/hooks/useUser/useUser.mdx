@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useUser" />
+
+# useUser
+
+The `useUser` hook provides user information and avatar URL based on the current theme.
+
+## Usage
+
+```typescript
+import { useUser } from '@edifice.io/react';
+
+const MyComponent = () => {
+  const { user, avatar, userDescription } = useUser();
+
+  return (
+    <div>
+      <img src={avatar} alt="User Avatar" />
+      <p>{user?.name}</p>
+      <p>{userDescription?.bio}</p>
+    </div>
+  );
+};
+```
+
+## Return Values
+
+- `user`: The current user information (`IUserInfo` or `undefined`).
+- `avatar`: The URL of the user's avatar.
+- `userDescription`: Partial description of the user (`Partial<IUserDescription>` or `undefined`).

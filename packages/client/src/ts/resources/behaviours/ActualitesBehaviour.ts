@@ -27,7 +27,7 @@ export class ActualitesBehaviour extends AbstractBehaviourService {
     );
 
     return infos.map((data) => {
-      var threadIcon;
+      let threadIcon;
       if (!data.thread_icon) {
         threadIcon = '/img/icons/glyphicons_036_file.png';
       } else {

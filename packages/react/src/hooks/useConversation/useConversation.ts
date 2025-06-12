@@ -35,7 +35,6 @@ const useConversation = () => {
       console.error(error);
       setMessages(0);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   const goToMessagerie = async () => {
@@ -57,7 +56,6 @@ const useConversation = () => {
       console.error(error);
       setMsgLink(window.location.origin + defaultLink);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   useEffect(() => {

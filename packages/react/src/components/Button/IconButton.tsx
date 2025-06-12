@@ -1,10 +1,3 @@
-/**
- * Button  Component
- *
- * @see Docs     https://edifice-ui.vercel.app/?path=/docs/components-core-button--base
- * @see Source   https://github.com/opendigitaleducation/edifice-ui/blob/main/packages/core/src/Button/Button.tsx
- * @see WAI-ARIA https://www.w3.org/WAI/ARIA/apg/patterns/button/
- */
 import { forwardRef, ReactNode, Ref } from 'react';
 
 import clsx from 'clsx';

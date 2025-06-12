@@ -196,7 +196,7 @@ export class Theme implements ITheme {
         });
   }
 
-  async getHelpPath(): Promise<String> {
+  async getHelpPath(): Promise<string> {
     const overrides = await this.listSkins();
     const override = overrides.find((t) => t.child === this.skin);
     return override?.help ?? '/help';

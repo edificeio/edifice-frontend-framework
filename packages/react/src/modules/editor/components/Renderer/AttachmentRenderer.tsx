@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Editor, NodeViewWrapper } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
@@ -20,24 +20,29 @@ interface AttachmentAttrsProps {
 }
 
 const AttachmentRenderer = (props: AttachmentProps) => {
-  const { t } = useTranslation();
-
-  const { node } = props;
-
-  const { editable } = useEditorContext();
-
+  const { node, editor } = props;
   const [attachmentArrayAttrs, setAttachmentArrayAttrs] = useState<
     AttachmentAttrsProps[]
   >(node.attrs.links);
+  const { t } = useTranslation();
+  const { editable } = useEditorContext();
 
-  const handleDelete = (index: any) => {
+  // Fix #WB2-2243: update attachmentArrayAttrs state when props changes
+  useEffect(() => {
+    if (attachmentArrayAttrs !== node.attrs.links) {
+      setAttachmentArrayAttrs(node.attrs.links);
+    }
+  }, [node.attrs.links, attachmentArrayAttrs]);
+
+  const handleDelete = (index: any, documentId: any) => {
+    editor.commands.unsetAttachment(documentId);
     setAttachmentArrayAttrs((oldAttachments) =>
       oldAttachments.filter((_, i) => i !== index),
     );
   };
 
   return (
-    attachmentArrayAttrs.length !== 0 && (
+    attachmentArrayAttrs?.length !== 0 && (
       <NodeViewWrapper>
         <div
           style={{
@@ -71,7 +76,9 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                           type="button"
                           icon={<IconDelete />}
                           variant="ghost"
-                          onClick={() => handleDelete(index)}
+                          onClick={() =>
+                            handleDelete(index, attachment.documentId)
+                          }
                         />
                       )}
                     </>

@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react';
 
-export default function useTrapFocus() {
+export default function useTrapFocus(isActive?: boolean) {
   const ref = useRef<HTMLElement | null>(null);
   const focusableElements =
     'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
   useEffect(() => {
+    if (!isActive) return;
+
     const node: any = ref.current;
     /** First Focusable Element */
     const firstFocusableElement = node.querySelectorAll(
@@ -45,7 +47,7 @@ export default function useTrapFocus() {
         node.removeEventListener('keydown', handleKeydown);
       };
     }
-  }, []);
+  }, [isActive]);
 
   return ref;
 }

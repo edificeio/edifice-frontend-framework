@@ -19,7 +19,18 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["node", "vite/client"]
+    "preserveSymlinks": false,
+    "types": [
+      "node",
+      "vite/client",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vitest"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "~/setup": ["vitest.setup.ts"]
+    }
   },
   "include": ["src"]
 }

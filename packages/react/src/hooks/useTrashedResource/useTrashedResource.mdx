@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useTrashedResource" />
+
+# useTrashedResource
+
+The `useTrashedResource` hook is used to check if a resource is trashed and handle the error accordingly.
+It will only work for resources coming from the Explorer.
+
+## Usage
+
+```typescript
+import { useTrashedResource } from '@edifice.io/client';
+
+const MyComponent = ({ resourceId }) => {
+  useTrashedResource(resourceId);
+
+  return (
+    <div>
+      {/* Your component code */}
+    </div>
+  );
+};
+```
+
+## Parameters
+
+- `id` (`string | undefined`): The ID of the resource to check.
+
+## Behavior
+
+- The hook makes an API call to check if the resource is trashed.
+- If the resource is trashed, it sets the `trashed` state to `true`.
+- If the `trashed` state is `true`, it throws a 404 error to show a "Not Found" page.
+
+## Example
+
+```typescript
+const resourceId = 'example-resource-id';
+useTrashedResource(resourceId);
+
+return <div>Resource Content</div>;
+```

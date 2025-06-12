@@ -1,44 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { WorkspaceElement } from '@edifice.io/client';
-import { MockedDataProvider } from '../../../providers/MockedDataProvider';
 import Workspace from './Workspace';
-
-const mockedDocuments: WorkspaceElement[] = [
-  {
-    _id: 'folder1',
-    name: 'level 1 arborescence tree',
-    eType: 'folder',
-    eParent: '',
-    _isShared: false,
-    _shared: [],
-    children: null!,
-    created: null as any,
-    owner: null as any,
-  },
-  {
-    _id: 'folder2',
-    name: 'level 1 arborescence tree',
-    eType: 'folder',
-    eParent: '',
-    _isShared: false,
-    _shared: [],
-    children: null!,
-    created: null as any,
-    owner: null as any,
-  },
-  {
-    _id: 'file1',
-    name: 'File 1',
-    eType: 'file',
-    eParent: '',
-    _isShared: false,
-    _shared: [],
-    children: null!,
-    created: null as any,
-    owner: null as any,
-  },
-];
 
 const meta: Meta<typeof Workspace> = {
   title: 'Modules/Multimedia/Workspace',
@@ -52,7 +14,19 @@ type Story = StoryObj<typeof Workspace>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 export const Base: Story = {
-  args: {},
+  args: {
+    defaultFolder: 'owner',
+    showPublicFolder: false,
+    multiple: false,
+  },
+  argTypes: {
+    multiple: {
+      control: {
+        type: 'boolean',
+        options: [true, false],
+      },
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -62,18 +36,74 @@ export const Base: Story = {
     },
   },
   render: (args: any) => {
-    return (
-      <MockedDataProvider
-        mocks={{
-          workflows: [
-            'org.entcore.workspace.controllers.WorkspaceController|listDocuments',
-            'org.entcore.workspace.controllers.WorkspaceController|listFolders',
-          ],
-          workspaceDocuments: mockedDocuments,
-        }}
-      >
-        <Workspace {...args}></Workspace>
-      </MockedDataProvider>
-    );
+    return <Workspace {...args} />;
+  },
+};
+
+export const WithRoles: Story = {
+  args: {
+    roles: ['img'],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The Workspace component displaying only media elements with specific roles.',
+      },
+    },
+  },
+  render: (args: any) => {
+    return <Workspace {...args} />;
+  },
+};
+
+export const WithDefaultFolder: Story = {
+  args: {
+    defaultFolder: 'shared',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'The Workspace component with a default folder selected.',
+      },
+    },
+  },
+  render: (args: any) => {
+    return <Workspace {...args} />;
+  },
+};
+
+export const ShowPublicFolder: Story = {
+  args: {
+    defaultFolder: 'public',
+    showPublicFolder: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The Workspace component allowing selection of public documents.',
+      },
+    },
+  },
+  render: (args: any) => {
+    return <Workspace {...args} />;
+  },
+};
+
+export const MultipleSelection: Story = {
+  args: {
+    multiple: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The Workspace component allowing multiple file selection. Default is true.',
+      },
+    },
+  },
+  render: (args: any) => {
+    return <Workspace {...args} />;
   },
 };

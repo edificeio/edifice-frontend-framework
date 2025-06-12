@@ -7,14 +7,14 @@ import * as commentStories from './CommentProvider.stories';
 
 # Comments
 
-CommentProvider component allows to add a comments section in your app. It provides a complete comments system with the ability to create, edit and delete comments. The component can be used in read-only or edit mode, and includes configurable options for maximum comment length, number of comments displayed, and number of replies allowed. All comment actions (post, edit, delete) can be customized through callback functions.
+The `CommentProvider` component allows you to add a comments section to your app. It provides a complete comments system with the ability to create, edit, and delete comments. The component can be used in read-only or edit mode and includes configurable options for maximum comment length, number of comments displayed, and number of replies allowed. All comment actions (post, edit, delete) can be customized through callback functions.
 
 <Canvas of={commentStories.Base} />
 
 ## Install
 
-- You need to install `@edifice.io/react`
-- `CommentProvider` is exported as a sub-module
+- You need to install `@edifice.io/react`.
+- `CommentProvider` is exported as a sub-module.
 
 ```
 import { CommentProvider } from '@edifice.io/react/comments';
@@ -25,120 +25,99 @@ import { CommentProvider } from '@edifice.io/react/comments';
 The structure of a comment object must conform to this interface. If not, you must transform your content before passing comments as a prop.
 
 ```
-
 interface CommentProps {
-  id: string; // Comment Id
+  id: string; // Comment ID
   comment: string; // Comment text
-  authorId: string; // Author Id
+  authorId: string; // Author ID
   authorName: string; // Name of the author of the comment
-  createdAt: number; // Date when comment was created
-  updatedAt?: number; // Date when comment was updated
-  updatedAt?: number; // Date when comment was updated
+  createdAt: number; // Date when the comment was created
+  updatedAt?: number; // Date when the comment was updated
 }
-
 ```
 
 ## Type prop
 
-The `CommentProvider` expects a `type` prop with 1 of the following values:
+The `CommentProvider` expects a `type` prop with one of the following values:
 
 ```
-
 CommentType = "read" | "edit";
-
 ```
 
-It will determined if you authorize to create and edit comments or just to display a list of comments (e.g: print page)
+It will determine if you authorize creating and editing comments or just displaying a list of comments (e.g., print page).
 
 ## Creating a new comment
 
-By passing `type='edit'` to the CommentProvider, it will expect the `comments` and `callbacks` props.
+By passing `type='edit'` to the `CommentProvider`, it will expect the `comments` and `callbacks` props.
 
 <Canvas of={commentStories.CreateComment} />
 
-You need to pass an Event Handler to the `post` key in the `callbacks` prop to delete this comment.
+You need to pass an event handler to the `post` key in the `callbacks` prop to create a new comment.
 
 ```
-
 post: (comment: string) => Promise<void>
-
 ```
 
 ## Update a comment
 
-If you have a comment, you can update a comment by cliking on the Update button.
+If you have a comment, you can update it by clicking on the Update button.
 
 <Canvas of={commentStories.UpdateComment} />
 
-You need to pass an Event Handler to the `put` key in the `callbacks` prop to update a comment.
+You need to pass an event handler to the `put` key in the `callbacks` prop to update a comment.
 
 ```
-
 put: ({comment, commentId}: {comment: string; commentId: string;}) => Promise<void>;
-
 ```
 
 ## Delete a comment
 
-If you have a comment, you can remove this comment by cliking on the Delete button.
+If you have a comment, you can remove it by clicking on the Delete button.
 
 <Canvas of={commentStories.DeleteComment} />
 
-You need to pass an Event Handler to the `delete` key in the `callbacks` prop to delete this comment.
+You need to pass an event handler to the `delete` key in the `callbacks` prop to delete a comment.
 
 ```
-
 delete: (commentId: string) => Promise<void>;
-
 ```
 
 ## Callbacks
 
-As above, the `callbacks` prop needs 3 keys/methods to work: `post`, `put`, `delete` to create, update or remove a comment.
+As mentioned above, the `callbacks` prop needs three keys/methods to work: `post`, `put`, and `delete` to create, update, or remove a comment.
 
-- The post method returns the newly created comment
+- The post method returns the newly created comment.
 
 ```
-
 post: (comment: string) => Promise<void>
-
 ```
 
-- The put method returns the updated comment along with its ID
+- The put method returns the updated comment along with its ID.
 
 ```
-
 put: ({comment, commentId}: {comment: string; commentId: string;}) => Promise<void>;
-
 ```
 
 - The delete method returns the commentId of the comment to be deleted.
 
 ```
-
 delete: (commentId: string) => Promise<void>;
-
 ```
 
-You can manage all three of these methods however you like in your code but need to be asynchrone.
-For instance:
+You can manage all three of these methods however you like in your code, but they need to be asynchronous. For instance:
 
 ```
-
-const handleOnPutcomment = async ({ comment, commentId }) => {
-await updateComment({ comment, commentId })
+const handleOnPutComment = async ({ comment, commentId }) => {
+  await updateComment({ comment, commentId });
 };
-
 ```
 
 ## Options
 
-`CommentProvider` accepts a prop called `options` to configure its behaviour
+`CommentProvider` accepts a prop called `options` to configure its behavior.
 
 <Canvas of={commentStories.OptionsComments} />
 
 ```
-
 type CommentOptions = {
   maxCommentLength: number; // Setting the text limit on a comment
   maxReplyLength: number; // Setting the text limit on a response
@@ -147,12 +126,11 @@ type CommentOptions = {
   maxReplies: number; // Limit on displaying replies to a comment
   additionalReplies: number; // Number of replies to load additionally in the limited list
 };
-
 ```
 
 ### Limit Comments
 
-Configure `maxComments` with a number to limit the list of comments displayed and change the default value of `additionalComments` to add show more comments.
+Configure `maxComments` with a number to limit the list of comments displayed and change the default value of `additionalComments` to show more comments.
 
 <Canvas of={commentStories.ReadMoreComments} />
 

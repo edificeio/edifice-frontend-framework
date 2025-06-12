@@ -77,7 +77,7 @@ export class TimelineApp implements ITimelineApp {
       this._lastPage = false;
     }
 
-    let types = this.selectedNotificationTypes;
+    const types = this.selectedNotificationTypes;
     // if(types.length===0) {
     //     types = this._notificationTypes;
     // }
@@ -87,7 +87,7 @@ export class TimelineApp implements ITimelineApp {
       return Promise.resolve();
     }
 
-    let params: { page: number; mine?: number } = {
+    const params: { page: number; mine?: number } = {
       page: this.page,
       mine: 1,
     };

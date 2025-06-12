@@ -253,7 +253,7 @@ export class Idiom implements IIdiom {
     key = key ?? '';
     let txt: string = bundle[key] === undefined ? key : bundle[key];
     if (params && typeof params === 'object') {
-      for (let member in params) {
+      for (const member in params) {
         if (typeof params[member] !== 'undefined') {
           txt = txt.replace(
             new RegExp('\\${' + member + '}', 'g'),
@@ -343,14 +343,14 @@ export class Idiom implements IIdiom {
   }
 
   addKeys(keys: any): void {
-    for (var property in keys) {
+    for (const property in keys) {
       if (typeof bundle[property] !== 'string')
         bundle[property] = keys[property];
     }
   }
 
   removeAccents(str: string): string {
-    for (var i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
+    for (let i = 0; i < defaultDiacriticsRemovalMap.length; i++) {
       str = str.replace(
         defaultDiacriticsRemovalMap[i].letters,
         defaultDiacriticsRemovalMap[i].base,

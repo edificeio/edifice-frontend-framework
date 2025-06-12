@@ -1,0 +1,14 @@
+@use '../../abstracts/' as *;
+
+.react-renderer {
+  audio {
+    cursor: initial;
+    border-radius: 30px;
+  }
+
+  &.has-focus audio {
+    outline-color: $secondary;
+    outline-width: 2px;
+    outline-style: solid;
+  }
+}

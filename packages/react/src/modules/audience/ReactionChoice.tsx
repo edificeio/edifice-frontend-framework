@@ -4,9 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { Dropdown, IconButton, Tooltip } from '../../components';
 import { default as useReactionIcons } from './hooks/useReactionIcons';
 
+/**
+ * Props for the ReactionChoice component.
+ */
 export interface ReactionChoiceProps {
+  /**
+   * An array of available reactions that can be chosen.
+   */
   availableReactions: ReactionType[];
+
+  /**
+   * Optional summary data of the reactions.
+   */
   summary?: ReactionSummaryData;
+
+  /**
+   * Optional callback function that is called when a reaction is chosen.
+   * @param chosenReaction - The reaction that was chosen.
+   */
   onChange?: (chosenReaction?: ReactionType) => void;
 }
 

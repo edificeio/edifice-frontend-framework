@@ -85,10 +85,13 @@ export const useComments = ({
     }
   };
 
-  const handleUpdateComment = (comment: string) => {
+  const handleUpdateComment = async (comment: string) => {
     if (editCommentId) {
       if (type === 'edit') {
-        callbacks?.put({ comment, commentId: editCommentId });
+        callbacks?.put({
+          comment,
+          commentId: editCommentId,
+        });
       }
 
       setEditCommentId(null);

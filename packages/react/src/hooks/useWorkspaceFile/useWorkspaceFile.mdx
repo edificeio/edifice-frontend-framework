@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useWorkspaceFile" />
+
+# useWorkspaceFile
+
+This hook provides functions to create, update, and remove files in the workspace.
+
+## Usage
+
+```typescript
+import useWorkspaceFile from './useWorkspaceFile';
+
+const { createOrUpdate, create, remove } = useWorkspaceFile();
+```
+
+## Functions
+
+### `createOrUpdate`
+
+This function creates a file in the workspace if the URI is not from the workspace. If the URI is from the workspace, it only updates the file.
+
+#### Parameters
+
+- `alt` (optional): The alternative text related to the file.
+- `legend` (optional): The legend text related to the file.
+- `blob`: The file as a Blob.
+- `uri` (optional): The previous URI of this file (or undefined if this is a new file).
+- `parentId` (optional): The folder parentId.
+- `application` (optional): The application related to this file.
+- `visibility` (optional): The visibility of the file.
+
+#### Returns
+
+- The new workspace URI.
+
+### `create`
+
+This function creates a new file in the workspace.
+
+#### Parameters
+
+- `file`: The file to be created.
+- `params` (optional): Additional parameters including visibility and application.
+
+#### Returns
+
+- The response from the `saveFile` method.
+
+### `remove`
+
+This function removes a file or an array of files from the workspace.
+
+#### Parameters
+
+- `file`: The file or array of files to be removed.
+
+#### Returns
+
+- A promise that resolves when the file(s) are removed.

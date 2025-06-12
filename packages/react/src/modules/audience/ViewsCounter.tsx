@@ -4,8 +4,18 @@ import { Button } from '../../components';
 import { IconSee } from '../icons/components';
 
 export interface ViewsCounterProps {
+  /**
+   * The number of views to display.
+   *
+   */
   viewsCounter: number;
+  /**
+   * Optional click handler for the counter button.
+   */
   onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  /**
+   * Optional CSS class name to apply to the counter component.
+   */
   className?: string;
 }
 

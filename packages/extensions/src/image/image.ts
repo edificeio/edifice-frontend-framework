@@ -115,10 +115,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             : {};
         },
         parseHTML: (element) => {
-          const style = element.getAttribute('style');
-          return style && typeof style === 'string' && style.length > 0
-            ? {}
-            : null;
+          return null;
         },
       },
     };
@@ -160,11 +157,12 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
             attr['style'] = {
               width: '1.5em',
               height: '1.5em',
-              fontSize: el.parentElement?.style?.fontSize,
+              fontSize: '16px',
             };
             attr['width'] = 'null';
             attr['height'] = 'null';
           }
+
           return attr;
         },
       },

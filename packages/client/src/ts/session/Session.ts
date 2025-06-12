@@ -146,7 +146,7 @@ export class Session implements ISession {
     }
     const rightName = right.right || right;
 
-    let currentSharedRights: Array<IResourceRight> = (
+    const currentSharedRights: Array<IResourceRight> = (
       resource.shared as Array<IResourceRight>
     ).filter((sharedRight) => {
       return (
@@ -270,11 +270,11 @@ export class Session implements ISession {
     return http.get<IEmailValidationInfos>('/directory/user/mailstate');
   }
 
-  public checkEmail(email: String): Promise<void> {
+  public checkEmail(email: string): Promise<void> {
     return http.put<void>('/directory/user/mailstate', { email: email });
   }
 
-  public tryEmailValidation(code: String): Promise<IEmailValidationState> {
+  public tryEmailValidation(code: string): Promise<IEmailValidationState> {
     return http.post<IEmailValidationState>('/directory/user/mailstate', {
       key: code,
     });
@@ -286,11 +286,11 @@ export class Session implements ISession {
     return http.get<IMobileValidationInfos>('/directory/user/mobilestate');
   }
 
-  public checkMobile(mobile: String): Promise<void> {
+  public checkMobile(mobile: string): Promise<void> {
     return http.put<void>('/directory/user/mobilestate', { mobile: mobile });
   }
 
-  public tryMobileValidation(code: String): Promise<IMobileValidationState> {
+  public tryMobileValidation(code: string): Promise<IMobileValidationState> {
     return http.post<IMobileValidationState>('/directory/user/mobilestate', {
       key: code,
     });
@@ -302,7 +302,7 @@ export class Session implements ISession {
     return http.get<IMfaInfos>('/auth/user/mfa/code');
   }
 
-  public tryMfaCode(code: String): Promise<IMfaCodeState> {
+  public tryMfaCode(code: string): Promise<IMfaCodeState> {
     return http.post<IMfaCodeState>('/auth/user/mfa/code', { key: code });
   }
 }

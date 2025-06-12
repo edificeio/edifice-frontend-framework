@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/storybook",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/apps/docs#readme",
   "bugs": {
@@ -36,6 +36,7 @@
     "react-i18next": "catalog:"
   },
   "devDependencies": {
+    "@edifice.io/config": "workspace:*",
     "vite": "catalog:"
   }
 }

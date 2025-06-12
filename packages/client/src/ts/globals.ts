@@ -34,11 +34,14 @@ export const APP = {
   WORKSPACE: 'workspace',
   // -- a few others commonly used apps
   EXPLORER: 'explorer',
+  HOMEWORKS: 'homeworks',
   VIDEO: 'video',
   MINDMAP: 'mindmap',
   SCRAPBOOK: 'scrapbook',
   COLLABORATIVEWALL: 'collaborativewall',
   WIKI: 'wiki',
+  TIMELINEGENERATOR: 'timelinegenerator',
+  COLLABORATIVEEDITOR: 'collaborativeeditor',
 
   // TODO compléter/trier les apps suivantes
   /*

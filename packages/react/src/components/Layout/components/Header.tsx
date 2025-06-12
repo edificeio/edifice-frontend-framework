@@ -10,29 +10,26 @@ import {
   PopoverFooter,
   VisuallyHidden,
 } from '../..';
-import {
-  useConversation,
-  useHasWorkflow,
-  useHeader,
-  useUser,
-} from '../../../hooks';
+import { useConversation, useHasWorkflow, useUser } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 
 import { IconRafterDown } from '../../../modules/icons/components';
-import { IconAssistance } from '../../../modules/icons/components/apps';
 import {
   IconCommunity,
   IconDisconnect,
   IconHome,
   IconMyApps,
+  IconNeoAssistance,
   IconNeoMessaging,
   IconNewRelease,
+  IconOneAssistance,
   IconOneMessaging,
   IconOneProfile,
   IconUserbook,
 } from '../../../modules/icons/components/nav';
 import { useHelp } from '../hooks';
+import useHeader from '../hooks/useHeader';
 import Help from './Help';
 import { Navbar } from './Navbar';
 import { NavBarNav } from './NavbarNav';
@@ -151,7 +148,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                         setIsHelpOpen(true);
                       }}
                     >
-                      <IconAssistance className="icon help" />
+                      <IconOneAssistance className="icon help" />
                       <VisuallyHidden>{t('navbar.help')}</VisuallyHidden>
                     </button>
 
@@ -321,7 +318,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       setIsHelpOpen(true);
                     }}
                   >
-                    <IconAssistance color="#fff" />
+                    <IconNeoAssistance color="#fff" />
                     <VisuallyHidden>{t('support')}</VisuallyHidden>
                   </button>
 

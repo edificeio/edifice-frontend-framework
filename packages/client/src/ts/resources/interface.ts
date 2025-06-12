@@ -265,6 +265,7 @@ export interface IActionParameters {
   // TODO : other common parameters should be placed here
 }
 /**  */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IActionResult {
   // TODO : common results should be placed here
 }
@@ -476,6 +477,22 @@ export interface CollaborativewallResource extends IResource {
   'publish-type': 'RESTRAINT' | 'IMMEDIATE';
 }
 
+export interface HomeworksCreate extends CreateParameters {
+  repeats?: any[];
+}
+
+export interface HomeworksUpdate extends UpdateParameters {
+  repeats?: any[];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ScrapbookUpdate extends UpdateParameters {}
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface ScrapbookResource extends IResource {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface TimelineGeneratorUpdate extends UpdateParameters {}
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface CollaborativeEditorUpdate extends UpdateParameters {}

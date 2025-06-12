@@ -29,6 +29,7 @@ export class WorkspaceBehaviour extends AbstractBehaviourService {
   RESOURCE = 'workspace';
 
   loadResources({ search, asset_id }: GetContextParameters) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<ILinkedResource[]>(async (resolve, reject) => {
       try {
         let url = '/workspace/documents?filter=all&hierarchical=true';

@@ -300,8 +300,6 @@ export default function useAudioRecorder(
     if (onUpdateRecord) {
       onUpdateRecord(undefined);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [closeAudioStream, onUpdateRecord]);
 
   const handleSave: () => Promise<WorkspaceElement | undefined> =

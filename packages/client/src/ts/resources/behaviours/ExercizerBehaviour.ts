@@ -46,7 +46,7 @@ export class ExercizerBehaviour extends AbstractBehaviourService {
         : '/img/illustrations/exercizer.svg';
       let recipient;
       let shared = false;
-      let scheduled_at = JSON.parse(data.scheduled_at);
+      const scheduled_at = JSON.parse(data.scheduled_at);
       if (scheduled_at.groupList.length > 0) {
         shared = true;
         recipient = scheduled_at.groupList[0].name;

@@ -121,9 +121,11 @@ export class ConfService {
     conf: any;
     publicTheme?: boolean;
   }): Promise<IOdeTheme> {
-    const { value } = await this.cache.httpGet<IOdeTheme>('/theme', {
+    /* const { value } = await this.cache.httpGet<IOdeTheme>('/theme', {
       queryParams: { _: version },
-    });
+    }); */
+
+    const value = await this.http.get<IOdeTheme>('/theme');
 
     const theme = !publicTheme ? value : null;
 

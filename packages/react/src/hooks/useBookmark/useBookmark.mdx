@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useBookmark" />
+
+# useBookmark
+
+The `useBookmark` hook is used to retrieve the list of bookmarked web applications for the current user session.
+
+## Usage
+
+```tsx
+import useBookmark from './useBookmark';
+
+const bookmarkedApps = useBookmark();
+```
+
+## Returns
+
+- `bookmarkedApps` (IWebApp[] | undefined): An array of bookmarked web applications or undefined if no bookmarks are found.
+
+## Example
+
+```tsx
+const bookmarkedApps = useBookmark();
+return (
+  <div>
+    {bookmarkedApps?.map((app) => <div key={app.id}>{app.displayName}</div>)}
+  </div>
+);
+```

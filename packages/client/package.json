@@ -1,7 +1,13 @@
 {
   "name": "@edifice.io/client",
-  "version": "2.0.0",
+  "version": "2.2.1",
   "description": "Edifice TypeScript Client",
+  "keywords": [
+    "typescript",
+    "client",
+    "edifice",
+    "frontend"
+  ],
   "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/client#readme",
   "bugs": {
     "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
@@ -30,9 +36,12 @@
   "scripts": {
     "build": "vite build",
     "docs": "npx rimraf ./docs/ && npx typedoc src/ts/index.ts --excludePrivate --disableSources --plugin typedoc-plugin-markdown",
+    "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check \"src/ts/**/*.ts\"",
-    "format:write": "npx prettier --write \"src/ts/**/*.ts\""
+    "format:write": "npx prettier --write \"src/ts/**/*.ts\"",
+    "lint": "eslint",
+    "test": "vitest"
   },
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",
@@ -40,6 +49,7 @@
     "core-js": "^3.35.1"
   },
   "devDependencies": {
+    "@edifice.io/config": "workspace:*",
     "@types/jasmine": "5.1.4",
     "@types/node": "catalog:",
     "jasmine": "5.1.0",

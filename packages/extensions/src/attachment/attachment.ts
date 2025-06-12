@@ -8,6 +8,7 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     attachment: {
       setAttachment: (attachment) => ReturnType;
+      unsetAttachment: (documentId: string) => ReturnType; // Modification de la commande
     };
   }
 }
@@ -107,6 +108,26 @@ export const Attachment = Node.create<AttachmentOptions>({
         ) =>
         ({ chain }) => {
           return chain().insertContent({ type: this.name, attrs }).run();
+        },
+      unsetAttachment:
+        (documentId: string) =>
+        ({ state, dispatch }) => {
+          const { selection } = state;
+          const { from, to } = selection;
+          state.doc.nodesBetween(from, to, (node, pos) => {
+            if (node.type.name === this.name && node.attrs.links.length > 1) {
+              const newLinks = node.attrs.links.filter(
+                (link) => link.documentId !== documentId,
+              );
+              if (newLinks.length !== node.attrs.links.length) {
+                const newAttrs = { ...node.attrs, links: newLinks };
+                dispatch(state.tr.setNodeMarkup(pos, undefined, newAttrs));
+              }
+            } else {
+              dispatch(state.tr.delete(from, to));
+            }
+          });
+          return true;
         },
     };
   },

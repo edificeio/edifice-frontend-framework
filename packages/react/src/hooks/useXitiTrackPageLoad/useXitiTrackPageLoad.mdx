@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useXitiTrackPageLoad" />
+
+# useXitiTrackPageLoad
+
+The `useXitiTrackPageLoad` hook is used to apply XiTi tracking for page navigation.
+
+## Usage
+
+```tsx
+import useXitiTrackPageLoad from './useXitiTrackPageLoad';
+
+function MyComponent() {
+  const { xitiStatus } = useXitiTrackPageLoad();
+
+  return <div>{xitiStatus}</div>;
+}
+```
+
+## Return Value
+
+The `useXitiTrackPageLoad` hook returns an object with the following properties:
+
+- `xitiStatus`: A string representing the status of the XiTi tracking.
+
+## Example
+
+```tsx
+import React from 'react';
+import useXitiTrackPageLoad from './useXitiTrackPageLoad';
+
+const ExampleComponent = () => {
+  const { xitiStatus } = useXitiTrackPageLoad();
+
+  return (
+    <div>
+      <h1>Page Load Tracking Status</h1>
+      <p>{xitiStatus}</p>
+    </div>
+  );
+};
+
+export default ExampleComponent;
+```

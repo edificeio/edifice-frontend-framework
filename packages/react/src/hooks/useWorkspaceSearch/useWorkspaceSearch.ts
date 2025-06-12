@@ -10,7 +10,6 @@ import {
 } from '@edifice.io/client';
 
 import { findNodeById } from '../../components/TreeView/utilities/treeview';
-import { useMockedData } from '../../providers/MockedDataProvider';
 import { TreeData } from '../../types';
 import { useHasWorkflow } from '../useHasWorkflow';
 
@@ -22,9 +21,6 @@ export default function useWorkspaceSearch(
   filter: WorkspaceSearchFilter,
   format: Role | Role[] | null,
 ) {
-  // Needed for storybook to mock calls to backend
-  const mock = useMockedData();
-
   const canListDocs = useHasWorkflow(
     'org.entcore.workspace.controllers.WorkspaceController|listDocuments',
   );
@@ -76,24 +72,9 @@ export default function useWorkspaceSearch(
       if (canListDocs && canListFolders) {
         const realWorkspaceId = folderId === rootId ? '' : folderId;
         // If mocked data is available, use it. Otherwise load from server.
-        const payload = mock?.listWorkspaceDocuments
-          ? await mock?.listWorkspaceDocuments?.().then((results) =>
-              results.map((result) => {
-                // Generate random IDs to prevent infinite recursion
-                const ret = {
-                  ...result,
-                  _id: '' + Math.round(Math.random() * 9999),
-                };
-                ret.name =
-                  result.eType == 'folder'
-                    ? 'folder id=' + ret._id
-                    : 'file id=' + ret._id;
-                return ret;
-              }),
-            )
-          : await odeServices
-              .workspace()
-              .listDocuments(filter, realWorkspaceId);
+        const payload = await odeServices
+          .workspace()
+          .listDocuments(filter, realWorkspaceId);
 
         const subfolders: WorkspaceElement[] = [];
         const files: WorkspaceElement[] = [];
@@ -118,7 +99,7 @@ export default function useWorkspaceSearch(
         dispatch({ folderId, subfolders, files, type: 'update' });
       }
     },
-    [canListDocs, canListFolders, rootId, mock, filter, format],
+    [canListDocs, canListFolders, rootId, filter, format],
   );
 
   return { root, loadContent } as {

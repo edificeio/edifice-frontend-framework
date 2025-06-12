@@ -100,7 +100,13 @@ const Button = forwardRef(
     );
 
     return (
-      <button ref={ref} className={classes} type={type} {...restProps}>
+      <button
+        ref={ref}
+        data-testid="button"
+        className={classes}
+        type={type}
+        {...restProps}
+      >
         {isLoading ? (
           <Loading
             isLoading

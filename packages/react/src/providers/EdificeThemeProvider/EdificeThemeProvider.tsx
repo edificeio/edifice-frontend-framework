@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import { useConf } from '../../hooks';
+import { useConf } from '../../hooks/useConf';
 import { useEdificeClient } from '../EdificeClientProvider/EdificeClientProvider.hook';
 import {
   EdificeThemeContext,
