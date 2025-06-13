@@ -11,7 +11,13 @@ import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeC
 const useLibraryUrl = (appCodeName?: string): string | null => {
   const { user, appCode } = useEdificeClient();
 
-  const appName = libraryMaps[(appCodeName as string) ?? (appCode as string)];
+  const appCodeToUse = (appCodeName ?? appCode) as string;
+  const appName = libraryMaps[appCodeToUse];
+
+  console.log('appCodeName:', appCodeName);
+  console.log('appCode:', appCode);
+  console.log('appCodeToUse:', appCodeName ?? appCode);
+  console.log('appName:', appName);
 
   // get library app from userinfo apps
   const libraryApp: IWebApp | undefined = (user as IUserInfo)?.apps.find(
