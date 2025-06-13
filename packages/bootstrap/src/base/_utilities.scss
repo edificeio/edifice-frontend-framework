@@ -41,7 +41,7 @@
 
 @each $value, $color in $extend-theme-colors {
   .border-#{$value} {
-    background-color: var(--#{$prefix}#{$value}) !important;
+    border-color: var(--#{$prefix}#{$value}) !important;
   }
 }
 
