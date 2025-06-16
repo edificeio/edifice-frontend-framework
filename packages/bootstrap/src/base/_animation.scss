@@ -17,3 +17,9 @@
     transform: scale(2.2) translateY(-4px);
   }
 }
+
+@keyframes placeholder-glow {
+  50% {
+    opacity: 0.3;
+  }
+}
