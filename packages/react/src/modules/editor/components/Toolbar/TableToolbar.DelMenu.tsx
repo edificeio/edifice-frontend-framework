@@ -62,12 +62,8 @@ export const TableToolbarDelMenu = ({ editor }: Props) => {
       </Tooltip>
       <Dropdown.Menu>
         {delOptions.map((option) => (
-          <div onMouseDown={(e) => e.preventDefault()}>
-            <Dropdown.Item
-              key={option.key}
-              icon={option.icon}
-              onClick={option.onClick}
-            >
+          <div key={option.key} onMouseDown={(e) => e.preventDefault()}>
+            <Dropdown.Item icon={option.icon} onClick={option.onClick}>
               {option.label}
             </Dropdown.Item>
           </div>
