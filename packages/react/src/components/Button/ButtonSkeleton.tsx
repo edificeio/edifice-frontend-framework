@@ -1,5 +1,4 @@
-import { Button } from '@edifice.io/react';
-import { ButtonColors, ButtonSizes } from './Button';
+import Button, { ButtonColors, ButtonSizes } from './Button';
 
 export interface ButtonSkeletonProps {
   className?: string;
