@@ -1,0 +1,43 @@
+@use '../abstracts/' as *;
+
+.user-profile {
+  &-student {
+    color: var(--#{$prefix}orange);
+
+    &:disabled {
+      color: var(--#{$prefix}orange-300);
+    }
+  }
+
+  &-teacher {
+    color: var(--#{$prefix}green);
+
+    &:disabled {
+      color: var(--#{$prefix}green-300);
+    }
+  }
+
+  &-relative {
+    color: var(--#{$prefix}blue);
+
+    &:disabled {
+      color: var(--#{$prefix}blue-300);
+    }
+  }
+
+  &-personnel {
+    color: var(--#{$prefix}purple);
+
+    &:disabled {
+      color: var(--#{$prefix}purple-300);
+    }
+  }
+
+  &-guest {
+    color: var(--#{$prefix}pink);
+
+    &:disabled {
+      color: var(--#{$prefix}pink-300);
+    }
+  }
+}
