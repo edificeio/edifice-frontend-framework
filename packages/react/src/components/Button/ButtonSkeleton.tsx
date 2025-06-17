@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Button, { ButtonColors, ButtonSizes } from './Button';
 
 export interface ButtonSkeletonProps {
@@ -11,9 +12,12 @@ const ButtonSkeleton = ({
   color = 'tertiary',
   size = 'md',
 }: ButtonSkeletonProps) => {
+  const classN = clsx('placeholder', className, {
+    'bg-gray-400': color === 'tertiary',
+  });
   return (
     <Button
-      className={`placeholder flex-shrink-1 ${className}`}
+      className={classN}
       color={color}
       variant="filled"
       size={size}
