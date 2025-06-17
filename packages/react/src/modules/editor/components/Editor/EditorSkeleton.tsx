@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import TextSkeleton from 'src/components/Skeleton/TextSkeleton';
 import { ButtonSkeleton } from '../../../../components';
 
 export interface EditorSkeletonProps {
@@ -26,10 +27,10 @@ const EditorSkeleton = ({
           <ButtonSkeleton className="col-2"></ButtonSkeleton>
         </div>
         <div className="d-flex flex-column gap-8 px-16">
-          <span className="placeholder col-10 "></span>
-          <span className="placeholder col-7 "></span>
-          <span className="placeholder col-8 "></span>
-          <span className="placeholder col-6 "></span>
+          <TextSkeleton className="col-10"></TextSkeleton>
+          <TextSkeleton className="col-7"></TextSkeleton>
+          <TextSkeleton className="col-8"></TextSkeleton>
+          <TextSkeleton className="col-6"></TextSkeleton>
         </div>
       </div>
     );
@@ -37,9 +38,9 @@ const EditorSkeleton = ({
 
   return (
     <div className={contentClass}>
-      <span className="placeholder col-10 "></span>
-      <span className="placeholder col-7 "></span>
-      <span className="placeholder col-8 "></span>
+      <TextSkeleton className="col-10"></TextSkeleton>
+      <TextSkeleton className="col-7"></TextSkeleton>
+      <TextSkeleton className="col-8"></TextSkeleton>
     </div>
   );
 };
