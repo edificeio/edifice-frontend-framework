@@ -95,6 +95,7 @@ const Button = forwardRef(
         'btn-loading': isLoading,
         'btn-lg': size === 'lg',
         'btn-sm': size === 'sm',
+        'btn-md': size === 'md',
       },
       className,
     );

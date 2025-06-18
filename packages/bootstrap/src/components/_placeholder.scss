@@ -1,0 +1,11 @@
+@forward '../base/animation';
+
+.placeholder {
+  &,
+  &:disabled,
+  &:disabled:hover {
+    animation: placeholder-glow 2s ease-in-out infinite;
+    color: var(--edifice-gray-400);
+    border-radius: var(--edifice-border-radius);
+  }
+}

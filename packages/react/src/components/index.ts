@@ -34,6 +34,7 @@ export * from './PreventPropagation';
 export * from './Radio';
 export * from './SearchBar';
 export * from './Select';
+export * from './Skeleton';
 export * from './StackedGroup';
 export * from './Switch';
 export * from './Table';
