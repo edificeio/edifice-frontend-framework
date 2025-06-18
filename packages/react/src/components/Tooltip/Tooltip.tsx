@@ -71,7 +71,7 @@ const Tooltip = ({
   return (
     <>
       <div
-        className="d-inline-block position-relative z-2"
+        className="d-inline-block position-relative"
         ref={setReferenceElement}
         onMouseEnter={() => {
           setVisible(true);
@@ -85,7 +85,7 @@ const Tooltip = ({
       </div>
       {visible && message && (
         <div
-          className={clsx('tooltip d-block show mb-12', `bs-tooltip-auto`)}
+          className={clsx('tooltip d-block show mb-12 z-2', `bs-tooltip-auto`)}
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
