@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import Button, { ButtonColors, ButtonSizes } from './Button';
+import Button, { ButtonColors, ButtonSizes } from '../Button/Button';
 
 export interface ButtonSkeletonProps {
   className?: string;
