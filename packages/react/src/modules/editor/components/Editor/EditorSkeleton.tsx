@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import TextSkeleton from 'src/components/Skeleton/TextSkeleton';
-import { ButtonSkeleton } from '../../../../components';
+import { ButtonSkeleton, TextSkeleton } from '../../../../components';
 
 export interface EditorSkeletonProps {
   /** Mode of the editor, either 'edit' or 'read' */
