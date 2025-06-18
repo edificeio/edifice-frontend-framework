@@ -1,0 +1,21 @@
+@use '../abstracts/' as *;
+
+$user-types: (
+  'student': 'orange',
+  'teacher': 'green',
+  'relative': 'blue',
+  'personnel': 'purple',
+  'guest': 'pink',
+);
+
+.user-profile {
+  @each $type, $color in $user-types {
+    &-#{$type} {
+      color: var(--#{$prefix}#{$color});
+
+      &:disabled {
+        color: var(--#{$prefix}#{$color}-300);
+      }
+    }
+  }
+}
