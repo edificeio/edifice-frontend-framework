@@ -23,6 +23,10 @@ export interface BaseProps
    */
   disabled?: boolean;
   /**
+   * Disabled status for button
+   */
+  buttonDisabled?: boolean;
+  /**
    * Optional class for styling purpose
    */
   className?: string;
@@ -64,6 +68,7 @@ const SearchBar = ({
   placeholder = 'search',
   className,
   disabled,
+  buttonDisabled,
   onChange,
   onClick,
   ...restProps
@@ -116,6 +121,7 @@ const SearchBar = ({
           icon={<IconSearch />}
           className="border-start-0"
           onClick={handleClick}
+          disabled={buttonDisabled}
         />
       )}
     </FormControl>

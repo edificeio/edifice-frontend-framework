@@ -69,4 +69,19 @@
   &.no-validation-icon {
     background-image: none;
   }
+
+  &[type='search'] {
+    &::-webkit-search-cancel-button {
+      /* stylelint-disable-next-line */
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M4.22221 4.22218C4.65178 3.7926 5.34827 3.7926 5.77784 4.22218L19.7778 18.2222C20.2074 18.6518 20.2074 19.3482 19.7778 19.7778C19.3483 20.2074 18.6518 20.2074 18.2222 19.7778L4.22221 5.77781C3.79263 5.34823 3.79263 4.65175 4.22221 4.22218Z' fill='%234A4A4A'/%3e%3cpath fill-rule='evenodd' clip-rule='evenodd' d='M19.7778 4.22218C20.2074 4.65175 20.2074 5.34823 19.7778 5.77781L5.77779 19.7778C5.34822 20.2074 4.65173 20.2074 4.22216 19.7778C3.79258 19.3482 3.79258 18.6518 4.22216 18.2222L18.2222 4.22218C18.6517 3.7926 19.3482 3.7926 19.7778 4.22218Z' fill='%234A4A4A'/%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 18px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  }
 }

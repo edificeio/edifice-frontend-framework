@@ -146,7 +146,9 @@
     }
 
     &:disabled {
-      --#{$prefix}btn-disabled-border-color: transparent;
+      border-color: var(--#{$prefix}gray-400);
+      color: var(--#{$prefix}gray-600);
+      background-color: var(--#{$prefix}gray-200);
     }
   }
 
