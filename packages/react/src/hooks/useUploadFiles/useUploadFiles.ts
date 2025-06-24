@@ -44,10 +44,10 @@ const useUploadFiles = ({
           } catch (err) {
             console.error(err);
           }
-        }
-        if (!resource) {
+        } else {
           resource = await uploadFile(file);
         }
+
         if (resource) {
           setUploadedFiles((prevFiles: WorkspaceElement[]) => [
             ...prevFiles,
