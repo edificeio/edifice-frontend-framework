@@ -20,7 +20,6 @@ const useDropzone = (props?: {
     setFiles((prevFiles) =>
       prevFiles.filter((prevFile) => prevFile.name !== file.name),
     );
-    if (inputRef.current) inputRef.current.value = '';
   };
 
   const replaceFileAt = (index: number, file: File) => {

@@ -21,7 +21,7 @@ const useUploadFiles = ({
     WorkspaceElement | undefined
   >(undefined);
 
-  const { files, deleteFile, replaceFileAt } = useDropzoneContext();
+  const { files, deleteFile, replaceFileAt, inputRef } = useDropzoneContext();
   const { remove, createOrUpdate } = useWorkspaceFile();
   const {
     getUploadStatus,
@@ -126,6 +126,9 @@ const useUploadFiles = ({
     }
     // Remove the file from `files`
     deleteFile(file);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
   }
 
   async function updateImage({
