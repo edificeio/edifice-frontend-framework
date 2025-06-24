@@ -53,6 +53,10 @@ const useUploadFiles = ({
             ...prevFiles,
             resource,
           ]);
+        } else {
+          if (inputRef.current) {
+            inputRef.current.value = '';
+          }
         }
       });
     },
