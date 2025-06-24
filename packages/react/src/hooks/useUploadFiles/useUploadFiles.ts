@@ -31,6 +31,12 @@ const useUploadFiles = ({
     uploadAlternateFile,
   } = useUpload(visibility, application);
 
+  const resetInputValue = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  }, [inputRef]);
+
   const tryUploading = useCallback(
     (files: Array<File | null>) => {
       files.forEach(async (file, index) => {
@@ -54,9 +60,7 @@ const useUploadFiles = ({
             resource,
           ]);
         } else {
-          if (inputRef.current) {
-            inputRef.current.value = '';
-          }
+          resetInputValue();
         }
       });
     },
@@ -130,9 +134,7 @@ const useUploadFiles = ({
     }
     // Remove the file from `files`
     deleteFile(file);
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
+    resetInputValue();
   }
 
   async function updateImage({
