@@ -13,7 +13,8 @@ $user-types: (
     &-#{$type} {
       color: var(--#{$prefix}#{$color});
 
-      &:disabled {
+      &:disabled,
+      .disabled {
         color: var(--#{$prefix}#{$color}-300);
       }
     }
