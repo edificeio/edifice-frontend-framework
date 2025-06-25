@@ -41,16 +41,19 @@ const useUploadFiles = ({
     (files: Array<File | null>) => {
       files.forEach(async (file, index) => {
         if (file == null) return;
-        let resource;
+        let resource, replacement;
+
         if (file.type.startsWith('image')) {
           try {
-            const replacement = await ImageResizer.resizeImageFile(file);
+            replacement = await ImageResizer.resizeImageFile(file);
             resource = await uploadAlternateFile(file, replacement);
             replaceFileAt(index, replacement);
           } catch (err) {
             console.error(err);
           }
-        } else {
+        }
+
+        if (!resource && !replacement) {
           resource = await uploadFile(file);
         }
 
