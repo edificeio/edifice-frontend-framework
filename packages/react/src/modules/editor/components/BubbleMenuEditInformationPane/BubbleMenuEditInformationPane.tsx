@@ -31,7 +31,7 @@ const BubbleMenuEditInformationPane = ({
         name: 'info',
         props: {
           'size': 'lg',
-          'leftIcon': <IconInfoCircle />,
+          'icon': <IconInfoCircle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.info'),
           'className':
             selectedNode?.attrs?.type === 'info' ? 'is-selected' : '',
@@ -52,7 +52,7 @@ const BubbleMenuEditInformationPane = ({
         name: 'success',
         props: {
           'size': 'lg',
-          'leftIcon': <IconSuccessOutline />,
+          'icon': <IconSuccessOutline />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.success'),
           'className':
             selectedNode?.attrs?.type === 'success' ? 'is-selected' : '',
@@ -73,7 +73,7 @@ const BubbleMenuEditInformationPane = ({
         name: 'warning',
         props: {
           'size': 'lg',
-          'leftIcon': <IconAlertTriangle />,
+          'icon': <IconAlertTriangle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.warning'),
           'className':
             selectedNode?.attrs?.type === 'warning' ? 'is-selected' : '',
@@ -94,7 +94,7 @@ const BubbleMenuEditInformationPane = ({
         name: 'question',
         props: {
           'size': 'lg',
-          'leftIcon': <IconQuestion />,
+          'icon': <IconQuestion />,
           'aria-label': t(
             'tiptap.tooltip.bubblemenu.information.pane.question',
           ),
