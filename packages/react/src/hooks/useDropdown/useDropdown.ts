@@ -113,9 +113,15 @@ const useDropdown = (
 
   useEffect(() => {
     if (activeIndex !== -1) {
-      const currentItem = Object.values(itemRefs.current).filter(
+      const filteredItems = Object.values(itemRefs.current).filter(
         (item) => !!item,
-      )[activeIndex] as HTMLElement;
+      );
+      if (activeIndex < 0 || activeIndex >= filteredItems.length) {
+        setActiveIndex(-1);
+        setIsFocused(null);
+        return;
+      }
+      const currentItem = filteredItems[activeIndex] as HTMLElement;
 
       if (currentItem) {
         const id = currentItem.getAttribute('id') as string;
