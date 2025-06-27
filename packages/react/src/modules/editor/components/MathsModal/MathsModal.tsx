@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Mathematics from '@tiptap-pro/extension-mathematics';
+import Mathematics from '@tiptap/extension-mathematics';
 import { Editor, EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';

@@ -186,7 +186,7 @@
     "react-i18next": "catalog:"
   },
   "optionalDependencies": {
-    "@tiptap-pro/extension-mathematics": "2.2.1"
+    "@tiptap/extension-mathematics": "2.2.1"
   },
   "publishConfig": {
     "access": "public"
