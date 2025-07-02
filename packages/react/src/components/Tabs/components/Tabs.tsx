@@ -23,12 +23,22 @@ export interface TabsProps {
    * Children Props
    */
   children?: (...props: any) => ReactNode;
+  /**
+   * Whether tabs should take full available width
+   */
+  fullWidth?: boolean;
 }
 
 /**
  * Tab Content displayed one at a time when a Tab Item is selected
  */
-export const Tabs = ({ defaultId, items, onChange, children }: TabsProps) => {
+export const Tabs = ({
+  defaultId,
+  items,
+  fullWidth = false,
+  onChange,
+  children,
+}: TabsProps) => {
   const {
     activeTab,
     setSelectedTab,
@@ -60,14 +70,13 @@ export const Tabs = ({ defaultId, items, onChange, children }: TabsProps) => {
   );
 
   const currentItem = items.find((item) => item.id === activeTab);
-
   return (
     <TabsContext.Provider value={value}>
       {typeof children === 'function' ? (
         children(currentItem)
       ) : (
         <>
-          <Tabs.List />
+          <Tabs.List fullWidth={fullWidth} />
           <Tabs.Panel currentItem={currentItem}>
             {currentItem?.content}
           </Tabs.Panel>
