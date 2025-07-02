@@ -27,6 +27,10 @@ export interface TabsProps {
    * Whether tabs should take full available width
    */
   fullWidth?: boolean;
+  /**
+   * Whether tabs should take full available height
+   */
+  fullHeight?: boolean;
 }
 
 /**
@@ -36,6 +40,7 @@ export const Tabs = ({
   defaultId,
   items,
   fullWidth = false,
+  fullHeight = false,
   onChange,
   children,
 }: TabsProps) => {
@@ -77,7 +82,7 @@ export const Tabs = ({
       ) : (
         <>
           <Tabs.List fullWidth={fullWidth} />
-          <Tabs.Panel currentItem={currentItem}>
+          <Tabs.Panel currentItem={currentItem} fullHeight={fullHeight}>
             {currentItem?.content}
           </Tabs.Panel>
         </>
