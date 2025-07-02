@@ -91,7 +91,7 @@ const Button = forwardRef(
         [`btn-filled btn-${color}`]: variant === 'filled',
         [`btn-${variant}-${color}`]:
           variant === 'outline' || variant === 'ghost',
-        'btn-icon btn-sm': !children,
+        'btn-icon': !children,
         'btn-loading': isLoading,
         'btn-lg': size === 'lg',
         'btn-sm': size === 'sm',

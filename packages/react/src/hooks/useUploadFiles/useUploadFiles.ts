@@ -21,7 +21,7 @@ const useUploadFiles = ({
     WorkspaceElement | undefined
   >(undefined);
 
-  const { files, deleteFile, replaceFileAt } = useDropzoneContext();
+  const { files, deleteFile, replaceFileAt, inputRef } = useDropzoneContext();
   const { remove, createOrUpdate } = useWorkspaceFile();
   const {
     getUploadStatus,
@@ -31,28 +31,39 @@ const useUploadFiles = ({
     uploadAlternateFile,
   } = useUpload(visibility, application);
 
+  const resetInputValue = useCallback(() => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  }, [inputRef]);
+
   const tryUploading = useCallback(
     (files: Array<File | null>) => {
       files.forEach(async (file, index) => {
         if (file == null) return;
-        let resource;
+        let resource, replacement;
+
         if (file.type.startsWith('image')) {
           try {
-            const replacement = await ImageResizer.resizeImageFile(file);
+            replacement = await ImageResizer.resizeImageFile(file);
             resource = await uploadAlternateFile(file, replacement);
             replaceFileAt(index, replacement);
           } catch (err) {
             console.error(err);
           }
         }
-        if (!resource) {
+
+        if (!resource && !replacement) {
           resource = await uploadFile(file);
         }
+
         if (resource) {
           setUploadedFiles((prevFiles: WorkspaceElement[]) => [
             ...prevFiles,
             resource,
           ]);
+        } else {
+          resetInputValue();
         }
       });
     },
@@ -126,6 +137,7 @@ const useUploadFiles = ({
     }
     // Remove the file from `files`
     deleteFile(file);
+    resetInputValue();
   }
 
   async function updateImage({
