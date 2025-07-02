@@ -15,11 +15,14 @@ export interface LayoutProps extends ComponentPropsWithoutRef<any> {
   children: ReactNode;
   /** Full screen mode without header component  */
   headless?: boolean;
+  /** Control white background - defaults to true */
+  whiteBg?: boolean;
 }
 
 export const Layout = ({
   children,
   headless = false,
+  whiteBg = true,
   ...restProps
 }: LayoutProps) => {
   const { theme } = useEdificeTheme();
@@ -36,7 +39,8 @@ export const Layout = ({
 
   useCantoo();
 
-  const classes = clsx('d-flex flex-column bg-white', {
+  const classes = clsx('d-flex flex-column', {
+    'bg-white': whiteBg,
     'container-fluid': !headless,
     'rounded-4 border': theme?.is1d && !headless,
     'mt-24': theme?.is1d && !headless,
