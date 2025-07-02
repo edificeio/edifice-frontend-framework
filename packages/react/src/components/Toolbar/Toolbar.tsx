@@ -265,6 +265,7 @@ export const Toolbar = forwardRef(
                     key={item.name ?? index}
                     color={item.props.color || 'tertiary'}
                     variant="ghost"
+                    size={item.props.size || hideLabel ? 'sm' : 'md'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
