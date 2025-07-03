@@ -50,6 +50,8 @@ export interface UseDropdownProps {
   itemProps: Record<string, any>;
   setVisible: Dispatch<SetStateAction<boolean>>;
   openOnSpace?: boolean;
+  openDropdown: () => void;
+  closeDropdown: () => void;
 }
 
 const useDropdown = (
@@ -327,6 +329,8 @@ const useDropdown = (
       onMenuItemClick: closeDropdown,
       onMenuItemKeyDown,
     },
+    openDropdown,
+    closeDropdown,
     setVisible,
   };
 };
