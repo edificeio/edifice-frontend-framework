@@ -92,7 +92,10 @@ export function useHelp() {
                             typedDomNode.attribs &&
                             typedDomNode.name === 'a'
                           ) {
-                            const sectionId = typedDomNode.attribs.href.replace('#', '');
+                            const sectionId = typedDomNode.attribs.href.replace(
+                              '#',
+                              '',
+                            );
                             return (
                               <span
                                 onClick={(e) => {
@@ -122,11 +125,7 @@ export function useHelp() {
       ) {
         const props = attributesToProps(domNode.attribs);
         return (
-          <div
-            {...props}
-            className="section level2"
-            hidden={!isActive}
-          >
+          <div {...props} className="section level2" hidden={!isActive}>
             {domToReact(typedDomNode.children, {
               replace: (domNode: any) => {
                 const typedDomNode = domNode as any;
