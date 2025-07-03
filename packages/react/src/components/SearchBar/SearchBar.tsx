@@ -1,62 +1,91 @@
 import { ChangeEvent } from 'react';
-
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import { IconSearch } from '../../modules/icons/components';
+import { IconSearch, IconClose } from '../../modules/icons/components';
 import { Size } from '../../types';
 import { SearchButton } from '../Button';
 import FormControl from '../Form/FormControl';
 
+/**
+ * Base props shared by both SearchBar variants
+ */
 export interface BaseProps {
   /**
-   * String or Template literal with React i18next namespace
+   * String or template literal key for i18next translation
    */
   placeholder?: string;
+
   /**
-   * Control SearchBar size
+   * Control SearchBar size (excluding 'sm')
    */
   size?: Exclude<Size, 'sm'>;
+
   /**
-   * Disabled status
+   * Disable the input
    */
   disabled?: boolean;
+
   /**
-   * Optional class for styling purpose
+   * Optional class for custom styling
    */
   className?: string;
+
   /**
-   * ChangeEvent Handler
+   * onChange handler for input changes
    */
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+
+  /**
+   * Current value of the input
+   */
+  value?: string;
+
+  /**
+   * Show a clear (reset) button when value is present
+   */
+  clearable?: boolean;
 }
 
+/**
+ * Default SearchBar with a submit button
+ */
 type DefaultSearchBar = {
   /**
-   * Switch between button or dynamic search bar
+   * Use false to render the default SearchBar (with a button)
    */
   isVariant: false;
+
   /**
-   * Handle Search with Default SearchBar
+   * Callback when clicking the search button
    */
   onClick: () => void;
 };
 
+/**
+ * Dynamic SearchBar with icon and no submit button
+ */
 type DynamicSearchBar = {
   /**
-   * Switch between button or dynamic search bar
+   * Use true to render the dynamic SearchBar (with an icon inside input)
    */
   isVariant: true;
+
   /**
-   * Handle Search with Default SearchBar
+   * onClick must be undefined for dynamic variant
    */
   onClick?: undefined;
 };
 
+/**
+ * Props for the SearchBar component
+ */
 export type Props = DefaultSearchBar | DynamicSearchBar;
-
 export type SearchBarProps = BaseProps & Props;
 
+/**
+ * SearchBar component to handle dynamic or static search input
+ */
 const SearchBar = ({
   isVariant = false,
   size = 'md',
@@ -65,31 +94,47 @@ const SearchBar = ({
   disabled,
   onChange,
   onClick,
+  value,
+  clearable = false,
   ...restProps
 }: SearchBarProps) => {
   const { t } = useTranslation();
 
+  // Compute wrapper classes
   const searchbar = clsx(className, {
     'input-group': !isVariant,
     'position-relative': isVariant,
   });
 
+  // Compute input classes
   const input = clsx({
     'border-end-0': !isVariant,
     'ps-48': isVariant,
+    'searchbar-hide-native-clear': isVariant && clearable,
   });
 
+  // Handle click on SearchButton (default variant only)
   const handleClick = () => {
     onClick?.();
   };
 
+  // Handle clear/reset of input value
+  const handleClear = () => {
+    const event = {
+      target: { value: '' },
+    } as ChangeEvent<HTMLInputElement>;
+    onChange?.(event);
+  };
+
   return (
     <FormControl id="search-bar" className={searchbar}>
+      {/* Dynamic search icon on the left (only in dynamic variant) */}
       {isVariant && (
         <div className="position-absolute z-1 top-50 start-0 translate-middle-y border-0 ps-12 bg-transparent">
           <IconSearch />
         </div>
       )}
+
       <FormControl.Input
         type="search"
         placeholder={t(placeholder)}
@@ -97,9 +142,24 @@ const SearchBar = ({
         noValidationIcon
         className={input}
         onChange={onChange}
+        value={value}
         disabled={disabled}
         {...restProps}
       />
+
+      {/* Clear button when clearable is true and input has value */}
+      {isVariant && clearable && value && onChange && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="position-absolute end-0 top-50 translate-middle-y pe-12 bg-transparent border-0"
+          aria-label={t('clear')}
+        >
+          <IconClose className="color-gray" style={{ width: 12, height: 12 }} />
+        </button>
+      )}
+
+      {/* Default submit button when not in variant mode */}
       {!isVariant && (
         <SearchButton
           type="submit"
