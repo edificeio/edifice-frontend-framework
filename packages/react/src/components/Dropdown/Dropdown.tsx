@@ -1,4 +1,10 @@
-import { ReactNode, useEffect, useMemo } from 'react';
+import {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+} from 'react';
 
 import { Placement } from '@floating-ui/react';
 import clsx from 'clsx';
@@ -14,6 +20,15 @@ import DropdownRadioItem from './DropdownRadioItem';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
 
+export interface DropdownApi {
+  visible: boolean;
+  isFocused: string | null;
+  menuRef: React.MutableRefObject<HTMLUListElement | null>;
+  triggerRef: React.MutableRefObject<HTMLButtonElement | null>;
+  setVisible: (visible: boolean) => void;
+  openDropdown: () => void;
+  closeDropdown: () => void;
+}
 export interface DropdownProps {
   /** Children Props */
   children: ReactNode | ((...props: any) => ReactNode);
@@ -88,85 +103,107 @@ export type DropdownMenuOptions =
       type: 'divider';
     };
 
-const Root = ({
-  children,
-  block,
-  overflow = true,
-  noWrap,
-  placement = 'bottom-start',
-  extraTriggerKeyDownHandler,
-  onToggle,
-  isTriggerHovered = false,
-  focusOnVisible = true,
-  openOnSpace = true,
-  focusOnMouseEnter = true,
-}: DropdownProps) => {
-  const {
-    visible,
-    isFocused,
-    triggerProps,
-    menuProps,
-    itemProps,
-    itemRefs,
-    setVisible,
-  } = useDropdown(
-    placement,
-    extraTriggerKeyDownHandler,
-    isTriggerHovered,
-    focusOnVisible,
-    openOnSpace,
-    focusOnMouseEnter,
-  );
-
-  /* Ref to close dropdown when clicking outside */
-  const ref = useClickOutside(() => {
-    setVisible(false);
-  });
-
-  const value = useMemo(
-    () => ({
+const Root = forwardRef<DropdownApi, DropdownProps>(
+  (
+    {
+      children,
+      block,
+      overflow = true,
+      noWrap,
+      placement = 'bottom-start',
+      extraTriggerKeyDownHandler,
+      onToggle,
+      isTriggerHovered = false,
+      focusOnVisible = true,
+      openOnSpace = true,
+      focusOnMouseEnter = true,
+    }: DropdownProps,
+    refDropdown,
+  ) => {
+    const {
       visible,
       isFocused,
       triggerProps,
       menuProps,
       itemProps,
       itemRefs,
-      block,
       setVisible,
-    }),
-    [
+      menuRef,
+      triggerRef,
+      closeDropdown,
+      openDropdown
+    } = useDropdown(
+      placement,
+      extraTriggerKeyDownHandler,
+      isTriggerHovered,
+      focusOnVisible,
+      openOnSpace,
+      focusOnMouseEnter,
+    );
+    useImperativeHandle(refDropdown, () => ({
       visible,
-      isFocused,
-      triggerProps,
-      menuProps,
-      itemProps,
-      itemRefs,
-      block,
       setVisible,
-    ],
-  );
+      isFocused,
+      menuRef,
+      triggerRef,
+      closeDropdown,
+      openDropdown,
+    }));
 
-  const dropdown = clsx('dropdown', {
-    'w-100': block,
-    'dropdown-nowrap': noWrap,
-    overflow,
-  });
+    /* Ref to close dropdown when clicking outside */
+    const ref = useClickOutside(() => {
+      setVisible(false);
+    });
 
-  useEffect(() => {
-    onToggle?.(visible);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
+    const value = useMemo(
+      () => ({
+        visible,
+        isFocused,
+        triggerProps,
+        menuProps,
+        itemProps,
+        itemRefs,
+        block,
+        setVisible,
+        openDropdown,
+        closeDropdown,
+      }),
+      [
+        visible,
+        isFocused,
+        triggerProps,
+        menuProps,
+        itemProps,
+        itemRefs,
+        block,
+        setVisible,
+        openDropdown,
+        closeDropdown,
+      ],
+    );
 
-  return (
-    <DropdownContext.Provider value={value}>
-      <div ref={ref} className={dropdown}>
-        {typeof children === 'function'
-          ? children(triggerProps, itemRefs, setVisible)
-          : children}
-      </div>
-    </DropdownContext.Provider>
-  );
-};
+    const dropdown = clsx('dropdown', {
+      'w-100': block,
+      'dropdown-nowrap': noWrap,
+      overflow,
+    });
+
+    useEffect(() => {
+      onToggle?.(visible);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [visible]);
+
+    return (
+      <DropdownContext.Provider value={value}>
+        <div ref={ref} className={dropdown}>
+          {typeof children === 'function'
+            ? children(triggerProps, itemRefs, setVisible)
+            : children}
+        </div>
+      </DropdownContext.Provider>
+    );
+  },
+);
 
 Root.displayName = 'Dropdown';
 
