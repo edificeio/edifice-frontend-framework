@@ -82,3 +82,20 @@ export const DisabledDynamicSearch: Story = {
     onClick: undefined,
   },
 };
+
+export const DynamicSearchWithClear: Story = {
+  render: (args) => {
+    const [value, setValue] = useState('Edifice');
+    return (
+      <SearchBar
+        {...args}
+        value={value}
+        clearable
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
+  },
+  args: {
+    isVariant: true,
+  },
+};
