@@ -13,10 +13,10 @@ export interface TabsListProps extends ComponentPropsWithoutRef<'div'> {
 }
 const TabsList = (props: TabsListProps) => {
   const { items, tabUnderlineLeft, tabUnderlineWidth } = useTabsContext();
-  const { className, ...restProps } = props;
+  const { className, fullWidth, ...restProps } = props;
 
   const ulClasses = clsx('nav nav-tabs flex-nowrap', {
-    'w-100': props.fullWidth,
+    'w-100': fullWidth,
   });
 
   const tabslist = clsx(
