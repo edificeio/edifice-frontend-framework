@@ -33,6 +33,9 @@ const FileCard = ({
   isSelected = false,
   onClick,
   className,
+  onSelect,
+  isFocused,
+  app,
 }: FileCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -117,6 +120,9 @@ const FileCard = ({
       isSelectable={isSelectable}
       isSelected={isSelected}
       onClick={onClick}
+      app={app}
+      isFocused={isFocused}
+      onSelect={onSelect}
     >
       <Card.Body space="8">
         <div
