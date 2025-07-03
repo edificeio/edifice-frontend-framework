@@ -1,60 +1,33 @@
 import { ChangeEvent } from 'react';
-
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import { IconSearch } from '../../modules/icons/components';
+import { IconSearch, IconClose } from '../../modules/icons/components';
 import { Size } from '../../types';
 import { SearchButton } from '../Button';
 import FormControl from '../Form/FormControl';
 
 export interface BaseProps {
-  /**
-   * String or Template literal with React i18next namespace
-   */
   placeholder?: string;
-  /**
-   * Control SearchBar size
-   */
   size?: Exclude<Size, 'sm'>;
-  /**
-   * Disabled status
-   */
   disabled?: boolean;
-  /**
-   * Optional class for styling purpose
-   */
   className?: string;
-  /**
-   * ChangeEvent Handler
-   */
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
+  clearable?: boolean; // Show a clear button when value is present (only works with isVariant)
 }
 
 type DefaultSearchBar = {
-  /**
-   * Switch between button or dynamic search bar
-   */
   isVariant: false;
-  /**
-   * Handle Search with Default SearchBar
-   */
   onClick: () => void;
 };
 
 type DynamicSearchBar = {
-  /**
-   * Switch between button or dynamic search bar
-   */
   isVariant: true;
-  /**
-   * Handle Search with Default SearchBar
-   */
   onClick?: undefined;
 };
 
 export type Props = DefaultSearchBar | DynamicSearchBar;
-
 export type SearchBarProps = BaseProps & Props;
 
 const SearchBar = ({
@@ -65,6 +38,8 @@ const SearchBar = ({
   disabled,
   onChange,
   onClick,
+  value,
+  clearable = false,
   ...restProps
 }: SearchBarProps) => {
   const { t } = useTranslation();
@@ -77,10 +52,18 @@ const SearchBar = ({
   const input = clsx({
     'border-end-0': !isVariant,
     'ps-48': isVariant,
+    'searchbar-hide-native-clear': isVariant && clearable,
   });
 
   const handleClick = () => {
     onClick?.();
+  };
+
+  const handleClear = () => {
+    const event = {
+      target: { value: '' },
+    } as ChangeEvent<HTMLInputElement>;
+    onChange?.(event);
   };
 
   return (
@@ -90,6 +73,7 @@ const SearchBar = ({
           <IconSearch />
         </div>
       )}
+
       <FormControl.Input
         type="search"
         placeholder={t(placeholder)}
@@ -97,9 +81,22 @@ const SearchBar = ({
         noValidationIcon
         className={input}
         onChange={onChange}
+        value={value}
         disabled={disabled}
         {...restProps}
       />
+
+      {isVariant && clearable && value && onChange && (
+        <button
+          type="button"
+          onClick={handleClear}
+          className="position-absolute end-0 top-50 translate-middle-y pe-12 bg-transparent border-0"
+          aria-label={t('clear')}
+        >
+          <IconClose className="color-gray" style={{ width: 12, height: 12 }} />
+        </button>
+      )}
+
       {!isVariant && (
         <SearchButton
           type="submit"
