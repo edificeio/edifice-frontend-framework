@@ -28,9 +28,9 @@ const TabsList = (props: TabsListProps) => {
   });
 
   const tabslist = clsx(
-    ' flex-shrink-0 overflow-x-auto bg-white',
+    ' flex-shrink-0 overflow-x-auto',
     {
-      'position-sticky': isSticky,
+      'position-sticky z-1': isSticky,
       'position-relative': !isSticky,
     },
     className,
