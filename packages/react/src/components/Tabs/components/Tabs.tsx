@@ -31,6 +31,14 @@ export interface TabsProps {
    * Whether tabs should take full available height
    */
   fullHeight?: boolean;
+  /**
+   * Whether the tab list should be sticky
+   */
+  isSticky?: boolean;
+  /**
+   * The top offset for the sticky tab list
+   */
+  stickyTop?: number;
 }
 
 /**
@@ -43,6 +51,8 @@ export const Tabs = ({
   fullHeight = false,
   onChange,
   children,
+  isSticky = false,
+  stickyTop = 0,
 }: TabsProps) => {
   const {
     activeTab,
