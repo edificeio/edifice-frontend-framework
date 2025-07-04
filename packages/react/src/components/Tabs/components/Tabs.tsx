@@ -39,6 +39,10 @@ export interface TabsProps {
    * The top offset for the sticky tab list
    */
   stickyTop?: number;
+  /**
+   * Additional class names for the Tabs component
+   */
+  className?: string;
 }
 
 /**
@@ -53,6 +57,7 @@ export const Tabs = ({
   children,
   isSticky = false,
   stickyTop = 0,
+  className,
 }: TabsProps) => {
   const {
     activeTab,
@@ -95,6 +100,7 @@ export const Tabs = ({
             fullWidth={fullWidth}
             isSticky={isSticky}
             stickyTop={stickyTop}
+            className={className}
           />
           <Tabs.Panel currentItem={currentItem} fullHeight={fullHeight}>
             {currentItem?.content}
