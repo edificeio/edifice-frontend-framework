@@ -25,11 +25,14 @@ const TabsList = (props: TabsListProps) => {
 
   const ulClasses = clsx('nav nav-tabs flex-nowrap', {
     'w-100': fullWidth,
-    'position-sticky': isSticky,
   });
 
   const tabslist = clsx(
-    'position-relative flex-shrink-0 overflow-x-auto',
+    ' flex-shrink-0 overflow-x-auto bg-white',
+    {
+      'position-sticky': isSticky,
+      'position-relative': !isSticky,
+    },
     className,
   );
 
@@ -37,7 +40,7 @@ const TabsList = (props: TabsListProps) => {
     <div
       className={tabslist}
       {...restProps}
-      style={{ top: isSticky ? stickyTop : undefined }}
+      style={isSticky ? { top: stickyTop } : undefined}
     >
       <ul className={ulClasses} role="tablist">
         {items.map((item, order) => {
