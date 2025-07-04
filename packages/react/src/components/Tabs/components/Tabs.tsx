@@ -91,7 +91,11 @@ export const Tabs = ({
         children(currentItem)
       ) : (
         <>
-          <Tabs.List fullWidth={fullWidth} />
+          <Tabs.List
+            fullWidth={fullWidth}
+            isSticky={isSticky}
+            stickyTop={stickyTop}
+          />
           <Tabs.Panel currentItem={currentItem} fullHeight={fullHeight}>
             {currentItem?.content}
           </Tabs.Panel>
