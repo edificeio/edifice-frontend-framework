@@ -104,7 +104,6 @@
     "@tiptap/extension-image": "2.11.0",
     "@tiptap/extension-link": "2.11.0",
     "@tiptap/extension-list-item": "2.11.0",
-    "@tiptap/extension-mathematics": "2.22.0",
     "@tiptap/extension-placeholder": "2.11.0",
     "@tiptap/extension-subscript": "2.11.0",
     "@tiptap/extension-superscript": "2.11.0",
@@ -185,6 +184,9 @@
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:"
+  },
+  "optionalDependencies": {
+    "@tiptap/extension-mathematics": "2.22.0"
   },
   "publishConfig": {
     "access": "public"
