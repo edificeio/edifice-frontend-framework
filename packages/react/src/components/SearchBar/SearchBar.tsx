@@ -125,6 +125,13 @@ const SearchBar = ({
     onClick?.();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   // Handle clear/reset of input value
   const handleClear = () => {
     const event = {

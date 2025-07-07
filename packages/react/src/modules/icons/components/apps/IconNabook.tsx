@@ -13,21 +13,27 @@ const SvgIconNabook = ({
     width="24"
     height="24"
     fill="none"
-    viewBox="0 0 500 500"
+    viewBox="0 0 50 50"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <rect width={500} height={500} fill="#120D37" rx={30} />
-    <path
-      fill="#066"
-      d="m363.4 100.712 18.319 264.583-100.438 21.778-71.561-134.076 9.084 144.502-87.235 10.711-26.773-275.746 96.357-16.554 84.212 131.341-13.084-132.203z"
-    />
-    <path
-      fill="#0FC"
-      d="m362.279 87.72 18.318 264.583-100.438 21.777-71.561-134.075 9.084 144.501-87.235 10.711-26.773-275.745 96.357-16.554 84.212 131.341-13.084-132.203z"
-    />
+    <g clipPath="url(#icon-nabook_svg__a)">
+      <path
+        fill="#066"
+        d="m36.34 10.071 1.832 26.459-10.044 2.177L20.972 25.3l.908 14.45-8.723 1.071-2.677-27.575 9.635-1.655 8.421 13.134-1.308-13.22z"
+      />
+      <path
+        fill="#0FC"
+        d="M36.228 8.772 38.06 35.23l-10.044 2.178L20.86 24l.908 14.45-8.723 1.072-2.678-27.575 9.636-1.655 8.421 13.134-1.308-13.22z"
+      />
+    </g>
+    <defs>
+      <clipPath id="icon-nabook_svg__a">
+        <path fill="#fff" d="M0 0h50v50H0z" />
+      </clipPath>
+    </defs>
   </svg>
 );
 export default SvgIconNabook;
