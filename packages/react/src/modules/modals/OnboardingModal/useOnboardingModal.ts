@@ -25,8 +25,8 @@ const saveOnboardingTrash = async (key: string) => {
   return result;
 };
 
-export const useOnboardingModal = (id: string) => {
-  const [isOpen, setIsOpen] = useState(true);
+export const useOnboardingModal = (id: string, defaultOpen: boolean) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isOnboarding, setIsOnboarding] = useState(false);
 
   useEffect(() => {
