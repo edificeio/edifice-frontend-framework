@@ -63,6 +63,15 @@ export class SnipletsService {
     return this.resourceProducingApps;
   }
 
+  static registerCustomBehaviour(
+    application: App,
+    resourceType: ResourceType,
+    service: (context: IOdeServices) => IBehaviourService,
+  ): void {
+    // Register a custom behaviour service for a specific resource type
+    this.registry.register({ application, resourceType }, service);
+  }
+
   static async registerBehaviours(currentApp: App): Promise<void> {
     // Register services
     this.resourceProducingApps.forEach((app) => {
