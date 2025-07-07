@@ -181,6 +181,7 @@ i18n.use(initReactI18next).init({
         'bbm.video.url.placeholder': 'Insert a Youtube link, Dailymotion, ...',
         'bbm.video.useEmbedCode': 'Use embed or iframe code',
         'bbm.video.modal.title': 'Add a video',
+        'bbm.studio.modal.title': 'Studio',
         'bbm.audio.modal.title': 'Add an audio',
         'bbm.image.modal.title': 'Add an image',
         'bbm.attachment.modal.title': 'Add an attachment',

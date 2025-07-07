@@ -96,7 +96,9 @@ export type MediaLibraryType =
   /** Embedded websites */
   | 'embedder'
   /** Hyperlinks */
-  | 'hyperlink';
+  | 'hyperlink'
+  /** Studio mode for recording audio and video */
+  | 'studio';
 
 type MediaLibraryTypeOptions = {
   /** I18n key describing this MediaLibrary type. */
@@ -142,6 +144,11 @@ const mediaLibraryTypes: { none: null } & {
   },
   hyperlink: { title: 'bbm.link.modal.title', defaultTab: 'linker' },
   embedder: { title: 'bbm.embed.modal.title', defaultTab: 'iframe' },
+  // Add studio type with video-capture as default tab
+  studio: {
+    title: 'bbm.studio.modal.title',
+    defaultTab: 'audio-capture',
+  },
 };
 
 /**
@@ -250,7 +257,7 @@ const MediaLibrary = forwardRef(
         icon: <IconRecordVideo />,
         label: t('bbm.video'),
         content: <InnerTabs.Video />,
-        availableFor: ['video'],
+        availableFor: ['video', 'studio'],
         isEnable: () => (videoCaptureWorkflow ? true : false),
       },
       'audio-capture': {
@@ -258,7 +265,7 @@ const MediaLibrary = forwardRef(
         icon: <IconMic />,
         label: t('bbm.audio'),
         content: <InnerTabs.Audio />,
-        availableFor: ['audio'],
+        availableFor: ['audio', 'studio'],
         isEnable: () => (workspaceCreateWorkflow ? true : false),
       },
       'external-link': {
