@@ -131,7 +131,7 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
       menuRef,
       triggerRef,
       closeDropdown,
-      openDropdown
+      openDropdown,
     } = useDropdown(
       placement,
       extraTriggerKeyDownHandler,

@@ -179,3 +179,21 @@ export const Linker: Story = {
     },
   },
 };
+
+/**
+ * Studio story showcasing both audio and video capture capabilities
+ */
+export const Studio: Story = {
+  render: (args) => renderMediaLibrary(args, 'studio'),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Use to record audio or video content in a single interface. Perfect for creating multimedia content directly within the app.',
+      },
+      source: {
+        code: code('studio'),
+      },
+    },
+  },
+};
