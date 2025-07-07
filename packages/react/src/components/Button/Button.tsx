@@ -7,7 +7,12 @@ import { Loading, LoadingIcon, LoadingPosition } from '../Loading';
 export type ButtonRef = HTMLButtonElement;
 
 export type ButtonTypes = 'button' | 'submit' | 'reset';
-export type ButtonColors = 'primary' | 'secondary' | 'tertiary' | 'danger';
+export type ButtonColors =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'danger'
+  | 'black';
 export type ButtonVariants = 'filled' | 'outline' | 'ghost';
 export type ButtonSizes = 'sm' | 'md' | 'lg';
 
