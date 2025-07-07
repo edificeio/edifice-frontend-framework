@@ -7,7 +7,10 @@ const FileIcon = ({
   roleMap,
 }: {
   type: Role | 'unknown';
-  roleMap?: Record<string, string | JSX.Element>;
+  roleMap?: {
+    icon: React.ReactNode | string;
+    color: string;
+  };
 }) => {
   const hasNoShadow = typeof roleMap?.icon !== 'string' && type !== 'unknown';
   const fileicon = clsx(
