@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, ReactNode } from 'react';
 
 import {
   DocumentHelper,
@@ -21,8 +21,20 @@ import FileIcon from './FileIcon';
 export interface FileCardProps extends CardProps {
   /**
    * WorkspaceElement
-   * */
+   */
   doc: WorkspaceElement;
+
+  /**
+   * Custom icon to override the default based on file type
+   * Can be a string or a React node
+   */
+  customIcon?: ReactNode;
+
+  /**
+   * Custom color class to override the default based on file type
+   * Example: "bg-purple-300" or any valid CSS class
+   */
+  customColor?: string;
 }
 
 // INFO: This component is for internal use only. It is not exported for external use.
@@ -36,12 +48,25 @@ const FileCard = ({
   onSelect,
   isFocused,
   app,
+  customIcon,
+  customColor,
 }: FileCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const type = DocumentHelper.getRole(doc);
 
-  function getRoleMap(type: Role | 'unknown') {
+  function getRoleMap(type: Role | 'unknown'): {
+    icon: ReactNode | string;
+    color: string;
+  } {
+    // If custom icon and color are provided, use them instead of the default mapping
+    if (customIcon !== undefined || customColor !== undefined) {
+      return {
+        icon: customIcon || <IconTextPage width={22} height={22} />,
+        color: customColor || 'bg-gray-300',
+      };
+    }
+
     const roleMappings = {
       csv: {
         icon: '.CSV',
@@ -96,9 +121,11 @@ const FileCard = ({
     return roleMappings[type] || roleMappings.unknown;
   }
 
+  const roleMap = getRoleMap(type ?? 'unknown');
+
   const file = clsx(
     'file position-relative rounded',
-    getRoleMap(type ?? 'default')?.color ?? 'bg-yellow-200',
+    roleMap?.color ?? 'bg-yellow-200',
   );
 
   const mediaSrc =
@@ -134,7 +161,7 @@ const FileCard = ({
           }}
         >
           {type !== 'img' || (type === 'img' && !hasThumbnail) ? (
-            <FileIcon type={type} roleMap={getRoleMap(type)} />
+            <FileIcon type={type} roleMap={roleMap} />
           ) : null}
         </div>
         <div className="mt-4">
