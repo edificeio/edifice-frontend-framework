@@ -58,12 +58,14 @@ const FileCard = ({
   function getRoleMap(type: Role | 'unknown'): {
     icon: ReactNode | string;
     color: string;
+    hasShadow?: boolean;
   } {
     // If custom icon and color are provided, use them instead of the default mapping
     if (customIcon !== undefined || customColor !== undefined) {
       return {
         icon: customIcon || <IconTextPage width={22} height={22} />,
         color: customColor || 'bg-gray-300',
+        hasShadow: false,
       };
     }
 
