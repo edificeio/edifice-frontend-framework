@@ -151,7 +151,7 @@ const SearchBar = ({
         onChange={onChange}
         value={value}
         disabled={disabled}
-        onKeyDown={handleKeyDown}
+        // onKeyDown={handleKeyDown}
         {...restProps}
       />
 

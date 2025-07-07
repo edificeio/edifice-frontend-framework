@@ -82,6 +82,7 @@ export { default as IconMic } from './IconMic';
 export { default as IconMinus } from './IconMinus';
 export { default as IconMove } from './IconMove';
 export { default as IconNoColors } from './IconNoColors';
+export { default as IconNotification } from './IconNotification';
 export { default as IconOptions } from './IconOptions';
 export { default as IconOrderedList } from './IconOrderedList';
 export { default as IconPaperclip } from './IconPaperclip';
