@@ -31,6 +31,18 @@ export interface TabsProps {
    * Whether tabs should take full available height
    */
   fullHeight?: boolean;
+  /**
+   * Whether the tab list should be sticky
+   */
+  isSticky?: boolean;
+  /**
+   * The top offset for the sticky tab list
+   */
+  stickyTop?: number;
+  /**
+   * Additional class names for the Tabs component
+   */
+  className?: string;
 }
 
 /**
@@ -43,6 +55,9 @@ export const Tabs = ({
   fullHeight = false,
   onChange,
   children,
+  isSticky = false,
+  stickyTop = 0,
+  className,
 }: TabsProps) => {
   const {
     activeTab,
@@ -81,7 +96,12 @@ export const Tabs = ({
         children(currentItem)
       ) : (
         <>
-          <Tabs.List fullWidth={fullWidth} />
+          <Tabs.List
+            fullWidth={fullWidth}
+            isSticky={isSticky}
+            stickyTop={stickyTop}
+            className={className}
+          />
           <Tabs.Panel currentItem={currentItem} fullHeight={fullHeight}>
             {currentItem?.content}
           </Tabs.Panel>
