@@ -1,5 +1,5 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 
 interface FlexProps extends React.HTMLAttributes<HTMLElement> {
   as?: React.ElementType;
@@ -7,6 +7,7 @@ interface FlexProps extends React.HTMLAttributes<HTMLElement> {
   align?: 'start' | 'end' | 'center' | 'baseline' | 'stretch';
   justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
   gap?: string;
+  fill?: boolean; // If true, applies 'flex-fill' class
   wrap?: 'wrap' | 'nowrap' | 'reverse';
   className?: string;
 }
@@ -17,6 +18,7 @@ const Flex: React.FC<FlexProps> = ({
   align,
   justify,
   gap,
+  fill,
   wrap = 'wrap',
   className,
   children,
@@ -24,7 +26,8 @@ const Flex: React.FC<FlexProps> = ({
 }) => {
   const classes = clsx(
     'd-flex',
-    direction && (direction === 'fill' ? 'flex-fill' : `flex-${direction}`),
+    direction && `flex-${direction}`,
+    fill && 'flex-fill',
     align && `align-items-${align}`,
     justify && `justify-content-${justify}`,
     gap && `gap-${gap}`,
