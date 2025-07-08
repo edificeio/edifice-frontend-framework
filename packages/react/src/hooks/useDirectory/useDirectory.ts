@@ -2,6 +2,7 @@ import { ID, odeServices } from '@edifice.io/client';
 
 const useDirectory = () => {
   function getAvatarURL(userId: ID, type: 'user' | 'group'): string {
+    if (userId === '') return '';
     return odeServices.directory().getAvatarUrl(userId, type);
   }
 
