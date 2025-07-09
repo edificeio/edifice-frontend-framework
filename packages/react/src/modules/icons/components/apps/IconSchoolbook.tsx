@@ -10,9 +10,10 @@ const SvgIconSchoolbook = ({
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
     width="24"
     height="24"
+    fill="none"
+    viewBox="0 0 50 50"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
@@ -20,7 +21,7 @@ const SvgIconSchoolbook = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       fill="currentColor"
-      d="M18.02 8.41V6.4H6v2h12.02zm-4 6.01V12.4h-8v2.02h8.02zm-8-5.02v2.02h12V9.4zm14.03-7c1.07 0 1.97.9 1.97 1.98v12.01c0 1.08-.9 2.02-1.98 2.02H6.02L2 22.4V4.38c0-1.08.9-1.97 1.98-1.97h16.05z"
+      d="M36.87 19.39v-3.85H13.94v3.85zm-7.61 11.46V27H13.94v3.85zm-15.32-9.58v3.85h22.93v-3.85zM40.72 7.92a3.78 3.78 0 0 1 3.76 3.76v22.93a3.85 3.85 0 0 1-3.76 3.85H13.94l-7.61 7.62v-34.4a3.79 3.79 0 0 1 3.76-3.76z"
     />
   </svg>
 );

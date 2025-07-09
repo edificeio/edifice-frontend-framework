@@ -10,9 +10,10 @@ const SvgIconAccount = ({
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
     width="24"
     height="24"
+    fill="none"
+    viewBox="0 0 50 50"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
@@ -20,7 +21,7 @@ const SvgIconAccount = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       fill="currentColor"
-      d="M12.01 14.42c2.68 0 8.03 1.31 8.03 3.99v2.02H3.99V18.4c0-2.68 5.35-3.99 8.02-3.99zm0-2.02a4.02 4.02 0 0 1 0-8.02C14.21 4.38 16 6.2 16 8.4s-1.78 4-3.99 4"
+      d="M25 29.78c6.33 0 19 3.11 19 9.44V44H6v-4.78c0-6.33 12.67-9.44 19-9.44M25 26a9.43 9.43 0 0 1-9.44-9.44 9.44 9.44 0 1 1 18.164 3.614A9.43 9.43 0 0 1 25 26"
     />
   </svg>
 );

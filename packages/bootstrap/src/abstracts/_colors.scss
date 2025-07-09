@@ -286,6 +286,9 @@ $vars-colors: (
 ) !default;
 
 $variants: ('primary', 'secondary', 'success', 'danger', 'warning', 'info');
+
+$nabook-color: #120d37 !default;
+
 $main-colors: (
   'blue': $blue,
   'indigo': $indigo,
@@ -306,6 +309,8 @@ $main-colors: (
   'one-yellow': $one-yellow,
   'one-green': $one-green,
   'one-teal': $one-teal,
+  'nabook-color': $nabook-color,
 ) !default;
 
 $extra-colors: map.merge($accessible-colors, $vars-colors);
+
