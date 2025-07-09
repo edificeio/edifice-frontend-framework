@@ -25,8 +25,8 @@ const saveOnboardingTrash = async (key: string) => {
   return result;
 };
 
-export const useOnboardingModal = (id: string, defaultOpen: boolean) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+export const useOnboardingModal = (id: string) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isOnboarding, setIsOnboarding] = useState(false);
 
   useEffect(() => {
@@ -35,16 +35,22 @@ export const useOnboardingModal = (id: string, defaultOpen: boolean) => {
 
       if (response) {
         const { key } = response;
+        if (key === true) {
+          setIsOpen(true);
+        }
         setIsOnboarding(key);
+
         return;
       }
       setIsOnboarding(true);
+      setIsOpen(true);
     })();
   }, [id]);
 
   const handleSavePreference = async () => {
     await saveOnboardingTrash(id);
     setIsOpen(false);
+    setIsOnboarding(false);
   };
 
   return {
