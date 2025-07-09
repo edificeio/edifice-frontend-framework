@@ -31,8 +31,6 @@ export default function useEdificeIcons() {
   function getIconCode(app: IWebApp | string | undefined): string {
     let appCode: string = '';
 
-    console.log("ouioui")
-
     if (typeof app === 'string') {
       appCode = app;
     } else {
@@ -54,7 +52,7 @@ export default function useEdificeIcons() {
     // appCode = configurationFramework.Platform.idiom.removeAccents(appCode);
     // @see distinct values for app's displayName is in query /auth/oauth2/userinfo
 
-    console.log(appCode)
+    console.log(appCode);
     switch (appCode) {
       case 'admin.title':
         appCode = 'admin';
