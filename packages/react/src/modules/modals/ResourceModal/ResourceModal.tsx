@@ -84,7 +84,10 @@ interface BaseProps {
   textareaMaxLength?: number;
 
   /** Callback when operation succeeds, with operation result as parameter */
-  onSuccess: (result: CreateResult | UpdateResult) => void;
+  onSuccess: (
+    result: CreateResult | UpdateResult,
+    param: CreateParameters | UpdateParameters,
+  ) => void;
 
   /** Callback when operation is cancelled */
   onCancel: () => void;
@@ -206,7 +209,7 @@ export const ResourceModal = ({
       };
 
       let result: CreateResult | UpdateResult;
-
+      let param: CreateParameters | UpdateParameters;
       if (isCreating) {
         const createParams = {
           ...data,
@@ -217,7 +220,7 @@ export const ResourceModal = ({
               : parseInt(props.currentFolder?.id || ''),
           application,
         };
-
+        param = createParams;
         if (props.createResource) {
           result = await props.createResource.mutateAsync(createParams);
         } else {
@@ -229,7 +232,7 @@ export const ResourceModal = ({
           entId: resource.assetId,
           trashed: resource.trashed,
         };
-
+        param = updateParams;
         if (props.updateResource) {
           result = await props.updateResource.mutateAsync(updateParams);
         } else {
@@ -264,7 +267,7 @@ export const ResourceModal = ({
       );
 
       // Pass the operation result to the onSuccess callback
-      onSuccess(result);
+      onSuccess(result, param);
     } catch (e) {
       console.error(e);
     }
