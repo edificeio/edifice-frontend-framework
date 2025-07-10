@@ -19,7 +19,7 @@ const Flex: React.FC<FlexProps> = ({
   justify,
   gap,
   fill,
-  wrap = 'wrap',
+  wrap,
   className,
   children,
   ...restProps
