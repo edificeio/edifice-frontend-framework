@@ -39,13 +39,61 @@ export interface FormInputs {
   formSlug: string;
 }
 
+/**
+ * Custom translations interface for overriding default translations
+ */
+export interface ResourceModalTranslations {
+  title?: string;
+  description?: string;
+  cancel?: string;
+  create?: string;
+  save?: string;
+  header?: {
+    create?: string;
+    edit?: string;
+  };
+  heading?: {
+    general?: string;
+    access?: string;
+  };
+  placeholder?: {
+    title?: string;
+    description?: string;
+  };
+  imagepicker?: {
+    add?: string;
+    delete?: string;
+  };
+  success?: {
+    created?: string;
+    updated?: string;
+  };
+}
+
 interface BaseProps {
+  /** Controls modal visibility */
   isOpen: boolean;
+
+  /** Custom content to be displayed after the form fields */
   children?: ReactNode | ((...props: any) => ReactNode);
+
+  /** Maximum length for the title input */
   inputMaxLength?: number;
+
+  /** Maximum length for the description textarea */
   textareaMaxLength?: number;
-  onSuccess: () => void;
+
+  /** Callback when operation succeeds, with operation result as parameter */
+  onSuccess: (result: CreateResult | UpdateResult) => void;
+
+  /** Callback when operation is cancelled */
   onCancel: () => void;
+
+  /** Override application code (uses EdificeClient context by default) */
+  appCode?: string;
+
+  /** Custom translations for the modal */
+  translations?: ResourceModalTranslations;
 }
 
 interface CreateProps extends BaseProps {
@@ -75,16 +123,36 @@ type Props = CreateProps | UpdateProps;
 const DEFAULT_INPUT_MAX_LENGTH = 60;
 const DEFAULT_TEXTAREA_MAX_LENGTH = 400;
 
+/**
+ * ResourceModal component for creating or updating resources
+ *
+ * @component
+ * @example
+ * ```tsx
+ * <ResourceModal
+ *   mode="create"
+ *   isOpen={true}
+ *   onCancel={() => setOpen(false)}
+ *   onSuccess={(result) => console.log('Resource created:', result)}
+ *   currentFolder={{ id: 'default' }}
+ * />
+ * ```
+ */
 export const ResourceModal = ({
   isOpen,
   onCancel,
   onSuccess,
   children,
+  appCode: customAppCode,
+  translations: customT = {},
   inputMaxLength = DEFAULT_INPUT_MAX_LENGTH,
   textareaMaxLength = DEFAULT_TEXTAREA_MAX_LENGTH,
   ...props
 }: Props) => {
-  const { appCode: application, currentApp } = useEdificeClient();
+  const { appCode: contextAppCode, currentApp } = useEdificeClient();
+  // Use custom app code if provided, otherwise use the one from context
+  const application = customAppCode || contextAppCode;
+
   const { t } = useTranslation();
   const { mode } = props;
 
@@ -137,6 +205,8 @@ export const ResourceModal = ({
         thumbnail,
       };
 
+      let result: CreateResult | UpdateResult;
+
       if (isCreating) {
         const createParams = {
           ...data,
@@ -149,9 +219,9 @@ export const ResourceModal = ({
         };
 
         if (props.createResource) {
-          await props.createResource.mutateAsync(createParams);
+          result = await props.createResource.mutateAsync(createParams);
         } else {
-          await odeServices.resource(application).create(createParams);
+          result = await odeServices.resource(application).create(createParams);
         }
       } else {
         const updateParams = {
@@ -161,9 +231,9 @@ export const ResourceModal = ({
         };
 
         if (props.updateResource) {
-          await props.updateResource.mutateAsync(updateParams);
+          result = await props.updateResource.mutateAsync(updateParams);
         } else {
-          await odeServices.resource(application).update(updateParams);
+          result = await odeServices.resource(application).update(updateParams);
         }
       }
 
@@ -192,7 +262,9 @@ export const ResourceModal = ({
           )}
         </>,
       );
-      onSuccess();
+
+      // Pass the operation result to the onSuccess callback
+      onSuccess(result);
     } catch (e) {
       console.error(e);
     }
@@ -208,16 +280,16 @@ export const ResourceModal = ({
       onModalClose={onCancel}
     >
       <Modal.Header onModalClose={onCancel}>
-        {t(
-          `explorer.resource.editModal.header.${
-            isCreating ? 'create' : 'edit'
-          }`,
-        )}
+        {customT.header?.[isCreating ? 'create' : 'edit'] ??
+          t(
+            `explorer.resource.editModal.header.${isCreating ? 'create' : 'edit'}`,
+          )}
       </Modal.Header>
 
       <Modal.Body>
         <Heading headingStyle="h4" level="h3" className="mb-16">
-          {t('explorer.resource.editModal.heading.general')}
+          {customT.heading?.general ??
+            t('explorer.resource.editModal.heading.general')}
         </Heading>
 
         <form id={formId} onSubmit={handleSubmit(onSubmit)}>
@@ -226,8 +298,14 @@ export const ResourceModal = ({
               <ImagePicker
                 app={currentApp}
                 src={isUpdating ? resource?.thumbnail || '' : ''}
-                addButtonLabel={t('explorer.imagepicker.button.add')}
-                deleteButtonLabel={t('explorer.imagepicker.button.delete')}
+                addButtonLabel={
+                  customT.imagepicker?.add ??
+                  t('explorer.imagepicker.button.add')
+                }
+                deleteButtonLabel={
+                  customT.imagepicker?.delete ??
+                  t('explorer.imagepicker.button.delete')
+                }
                 onUploadImage={handleUploadImage}
                 onDeleteImage={handleDeleteImage}
                 className="align-self-center mt-8"
@@ -237,7 +315,7 @@ export const ResourceModal = ({
             </div>
             <div className="col">
               <FormControl id="title" className="mb-16" isRequired>
-                <Label>{t('title')}</Label>
+                <Label>{customT.title ?? t('title')}</Label>
                 <Input
                   type="text"
                   defaultValue={isUpdating ? resource?.name : ''}
@@ -249,25 +327,27 @@ export const ResourceModal = ({
                       message: 'invalid title',
                     },
                   })}
-                  placeholder={t(
-                    'explorer.resource.editModal.title.placeholder',
-                  )}
+                  placeholder={
+                    customT.placeholder?.title ??
+                    t('explorer.resource.editModal.title.placeholder')
+                  }
                   size="md"
                   aria-required={true}
                   maxLength={inputMaxLength}
                 />
               </FormControl>
               <FormControl id="description" isOptional>
-                <Label>{t('description')}</Label>
+                <Label>{customT.description ?? t('description')}</Label>
                 <TextArea
                   defaultValue={resource?.description || ''}
                   {...register('description', {
                     required: false,
                     maxLength: textareaMaxLength,
                   })}
-                  placeholder={t(
-                    'explorer.resource.editModal.description.placeholder',
-                  )}
+                  placeholder={
+                    customT.placeholder?.description ??
+                    t('explorer.resource.editModal.description.placeholder')
+                  }
                   size="md"
                   maxLength={textareaMaxLength}
                 />
@@ -294,7 +374,7 @@ export const ResourceModal = ({
           type="button"
           variant="ghost"
         >
-          {t('explorer.cancel')}
+          {customT.cancel ?? t('explorer.cancel')}
         </Button>
         <Button
           form={formId}
@@ -304,7 +384,9 @@ export const ResourceModal = ({
           variant="filled"
           disabled={!isValid || isSubmitting}
         >
-          {t(isCreating ? 'explorer.create' : 'save')}
+          {isCreating
+            ? (customT.create ?? t('explorer.create'))
+            : (customT.save ?? t('save'))}
         </Button>
       </Modal.Footer>
       <MediaLibrary
