@@ -40,9 +40,13 @@ export interface TabsProps {
    */
   stickyTop?: number;
   /**
-   * Additional class names for the Tabs component
+   * Additional class name for the tab header
    */
-  className?: string;
+  headerClassName?: string;
+  /**
+   * Additional class name for the content area
+   */
+  contentClassName?: string;
 }
 
 /**
@@ -57,7 +61,8 @@ export const Tabs = ({
   children,
   isSticky = false,
   stickyTop = 0,
-  className,
+  headerClassName,
+  contentClassName,
 }: TabsProps) => {
   const {
     activeTab,
@@ -100,9 +105,13 @@ export const Tabs = ({
             fullWidth={fullWidth}
             isSticky={isSticky}
             stickyTop={stickyTop}
-            className={className}
+            className={headerClassName}
           />
-          <Tabs.Panel currentItem={currentItem} fullHeight={fullHeight}>
+          <Tabs.Panel
+            currentItem={currentItem}
+            fullHeight={fullHeight}
+            className={contentClassName}
+          >
             {currentItem?.content}
           </Tabs.Panel>
         </>

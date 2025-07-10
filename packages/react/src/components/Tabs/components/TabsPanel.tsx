@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 
+import clsx from 'clsx';
 import { useTabsContext } from '../context/TabsContext';
 import { TabsItemProps } from './TabsItem';
-import clsx from 'clsx';
 
 export interface TabsPanelProps {
   /**
@@ -17,13 +17,26 @@ export interface TabsPanelProps {
    * Whether tabs should take full available height
    */
   fullHeight?: boolean;
+  /**
+   * Additional class name for the content area
+   */
+  className?: string;
 }
 
-const TabsPanel = ({ children, currentItem, fullHeight }: TabsPanelProps) => {
+const TabsPanel = ({
+  children,
+  currentItem,
+  fullHeight,
+  className,
+}: TabsPanelProps) => {
   const { activeTab } = useTabsContext();
-  const contentClasses = clsx('tab-content d-flex flex-fill w-100', {
-    'position-relative h-100': fullHeight,
-  });
+  const contentClasses = clsx(
+    'tab-content d-flex flex-fill w-100',
+    {
+      'position-relative h-100': fullHeight,
+    },
+    className,
+  );
 
   return (
     <div className={contentClasses}>
