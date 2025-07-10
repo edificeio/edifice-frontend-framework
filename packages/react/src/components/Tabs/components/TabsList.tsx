@@ -46,11 +46,11 @@ const TabsList = (props: TabsListProps) => {
         {items.map((item, order) => {
           return <Tabs.Item key={item.id} order={order} {...item}></Tabs.Item>;
         })}
+        <span
+          className="nav-slide"
+          style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
+        />
       </ul>
-      <span
-        className="nav-slide"
-        style={{ left: tabUnderlineLeft, width: tabUnderlineWidth }}
-      />
     </div>
   );
 };
