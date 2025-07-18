@@ -42,6 +42,10 @@ export interface InputProps
    * Show count of characters
    */
   showCounter?: boolean;
+  /**
+   * Browser autocomplete feature
+   */
+  autoComplete?: string;
 }
 
 /**
@@ -57,6 +61,7 @@ const Input = forwardRef(
       type = 'text',
       className,
       showCounter,
+      autoComplete = 'off',
       ...restProps
     }: InputProps,
     ref: Ref<HTMLInputElement>,
@@ -97,6 +102,7 @@ const Input = forwardRef(
           readOnly={isReadOnly}
           {...restProps}
           onChange={handleChange}
+          autoComplete={autoComplete}
         />
         {showCounter && !status && (
           <span
