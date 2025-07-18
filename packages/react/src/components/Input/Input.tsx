@@ -45,7 +45,7 @@ export interface InputProps
   /**
    * Autocomplete by browser
    */
-  autoComplete?: 'off' | 'on';
+  autoComplete?: string;
 }
 
 /**
