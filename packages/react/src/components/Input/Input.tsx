@@ -43,7 +43,7 @@ export interface InputProps
    */
   showCounter?: boolean;
   /**
-   * Autocomplete by browser
+   * Browser autocomplete feature
    */
   autoComplete?: string;
 }
