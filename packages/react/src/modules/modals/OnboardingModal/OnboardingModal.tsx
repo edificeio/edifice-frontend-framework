@@ -87,7 +87,7 @@ const OnboardingModal = ({ id, items, modalOptions = {} }: OnboardingProps) => {
           focusId="nextButtonId"
           onModalClose={() => setIsOpen(false)}
         >
-          <Modal.Header onModalClose={() => setIsOpen(false)}>
+          <Modal.Header onModalClose={() => setIsOpen(false)} centered>
             {t(currentTitle || 'explorer.modal.onboarding.trash.title')}
           </Modal.Header>
           <Modal.Body>
