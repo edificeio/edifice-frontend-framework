@@ -82,7 +82,7 @@ export class DataService implements IDataService {
   ) {
     const eventData = this.addUserInfos({
       'event-type': 'VIDEO_SAVE',
-      'module': 'video',
+      'module': this.app || 'video',
       video_id,
       browser,
       'duration': Math.round(duration),
@@ -90,7 +90,6 @@ export class DataService implements IDataService {
       'source': isCaptation ? 'CAPTURED' : 'UPLOADED',
       url,
     });
-    if (this.app) eventData['override-module'] = this.app;
     if (deviceType) eventData['device_type'] = deviceType;
 
     this.trackWebEvent(eventData);
