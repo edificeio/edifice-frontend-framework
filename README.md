@@ -1,3 +1,10 @@
+# À propos d'infra-front
+    
+* Licence : [AGPL v3](http://www.gnu.org/licenses/agpl.txt) - Copyright Edifice
+* Financeur(s) : Edifice
+* Développeur(s) : Edifice
+* Description : framework frontend React Edifice.
+
 # Edifice UI
 
 Edifice React Monorepo with React Components, Editor and Icons Library
