@@ -1,5 +1,5 @@
-import { forwardRef, Ref } from 'react';
 import clsx from 'clsx';
+import { forwardRef, ReactNode, Ref } from 'react';
 import { Avatar, type AvatarProps } from '../Avatar';
 import { StackedGroup } from '../StackedGroup';
 
@@ -23,6 +23,15 @@ export interface AvatarGroupProps extends Omit<AvatarProps, 'src'> {
    * @default 'leftFirst'
    */
   stackingOrder?: 'leftFirst' | 'rightFirst';
+  /**
+   * Whether to wrap avatars to the next line
+   * @default false
+   */
+  wrap?: boolean;
+  /**
+   * Cover content for the last avatar
+   */
+  lastItemCover?: ReactNode;
 }
 
 const AvatarGroup = forwardRef(
@@ -36,23 +45,30 @@ const AvatarGroup = forwardRef(
       variant = 'circle',
       alt,
       stackingOrder = 'leftFirst',
+      wrap = false,
+      lastItemCover,
       ...restProps
     }: AvatarGroupProps,
     ref: Ref<HTMLDivElement>,
   ) => {
     const visibleAvatars = src.slice(0, maxAvatars);
 
-    const classes = clsx('avatar-group', className);
+    const classes = clsx('avatar-group d-flex', className);
 
     return (
-      <div ref={ref} className={classes} style={{ display: 'flex' }}>
-        <StackedGroup overlap={overlap} stackingOrder={stackingOrder}>
+      <div ref={ref} className={classes}>
+        <StackedGroup
+          overlap={overlap}
+          stackingOrder={stackingOrder}
+          wrap={wrap}
+        >
           {visibleAvatars.map((avatarSrc, index) => (
             <Avatar
               src={avatarSrc}
               size={size}
               variant={variant}
               alt={`${alt} ${index + 1}`}
+              cover={index === maxAvatars - 1 ? lastItemCover : undefined}
               {...restProps}
             />
           ))}
