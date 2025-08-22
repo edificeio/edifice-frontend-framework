@@ -68,4 +68,17 @@
     --#{$prefix}avatar-size: auto;
     --#{$prefix}avatar-svg-size: 100%;
   }
+
+  &.avatar-with-cover {
+    position: relative;
+
+    .avatar-cover {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #00000040;
+      inset: 0;
+    }
+  }
 }

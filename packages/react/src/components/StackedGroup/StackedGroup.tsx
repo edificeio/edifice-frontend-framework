@@ -1,5 +1,5 @@
-import { forwardRef, Ref, ReactNode } from 'react';
 import clsx from 'clsx';
+import { forwardRef, ReactNode, Ref } from 'react';
 
 export interface StackedGroupProps {
   /**
@@ -20,6 +20,11 @@ export interface StackedGroupProps {
    * Additional CSS class
    */
   className?: string;
+  /**
+   * Whether to wrap items to the next line
+   * @default false
+   */
+  wrap?: boolean;
 }
 
 const StackedGroup = forwardRef(
@@ -29,21 +34,24 @@ const StackedGroup = forwardRef(
       overlap = 20,
       className,
       stackingOrder = 'leftFirst',
+      wrap = false,
     }: StackedGroupProps,
     ref: Ref<HTMLDivElement>,
   ) => {
-    const classes = clsx('stacked-group', className);
+    const classes = clsx('stacked-group d-flex align-items-center', className, {
+      'flex-wrap': wrap,
+    });
     return (
       <div
         ref={ref}
         className={classes}
-        style={{ display: 'flex', alignItems: 'center' }}
+        style={wrap ? { paddingLeft: `${overlap}px` } : undefined}
       >
         {children.map((child, index) => (
           <div
             key={index}
             style={{
-              marginLeft: index === 0 ? 0 : `-${overlap}px`,
+              marginLeft: index === 0 && !wrap ? 0 : `-${overlap}px`,
               zIndex:
                 stackingOrder === 'rightFirst'
                   ? children.length - index
