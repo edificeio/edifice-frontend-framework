@@ -1,10 +1,10 @@
-import { forwardRef, Ref } from 'react';
+import { forwardRef, ReactNode, Ref } from 'react';
 
 import clsx from 'clsx';
 
 import noAvatar from '@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg';
-import { Image } from '../Image';
 import { Color } from 'src/types/color';
+import { Image } from '../Image';
 
 export type AvatarVariants = 'square' | 'rounded' | 'circle';
 export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -58,6 +58,10 @@ export interface AvatarProps extends React.ComponentPropsWithRef<'img'> {
    * Outer border offset in pixels
    */
   outerBorderOffset?: number;
+  /**
+   * Cover content for the avatar
+   */
+  cover?: ReactNode;
 }
 
 const Avatar = forwardRef(
@@ -74,6 +78,7 @@ const Avatar = forwardRef(
       outerBorderColor,
       outerBorderWidth,
       outerBorderOffset,
+      cover,
       ...restProps
     }: AvatarProps,
     ref: Ref<HTMLDivElement>,
@@ -104,6 +109,7 @@ const Avatar = forwardRef(
         ...avatarSizes,
         ...avatarVariants,
       },
+      { 'avatar-with-cover': cover },
       className,
     );
 
@@ -125,6 +131,7 @@ const Avatar = forwardRef(
           imgPlaceholder={placeholder}
           {...restProps}
         />
+        {cover && <div className="avatar-cover">{cover}</div>}
       </div>
     );
   },

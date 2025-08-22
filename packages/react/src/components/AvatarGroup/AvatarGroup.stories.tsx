@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { IconOptions } from '../../modules/icons/components';
 import AvatarGroup from './AvatarGroup';
 
 const meta = {
@@ -67,6 +68,9 @@ const meta = {
     },
     outerBorderOffset: {
       control: { type: 'number' },
+    },
+    wrap: {
+      control: { type: 'boolean' },
     },
   },
   tags: ['autodocs'],
@@ -168,6 +172,54 @@ export const Variants: Story = {
       description: {
         story:
           'Two variants are available for the shape of the avatars: `circle` and `square`.',
+      },
+    },
+  },
+};
+
+export const Wrap: Story = {
+  args: {
+    src: mockAvatars,
+    wrap: true,
+    alt: 'Wrap avatars',
+  },
+  render: () => (
+    <div
+      className="d-flex flex-column gap-8 flex-wrap"
+      style={{ width: '100px' }}
+    >
+      <AvatarGroup src={mockAvatars} maxAvatars={6} wrap alt="Wrap avatars" />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The wrap property allows the avatar group to wrap onto multiple lines if there are too many avatars to fit in a single line.',
+      },
+    },
+  },
+};
+
+export const LastItemCover: Story = {
+  args: {
+    src: mockAvatars,
+    alt: 'Last item cover',
+  },
+  render: () => (
+    <div className="d-flex flex-column gap-8 flex-wrap">
+      <AvatarGroup
+        src={mockAvatars}
+        lastItemCover={<IconOptions style={{ rotate: '90deg' }} color="#FFF" />}
+        alt="Last item cover"
+      />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The last item cover allows you to customize the appearance of the last avatar in the group.',
       },
     },
   },
