@@ -64,6 +64,7 @@ const AvatarGroup = forwardRef(
         >
           {visibleAvatars.map((avatarSrc, index) => (
             <Avatar
+              key={index}
               src={avatarSrc}
               size={size}
               variant={variant}
