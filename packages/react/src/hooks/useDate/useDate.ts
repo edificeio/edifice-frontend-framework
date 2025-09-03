@@ -14,8 +14,8 @@ import 'dayjs/locale/es.js';
 import 'dayjs/locale/fr.js';
 import 'dayjs/locale/it.js';
 import 'dayjs/locale/pt.js';
-import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useTranslation } from 'react-i18next';
+import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
@@ -32,7 +32,20 @@ export type NumberDate = number;
 export type CoreDate = IsoDate | MongoDate | NumberDate;
 
 /**
- * Hook to compute user-friendly dates from various format.
+ * Custom React hook for date parsing, formatting, and localization.
+ *
+ * Provides utility functions to:
+ * - Parse various date formats and timestamps into Dayjs objects, respecting the current language.
+ * - Format dates in user-friendly ways, including "time ago", "yesterday", and localized date strings.
+ * - Compute elapsed durations from a given date to now.
+ *
+ * @returns An object containing:
+ * - `fromNow(date: CoreDate | NumberDate): string` — Returns a human-readable elapsed duration from the given date to now.
+ * - `formatDate(date: CoreDate, format?: 'short' | 'long' | 'abbr' | string): string` — Formats a date according to the specified format and current language.
+ * - `formatTimeAgo(date: CoreDate | NumberDate): string` — Returns a localized string representing how long ago the date was, with special handling for today, yesterday, and recent dates.
+ *
+ * @remarks
+ * - Uses the current language from the Edifice client context for localization.
  */
 export default function useDate() {
   // Current language
@@ -64,7 +77,7 @@ export default function useDate() {
   );
 
   const toComputedDate = useCallback(
-    (date: CoreDate | NumberDate): Dayjs | undefined => {
+    (date: CoreDate): Dayjs | undefined => {
       let computedDate: Dayjs = dayjs();
       try {
         if ('undefined' === typeof date) {
@@ -90,7 +103,7 @@ export default function useDate() {
   );
 
   const formatTimeAgo = useCallback(
-    (date: CoreDate | NumberDate): string => {
+    (date: CoreDate): string => {
       const computedDate = toComputedDate(date);
 
       if (!computedDate?.isValid()) return '';
@@ -124,13 +137,21 @@ export default function useDate() {
 
   /** Compute a user-friendly elapsed duration, between now and a date. */
   const fromNow = useCallback(
-    (date: CoreDate | NumberDate): string => {
+    (date: CoreDate): string => {
       const computedDate = toComputedDate(date);
       return computedDate?.isValid() ? computedDate.fromNow() : '';
     },
     [currentLanguage, parseDate],
   );
 
+  /**
+   * Formats a date according to the specified format and current language.
+   *
+   * @param date - The date to format (CoreDate).
+   * @param format - The format to use ('short', 'long', 'abbr', or custom DayJS format string,
+   * see https://day.js.org/docs/en/display/format#list-of-localized-formats).
+   * @returns The formatted date string.
+   */
   const formatDate = useCallback(
     (date: CoreDate, format = 'short'): string => {
       const computedDate = toComputedDate(date);
