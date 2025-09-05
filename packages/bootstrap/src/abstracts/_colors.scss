@@ -111,6 +111,8 @@ $secondary: $blue !default;
 $one-primary: $blue !default;
 $one-secondary: $orange !default;
 
+$nabook-color: #120d37 !default;
+
 $tertiary: $gray-300 !default;
 $light: $gray-200 !default;
 $medium: $gray-500 !default;
@@ -283,10 +285,31 @@ $vars-colors: (
   'info-200': $info-200,
   'info-300': $info-300,
   'info-800': $info-800,
+  'nabook-color': $nabook-color,
 ) !default;
 
 $variants: ('primary', 'secondary', 'success', 'danger', 'warning', 'info');
 
-$extra-colors: map.merge($accessible-colors, $vars-colors);
+$main-colors: (
+  'blue': $blue,
+  'indigo': $indigo,
+  'purple': $purple,
+  'pink': $pink,
+  'red': $red,
+  'orange': $orange,
+  'yellow': $yellow,
+  'green': $green,
+  'teal': $teal,
+  'cyan': $cyan,
+  'one-blue': $one-blue,
+  'one-indigo': $one-indigo,
+  'one-purple': $one-purple,
+  'one-pink': $one-pink,
+  'one-red': $one-red,
+  'one-orange': $one-orange,
+  'one-yellow': $one-yellow,
+  'one-green': $one-green,
+  'one-teal': $one-teal,
+) !default;
 
-$nabook-color: #120d37 !default;
+$extra-colors: map.merge($accessible-colors, $vars-colors);

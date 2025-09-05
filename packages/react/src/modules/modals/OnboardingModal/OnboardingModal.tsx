@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
@@ -44,129 +44,172 @@ interface ModalOptionsProps {
    */
   closeText?: string;
 }
+
+export interface OnboardingModalRef {
+  setIsOpen: (isOpen: boolean) => void;
+  handleSavePreference: () => void;
+}
+
 interface OnboardingProps {
   id: string;
   items: ModalItemsProps[];
   modalOptions?: ModalOptionsProps;
+  isOnboardingChange?: (isOnboarding: boolean) => void;
 }
 
-const OnboardingModal = ({ id, items, modalOptions = {} }: OnboardingProps) => {
-  const [swiperInstance, setSwiperInstance] = useState<any>();
-  const [swiperProgress, setSwiperprogress] = useState<number>(0);
+const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
+  (
+    { id, items, modalOptions = {}, isOnboardingChange }: OnboardingProps,
+    ref,
+  ) => {
+    const [swiperInstance, setSwiperInstance] = useState<any>();
+    const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
-  const { isOpen, isOnboarding, setIsOpen, handleSavePreference } =
-    useOnboardingModal(id);
+    const { isOpen, isOnboarding, setIsOpen, handleSavePreference } =
+      useOnboardingModal(id);
 
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-    link.rel = 'stylesheet';
-    link.type = 'text/css';
+    useImperativeHandle(ref, () => ({
+      setIsOpen,
+      handleSavePreference,
+    }));
 
-    document.head.appendChild(link);
+    // Effect to notify child component about onboarding state change
+    useEffect(() => {
+      if (isOnboardingChange) {
+        isOnboardingChange(isOnboarding);
+      }
+    }, [isOnboarding, isOnboardingChange]);
 
-    return () => {
-      document.head.removeChild(link);
+    useEffect(() => {
+      const link = document.createElement('link');
+      link.href =
+        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+
+      document.head.appendChild(link);
+
+      return () => {
+        document.head.removeChild(link);
+      };
+    }, []);
+
+    const { t } = useTranslation();
+
+    const { title, prevText, closeText, nextText } = modalOptions;
+    const currentTitle =
+      swiperInstance?.activeIndex != undefined &&
+      items[swiperInstance?.activeIndex]?.title
+        ? items[swiperInstance.activeIndex].title
+        : title;
+
+    const handleCloseWithPreference = () => {
+      handleSavePreference();
+      setSwiperprogress(0);
     };
-  }, []);
 
-  const { t } = useTranslation();
+    const handleCloseWithoutPreference = () => {
+      setIsOpen(false);
+      setSwiperprogress(0);
+    };
 
-  const { title, prevText, closeText, nextText } = modalOptions;
-  const currentTitle =
-    swiperInstance?.activeIndex != undefined &&
-    items[swiperInstance?.activeIndex]?.title
-      ? items[swiperInstance.activeIndex].title
-      : title;
-  return isOnboarding
-    ? createPortal(
-        <Modal
-          id="onboarding-modal"
-          size="md"
-          isOpen={isOpen}
-          focusId="nextButtonId"
-          onModalClose={() => setIsOpen(false)}
-        >
-          <Modal.Header onModalClose={() => setIsOpen(false)}>
-            {t(currentTitle || 'explorer.modal.onboarding.trash.title')}
-          </Modal.Header>
-          <Modal.Body>
-            <Swiper
-              modules={[Pagination]}
-              onSwiper={(swiper) => {
-                setSwiperInstance(swiper);
-              }}
-              onSlideChange={(swiper) => {
-                setSwiperprogress(swiper.progress);
-              }}
-              pagination={{
-                clickable: true,
-              }}
-            >
-              {items.map((item, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <Image
-                      width="270"
-                      height="140"
-                      className="mx-auto my-12"
-                      loading="lazy"
-                      src={item.src}
-                      alt={t(item.alt)}
-                    />
-                    <p className="text-center">{t(item.text)}</p>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </Modal.Body>
-          <Modal.Footer>
+    return createPortal(
+      <Modal
+        id="onboarding-modal"
+        size="md"
+        isOpen={isOpen}
+        focusId="nextButtonId"
+        onModalClose={handleCloseWithoutPreference}
+      >
+        <Modal.Header onModalClose={handleCloseWithoutPreference} centered>
+          {t(currentTitle || 'explorer.modal.onboarding.trash.title')}
+        </Modal.Header>
+        <Modal.Body>
+          <Swiper
+            modules={[Pagination]}
+            onSwiper={(swiper) => {
+              setSwiperInstance(swiper);
+            }}
+            onSlideChange={(swiper) => {
+              setSwiperprogress(swiper.progress);
+            }}
+            pagination={{
+              clickable: true,
+            }}
+          >
+            {items.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <Image
+                    width="270"
+                    height="140"
+                    className="mx-auto my-12"
+                    loading="lazy"
+                    src={item.src}
+                    alt={t(item.alt)}
+                  />
+                  <p
+                    className="text-center"
+                    dangerouslySetInnerHTML={{ __html: t(item.text) }}
+                  />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            color="tertiary"
+            variant="ghost"
+            onClick={handleCloseWithoutPreference}
+          >
+            {t('explorer.modal.onboarding.trash.later')}
+          </Button>
+
+          {swiperProgress > 0 && (
             <Button
               type="button"
-              color="tertiary"
-              variant="ghost"
-              onClick={() => setIsOpen(false)}
+              color="primary"
+              variant="outline"
+              onClick={() => swiperInstance.slidePrev()}
             >
-              {t('explorer.modal.onboarding.trash.later')}
+              {t(prevText || 'explorer.modal.onboarding.trash.prev')}
             </Button>
-
-            {swiperProgress > 0 && (
-              <Button
-                type="button"
-                color="primary"
-                variant="outline"
-                onClick={() => swiperInstance.slidePrev()}
-              >
-                {t(prevText || 'explorer.modal.onboarding.trash.prev')}
-              </Button>
-            )}
-            {swiperProgress < 1 && (
-              <Button
-                id="nextButtonId"
-                type="button"
-                color="primary"
-                variant="filled"
-                onClick={() => swiperInstance.slideNext()}
-              >
-                {t(nextText || 'explorer.modal.onboarding.trash.next')}
-              </Button>
-            )}
-            {swiperProgress === 1 && (
-              <Button
-                type="button"
-                color="primary"
-                variant="filled"
-                onClick={handleSavePreference}
-              >
-                {t(closeText || 'explorer.modal.onboarding.trash.close')}
-              </Button>
-            )}
-          </Modal.Footer>
-        </Modal>,
-        document.getElementById('portal') as HTMLElement,
-      )
-    : null;
-};
+          )}
+          {swiperProgress < 1 && (
+            <Button
+              id="nextButtonId"
+              type="button"
+              color="primary"
+              variant="filled"
+              onClick={() => swiperInstance.slideNext()}
+            >
+              {t(nextText || 'explorer.modal.onboarding.trash.next')}
+            </Button>
+          )}
+          {swiperProgress === 1 && (
+            <Button
+              type="button"
+              color="primary"
+              variant="filled"
+              onClick={() => {
+                if (isOnboarding) {
+                  handleCloseWithPreference();
+                } else {
+                  handleCloseWithoutPreference();
+                }
+              }}
+            >
+              {t(closeText || 'explorer.modal.onboarding.trash.close')}
+            </Button>
+          )}
+        </Modal.Footer>
+      </Modal>,
+      document.getElementById('portal') as HTMLElement,
+    );
+  },
+);
 
 OnboardingModal.displayName = 'OnboardingModal';
 

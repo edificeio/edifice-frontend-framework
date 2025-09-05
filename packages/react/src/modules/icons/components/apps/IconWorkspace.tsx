@@ -10,9 +10,10 @@ const SvgIconWorkspace = ({
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 23 24"
     width="24"
     height="24"
+    fill="none"
+    viewBox="0 0 50 50"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
@@ -20,7 +21,7 @@ const SvgIconWorkspace = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       fill="currentColor"
-      d="M22.34 8.68v9.45q0 1.23-.89 2.12t-2.12.89H3.01q-1.23 0-2.12-.89T0 18.13V5.25q0-1.23.9-2.12t2.12-.9h4.3q1.23 0 2.12.9t.89 2.12v.43h9.01q1.23 0 2.12.89t.89 2.11z"
+      d="M45.6 20.46v17.43a5.6 5.6 0 0 1-5.54 5.54H9.94A5.3 5.3 0 0 1 6 41.79a5.3 5.3 0 0 1-1.64-3.9V14.11A5.3 5.3 0 0 1 6 10.21a5.3 5.3 0 0 1 3.9-1.64h7.94a5.3 5.3 0 0 1 3.9 1.64 5.3 5.3 0 0 1 1.65 3.9v.8h16.67a5.6 5.6 0 0 1 5.54 5.55"
     />
   </svg>
 );

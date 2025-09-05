@@ -22,8 +22,9 @@ const IconButton = forwardRef(
     const buttonProps = {
       ...restProps,
       ...{
-        className: clsx('btn-icon btn-sm', className),
+        className: clsx('btn-icon', className),
       },
+      size: restProps.size || 'sm',
     };
 
     return <Button ref={ref} {...buttonProps} leftIcon={icon} />;

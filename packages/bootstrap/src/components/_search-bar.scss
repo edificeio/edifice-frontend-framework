@@ -1,0 +1,8 @@
+.searchbar-hide-native-clear::-webkit-search-cancel-button {
+  appearance: none !important;
+  display: none !important;
+}
+
+.searchbar-hide-native-clear {
+  padding-right: 32px;
+}

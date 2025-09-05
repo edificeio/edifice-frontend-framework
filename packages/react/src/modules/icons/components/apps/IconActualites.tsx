@@ -10,9 +10,10 @@ const SvgIconActualites = ({
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 28 24"
     width="24"
     height="24"
+    fill="none"
+    viewBox="0 0 50 50"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
@@ -20,7 +21,7 @@ const SvgIconActualites = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <path
       fill="currentColor"
-      d="M13.73 7.4H8.6v5.15h5.14V7.42zm1.73 8.6v1.7H6.88V16zm0-10.32v8.58H6.88V5.68zm8.59 10.31v1.71h-6.88V16h6.88zm0-3.43v1.7h-6.88v-1.7zm0-3.44v1.73h-6.88V9.12zm0-3.44V7.4h-6.88V5.68zM3.44 18.57V5.67H1.7v12.9q0 .33.26.6t.6.26.6-.26.27-.6zm22.31 0V3.97H5.15v14.6q0 .43-.15.86h19.91q.34 0 .6-.26t.25-.6zM27.5 2.24v16.33q0 1.08-.75 1.83t-1.83.74H2.57q-1.05 0-1.82-.74T0 18.57V3.97h3.44V2.24h24.05z"
+      d="M25 18.91h-8.54v8.52H25zm2.87 14.22V36H13.63v-2.87zm0-17.09v14.22H13.63V16zm14.2 17.09V36H30.68v-2.87zm0-5.7v2.83H30.68v-2.83zm0-5.69v2.87H30.68v-2.87zm0-5.7v2.87H30.68V16zM7.93 37.39V16H5.06v21.39a1.51 1.51 0 0 0 1.44 1.44 1.37 1.37 0 0 0 1-.44 1.35 1.35 0 0 0 .43-1m37 0V13.21H10.76v24.18a4.5 4.5 0 0 1-.24 1.44h33a1.4 1.4 0 0 0 1-.44 1.28 1.28 0 0 0 .38-1zm2.86-27v27a4.2 4.2 0 0 1-4.26 4.26H6.5a4.22 4.22 0 0 1-3-1.23 3.9 3.9 0 0 1-1.23-3V13.21h5.66v-2.86z"
     />
   </svg>
 );

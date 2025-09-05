@@ -7,7 +7,12 @@ import { Loading, LoadingIcon, LoadingPosition } from '../Loading';
 export type ButtonRef = HTMLButtonElement;
 
 export type ButtonTypes = 'button' | 'submit' | 'reset';
-export type ButtonColors = 'primary' | 'secondary' | 'tertiary' | 'danger';
+export type ButtonColors =
+  | 'primary'
+  | 'secondary'
+  | 'tertiary'
+  | 'danger'
+  | 'black';
 export type ButtonVariants = 'filled' | 'outline' | 'ghost';
 export type ButtonSizes = 'sm' | 'md' | 'lg';
 
@@ -91,7 +96,7 @@ const Button = forwardRef(
         [`btn-filled btn-${color}`]: variant === 'filled',
         [`btn-${variant}-${color}`]:
           variant === 'outline' || variant === 'ghost',
-        'btn-icon btn-sm': !children,
+        'btn-icon': !children,
         'btn-loading': isLoading,
         'btn-lg': size === 'lg',
         'btn-sm': size === 'sm',

@@ -8,10 +8,11 @@ import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeC
  *
  * @returns the Library URL as a string. Returns null if no library was found in user apps.
  */
-const useLibraryUrl = (): string | null => {
+const useLibraryUrl = (appCodeName?: string): string | null => {
   const { user, appCode } = useEdificeClient();
 
-  const appName = libraryMaps[appCode as string];
+  const appCodeToUse = (appCodeName ?? appCode) as string;
+  const appName = libraryMaps[appCodeToUse];
 
   // get library app from userinfo apps
   const libraryApp: IWebApp | undefined = (user as IUserInfo)?.apps.find(
