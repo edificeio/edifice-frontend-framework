@@ -58,8 +58,8 @@ $icons-applications: (
     'one': $one-blue,
   ),
   'community': (
-    'neo': $blue,
-    'one': $one-blue,
+    'neo': $purple,
+    'one': $one-purple,
   ),
   'competences': (
     'neo': $green,
@@ -226,8 +226,8 @@ $icons-applications: (
     'one': $one-pink,
   ),
   'visioconf': (
-    'neo': $pink,
-    'one': $one-pink,
+    'neo': $orange,
+    'one': $one-orange,
   ),
   'web-conference': (
     'neo': $orange,
@@ -260,6 +260,18 @@ $icons-applications: (
   'appointments': (
     'neo': $green,
     'one': $one-green,
+  ),
+  'communities': (
+    'neo': $purple,
+    'one': $one-purple,
+  ),
+  'minetest': (
+    'neo': $blue,
+    'one': $one-blue,
+  ),
+  'geogebra': (
+    'neo': $blue,
+    'one': $one-blue,
   ),
 ) !default;
 
@@ -429,8 +441,8 @@ $icons-connectors: (
     'one': $one-yellow,
   ),
   'mediacentre': (
-    'neo': $indigo,
-    'one': $one-indigo,
+    'neo': $blue,
+    'one': $one-blue,
   ),
   'monorientationenligne': (
     'neo': $yellow,
@@ -490,7 +502,7 @@ $icons-connectors: (
   ),
   'pronote': (
     'neo': $purple,
-    'one': $one-indigo,
+    'one': $one-purple,
   ),
   'public': (
     'neo': $red,
@@ -537,6 +549,10 @@ $icons-connectors: (
     'one': $one-yellow,
   ),
   'webclasseur': (
+    'neo': $blue,
+    'one': $one-blue,
+  ),
+  'lool': (
     'neo': $blue,
     'one': $one-blue,
   ),
