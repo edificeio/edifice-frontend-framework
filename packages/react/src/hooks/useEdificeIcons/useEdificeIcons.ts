@@ -65,8 +65,6 @@ export default function useEdificeIcons() {
       case 'communautés':
         appCode = 'community';
         break;
-      case 'communities':
-        appCode = 'community';
         break;
       case 'directory.user':
         appCode = 'userbook';
