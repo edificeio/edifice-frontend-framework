@@ -1,3 +1,4 @@
+export { default as IconCommunities } from './IconCommunities';
 export { default as IconCommunity } from './IconCommunity';
 export { default as IconDisconnect } from './IconDisconnect';
 export { default as IconHome } from './IconHome';
