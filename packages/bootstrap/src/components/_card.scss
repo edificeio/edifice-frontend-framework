@@ -177,6 +177,12 @@
     }
   }
 
+  &.card-hoverable {
+    &:hover {
+      background-color: var(--#{$prefix}card-hover-bg) !important;
+    }
+  }
+
   &-text {
     em {
       color: var(--#{$prefix}gray-700);
