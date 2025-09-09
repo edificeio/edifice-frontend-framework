@@ -1,0 +1,13 @@
+@use '../abstracts/' as *;
+
+.step {
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+  width: 20px;
+  height: 8px;
+
+  &.step-active {
+    width: 40px;
+  }
+}

@@ -36,6 +36,7 @@ export * from './SearchBar';
 export * from './Select';
 export * from './Skeleton';
 export * from './StackedGroup';
+export * from './Stepper';
 export * from './Switch';
 export * from './Table';
 export * from './Tabs';
