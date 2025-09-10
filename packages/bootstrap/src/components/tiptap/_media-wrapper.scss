@@ -15,17 +15,6 @@
     right: -14px !important;
   }
 
-  .media-node-view .vertical-resize-handle {
-    top: 50%;
-    right: -10px;
-    height: 44px;
-    width: 4px;
-    cursor: col-resize;
-    position: absolute;
-    border-radius: 4px;
-    transform: translateY(-50%);
-  }
-
   .react-renderer.has-focus {
     .media-node-view .vertical-resize-handle {
       opacity: 1;
@@ -34,6 +23,17 @@
 
     .iframe-node-view {
       outline-offset: 0px !important;
+    }
+
+    .media-node-view .vertical-resize-handle {
+      top: 50%;
+      right: -10px;
+      height: 44px;
+      width: 4px;
+      cursor: col-resize;
+      position: absolute;
+      border-radius: 4px;
+      transform: translateY(-50%);
     }
 
     .media-node-view {
