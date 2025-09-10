@@ -16,11 +16,21 @@ export interface StepperProps {
    * Gap between steps in the Stepper.
    */
   gap?: '4' | '8' | '12' | '16' | '24' | '32';
+  /*
+   * Color theme of the Stepper
+   */
+  color?: StepperColors;
 }
 
 const Stepper = forwardRef(
   (
-    { currentStep, nbSteps, gap = '8', ...props }: StepperProps,
+    {
+      currentStep,
+      nbSteps,
+      gap = '8',
+      color = 'secondary',
+      ...props
+    }: StepperProps,
     ref: Ref<HTMLDivElement>,
   ) => {
     return (
@@ -28,7 +38,7 @@ const Stepper = forwardRef(
         {Array.from({ length: nbSteps }).map((_, index) => (
           <div
             key={`step-${index}`}
-            className={`rounded step ${index === currentStep ? 'bg-secondary step-active' : 'bg-secondary-300'}`}
+            className={`rounded step ${index === currentStep ? `bg-${color} step-active` : `bg-${color}-300`}`}
           />
         ))}
       </Flex>
