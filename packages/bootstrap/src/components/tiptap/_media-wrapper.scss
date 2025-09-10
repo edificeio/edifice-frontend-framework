@@ -1,4 +1,4 @@
-@use "../../abstracts/" as *;
+@use '../../abstracts/' as *;
 
 .ProseMirror {
   .media-node-view .vertical-resize-handle {
@@ -9,6 +9,10 @@
   .media-node-view {
     position: relative;
     width: fit-content;
+  }
+
+  .iframe-node-view .vertical-resize-handle {
+    right: -14px !important;
   }
 
   .media-node-view .vertical-resize-handle {
@@ -26,6 +30,10 @@
     .media-node-view .vertical-resize-handle {
       opacity: 1;
       z-index: 1;
+    }
+
+    .iframe-node-view {
+      outline-offset: 0px !important;
     }
 
     .media-node-view {

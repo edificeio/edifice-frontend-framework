@@ -5,7 +5,6 @@ import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
 import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
 import { CustomHighlight } from '@edifice.io/tiptap-extensions/highlight';
 import { Hyperlink } from '@edifice.io/tiptap-extensions/hyperlink';
-import { Iframe } from '@edifice.io/tiptap-extensions/iframe';
 import { SpeechRecognition } from '@edifice.io/tiptap-extensions/speech-recognition';
 import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis';
 import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
@@ -36,6 +35,7 @@ import {
   AttachmentRenderer,
   AudioNodeView,
   AudioRenderer,
+  IframeNodeView,
   ImageNodeView,
   InformationPaneNodeView,
   InformationPaneRenderer,
@@ -113,11 +113,11 @@ export const useTipTapEditor = (
             ? `${currentLanguage}-${currentLanguage.toUpperCase()}` // FIXME very dirty hack for demo
             : 'fr-FR',
       }),
-      Iframe,
       Hyperlink,
       FontFamily,
       Mathematics,
       Alert,
+      IframeNodeView(MediaRenderer),
       VideoNodeView(MediaRenderer),
       AudioNodeView(AudioRenderer),
       LinkerNodeView(LinkerRenderer),

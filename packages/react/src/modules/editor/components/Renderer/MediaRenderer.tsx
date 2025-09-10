@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 import { NodeViewWrapper } from '@tiptap/react';
@@ -15,10 +15,16 @@ const MediaRenderer = (props: MediaResizeProps) => {
 
   const { browser, device } = useBrowserInfo(navigator.userAgent);
 
-  const resizableMedia = useRef<HTMLImageElement | HTMLVideoElement>(null);
+  const resizableMedia = useRef<
+    HTMLImageElement | HTMLVideoElement | HTMLIFrameElement
+  >(null);
 
   const { startVerticalResize, stopVerticalResize, isVerticalResizeActive } =
     useResizeMedia(props, resizableMedia);
+
+  const [showOverlay, setShowOverlay] = useState(false);
+  const width = node.attrs.width || 560;
+  const height = node.attrs.height || Math.round((width * 9) / 16);
 
   const alignContent = (textalign: string) => {
     switch (textalign) {
@@ -75,39 +81,72 @@ const MediaRenderer = (props: MediaResizeProps) => {
     <NodeViewWrapper style={alignContent(node.attrs.textAlign)}>
       <div className="media-node-view">
         <div data-drag-handle>
-          {node.type.name === 'custom-image' ? (
-            <>
-              <Image
-                src={node.attrs.src}
-                alt={node.attrs.alt}
-                title={node.attrs.title}
-                width={node.attrs.width}
-                style={node.attrs.style}
-                height={node.attrs.height}
-                className={`custom-image`}
-                ref={resizableMedia as React.RefObject<HTMLImageElement>}
-              />
-              {node.attrs.title && (
-                // Display legend (set in title attribute) if it exists
-                <em className="custom-image-legend caption text-align-left">
-                  {node.attrs.title}
-                </em>
-              )}
-            </>
-          ) : (
-            <video
-              ref={resizableMedia as React.RefObject<HTMLVideoElement>}
-              controls={node.attrs.controls === 'true'}
-              src={node.attrs.src}
-              width={node.attrs.width}
-              height={node.attrs.height}
-              data-video-resolution={`${node.attrs.width}x${node.attrs.height}`}
-              data-document-id={node.attrs.documentId}
-              data-document-is-captation={node.attrs.isCaptation}
-            >
-              <source src={node.attrs.src} />
-            </video>
-          )}
+          {(() => {
+            switch (node.type.name) {
+              case 'custom-image':
+                return (
+                  <>
+                    <Image
+                      src={node.attrs.src}
+                      alt={node.attrs.alt}
+                      title={node.attrs.title}
+                      width={node.attrs.width}
+                      style={node.attrs.style}
+                      height={node.attrs.height}
+                      className={`custom-image`}
+                      ref={resizableMedia as React.RefObject<HTMLImageElement>}
+                    />
+                    {node.attrs.title && (
+                      // Display legend (set in title attribute) if it exists
+                      <em className="custom-image-legend caption text-align-left">
+                        {node.attrs.title}
+                      </em>
+                    )}
+                  </>
+                );
+              case 'video':
+                return (
+                  <video
+                    ref={resizableMedia as React.RefObject<HTMLVideoElement>}
+                    controls={node.attrs.controls === 'true'}
+                    src={node.attrs.src}
+                    width={node.attrs.width}
+                    height={node.attrs.height}
+                    data-video-resolution={`${node.attrs.width}x${node.attrs.height}`}
+                    data-document-id={node.attrs.documentId}
+                    data-document-is-captation={node.attrs.isCaptation}
+                  >
+                    <source src={node.attrs.src} />
+                  </video>
+                );
+              case 'iframe':
+                return (
+                  <>
+                    {showOverlay && (
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          cursor: 'ew-resize',
+                          zIndex: 2,
+                        }}
+                      />
+                    )}
+
+                    <iframe
+                      ref={resizableMedia as React.RefObject<HTMLIFrameElement>}
+                      src={node.attrs.src}
+                      width={width}
+                      height={height}
+                      allowFullScreen={node.attrs.allowfullscreen ?? true}
+                      style={node.attrs.style}
+                    />
+                  </>
+                );
+              default:
+                return null;
+            }
+          })()}
         </div>
 
         <div
@@ -117,10 +156,12 @@ const MediaRenderer = (props: MediaResizeProps) => {
           title={t('tiptap.media.resize')}
           onMouseDown={(e) => {
             e.stopPropagation();
+            setShowOverlay(true);
             startVerticalResize(e);
           }}
           onMouseUp={(e) => {
             e.stopPropagation();
+            setShowOverlay(false);
             stopVerticalResize();
           }}
         />

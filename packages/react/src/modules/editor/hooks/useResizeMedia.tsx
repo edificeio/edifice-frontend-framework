@@ -1,106 +1,106 @@
 import { useEffect, useRef } from 'react';
-
 import { Editor } from '@tiptap/react';
 
 export interface MediaResizeProps {
   editor: Editor;
+  updateAttributes: (attrs: Record<string, any>) => void;
   [x: string]: any;
 }
 
 const MIN_WIDTH = 80;
 
+type ResizableElt = HTMLImageElement | HTMLVideoElement | HTMLIFrameElement;
+
 export const useResizeMedia = (
   props: MediaResizeProps,
-  refResizable: React.RefObject<HTMLImageElement | HTMLVideoElement>,
+  refResizable: React.RefObject<ResizableElt>,
+  forcedAspectRatio?: number,
 ) => {
   const aspectRatio = useRef(0);
-
   const lastCursorX = useRef(-1);
-
   const isVerticalResizeActive = useRef(false);
-
   const proseMirrorContainerWidth = useRef(0);
 
-  const limitWidthOrHeight = (width: number) => width < MIN_WIDTH;
+  const limitWidth = (width: number) => width < MIN_WIDTH;
+
+  const readCurrentPixelWidth = () => {
+    const el = refResizable.current;
+    if (!el) return 0;
+
+    const rect = el.getBoundingClientRect();
+    return Math.round(rect.width || (el as any).width || 0);
+  };
+
+  const readCurrentPixelHeight = () => {
+    const el = refResizable.current;
+    if (!el) return 0;
+
+    const rect = el.getBoundingClientRect();
+    return Math.round(rect.height || (el as any).height || 0);
+  };
 
   useEffect(() => {
     const proseMirrorContainerDiv = document.querySelector('.ProseMirror');
-
     if (proseMirrorContainerDiv)
-      proseMirrorContainerWidth.current = proseMirrorContainerDiv?.clientWidth;
+      proseMirrorContainerWidth.current = proseMirrorContainerDiv.clientWidth;
 
-    if (!refResizable) return;
-    aspectRatio.current = 1.5;
-
-    // comment first call of onVerticalResize because re-render and actives undo/redo
-    // onVerticalResize("left", 0);
+    if (forcedAspectRatio && forcedAspectRatio > 0) {
+      aspectRatio.current = forcedAspectRatio;
+    } else {
+      const w = readCurrentPixelWidth();
+      const h = readCurrentPixelHeight();
+      if (w > 0 && h > 0) {
+        aspectRatio.current = w / h;
+      } else {
+        aspectRatio.current = 16 / 9;
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onVerticalResize = (
-    directionOfMouseMove: 'right' | 'left',
-    diff: number,
-  ) => {
-    if (!refResizable) {
-      console.error('Media ref is undefined|null', {
-        refResizable: refResizable,
-      });
-      return;
+  const clampWidth = (w: number) => {
+    let width = w;
+    if (
+      proseMirrorContainerWidth.current > 0 &&
+      width > proseMirrorContainerWidth.current
+    ) {
+      width = proseMirrorContainerWidth.current;
     }
+    if (limitWidth(width)) width = MIN_WIDTH;
+    return Math.round(width);
+  };
 
-    const currentMediaDimensions = {
-      width: refResizable.current?.width,
-      height: refResizable.current?.height,
-    };
+  const onVerticalResize = (direction: 'right' | 'left', diff: number) => {
+    const currWidth = readCurrentPixelWidth();
+    if (!currWidth) return;
 
-    const newMediaDimensions = {
-      width: -1,
-      height: -1,
-    };
+    let newWidth =
+      direction === 'left'
+        ? currWidth - Math.abs(diff)
+        : currWidth + Math.abs(diff);
+    newWidth = clampWidth(newWidth);
 
-    if (currentMediaDimensions.width) {
-      if (directionOfMouseMove === 'left') {
-        newMediaDimensions.width =
-          currentMediaDimensions.width - Math.abs(diff);
-      } else {
-        newMediaDimensions.width =
-          currentMediaDimensions.width + Math.abs(diff);
-      }
-    }
-
-    if (newMediaDimensions.width > proseMirrorContainerWidth.current)
-      newMediaDimensions.width = proseMirrorContainerWidth.current;
-
-    if (diff !== 0 && limitWidthOrHeight(newMediaDimensions.width)) {
-      newMediaDimensions.width = MIN_WIDTH;
-    }
-
-    newMediaDimensions.height = newMediaDimensions.width / aspectRatio.current;
+    const ratio = aspectRatio.current || 16 / 9;
+    const newHeight = Math.round(newWidth / ratio);
 
     setTimeout(() => {
-      props.updateAttributes(newMediaDimensions);
+      props.updateAttributes({ width: newWidth, height: newHeight });
     });
   };
 
   const onVerticalMouseMove = (event: MouseEvent) => {
     if (!isVerticalResizeActive.current) return;
-
     const { clientX } = event;
-
     const diff = lastCursorX.current - clientX;
-
     lastCursorX.current = clientX;
-
     if (diff === 0) return;
-
-    const directionOfMouseMove: 'left' | 'right' = diff > 0 ? 'left' : 'right';
-
-    onVerticalResize(directionOfMouseMove, Math.abs(diff));
+    const direction: 'left' | 'right' = diff > 0 ? 'left' : 'right';
+    onVerticalResize(direction, Math.abs(diff));
   };
 
   const startVerticalResize = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-  ): void => {
+  ) => {
     isVerticalResizeActive.current = true;
     lastCursorX.current = event.clientX;
 
