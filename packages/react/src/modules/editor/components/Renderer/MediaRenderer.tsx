@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 import { NodeViewWrapper } from '@tiptap/react';
@@ -22,7 +22,6 @@ const MediaRenderer = (props: MediaResizeProps) => {
   const { startVerticalResize, stopVerticalResize, isVerticalResizeActive } =
     useResizeMedia(props, resizableMedia);
 
-  const [showOverlay, setShowOverlay] = useState(false);
   const width = node.attrs.width || 560;
   const height = node.attrs.height || Math.round((width * 9) / 16);
 
@@ -122,16 +121,7 @@ const MediaRenderer = (props: MediaResizeProps) => {
               case 'iframe':
                 return (
                   <>
-                    {showOverlay && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          inset: 0,
-                          cursor: 'ew-resize',
-                          zIndex: 2,
-                        }}
-                      />
-                    )}
+                    <div className="iframe-node-view" />
 
                     <iframe
                       ref={resizableMedia as React.RefObject<HTMLIFrameElement>}
@@ -156,12 +146,10 @@ const MediaRenderer = (props: MediaResizeProps) => {
           title={t('tiptap.media.resize')}
           onMouseDown={(e) => {
             e.stopPropagation();
-            setShowOverlay(true);
             startVerticalResize(e);
           }}
           onMouseUp={(e) => {
             e.stopPropagation();
-            setShowOverlay(false);
             stopVerticalResize();
           }}
         />

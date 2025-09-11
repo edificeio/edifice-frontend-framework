@@ -11,18 +11,17 @@
     width: fit-content;
   }
 
-  .iframe-node-view .vertical-resize-handle {
-    right: -14px !important;
-  }
-
   .react-renderer.has-focus {
     .media-node-view .vertical-resize-handle {
       opacity: 1;
       z-index: 1;
     }
 
-    .iframe-node-view {
-      outline-offset: 0px !important;
+    .media-node-view .iframe-node-view {
+      position: absolute;
+      inset: 0;
+      cursor: ew-resize;
+      z-index: 2;
     }
 
     .media-node-view .vertical-resize-handle {
