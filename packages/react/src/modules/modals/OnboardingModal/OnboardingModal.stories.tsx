@@ -89,6 +89,7 @@ export const Default: Story = {
 
     return (
       <>
+        <div id="portal" />
         <Button
           type="button"
           variant="filled"
