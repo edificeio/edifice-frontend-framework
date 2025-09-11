@@ -14,16 +14,16 @@ export interface EditorPreviewProps {
   content: string;
   /** Display with or without a border */
   variant?: 'outline' | 'ghost';
-  handleClickOnDetail?: () => void;
-  handleClickOnMedia?: () => void;
+  onDetailClick?: () => void;
+  onMediaClick?: () => void;
   maxMediaDisplayed?: number;
 }
 
 const EditorPreview = ({
   content,
   variant = 'outline',
-  handleClickOnDetail,
-  handleClickOnMedia,
+  onDetailClick,
+  onMediaClick,
   maxMediaDisplayed = 3,
 }: EditorPreviewProps) => {
   const { t } = useTranslation();
@@ -43,6 +43,15 @@ const EditorPreview = ({
     tmp.innerHTML = html;
     // Get text content only
     return tmp.textContent || tmp.innerText || '';
+  };
+
+  const hasMediaCallback = onDetailClick || onMediaClick;
+
+  const handleMediaClick = (e: React.MouseEvent) => {
+    if (onMediaClick) {
+      e.stopPropagation();
+      onMediaClick();
+    }
   };
 
   useEffect(() => {
@@ -71,19 +80,18 @@ const EditorPreview = ({
   }, [content]);
 
   return (
-    <div className={borderClass} data-testid="editor-preview">
+    <div
+      className={borderClass}
+      data-testid="editor-preview"
+      onClick={onDetailClick}
+      tabIndex={onDetailClick ? -1 : undefined}
+      role={onDetailClick ? 'button' : undefined}
+    >
+      <div className={contentClass}>{summaryContent}</div>
       <div
-        onClick={handleClickOnDetail}
-        tabIndex={handleClickOnDetail ? -1 : undefined}
-        role={handleClickOnDetail ? 'button' : undefined}
-        className={contentClass}
-      >
-        {summaryContent}
-      </div>
-      <div
-        onClick={handleClickOnMedia}
-        tabIndex={handleClickOnMedia ? -1 : undefined}
-        role={handleClickOnMedia ? 'button' : undefined}
+        onClick={handleMediaClick}
+        tabIndex={hasMediaCallback ? -1 : undefined}
+        role={hasMediaCallback ? 'button' : undefined}
         className="d-flex align-items-center justify-content-center gap-24 px-32 pt-16"
       >
         {mediaURLs.slice(0, maxMediaDisplayed).map((url, index) => (

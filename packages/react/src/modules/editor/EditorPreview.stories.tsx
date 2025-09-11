@@ -61,8 +61,8 @@ export const GhostPreviewVariant: Story = {
 export const ClickablePreviewVariant: Story = {
   args: {
     content: defaultContent,
-    handleClickOnDetail: () => alert('Detail clicked'),
-    handleClickOnMedia: () => alert('Media clicked'),
+    onDetailClick: () => alert('Detail clicked'),
+    onMediaClick: () => alert('Media clicked'),
   },
   name: 'Clickable preview',
 };
