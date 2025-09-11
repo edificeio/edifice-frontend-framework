@@ -31,13 +31,7 @@ export const OutlinePreviewSkeletonVariant: Story = {
   args: {
     variant: 'outline',
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '60rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
   name: 'Outline Variant',
 };
 
@@ -45,12 +39,6 @@ export const GhostPreviewSkeletonVariant: Story = {
   args: {
     variant: 'ghost',
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '60rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
   name: 'Ghost Variant',
 };
