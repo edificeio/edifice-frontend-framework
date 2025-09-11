@@ -75,6 +75,7 @@ export interface GetResourceRightPayload {
       name: string;
       groupDisplayName: string;
       structureName: string;
+      labels?: string[];
     }>;
     checked: Record<string, string[]>;
   };

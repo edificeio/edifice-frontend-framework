@@ -251,8 +251,9 @@ export class ShareService {
     const rights = [...userRights, ...groupRights];
     // prepare list of visible groups
     const visibleGroups = rightsPayload.groups.visibles.map(
-      ({ groupDisplayName, id, name }) => {
+      ({ groupDisplayName, id, name, labels }) => {
         const group: Group = {
+          labels,
           displayName: groupDisplayName || name,
           id,
         };
