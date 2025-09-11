@@ -10,11 +10,6 @@ import { Image } from '../../../../components';
  * Editor component properties
  */
 export interface EditorPreviewProps {
-  /**
-   * (Optional) id of the HTML element.
-   * Useful with an external `<FormControl id=...><Label/>`.
-   */
-  id?: string;
   /** Rich content to render. */
   content: string;
   /** Display with or without a border */
@@ -35,10 +30,11 @@ const EditorPreview = ({
   const [summaryContent, setSummaryContent] = useState<string>('');
   const [mediaURLs, setMediaURLs] = useState<string[]>([]);
 
-  const borderClass = clsx(variant === 'outline' && 'border rounded-3');
+  const borderClass = clsx(
+    variant === 'outline' && 'border rounded-3 py-12 px-16',
+  );
   const contentClass = clsx(
-    'flex-fill text-truncate text-truncate-2 post-preview-content mt-16 overflow-hidden',
-    variant === 'outline' && 'my-12 mx-16',
+    'flex-fill text-truncate text-truncate-2 post-preview-content overflow-hidden',
   );
 
   const stripHtml = (html: string) => {
@@ -78,16 +74,16 @@ const EditorPreview = ({
     <div className={borderClass} data-testid="editor-preview">
       <div
         onClick={handleClickOnDetail}
-        tabIndex={-1}
-        role="button"
+        tabIndex={handleClickOnDetail ? -1 : undefined}
+        role={handleClickOnDetail ? 'button' : undefined}
         className={contentClass}
       >
         {summaryContent}
       </div>
       <div
         onClick={handleClickOnMedia}
-        tabIndex={-1}
-        role="button"
+        tabIndex={handleClickOnMedia ? -1 : undefined}
+        role={handleClickOnMedia ? 'button' : undefined}
         className="d-flex align-items-center justify-content-center gap-24 px-32 pt-16"
       >
         {mediaURLs.slice(0, maxMediaDisplayed).map((url, index) => (
@@ -95,6 +91,7 @@ const EditorPreview = ({
             className={clsx('position-relative col-12 col-md-4 ', {
               'd-none d-md-block': index >= 1,
             })}
+            style={{ maxWidth: '150px' }}
             key={url}
           >
             <Image
