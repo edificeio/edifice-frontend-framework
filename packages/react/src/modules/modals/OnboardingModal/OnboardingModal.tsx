@@ -206,7 +206,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
           )}
         </Modal.Footer>
       </Modal>,
-      document.getElementById('portal') as HTMLElement,
+      (document.getElementById('portal') as HTMLElement) || document.body,
     );
   },
 );
