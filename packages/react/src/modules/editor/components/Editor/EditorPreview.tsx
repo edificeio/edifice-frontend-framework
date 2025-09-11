@@ -28,7 +28,12 @@ const EditorPreview = ({
 }: EditorPreviewProps) => {
   const { t } = useTranslation();
   const [summaryContent, setSummaryContent] = useState<string>('');
-  const [mediaURLs, setMediaURLs] = useState<string[]>([]);
+  const [medias, setMedias] = useState<
+    {
+      url: string;
+      alt: string;
+    }[]
+  >([]);
 
   const borderClass = clsx(
     variant === 'outline' && 'border rounded-3 py-12 px-16',
@@ -54,17 +59,18 @@ const EditorPreview = ({
       const mediaElements = Array.from(
         doc.querySelectorAll('img, video, iframe, audio, embed'),
       );
-      const imgURLs = mediaElements
-        .filter((el) => el.tagName.toLowerCase() === 'img')
-        .map((el) => {
-          const src = (el as HTMLImageElement).src;
-          if (src) {
-            return getThumbnail(src, 0, 300);
-          }
-          return '';
-        })
-        .filter(Boolean);
-      setMediaURLs(imgURLs);
+
+      setMedias(
+        mediaElements
+          .filter((el) => el.tagName.toLowerCase() === 'img')
+          .map((el) => {
+            const image = el as HTMLImageElement;
+            if (image.src) {
+              return { url: getThumbnail(image.src, 0, 300), alt: image.alt };
+            }
+            return { url: '', alt: '' };
+          }),
+      );
 
       // Remove media elements from the document for summary content
       mediaElements.forEach((el) => el.parentNode?.removeChild(el));
@@ -91,24 +97,24 @@ const EditorPreview = ({
         role={hasMediaCallback ? 'button' : undefined}
         className="d-flex align-items-center justify-content-center gap-24 px-32 pt-16"
       >
-        {mediaURLs.slice(0, maxMediaDisplayed).map((url, index) => (
+        {medias.slice(0, maxMediaDisplayed).map((media, index) => (
           <div
             className={clsx('position-relative col-12 col-md-4 ', {
               'd-none d-md-block': index >= 1,
             })}
             style={{ maxWidth: '150px' }}
-            key={url}
+            key={media.url}
           >
             <Image
-              alt=""
+              alt={media.alt}
               objectFit="cover"
               ratio="16"
               className="rounded"
-              src={url}
+              src={media.url}
               sizes=""
             />
             {(index === 0 || index === 2) &&
-              mediaURLs.length - (index + 1) > 0 && (
+              medias.length - (index + 1) > 0 && (
                 <div
                   className={clsx(
                     'position-absolute top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center rounded text-light bg-dark bg-opacity-50',
@@ -119,7 +125,7 @@ const EditorPreview = ({
                   )}
                 >
                   {t('editor.preview.moreMedia', {
-                    mediaCount: mediaURLs.length - (index + 1),
+                    mediaCount: medias.length - (index + 1),
                   })}
                 </div>
               )}
