@@ -40,13 +40,7 @@ export const OutlinePreviewVariant: Story = {
     variant: 'outline',
     content: defaultContent,
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '60rem' }}>
-        <Story />
-      </div>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
   name: 'Outline Variant',
 };
 
