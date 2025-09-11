@@ -112,7 +112,7 @@ export const ShareBookmarkLine = ({
             </td>
           ))}
           <td>
-            {!shareRight.isBookmarkMember && (
+            {!shareRight.isBookmarkMember && !isDisabled && (
               <IconButton
                 aria-label={t('close')}
                 color="tertiary"
