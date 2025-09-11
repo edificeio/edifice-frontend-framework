@@ -1,4 +1,4 @@
-@use "../../abstracts/" as *;
+@use '../../abstracts/' as *;
 
 .node-custom-image {
   display: inline-block;
@@ -10,11 +10,13 @@ p:has(.node-custom-image) {
   flex-wrap: wrap;
   overflow-wrap: anywhere;
 
-  &[style="text-align: center"] {
+  &[style='text-align: center'],
+  &[style='text-align: center;'] {
     justify-content: center;
   }
 
-  &[style="text-align: right"] {
+  &[style='text-align: right'],
+  &[style='text-align: right;'] {
     justify-content: end;
   }
 }
