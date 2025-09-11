@@ -15,6 +15,7 @@ import {
 } from '../../icons/components';
 import { hasRight } from './utils/hasRight';
 import { showShareRightLine } from './utils/showShareRightLine';
+import { useShareRightDisabled } from './hooks/useShareRightDisabled';
 
 export const ShareBookmarkLine = ({
   shareRights,
@@ -35,6 +36,7 @@ export const ShareBookmarkLine = ({
   onDeleteRow: (shareRight: ShareRight) => void;
 }) => {
   const { t } = useTranslation();
+  const { isShareRightDisabled } = useShareRightDisabled();
 
   return shareRights?.rights.map((shareRight: ShareRight) => {
     const avatarMapping = {
@@ -58,6 +60,9 @@ export const ShareBookmarkLine = ({
 
     const isTypeBookmark = shareRight.type === 'sharebookmark';
     const isTypeUser = shareRight.type === 'user';
+
+    // Determine if this share right should have disabled checkboxes
+    const isDisabled = isShareRightDisabled(shareRight, shareRights);
 
     return (
       showShareRightLine(shareRight, showBookmark) && (
@@ -102,6 +107,7 @@ export const ShareBookmarkLine = ({
               <Checkbox
                 checked={hasRight(shareRight, shareRightAction)}
                 onChange={() => toggleRight(shareRight, shareRightAction.id)}
+                disabled={isDisabled}
               />
             </td>
           ))}

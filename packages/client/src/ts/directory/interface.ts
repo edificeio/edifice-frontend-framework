@@ -13,6 +13,7 @@ export interface User {
 export interface Group {
   id: string;
   displayName: string;
+  labels?: string[];
 }
 
 /**
