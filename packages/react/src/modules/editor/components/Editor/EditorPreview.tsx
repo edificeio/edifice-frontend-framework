@@ -34,14 +34,6 @@ const EditorPreview = ({
     variant === 'outline' && 'border rounded-3 py-12 px-16',
   );
 
-  const stripHtml = (html: string) => {
-    // Create a temporary element
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    // Get text content only
-    return tmp.textContent || tmp.innerText || '';
-  };
-
   const hasMediaCallback = onDetailClick || onMediaClick;
 
   const handleMediaClick = (e: React.MouseEvent) => {
@@ -52,27 +44,33 @@ const EditorPreview = ({
   };
 
   useEffect(() => {
-    let contentHTML = content;
+    const contentHTML = content;
     if (contentHTML) {
-      const getMediaTags = /<(img|video|iframe|audio|embed)[^>]*>(<\/\1>)?/gim;
-      const getSrc = /src=(?:"|')([^"|']*)(?:"|')/;
-      const mediaTags = contentHTML.match(getMediaTags);
-      contentHTML = contentHTML.replace(getMediaTags, '');
-      if (mediaTags?.length) {
-        setMediaURLs(
-          mediaTags
-            .filter((tag) => tag.includes('img'))
-            .map((tag) => {
-              const srcMatch = getSrc.exec(tag);
-              if (srcMatch?.length) {
-                return getThumbnail(srcMatch[1], 0, 300);
-              }
-              return '';
-            }) || [],
-        );
-      }
+      // Use DOMParser to safely parse the HTML content
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(contentHTML, 'text/html');
 
-      setSummaryContent(stripHtml(contentHTML));
+      // Extract media URLs from <img>, <video>, <iframe>, <audio>, <embed>
+      const mediaElements = Array.from(
+        doc.querySelectorAll('img, video, iframe, audio, embed'),
+      );
+      const imgURLs = mediaElements
+        .filter((el) => el.tagName.toLowerCase() === 'img')
+        .map((el) => {
+          const src = (el as HTMLImageElement).src;
+          if (src) {
+            return getThumbnail(src, 0, 300);
+          }
+          return '';
+        })
+        .filter(Boolean);
+      setMediaURLs(imgURLs);
+
+      // Remove media elements from the document for summary content
+      mediaElements.forEach((el) => el.parentNode?.removeChild(el));
+
+      // Get the text content for summary
+      setSummaryContent(doc.body.textContent || '');
     }
   }, [content]);
 
