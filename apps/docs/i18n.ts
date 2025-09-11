@@ -220,6 +220,7 @@ i18n.use(initReactI18next).init({
         'audience.reaction.tab.all': 'All',
         'audience.reaction.modal.more': 'More',
         'audience.reaction.modal.header': 'Reactions',
+        'editor.preview.moreMedia': '+[[mediaCount]] images',
       },
     },
   },
