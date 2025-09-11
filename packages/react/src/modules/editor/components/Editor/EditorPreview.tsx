@@ -33,9 +33,6 @@ const EditorPreview = ({
   const borderClass = clsx(
     variant === 'outline' && 'border rounded-3 py-12 px-16',
   );
-  const contentClass = clsx(
-    'flex-fill text-truncate text-truncate-2 post-preview-content overflow-hidden',
-  );
 
   const stripHtml = (html: string) => {
     // Create a temporary element
@@ -87,7 +84,9 @@ const EditorPreview = ({
       tabIndex={onDetailClick ? -1 : undefined}
       role={onDetailClick ? 'button' : undefined}
     >
-      <div className={contentClass}>{summaryContent}</div>
+      <div className="flex-fill text-truncate text-truncate-2 post-preview-content overflow-hidden">
+        {summaryContent}
+      </div>
       <div
         onClick={handleMediaClick}
         tabIndex={hasMediaCallback ? -1 : undefined}
