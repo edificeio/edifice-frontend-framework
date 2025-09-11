@@ -74,7 +74,7 @@
       height: 2rem;
     }
 
-    &:last-child {
+    &:last-of-type {
       small {
         &::after {
           display: none;
