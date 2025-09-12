@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useBrowserInfo } from '../../../hooks';
@@ -34,7 +34,7 @@ export function useCameras() {
   // Enable video stream and stop streaming on clean up.
   useEffect(() => {
     if (!stream) {
-      startStreaming();
+      resetStream();
     }
     return () => {
       if (stream) {
@@ -89,9 +89,7 @@ export function useCameras() {
    * Try enable a stream with the selected constraints.
    * The navigator may ask the user permission of using it.
    */
-  const enableStream = async (
-    mediaStreamConstraints: MediaStreamConstraints,
-  ) => {
+  async function enableStream(mediaStreamConstraints: MediaStreamConstraints) {
     try {
       const mediaStream: MediaStream =
         await navigator.mediaDevices.getUserMedia(mediaStreamConstraints);
@@ -99,61 +97,61 @@ export function useCameras() {
     } catch (err) {
       console.error(err);
     }
-  };
-
-  function setPreferedDevice(device?: MediaDeviceInfo) {
-    let mediaStreamConstraints: MediaStreamConstraints = {};
-    if (device?.deviceId) {
-      if (device?.deviceId === 'environment' || device?.deviceId === 'user') {
-        mediaStreamConstraints = {
-          audio: true,
-          video: {
-            aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-            facingMode: device?.deviceId,
-          },
-        };
-      } else {
-        mediaStreamConstraints = {
-          audio: true,
-          video: {
-            aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-            deviceId: device.deviceId,
-          },
-        };
-      }
-      setMediaStreamConstraints(mediaStreamConstraints);
-    } else {
-      console.error('Selected input device id is null');
-    }
   }
 
-  const isStreaming = typeof stream !== 'undefined';
-
-  function startStreaming() {
+  const resetStream = useCallback(() => {
     console.log('startStreaming');
     stopStreaming();
     enableStream(mediaStreamConstraints);
-  }
+  }, [mediaStreamConstraints]);
 
-  function stopStreaming() {
+  const setPreferedDevice = useCallback(
+    (device?: MediaDeviceInfo) => {
+      let mediaStreamConstraints: MediaStreamConstraints = {};
+      if (device?.deviceId) {
+        if (device?.deviceId === 'environment' || device?.deviceId === 'user') {
+          mediaStreamConstraints = {
+            audio: true,
+            video: {
+              aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
+              facingMode: device?.deviceId,
+            },
+          };
+        } else {
+          mediaStreamConstraints = {
+            audio: true,
+            video: {
+              aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
+              deviceId: device.deviceId,
+            },
+          };
+        }
+        setMediaStreamConstraints(mediaStreamConstraints);
+        resetStream();
+      } else {
+        console.error('Selected input device id is null');
+      }
+    },
+    [resetStream],
+  );
+
+  const isStreaming = useMemo(() => typeof stream !== 'undefined', [stream]);
+
+  const stopStreaming = useCallback(() => {
     if (isStreaming) {
-      stream.getTracks().forEach((track) => track.stop());
+      stream?.getTracks().forEach((track) => track.stop());
       setStream(undefined);
     }
-  }
+  }, [stream]);
 
   return {
     /** Readonly list (array) of available video input devices. */
     inputDevices,
     /** Select which input video device to use. */
     setPreferedDevice,
-    /** Check if selected device is already streaming. */
-    isStreaming,
-    /** Start a video stream from the selected device. */
-    startStreaming,
-    /** The started streaming video. */
+    /** The current video stream. */
     stream,
-    /** Stop the video stream. */
-    stopStreaming,
+    /** Start a video stream from the default or selected device. */
+    resetStream,
   };
 }

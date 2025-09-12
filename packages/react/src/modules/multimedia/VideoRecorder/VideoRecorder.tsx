@@ -57,13 +57,8 @@ const VideoRecorder = forwardRef(
     }: VideoRecorderProps,
     ref,
   ) => {
-    const {
-      inputDevices,
-      setPreferedDevice,
-      isStreaming,
-      startStreaming,
-      stream,
-    } = useCameras();
+    const { inputDevices, setPreferedDevice, resetStream, stream } =
+      useCameras();
 
     const [maxDuration, setMaxDuration] = useState<number>(180000);
 
@@ -234,7 +229,7 @@ const VideoRecorder = forwardRef(
       setRecordedTime(0);
       setRecordedChunks([]);
       setRecordedVideo(undefined);
-      startStreaming();
+      resetStream();
 
       if (onRecordUpdated) {
         onRecordUpdated();
@@ -279,16 +274,15 @@ const VideoRecorder = forwardRef(
         const selectedDevice = inputDevices.find(
           (inputDevice) => inputDevice.label === option,
         );
-        setPreferedDevice(selectedDevice);
-
         // Stop any recording.
-        if (isStreaming && recorderRef.current?.state === 'recording') {
+        if (/*isStreaming && */ recorderRef.current?.state === 'recording') {
           recorderRef.current.requestData();
           recorderRef.current.stop();
         }
-        startStreaming();
+
+        setPreferedDevice(selectedDevice);
       },
-      [inputDevices, isStreaming, startStreaming],
+      [inputDevices, stream],
     );
 
     /**
