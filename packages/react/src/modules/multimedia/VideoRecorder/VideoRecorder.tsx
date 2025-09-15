@@ -57,7 +57,7 @@ const VideoRecorder = forwardRef(
     }: VideoRecorderProps,
     ref,
   ) => {
-    const { inputDevices, setPreferedDevice, resetStream, stream } =
+    const { inputDevices, setPreferedDevice, restartStream, stream } =
       useCameras();
 
     const [maxDuration, setMaxDuration] = useState<number>(180000);
@@ -96,8 +96,12 @@ const VideoRecorder = forwardRef(
      * Get max duration from Conf.
      */
     async function initMaxDuration() {
-      const videoConfResponse = await odeServices.video().getVideoConf();
-      setMaxDuration((videoConfResponse.maxDuration ?? 3) * 60 * 1000);
+      try {
+        const videoConfResponse = await odeServices.video().getVideoConf();
+        setMaxDuration(videoConfResponse.maxDuration * 60 * 1000);
+      } catch {
+        setMaxDuration(3 * 60 * 1000);
+      }
     }
 
     useEffect(() => {
@@ -229,7 +233,7 @@ const VideoRecorder = forwardRef(
       setRecordedTime(0);
       setRecordedChunks([]);
       setRecordedVideo(undefined);
-      resetStream();
+      restartStream();
 
       if (onRecordUpdated) {
         onRecordUpdated();
@@ -275,7 +279,7 @@ const VideoRecorder = forwardRef(
           (inputDevice) => inputDevice.label === option,
         );
         // Stop any recording.
-        if (/*isStreaming && */ recorderRef.current?.state === 'recording') {
+        if (recorderRef.current?.state === 'recording') {
           recorderRef.current.requestData();
           recorderRef.current.stop();
         }
