@@ -59,6 +59,8 @@ export interface InternalLinkerProps {
   applicationList?: ApplicationOption[];
   /** Whether to show the application selector */
   showApplicationSelector?: boolean;
+  /** Optional callback to filter resources after loading. Applied in addition to search filters. */
+  resourceFilter?: (resource: ILinkedResource) => boolean;
 }
 
 export const InternalLinker = ({
@@ -71,11 +73,13 @@ export const InternalLinker = ({
   resourceList,
   applicationList,
   showApplicationSelector = true,
+  resourceFilter,
 }: InternalLinkerProps) => {
   const { t } = useTranslation();
   const { theme } = useEdificeTheme();
 
   // Get available applications, and a function to load their resources.
+  // Pass the resourceFilter to enable custom filtering of loaded resources
   const { resourceApplications, loadResources } = useResourceSearch(appCode);
 
   // List of options (applications with name and icon) to display, for the user to choose.
@@ -113,17 +117,24 @@ export const InternalLinker = ({
       async function load() {
         // If resources are provided, use them directly.
         if (resourceList) {
-          // Filter resources based on search terms.
-          const filteredResources = resourceList.filter((resource) =>
+          // Filter resources based on search terms and optional custom filter
+          let filteredResources = resourceList.filter((resource) =>
             filterResources(resource, search),
           );
+
+          // Apply additional custom resource filter if provided
+          if (resourceFilter) {
+            filteredResources = filteredResources.filter(resourceFilter);
+          }
+
           setResources(sortResources(filteredResources));
           return;
         } else if (selectedApplication) {
           // Otherwise, load resources from the currently selected application.
           try {
             // Load resources from the currently selected application.
-            const resources = (
+            // Note: resourceFilter is already applied in useResourceSearch hook
+            let resources = (
               await loadResources({
                 application: selectedApplication.application,
                 search,
@@ -132,6 +143,11 @@ export const InternalLinker = ({
                 pagination: { startIdx: 0, pageSize: 300 }, // ignored at the moment
               })
             ).filter((resource) => filterResources(resource, search));
+            // Apply additional custom resource filter if provided
+            if (resourceFilter) {
+              resources = resources.filter(resourceFilter);
+            }
+            // Sort resources by modified date before displaying them
             setResources(sortResources(resources));
             return; // end here
           } catch {
@@ -148,6 +164,7 @@ export const InternalLinker = ({
       filterResources,
       sortResources,
       resourceList,
+      resourceFilter,
     ],
   );
 

@@ -21,8 +21,18 @@ export interface LinkerModel {
         $date: number | string;
       };
 }
+
+/**
+ * Share detail interface for fine-grained sharing information
+ */
+export interface ShareDetail {
+  [rightOrId: string]: boolean| string;
+}
+
 export interface ILinkedResource extends IResource {
   path: string;
+  /** Optional detailed sharing information with users/groups and their specific rights */
+  shareDetails?: ShareDetail[];
 }
 
 /**
