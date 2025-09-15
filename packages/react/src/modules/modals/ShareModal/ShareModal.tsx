@@ -31,6 +31,7 @@ import { ShareBookmarkLine } from './ShareBookmarkLine';
 import { useSearch } from './hooks/useSearch';
 import useShare from './hooks/useShare';
 import { useShareBookmark } from './hooks/useShareBookmark';
+import { Alert } from '../../../components';
 
 export type ShareOptions = {
   resourceId: ID;
@@ -141,6 +142,9 @@ export default function ShareResourceModal({
     <Modal id="share_modal" size="lg" isOpen={isOpen} onModalClose={onCancel}>
       <Modal.Header onModalClose={onCancel}>{t('share.title')}</Modal.Header>
       <Modal.Body>
+        <Alert type="info" className="mb-16">
+          {t('explorer.modal.share.alert.community')}
+        </Alert>
         <Heading headingStyle="h4" level="h3" className="mb-16">
           {t('explorer.modal.share.usersWithAccess')}
         </Heading>
