@@ -17,20 +17,11 @@ import {
   LoadingScreen,
   OptionsType,
   Select,
-  Toolbar,
-  ToolbarItem,
 } from '../../../components';
 import { useUpload } from '../../../hooks';
-import {
-  IconPause,
-  IconPlayFilled,
-  IconRecord,
-  IconRecordStop,
-  IconRecordVideo,
-  IconRefresh,
-  IconSave,
-} from '../../icons/components';
+import { IconRecord, IconRecordVideo } from '../../icons/components';
 import { useCameras } from './useCameras';
+import { VideoRecorderToolbar } from './VideoRecorderToolbar';
 
 export interface VideoRecorderProps {
   appCode: string;
@@ -298,80 +289,6 @@ const VideoRecorder = forwardRef(
       }
     }, [recordedTime, handleStop]);
 
-    const toolbarItems: ToolbarItem[] = [
-      {
-        type: 'icon',
-        name: 'record',
-        props: {
-          'icon': <IconRecord color={recording || recorded ? '' : 'red'} />,
-          'color': 'danger',
-          'disabled': recording || recorded || saving,
-          'onClick': handleRecord,
-          'aria-label': t('bbm.video.record.start'),
-        },
-        tooltip: t('bbm.video.record.start'),
-      },
-      {
-        type: 'icon',
-        name: 'stop',
-        props: {
-          'icon': <IconRecordStop />,
-          'disabled': !recording || recorded || saving,
-          'onClick': handleStop,
-          'aria-label': t('bbm.video.record.stop'),
-        },
-        tooltip: t('bbm.video.record.stop'),
-      },
-      {
-        type: 'icon',
-        name: 'play',
-        visibility: !playing ? 'show' : 'hide',
-        props: {
-          'icon': <IconPlayFilled />,
-          'disabled': !recorded || saving,
-          'onClick': handlePlayPause,
-          'aria-label': t('bbm.video.play.start'),
-        },
-        tooltip: t('bbm.video.play.start'),
-      },
-      {
-        type: 'icon',
-        name: 'pause',
-        visibility: playing ? 'show' : 'hide',
-        props: {
-          'icon': <IconPause />,
-          'disabled': !recorded || saving,
-          'onClick': handlePlayPause,
-          'aria-label': t('bbm.video.play.pause'),
-        },
-        tooltip: t('bbm.video.play.pause'),
-      },
-      { type: 'divider' },
-      {
-        type: 'icon',
-        name: 'reset',
-        props: {
-          'icon': <IconRefresh />,
-          'disabled': !recorded || saving,
-          'onClick': handleReset,
-          'aria-label': t('bbm.video.record.reset'),
-        },
-        tooltip: t('bbm.video.record.reset'),
-      },
-      {
-        type: 'icon',
-        name: 'save',
-        visibility: hideSaveAction ? 'hide' : 'show',
-        props: {
-          'icon': <IconSave />,
-          'disabled': !recorded || saving || saved,
-          'onClick': handleSave,
-          'aria-label': t('bbm.video.record.save'),
-        },
-        tooltip: t('bbm.video.record.save'),
-      },
-    ];
-
     return (
       <div className="video-recorder d-flex flex-fill flex-column align-items-center pb-8">
         <div className="video-recorder-caption d-none d-md-block">
@@ -434,9 +351,20 @@ const VideoRecorder = forwardRef(
             </div>
           )}
           {stream && (
-            <Toolbar
-              items={toolbarItems}
-              className="position-absolute bottom-0 start-50 bg-white"
+            <VideoRecorderToolbar
+              {...{
+                playing,
+                recording,
+                recorded,
+                saving,
+                saved,
+                hideSaveAction,
+                handleRecord,
+                handleStop,
+                handlePlayPause,
+                handleReset,
+                handleSave,
+              }}
             />
           )}
         </div>

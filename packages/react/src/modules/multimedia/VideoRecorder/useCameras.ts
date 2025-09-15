@@ -34,13 +34,14 @@ export function useCameras() {
   }
 
   /**
-   * Try enable a stream with the selected constraints.
+   * Try enabling a stream with the selected constraints.
    * The navigator may ask the user permission of using it.
    */
   async function enableStream(mediaStreamConstraints: MediaStreamConstraints) {
     try {
       const mediaStream: MediaStream =
         await navigator.mediaDevices.getUserMedia(mediaStreamConstraints);
+
       setStream((previousStream) => {
         previousStream?.getTracks().forEach((track) => track.stop());
         return mediaStream;
