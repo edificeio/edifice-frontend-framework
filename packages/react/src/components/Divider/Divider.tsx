@@ -9,7 +9,13 @@ export function Divider({
   color: string;
 }) {
   return (
-    <Flex align="center" justify="around" gap="16" wrap="nowrap">
+    <Flex
+      align="center"
+      justify="around"
+      gap="16"
+      wrap="nowrap"
+      className="flex-fill"
+    >
       <hr
         className="divider m-12 ms-0 flex-fill"
         style={{ borderColor: color }}
