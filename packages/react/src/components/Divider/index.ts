@@ -1,1 +1,1 @@
-export * from './SeparatedInfo';
+export * from './Divider';

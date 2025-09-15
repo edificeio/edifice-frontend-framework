@@ -1,5 +1,5 @@
-import { Flex } from '@edifice.io/react';
 import { ReactNode } from 'react';
+import { Flex } from '../Flex';
 
 export function Divider({
   children,
