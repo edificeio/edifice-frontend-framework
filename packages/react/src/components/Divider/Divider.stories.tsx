@@ -16,7 +16,7 @@ const meta: Meta<typeof Divider> = {
     docs: {
       description: {
         component:
-          'A divider display a horizontal line with content in the middle.',
+          'A divider displays an horizontal line with some content in the middle.',
       },
     },
   },
