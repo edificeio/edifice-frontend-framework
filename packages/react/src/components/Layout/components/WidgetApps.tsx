@@ -31,7 +31,16 @@ export const WidgetAppsBody = ({
       )}
       {bookmarkedApps.slice(0, 6).map((app, index) => {
         return (
-          <a key={index} href={app.address} className="bookmarked-app">
+          <a
+            key={index}
+            href={app.address}
+            className="bookmarked-app"
+            target={
+              app.isExternal || app.category === 'connector'
+                ? '_blank'
+                : undefined
+            }
+          >
             <AppIcon app={app} size="32" />
           </a>
         );
