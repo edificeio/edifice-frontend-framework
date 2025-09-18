@@ -18,10 +18,7 @@ export function useCameras() {
   const [mediaStreamConstraints, setMediaStreamConstraints] =
     useState<MediaStreamConstraints>({
       audio: true,
-      video: {
-        facingMode: 'environment',
-        aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-      },
+      video: true,
     });
 
   // Video stream from the default or prefered camera.
@@ -37,29 +34,32 @@ export function useCameras() {
    * Try enabling a stream with the selected constraints.
    * The navigator may ask the user permission of using it.
    */
-  async function enableStream(mediaStreamConstraints: MediaStreamConstraints) {
+  const enableStream = async (constraints: MediaStreamConstraints) => {
     try {
+      // Aquire new stream
       const mediaStream: MediaStream =
-        await navigator.mediaDevices.getUserMedia(mediaStreamConstraints);
+        await navigator.mediaDevices.getUserMedia(constraints);
 
-      setStream((previousStream) => {
-        previousStream?.getTracks().forEach((track) => track.stop());
-        return mediaStream;
-      });
+      // Use it
+      setStream(mediaStream);
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   const restartStream = () => {
+    // Stop previous stream
+    stream?.getTracks().forEach((track) => track.stop());
+
     enableStream(mediaStreamConstraints);
   };
 
   const setPreferedDevice = (device?: MediaDeviceInfo) => {
-    let mediaStreamConstraints: MediaStreamConstraints = {};
+    let constraints: MediaStreamConstraints = {};
+
     if (device?.deviceId) {
-      if (device?.deviceId === 'environment' || device?.deviceId === 'user') {
-        mediaStreamConstraints = {
+      if (device.deviceId === 'environment' || device.deviceId === 'user') {
+        constraints = {
           audio: true,
           video: {
             aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
@@ -67,20 +67,23 @@ export function useCameras() {
           },
         };
       } else {
-        mediaStreamConstraints = {
+        constraints = {
           audio: true,
           video: {
             aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-            deviceId: device.deviceId,
+            deviceId: { exact: device.deviceId },
           },
         };
       }
-      setMediaStreamConstraints(mediaStreamConstraints);
-      restartStream();
+      setMediaStreamConstraints(constraints);
     } else {
       console.error('Selected input device id is null');
     }
   };
+
+  useEffect(() => {
+    restartStream();
+  }, [mediaStreamConstraints]);
 
   useEffect(() => {
     // Initialize the inputDevices state to find available cameras.

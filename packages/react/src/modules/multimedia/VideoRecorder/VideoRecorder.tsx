@@ -97,16 +97,23 @@ const VideoRecorder = forwardRef(
 
     useEffect(() => {
       try {
+        // Cleanup
         if (videoRef.current) {
           if (videoRef.current.src) {
             window.URL.revokeObjectURL(videoRef.current.src);
             videoRef.current.src = '';
           }
+          if (videoRef.current.srcObject instanceof MediaStream) {
+            videoRef.current.srcObject = null;
+          }
+
           if (stream) {
+            // Set this stream as the new source
             videoRef.current.srcObject = stream;
             videoRef.current.autoplay = true;
             videoRef.current.volume = 1;
             videoRef.current.muted = true;
+            videoRef.current.load();
           }
         }
       } catch (err) {
@@ -264,21 +271,18 @@ const VideoRecorder = forwardRef(
       }
     };
 
-    const handleInputDeviceChange = useCallback(
-      (option: OptionsType | string) => {
-        const selectedDevice = inputDevices.find(
-          (inputDevice) => inputDevice.label === option,
-        );
-        // Stop any recording.
-        if (recorderRef.current?.state === 'recording') {
-          recorderRef.current.requestData();
-          recorderRef.current.stop();
-        }
+    const handleInputDeviceChange = (option: OptionsType | string) => {
+      const selectedDevice = inputDevices.find(
+        (inputDevice) => inputDevice.label === option,
+      );
+      // Stop any recording.
+      if (recorderRef.current?.state === 'recording') {
+        recorderRef.current.requestData();
+        recorderRef.current.stop();
+      }
 
-        setPreferedDevice(selectedDevice);
-      },
-      [inputDevices, stream],
-    );
+      setPreferedDevice(selectedDevice);
+    };
 
     /**
      * Auto-stop recording when max allowed duration is reached.
