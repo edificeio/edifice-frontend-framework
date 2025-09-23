@@ -13,6 +13,7 @@ export interface User {
 export interface Group {
   id: string;
   displayName: string;
+  nbUsers?: number;
 }
 
 /**
@@ -49,6 +50,7 @@ export interface BookmarkGetResponse {
     groupType: string;
     profile: string;
     sortName: string;
+    nbUsers?: number;
   }>;
   users: Array<{
     displayName: string;
