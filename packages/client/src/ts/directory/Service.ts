@@ -53,7 +53,7 @@ export class DirectoryService {
       displayName: name,
       groups: groups.map(({ name, id, nbUsers }) => {
         return {
-          nbUsers: nbUsers ? nbUsers : undefined,
+          nbUsers,
           displayName: name,
           id,
         };
