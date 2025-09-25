@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useId, useMemo, useState } from 'react';
 
-import { IUserInfo, odeServices } from '@edifice.io/client';
+import { IUserInfo } from '@edifice.io/client';
 import { useHover } from '@uidotdev/usehooks';
 import { useTranslation } from 'react-i18next';
 import { useBookmark, useHasWorkflow } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
-import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 
 export default function useHeader({
   user,
@@ -17,8 +16,6 @@ export default function useHeader({
 }): any {
   const { appCode } = useEdificeClient();
   const { t } = useTranslation();
-
-  const { theme } = useEdificeTheme();
 
   /**
    * Get document title for responsive usage
@@ -71,11 +68,6 @@ export default function useHeader({
     setIsCollapsed(!isCollapsed);
   }, [isCollapsed]);
 
-  const handleLogout = async () => {
-    await odeServices.session().logout();
-    window.location.href = theme?.logoutCallback ?? '/auth/login';
-  };
-
   return useMemo(
     () => ({
       title,
@@ -92,14 +84,12 @@ export default function useHeader({
       searchWorkflow,
       isCollapsed,
       toggleCollapsedNav,
-      handleLogout,
     }),
     [
       appsRef,
       bookmarkedApps,
       communityWorkflow,
       conversationWorflow,
-      handleLogout,
       isAppsHovered,
       isCollapsed,
       popoverAppsId,
