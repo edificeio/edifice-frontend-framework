@@ -26,7 +26,7 @@ export interface LinkerModel {
  * Share detail interface for fine-grained sharing information
  */
 export interface ShareDetail {
-  [rightOrId: string]: boolean| string;
+  [rightOrId: string]: boolean | string;
 }
 
 export interface ILinkedResource extends IResource {

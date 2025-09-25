@@ -16,6 +16,7 @@ import {
 import { hasRight } from './utils/hasRight';
 import { showShareRightLine } from './utils/showShareRightLine';
 import { useShareRightDisabled } from './hooks/useShareRightDisabled';
+import { useShareRightVisible } from './hooks/useShareRightVisible';
 
 export const ShareBookmarkLine = ({
   shareRights,
@@ -37,6 +38,7 @@ export const ShareBookmarkLine = ({
 }) => {
   const { t } = useTranslation();
   const { isShareRightDisabled } = useShareRightDisabled();
+  const { isShareRightVisible } = useShareRightVisible();
 
   return shareRights?.rights.map((shareRight: ShareRight) => {
     const avatarMapping = {
@@ -63,6 +65,11 @@ export const ShareBookmarkLine = ({
 
     // Determine if this share right should have disabled checkboxes
     const isDisabled = isShareRightDisabled(shareRight, shareRights);
+
+    // Hide groups that are marked as not visible by the hook
+    if (!isShareRightVisible(shareRight, shareRights)) {
+      return null;
+    }
 
     return (
       showShareRightLine(shareRight, showBookmark) && (
