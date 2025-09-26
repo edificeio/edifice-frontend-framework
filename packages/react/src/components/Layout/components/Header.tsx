@@ -80,7 +80,6 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
     searchWorkflow,
     isCollapsed,
     toggleCollapsedNav,
-    handleLogout,
   } = useHeader({ user, avatar });
 
   const hasMessages = messages > 0;
@@ -162,10 +161,15 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                   </NavItem>
                 ) : null}
                 <NavItem>
-                  <button className="nav-link" onClick={handleLogout}>
+                  <a
+                    href={
+                      '/auth/logout?callback=' + (theme?.logoutCallback ?? '/')
+                    }
+                    className="nav-link"
+                  >
                     <IconDisconnect className="icon logout" />
                     <VisuallyHidden>{t('navbar.disconnect')}</VisuallyHidden>
-                  </button>
+                  </a>
                 </NavItem>
                 <NavItem className="d-md-none">
                   <button
