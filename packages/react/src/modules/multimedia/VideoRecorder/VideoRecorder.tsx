@@ -17,19 +17,11 @@ import {
   LoadingScreen,
   OptionsType,
   Select,
-  Toolbar,
-  ToolbarItem,
 } from '../../../components';
-import { useBrowserInfo, useUpload } from '../../../hooks';
-import {
-  IconPause,
-  IconPlayFilled,
-  IconRecord,
-  IconRecordStop,
-  IconRecordVideo,
-  IconRefresh,
-  IconSave,
-} from '../../icons/components';
+import { useUpload } from '../../../hooks';
+import { IconRecord, IconRecordVideo } from '../../icons/components';
+import { useCameras } from './useCameras';
+import { VideoRecorderToolbar } from './VideoRecorderToolbar';
 
 export interface VideoRecorderProps {
   appCode: string;
@@ -39,9 +31,6 @@ export interface VideoRecorderProps {
   onRecordUpdated?: (recordURL?: string) => void;
   hideSaveAction?: boolean;
 }
-
-const VIDEO_HEIGHT = 9;
-const VIDEO_WIDTH = 16;
 
 export interface VideoRecorderRef {
   save: () => Promise<WorkspaceElement | undefined>;
@@ -59,8 +48,10 @@ const VideoRecorder = forwardRef(
     }: VideoRecorderProps,
     ref,
   ) => {
+    const { inputDevices, setPreferedDevice, restartStream, stream } =
+      useCameras();
+
     const [maxDuration, setMaxDuration] = useState<number>(180000);
-    const [inputDevices, setInputDevices] = useState<MediaDeviceInfo[]>([]);
 
     const [recording, setRecording] = useState<boolean>(false);
     const [recorded, setRecorded] = useState<boolean>(false);
@@ -68,15 +59,6 @@ const VideoRecorder = forwardRef(
     const [saving, setSaving] = useState<boolean>(false);
     const [saved, setSaved] = useState<boolean>(false);
 
-    const [mediaStreamConstraints, setMediaStreamConstraints] =
-      useState<MediaStreamConstraints>({
-        audio: true,
-        video: {
-          facingMode: 'environment',
-          aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-        },
-      });
-    const [stream, setStream] = useState<MediaStream>();
     const [mimeType, setMimeType] = useState<string>('');
 
     const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -90,8 +72,6 @@ const VideoRecorder = forwardRef(
 
     const { uploadBlob } = useUpload(undefined, appCode);
 
-    const { device } = useBrowserInfo(navigator.userAgent);
-
     // We add one methods to handle save action from parent component
     useImperativeHandle(ref, () => ({
       save: handleSave,
@@ -99,26 +79,46 @@ const VideoRecorder = forwardRef(
 
     const { t } = useTranslation();
 
-    /**
-     * Get max duration from Conf and input devices list.
-     */
     useEffect(() => {
       initMaxDuration();
-      initInputDevices();
     }, []);
 
     /**
-     * Enable video stream and stop streaming on clean up.
+     * Get max duration from Conf.
      */
-    useEffect(() => {
-      if (!stream) {
-        enableStream(mediaStreamConstraints);
+    async function initMaxDuration() {
+      try {
+        const videoConfResponse = await odeServices.video().getVideoConf();
+        setMaxDuration(videoConfResponse.maxDuration * 60 * 1000);
+      } catch {
+        setMaxDuration(3 * 60 * 1000);
       }
-      return () => {
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop());
+    }
+
+    useEffect(() => {
+      try {
+        // Cleanup
+        if (videoRef.current) {
+          if (videoRef.current.src) {
+            window.URL.revokeObjectURL(videoRef.current.src);
+            videoRef.current.src = '';
+          }
+          if (videoRef.current.srcObject instanceof MediaStream) {
+            videoRef.current.srcObject = null;
+          }
+
+          if (stream) {
+            // Set this stream as the new source
+            videoRef.current.srcObject = stream;
+            videoRef.current.autoplay = true;
+            videoRef.current.volume = 1;
+            videoRef.current.muted = true;
+            videoRef.current.load();
+          }
         }
-      };
+      } catch (err) {
+        console.error(err);
+      }
     }, [stream]);
 
     /**
@@ -177,72 +177,6 @@ const VideoRecorder = forwardRef(
       }
     }, [playing]);
 
-    const initMaxDuration = async () => {
-      const videoConfResponse = await odeServices.video().getVideoConf();
-      setMaxDuration((videoConfResponse.maxDuration ?? 3) * 60 * 1000);
-    };
-
-    const initInputDevices = async () => {
-      const devices = await navigator.mediaDevices.enumerateDevices();
-      const videoDevices = devices.filter(
-        (device) => device.kind === 'videoinput',
-      );
-      // console, mobile, tablet, smarttv, wearable, embedded
-      switch (device.type) {
-        case 'mobile':
-        case 'tablet': {
-          const backCamera = {
-            deviceId: 'environment',
-            label: t('video.back.camera'),
-            groupId: '',
-            kind: 'videoinput',
-          } as MediaDeviceInfo;
-          const frontCamera = {
-            deviceId: 'user',
-            label: t('video.front.camera'),
-            groupId: '',
-            kind: 'videoinput',
-          } as MediaDeviceInfo;
-
-          if (videoDevices?.length > 1) {
-            // mobile/tablet has more than 1 camera
-            setInputDevices([backCamera, frontCamera]);
-          } else {
-            // else we let the system use the only one that exists (or none)
-            setInputDevices([backCamera]);
-          }
-          break;
-        }
-        default:
-          // "Desktop" or other future types => list all cameras without distinction.
-          setInputDevices(videoDevices);
-          break;
-      }
-    };
-
-    const enableStream = async (
-      mediaStreamConstraints: MediaStreamConstraints,
-    ) => {
-      try {
-        const mediaStream: MediaStream =
-          await navigator.mediaDevices.getUserMedia(mediaStreamConstraints);
-        setStream(mediaStream);
-
-        if (videoRef.current) {
-          if (videoRef.current.src) {
-            window.URL.revokeObjectURL(videoRef.current.src);
-            videoRef.current.src = '';
-          }
-          videoRef.current.srcObject = mediaStream;
-          videoRef.current.autoplay = true;
-          videoRef.current.volume = 1;
-          videoRef.current.muted = true;
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
     const handleRecord = useCallback(() => {
       setRecording(true);
 
@@ -297,7 +231,7 @@ const VideoRecorder = forwardRef(
       setRecordedTime(0);
       setRecordedChunks([]);
       setRecordedVideo(undefined);
-      enableStream(mediaStreamConstraints);
+      restartStream();
 
       if (onRecordUpdated) {
         onRecordUpdated();
@@ -341,44 +275,13 @@ const VideoRecorder = forwardRef(
       const selectedDevice = inputDevices.find(
         (inputDevice) => inputDevice.label === option,
       );
-
-      let mediaStreamConstraints: MediaStreamConstraints = {};
-      if (selectedDevice?.deviceId) {
-        if (
-          selectedDevice?.deviceId === 'environment' ||
-          selectedDevice?.deviceId === 'user'
-        ) {
-          mediaStreamConstraints = {
-            audio: true,
-            video: {
-              aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-              facingMode: selectedDevice?.deviceId,
-            },
-          };
-        } else {
-          mediaStreamConstraints = {
-            audio: true,
-            video: {
-              aspectRatio: VIDEO_WIDTH / VIDEO_HEIGHT,
-              deviceId: selectedDevice.deviceId,
-            },
-          };
-        }
-
-        setMediaStreamConstraints(mediaStreamConstraints);
-
-        if (stream) {
-          if (recorderRef.current?.state === 'recording') {
-            recorderRef.current.requestData();
-            recorderRef.current.stop();
-          }
-          stream.getTracks().forEach((track) => track.stop());
-          setStream(undefined);
-        }
-        enableStream(mediaStreamConstraints);
-      } else {
-        console.error('Selected input device id is null');
+      // Stop any recording.
+      if (recorderRef.current?.state === 'recording') {
+        recorderRef.current.requestData();
+        recorderRef.current.stop();
       }
+
+      setPreferedDevice(selectedDevice);
     };
 
     /**
@@ -389,80 +292,6 @@ const VideoRecorder = forwardRef(
         handleStop();
       }
     }, [recordedTime, handleStop]);
-
-    const toolbarItems: ToolbarItem[] = [
-      {
-        type: 'icon',
-        name: 'record',
-        props: {
-          'icon': <IconRecord color={recording || recorded ? '' : 'red'} />,
-          'color': 'danger',
-          'disabled': recording || recorded || saving,
-          'onClick': handleRecord,
-          'aria-label': t('bbm.video.record.start'),
-        },
-        tooltip: t('bbm.video.record.start'),
-      },
-      {
-        type: 'icon',
-        name: 'stop',
-        props: {
-          'icon': <IconRecordStop />,
-          'disabled': !recording || recorded || saving,
-          'onClick': handleStop,
-          'aria-label': t('bbm.video.record.stop'),
-        },
-        tooltip: t('bbm.video.record.stop'),
-      },
-      {
-        type: 'icon',
-        name: 'play',
-        visibility: !playing ? 'show' : 'hide',
-        props: {
-          'icon': <IconPlayFilled />,
-          'disabled': !recorded || saving,
-          'onClick': handlePlayPause,
-          'aria-label': t('bbm.video.play.start'),
-        },
-        tooltip: t('bbm.video.play.start'),
-      },
-      {
-        type: 'icon',
-        name: 'pause',
-        visibility: playing ? 'show' : 'hide',
-        props: {
-          'icon': <IconPause />,
-          'disabled': !recorded || saving,
-          'onClick': handlePlayPause,
-          'aria-label': t('bbm.video.play.pause'),
-        },
-        tooltip: t('bbm.video.play.pause'),
-      },
-      { type: 'divider' },
-      {
-        type: 'icon',
-        name: 'reset',
-        props: {
-          'icon': <IconRefresh />,
-          'disabled': !recorded || saving,
-          'onClick': handleReset,
-          'aria-label': t('bbm.video.record.reset'),
-        },
-        tooltip: t('bbm.video.record.reset'),
-      },
-      {
-        type: 'icon',
-        name: 'save',
-        visibility: hideSaveAction ? 'hide' : 'show',
-        props: {
-          'icon': <IconSave />,
-          'disabled': !recorded || saving || saved,
-          'onClick': handleSave,
-          'aria-label': t('bbm.video.record.save'),
-        },
-        tooltip: t('bbm.video.record.save'),
-      },
-    ];
 
     return (
       <div className="video-recorder d-flex flex-fill flex-column align-items-center pb-8">
@@ -526,9 +355,20 @@ const VideoRecorder = forwardRef(
             </div>
           )}
           {stream && (
-            <Toolbar
-              items={toolbarItems}
-              className="position-absolute bottom-0 start-50 bg-white"
+            <VideoRecorderToolbar
+              {...{
+                playing,
+                recording,
+                recorded,
+                saving,
+                saved,
+                hideSaveAction,
+                handleRecord,
+                handleStop,
+                handlePlayPause,
+                handleReset,
+                handleSave,
+              }}
             />
           )}
         </div>
