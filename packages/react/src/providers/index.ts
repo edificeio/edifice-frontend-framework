@@ -1,5 +1,6 @@
 export * from './AntdProvider';
 export * from './ChakraProvider';
+export * from './MantineProvider';
 export * from './EdificeClientProvider/EdificeClientProvider';
 export * from './EdificeClientProvider/EdificeClientProvider.context';
 export * from './EdificeClientProvider/EdificeClientProvider.hook';
