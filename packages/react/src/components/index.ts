@@ -11,6 +11,7 @@ export * from './Button';
 export * from './ButtonV2';
 export * from './ButtonV3';
 export * from './ButtonV4';
+export * from './ButtonV5';
 export * from './Card';
 export * from './Checkbox';
 export * from './ColorPicker';

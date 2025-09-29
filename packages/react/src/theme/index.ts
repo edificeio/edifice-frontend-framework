@@ -87,4 +87,7 @@ const theme = createSystem({
   } as any,
 });
 
+// Export du thème MUI
+export { muiTheme } from './mui-theme';
+
 export default theme;

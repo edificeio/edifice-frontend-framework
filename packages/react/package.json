@@ -110,6 +110,8 @@
     "@mantine/nprogress": "^8.3.2",
     "@mantine/spotlight": "^8.3.2",
     "@mantine/tiptap": "^8.3.2",
+    "@mui/icons-material": "^7.3.2",
+    "@mui/material": "^7.3.2",
     "@pixi/mixin-get-child-by-name": "7.4.2",
     "@pixi/react": "7.1.2",
     "@popperjs/core": "2.11.8",
