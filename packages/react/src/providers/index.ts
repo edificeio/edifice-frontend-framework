@@ -1,3 +1,4 @@
+export * from './AntdProvider';
 export * from './ChakraProvider';
 export * from './EdificeClientProvider/EdificeClientProvider';
 export * from './EdificeClientProvider/EdificeClientProvider.context';
