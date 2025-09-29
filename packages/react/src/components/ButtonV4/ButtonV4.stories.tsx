@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonV4 } from './ButtonV4';
 import { MantineProvider } from '../../providers/MantineProvider';
-import { IconHome, IconPlus, IconSearch } from '@tabler/icons-react';
+import { IconPlus, IconSearch } from '@tabler/icons-react';
 
 const meta: Meta<typeof ButtonV4> = {
-  title: 'Components/ButtonV4',
+  title: 'Components/Button-mantine',
   component: ButtonV4,
   parameters: {
     layout: 'centered',
@@ -65,258 +65,188 @@ const meta: Meta<typeof ButtonV4> = {
 export default meta;
 type Story = StoryObj<typeof ButtonV4>;
 
-// Story par défaut
-export const Default: Story = {
+export const Base: Story = {
   args: {
-    children: 'Button V4',
     variant: 'filled',
     color: 'primary',
-    size: 'md',
+    children: 'Label',
+    disabled: false,
   },
 };
 
-// Variantes de couleurs
-export const Colors: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV4 variant="filled" color="primary">
-        Primary
-      </ButtonV4>
-      <ButtonV4 variant="filled" color="secondary">
-        Secondary
-      </ButtonV4>
-      <ButtonV4 variant="filled" color="success">
-        Success
-      </ButtonV4>
-      <ButtonV4 variant="filled" color="warning">
-        Warning
-      </ButtonV4>
-      <ButtonV4 variant="filled" color="danger">
-        Danger
-      </ButtonV4>
-      <ButtonV4 variant="filled" color="info">
-        Info
-      </ButtonV4>
-    </div>
-  ),
+export const Disabled: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'Label',
+    disabled: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Toutes les couleurs disponibles pour le bouton.',
+        story: 'Add the disabled props to the button to disable it.',
       },
     },
   },
 };
 
-// Variantes de style
-export const Variants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV4 variant="filled" color="primary">
-        Filled
-      </ButtonV4>
-      <ButtonV4 variant="outline" color="primary">
-        Outline
-      </ButtonV4>
-      <ButtonV4 variant="light" color="primary">
-        Light
-      </ButtonV4>
-      <ButtonV4 variant="subtle" color="primary">
-        Subtle
-      </ButtonV4>
-      <ButtonV4 variant="gradient" color="primary">
-        Gradient
-      </ButtonV4>
-    </div>
-  ),
+export const Danger: Story = {
+  args: {
+    variant: 'filled',
+    color: 'danger',
+    children: 'Label',
+    disabled: false,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents styles de bouton disponibles.',
+        story:
+          'Used for destructive actions and warning the user of an important action.',
       },
     },
   },
 };
 
-// Tailles
-export const Sizes: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-        gap: '1rem',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}
-    >
-      <ButtonV4 size="xs" color="primary">
-        Extra Small
-      </ButtonV4>
-      <ButtonV4 size="sm" color="primary">
-        Small
-      </ButtonV4>
-      <ButtonV4 size="md" color="primary">
-        Medium
-      </ButtonV4>
-      <ButtonV4 size="lg" color="primary">
-        Large
-      </ButtonV4>
-      <ButtonV4 size="xl" color="primary">
-        Extra Large
-      </ButtonV4>
-    </div>
-  ),
+export const WithIconLeft: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'New user',
+    disabled: false,
+    leftSection: <IconPlus size={16} />,
+  },
+};
+
+export const WithIconRight: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'Close',
+    disabled: false,
+    rightSection: <IconSearch size={16} />,
+  },
+};
+
+export const WithBothIcon: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'Button',
+    disabled: false,
+    leftSection: <IconPlus size={16} />,
+    rightSection: <IconSearch size={16} />,
+  },
+};
+
+export const LoadingButtonWithText: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différentes tailles de bouton disponibles.',
+        story:
+          'Loading button is not disabled but we have `pointer-events:none` to desactive its behaviour. You can add the disabled props if you want. Default position of the loading icon is on the left.',
       },
     },
   },
 };
 
-// États
-export const States: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV4 color="primary">Normal</ButtonV4>
-      <ButtonV4 loading color="primary">
-        Loading
-      </ButtonV4>
-      <ButtonV4 disabled color="primary">
-        Disabled
-      </ButtonV4>
-    </div>
-  ),
+export const LoadingButtonRightWithText: Story = {
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents états du bouton.',
+        story:
+          "You can change the position of the loading icon by adding `loadingPosition='right'`",
       },
     },
   },
 };
 
-// Avec icônes
-export const WithIcons: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV4 leftSection={<IconPlus size={16} />} color="primary">
-        Left Icon
-      </ButtonV4>
-      <ButtonV4 rightSection={<IconSearch size={16} />} color="primary">
-        Right Icon
-      </ButtonV4>
-      <ButtonV4
-        leftSection={<IconPlus size={16} />}
-        rightSection={<IconSearch size={16} />}
-        color="primary"
-      >
-        Both Icons
-      </ButtonV4>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Boutons avec icônes à gauche, à droite, ou des deux côtés.',
-      },
-    },
-  },
-};
-
-// Loading avec position
-export const LoadingPositions: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV4 loading color="primary">
-        Loading
-      </ButtonV4>
-      <ButtonV4 loading leftSection={<IconHome size={16} />} color="primary">
-        Loading with Icon
-      </ButtonV4>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Position du spinner de chargement.',
-      },
-    },
-  },
-};
-
-// Combinaisons de couleurs et variants
-export const ColorVariants: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '1rem',
-      }}
-    >
-      <div>
-        <h4>Primary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV4 variant="filled" color="primary">
-            Filled
-          </ButtonV4>
-          <ButtonV4 variant="outline" color="primary">
-            Outline
-          </ButtonV4>
-          <ButtonV4 variant="light" color="primary">
-            Light
-          </ButtonV4>
-        </div>
+export const ButtonGroupWithSecondaryAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV4 {...args} variant="outline" color="secondary">
+          Cancel
+        </ButtonV4>
+        <ButtonV4 {...args} variant="filled" color="secondary">
+          Save
+        </ButtonV4>
       </div>
-      <div>
-        <h4>Secondary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV4 variant="filled" color="secondary">
-            Filled
-          </ButtonV4>
-          <ButtonV4 variant="outline" color="secondary">
-            Outline
-          </ButtonV4>
-          <ButtonV4 variant="light" color="secondary">
-            Light
-          </ButtonV4>
-        </div>
-      </div>
-      <div>
-        <h4>Danger</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV4 variant="filled" color="danger">
-            Filled
-          </ButtonV4>
-          <ButtonV4 variant="outline" color="danger">
-            Outline
-          </ButtonV4>
-          <ButtonV4 variant="light" color="danger">
-            Light
-          </ButtonV4>
-        </div>
-      </div>
-    </div>
-  ),
+    );
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Combinaisons de couleurs et de variants.',
+        story:
+          'When more than one buttons, primary action is always on the right side. Then secondary action on its left.',
       },
     },
   },
 };
 
-// Comparaison avec l'ancien Button
-export const Comparison: Story = {
+export const ButtonGroupWithThirdAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV4
+          {...args}
+          variant="light"
+          color="primary"
+          leftSection={<IconPlus size={16} />}
+          rightSection={<IconSearch size={16} />}
+        >
+          Button
+        </ButtonV4>
+        <ButtonV4
+          {...args}
+          variant="outline"
+          color="primary"
+          leftSection={<IconPlus size={16} />}
+          rightSection={<IconSearch size={16} />}
+        >
+          Button
+        </ButtonV4>
+        <ButtonV4
+          {...args}
+          variant="filled"
+          color="primary"
+          leftSection={<IconPlus size={16} />}
+          rightSection={<IconSearch size={16} />}
+        >
+          Button
+        </ButtonV4>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When more than two buttons, third action is furthest to the left.',
+      },
+    },
+  },
+};
+
+// Comparaison avec le Button de base
+export const ComparisonWithBaseButton: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       <div>
@@ -327,11 +257,11 @@ export const Comparison: Story = {
           <ButtonV4 variant="filled" color="primary">
             Primary
           </ButtonV4>
-          <ButtonV4 variant="filled" color="secondary">
-            Secondary
+          <ButtonV4 variant="outline" color="secondary">
+            Secondary Outline
           </ButtonV4>
-          <ButtonV4 variant="outline" color="primary">
-            Outline
+          <ButtonV4 variant="light" color="danger">
+            Danger Light
           </ButtonV4>
         </div>
       </div>
@@ -340,9 +270,11 @@ export const Comparison: Story = {
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
-          <button className="btn btn-primary">Primary</button>
-          <button className="btn btn-secondary">Secondary</button>
-          <button className="btn btn-outline-primary">Outline</button>
+          <button className="btn btn-filled btn-primary">Primary</button>
+          <button className="btn btn-outline-secondary">
+            Secondary Outline
+          </button>
+          <button className="btn btn-ghost-danger">Danger Ghost</button>
         </div>
       </div>
     </div>

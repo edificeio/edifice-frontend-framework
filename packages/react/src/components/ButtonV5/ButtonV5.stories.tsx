@@ -5,7 +5,7 @@ import { muiTheme } from '../../theme';
 import { Add, Search, Home } from '@mui/icons-material';
 
 const meta: Meta<typeof ButtonV5> = {
-  title: 'Components/ButtonV5',
+  title: 'Components/Button-mui',
   component: ButtonV5,
   parameters: {
     layout: 'centered',
@@ -58,242 +58,188 @@ const meta: Meta<typeof ButtonV5> = {
 export default meta;
 type Story = StoryObj<typeof ButtonV5>;
 
-// Story par défaut
-export const Default: Story = {
+export const Base: Story = {
   args: {
-    children: 'Button V5',
     variant: 'contained',
     color: 'primary',
-    size: 'medium',
+    children: 'Label',
+    disabled: false,
   },
 };
 
-// Variantes de couleurs
-export const Colors: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV5 variant="contained" color="primary">
-        Primary
-      </ButtonV5>
-      <ButtonV5 variant="contained" color="secondary">
-        Secondary
-      </ButtonV5>
-      <ButtonV5 variant="contained" color="success">
-        Success
-      </ButtonV5>
-      <ButtonV5 variant="contained" color="warning">
-        Warning
-      </ButtonV5>
-      <ButtonV5 variant="contained" color="error">
-        Error
-      </ButtonV5>
-      <ButtonV5 variant="contained" color="info">
-        Info
-      </ButtonV5>
-    </div>
-  ),
+export const Disabled: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'Label',
+    disabled: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Toutes les couleurs disponibles pour le bouton.',
+        story: 'Add the disabled props to the button to disable it.',
       },
     },
   },
 };
 
-// Variantes de style
-export const Variants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV5 variant="contained" color="primary">
-        Contained
-      </ButtonV5>
-      <ButtonV5 variant="outlined" color="primary">
-        Outlined
-      </ButtonV5>
-      <ButtonV5 variant="text" color="primary">
-        Text
-      </ButtonV5>
-    </div>
-  ),
+export const Danger: Story = {
+  args: {
+    variant: 'contained',
+    color: 'error',
+    children: 'Label',
+    disabled: false,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents styles de bouton disponibles.',
+        story:
+          'Used for destructive actions and warning the user of an important action.',
       },
     },
   },
 };
 
-// Tailles
-export const Sizes: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-        gap: '1rem',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}
-    >
-      <ButtonV5 size="small" color="primary">
-        Small
-      </ButtonV5>
-      <ButtonV5 size="medium" color="primary">
-        Medium
-      </ButtonV5>
-      <ButtonV5 size="large" color="primary">
-        Large
-      </ButtonV5>
-    </div>
-  ),
+export const WithIconLeft: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'New user',
+    disabled: false,
+    startIcon: <Add />,
+  },
+};
+
+export const WithIconRight: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'Close',
+    disabled: false,
+    endIcon: <Search />,
+  },
+};
+
+export const WithBothIcon: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'Button',
+    disabled: false,
+    startIcon: <Add />,
+    endIcon: <Search />,
+  },
+};
+
+export const LoadingButtonWithText: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différentes tailles de bouton disponibles.',
+        story:
+          'Loading button is not disabled but we have `pointer-events:none` to desactive its behaviour. You can add the disabled props if you want. Default position of the loading icon is on the left.',
       },
     },
   },
 };
 
-// États
-export const States: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV5 color="primary">Normal</ButtonV5>
-      <ButtonV5 loading color="primary">
-        Loading
-      </ButtonV5>
-      <ButtonV5 disabled color="primary">
-        Disabled
-      </ButtonV5>
-    </div>
-  ),
+export const LoadingButtonRightWithText: Story = {
+  args: {
+    variant: 'contained',
+    color: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents états du bouton.',
+        story:
+          "You can change the position of the loading icon by adding `loadingPosition='right'`",
       },
     },
   },
 };
 
-// Avec icônes
-export const WithIcons: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV5 startIcon={<Add />} color="primary">
-        Left Icon
-      </ButtonV5>
-      <ButtonV5 endIcon={<Search />} color="primary">
-        Right Icon
-      </ButtonV5>
-      <ButtonV5 startIcon={<Add />} endIcon={<Search />} color="primary">
-        Both Icons
-      </ButtonV5>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Boutons avec icônes à gauche, à droite, ou des deux côtés.',
-      },
-    },
-  },
-};
-
-// Loading avec position
-export const LoadingPositions: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV5 loading color="primary">
-        Loading
-      </ButtonV5>
-      <ButtonV5 loading startIcon={<Home />} color="primary">
-        Loading with Icon
-      </ButtonV5>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Position du spinner de chargement.',
-      },
-    },
-  },
-};
-
-// Combinaisons de couleurs et variants
-export const ColorVariants: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '1rem',
-      }}
-    >
-      <div>
-        <h4>Primary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV5 variant="contained" color="primary">
-            Contained
-          </ButtonV5>
-          <ButtonV5 variant="outlined" color="primary">
-            Outlined
-          </ButtonV5>
-          <ButtonV5 variant="text" color="primary">
-            Text
-          </ButtonV5>
-        </div>
+export const ButtonGroupWithSecondaryAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV5 {...args} variant="outlined" color="secondary">
+          Cancel
+        </ButtonV5>
+        <ButtonV5 {...args} variant="contained" color="secondary">
+          Save
+        </ButtonV5>
       </div>
-      <div>
-        <h4>Secondary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV5 variant="contained" color="secondary">
-            Contained
-          </ButtonV5>
-          <ButtonV5 variant="outlined" color="secondary">
-            Outlined
-          </ButtonV5>
-          <ButtonV5 variant="text" color="secondary">
-            Text
-          </ButtonV5>
-        </div>
-      </div>
-      <div>
-        <h4>Error</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV5 variant="contained" color="error">
-            Contained
-          </ButtonV5>
-          <ButtonV5 variant="outlined" color="error">
-            Outlined
-          </ButtonV5>
-          <ButtonV5 variant="text" color="error">
-            Text
-          </ButtonV5>
-        </div>
-      </div>
-    </div>
-  ),
+    );
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Combinaisons de couleurs et de variants.',
+        story:
+          'When more than one buttons, primary action is always on the right side. Then secondary action on its left.',
       },
     },
   },
 };
 
-// Comparaison avec l'ancien Button
-export const Comparison: Story = {
+export const ButtonGroupWithThirdAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV5
+          {...args}
+          variant="text"
+          color="primary"
+          startIcon={<Add />}
+          endIcon={<Search />}
+        >
+          Button
+        </ButtonV5>
+        <ButtonV5
+          {...args}
+          variant="outlined"
+          color="primary"
+          startIcon={<Add />}
+          endIcon={<Search />}
+        >
+          Button
+        </ButtonV5>
+        <ButtonV5
+          {...args}
+          variant="contained"
+          color="primary"
+          startIcon={<Add />}
+          endIcon={<Search />}
+        >
+          Button
+        </ButtonV5>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When more than two buttons, third action is furthest to the left.',
+      },
+    },
+  },
+};
+
+// Comparaison avec le Button de base
+export const ComparisonWithBaseButton: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       <div>
@@ -304,11 +250,11 @@ export const Comparison: Story = {
           <ButtonV5 variant="contained" color="primary">
             Primary
           </ButtonV5>
-          <ButtonV5 variant="contained" color="secondary">
-            Secondary
+          <ButtonV5 variant="outlined" color="secondary">
+            Secondary Outline
           </ButtonV5>
-          <ButtonV5 variant="outlined" color="primary">
-            Outlined
+          <ButtonV5 variant="text" color="error">
+            Error Text
           </ButtonV5>
         </div>
       </div>
@@ -317,9 +263,11 @@ export const Comparison: Story = {
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
-          <button className="btn btn-primary">Primary</button>
-          <button className="btn btn-secondary">Secondary</button>
-          <button className="btn btn-outline-primary">Outline</button>
+          <button className="btn btn-filled btn-primary">Primary</button>
+          <button className="btn btn-outline-secondary">
+            Secondary Outline
+          </button>
+          <button className="btn btn-ghost-danger">Danger Ghost</button>
         </div>
       </div>
     </div>
