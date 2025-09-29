@@ -110,21 +110,60 @@ export const ButtonV5 = forwardRef<HTMLButtonElement, ButtonV5Props>(
           }
           endIcon={!loading ? endIcon : undefined}
           sx={{
-            // Styles personnalisés pour s'intégrer avec le design system
+            // Styles personnalisés pour correspondre au Button de base
             'textTransform': 'none',
-            'fontWeight': 500,
-            'borderRadius': 2,
-            'minHeight': size === 'small' ? 32 : size === 'large' ? 48 : 40,
-            'px': size === 'small' ? 2 : size === 'large' ? 3 : 2.5,
-            'py': size === 'small' ? 0.5 : size === 'large' ? 1.5 : 1,
+            'fontWeight': 600,
+            'borderRadius': '0.8rem',
+            'border': '0.1rem solid transparent',
+            'display': 'flex',
+            'alignItems': 'center',
+            'justifyContent': 'center',
+            'gap': '0.8rem',
+            'height':
+              size === 'small'
+                ? '3.2rem'
+                : size === 'large'
+                  ? '4.8rem'
+                  : '4rem',
+            'paddingLeft':
+              size === 'small'
+                ? '1.2rem'
+                : size === 'large'
+                  ? '2rem'
+                  : '1.6rem',
+            'paddingRight':
+              size === 'small'
+                ? '1.2rem'
+                : size === 'large'
+                  ? '2rem'
+                  : '1.6rem',
+            'paddingTop':
+              size === 'small'
+                ? '0.4rem'
+                : size === 'large'
+                  ? '1.2rem'
+                  : '0.8rem',
+            'paddingBottom':
+              size === 'small'
+                ? '0.4rem'
+                : size === 'large'
+                  ? '1.2rem'
+                  : '0.8rem',
             'fontSize':
               size === 'small'
-                ? '1rem'
+                ? '1.4rem'
                 : size === 'large'
-                  ? '1.25rem'
-                  : '1.125rem',
+                  ? '1.6rem'
+                  : '1.6rem',
+            'lineHeight': '2.2rem',
+            'transition': 'all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             '&:hover': {
-              boxShadow: variant === 'contained' ? 2 : 0,
+              transform: 'translateY(-0.2rem)',
+              boxShadow: '0 0.2rem 0 0 var(--mui-palette-primary-main)',
+            },
+            '&:active': {
+              transform: 'translateY(0)',
+              boxShadow: 'none',
             },
             '&:focus': {
               outline: '2px solid',

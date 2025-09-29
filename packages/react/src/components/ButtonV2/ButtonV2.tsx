@@ -137,6 +137,15 @@ const ButtonV2 = forwardRef(
         paddingY: '0.8rem',
         fontSize: '1.6rem',
         lineHeight: '2.2rem',
+        transition: 'all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        _hover: {
+          transform: 'translateY(-0.2rem)',
+          boxShadow: '0 0.2rem 0 0 var(--chakra-colors-primary-600)',
+        },
+        _active: {
+          transform: 'translateY(0)',
+          boxShadow: 'none',
+        },
         _focus: {
           boxShadow: '0 0 0 0.4rem var(--edifice-secondary-200)',
         },
@@ -171,8 +180,16 @@ const ButtonV2 = forwardRef(
             solid: {
               bg: 'primary.500',
               color: 'white',
-              _hover: { bg: 'primary.600' },
-              _active: { bg: 'primary.700' },
+              _hover: {
+                bg: 'primary.600',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-primary-600)',
+              },
+              _active: {
+                bg: 'primary.700',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { bg: 'gray.300', color: 'gray.600' },
             },
             outline: {
@@ -180,15 +197,31 @@ const ButtonV2 = forwardRef(
               borderColor: 'primary.500',
               color: 'primary.500',
               bg: 'transparent',
-              _hover: { bg: 'primary.50' },
-              _active: { bg: 'primary.100' },
+              _hover: {
+                bg: 'primary.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-primary-500)',
+              },
+              _active: {
+                bg: 'primary.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { borderColor: 'gray.300', color: 'gray.500' },
             },
             ghost: {
               color: 'primary.500',
               bg: 'transparent',
-              _hover: { bg: 'primary.50' },
-              _active: { bg: 'primary.100' },
+              _hover: {
+                bg: 'primary.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-primary-500)',
+              },
+              _active: {
+                bg: 'primary.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { color: 'gray.500' },
             },
           },
@@ -196,8 +229,16 @@ const ButtonV2 = forwardRef(
             solid: {
               bg: 'secondary.500',
               color: 'white',
-              _hover: { bg: 'secondary.600' },
-              _active: { bg: 'secondary.700' },
+              _hover: {
+                bg: 'secondary.600',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-secondary-600)',
+              },
+              _active: {
+                bg: 'secondary.700',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { bg: 'gray.300', color: 'gray.600' },
             },
             outline: {
@@ -205,15 +246,31 @@ const ButtonV2 = forwardRef(
               borderColor: 'secondary.500',
               color: 'secondary.500',
               bg: 'transparent',
-              _hover: { bg: 'secondary.50' },
-              _active: { bg: 'secondary.100' },
+              _hover: {
+                bg: 'secondary.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-secondary-500)',
+              },
+              _active: {
+                bg: 'secondary.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { borderColor: 'gray.300', color: 'gray.500' },
             },
             ghost: {
               color: 'secondary.500',
               bg: 'transparent',
-              _hover: { bg: 'secondary.50' },
-              _active: { bg: 'secondary.100' },
+              _hover: {
+                bg: 'secondary.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-secondary-500)',
+              },
+              _active: {
+                bg: 'secondary.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { color: 'gray.500' },
             },
           },
@@ -221,8 +278,16 @@ const ButtonV2 = forwardRef(
             solid: {
               bg: 'danger.500',
               color: 'white',
-              _hover: { bg: 'danger.600' },
-              _active: { bg: 'danger.700' },
+              _hover: {
+                bg: 'danger.600',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-danger-600)',
+              },
+              _active: {
+                bg: 'danger.700',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { bg: 'gray.300', color: 'gray.600' },
             },
             outline: {
@@ -230,15 +295,31 @@ const ButtonV2 = forwardRef(
               borderColor: 'danger.500',
               color: 'danger.500',
               bg: 'transparent',
-              _hover: { bg: 'danger.50' },
-              _active: { bg: 'danger.100' },
+              _hover: {
+                bg: 'danger.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-danger-500)',
+              },
+              _active: {
+                bg: 'danger.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { borderColor: 'gray.300', color: 'gray.500' },
             },
             ghost: {
               color: 'danger.500',
               bg: 'transparent',
-              _hover: { bg: 'danger.50' },
-              _active: { bg: 'danger.100' },
+              _hover: {
+                bg: 'danger.50',
+                transform: 'translateY(-0.2rem)',
+                boxShadow: '0 0.2rem 0 0 var(--chakra-colors-danger-500)',
+              },
+              _active: {
+                bg: 'danger.100',
+                transform: 'translateY(0)',
+                boxShadow: 'none',
+              },
               _disabled: { color: 'gray.500' },
             },
           },

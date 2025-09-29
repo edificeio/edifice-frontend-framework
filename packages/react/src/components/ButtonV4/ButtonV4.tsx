@@ -93,22 +93,93 @@ export const ButtonV4: React.FC<ButtonV4Props> = ({
       className={clsx('edifice-button-v4', className)}
       onClick={onClick}
       style={{
-        // Styles inline pour s'assurer que les styles sont appliqués
-        fontFamily: 'inherit',
-        fontWeight: 500,
-        textDecoration: 'none',
-        border: 'none',
-        cursor: disabled || loading ? 'not-allowed' : 'pointer',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'relative',
-        userSelect: 'none',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        boxSizing: 'border-box',
-        transition: 'all 0.2s ease',
+        // Styles personnalisés pour correspondre au Button de base
+        'fontFamily': 'inherit',
+        'fontWeight': 600,
+        'textDecoration': 'none',
+        'border': '0.1rem solid transparent',
+        'cursor': disabled || loading ? 'not-allowed' : 'pointer',
+        'display': 'inline-flex',
+        'alignItems': 'center',
+        'justifyContent': 'center',
+        'position': 'relative',
+        'userSelect': 'none',
+        'whiteSpace': 'nowrap',
+        'overflow': 'hidden',
+        'textOverflow': 'ellipsis',
+        'boxSizing': 'border-box',
+        'transition': 'all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+        'borderRadius': '0.8rem',
+        'gap': '0.8rem',
+        '&:hover': {
+          transform: 'translateY(-0.2rem)',
+          boxShadow: '0 0.2rem 0 0 var(--mantine-color-primary-6)',
+        },
+        '&:active': {
+          transform: 'translateY(0)',
+          boxShadow: 'none',
+        },
+        'height':
+          size === 'xs'
+            ? '2.4rem'
+            : size === 'sm'
+              ? '3.2rem'
+              : size === 'lg'
+                ? '4.8rem'
+                : size === 'xl'
+                  ? '5.6rem'
+                  : '4rem',
+        'paddingLeft':
+          size === 'xs'
+            ? '0.8rem'
+            : size === 'sm'
+              ? '1.2rem'
+              : size === 'lg'
+                ? '2rem'
+                : size === 'xl'
+                  ? '2.4rem'
+                  : '1.6rem',
+        'paddingRight':
+          size === 'xs'
+            ? '0.8rem'
+            : size === 'sm'
+              ? '1.2rem'
+              : size === 'lg'
+                ? '2rem'
+                : size === 'xl'
+                  ? '2.4rem'
+                  : '1.6rem',
+        'paddingTop':
+          size === 'xs'
+            ? '0.2rem'
+            : size === 'sm'
+              ? '0.4rem'
+              : size === 'lg'
+                ? '1.2rem'
+                : size === 'xl'
+                  ? '1.6rem'
+                  : '0.8rem',
+        'paddingBottom':
+          size === 'xs'
+            ? '0.2rem'
+            : size === 'sm'
+              ? '0.4rem'
+              : size === 'lg'
+                ? '1.2rem'
+                : size === 'xl'
+                  ? '1.6rem'
+                  : '0.8rem',
+        'fontSize':
+          size === 'xs'
+            ? '1.2rem'
+            : size === 'sm'
+              ? '1.4rem'
+              : size === 'lg'
+                ? '1.6rem'
+                : size === 'xl'
+                  ? '1.8rem'
+                  : '1.6rem',
+        'lineHeight': '2.2rem',
         ...props.style,
       }}
       {...props}
