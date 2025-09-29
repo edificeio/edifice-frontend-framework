@@ -1,0 +1,69 @@
+/* Import des styles de base de Mantine */
+@import '@mantine/core/styles.css';
+@import '@mantine/notifications/styles.css';
+@import '@mantine/spotlight/styles.css';
+@import '@mantine/dates/styles.css';
+@import '@mantine/dropzone/styles.css';
+@import '@mantine/carousel/styles.css';
+@import '@mantine/nprogress/styles.css';
+@import '@mantine/tiptap/styles.css';
+@import '@mantine/code-highlight/styles.css';
+
+/* Variables CSS personnalisées pour Edifice */
+:root {
+  --mantine-color-primary-0: #fff7ed;
+  --mantine-color-primary-1: #ffedd5;
+  --mantine-color-primary-2: #fed7aa;
+  --mantine-color-primary-3: #fdba74;
+  --mantine-color-primary-4: #fb923c;
+  --mantine-color-primary-5: #ff8d2e;
+  --mantine-color-primary-6: #ea580c;
+  --mantine-color-primary-7: #c2410c;
+  --mantine-color-primary-8: #9a3412;
+  --mantine-color-primary-9: #7c2d12;
+}
+
+/* Styles personnalisés pour ButtonV4 */
+.edifice-button-v4 {
+  /* Assure que les styles Mantine sont appliqués */
+  font-family: inherit;
+  line-height: 1.5;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+/* Amélioration des transitions */
+.edifice-button-v4 * {
+  transition: all 0.2s ease;
+}
+
+/* Styles pour les états de focus */
+.edifice-button-v4:focus-visible {
+  outline: 2px solid var(--mantine-color-primary-6);
+  outline-offset: 2px;
+}
+
+/* Styles pour les états disabled */
+.edifice-button-v4:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Styles pour l'état loading */
+.edifice-button-v4[data-loading="true"] {
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
