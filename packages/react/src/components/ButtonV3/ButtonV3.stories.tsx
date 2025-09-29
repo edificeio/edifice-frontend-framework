@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { ButtonV3 } from './ButtonV3';
 import { AntdProvider } from '../../providers/AntdProvider';
-import { HomeOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 
 const meta: Meta<typeof ButtonV3> = {
-  title: 'Components/ButtonV3',
+  title: 'Components/Button-antd',
   component: ButtonV3,
   parameters: {
     layout: 'centered',
@@ -63,191 +63,177 @@ const meta: Meta<typeof ButtonV3> = {
 export default meta;
 type Story = StoryObj<typeof ButtonV3>;
 
-// Story par défaut
-export const Default: Story = {
+export const Base: Story = {
   args: {
-    children: 'Button V3',
     variant: 'primary',
-    size: 'medium',
+    children: 'Label',
+    disabled: false,
   },
 };
 
-// Variantes de couleurs
-export const Colors: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV3 variant="primary">Primary</ButtonV3>
-      <ButtonV3 variant="secondary">Secondary</ButtonV3>
-      <ButtonV3 variant="success">Success</ButtonV3>
-      <ButtonV3 variant="warning">Warning</ButtonV3>
-      <ButtonV3 variant="danger">Danger</ButtonV3>
-      <ButtonV3 variant="info">Info</ButtonV3>
-    </div>
-  ),
+export const Disabled: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Label',
+    disabled: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Toutes les couleurs disponibles pour le bouton.',
+        story: 'Add the disabled props to the button to disable it.',
       },
     },
   },
 };
 
-// Variantes de style
-export const Variants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV3 variant="primary">Primary</ButtonV3>
-      <ButtonV3 variant="ghost">Ghost</ButtonV3>
-      <ButtonV3 variant="dashed">Dashed</ButtonV3>
-      <ButtonV3 variant="link">Link</ButtonV3>
-      <ButtonV3 variant="text">Text</ButtonV3>
-    </div>
-  ),
+export const Danger: Story = {
+  args: {
+    variant: 'danger',
+    children: 'Label',
+    disabled: false,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents styles de bouton disponibles.',
+        story:
+          'Used for destructive actions and warning the user of an important action.',
       },
     },
   },
 };
 
-// Tailles
-export const Sizes: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'flex',
-        gap: '1rem',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-      }}
-    >
-      <ButtonV3 size="small">Small</ButtonV3>
-      <ButtonV3 size="medium">Medium</ButtonV3>
-      <ButtonV3 size="large">Large</ButtonV3>
-    </div>
-  ),
+export const WithIconLeft: Story = {
+  args: {
+    variant: 'primary',
+    children: 'New user',
+    disabled: false,
+    startIcon: <PlusOutlined />,
+  },
+};
+
+export const WithIconRight: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Close',
+    disabled: false,
+    endIcon: <SearchOutlined />,
+  },
+};
+
+export const WithBothIcon: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Button',
+    disabled: false,
+    startIcon: <PlusOutlined />,
+    endIcon: <SearchOutlined />,
+  },
+};
+
+export const LoadingButtonWithText: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différentes tailles de bouton disponibles.',
+        story:
+          'Loading button is not disabled but we have `pointer-events:none` to desactive its behaviour. You can add the disabled props if you want. Default position of the loading icon is on the left.',
       },
     },
   },
 };
 
-// États
-export const States: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV3>Normal</ButtonV3>
-      <ButtonV3 loading>Loading</ButtonV3>
-      <ButtonV3 disabled>Disabled</ButtonV3>
-    </div>
-  ),
+export const LoadingButtonRightWithText: Story = {
+  args: {
+    variant: 'primary',
+    children: 'Loading...',
+    loading: true,
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Les différents états du bouton.',
+        story:
+          "You can change the position of the loading icon by adding `loadingPosition='right'`",
       },
     },
   },
 };
 
-// Avec icônes
-export const WithIcons: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV3 startIcon={<PlusOutlined />}>Left Icon</ButtonV3>
-      <ButtonV3 endIcon={<SearchOutlined />}>Right Icon</ButtonV3>
-      <ButtonV3 startIcon={<PlusOutlined />} endIcon={<SearchOutlined />}>
-        Both Icons
-      </ButtonV3>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Boutons avec icônes à gauche, à droite, ou des deux côtés.',
-      },
-    },
-  },
-};
-
-// Loading avec position
-export const LoadingPositions: Story = {
-  render: () => (
-    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-      <ButtonV3 loading>Loading</ButtonV3>
-      <ButtonV3 loading startIcon={<HomeOutlined />}>
-        Loading with Icon
-      </ButtonV3>
-    </div>
-  ),
-  parameters: {
-    docs: {
-      description: {
-        story: 'Position du spinner de chargement.',
-      },
-    },
-  },
-};
-
-// Combinaisons de couleurs et variants
-export const ColorVariants: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
-        gap: '1rem',
-      }}
-    >
-      <div>
-        <h4>Primary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV3 variant="primary">Primary</ButtonV3>
-          <ButtonV3 variant="ghost">Ghost</ButtonV3>
-          <ButtonV3 variant="dashed">Dashed</ButtonV3>
-        </div>
+export const ButtonGroupWithSecondaryAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV3 {...args} variant="secondary">
+          Cancel
+        </ButtonV3>
+        <ButtonV3 {...args} variant="primary">
+          Save
+        </ButtonV3>
       </div>
-      <div>
-        <h4>Secondary</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV3 variant="secondary">Secondary</ButtonV3>
-          <ButtonV3 variant="ghost">Ghost</ButtonV3>
-          <ButtonV3 variant="dashed">Dashed</ButtonV3>
-        </div>
-      </div>
-      <div>
-        <h4>Danger</h4>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-        >
-          <ButtonV3 variant="danger">Danger</ButtonV3>
-          <ButtonV3 variant="ghost">Ghost</ButtonV3>
-          <ButtonV3 variant="dashed">Dashed</ButtonV3>
-        </div>
-      </div>
-    </div>
-  ),
+    );
+  },
+
   parameters: {
     docs: {
       description: {
-        story: 'Combinaisons de couleurs et de variants.',
+        story:
+          'When more than one buttons, primary action is always on the right side. Then secondary action on its left.',
       },
     },
   },
 };
 
-// Comparaison avec l'ancien Button
-export const Comparison: Story = {
+export const ButtonGroupWithThirdAction: Story = {
+  render: (args) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <ButtonV3
+          {...args}
+          variant="ghost"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
+        >
+          Button
+        </ButtonV3>
+        <ButtonV3
+          {...args}
+          variant="dashed"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
+        >
+          Button
+        </ButtonV3>
+        <ButtonV3
+          {...args}
+          variant="primary"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
+        >
+          Button
+        </ButtonV3>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When more than two buttons, third action is furthest to the left.',
+      },
+    },
+  },
+};
+
+// Comparaison avec le Button de base
+export const ComparisonWithBaseButton: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       <div>
@@ -265,9 +251,11 @@ export const Comparison: Story = {
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
-          <button className="btn btn-primary">Primary</button>
-          <button className="btn btn-secondary">Secondary</button>
-          <button className="btn btn-outline-primary">Outline</button>
+          <button className="btn btn-filled btn-primary">Primary</button>
+          <button className="btn btn-outline-secondary">
+            Secondary Outline
+          </button>
+          <button className="btn btn-ghost-danger">Danger Ghost</button>
         </div>
       </div>
     </div>
