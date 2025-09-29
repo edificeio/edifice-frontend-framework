@@ -38,14 +38,14 @@ init () {
   echo "[init] Install dependencies..."
 
   # Installation des dépendances
-  docker compose run -e TIPTAP_PRO_TOKEN=$TIPTAP_PRO_TOKEN -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm install"
+  docker compose run -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm install"
 }
 
 build () {
   echo "[build] Build packages..."
 
   # Build des packages
-  docker compose run -e TIPTAP_PRO_TOKEN=$TIPTAP_PRO_TOKEN -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm run build"
+  docker compose run -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm run build"
 }
 
 publish () {

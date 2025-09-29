@@ -3,7 +3,6 @@ services:
     image: opendigitaleducation/node:20-alpine-pnpm
     working_dir: /home/node/app
     environment:
-      - TIPTAP_PRO_TOKEN
       - NPM_TOKEN
       - CHROMATIC_TOKEN
     volumes:

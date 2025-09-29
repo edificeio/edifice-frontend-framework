@@ -26,14 +26,11 @@ jobs:
         run: |
           pnpm config set @edifice-ui:registry https://registry.npmjs.org
           pnpm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
-          pnpm config set @tiptap-pro:registry https://registry.tiptap.dev
-          pnpm config set //registry.tiptap.dev/:_authToken ${{ secrets.TIPTAP_PRO_TOKEN }}
           pnpm config set auto-install-peers true
       - name: Install dependencies
         run: |
           pnpm install && pnpm run build
         env:
-          TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run Chromatic
         uses: chromaui/action@latest
