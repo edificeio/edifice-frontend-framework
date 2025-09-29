@@ -8,6 +8,7 @@ export * from './AvatarGroup';
 export * from './Badge';
 export * from './Breadcrumb';
 export * from './Button';
+export * from './ButtonV2';
 export * from './Card';
 export * from './Checkbox';
 export * from './ColorPicker';
