@@ -8,7 +8,7 @@ import { Hyperlink } from '@edifice.io/tiptap-extensions/hyperlink';
 import { SpeechRecognition } from '@edifice.io/tiptap-extensions/speech-recognition';
 import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis';
 import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
-import { Mathematics } from '@tiptap-pro/extension-mathematics';
+import { Mathematics } from '@tiptap/extension-mathematics';
 import Color from '@tiptap/extension-color';
 import Focus from '@tiptap/extension-focus';
 import FontFamily from '@tiptap/extension-font-family';
