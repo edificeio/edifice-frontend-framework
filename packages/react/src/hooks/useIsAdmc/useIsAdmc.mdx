@@ -1,0 +1,16 @@
+# useIsAdmc
+
+Detects whether the current user has super admin rights.
+
+This hook uses the `odeServices.session().getUser()` function and inspects the user's `functions` object for `SUPER_ADMIN`.
+
+## Usage
+
+```tsx
+import { useIsAdmc } from '@edifice.io/react/hooks';
+
+function Component() {
+  const { isAdmc } = useIsAdmc();
+  return <div>{isAdmc ? 'You are ADMC' : 'Not ADMC'}</div>;
+}
+```

@@ -1,0 +1,16 @@
+# useIsAdmlcOrAdmc
+
+Detects whether the current user is ADML (local admin) or ADMC (super admin).
+
+This hook first checks `session.isAdml()` and if false, falls back to checking the user's `functions` for `SUPER_ADMIN`.
+
+## Usage
+
+```tsx
+import { useIsAdmlcOrAdmc } from '@edifice.io/react/hooks';
+
+function Component() {
+  const { isAdmlcOrAdmc } = useIsAdmlcOrAdmc();
+  return <div>{isAdmlcOrAdmc ? 'Admin-like' : 'No admin rights'}</div>;
+}
+```

@@ -16,6 +16,8 @@ export * from './useHover';
 export * from './useHttpErrorToast';
 export * from './useImage';
 export * from './useIsAdml';
+export * from './useIsAdmc';
+export * from './useIsAdmlcOrAdmc';
 export * from './useKeyPress';
 export * from './useLibraryUrl';
 export * from './useMediaLibrary';
