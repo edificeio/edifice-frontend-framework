@@ -114,6 +114,10 @@ export type CommentOptions = {
    * Number of replies to load additionally in the limited list
    */
   additionalReplies: number;
+  /**
+   * Allow replying to comments
+   */
+  allowReplies: boolean;
 };
 
 export interface UserProfileResult {
