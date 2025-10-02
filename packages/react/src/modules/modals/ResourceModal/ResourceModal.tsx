@@ -1,4 +1,4 @@
-import { ReactNode, useId } from 'react';
+import { ReactNode, useEffect, useId } from 'react';
 
 import {
   CreateParameters,
@@ -11,11 +11,12 @@ import {
 } from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import {
   Button,
+  Checkbox,
   FormControl,
   Heading,
   Input,
@@ -37,6 +38,7 @@ export interface FormInputs {
   description: string;
   enablePublic: boolean;
   formSlug: string;
+  allowReplies: boolean;
 }
 
 /**
@@ -172,6 +174,7 @@ export const ResourceModal = ({
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { isSubmitting, isValid },
   } = useForm<FormInputs>({
     mode: 'onChange',
@@ -180,8 +183,13 @@ export const ResourceModal = ({
       enablePublic: isUpdating ? resource?.public : false,
       title: isUpdating ? resource?.name : '',
       formSlug: isUpdating ? resource?.slug : '',
+      allowReplies: isUpdating ? (resource?.allowReplies ?? true) : true,
     },
   });
+
+  useEffect(() => {
+    console.log(resource);
+  }, [resource]);
 
   const {
     ref: mediaLibraryRef,
@@ -206,6 +214,7 @@ export const ResourceModal = ({
         public: formData.enablePublic,
         slug: formData.enablePublic ? formData.formSlug || '' : '',
         thumbnail,
+        allowReplies: formData.allowReplies,
       };
 
       let result: CreateResult | UpdateResult;
@@ -361,6 +370,21 @@ export const ResourceModal = ({
                   />
                 )}
               </FormControl>
+              {application === 'blog' && (
+                <FormControl id="allowReplies" className="mt-16">
+                  <Controller
+                    name="allowReplies"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        label="Autoriser les réponses aux commentaires"
+                        checked={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                </FormControl>
+              )}
             </div>
           </div>
 

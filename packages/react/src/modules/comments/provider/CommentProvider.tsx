@@ -27,6 +27,7 @@ const CommentProvider = ({
     additionalComments: DEFAULT_ADD_COMMENTS,
     maxReplies: DEFAULT_MAX_REPLIES,
     additionalReplies: DEFAULT_ADD_REPLIES,
+    allowReplies: true,
     ...commentOptions,
   };
 
