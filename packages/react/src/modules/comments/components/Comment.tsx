@@ -148,7 +148,7 @@ export const Comment = ({
                   </div>
                   {type === 'edit' && (
                     <div className="ms-n8">
-                      {!replyTo && (
+                      {!replyTo && options.allowReplies && (
                         <Button
                           variant="ghost"
                           color="tertiary"

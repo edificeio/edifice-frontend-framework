@@ -117,6 +117,7 @@ export interface IResource {
   trashedBy?: ID[];
   rights: RightStringified[];
   description: string;
+  allowReplies?: boolean;
 }
 
 /**
@@ -282,6 +283,7 @@ export interface CreateParameters extends IActionParameters {
   slug?: string;
   commentType?: string;
   publishType?: string;
+  allowReplies?: boolean;
   /* app?: string;  @deprecated, replaced by 'application' in IActionParameters */
 }
 /** Response when creating resource */
@@ -446,6 +448,7 @@ export interface UpdateParameters {
   description: string;
   public: boolean;
   slug: string;
+  allowReplies?: boolean;
 }
 /** Response when updating resource. */
 export interface UpdateResult {

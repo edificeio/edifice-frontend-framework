@@ -10,6 +10,7 @@ import {
   DEFAULT_MAX_COMMENT_LENGTH,
   DEFAULT_MAX_REPLIES,
   DEFAULT_MAX_REPLY_LENGTH,
+  DEFAULT_ALLOW_REPLIES,
 } from '../constants';
 import { CommentContext } from '../context/Context';
 import { useComments } from '../hooks/useComments';
@@ -27,6 +28,7 @@ const CommentProvider = ({
     additionalComments: DEFAULT_ADD_COMMENTS,
     maxReplies: DEFAULT_MAX_REPLIES,
     additionalReplies: DEFAULT_ADD_REPLIES,
+    allowReplies: DEFAULT_ALLOW_REPLIES,
     ...commentOptions,
   };
 

@@ -22,3 +22,5 @@ export const DEFAULT_MAX_REPLIES = 5;
  * Number of comments to add when adding more comment in the limited list
  */
 export const DEFAULT_ADD_REPLIES = 5;
+
+export const DEFAULT_ALLOW_REPLIES = true;

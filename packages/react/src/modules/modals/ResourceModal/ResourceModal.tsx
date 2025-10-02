@@ -24,7 +24,7 @@ import {
   Modal,
   TextArea,
 } from '../../../components';
-import { useMediaLibrary, useToast } from '../../../hooks';
+import { useHasWorkflow, useMediaLibrary, useToast } from '../../../hooks';
 import { useResource } from '../../../hooks/useResource';
 import { useEdificeClient } from '../../../providers';
 import { MediaLibrary } from '../../multimedia';
@@ -36,6 +36,7 @@ export interface FormInputs {
   description: string;
   enablePublic: boolean;
   formSlug: string;
+  allowReplies: boolean;
 }
 
 /**
@@ -154,6 +155,9 @@ export const ResourceModal = ({
   const { appCode: contextAppCode, currentApp } = useEdificeClient();
   // Use custom app code if provided, otherwise use the one from context
   const application = customAppCode || contextAppCode;
+  const hasOptionalCommentRepliesWorkflow = useHasWorkflow(
+    'org.entcore.blog.controllers.BlogController|optionalCommentReplies',
+  );
 
   const { t } = useTranslation();
   const { mode } = props;
@@ -179,6 +183,7 @@ export const ResourceModal = ({
       enablePublic: isUpdating ? resource?.public : false,
       title: isUpdating ? resource?.name : '',
       formSlug: isUpdating ? resource?.slug : '',
+      allowReplies: isUpdating ? resource?.allowReplies : true,
     },
   });
 
@@ -203,6 +208,7 @@ export const ResourceModal = ({
         public: formData.enablePublic,
         slug: formData.enablePublic ? formData.formSlug || '' : '',
         thumbnail,
+        allowReplies: formData.allowReplies,
       };
 
       let result: CreateResult | UpdateResult;
@@ -354,6 +360,24 @@ export const ResourceModal = ({
                   showCounter
                 />
               </FormControl>
+              {application === 'blog' &&
+                hasOptionalCommentRepliesWorkflow === true && (
+                  <FormControl
+                    id="allowReplies"
+                    className="d-flex gap-8 mt-16 mb-8"
+                  >
+                    <FormControl.Input
+                      type="checkbox"
+                      defaultChecked={isUpdating ? resource.allowReplies : true}
+                      {...register('allowReplies')}
+                      className="form-check-input mt-0"
+                      size="sm"
+                    />
+                    <FormControl.Label className="form-check-label mb-0">
+                      {t('explorer.resource.editModal.comments.allowReplies')}
+                    </FormControl.Label>
+                  </FormControl>
+                )}
             </div>
           </div>
 
