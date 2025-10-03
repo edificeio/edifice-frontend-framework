@@ -18,7 +18,6 @@ export const useHttpErrorToast = ({
 
   useEffect(() => {
     if (active) {
-      // Subscribe to HTTP error events
       const subscription = odeServices
         .notify()
         .events()
@@ -43,10 +42,7 @@ export const useHttpErrorToast = ({
           );
         });
 
-      // return cleaning function
       return () => subscription.revoke();
-    } else {
-      // Do nothing => no cleaning function to return
     }
   }, [t, toast, active]);
 
