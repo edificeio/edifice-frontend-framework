@@ -22,7 +22,7 @@ export class Theme implements ITheme {
   templateOverrides: IThemeOverrides = {};
   portalTemplate = '/assets/themes/raw/portal.html';
   basePath = '';
-  logoutCallback = '/';
+  logoutCallback = '';
   skins: Array<IThemeConfOverriding> = [];
 
   is1D = false;

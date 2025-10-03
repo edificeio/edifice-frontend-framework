@@ -163,7 +163,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                 <NavItem>
                   <a
                     href={
-                      '/auth/logout?callback=' + (theme?.logoutCallback ?? '/')
+                      '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
                     }
                     className="nav-link"
                   >
@@ -395,7 +395,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       <a
                         href={
                           '/auth/logout?callback=' +
-                          (theme?.logoutCallback ?? '/')
+                          (theme?.logoutCallback ?? '')
                         }
                         className="nav-link dropdown-item"
                       >

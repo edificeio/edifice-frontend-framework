@@ -158,7 +158,7 @@ export class ConfService {
       basePath: `${this.cdnDomain}${themeUrl}../../`,
       bootstrapVersion,
       is1d,
-      logoutCallback: theme?.logoutCallback || '/',
+      logoutCallback: theme?.logoutCallback || '',
       skin: themeOverride?.child,
       skinName,
       skins,
