@@ -1,7 +1,7 @@
 import { IGetConf, ITheme, IThemeOverrides } from '../configure/interfaces';
 import { IUserInfo } from '../session/interfaces';
-import { notify } from './Framework';
 import { IHttpParams, IHttpResponse } from '../transport/interfaces';
+import { notify } from './Framework';
 
 //-------------------------------------
 export abstract class NotifyFrameworkFactory {
@@ -57,7 +57,7 @@ export interface INotifyFramework {
    * By definition, an event can occur multiple times (otherwise it is a one-time "process", see above) and be watched by many targets.
    * => We model it as a subject with many potential subscribers.
    */
-  events(): ISubject;
+  events<T extends ISubjectMessage>(): ISubject<T>;
 }
 
 //-------------------------------------
@@ -101,14 +101,14 @@ export interface ISubscription {
 }
 /** Generic typing of a subject. */
 //-------------------------------------
-export interface ISubject {
+export interface ISubject<T extends ISubjectMessage> {
   subscribe(
     layer: Omit<LayerName, TransportLayer | WebDataLayer>,
-    handler: <T extends ISubjectMessage>(message: T) => void,
+    handler: (message: T) => void,
   ): ISubscription;
   publish(
     layer: Omit<LayerName, TransportLayer | WebDataLayer>,
-    message: ISubjectMessage,
+    message: T,
   ): void;
 }
 
@@ -122,15 +122,6 @@ export interface IHttpErrorEvent extends ISubjectMessage {
     payload?: any;
   };
 }
-/** Overloaded typing of a subject, dedicated to transport errors. */
-//-------------------------------------
-export declare interface ISubject {
-  publish(layer: TransportLayer, message: IHttpErrorEvent): void;
-  subscribe(
-    layer: TransportLayer,
-    handler: (message: IHttpErrorEvent) => void,
-  ): ISubscription;
-}
 
 /** Typing of tracked events on a DATA layer. */
 //-------------------------------------
@@ -142,13 +133,4 @@ export interface IDataTrackEvent extends ISubjectMessage {
     'userId'?: string;
     [key: string]: any;
   };
-}
-/** Overloaded typing of a subject, dedicated to tracking web data events. */
-//-------------------------------------
-export declare interface ISubject {
-  publish(layer: WebDataLayer, message: IDataTrackEvent): void;
-  subscribe(
-    layer: WebDataLayer,
-    handler: (message: IDataTrackEvent) => void,
-  ): ISubscription;
 }
