@@ -1,26 +1,22 @@
-import React from 'react';
 import { Button as AntButton } from 'antd';
+import { ButtonColorType, ButtonVariantType } from 'antd/es/button';
 import { clsx } from 'clsx';
+import React from 'react';
+import { ButtonColors, ButtonSizes, ButtonVariants } from '../Button/Button';
 
 export interface ButtonV3Props {
   /**
    * Taille du bouton
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: ButtonSizes;
   /**
-   * Variante du bouton
+   * `primary`, `secondary`, `tertiary` or `danger`
    */
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'ghost'
-    | 'dashed'
-    | 'link'
-    | 'text';
+  color?: ButtonColors;
+  /**
+   * `filled`, `outline` or `ghost`
+   */
+  variant?: ButtonVariants;
   /**
    * Icône à afficher avant le texte
    */
@@ -82,7 +78,8 @@ export interface ButtonV3Props {
  */
 export const ButtonV3: React.FC<ButtonV3Props> = ({
   size = 'medium',
-  variant = 'primary',
+  variant = 'filled',
+  color = 'primary',
   startIcon,
   endIcon,
   className,
@@ -90,7 +87,7 @@ export const ButtonV3: React.FC<ButtonV3Props> = ({
   disabled,
   loading,
   shape,
-  htmlType,
+  htmlType = 'button',
   onClick,
   style,
   ...props
@@ -99,58 +96,42 @@ export const ButtonV3: React.FC<ButtonV3Props> = ({
   const antdSize = size === 'medium' ? 'middle' : size;
 
   // Mapping des variantes vers les types Ant Design
-  const getAntdType = (variant: string) => {
+  const getAntdType = (variant: ButtonVariants): ButtonVariantType => {
     switch (variant) {
-      case 'primary':
-        return 'primary';
-      case 'secondary':
-        return 'default';
-      case 'success':
-        return 'primary';
-      case 'warning':
-        return 'primary';
-      case 'danger':
-        return 'primary';
-      case 'info':
-        return 'primary';
+      case 'filled':
+        return 'solid';
+      case 'outline':
+        return 'outlined';
       case 'ghost':
-        return 'default';
-      case 'dashed':
-        return 'dashed';
-      case 'link':
-        return 'link';
-      case 'text':
         return 'text';
       default:
-        return 'primary';
+        return 'solid';
     }
   };
 
   // Mapping des couleurs pour les variantes spéciales
-  const getButtonColor = (variant: string) => {
-    switch (variant) {
-      case 'success':
-        return '#7dbf85';
-      case 'warning':
-        return '#f59700';
-      case 'danger':
-        return '#e13a3a';
-      case 'info':
-        return '#4bafd5';
+  const getButtonColor = (color: string) => {
+    switch (color) {
       case 'secondary':
-        return '#2a9cc8';
+        return 'blue';
+      case 'tertiary':
+        return 'default';
+      case 'danger':
+        return 'danger';
       default:
-        return undefined;
+        return 'primary';
     }
   };
 
-  const buttonColor = getButtonColor(variant);
+  const buttonColor: ButtonColorType = getButtonColor(color);
   const antdType = getAntdType(variant);
 
   return (
     <AntButton
-      type={antdType as any}
+      type="default"
       size={antdSize as any}
+      variant={antdType}
+      color={buttonColor}
       className={clsx(
         'edifice-button-v3',
         `edifice-button-v3--${variant}`,
@@ -161,7 +142,6 @@ export const ButtonV3: React.FC<ButtonV3Props> = ({
         // Styles personnalisés pour correspondre au Button de base
         fontWeight: 600,
         borderRadius: '0.8rem',
-        border: '0.1rem solid transparent',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -180,11 +160,6 @@ export const ButtonV3: React.FC<ButtonV3Props> = ({
           size === 'small' ? '1.4rem' : size === 'large' ? '1.6rem' : '1.6rem',
         lineHeight: '2.2rem',
         transition: 'all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        ...(buttonColor && {
-          backgroundColor: variant === 'ghost' ? 'transparent' : buttonColor,
-          borderColor: buttonColor,
-          color: variant === 'ghost' ? buttonColor : '#ffffff',
-        }),
         ...style,
       }}
       onMouseEnter={(e) => {
