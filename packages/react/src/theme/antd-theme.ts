@@ -10,6 +10,7 @@ export const antdTheme = {
     colorWarning: '#f59700', // warning
     colorError: '#e13a3a', // danger
     colorInfo: '#4bafd5', // info
+    colorBlue: '#2a9cc8', // blue
 
     // Couleurs secondaires
     colorSecondary: '#2a9cc8', // blue (secondary)
@@ -77,6 +78,10 @@ export const antdTheme = {
       dangerShadow: '0 2px 0 rgba(225, 58, 58, 0.1)',
       linkHoverBg: 'rgba(255, 141, 46, 0.06)',
       textHoverBg: 'rgba(0, 0, 0, 0.06)',
+    },
+    Select: {
+      // Configuration spécifique pour les sélecteurs
+      borderRadius: 8,
     },
     // Vous pouvez ajouter d'autres composants ici selon vos besoins
   },

@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ButtonV3 } from './ButtonV3';
-import { AntdProvider } from '../../providers/AntdProvider';
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import type { Meta, StoryObj } from '@storybook/react';
+import { AntdProvider } from '../../providers/AntdProvider';
+import { ButtonV3 } from './ButtonV3';
 
 const meta: Meta<typeof ButtonV3> = {
   title: 'Components/Button-antd',
@@ -25,18 +25,12 @@ const meta: Meta<typeof ButtonV3> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'success',
-        'warning',
-        'danger',
-        'info',
-        'ghost',
-        'dashed',
-        'link',
-        'text',
-      ],
+      options: ['filled', 'ghost', 'outline'],
+      description: 'Couleur du bouton',
+    },
+    color: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'danger', 'tertiary'],
       description: 'Variante du bouton',
     },
     size: {
@@ -65,7 +59,8 @@ type Story = StoryObj<typeof ButtonV3>;
 
 export const Base: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Label',
     disabled: false,
   },
@@ -73,7 +68,8 @@ export const Base: Story = {
 
 export const Disabled: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Label',
     disabled: true,
   },
@@ -89,7 +85,8 @@ export const Disabled: Story = {
 
 export const Danger: Story = {
   args: {
-    variant: 'danger',
+    color: 'danger',
+    variant: 'filled',
     children: 'Label',
     disabled: false,
   },
@@ -106,7 +103,8 @@ export const Danger: Story = {
 
 export const WithIconLeft: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'New user',
     disabled: false,
     startIcon: <PlusOutlined />,
@@ -115,7 +113,8 @@ export const WithIconLeft: Story = {
 
 export const WithIconRight: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Close',
     disabled: false,
     endIcon: <SearchOutlined />,
@@ -124,7 +123,8 @@ export const WithIconRight: Story = {
 
 export const WithBothIcon: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Button',
     disabled: false,
     startIcon: <PlusOutlined />,
@@ -134,7 +134,8 @@ export const WithBothIcon: Story = {
 
 export const LoadingButtonWithText: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Loading...',
     loading: true,
   },
@@ -151,7 +152,8 @@ export const LoadingButtonWithText: Story = {
 
 export const LoadingButtonRightWithText: Story = {
   args: {
-    variant: 'primary',
+    color: 'primary',
+    variant: 'filled',
     children: 'Loading...',
     loading: true,
   },
@@ -170,10 +172,10 @@ export const ButtonGroupWithSecondaryAction: Story = {
   render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
-        <ButtonV3 {...args} variant="secondary">
+        <ButtonV3 {...args} color="secondary">
           Cancel
         </ButtonV3>
-        <ButtonV3 {...args} variant="primary">
+        <ButtonV3 {...args} color="primary">
           Save
         </ButtonV3>
       </div>
@@ -196,6 +198,7 @@ export const ButtonGroupWithThirdAction: Story = {
       <div className="d-flex align-items-center gap-8">
         <ButtonV3
           {...args}
+          color="danger"
           variant="ghost"
           startIcon={<PlusOutlined />}
           endIcon={<SearchOutlined />}
@@ -204,7 +207,7 @@ export const ButtonGroupWithThirdAction: Story = {
         </ButtonV3>
         <ButtonV3
           {...args}
-          variant="dashed"
+          variant="filled"
           startIcon={<PlusOutlined />}
           endIcon={<SearchOutlined />}
         >
@@ -212,7 +215,8 @@ export const ButtonGroupWithThirdAction: Story = {
         </ButtonV3>
         <ButtonV3
           {...args}
-          variant="primary"
+          color="secondary"
+          variant="outline"
           startIcon={<PlusOutlined />}
           endIcon={<SearchOutlined />}
         >
@@ -241,9 +245,13 @@ export const ComparisonWithBaseButton: Story = {
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
-          <ButtonV3 variant="primary">Primary</ButtonV3>
-          <ButtonV3 variant="secondary">Secondary</ButtonV3>
-          <ButtonV3 variant="ghost">Ghost</ButtonV3>
+          <ButtonV3 color="primary">Primary</ButtonV3>
+          <ButtonV3 variant="outline" color="primary">
+            Secondary
+          </ButtonV3>
+          <ButtonV3 variant="ghost" color="danger">
+            Ghost
+          </ButtonV3>
         </div>
       </div>
       <div>
