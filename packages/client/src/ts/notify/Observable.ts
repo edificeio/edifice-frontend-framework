@@ -15,7 +15,7 @@ export class Observable<T> {
       revoke: () => {
         this.revokeHandler(handler);
       },
-    } as ISubscription;
+    };
   }
 
   public postMessage(message: T) {
