@@ -34,7 +34,8 @@
     "lint": "turbo run lint --filter=./packages/**",
     "pre-commit": "pnpm run lint && pnpm run format && pnpm run test",
     "prepare": "husky install",
-    "test": "turbo run test --filter=./packages/react"
+    "test": "turbo run test --filter=./packages/react",
+    "test:client": "turbo run test --filter=./packages/client"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.0",
