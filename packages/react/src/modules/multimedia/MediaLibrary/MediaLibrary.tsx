@@ -219,9 +219,6 @@ const MediaLibrary = forwardRef(
       ...refModal.current,
     }));
 
-    // HTTP errors toasts
-    useHttpErrorToast({ isDismissible: true, duration: Infinity });
-
     const { t } = useTranslation();
 
     const workspaceCreateWorkflow = useHasWorkflow(
@@ -232,6 +229,13 @@ const MediaLibrary = forwardRef(
     );
 
     const [type, setType] = useState<MediaLibraryType | null>(null);
+
+    // HTTP errors toasts
+    useHttpErrorToast({
+      active: !!type,
+      isDismissible: true,
+      duration: Infinity,
+    });
 
     const availableTabs: {
       [tabname in AvailableTab]: TabsItemProps & MediaLibraryTabProps;

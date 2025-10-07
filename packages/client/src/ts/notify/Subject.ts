@@ -1,89 +1,46 @@
 import {
-  IHttpErrorEvent,
   ISubject,
   ISubjectMessage,
   ISubscription,
   LayerName,
 } from './interfaces';
-
-type RevokationFunction = () => void;
-
-class Subscription<T extends ISubjectMessage> implements ISubscription {
-  public revoke: RevokationFunction;
-
-  constructor(
-    private _channel?: BroadcastChannel,
-    handler?: (message: T) => void,
-  ) {
-    this.revoke = this.setReceiver((message: MessageEvent<T>) =>
-      handler?.(message.data),
-    );
-  }
-
-  private setReceiver(
-    receiver: (message: MessageEvent<T>) => void,
-  ): RevokationFunction {
-    this._channel?.addEventListener('message', receiver);
-    return () => {
-      if (this._channel) {
-        this._channel.removeEventListener('message', receiver);
-        // Close channel, then delete it since it is unusable.
-        this._channel.close();
-        delete this._channel;
-      }
-    };
-  }
-}
+import { Observable } from './Observable';
 
 //-------------------------------------
 // Event system
 //-------------------------------------
-export class Subject implements ISubject {
-  /* A single BroadcastChannel cannot send AND receive messages, afaik.
-   * => We maintain here channels for *sending* messages.
-   * *Receiving* channels will be instantiated while subscribing.
-   */
-  private publishChannels: Map<string, BroadcastChannel> = new Map<
-    string,
-    BroadcastChannel
-  >();
+export class Subject<T extends ISubjectMessage> implements ISubject<T> {
+  private observables = new Map<string, Observable<T>>();
 
-  private getChannelName(layer: string): string {
+  private getSubjectName(layer: string): string {
     return 'Subject:' + layer;
   }
 
-  private getPublishChannel(layer: string): BroadcastChannel {
-    const name = this.getChannelName(layer);
-    let channel = this.publishChannels.get(name);
-    if (!channel) {
-      channel = this.newChannel(layer);
-      this.publishChannels.set(name, channel);
+  private getObservable(layer: string): Observable<T> {
+    const name = this.getSubjectName(layer);
+    let observable = this.observables.get(name);
+    if (!observable) {
+      observable = new Observable();
+      this.observables.set(name, observable);
     }
-    return channel;
+    return observable;
   }
 
-  public newChannel(layer: string): BroadcastChannel {
-    const name = this.getChannelName(layer);
-    const channel = new BroadcastChannel(name);
-    channel.addEventListener('messageerror', (ev) => console.log(ev.data));
-    return channel;
+  publish(layer: LayerName, message: T): void {
+    typeof layer === 'string' && this.getObservable(layer).postMessage(message);
   }
 
-  publish(layer: LayerName, message: ISubjectMessage | IHttpErrorEvent): void {
-    typeof layer === 'string' &&
-      this.getPublishChannel(layer).postMessage(message);
-  }
-
-  subscribe<T extends ISubjectMessage>(
-    layer: LayerName,
-    handler: (message: T) => void,
-  ): ISubscription {
+  subscribe(layer: LayerName, handler: (message: T) => void): ISubscription {
     if (typeof layer === 'string') {
-      // Create a *receiving* channel for every subscription.
-      const receiveChannel = this.newChannel(layer);
-      return new Subscription(receiveChannel, handler);
+      const observable = this.getObservable(layer);
+      return observable.addEventListener(handler);
     } else {
-      return new Subscription();
+      return { revoke: () => {} } as ISubscription;
     }
+  }
+
+  public getSubscriberCountFor(layer: LayerName) {
+    const observable = this.getObservable(layer);
+    return observable.subscriberCount;
   }
 }
