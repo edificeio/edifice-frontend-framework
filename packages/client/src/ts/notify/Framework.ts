@@ -1,7 +1,12 @@
 import { IGetConf, ITheme, IThemeOverrides } from '../configure/interfaces';
 import { IUserInfo } from '../session/interfaces';
 import { Subject } from './Subject';
-import { IPromisified, INotifyFramework } from './interfaces';
+import {
+  INotifyFramework,
+  IPromisified,
+  ISubject,
+  ISubjectMessage,
+} from './interfaces';
 
 type PromiseRegistry = { [name: string]: Promisified<any> };
 
@@ -39,14 +44,14 @@ export class Promisified<T> implements IPromisified<T> {
 class NotifyFramework implements INotifyFramework {
   //-------------------------------------
   private promises: PromiseRegistry = {};
-  private subject: Subject = new Subject();
+  private subject = new Subject<ISubjectMessage>();
 
-  private asyncData<T>(asyncDataName: string): Promisified<T> {
+  private asyncData<U>(asyncDataName: string): Promisified<U> {
     if (typeof this.promises[asyncDataName] === 'undefined') {
       this.promises[asyncDataName] =
-        new Promisified<T>() as unknown as Promisified<any>;
+        new Promisified<U>() as unknown as Promisified<any>;
     }
-    return this.promises[asyncDataName] as unknown as Promisified<T>;
+    return this.promises[asyncDataName] as unknown as Promisified<U>;
   }
 
   public onSessionReady(): IPromisified<IUserInfo> {
@@ -73,10 +78,10 @@ class NotifyFramework implements INotifyFramework {
     return new Promisified<T>();
   }
 
-  public events(): Subject {
-    return this.subject;
+  public events<T extends ISubjectMessage>(): ISubject<T> {
+    return this.subject as unknown as ISubject<T>;
   }
 }
 
 /** The whole framework is a singleton. */
-export const notify: NotifyFramework = new NotifyFramework();
+export const notify = new NotifyFramework();
