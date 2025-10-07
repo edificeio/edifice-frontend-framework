@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import { useConf } from '../../hooks/useConf';
+import AntdProvider from '../AntdProvider';
 import { useEdificeClient } from '../EdificeClientProvider/EdificeClientProvider.hook';
 import {
   EdificeThemeContext,
@@ -58,7 +59,7 @@ export function EdificeThemeProvider({
 
   return (
     <EdificeThemeContext.Provider value={values}>
-      {children}
+      <AntdProvider>{children}</AntdProvider>
     </EdificeThemeContext.Provider>
   );
 }
