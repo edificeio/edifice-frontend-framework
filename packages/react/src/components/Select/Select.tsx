@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import SelectTrigger from './SelectTrigger';
 import Dropdown, { DropdownProps } from '../Dropdown/Dropdown';
 import { DropdownTriggerProps } from '../Dropdown/DropdownTrigger';
+import SelectTrigger from './SelectTrigger';
 
 export interface OptionsType {
   /**
@@ -75,7 +75,9 @@ const Select = ({
     <Dropdown overflow={overflow} block={block}>
       <SelectTrigger
         icon={iconChange || icon}
-        label={t(label || placeholderOption)}
+        label={
+          <span className="text-truncate">{t(label || placeholderOption)}</span>
+        }
         variant={variant}
         size={size}
         disabled={disabled}
