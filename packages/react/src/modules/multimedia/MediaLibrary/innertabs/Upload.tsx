@@ -66,7 +66,7 @@ export const Upload = () => {
   return (
     <div className="flex-grow-1">
       <Alert type="info" className="flex-shrink-0 mb-16">
-        {t('bbm.image.modal.alert')}
+        {t('bbm.upload.alert')}
       </Alert>
       <Dropzone multiple={multiple} accept={acceptedTypes(type ?? 'embedder')}>
         <UploadFiles
