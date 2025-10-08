@@ -4,6 +4,8 @@ import { Dropzone } from '../../../../components/Dropzone';
 import { UploadFiles } from '../../UploadFiles';
 import { MediaLibraryType } from '../MediaLibrary';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
+import { useTranslation } from 'react-i18next';
+import { Alert } from '../../../../components/Alert';
 
 /**
  * Get acceptable file (MIME-)types or extensions, for a MediaLibraryType.
@@ -36,6 +38,8 @@ const acceptedTypes = (type: MediaLibraryType) => {
 };
 
 export const Upload = () => {
+  const { t } = useTranslation();
+
   const {
     type,
     visibility,
@@ -60,7 +64,10 @@ export const Upload = () => {
   };
 
   return (
-    <div className="py-8 flex-grow-1">
+    <div className="flex-grow-1">
+      <Alert type="info" className="flex-shrink-0 mb-16">
+        {t('bbm.image.modal.alert')}
+      </Alert>
       <Dropzone multiple={multiple} accept={acceptedTypes(type ?? 'embedder')}>
         <UploadFiles
           onFilesChange={handleOnFilesChange}
