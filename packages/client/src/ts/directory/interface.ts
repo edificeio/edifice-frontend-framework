@@ -23,6 +23,7 @@ export interface Group {
 export interface Bookmark {
   id: string;
   displayName: string;
+  notVisibleCount: number;
 }
 
 export interface BookmarkWithMembers extends Bookmark {
@@ -44,6 +45,7 @@ export interface BookmarkSaveResponse {
 export interface BookmarkGetResponse {
   id: string;
   name: string;
+  notVisibleCount: number;
   groups: Array<{
     id: string;
     name: string;
