@@ -44,13 +44,14 @@ export class DirectoryService {
   }
 
   async getBookMarkById(idBookmark: string): Promise<BookmarkWithDetails> {
-    const { groups, id, name, users } =
+    const { groups, id, name, users, notVisibleCount } =
       await this.http.get<BookmarkGetResponse>(
         `/directory/sharebookmark/${idBookmark}`,
       );
     return {
       id,
       displayName: name,
+      notVisibleCount,
       groups: groups.map(({ name, id, nbUsers }) => {
         return {
           nbUsers,
