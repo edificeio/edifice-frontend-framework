@@ -25,7 +25,11 @@ export interface SelectProps
   extends Omit<DropdownProps, 'children'>,
     Omit<DropdownTriggerProps, 'badgeContent'> {
   /**
-   * Default select label
+   * Controlled value
+   */
+  selectedValue?: OptionsType | string;
+  /**
+   * Default select label if no selected value (uncontrolled)
    */
   placeholderOption: string;
   /**
@@ -44,6 +48,7 @@ export interface SelectProps
  */
 
 const Select = ({
+  selectedValue,
   icon,
   options,
   overflow,
@@ -57,6 +62,13 @@ const Select = ({
   const [localValue, setLocalValue] = useState<OptionsType | string>();
 
   const { t } = useTranslation();
+
+  // Sync localValue with selectedValue prop if controlled
+  useEffect(() => {
+    if (selectedValue !== undefined) {
+      setLocalValue(selectedValue);
+    }
+  }, [selectedValue]);
 
   useEffect(() => {
     if (localValue) {
