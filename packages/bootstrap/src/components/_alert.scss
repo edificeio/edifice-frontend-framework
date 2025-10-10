@@ -90,6 +90,8 @@
   }
 
   &.is-dismissible {
+    padding-right: $spacer-32;
+
     .btn-close {
       position: absolute;
       right: $spacer-12;
