@@ -1,3 +1,6 @@
+export interface Comment {
+  _id: string;
+}
 export interface WorkspaceElement {
   _id?: string;
   eType: 'folder' | 'file' | string;
