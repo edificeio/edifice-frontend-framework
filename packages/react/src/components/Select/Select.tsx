@@ -23,7 +23,7 @@ export interface OptionsType {
 
 export interface SelectProps
   extends Omit<DropdownProps, 'children'>,
-    Omit<DropdownTriggerProps, 'badgeContent'> {
+    Omit<DropdownTriggerProps, 'badgeContent' | 'defaultValue'> {
   /**
    * Default select label
    */
@@ -36,6 +36,10 @@ export interface SelectProps
    * Callback to get value
    */
   onValueChange?: (option: OptionsType | string) => void;
+  /**
+   * Default value
+   */
+  defaultValue?: string;
 }
 
 /**
@@ -53,6 +57,7 @@ const Select = ({
   disabled,
   placeholderOption,
   onValueChange,
+  defaultValue,
 }: SelectProps) => {
   const [localValue, setLocalValue] = useState<OptionsType | string>();
 
@@ -66,6 +71,19 @@ const Select = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue]);
+
+  useEffect(() => {
+    if (defaultValue) {
+      options.some((option) => {
+        const value = typeof option === 'object' ? option.value : option;
+        if (value === defaultValue) {
+          setLocalValue(option);
+          return true;
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const label = typeof localValue === 'object' ? localValue.label : localValue;
   const iconChange =
