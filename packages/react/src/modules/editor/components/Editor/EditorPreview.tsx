@@ -102,7 +102,6 @@ const EditorPreview = ({
             className={clsx('position-relative col-12 col-md-4 ', {
               'd-none d-md-block': index >= 1,
             })}
-            style={{ maxHeight: '150px' }}
             key={media.url}
           >
             <Image
