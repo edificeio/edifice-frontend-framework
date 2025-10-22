@@ -74,13 +74,13 @@ const Select = ({
 
   useEffect(() => {
     if (defaultValue) {
-      options.some((option) => {
+      const foundOption = options.find((option) => {
         const value = typeof option === 'object' ? option.value : option;
-        if (value === defaultValue) {
-          setLocalValue(option);
-          return true;
-        }
+        return value === defaultValue;
       });
+      if (foundOption !== undefined) {
+        setLocalValue(foundOption);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
