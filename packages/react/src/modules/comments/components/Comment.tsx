@@ -143,7 +143,9 @@ export const Comment = ({
                 </>
               ) : (
                 <>
-                  <div className="mt-8 mb-4">{content}</div>
+                  <div className="mt-8 mb-4" style={{ whiteSpace: 'pre-line' }}>
+                    {content}
+                  </div>
                   {type === 'edit' && (
                     <div className="ms-n8">
                       {!replyTo && (
