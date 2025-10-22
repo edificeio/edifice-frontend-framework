@@ -94,6 +94,23 @@ export const WithIcon: Story = {
   },
 };
 
+export const DefaultValue: Story = {
+  render: (args) => {
+    const onChange = (option: OptionsType | string) => {
+      console.log(option);
+    };
+
+    return (
+      <Select
+        onValueChange={onChange}
+        options={subjectAreaOptions}
+        placeholderOption={subjectAreaOptions[0].label}
+        defaultValue={subjectAreaOptions[3].value}
+      />
+    );
+  },
+};
+
 export const Disabled: Story = {
   render: (args) => {
     const onChange = (option: OptionsType | string) => {
