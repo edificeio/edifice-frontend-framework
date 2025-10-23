@@ -32,6 +32,7 @@ export * from './Modal';
 export * from './Popover';
 export * from './PreventPropagation';
 export * from './Radio';
+export * from './RadioCard';
 export * from './SearchBar';
 export * from './Select';
 export * from './Skeleton';
