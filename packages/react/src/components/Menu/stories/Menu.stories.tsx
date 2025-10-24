@@ -139,3 +139,40 @@ export const CustomMenuElement: Story = {
     );
   },
 };
+
+const data2 = [
+  {
+    id: '1',
+    children: 'Node 1 with big size and truncate at the seconde line',
+    onClick: () => console.log('node 1'),
+    leftIcon: <IconAlertCircle />,
+  },
+  {
+    id: '2',
+    children: 'Node 2 with big size and truncate at the seconde line',
+    onClick: () => console.log('node 2'),
+    leftIcon: <IconCalendar />,
+  },
+];
+
+export const LargeButton: Story = {
+  render: (args) => {
+    return (
+      <div style={{ width: '20rem' }}>
+        <Menu {...args}>
+          {data2.map((item) => (
+            <Menu.Item key={item.id}>
+              <Menu.Button
+                size="lg"
+                leftIcon={item.leftIcon}
+                onClick={item.onClick}
+              >
+                {item.children}
+              </Menu.Button>
+            </Menu.Item>
+          ))}
+        </Menu>
+      </div>
+    );
+  },
+};
