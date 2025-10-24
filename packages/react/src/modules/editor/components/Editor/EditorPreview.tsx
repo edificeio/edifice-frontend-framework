@@ -88,7 +88,12 @@ const EditorPreview = ({
       tabIndex={onDetailClick ? -1 : undefined}
       role={onDetailClick ? 'button' : undefined}
     >
-      <div className="flex-fill text-truncate text-truncate-2 post-preview-content overflow-hidden">
+      <div
+        className="flex-fill text-truncate text-truncate-2 post-preview-content overflow-hidden"
+        style={{
+          overflowWrap: 'anywhere',
+        }}
+      >
         {summaryContent}
       </div>
       <div
