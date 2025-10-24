@@ -22,6 +22,18 @@
         --edifice-btn-hover-bg: var(--edifice-secondary-200);
       }
     }
+
+    &.menu-button-lg {
+      height: auto;
+
+      svg {
+        width: inherit;
+        min-width: 2.4rem;
+        height: inherit;
+        min-height: 2.4rem;
+        margin: 0.8rem;
+      }
+    }
   }
 
   [data-menubar-list]:focus,
