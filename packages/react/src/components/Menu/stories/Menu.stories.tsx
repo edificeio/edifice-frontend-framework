@@ -143,13 +143,13 @@ export const CustomMenuElement: Story = {
 const data2 = [
   {
     id: '1',
-    children: 'Node 1 with big size and truncate at the seconde line',
+    children: 'Node 1 with big size and truncate at the second line',
     onClick: () => console.log('node 1'),
     leftIcon: <IconAlertCircle />,
   },
   {
     id: '2',
-    children: 'Node 2 with big size and truncate at the seconde line',
+    children: 'Node 2 with big size and truncate at the second line',
     onClick: () => console.log('node 2'),
     leftIcon: <IconCalendar />,
   },
