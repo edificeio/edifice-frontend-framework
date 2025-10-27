@@ -149,7 +149,7 @@ const data2 = [
   },
   {
     id: '2',
-    children: 'Node 2 with big size and truncate at the second line',
+    children: 'Node 2',
     onClick: () => console.log('node 2'),
     leftIcon: <IconCalendar />,
   },

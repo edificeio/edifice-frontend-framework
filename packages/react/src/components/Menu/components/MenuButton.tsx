@@ -33,6 +33,7 @@ export const MenuButton = (props: Partial<MenuButtonProps>) => {
       rightIcon={rightIcon}
       onClick={onClick}
       {...childProps}
+      style={size === 'lg' ? { height: 'auto' } : undefined}
     >
       <span
         className={clsx('text-truncate', {
