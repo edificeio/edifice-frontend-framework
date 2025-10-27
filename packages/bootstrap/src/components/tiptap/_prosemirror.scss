@@ -1,22 +1,26 @@
-@use "../../abstracts/" as *;
+@use '../../abstracts/' as *;
 
 // The CSS selector defined here must override other rules, whatever the theme.
 // Hence the following [data-product] is required.
 [data-product] .ProseMirror {
-    &-focused {
-        outline: none;
-    }
+  &-focused {
+    outline: none;
+  }
 
-    .mark,
-    mark {
-        padding-inline: 0;
-    }
+  .mark,
+  mark {
+    padding-inline: 0;
+  }
 
-    /* Headers should use inherited font family and text transformation.*/
-    :where(h1, h2, h3, .h1, .h2, .h3) {
-        font-family: inherit;
-        font-weight: 700;
-        text-transform: inherit;
-        color: var(--#{$prefix}secondary);
-    }
+  /* Headers should use inherited font family and text transformation.*/
+  :where(h1, h2, h3, .h1, .h2, .h3) {
+    font-family: inherit;
+    font-weight: 700;
+    text-transform: inherit;
+    color: var(--#{$prefix}secondary);
+  }
+
+  p {
+    overflow-wrap: anywhere;
+  }
 }
