@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Utils/ReactQuery/InvalidateQueriesWithFirstPage" />
+
+# InvalidateQueriesWithFirstPage
+
+Invalidates queries and resets infinite query data to only contain the first page.
+
+This utility function is useful when you want to invalidate a query but also ensure
+that any infinite query data is reset to show only the first page, removing any
+previously loaded subsequent pages.
+
+## Parameters
+
+- `queryClient` - The TanStack Query client instance used to manage queries
+- `options` - The invalidate query filters that specify which queries to invalidate
+
+## Returns
+
+- The result of the invalidateQueries operation, or undefined if no queryKey is provided
+
+## Usage
+
+```typescript
+// Invalidate user queries and reset to first page only
+invalidateQueriesWithFirstPage(queryClient, {
+  queryKey: ['users'],
+});
+```
