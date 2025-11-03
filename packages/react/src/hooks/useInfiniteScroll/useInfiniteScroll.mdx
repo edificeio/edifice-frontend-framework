@@ -1,0 +1,43 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Hooks/useInfiniteScroll" />
+
+# useInfiniteScroll
+
+The `useInfiniteScroll` hook provides infinite scrolling functionality by detecting when a user scrolls near the bottom of a container and triggering a callback to load more content.
+
+## Usage
+
+```tsx
+import { useInfiniteScroll } from './useInfiniteScroll';
+
+const MyComponent = () => {
+  const [items, setItems] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const loadMore = () => {
+    // Function to fetch more items
+  };
+
+  const loadNextRef = useInfiniteScroll({ callback: loadMore });
+
+  return (
+    <div>
+      {items.map((item) => (
+        <div key={item.id}>{item.content}</div>
+      ))}
+      {hasMore && <div ref={loadNextRef}>Loading more...</div>}
+    </div>
+  );
+};
+```
+
+## Parameters
+
+- `callback` (function): The function to call when more items need to be loaded
+- `options` (object, optional):
+- `threshold` (number): 0.5 Trigger the callback when 50% of element is visible
+
+## Returns
+
+- `ref` (RefObject): A React ref to attach to the last element of the list if there is more
