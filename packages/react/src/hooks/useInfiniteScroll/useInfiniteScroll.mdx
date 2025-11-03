@@ -19,7 +19,7 @@ const MyComponent = () => {
     // Function to fetch more items
   };
 
-  const loadNextRef = useInfiniteScroll(loadMore);
+  const loadNextRef = useInfiniteScroll({ callback: loadMore });
 
   return (
     <div>
