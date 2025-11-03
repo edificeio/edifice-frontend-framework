@@ -48,12 +48,12 @@ export default function useInfiniteScroll({
 
       if (!node) return;
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(async (entry) => {
+      const observer = new IntersectionObserver(async (entries) => {
+        for (const entry of entries) {
           if (entry.isIntersecting) {
             await callback();
           }
-        });
+        }
       }, options);
 
       observer.observe(node);
