@@ -26,7 +26,7 @@ const MyComponent = () => {
       {items.map((item) => (
         <div key={item.id}>{item.content}</div>
       ))}
-      {hasMore && <div ref="loadNextRef">Loading more...</div>}
+      {hasMore && <div ref={loadNextRef}>Loading more...</div>}
     </div>
   );
 };
