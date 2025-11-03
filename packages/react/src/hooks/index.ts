@@ -15,6 +15,7 @@ export * from './useHasWorkflow';
 export * from './useHover';
 export * from './useHttpErrorToast';
 export * from './useImage';
+export * from './useInfiniteScroll';
 export * from './useIsAdml';
 export * from './useIsAdmc';
 export * from './useIsAdmlcOrAdmc';
