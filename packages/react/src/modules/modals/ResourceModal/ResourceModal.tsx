@@ -337,6 +337,7 @@ export const ResourceModal = ({
                   size="md"
                   aria-required={true}
                   maxLength={inputMaxLength}
+                  showCounter
                 />
               </FormControl>
               <FormControl id="description" isOptional>
@@ -353,13 +354,8 @@ export const ResourceModal = ({
                   }
                   size="md"
                   maxLength={textareaMaxLength}
+                  showCounter
                 />
-                {watchedDescription && (
-                  <TextareaCounter
-                    content={watchedDescription}
-                    maxLength={textareaMaxLength}
-                  />
-                )}
               </FormControl>
             </div>
           </div>
