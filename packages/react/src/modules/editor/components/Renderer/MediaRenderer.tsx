@@ -129,7 +129,6 @@ const MediaRenderer = (props: MediaResizeProps) => {
                       width={width}
                       height={height}
                       allowFullScreen={node.attrs.allowfullscreen ?? true}
-                      style={node.attrs.style}
                     />
                   </>
                 );
