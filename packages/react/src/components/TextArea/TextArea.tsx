@@ -97,8 +97,8 @@ const TextArea = forwardRef(
           placeholder={placeholder}
           required={isRequired}
           readOnly={isReadOnly}
-          onChange={handleChange}
           {...restProps}
+          onChange={handleChange}
         />
         {showCounter && !status && (
           <span
