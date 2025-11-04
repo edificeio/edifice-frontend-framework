@@ -24,7 +24,6 @@ import {
   Modal,
   TextArea,
 } from '../../../components';
-import { TextareaCounter } from '../../../components/TextArea/TextareaCounter';
 import { useMediaLibrary, useToast } from '../../../hooks';
 import { useResource } from '../../../hooks/useResource';
 import { useEdificeClient } from '../../../providers';
@@ -193,8 +192,6 @@ export const ResourceModal = ({
     isUpdating,
     selectedResource: isUpdating ? resource : undefined,
   });
-
-  const watchedDescription = watch('description');
 
   const onSubmit: SubmitHandler<FormInputs> = async function (
     formData: FormInputs,
