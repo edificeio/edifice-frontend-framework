@@ -313,3 +313,23 @@ export const MaxCount: Story = {
     maxLength: 50,
   },
 };
+
+export const CharacterCount: Story = {
+  render: Template,
+
+  args: {
+    size: 'md',
+    placeholder: 'Enter text',
+    showCounter: true,
+    maxLength: 100,
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The TextArea component can display a character count when `showCounter` is enabled. Use `maxLength` to set the maximum number of characters allowed.',
+      },
+    },
+  },
+};
