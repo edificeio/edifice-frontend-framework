@@ -19,12 +19,12 @@ const meta: Meta<typeof ButtonAnt> = {
     variant: {
       control: { type: 'select' },
       options: ['filled', 'ghost', 'outline'],
-      description: 'Couleur du bouton',
+      description: 'Variante du bouton',
     },
     color: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'danger', 'tertiary'],
-      description: 'Variante du bouton',
+      description: 'Couleur du bouton',
     },
     size: {
       control: { type: 'select' },
