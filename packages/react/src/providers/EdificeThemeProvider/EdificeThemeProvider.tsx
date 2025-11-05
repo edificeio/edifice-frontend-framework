@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import { useConf } from '../../hooks/useConf';
-import AntdProvider from '../AntdProvider';
+import AntdProvider from '../AntThemeProvider/AntdProvider';
 import { useEdificeClient } from '../EdificeClientProvider/EdificeClientProvider.hook';
 import {
   EdificeThemeContext,

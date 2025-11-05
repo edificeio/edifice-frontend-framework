@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import React from 'react';
 import { ButtonColors, ButtonSizes, ButtonVariants } from '../Button/Button';
 
-export interface ButtonV3Props {
+export interface ButtonAntProps {
   /**
    * Taille du bouton
    */
@@ -64,19 +64,19 @@ export interface ButtonV3Props {
 }
 
 /**
- * Composant ButtonV3 basé sur Ant Design
+ * Composant ButtonAnt basé sur Ant Design
  *
  * Ce composant remplace progressivement les boutons Bootstrap
  * en utilisant Ant Design avec le thème personnalisé d'Edifice.
  *
  * @example
  * ```tsx
- * <ButtonV3 variant="primary" size="large">
+ * <ButtonAnt variant="primary" size="large">
  *   Cliquer ici
- * </ButtonV3>
+ * </ButtonAnt>
  * ```
  */
-export const ButtonV3: React.FC<ButtonV3Props> = ({
+export const ButtonAnt: React.FC<ButtonAntProps> = ({
   size = 'medium',
   variant = 'filled',
   color = 'primary',
@@ -204,4 +204,4 @@ export const ButtonV3: React.FC<ButtonV3Props> = ({
   );
 };
 
-export default ButtonV3;
+export default ButtonAnt;

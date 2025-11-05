@@ -1,6 +1,7 @@
-import React from 'react';
 import { ConfigProvider } from 'antd';
-import { antdTheme } from '../theme/antd-theme';
+import React from 'react';
+import './antThemeOverride.css';
+import antdTheme from './antd-theme';
 
 interface AntdProviderProps {
   children: React.ReactNode;

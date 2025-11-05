@@ -1,58 +1,50 @@
+import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import type { Meta, StoryObj } from '@storybook/react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { ButtonV2 } from './index';
-import theme from '../../theme';
+import { AntdProvider } from '../../providers/AntThemeProvider/AntdProvider';
+import { ButtonAnt } from './ButtonAnt';
 
-const meta: Meta<typeof ButtonV2> = {
-  title: 'Components/Button-chakra',
-  component: ButtonV2,
+const meta: Meta<typeof ButtonAnt> = {
+  title: 'Components/Button-Ant',
+  component: ButtonAnt,
   parameters: {
     layout: 'centered',
     docs: {
       description: {
         component:
-          'Nouveau composant bouton utilisant Chakra UI. Remplace progressivement le composant Button basé sur Bootstrap.',
+          'Nouveau composant bouton utilisant Ant Design. Remplace progressivement le composant Button basé sur Bootstrap.',
       },
     },
   },
   decorators: [
     (Story) => (
-      <ChakraProvider value={theme}>
+      <AntdProvider>
         <Story />
-      </ChakraProvider>
+      </AntdProvider>
     ),
   ],
   argTypes: {
-    color: {
-      control: { type: 'select' },
-      options: [
-        'primary',
-        'secondary',
-        'tertiary',
-        'danger',
-        'success',
-        'warning',
-        'info',
-      ],
-      description: 'Couleur du bouton',
-    },
     variant: {
       control: { type: 'select' },
-      options: ['solid', 'outline', 'ghost'],
-      description: 'Style du bouton',
+      options: ['filled', 'ghost', 'outline'],
+      description: 'Couleur du bouton',
+    },
+    color: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'danger', 'tertiary'],
+      description: 'Variante du bouton',
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg'],
+      options: ['small', 'medium', 'large'],
       description: 'Taille du bouton',
-    },
-    isLoading: {
-      control: { type: 'boolean' },
-      description: 'État de chargement',
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'État désactivé',
+    },
+    loading: {
+      control: { type: 'boolean' },
+      description: 'État de chargement',
     },
     children: {
       control: { type: 'text' },
@@ -63,12 +55,12 @@ const meta: Meta<typeof ButtonV2> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof ButtonV2>;
+type Story = StoryObj<typeof ButtonAnt>;
 
 export const Base: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Label',
     disabled: false,
   },
@@ -77,7 +69,7 @@ export const Base: Story = {
 export const Disabled: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Label',
     disabled: true,
   },
@@ -94,7 +86,7 @@ export const Disabled: Story = {
 export const Danger: Story = {
   args: {
     color: 'danger',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Label',
     disabled: false,
   },
@@ -112,40 +104,40 @@ export const Danger: Story = {
 export const WithIconLeft: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'New user',
     disabled: false,
-    leftIcon: '→',
+    startIcon: <PlusOutlined />,
   },
 };
 
 export const WithIconRight: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Close',
     disabled: false,
-    rightIcon: '×',
+    endIcon: <SearchOutlined />,
   },
 };
 
 export const WithBothIcon: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Button',
     disabled: false,
-    leftIcon: '←',
-    rightIcon: '→',
+    startIcon: <PlusOutlined />,
+    endIcon: <SearchOutlined />,
   },
 };
 
 export const LoadingButtonWithText: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Loading...',
-    isLoading: true,
+    loading: true,
   },
 
   parameters: {
@@ -161,10 +153,9 @@ export const LoadingButtonWithText: Story = {
 export const LoadingButtonRightWithText: Story = {
   args: {
     color: 'primary',
-    variant: 'solid',
+    variant: 'filled',
     children: 'Loading...',
-    isLoading: true,
-    loadingPosition: 'right',
+    loading: true,
   },
 
   parameters: {
@@ -181,12 +172,12 @@ export const ButtonGroupWithSecondaryAction: Story = {
   render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
-        <ButtonV2 {...args} color="secondary" variant="outline">
+        <ButtonAnt {...args} color="secondary">
           Cancel
-        </ButtonV2>
-        <ButtonV2 {...args} color="secondary" variant="solid">
+        </ButtonAnt>
+        <ButtonAnt {...args} color="primary">
           Save
-        </ButtonV2>
+        </ButtonAnt>
       </div>
     );
   },
@@ -205,33 +196,32 @@ export const ButtonGroupWithThirdAction: Story = {
   render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
-        <ButtonV2
+        <ButtonAnt
           {...args}
-          color="primary"
+          color="danger"
           variant="ghost"
-          leftIcon="←"
-          rightIcon="→"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
         >
           Button
-        </ButtonV2>
-        <ButtonV2
+        </ButtonAnt>
+        <ButtonAnt
           {...args}
-          color="primary"
+          variant="filled"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
+        >
+          Button
+        </ButtonAnt>
+        <ButtonAnt
+          {...args}
+          color="secondary"
           variant="outline"
-          leftIcon="←"
-          rightIcon="→"
+          startIcon={<PlusOutlined />}
+          endIcon={<SearchOutlined />}
         >
           Button
-        </ButtonV2>
-        <ButtonV2
-          {...args}
-          color="primary"
-          variant="solid"
-          leftIcon="←"
-          rightIcon="→"
-        >
-          Button
-        </ButtonV2>
+        </ButtonAnt>
       </div>
     );
   },
@@ -251,19 +241,17 @@ export const ComparisonWithBaseButton: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
       <div>
-        <h4>ButtonV2 (Chakra UI)</h4>
+        <h4>ButtonAnt (Ant Design)</h4>
         <div
           style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
         >
-          <ButtonV2 color="primary" variant="solid">
-            Primary
-          </ButtonV2>
-          <ButtonV2 color="secondary" variant="outline">
-            Secondary Outline
-          </ButtonV2>
-          <ButtonV2 color="danger" variant="ghost">
-            Danger Ghost
-          </ButtonV2>
+          <ButtonAnt color="primary">Primary</ButtonAnt>
+          <ButtonAnt variant="outline" color="primary">
+            Secondary
+          </ButtonAnt>
+          <ButtonAnt variant="ghost" color="danger">
+            Ghost
+          </ButtonAnt>
         </div>
       </div>
       <div>
@@ -283,7 +271,8 @@ export const ComparisonWithBaseButton: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Comparaison entre ButtonV2 (Chakra UI) et Button (Bootstrap).',
+        story:
+          'Comparaison entre ButtonAnt (Ant Design) et Button (Bootstrap).',
       },
     },
   },
