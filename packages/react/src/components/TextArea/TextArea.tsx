@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { Size } from '../../types';
 import { useFormControl } from '../Form/FormContext';
+import Textcounter from '../TextCounter/TextCounter';
 
 export type OmitTextAreaProps =
   | 'disabled'
@@ -56,7 +57,7 @@ const TextArea = forwardRef(
       size = 'md',
       height = 'md',
       className,
-      showCounter,
+      showCounter = false,
       ...restProps
     }: TextAreaProps,
     ref: Ref<HTMLTextAreaElement>,
@@ -64,7 +65,7 @@ const TextArea = forwardRef(
     const { id, isRequired, isReadOnly, status } = useFormControl();
 
     const [currentLength, setCurrentLength] = useState(
-      restProps.value?.toString().length || 0,
+      restProps.defaultValue?.toString().length || 0,
     );
 
     const classes = clsx(
@@ -82,7 +83,7 @@ const TextArea = forwardRef(
       },
       className,
     );
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setCurrentLength(e.target.value.length);
       restProps.onChange?.(e);
@@ -101,14 +102,10 @@ const TextArea = forwardRef(
           onChange={handleChange}
         />
         {showCounter && !status && (
-          <span
-            className={clsx('caption text-end float-end mt-n32 py-2 px-12 ', {
-              'text-danger': currentLength === restProps.maxLength,
-              'text-gray-700': currentLength !== restProps.maxLength,
-            })}
-          >
-            {currentLength} / {restProps.maxLength}
-          </span>
+          <Textcounter
+            currentLength={currentLength}
+            maxLength={restProps.maxLength ?? 0}
+          />
         )}
       </>
     );
