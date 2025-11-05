@@ -19,7 +19,7 @@ const FileIcon = ({
     type !== 'unknown' &&
     roleMap?.hasShadow !== false;
   const fileicon = clsx(
-    'position-absolute top-50 start-50 translate-middle',
+    'position-absolute rounded-circle top-50 start-50 translate-middle',
     {
       'p-12 rounded-circle shadow': hasShadow,
     },
