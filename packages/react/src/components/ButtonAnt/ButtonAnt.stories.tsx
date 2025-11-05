@@ -24,7 +24,8 @@ const meta: Meta<typeof ButtonAnt> = {
     color: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'danger', 'tertiary'],
-      description: 'Couleur du bouton',
+      description:
+        'Couleur du bouton (définit la signification sémantique: primary/secondary/danger/tertiary)',
     },
     size: {
       control: { type: 'select' },
