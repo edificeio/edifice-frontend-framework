@@ -1,10 +1,9 @@
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
 import type { Meta, StoryObj } from '@storybook/react';
-import { AntdProvider } from '../../providers/AntThemeProvider/AntdProvider';
 import { ButtonAnt } from './ButtonAnt';
 
 const meta: Meta<typeof ButtonAnt> = {
-  title: 'Components/Button-Ant',
+  title: 'Components/ButtonAnt',
   component: ButtonAnt,
   parameters: {
     layout: 'centered',
@@ -15,13 +14,7 @@ const meta: Meta<typeof ButtonAnt> = {
       },
     },
   },
-  decorators: [
-    (Story) => (
-      <AntdProvider>
-        <Story />
-      </AntdProvider>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
   argTypes: {
     variant: {
       control: { type: 'select' },
