@@ -71,7 +71,7 @@ export interface ButtonAntProps {
  *
  * @example
  * ```tsx
- * <ButtonAnt variant="primary" size="large">
+ * <ButtonAnt color="primary" variant="filled" size="large">
  *   Cliquer ici
  * </ButtonAnt>
  * ```
