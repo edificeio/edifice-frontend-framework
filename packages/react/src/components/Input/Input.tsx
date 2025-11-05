@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 import { Size } from '../../types';
 import { useFormControl } from '../Form/FormContext';
+import Textcounter from '../TextCounter/TextCounter';
 
 export type OmitInputProps =
   | 'disabled'
@@ -60,7 +61,7 @@ const Input = forwardRef(
       size = 'md',
       type = 'text',
       className,
-      showCounter,
+      showCounter = false,
       autoComplete = 'off',
       ...restProps
     }: InputProps,
@@ -68,7 +69,7 @@ const Input = forwardRef(
   ) => {
     const { id, isRequired, isReadOnly, status } = useFormControl();
     const [currentLength, setCurrentLength] = useState(
-      restProps.value?.toString().length || 0,
+      restProps.defaultValue?.toString().length || 0,
     );
 
     const classes = clsx(
@@ -105,14 +106,10 @@ const Input = forwardRef(
           autoComplete={autoComplete}
         />
         {showCounter && !status && (
-          <span
-            className={clsx('caption text-end float-end mt-n32 py-2 px-12 ', {
-              'text-danger': currentLength === restProps.maxLength,
-              'text-gray-700': currentLength !== restProps.maxLength,
-            })}
-          >
-            {currentLength} / {restProps.maxLength}
-          </span>
+          <Textcounter
+            currentLength={currentLength}
+            maxLength={restProps.maxLength ?? 0}
+          />
         )}
       </>
     );
