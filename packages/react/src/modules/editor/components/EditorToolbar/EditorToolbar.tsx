@@ -6,6 +6,7 @@ import {
   CantooEditor,
   useActionOptions,
   useEditorContext,
+  useEditorState,
   useSpeechRecognition,
 } from '../..';
 import { IconButtonProps, Toolbar, ToolbarItem } from '../../../../components';
@@ -55,6 +56,7 @@ export const EditorToolbar = ({
 }: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
+  const editorState = useEditorState(editor);
 
   const [plusOptions, listOptions, alignmentOptions] = useActionOptions(
     editor,
@@ -439,6 +441,7 @@ export const EditorToolbar = ({
     alignmentOptions,
     canRecognizeSpeech,
     editor,
+    editorState,
     listOptions,
     mediaLibraryRef,
     plusOptions,
