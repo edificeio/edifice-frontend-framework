@@ -7,6 +7,7 @@ import {
   type ShareRightAction,
   type ShareRightActionDisplayName,
   type ShareRightWithVisibles,
+  type ShareUrls,
 } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
@@ -30,6 +31,10 @@ interface UseShareResourceModalProps {
   shareResource?: ShareResourceMutation;
   onSuccess: () => void;
   setIsLoading: (value: boolean) => void;
+  resourceShareRights?: ShareRightWithVisibles;
+  resourceShareRightActions?: ShareRightAction[];
+  filteredActions?: ShareRightActionDisplayName[];
+  urls?: ShareUrls;
 }
 
 type State = {
@@ -80,6 +85,10 @@ export default function useShare({
   shareResource,
   setIsLoading,
   onSuccess,
+  resourceShareRights,
+  resourceShareRightActions,
+  filteredActions,
+  urls,
 }: UseShareResourceModalProps) {
   const { appCode } = useEdificeClient();
   const { user, avatar } = useUser();
@@ -92,27 +101,48 @@ export default function useShare({
   useEffect(() => {
     if (!resourceId) return;
 
-    (async () => {
-      try {
-        const [shareRightActions, shareRights] = await Promise.all([
-          odeServices.share().getActionsForApp(appCode),
-          odeServices.share().getRightsForResource(appCode, resourceId),
-        ]);
+    if (resourceShareRights && resourceShareRightActions) {
+      dispatch({
+        type: 'init',
+        payload: {
+          shareRightActions: resourceShareRightActions,
+          shareRights: resourceShareRights,
+        },
+      });
+      setIsLoading(false);
+      return;
+    } else {
+      (async () => {
+        try {
+          const [shareRightActions, shareRights] = await Promise.all([
+            odeServices
+              .share()
+              .getActionsForApp(appCode, urls?.getShareMapping),
+            odeServices.share().getRightsForResource(appCode, resourceId, urls),
+          ]);
 
-        dispatch({
-          type: 'init',
-          payload: {
-            shareRightActions,
-            shareRights,
-          },
-        });
-      } catch (error) {
-        console.error(error);
-      }
-      {
-        setIsLoading(false);
-      }
-    })();
+          // filter actions if needed
+          const filteredShareRightActions = filteredActions
+            ? shareRightActions.filter((action) =>
+                filteredActions.includes(action.id),
+              )
+            : shareRightActions;
+
+          dispatch({
+            type: 'init',
+            payload: {
+              shareRightActions: filteredShareRightActions,
+              shareRights,
+            },
+          });
+        } catch (error) {
+          console.error(error);
+        }
+        {
+          setIsLoading(false);
+        }
+      })();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resourceId]);
 
@@ -257,8 +287,11 @@ export default function useShare({
       } else {
         const result = await odeServices
           .share()
-          .saveRights(appCode, resourceId, shares);
+          .saveRights(appCode, resourceId, shares, urls);
         notifySuccess(result);
+      }
+      if (urls?.getResourceRights) {
+        odeServices.cache().clearCache(urls.getResourceRights);
       }
       onSuccess();
     } catch (error) {

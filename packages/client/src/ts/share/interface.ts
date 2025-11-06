@@ -1,4 +1,4 @@
-import { Group, Bookmark, User } from '../directory/interface';
+import { Bookmark, Group, User } from '../directory/interface';
 
 export interface ShareRight {
   id: string;
@@ -124,3 +124,9 @@ export interface ShareRightWithVisibles {
   visibleGroups: Group[];
   visibleBookmarks: Bookmark[];
 }
+
+export type ShareUrls = {
+  getResourceRights?: string;
+  saveResourceRights?: string;
+  getShareMapping?: string;
+};

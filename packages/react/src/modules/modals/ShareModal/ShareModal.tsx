@@ -5,12 +5,17 @@ import {
   PutShareResponse,
   RightStringified,
   ShareRight,
+  ShareRightAction,
+  ShareRightActionDisplayName,
+  ShareRightWithVisibles,
+  ShareUrls,
 } from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
+  Alert,
   Avatar,
   Button,
   Checkbox,
@@ -31,12 +36,15 @@ import { ShareBookmarkLine } from './ShareBookmarkLine';
 import { useSearch } from './hooks/useSearch';
 import useShare from './hooks/useShare';
 import { useShareBookmark } from './hooks/useShareBookmark';
-import { Alert } from '../../../components';
 
 export type ShareOptions = {
   resourceId: ID;
   resourceRights: RightStringified[];
   resourceCreatorId: string;
+  resourceShareRights?: ShareRightWithVisibles;
+  resourceShareRightActions?: ShareRightAction[];
+  filteredActions?: ShareRightActionDisplayName[];
+  urls?: ShareUrls;
 };
 
 export type ShareResourceMutation = UseMutationResult<
@@ -85,7 +93,15 @@ export default function ShareResourceModal({
   onSuccess,
   onCancel,
 }: ShareResourceModalProps) {
-  const { resourceId, resourceCreatorId, resourceRights } = shareOptions;
+  const {
+    resourceId,
+    resourceCreatorId,
+    resourceRights,
+    resourceShareRights,
+    resourceShareRightActions,
+    filteredActions,
+    urls,
+  } = shareOptions;
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -104,6 +120,10 @@ export default function ShareResourceModal({
     shareResource,
     setIsLoading,
     onSuccess,
+    resourceShareRights,
+    resourceShareRightActions,
+    filteredActions,
+    urls,
   });
 
   const {
@@ -119,6 +139,7 @@ export default function ShareResourceModal({
     resourceCreatorId,
     shareRights,
     shareDispatch,
+    urlRessourceRights: urls?.getResourceRights,
   });
 
   const {

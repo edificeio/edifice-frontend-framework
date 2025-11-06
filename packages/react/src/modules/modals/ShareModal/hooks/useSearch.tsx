@@ -74,11 +74,13 @@ export const useSearch = ({
   resourceCreatorId,
   shareRights,
   shareDispatch,
+  urlRessourceRights,
 }: {
   resourceId: ShareOptions['resourceCreatorId'];
   resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareRights: ShareRightWithVisibles;
   shareDispatch: Dispatch<ShareAction>;
+  urlRessourceRights?: string;
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -119,7 +121,12 @@ export const useSearch = ({
     ) {
       const resSearchShareSubjects = await odeServices
         .share()
-        .searchShareSubjects(appCode, resourceId, debouncedSearchInputValue);
+        .searchShareSubjects(
+          appCode,
+          resourceId,
+          debouncedSearchInputValue,
+          urlRessourceRights,
+        );
 
       dispatch({
         type: 'addApiResult',
