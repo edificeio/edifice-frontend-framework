@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { BubbleMenu, BubbleMenuProps, Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
@@ -37,7 +38,7 @@ const BubbleMenuEditImage = ({
     editor
       .chain()
       .focus()
-      .setAttributes({
+      .updateAttributes('custom-image', {
         width: buttonSize.width,
         height: buttonSize.height,
         size: buttonSize.size,
@@ -143,7 +144,7 @@ const BubbleMenuEditImage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, selectedNode]);
 
-  const tippyOptions: BubbleMenuProps['tippyOptions'] = useMemo(() => {
+  const reference = useMemo(() => {
     // Adjust a DOMRect to make it visible at a correct place.
     function adjustRect(rect: DOMRect) {
       let yOffset = 0;
@@ -156,14 +157,9 @@ const BubbleMenuEditImage = ({
       }
       return new DOMRect(rect.x, rect.y - yOffset, rect.width, rect.height);
     }
-
+    // Try to get the bounding rect of the image
     return {
-      placement: 'bottom-start',
-      offset: [0, 0],
-      zIndex: 999,
-      duration: 100,
-      // Try to get the bounding rect of the table.
-      getReferenceClientRect: () => {
+      getBoundingClientRect: () => {
         const parentDiv = editor?.isActive('custom-image')
           ? editor.state.selection.$anchor
           : null;
@@ -185,6 +181,19 @@ const BubbleMenuEditImage = ({
     };
   }, [editor]);
 
+  const floatingOptions = useMemo(() => {
+    return {
+      placement: 'bottom-start' as const,
+      middleware: [
+        {
+          name: 'offset',
+          options: { mainAxis: 0, crossAxis: 0 },
+        },
+      ],
+      strategy: 'fixed' as const,
+    };
+  }, []);
+
   return (
     <BubbleMenu
       className={openEditImage ? 'd-none' : ''}
@@ -192,7 +201,8 @@ const BubbleMenuEditImage = ({
         return editor.isActive('custom-image') && !openEditImage;
       }}
       editor={editor}
-      tippyOptions={tippyOptions}
+      options={floatingOptions}
+      getReferencedVirtualElement={() => reference}
     >
       {editable && <Toolbar className="p-8" items={ImageSizeItems} />}
     </BubbleMenu>
