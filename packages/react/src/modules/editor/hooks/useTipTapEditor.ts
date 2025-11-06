@@ -9,19 +9,13 @@ import { SpeechRecognition } from '@edifice.io/tiptap-extensions/speech-recognit
 import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis';
 import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
 import { Mathematics } from '@tiptap/extension-mathematics';
-import Color from '@tiptap/extension-color';
-import Focus from '@tiptap/extension-focus';
-import FontFamily from '@tiptap/extension-font-family';
-import Placeholder from '@tiptap/extension-placeholder';
+import { Color, TextStyleKit, FontFamily } from '@tiptap/extension-text-style';
+import { Focus, Placeholder } from '@tiptap/extensions';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
+import { Table, TableHeader, TableRow } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import { Content, Extensions, FocusPosition, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -87,8 +81,7 @@ export const useTipTapEditor = (
       CustomHighlight.configure({
         multicolor: true,
       }),
-      Underline,
-      TextStyle,
+      TextStyleKit,
       Color,
       Subscript,
       Superscript,
