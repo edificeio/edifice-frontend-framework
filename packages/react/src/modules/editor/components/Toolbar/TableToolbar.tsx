@@ -3,9 +3,8 @@ import { RefAttributes, useEffect, useMemo, useState } from 'react';
 import {
   Editor,
   findParentNodeClosestToPos,
-  FloatingMenu,
-  FloatingMenuProps,
 } from '@tiptap/react';
+import { FloatingMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
 
 import { IconButtonProps, Toolbar } from '../../../../components';
@@ -28,7 +27,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
   const [isSpan, setSpan] = useState<boolean | undefined>(undefined);
 
   // Options need some computing
-  const tippyOptions: FloatingMenuProps['tippyOptions'] = useMemo(() => {
+  const floatingOptions = useMemo(() => {
     // Adjust a DOMRect to make it visible at a correct place.
     function adjustRect(rect: DOMRect) {
       let yOffset = 0;
@@ -43,9 +42,14 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
     }
 
     return {
-      placement: 'bottom',
-      offset: [0, 0],
-      zIndex: 999,
+      placement: 'bottom' as const,
+      middleware: [
+        {
+          name: 'offset',
+          options: { mainAxis: 0, crossAxis: 0 },
+        },
+      ],
+      strategy: 'fixed' as const,
       // popperOptions: {modifiers: [ /*see popper v2 modifiers*/ ]},
       // Try to get the bounding rect of the table.
       getReferenceClientRect: () => {
@@ -98,7 +102,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
       {editor && (
         <FloatingMenu
           editor={editor}
-          tippyOptions={tippyOptions}
+          options={floatingOptions}
           shouldShow={handleShouldShow}
         >
           <Toolbar

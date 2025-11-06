@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { Editor, FloatingMenu } from '@tiptap/react';
+import { Editor } from '@tiptap/react';
+import { FloatingMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
 
 import { Toolbar, ToolbarItem } from '../../../../components/Toolbar';
@@ -9,7 +10,7 @@ import {
   IconExternalLink,
   IconUnlink,
 } from '../../../icons/components';
-import { tippyOptions } from './LinkToolbar.TippyOptions';
+import { floatingOptions } from './LinkToolbar.FloatingOptions';
 
 interface LinkToolbarProps {
   /**
@@ -99,7 +100,7 @@ const LinkToolbar = ({
       {editor && (
         <FloatingMenu
           editor={editor}
-          tippyOptions={tippyOptions}
+          options={floatingOptions}
           shouldShow={handleShouldShow}
         >
           <Toolbar className="p-4" items={LinkToolbarItems} />

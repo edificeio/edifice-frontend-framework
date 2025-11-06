@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
-import { BubbleMenu, BubbleMenuProps, Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
@@ -136,13 +137,9 @@ const BubbleMenuEditInformationPane = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t, selectedNode]);
 
-  const tippyOptions: BubbleMenuProps['tippyOptions'] = useMemo(() => {
+  const reference = useMemo(() => {
     return {
-      placement: 'bottom',
-      offset: [0, 0],
-      zIndex: 999,
-      duration: 100,
-      getReferenceClientRect: () => {
+      getBoundingClientRect: () => {
         const { state } = editor;
         const { $anchor } = state.selection;
 
@@ -156,14 +153,16 @@ const BubbleMenuEditInformationPane = ({
         }
 
         if (informationPanePos !== null) {
-          let domNode = editor.view.nodeDOM(informationPanePos);
+          let domNode = editor.view.nodeDOM(
+            informationPanePos,
+          ) as HTMLElement | null;
 
           while (
             domNode &&
             domNode instanceof HTMLElement &&
             !domNode.classList.contains('information-pane')
           ) {
-            domNode = domNode.children[0];
+            domNode = domNode.children[0] as HTMLElement | null;
           }
 
           if (domNode instanceof HTMLElement) {
@@ -176,13 +175,27 @@ const BubbleMenuEditInformationPane = ({
     };
   }, [editor]);
 
+  const floatingOptions = useMemo(() => {
+    return {
+      placement: 'bottom' as const,
+      middleware: [
+        {
+          name: 'offset',
+          options: { mainAxis: 0, crossAxis: 0 },
+        },
+      ],
+      strategy: 'fixed' as const,
+    };
+  }, []);
+
   return (
     <BubbleMenu
       shouldShow={({ editor }) => {
         return editor.isActive('information-pane');
       }}
       editor={editor}
-      tippyOptions={tippyOptions}
+      options={floatingOptions}
+      getReferencedVirtualElement={() => reference}
     >
       {editable && <Toolbar className="p-8" items={InformationPaneTypeItems} />}
     </BubbleMenu>
