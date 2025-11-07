@@ -13,7 +13,7 @@ import {
 } from '../constants';
 import { CommentContext } from '../context/Context';
 import { useComments } from '../hooks/useComments';
-import { RootProps } from '../types';
+import { CommentOptions, RootProps } from '../types';
 
 const CommentProvider = ({
   comments: defaultComments,
@@ -28,7 +28,7 @@ const CommentProvider = ({
     maxReplies: DEFAULT_MAX_REPLIES,
     additionalReplies: DEFAULT_ADD_REPLIES,
     ...commentOptions,
-  };
+  } as CommentOptions;
 
   const { type } = props;
 

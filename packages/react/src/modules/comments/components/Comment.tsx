@@ -11,9 +11,9 @@ import { CommentAvatar } from './CommentAvatar';
 import { CommentDate } from './CommentDate';
 import { CommentTitle } from './CommentTitle';
 //import { DeleteModal } from './DeleteModal';
-import { TextCounter } from './TextCounter';
 import { CommentDeleted } from './CommentDeleted';
 import { CommentReplies } from './CommentReplies';
+import { TextCounter } from './TextCounter';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 
@@ -148,7 +148,7 @@ export const Comment = ({
                   </div>
                   {type === 'edit' && (
                     <div className="ms-n8">
-                      {!replyTo && (
+                      {!replyTo && (options.maxReplyLength as number) > 0 && (
                         <Button
                           variant="ghost"
                           color="tertiary"

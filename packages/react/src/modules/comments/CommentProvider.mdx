@@ -83,6 +83,12 @@ You need to pass an event handler to the `delete` key in the `callbacks` prop to
 delete: (commentId: string) => Promise<void>;
 ```
 
+## Hide the Reply button
+
+You can hide the reply button by setting the `maxReplyLength` option to `0`.
+
+<Canvas of={commentStories.HideCommentButton} />
+
 ## Reply to a comment
 
 You can reply to a comment by clicking on the Reply button.
