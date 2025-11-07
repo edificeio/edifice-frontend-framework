@@ -13,7 +13,7 @@ export function CommentList() {
       profiles?.find((user) => user?.userId === authorId)?.profile ?? 'Guest';
 
     return (
-      <div id={`comment#${comment.id}`} key={comment.id}>
+      <div id={`comment-${comment.id}`} key={comment.id}>
         <Comment
           comment={comment}
           profile={profile}
