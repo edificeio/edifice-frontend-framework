@@ -46,9 +46,9 @@ export default function ShareResourceModal({
   onSuccess,
   onCancel,
 }: ShareResourceModalProps) {
-  const refShareRessources = useRef<ShareResourcesRef>(null);
+  const refShareResources = useRef<ShareResourcesRef>(null);
   const handleShare = () => {
-    refShareRessources.current?.handleShare();
+    refShareResources.current?.handleShare();
   };
 
   const { t } = useTranslation();
@@ -66,7 +66,7 @@ export default function ShareResourceModal({
         <ShareResources
           shareOptions={shareOptions}
           shareResource={shareResource}
-          ref={refShareRessources}
+          ref={refShareResources}
           onSuccess={onSuccess}
         />
         {children}
@@ -85,9 +85,9 @@ export default function ShareResourceModal({
           type="button"
           color="primary"
           variant="filled"
-          isLoading={refShareRessources.current?.isSharing}
+          isLoading={refShareResources.current?.isSharing}
           onClick={handleShare}
-          disabled={refShareRessources.current?.isSharing}
+          disabled={refShareResources.current?.isSharing}
         >
           {t('share')}
         </Button>

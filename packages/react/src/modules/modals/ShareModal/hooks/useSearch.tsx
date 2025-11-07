@@ -74,13 +74,13 @@ export const useSearch = ({
   resourceCreatorId,
   shareRights,
   shareDispatch,
-  urlRessourceRights,
+  urlResourceRights,
 }: {
   resourceId: ShareOptions['resourceCreatorId'];
   resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareRights: ShareRightWithVisibles;
   shareDispatch: Dispatch<ShareAction>;
-  urlRessourceRights?: string;
+  urlResourceRights?: string;
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -125,7 +125,7 @@ export const useSearch = ({
           appCode,
           resourceId,
           debouncedSearchInputValue,
-          urlRessourceRights,
+          urlResourceRights,
         );
 
       dispatch({

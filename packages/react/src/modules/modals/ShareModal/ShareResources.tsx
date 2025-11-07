@@ -128,7 +128,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       resourceCreatorId,
       shareRights,
       shareDispatch,
-      urlRessourceRights: urls?.getResourceRights,
+      urlResourceRights: urls?.getResourceRights,
     });
 
     const {
