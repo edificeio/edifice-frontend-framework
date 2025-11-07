@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useToast, useUser } from '../../../../hooks';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
-import { ShareOptions, ShareResourceMutation } from '../ShareModal';
+import { ShareOptions, ShareResourceMutation } from '../ShareResources';
 
 interface UseShareResourceModalProps {
   /**
@@ -30,7 +30,7 @@ interface UseShareResourceModalProps {
   resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareResource?: ShareResourceMutation;
   onSuccess: () => void;
-  setIsLoading: (value: boolean) => void;
+  setIsLoading?: (value: boolean) => void;
   resourceShareRights?: ShareRightWithVisibles;
   resourceShareRightActions?: ShareRightAction[];
   filteredActions?: ShareRightActionDisplayName[];
@@ -109,7 +109,7 @@ export default function useShare({
           shareRights: resourceShareRights,
         },
       });
-      setIsLoading(false);
+      setIsLoading?.(false);
       return;
     } else {
       (async () => {
@@ -139,7 +139,7 @@ export default function useShare({
           console.error(error);
         }
         {
-          setIsLoading(false);
+          setIsLoading?.(false);
         }
       })();
     }
