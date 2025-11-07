@@ -281,7 +281,6 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
             />
           )}
         </div>
-        <hr />
       </div>
     );
   },
