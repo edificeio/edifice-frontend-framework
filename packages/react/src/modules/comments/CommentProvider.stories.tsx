@@ -112,7 +112,7 @@ export const HideCommentButton: Story = {
         type="edit"
         comments={comments}
         callbacks={getCallbacks(setComments)}
-        options={{ maxReplyLength: 0 }}
+        options={{ disableReply: true }}
       />
     );
   },

@@ -83,12 +83,6 @@ You need to pass an event handler to the `delete` key in the `callbacks` prop to
 delete: (commentId: string) => Promise<void>;
 ```
 
-## Hide the Reply button
-
-You can hide the reply button by setting the `maxReplyLength` option to `0`.
-
-<Canvas of={commentStories.HideCommentButton} />
-
 ## Reply to a comment
 
 You can reply to a comment by clicking on the Reply button.
@@ -151,6 +145,7 @@ type CommentOptions = {
   additionalComments: number; // Number of comments to load additionally in the limited list
   maxReplies: number; // Limit on displaying replies to a comment
   additionalReplies: number; // Number of replies to load additionally in the limited list
+  disableReply: boolean; // Truthy when the Reply button must be hidden
 };
 ```
 
@@ -159,6 +154,12 @@ type CommentOptions = {
 Configure `maxComments` with a number to limit the list of comments displayed and change the default value of `additionalComments` to show more comments.
 
 <Canvas of={commentStories.ReadMoreComments} />
+
+### Hide the Reply button
+
+You can hide the reply button by setting the `disableReply` option to `true`.
+
+<Canvas of={commentStories.HideCommentButton} />
 
 ## Read-only comments
 

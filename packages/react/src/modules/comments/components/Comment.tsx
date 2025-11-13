@@ -148,7 +148,7 @@ export const Comment = ({
                   </div>
                   {type === 'edit' && (
                     <div className="ms-n8">
-                      {!replyTo && (options.maxReplyLength as number) > 0 && (
+                      {!(replyTo || options.disableReply) && (
                         <Button
                           variant="ghost"
                           color="tertiary"

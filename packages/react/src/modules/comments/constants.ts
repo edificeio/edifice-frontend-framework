@@ -22,3 +22,7 @@ export const DEFAULT_MAX_REPLIES = 5;
  * Number of comments to add when adding more comment in the limited list
  */
 export const DEFAULT_ADD_REPLIES = 5;
+/**
+ * Forbid replying to a comment. Defaults to false.
+ */
+export const DEFAULT_DISABLE_REPLY = false;

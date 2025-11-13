@@ -6,6 +6,7 @@ import { CommentList } from '../components/CommentList';
 import {
   DEFAULT_ADD_COMMENTS,
   DEFAULT_ADD_REPLIES,
+  DEFAULT_DISABLE_REPLY,
   DEFAULT_MAX_COMMENTS,
   DEFAULT_MAX_COMMENT_LENGTH,
   DEFAULT_MAX_REPLIES,
@@ -27,6 +28,7 @@ const CommentProvider = ({
     additionalComments: DEFAULT_ADD_COMMENTS,
     maxReplies: DEFAULT_MAX_REPLIES,
     additionalReplies: DEFAULT_ADD_REPLIES,
+    disableReply: DEFAULT_DISABLE_REPLY,
     ...commentOptions,
   } as CommentOptions;
 
