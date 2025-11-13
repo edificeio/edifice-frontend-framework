@@ -6,6 +6,7 @@ import { CommentList } from '../components/CommentList';
 import {
   DEFAULT_ADD_COMMENTS,
   DEFAULT_ADD_REPLIES,
+  DEFAULT_DISABLE_REPLY,
   DEFAULT_MAX_COMMENTS,
   DEFAULT_MAX_COMMENT_LENGTH,
   DEFAULT_MAX_REPLIES,
@@ -13,7 +14,7 @@ import {
 } from '../constants';
 import { CommentContext } from '../context/Context';
 import { useComments } from '../hooks/useComments';
-import { RootProps } from '../types';
+import { CommentOptions, RootProps } from '../types';
 
 const CommentProvider = ({
   comments: defaultComments,
@@ -27,8 +28,9 @@ const CommentProvider = ({
     additionalComments: DEFAULT_ADD_COMMENTS,
     maxReplies: DEFAULT_MAX_REPLIES,
     additionalReplies: DEFAULT_ADD_REPLIES,
+    disableReply: DEFAULT_DISABLE_REPLY,
     ...commentOptions,
-  };
+  } as CommentOptions;
 
   const { type } = props;
 
