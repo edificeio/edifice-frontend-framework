@@ -104,6 +104,20 @@ export const DeleteComment: Story = {
   },
 };
 
+export const HideCommentButton: Story = {
+  render: (_args) => {
+    const [comments, setComments] = useState<CommentProps[]>([defaultComment]);
+    return (
+      <CommentProvider
+        type="edit"
+        comments={comments}
+        callbacks={getCallbacks(setComments)}
+        options={{ disableReply: true }}
+      />
+    );
+  },
+};
+
 export const ReplyComment: Story = {
   render: (_args) => {
     const [comments, setComments] = useState<CommentProps[]>([
