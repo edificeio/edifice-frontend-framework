@@ -11,9 +11,9 @@ import { CommentAvatar } from './CommentAvatar';
 import { CommentDate } from './CommentDate';
 import { CommentTitle } from './CommentTitle';
 //import { DeleteModal } from './DeleteModal';
-import { TextCounter } from './TextCounter';
 import { CommentDeleted } from './CommentDeleted';
 import { CommentReplies } from './CommentReplies';
+import { TextCounter } from './TextCounter';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 
