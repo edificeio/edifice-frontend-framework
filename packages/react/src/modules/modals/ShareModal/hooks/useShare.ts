@@ -85,8 +85,6 @@ export default function useShare({
   shareResource,
   setIsLoading,
   onSuccess,
-  resourceShareRights,
-  resourceShareRightActions,
   filteredActions,
   urls,
 }: UseShareResourceModalProps) {
@@ -101,48 +99,34 @@ export default function useShare({
   useEffect(() => {
     if (!resourceId) return;
 
-    if (resourceShareRights && resourceShareRightActions) {
-      dispatch({
-        type: 'init',
-        payload: {
-          shareRightActions: resourceShareRightActions,
-          shareRights: resourceShareRights,
-        },
-      });
-      setIsLoading?.(false);
-      return;
-    } else {
-      (async () => {
-        try {
-          const [shareRightActions, shareRights] = await Promise.all([
-            odeServices
-              .share()
-              .getActionsForApp(appCode, urls?.getShareMapping),
-            odeServices.share().getRightsForResource(appCode, resourceId, urls),
-          ]);
+    (async () => {
+      try {
+        const [shareRightActions, shareRights] = await Promise.all([
+          odeServices.share().getActionsForApp(appCode, urls?.getShareMapping),
+          odeServices.share().getRightsForResource(appCode, resourceId, urls),
+        ]);
 
-          // filter actions if needed
-          const filteredShareRightActions = filteredActions
-            ? shareRightActions.filter((action) =>
-                filteredActions.includes(action.id),
-              )
-            : shareRightActions;
+        // filter actions if needed
+        const filteredShareRightActions = filteredActions
+          ? shareRightActions.filter((action) =>
+              filteredActions.includes(action.id),
+            )
+          : shareRightActions;
 
-          dispatch({
-            type: 'init',
-            payload: {
-              shareRightActions: filteredShareRightActions,
-              shareRights,
-            },
-          });
-        } catch (error) {
-          console.error(error);
-        }
-        {
-          setIsLoading?.(false);
-        }
-      })();
-    }
+        dispatch({
+          type: 'init',
+          payload: {
+            shareRightActions: filteredShareRightActions,
+            shareRights,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+      {
+        setIsLoading?.(false);
+      }
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resourceId]);
 

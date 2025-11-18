@@ -5,9 +5,7 @@ import {
   PutShareResponse,
   RightStringified,
   ShareRight,
-  ShareRightAction,
   ShareRightActionDisplayName,
-  ShareRightWithVisibles,
   ShareUrls,
 } from '@edifice.io/client';
 import { UseMutationResult } from '@tanstack/react-query';
@@ -38,8 +36,6 @@ export type ShareOptions = {
   resourceId: ID;
   resourceRights: RightStringified[];
   resourceCreatorId: string;
-  resourceShareRights?: ShareRightWithVisibles;
-  resourceShareRightActions?: ShareRightAction[];
   filteredActions?: ShareRightActionDisplayName[];
   urls?: ShareUrls;
 };
@@ -70,6 +66,10 @@ interface ShareResourceProps {
    * onSuccess callback when a resource is successfully shared
    */
   onSuccess: () => void;
+  /**
+   * Optional className for the search input
+   */
+  classNameSearchInput?: string;
 }
 
 export interface ShareResourcesRef {
@@ -79,15 +79,18 @@ export interface ShareResourcesRef {
 
 const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
   (
-    { shareOptions, shareResource, onSuccess }: ShareResourceProps,
+    {
+      shareOptions,
+      shareResource,
+      onSuccess,
+      classNameSearchInput = 'col-6',
+    }: ShareResourceProps,
     ref: Ref<ShareResourcesRef>,
   ) => {
     const {
       resourceId,
       resourceCreatorId,
       resourceRights,
-      resourceShareRights,
-      resourceShareRightActions,
       filteredActions,
       urls,
     } = shareOptions;
@@ -109,8 +112,6 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       shareResource,
       setIsLoading,
       onSuccess,
-      resourceShareRights,
-      resourceShareRightActions,
       filteredActions,
       urls,
     });
@@ -171,7 +172,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
           </Tooltip>
         </Heading>
         <div className="row mb-16">
-          <div className="col-10">
+          <div className={classNameSearchInput}>
             <Combobox
               value={searchInputValue}
               placeholder={searchPlaceholder}
@@ -189,7 +190,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
             <LoadingScreen />
           ) : (
             <table className="table border align-middle mb-0">
-              <thead className="bg-secondary">
+              <thead className="bg-blue-200">
                 <tr>
                   <th scope="col" className="w-32">
                     <VisuallyHidden>
@@ -205,7 +206,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
                     <th
                       key={shareRightAction.displayName}
                       scope="col"
-                      className="text-center text-white"
+                      className="text-center text-gray-800"
                     >
                       {t(shareRightAction.displayName)}
                     </th>

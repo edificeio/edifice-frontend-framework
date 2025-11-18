@@ -3,7 +3,7 @@ import { ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Alert, Button, Heading, Modal } from '../../../components';
+import { Alert, Button, Modal } from '../../../components';
 import ShareResources, {
   ShareOptions,
   ShareResourceMutation,
@@ -60,14 +60,12 @@ export default function ShareResourceModal({
         <Alert type="info" className="mb-16">
           {t('explorer.modal.share.alert.community')}
         </Alert>
-        <Heading headingStyle="h4" level="h3" className="mb-16">
-          {t('explorer.modal.share.usersWithAccess')}
-        </Heading>
         <ShareResources
           shareOptions={shareOptions}
           shareResource={shareResource}
           ref={refShareResources}
           onSuccess={onSuccess}
+          classNameSearchInput="flex-fill"
         />
         {children}
       </Modal.Body>
@@ -93,6 +91,6 @@ export default function ShareResourceModal({
         </Button>
       </Modal.Footer>
     </Modal>,
-    document.getElementById('portal') as HTMLElement,
+    (document.getElementById('portal') as HTMLElement) || document.body,
   );
 }
