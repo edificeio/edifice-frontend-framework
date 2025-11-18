@@ -36,11 +36,11 @@ export class ShareService {
     app: string,
     resourceId: string,
     searchText: string,
-    urlRessourceRights?: string,
+    urlResourceRights?: string,
   ): Promise<ShareSubject[]> {
     const cleanSearchText = StringUtils.removeAccents(searchText).toLowerCase();
     const response = await this.cache.httpGetJson<GetResourceRightPayload>(
-      urlRessourceRights ||
+      urlResourceRights ||
         `/${app}/share/json/${resourceId}?search=${searchText}`,
     );
     const resUsers = response.users.visibles
@@ -160,7 +160,7 @@ export class ShareService {
   ): Promise<ShareRightWithVisibles> {
     // fetch bookmarks
     const visibleBookmarks = await this.directory.getBookMarks();
-    // get rights for this ressources
+    // get rights for this ressurces
     const url = `/${app}/share/json/${resourceId}?search=`;
     const rightsPayload = await this.cache.httpGetJson<GetResourceRightPayload>(
       urls?.getResourceRights || url,
