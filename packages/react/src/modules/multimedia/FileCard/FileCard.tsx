@@ -131,9 +131,11 @@ const FileCard = ({
   );
 
   const mediaSrc =
-    type === 'img' || type === 'video'
-      ? odeServices.workspace().getThumbnailUrl(doc)
-      : null;
+    doc.eType === 'resource'
+      ? (doc as any).thumbnail
+      : type === 'img' || type === 'video'
+        ? odeServices.workspace().getThumbnailUrl(doc)
+        : null;
 
   const hasThumbnail = useThumbnail(mediaSrc!, { ref });
 
