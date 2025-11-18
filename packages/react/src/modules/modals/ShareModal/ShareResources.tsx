@@ -75,6 +75,7 @@ interface ShareResourceProps {
 export interface ShareResourcesRef {
   handleShare: () => void;
   isSharing: boolean;
+  shareRights: ShareRight[];
 }
 
 const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
@@ -146,6 +147,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
     useImperativeHandle(ref, () => ({
       handleShare,
       isSharing,
+      shareRights: shareRights.rights,
     }));
 
     const { t } = useTranslation();
