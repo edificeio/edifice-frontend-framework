@@ -40,8 +40,8 @@ export const OverrideUrls: Story = {
     shareOptions: {
       ...mockShareOptions,
       urls: {
-        getResourceRights: '/actualites/api/v1/infos/ressource-1/shares',
-        saveResourceRights: '/actualites/api/v1/infos/ressource-1/shares',
+        getResourceRights: '/actualites/api/v1/infos/resource-1/shares',
+        saveResourceRights: '/actualites/api/v1/infos/resource-1/shares',
         getShareMapping: '/actualites/api/v1/rights/sharing',
       },
       filteredActions: ['read', 'comment'] as ShareRightActionDisplayName[],
