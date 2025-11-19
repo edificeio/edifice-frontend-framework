@@ -71,6 +71,11 @@ export const Comment = ({
     setValue(event.target.value);
   };
 
+  const handleDeleteComment = (id: string) => {
+    onDeleteComment(id);
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <>
       {comment.deleted && hasReplies && !hasAllDeletedReplies && (
@@ -195,7 +200,7 @@ export const Comment = ({
               <DeleteModal
                 isOpen={isDeleteModalOpen}
                 onCancel={() => setIsDeleteModalOpen(false)}
-                onSuccess={() => onDeleteComment(id)}
+                onSuccess={() => handleDeleteComment(id)}
               />
             )}
           </Suspense>
