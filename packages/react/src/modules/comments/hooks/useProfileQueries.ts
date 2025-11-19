@@ -16,6 +16,7 @@ export const useProfileQueries = (usersIds: string[]) => {
         };
       },
       staleTime: Infinity,
+      enabled: !!userId,
     })),
     combine: (results) => {
       return {
