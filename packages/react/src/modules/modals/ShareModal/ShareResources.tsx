@@ -65,7 +65,7 @@ interface ShareResourceProps {
   /**
    * onSuccess callback when a resource is successfully shared
    */
-  onSuccess: () => void;
+  onSuccess?: () => void;
   /**
    * Optional className for the search input
    */
@@ -76,6 +76,7 @@ export interface ShareResourcesRef {
   handleShare: () => void;
   isSharing: boolean;
   shareRights: ShareRight[];
+  isDirty: boolean;
 }
 
 const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
@@ -83,7 +84,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
     {
       shareOptions,
       shareResource,
-      onSuccess,
+      onSuccess = () => {},
       classNameSearchInput = 'col-6',
     }: ShareResourceProps,
     ref: Ref<ShareResourcesRef>,
@@ -106,6 +107,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       toggleRight,
       handleShare,
       handleDeleteRow,
+      isDirty,
     } = useShare({
       resourceId,
       resourceCreatorId,
@@ -148,6 +150,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       handleShare,
       isSharing,
       shareRights: shareRights.rights,
+      isDirty: !!isDirty,
     }));
 
     const { t } = useTranslation();

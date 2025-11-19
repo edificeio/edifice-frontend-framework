@@ -39,6 +39,7 @@ interface UseShareResourceModalProps {
 
 type State = {
   isSharing: boolean;
+  isDirty?: boolean;
   shareRights: ShareRightWithVisibles;
   shareRightActions: ShareRightAction[];
 };
@@ -52,6 +53,7 @@ export type ShareAction =
 
 const initialState: State = {
   isSharing: false,
+  isDirty: false,
   shareRights: {
     rights: [],
     visibleBookmarks: [],
@@ -66,11 +68,11 @@ function reducer(state: State, action: ShareAction) {
     case 'init':
       return { ...state, ...action.payload };
     case 'deleteRow':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'updateShareRights':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'toggleRight':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'isSharing':
       return { ...state, isSharing: action.payload };
     default:
@@ -326,5 +328,6 @@ export default function useShare({
     handleDeleteRow,
     handleShare,
     toggleRight,
+    isDirty: state.isDirty,
   };
 }
