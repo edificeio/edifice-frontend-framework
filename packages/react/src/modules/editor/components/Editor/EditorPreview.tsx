@@ -114,6 +114,7 @@ const EditorPreview = ({
               objectFit="cover"
               ratio="16"
               className="rounded"
+              loading="lazy"
               src={media.url}
               sizes=""
             />
