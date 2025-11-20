@@ -210,6 +210,26 @@ export interface ShareRightWithVisibles {
  * @property {string} [getResourceRights] - Optional URL endpoint for fetching resource rights
  * @property {string} [saveResourceRights] - Optional URL endpoint for saving/updating resource rights
  * @property {string} [getShareMapping] - Optional URL endpoint for retrieving share action mappings
+ *
+ * @example Example related to sharing thread resources:
+ * ```ts
+ * const shareUrls: ShareUrls = {
+ *     getResourceRights: '/api/V1/thread/shares', (get endpoint)
+ *     saveResourceRights: '/api/V1/thread/shares', (put endpoint)
+ *     getShareMapping: '/api/V1/rights/sharing'
+ *   }
+ * };
+ * ```
+ *
+ * @example Example related to sharing info resources:
+ * ```ts
+ * const shareUrls: ShareUrls = {
+ *     getResourceRights: '/api/V1/info/shares', (get endpoint)
+ *     saveResourceRights: '/api/V1/info/shares', (put endpoint)
+ *     getShareMapping: '/api/V1/rights/sharing'
+ *   }
+ * };
+ * ```
  */
 export type ShareUrls = {
   getResourceRights?: string;

@@ -48,7 +48,7 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  * @property {ShareRightActionDisplayName[]} [filteredActions] - Optional list of allowed actions to display
  * @property {ShareUrls} [urls] - Optional custom URLs for API endpoints related to sharing operations
  *
- * @example
+ * @example Example related to sharing thread resources:
  * ```ts
  * const shareOptions: ShareOptions = {
  *   resourceId: '12345',
@@ -63,7 +63,7 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  * };
  * ```
  *
- * @example
+ * @example Example related to sharing info resources:
  * ```ts
  * const shareOptions: ShareOptions = {
  *   resourceId: '12345',
