@@ -38,6 +38,46 @@ import { useSearch } from './hooks/useSearch';
 import useShare from './hooks/useShare';
 import { useShareBookmark } from './hooks/useShareBookmark';
 
+/**
+ * Configuration options for sharing a resource
+ *
+ * @typedef {Object} ShareOptions
+ * @property {ID} resourceId - Unique identifier of the resource to share
+ * @property {RightStringified[]} resourceRights - Current rights assigned to the resource
+ * @property {string} resourceCreatorId - User ID of the resource creator
+ * @property {ShareRightActionDisplayName[]} [filteredActions] - Optional list of allowed actions to display
+ * @property {ShareUrls} [urls] - Optional custom URLs for API endpoints related to sharing operations
+ *
+ * @example
+ * ```ts
+ * const shareOptions: ShareOptions = {
+ *   resourceId: '12345',
+ *   resourceRights: [],
+ *   resourceCreatorId: 'user-67890',
+ *   filteredActions: ['read', 'contrib'],
+ *   urls: {
+ *     getResourceRights: '/api/V1/thread/shares', (get endpoint)
+ *     saveResourceRights: '/api/V1/thread/shares', (put endpoint)
+ *     getShareMapping: '/api/V1/rights/sharing'
+ *   }
+ * };
+ * ```
+ *
+ * @example
+ * ```ts
+ * const shareOptions: ShareOptions = {
+ *   resourceId: '12345',
+ *   resourceRights: [],
+ *   resourceCreatorId: 'user-67890',
+ *   filteredActions: ['read', 'contrib'],
+ *   urls: {
+ *     getResourceRights: '/api/V1/info/shares', (get endpoint)
+ *     saveResourceRights: '/api/V1/info/shares', (put endpoint)
+ *     getShareMapping: '/api/V1/rights/sharing'
+ *   }
+ * };
+ * ```
+ */
 export type ShareOptions = {
   resourceId: ID;
   resourceRights: RightStringified[];
@@ -46,6 +86,11 @@ export type ShareOptions = {
   urls?: ShareUrls;
 };
 
+/**
+ * React Query mutation result for share operations
+ *
+ * @typedef {UseMutationResult<PutShareResponse, unknown, {resourceId: string; rights: ShareRight[]}, unknown>} ShareResourceMutation
+ */
 export type ShareResourceMutation = UseMutationResult<
   PutShareResponse,
   unknown,
@@ -56,6 +101,16 @@ export type ShareResourceMutation = UseMutationResult<
   unknown
 >;
 
+/**
+ * Props for the ShareResources component
+ *
+ * @interface ShareResourceProps
+ * @property {ShareOptions} shareOptions - Configuration for the resource being shared
+ * @property {ShareResourceMutation} [shareResource] - Optional React Query mutation for optimistic UI updates
+ * @property {() => void} [onSuccess] - Callback fired after successful share operation
+ * @property {(shareRights: ShareRight[], isDirty: boolean) => void} [onChange] - Callback fired when share rights change
+ * @property {string} [classNameSearchInput] - Optional CSS class for the search input wrapper (default: 'col-6')
+ */
 interface ShareResourceProps {
   /**
    * Expect resourceId,
@@ -82,11 +137,77 @@ interface ShareResourceProps {
   classNameSearchInput?: string;
 }
 
+/**
+ * Ref interface exposed by ShareResources component
+ *
+ * @interface ShareResourcesRef
+ * @property {() => void} handleShare - Method to trigger the share operation
+ * @property {() => boolean} isSharing - Method to check if sharing is in progress
+ *
+ * @example
+ * ```tsx
+ * const ref = useRef<ShareResourcesRef>(null);
+ *
+ * // Trigger share programmatically
+ * ref.current?.handleShare();
+ *
+ * // Check sharing status
+ * const sharing = ref.current?.isSharing();
+ * ```
+ */
 export interface ShareResourcesRef {
   handleShare: () => void;
   isSharing: () => boolean;
 }
 
+/**
+ * ShareResources Component
+ *
+ * A component for managing resource sharing permissions with users and groups.
+ * Provides search functionality, bookmark management, and granular rights control.
+ *
+ * @example
+ * ```tsx
+ * import { useRef } from 'react';
+ * import ShareResources, { ShareResourcesRef, ShareOptions } from './ShareResources';
+ *
+ * function MyComponent() {
+ *   const shareRef = useRef<ShareResourcesRef>(null);
+ *
+ *   const shareOptions: ShareOptions = {
+ *     resourceId: '123',
+ *     resourceRights: [],
+ *     resourceCreatorId: 'user-456',
+ *     filteredActions: ['read', 'contrib'],
+ *     urls: {
+ *       getResourceRights: '/api/share/rights',
+ *       putResourceRights: '/api/share/update'
+ *     }
+ *   };
+ *
+ *   const handleSave = () => {
+ *     if (shareRef.current) {
+ *       shareRef.current.handleShare();
+ *     }
+ *   };
+ *
+ *   return (
+ *     <>
+ *       <ShareResources
+ *         ref={shareRef}
+ *         shareOptions={shareOptions}
+ *         onSuccess={() => console.log('Shared successfully')}
+ *         onChange={(rights, isDirty) => console.log('Rights changed:', isDirty)}
+ *       />
+ *       <button onClick={handleSave}>Save Changes</button>
+ *     </>
+ *   );
+ * }
+ * ```
+ *
+ * @component
+ * @forwardRef
+ */
 const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
   (
     {
