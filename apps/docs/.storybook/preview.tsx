@@ -24,8 +24,6 @@ import {
   workspaceHandlers,
 } from '@edifice.io/config';
 
-import React from 'react';
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -120,7 +118,7 @@ const preview: Preview = {
         return (
           <div data-product={themePath} className="my-12">
             <Story />
-            <div id="portal" />
+            <MockedPortal />
           </div>
         );
       };

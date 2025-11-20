@@ -1,4 +1,10 @@
-import { forwardRef, Ref, useImperativeHandle, useState } from 'react';
+import {
+  forwardRef,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
 
 import {
   ID,
@@ -67,6 +73,10 @@ interface ShareResourceProps {
    */
   onSuccess?: () => void;
   /**
+   * Callback when share rights change
+   */
+  onChange?: (shareRights: ShareRight[], isDirty: boolean) => void;
+  /**
    * Optional className for the search input
    */
   classNameSearchInput?: string;
@@ -74,9 +84,7 @@ interface ShareResourceProps {
 
 export interface ShareResourcesRef {
   handleShare: () => void;
-  isSharing: boolean;
-  shareRights: ShareRight[];
-  isDirty: boolean;
+  isSharing: () => boolean;
 }
 
 const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
@@ -85,6 +93,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       shareOptions,
       shareResource,
       onSuccess = () => {},
+      onChange = () => {},
       classNameSearchInput = 'col-6',
     }: ShareResourceProps,
     ref: Ref<ShareResourcesRef>,
@@ -146,12 +155,18 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       toggleBookmarkInput,
     } = useShareBookmark({ shareRights, shareDispatch });
 
-    useImperativeHandle(ref, () => ({
-      handleShare,
-      isSharing,
-      shareRights: shareRights.rights,
-      isDirty: !!isDirty,
-    }));
+    useImperativeHandle(
+      ref,
+      () => ({
+        handleShare,
+        isSharing: () => isSharing,
+      }),
+      [handleShare, isSharing],
+    );
+
+    useEffect(() => {
+      onChange(shareRights.rights, isDirty);
+    }, [isDirty, shareRights.rights, onChange]);
 
     const { t } = useTranslation();
 

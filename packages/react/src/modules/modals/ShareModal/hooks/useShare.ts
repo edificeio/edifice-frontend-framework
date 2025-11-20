@@ -328,6 +328,6 @@ export default function useShare({
     handleDeleteRow,
     handleShare,
     toggleRight,
-    isDirty: state.isDirty,
+    isDirty: !!state.isDirty,
   };
 }

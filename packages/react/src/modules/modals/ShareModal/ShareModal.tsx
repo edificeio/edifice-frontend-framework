@@ -83,9 +83,9 @@ export default function ShareResourceModal({
           type="button"
           color="primary"
           variant="filled"
-          isLoading={refShareResources.current?.isSharing}
+          isLoading={!!refShareResources.current?.isSharing()}
           onClick={handleShare}
-          disabled={refShareResources.current?.isSharing}
+          disabled={!!refShareResources.current?.isSharing()}
         >
           {t('share')}
         </Button>
