@@ -1,9 +1,11 @@
 import {
+  actualitesHandlers,
   authHandlers,
   blogHandlers,
   commonHandlers,
   directoryHandlers,
   publicConfigHandlers,
+  shareHandlers,
   themeHandlers,
   userbookHandlers,
   wikiHandlers,
@@ -20,4 +22,6 @@ export const handlers = [
   ...themeHandlers,
   ...wikiHandlers,
   ...publicConfigHandlers,
+  ...shareHandlers,
+  ...actualitesHandlers,
 ];

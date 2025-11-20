@@ -184,7 +184,8 @@ i18n.use(initReactI18next).init({
         'bbm.studio.modal.title': 'Studio',
         'bbm.audio.modal.title': 'Add an audio',
         'bbm.image.modal.title': 'Add an image',
-        'bbm.upload.alert': 'The media are imported in the chronological order of their creation. You will be able to change the order once the import is complete',
+        'bbm.upload.alert':
+          'The media are imported in the chronological order of their creation. You will be able to change the order once the import is complete',
         'bbm.attachment.modal.title': 'Add an attachment',
         'bbm.embed.modal.title': 'Add embed or iframe',
         'bbm.link.modal.title': 'Add a link',
@@ -201,6 +202,13 @@ i18n.use(initReactI18next).init({
         'defaultPalette': 'Default palette',
         'accessiblePalette': 'Accessible palette',
         'explorer.emptyScreen.trash.title': "It's empty here!",
+        'explorer.modal.share.search': 'Search for users or groups',
+        'explorer.modal.share.search.placeholder':
+          'Search users, groups or favorites',
+        'share.save.sharebookmark': 'Save as favorites',
+        'explorer.modal.share.sharebookmark.placeholder':
+          'Enter a name for this favorite',
+        'explorer.modal.share.sharebookmark.save': 'Save favorite',
         'workspace.empty.docSpace':
           'No resource in the document space for the moment.',
         'workspace.tree.public': 'Public folder',
