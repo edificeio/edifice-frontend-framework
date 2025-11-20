@@ -160,7 +160,7 @@ export class ShareService {
   ): Promise<ShareRightWithVisibles> {
     // fetch bookmarks
     const visibleBookmarks = await this.directory.getBookMarks();
-    // get rights for this ressurces
+    // get rights for this resources
     const url = `/${app}/share/json/${resourceId}?search=`;
     const rightsPayload = await this.cache.httpGetJson<GetResourceRightPayload>(
       urls?.getResourceRights || url,
