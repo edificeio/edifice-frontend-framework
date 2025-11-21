@@ -1,3 +1,4 @@
+export * from './AntThemeProvider/AntProvider';
 export * from './EdificeClientProvider/EdificeClientProvider';
 export * from './EdificeClientProvider/EdificeClientProvider.context';
 export * from './EdificeClientProvider/EdificeClientProvider.hook';
