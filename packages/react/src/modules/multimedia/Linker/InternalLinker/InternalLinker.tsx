@@ -334,9 +334,15 @@ export const InternalLinker = ({
                     {selectedApplication?.icon || <IconApplications />}
                   </div>
                 }
-                label={t(
-                  selectedApplication?.displayName || 'bbm.linker.int.choose',
-                )}
+                label={
+                  <span className="d-md-inline d-sm-none">
+                    {' '}
+                    {t(
+                      selectedApplication?.displayName ||
+                        'bbm.linker.int.choose',
+                    )}
+                  </span>
+                }
                 variant="ghost"
                 size="md"
               />
