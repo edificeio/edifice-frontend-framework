@@ -7,8 +7,6 @@ export interface MediaResizeProps {
   [x: string]: any;
 }
 
-const MIN_WIDTH = 80;
-
 type ResizableElt = HTMLImageElement | HTMLVideoElement | HTMLIFrameElement;
 
 export const useResizeMedia = (
@@ -20,8 +18,6 @@ export const useResizeMedia = (
   const lastCursorX = useRef(-1);
   const isVerticalResizeActive = useRef(false);
   const proseMirrorContainerWidth = useRef(0);
-
-  const limitWidth = (width: number) => width < MIN_WIDTH;
 
   const readCurrentPixelWidth = () => {
     const el = refResizable.current;
@@ -66,7 +62,6 @@ export const useResizeMedia = (
     ) {
       width = proseMirrorContainerWidth.current;
     }
-    if (limitWidth(width)) width = MIN_WIDTH;
     return Math.round(width);
   };
 
