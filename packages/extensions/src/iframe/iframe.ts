@@ -47,53 +47,19 @@ export const Iframe = Node.create<IframeOptions>({
         parseHTML: () => this.options.allowFullscreen,
       },
       width: {
-        default: '600',
-        parseHTML: (element) => {
-          const width = element.getAttribute('width');
-          const height = element.getAttribute('height');
-          if (!width) return '600';
-          
-          const widthValue = parseInt(width);
-          const maxWidth = 600;
-          
-          // Si la largeur dépasse le max, on la limite et on stocke le ratio
-          if (widthValue > maxWidth && height) {
-            const heightValue = parseInt(height);
-            const ratio = heightValue / widthValue;
-            // Stocker le ratio dans un attribut custom pour calculer la hauteur
-            element.dataset.aspectRatio = ratio.toString();
-          }
-          
-          return Math.min(widthValue, maxWidth).toString();
-        },
         renderHTML: (attributes) => {
-          if (!attributes.width) return {};
-          
-          const widthValue = parseInt(attributes.width);
-          const maxWidth = 600;
-          return {
-            width: Math.min(widthValue, maxWidth),
-          };
+          return attributes.width
+            ? {
+                width:
+                  attributes.width === '100%'
+                    ? '100%'
+                    : parseInt(attributes.width),
+              }
+            : {};
         },
+        parseHTML: (element) => element.getAttribute('width'),
       },
       height: {
-        parseHTML: (element) => {
-          const height = element.getAttribute('height');
-          const width = element.getAttribute('width');
-          
-          if (!height) return null;
-          
-          const heightValue = parseInt(height);
-          const widthValue = parseInt(width || '600');
-          const maxWidth = 600;
-          
-          if (widthValue > maxWidth) {
-            const ratio = heightValue / widthValue;
-            return Math.round(maxWidth * ratio).toString();
-          }
-          
-          return height;
-        },
         renderHTML: (attributes) => {
           return attributes.height
             ? {
@@ -101,6 +67,7 @@ export const Iframe = Node.create<IframeOptions>({
               }
             : {};
         },
+        parseHTML: (element) => element.getAttribute('height'),
       },
       style: {
         renderHTML: (attributes) => {
