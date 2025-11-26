@@ -22,9 +22,6 @@ const MediaRenderer = (props: MediaResizeProps) => {
   const { startVerticalResize, stopVerticalResize, isVerticalResizeActive } =
     useResizeMedia(props, resizableMedia);
 
-  const width = node.attrs.width || 560;
-  const height = node.attrs.height || Math.round((width * 9) / 16);
-
   const alignContent = (textalign: string) => {
     switch (textalign) {
       case 'center':
@@ -126,8 +123,8 @@ const MediaRenderer = (props: MediaResizeProps) => {
                     <iframe
                       ref={resizableMedia as React.RefObject<HTMLIFrameElement>}
                       src={node.attrs.src}
-                      width={width}
-                      height={height}
+                      width={node.attrs.width}
+                      height={node.attrs.height}
                       allowFullScreen={node.attrs.allowfullscreen ?? true}
                     />
                   </>
