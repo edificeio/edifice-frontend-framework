@@ -1,6 +1,6 @@
 import { ConfigProvider } from 'antd';
 import React from 'react';
-import antdTheme from './ant-theme';
+import { antTheme } from './antThemeConfig';
 import './antThemeOverride.css';
 
 interface AntProviderProps {
@@ -12,7 +12,7 @@ interface AntProviderProps {
  * avec le système de design existant d'Edifice
  */
 export const AntProvider: React.FC<AntProviderProps> = ({ children }) => {
-  return <ConfigProvider theme={antdTheme}>{children}</ConfigProvider>;
+  return <ConfigProvider theme={antTheme}>{children}</ConfigProvider>;
 };
 
 export default AntProvider;
