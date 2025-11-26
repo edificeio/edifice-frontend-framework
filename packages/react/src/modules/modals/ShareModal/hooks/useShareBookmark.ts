@@ -87,7 +87,7 @@ export const useShareBookmark = ({
 
   const handleOnSave = () => {
     const inputValue = refBookmark.current?.value || '';
-    saveBookmark(inputValue);
+    return saveBookmark(inputValue);
   };
 
   return {
