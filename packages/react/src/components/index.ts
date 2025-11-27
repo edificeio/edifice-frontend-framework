@@ -35,6 +35,7 @@ export * from './PreventPropagation';
 export * from './Radio';
 export * from './RadioCard';
 export * from './SearchBar';
+export * from './SegmentedControl';
 export * from './Select';
 export * from './SeparatedInfo';
 export * from './Skeleton';
