@@ -1,4 +1,6 @@
 import { Segmented as AntSegmented } from 'antd';
+import clsx from 'clsx';
+import './SegmentedControl.css';
 
 /**
  * Simple option for SegmentedControl
@@ -65,19 +67,13 @@ export interface SegmentedControlProps {
 const SegmentedControl = (props: SegmentedControlProps) => {
   const { options, value, onChange, className } = props;
 
-  // Transform options to Ant Design format
-  const antOptions = options.map((option) => ({
-    label: option.label,
-    value: option.value,
-  }));
-
   // Only pass explicitly allowed props to Ant Design
   // This prevents dependency on Ant Design-specific props
   const antProps = {
-    options: antOptions,
+    options,
     value,
     onChange,
-    className,
+    className: clsx('segmented-control-wrapper', className),
   };
 
   return <AntSegmented {...antProps} />;
