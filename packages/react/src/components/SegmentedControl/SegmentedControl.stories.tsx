@@ -39,11 +39,11 @@ const meta: Meta<typeof SegmentedControl> = {
   },
   args: {
     options: [
-      { label: 'List', value: 'list' },
-      { label: 'Kanban', value: 'kanban' },
-      { label: 'Table', value: 'table' },
+      { label: 'Publié 3', value: 'published' },
+      { label: 'À valider 1', value: 'to_validate' },
+      { label: 'Brouillon 2', value: 'draft' },
     ],
-    value: 'list',
+    value: 'published',
   },
   parameters: {
     docs: {
