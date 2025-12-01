@@ -12,6 +12,7 @@ import {
   ShareRightActionDisplayName,
   ShareRightWithVisibles,
   ShareSubject,
+  ShareUrls,
   SharingRight,
 } from './interface';
 
@@ -35,10 +36,12 @@ export class ShareService {
     app: string,
     resourceId: string,
     searchText: string,
+    urlResourceRights?: string,
   ): Promise<ShareSubject[]> {
     const cleanSearchText = StringUtils.removeAccents(searchText).toLowerCase();
     const response = await this.cache.httpGetJson<GetResourceRightPayload>(
-      `/${app}/share/json/${resourceId}?search=${searchText}`,
+      urlResourceRights ||
+        `/${app}/share/json/${resourceId}?search=${searchText}`,
     );
     const resUsers = response.users.visibles
       .filter(({ username, firstName, lastName, login }) => {
@@ -106,9 +109,12 @@ export class ShareService {
     return [...resBookmarks, ...resUsers, ...resGroups];
   }
 
-  async getShareMapping(app: string) {
+  async getShareMapping(
+    app: string,
+    urlShareMapping?: string,
+  ): Promise<ShareMapping> {
     const sharingMap = await this.cache.httpGetJson<ShareMapping>(
-      `/${app}/rights/sharing`,
+      urlShareMapping || `/${app}/rights/sharing`,
     );
     //fix keys app.role => role
     for (const key of Object.keys(sharingMap)) {
@@ -150,15 +156,20 @@ export class ShareService {
   async getRightsForResource(
     app: string,
     resourceId: string,
+    shareUrls?: ShareUrls,
   ): Promise<ShareRightWithVisibles> {
     // fetch bookmarks
     const visibleBookmarks = await this.directory.getBookMarks();
-    // get rights for this ressources
+    // get rights for this resources
     const url = `/${app}/share/json/${resourceId}?search=`;
-    const rightsPayload =
-      await this.cache.httpGetJson<GetResourceRightPayload>(url);
+    const rightsPayload = await this.cache.httpGetJson<GetResourceRightPayload>(
+      shareUrls?.getResourceRights || url,
+    );
     // get mapping between rights and normalized rights
-    const sharingMap = await this.getShareMapping(app);
+    const sharingMap = await this.getShareMapping(
+      app,
+      shareUrls?.getShareMapping,
+    );
     // get normalized rights infos
     const sharingRights = await this.cache.httpGetJson<SharingRight>(
       '/infra/public/json/sharing-rights.json',
@@ -282,18 +293,18 @@ export class ShareService {
     };
   }
 
-  async saveRights(
+  async getPutSharePayload(
     app: string,
-    resourceId: string,
     rights: ShareRight[],
-  ): Promise<PutShareResponse> {
-    // get mapping between action and java names
-    const mapping = await this.getShareMapping(app);
+    urlGetShareMapping?: string,
+  ): Promise<PutSharePayload> {
     const payload: PutSharePayload = {
-      bookmarks: {},
-      groups: {},
       users: {},
+      groups: {},
+      bookmarks: {},
     };
+    // get mapping between action and java names
+    const mapping = await this.getShareMapping(app, urlGetShareMapping);
 
     for (const right of rights) {
       // get java rights for each available actions
@@ -318,20 +329,41 @@ export class ShareService {
         }
       }
     }
-    const url = `/${app}/share/resource/${resourceId}`;
+
+    return payload;
+  }
+
+  async saveRights(
+    app: string,
+    resourceId: string,
+    rights: ShareRight[],
+    urls?: ShareUrls,
+  ): Promise<PutShareResponse> {
+    const payload = await this.getPutSharePayload(
+      app,
+      rights,
+      urls?.getShareMapping,
+    );
+    const url =
+      urls?.saveResourceRights || `/${app}/share/resource/${resourceId}`;
     //clear cache for rights
-    this.cache.clearCache(`/${app}/share/json/${resourceId}?search=`);
+    this.cache.clearCache(
+      urls?.getResourceRights || `/${app}/share/json/${resourceId}?search=`,
+    );
     const res = await this.http.putJson<PutShareResponse>(url, payload);
     return res;
   }
 
-  async getActionsForApp(app: string): Promise<ShareRightAction[]> {
+  async getActionsForApp(
+    app: string,
+    urlShareMapping?: string,
+  ): Promise<ShareRightAction[]> {
     // get normalized rights infos
     const sharingRights = await this.cache.httpGetJson<SharingRight>(
       '/infra/public/json/sharing-rights.json',
     );
     // get mapping for rights
-    const sharingMap = await this.getShareMapping(app);
+    const sharingMap = await this.getShareMapping(app, urlShareMapping);
     const rightActions: ShareRightAction[] = Object.keys(sharingRights)
       .map((key) => {
         const value = sharingRights[key as ShareRightActionDisplayName];
