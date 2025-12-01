@@ -154,6 +154,7 @@ export { default as IconToolCenter } from './IconToolCenter';
 export { default as IconTool } from './IconTool';
 export { default as IconTrendingUp } from './IconTrendingUp';
 export { default as IconUndoAll } from './IconUndoAll';
+export { default as IconUndoSlashed } from './IconUndoSlashed';
 export { default as IconUndo } from './IconUndo';
 export { default as IconUnion } from './IconUnion';
 export { default as IconUnlink } from './IconUnlink';
