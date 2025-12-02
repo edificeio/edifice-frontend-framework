@@ -150,6 +150,8 @@ export { default as IconTextToSpeech } from './IconTextToSpeech';
 export { default as IconTextTypo } from './IconTextTypo';
 export { default as IconTextUnderline } from './IconTextUnderline';
 export { default as IconTextVanilla } from './IconTextVanilla';
+export { default as IconThumbDown } from './IconThumbDown';
+export { default as IconThumbUp } from './IconThumbUp';
 export { default as IconToolCenter } from './IconToolCenter';
 export { default as IconTool } from './IconTool';
 export { default as IconTrendingUp } from './IconTrendingUp';
