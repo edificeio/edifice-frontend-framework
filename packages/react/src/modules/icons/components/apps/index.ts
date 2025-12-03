@@ -7,6 +7,7 @@ export { default as IconAgenda } from './IconAgenda';
 export { default as IconAppointments } from './IconAppointments';
 export { default as IconArchive } from './IconArchive';
 export { default as IconAssistance } from './IconAssistance';
+export { default as IconAssistancetic } from './IconAssistancetic';
 export { default as IconAssr } from './IconAssr';
 export { default as IconAward } from './IconAward';
 export { default as IconBanquesavoir } from './IconBanquesavoir';
