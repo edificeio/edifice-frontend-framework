@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button, Modal } from '../../../components';
 
 interface DeleteModalProps {
@@ -11,13 +12,19 @@ export const DeleteModal = ({
   onCancel,
   onSuccess,
 }: DeleteModalProps) => {
+  const { t } = useTranslation();
   return (
-    <Modal isOpen={isOpen} onModalClose={onCancel} id="delete-comment-modal">
+    <Modal
+      size="sm"
+      isOpen={isOpen}
+      onModalClose={onCancel}
+      id="delete-comment-modal"
+    >
       <Modal.Header onModalClose={onCancel}>
-        Suppression de commentaire
+        {t('comment.delete.modal.title')}
       </Modal.Header>
       <Modal.Body>
-        <p>Voulez-vous vraiment supprimer ce commentaire ?</p>
+        <p>{t('comment.delete.modal.body')}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button
@@ -26,7 +33,7 @@ export const DeleteModal = ({
           type="button"
           variant="ghost"
         >
-          Annuler
+          {t('cancel')}
         </Button>
         <Button
           color="danger"
@@ -34,7 +41,7 @@ export const DeleteModal = ({
           type="button"
           variant="filled"
         >
-          Supprimer le commentaire
+          {t('comment.delete.modal.delete')}
         </Button>
       </Modal.Footer>
     </Modal>
