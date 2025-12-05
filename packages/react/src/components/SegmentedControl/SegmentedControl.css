@@ -9,7 +9,7 @@
 }
 
 .segmented-control-wrapper.ant-segmented .ant-segmented-group {
-  gap: 0.4rem;
+  gap: var(--edifice-spacer-4);
 }
 
 .segmented-control-wrapper.ant-segmented .ant-segmented-item {
@@ -22,7 +22,7 @@
   --ant-segmented-item-hover-color:var(--edifice-body-color);
   /* font-weight: 700; remove because of layout shift*/
   --ant-segmented-item-hover-bg: var(--edifice-gray-300);
-} 
+}
 
 .segmented-control-wrapper.ant-segmented .ant-segmented-item-selected {
   --ant-segmented-item-selected-bg: var(--edifice-secondary-200);
@@ -38,7 +38,7 @@
   border-radius: var(--edifice-border-radius-lg);
 }
 
- /* Uncomment to disable l'animation */
+ /* Uncomment to disable the animation */
 /* .segmented-control-wrapper.ant-segmented .ant-segmented-thumb-motion-appear-active {
   transition: none; 
 } */
