@@ -1,0 +1,44 @@
+.segmented-control-wrapper.ant-segmented {
+  border-radius: var(--edifice-border-radius-xl);
+  --ant-segmented-track-padding: var(--edifice-spacer-4);
+  --ant-control-height: var(--edifice-spacer-48);
+  --ant-control-padding-horizontal: var(--edifice-spacer-8);
+  --ant-line-width: var(--edifice-spacer-0);
+  --ant-segmented-track-bg: var(--edifice-white);
+  border: 1px solid var(--edifice-secondary-200);
+}
+
+.segmented-control-wrapper.ant-segmented .ant-segmented-group {
+  gap: var(--edifice-spacer-4);
+}
+
+.segmented-control-wrapper.ant-segmented .ant-segmented-item {
+  border-radius: var(--edifice-border-radius-lg);
+  --ant-segmented-item-color: var(--edifice-body-color);
+}
+
+
+.segmented-control-wrapper.ant-segmented .ant-segmented-item:hover{
+  --ant-segmented-item-hover-color:var(--edifice-body-color);
+  /* font-weight: 700; remove because of layout shift*/
+  --ant-segmented-item-hover-bg: var(--edifice-gray-300);
+}
+
+.segmented-control-wrapper.ant-segmented .ant-segmented-item-selected {
+  --ant-segmented-item-selected-bg: var(--edifice-secondary-200);
+  --ant-segmented-item-selected-color: var(--edifice-body-color);
+  /* font-weight: 700; remove because of layout shift */
+  box-shadow: none;
+}
+
+/* Animation */
+.segmented-control-wrapper.ant-segmented .ant-segmented-thumb {
+  --ant-segmented-item-selected-bg : var(--edifice-secondary-200);
+  box-shadow: none;
+  border-radius: var(--edifice-border-radius-lg);
+}
+
+ /* Uncomment to disable the animation */
+/* .segmented-control-wrapper.ant-segmented .ant-segmented-thumb-motion-appear-active {
+  transition: none; 
+} */
