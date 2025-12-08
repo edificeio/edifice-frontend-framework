@@ -56,6 +56,5 @@ export const Vertical: Story = {
   ),
   args: {
     vertical: true,
-    className: 'border-secondary',
   },
 };
