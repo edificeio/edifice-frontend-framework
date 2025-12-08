@@ -1,6 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-
-import { Divider } from './Divider';
+import Divider from './Divider';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Divider> = {
@@ -9,8 +8,11 @@ const meta: Meta<typeof Divider> = {
   decorators: [(Story) => <div className="p-16">{Story()}</div>],
   parameters: {
     argTypes: {
-      color: {
-        control: 'color',
+      vertical: {
+        control: 'boolean',
+      },
+      className: {
+        control: 'text',
       },
     },
     docs: {
@@ -27,20 +29,34 @@ type Story = StoryObj<typeof Divider>;
 
 export const Base: Story = {
   args: {
-    children: [<span key="1">Content to display</span>],
+    children: <span key="1">Content to display</span>,
   },
 };
 export const WithMultipleChildren: Story = {
   args: {
-    children: [
-      <span key="1">Content to display 1</span>,
-      <span key="2">Content to display 2</span>,
-    ],
+    children: (
+      <>
+        <span key="1">Content to display 1</span>,
+        <span key="2">Content to display 2</span>,
+      </>
+    ),
   },
 };
 export const WithCustomColor: Story = {
   args: {
-    children: [<span key="1">Content to display</span>],
-    color: 'var(--edifice-primary)',
+    children: <span key="1">Content to display</span>,
+    className: 'border-primary',
+  },
+};
+export const Vertical: Story = {
+  render: (args) => (
+    <div>
+      Content to display
+      <Divider {...args} />
+      With a vertical divider
+    </div>
+  ),
+  args: {
+    vertical: true,
   },
 };

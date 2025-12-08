@@ -37,7 +37,6 @@ export * from './RadioCard';
 export * from './SearchBar';
 export * from './SegmentedControl';
 export * from './Select';
-export * from './SeparatedInfo';
 export * from './Skeleton';
 export * from './StackedGroup';
 export * from './Stepper';
