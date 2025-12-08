@@ -29,20 +29,22 @@ type Story = StoryObj<typeof Divider>;
 
 export const Base: Story = {
   args: {
-    children: [<span key="1">Content to display</span>],
+    children: <span key="1">Content to display</span>,
   },
 };
 export const WithMultipleChildren: Story = {
   args: {
-    children: [
-      <span key="1">Content to display 1</span>,
-      <span key="2">Content to display 2</span>,
-    ],
+    children: (
+      <>
+        <span key="1">Content to display 1</span>,
+        <span key="2">Content to display 2</span>,
+      </>
+    ),
   },
 };
 export const WithCustomColor: Story = {
   args: {
-    children: [<span key="1">Content to display</span>],
+    children: <span key="1">Content to display</span>,
     className: 'border-primary',
   },
 };
