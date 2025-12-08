@@ -32,12 +32,10 @@ const Divider = ({
   children,
   vertical = false,
   className = 'border-gray-500',
-  style,
 }: {
   children?: ReactNode;
   vertical?: boolean;
   className?: string;
-  style?: React.CSSProperties;
 }) => {
   return (
     <AntDivider
@@ -46,7 +44,6 @@ const Divider = ({
       type={vertical ? 'vertical' : 'horizontal'}
       className={className}
       orientation="center"
-      style={style}
     />
   );
 };
