@@ -8,9 +8,6 @@ const meta: Meta<typeof Divider> = {
   decorators: [(Story) => <div className="p-16">{Story()}</div>],
   parameters: {
     argTypes: {
-      variant: {
-        options: ['dashed', 'dotted', 'solid'],
-      },
       vertical: {
         control: 'boolean',
       },

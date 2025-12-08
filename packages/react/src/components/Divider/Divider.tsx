@@ -6,7 +6,6 @@ import { ReactNode } from 'react';
  *
  * @param props - The component props
  * @param props.children - Content to be displayed inside the divider
- * @param props.variant - The variant of the divider. Can be 'dashed', 'dotted', or 'solid'. Defaults to 'solid'
  * @param props.vertical - Whether the divider is vertical. Defaults to false
  * @param props.className - Optional CSS class name for additional styling
  * @param props.style - Optional inline styles for the divider
@@ -21,8 +20,8 @@ import { ReactNode } from 'react';
  * // Divider with text content
  * <Divider>Section Title</Divider>
  *
- * // Vertical dashed divider
- * <Divider variant="dashed" vertical />
+ * // Vertical divider
+ * <Divider vertical />
  *
  * // Custom colored divider
  * <Divider className="border-red-500" />
@@ -30,13 +29,11 @@ import { ReactNode } from 'react';
  */
 const Divider = ({
   children,
-  variant = 'solid',
   vertical = false,
   className = 'border-gray-400',
   style,
 }: {
   children?: ReactNode;
-  variant?: 'dashed' | 'dotted' | 'solid';
   vertical?: boolean;
   className?: string;
   style?: React.CSSProperties;
@@ -45,7 +42,6 @@ const Divider = ({
     <AntDivider
       plain
       children={children}
-      variant={variant as any}
       type={vertical ? 'vertical' : 'horizontal'}
       className={className}
       orientation="center"
