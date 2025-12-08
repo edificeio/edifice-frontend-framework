@@ -1,5 +1,4 @@
 import { Segmented as AntSegmented } from 'antd';
-import clsx from 'clsx';
 
 /**
  * Simple option for SegmentedControl
@@ -72,7 +71,7 @@ const SegmentedControl = (props: SegmentedControlProps) => {
     options,
     value,
     onChange,
-    className: clsx('segmented-control-wrapper', className),
+    className,
   };
 
   return <AntSegmented {...antProps} />;
