@@ -41,6 +41,20 @@ export const WithMultipleChildren: Story = {
 export const WithCustomColor: Story = {
   args: {
     children: [<span key="1">Content to display</span>],
-    color: 'var(--edifice-primary)',
+    color: 'border-primary',
+  },
+};
+export const Vertical: Story = {
+  render: (args) => (
+    <div>
+      Content to display
+      <Divider {...args} />
+      With a vertical divider
+    </div>
+  ),
+  args: {
+    children: [<span key="1">Content to display</span>],
+    vertical: true,
+    color: 'border-primary',
   },
 };
