@@ -28,7 +28,7 @@ import { ReactNode } from 'react';
  * <Divider className="border-red-500" />
  * ```
  */
-export function Divider({
+const Divider = ({
   children,
   variant = 'solid',
   vertical = false,
@@ -40,7 +40,7 @@ export function Divider({
   vertical?: boolean;
   className?: string;
   style?: React.CSSProperties;
-}) {
+}) => {
   return (
     <AntDivider
       plain
@@ -52,4 +52,8 @@ export function Divider({
       style={style}
     />
   );
-}
+};
+
+Divider.displayName = 'Divider';
+
+export default Divider;
