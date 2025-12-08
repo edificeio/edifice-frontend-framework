@@ -9,8 +9,14 @@ const meta: Meta<typeof Divider> = {
   decorators: [(Story) => <div className="p-16">{Story()}</div>],
   parameters: {
     argTypes: {
-      color: {
-        control: 'color',
+      variant: {
+        options: ['dashed', 'dotted', 'solid'],
+      },
+      vertical: {
+        control: 'boolean',
+      },
+      className: {
+        control: 'text',
       },
     },
     docs: {
@@ -41,7 +47,7 @@ export const WithMultipleChildren: Story = {
 export const WithCustomColor: Story = {
   args: {
     children: [<span key="1">Content to display</span>],
-    color: 'border-primary',
+    className: 'border-primary',
   },
 };
 export const Vertical: Story = {
@@ -53,8 +59,7 @@ export const Vertical: Story = {
     </div>
   ),
   args: {
-    children: [<span key="1">Content to display</span>],
     vertical: true,
-    color: 'border-primary',
+    className: 'border-secondary',
   },
 };
