@@ -1,0 +1,52 @@
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
+
+.edifice.ant-segmented {
+  border-radius: var(--#{$prefix}border-radius-xl);
+
+  --ant-segmented-track-padding: var(--#{$prefix}spacer-4);
+  --ant-control-height: var(--#{$prefix}spacer-48);
+  --ant-control-padding-horizontal: var(--#{$prefix}spacer-8);
+  --ant-line-width: var(--#{$prefix}spacer-0);
+  --ant-segmented-track-bg: var(--#{$prefix}white);
+
+  border: 1px solid var(--#{$prefix}secondary-200);
+
+  .ant-segmented-group {
+    gap: var(--#{$prefix}spacer-4);
+  }
+
+  .ant-segmented-item {
+    border-radius: var(--#{$prefix}border-radius-lg);
+
+    --ant-segmented-item-color: var(--#{$prefix}body-color);
+
+    &:hover {
+      --ant-segmented-item-hover-color: var(--#{$prefix}body-color);
+      // font-weight: 700; remove because of layout shift
+
+      --ant-segmented-item-hover-bg: var(--#{$prefix}gray-300);
+    }
+
+    &-selected {
+      --ant-segmented-item-selected-bg: var(--#{$prefix}secondary-200);
+      --ant-segmented-item-selected-color: var(--#{$prefix}body-color);
+      // font-weight: 700; remove because of layout shift
+
+      box-shadow: none;
+    }
+  }
+
+  /* Animation */
+  .ant-segmented-thumb {
+    --ant-segmented-item-selected-bg: var(--#{$prefix}secondary-200);
+
+    box-shadow: none;
+    border-radius: var(--#{$prefix}border-radius-lg);
+  }
+
+  // // Uncomment to disable the animation
+  // .ant-segmented-thumb-motion-appear-active {
+  //   transition: none;
+  // }
+}

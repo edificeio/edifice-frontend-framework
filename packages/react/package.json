@@ -65,8 +65,7 @@
     "./widgets": {
       "import": "./dist/widgets.js",
       "types": "./dist/modules/widgets/index.d.ts"
-    },
-    "./dist/style.css": "./dist/style.css"
+    }
   },
   "module": "dist/index.js",
   "types": "dist/index.d.ts",

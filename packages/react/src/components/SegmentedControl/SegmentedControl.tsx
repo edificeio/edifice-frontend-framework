@@ -1,6 +1,5 @@
 import { Segmented as AntSegmented } from 'antd';
 import clsx from 'clsx';
-import './SegmentedControl.css';
 
 /**
  * Simple option for SegmentedControl
