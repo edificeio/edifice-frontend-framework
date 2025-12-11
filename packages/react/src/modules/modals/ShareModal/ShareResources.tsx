@@ -114,6 +114,7 @@ export type ShareResourceMutation = UseMutationResult<
  * @property {ShareResourceMutation} [shareResource] - Optional React Query mutation for optimistic UI updates
  * @property {() => void} [onSuccess] - Callback fired after successful share operation
  * @property {(shareRights: ShareRight[], isDirty: boolean) => void} [onChange] - Callback fired when share rights change
+ * @property {(isSubmitting: boolean) => void} [onSubmit] - Callback fired when share operation is submitting
  * @property {string} [classNameSearchInput] - Optional CSS class for the search input wrapper (default: 'col-6')
  */
 interface ShareResourceProps {
@@ -137,9 +138,9 @@ interface ShareResourceProps {
    */
   onChange?: (shareRights: ShareRight[], isDirty: boolean) => void;
   /**
-   * Callback when ShareResources component is submitting share rights or bookmark
+   * Callback when ShareResources component is submitting share rights or bookmark changes
    */
-  onSubmit?: () => void;
+  onSubmit?: (isSubmitting: boolean) => void;
   /**
    * Optional className for the search input wrapper (default: 'col-6')
    */
@@ -205,7 +206,7 @@ export interface ShareResourcesRef {
  *         shareOptions={shareOptions}
  *         onSuccess={() => console.log('Shared successfully')}
  *         onChange={(rights, isDirty) => console.log('Rights changed:', isDirty)}
- *         onSubmit={() => console.log('Submitting share...')}
+ *         onSubmit={(isSubmitting) => console.log('Submitting share...', isSubmitting)}
  *       />
  *       <button onClick={handleSave}>Save Changes</button>
  *     </>
@@ -306,9 +307,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
     }, [isDirty, shareRights.rights, onChange]);
 
     useEffect(() => {
-      if (isSavingBookmark || isSharing) {
-        onSubmit();
-      }
+      onSubmit(isSavingBookmark || isSharing);
     }, [isSavingBookmark, isSharing, onSubmit]);
 
     const { t } = useTranslation();
