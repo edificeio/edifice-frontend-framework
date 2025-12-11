@@ -66,6 +66,7 @@ export const Default: Story = {
       <SegmentedControl
         {...args}
         value={value}
+        data-testid="segmented-control-news"
         onChange={(val) => {
           setValue(val);
           args.onChange?.(val);

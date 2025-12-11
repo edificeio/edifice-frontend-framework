@@ -1,3 +1,4 @@
+import { forwardRef, Ref } from 'react';
 import { Segmented as AntSegmented } from 'antd';
 
 /**
@@ -62,20 +63,28 @@ export interface SegmentedControlProps {
  * />
  * ```
  */
-const SegmentedControl = (props: SegmentedControlProps) => {
-  const { options, value, onChange, className } = props;
+const SegmentedControl = forwardRef(
+  (
+    {
+      options,
+      value,
+      onChange,
+      className,
+      ...restProps
+    }: SegmentedControlProps,
+    ref: Ref<HTMLDivElement>,
+  ) => {
+    const antProps = {
+      options,
+      value,
+      onChange,
+      className,
+      ...restProps,
+    };
 
-  // Only pass explicitly allowed props to Ant Design
-  // This prevents dependency on Ant Design-specific props
-  const antProps = {
-    options,
-    value,
-    onChange,
-    className,
-  };
-
-  return <AntSegmented {...antProps} />;
-};
+    return <AntSegmented ref={ref} {...antProps} />;
+  },
+);
 
 SegmentedControl.displayName = 'SegmentedControl';
 
