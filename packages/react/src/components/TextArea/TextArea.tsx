@@ -13,8 +13,10 @@ export type OmitTextAreaProps =
   | 'id'
   | 'readOnly';
 
-export interface TextAreaProps
-  extends Omit<React.ComponentPropsWithRef<'textarea'>, OmitTextAreaProps> {
+export interface TextAreaProps extends Omit<
+  React.ComponentPropsWithRef<'textarea'>,
+  OmitTextAreaProps
+> {
   /**
    * Control size of TextArea
    */

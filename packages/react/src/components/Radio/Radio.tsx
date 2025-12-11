@@ -2,8 +2,7 @@ import { ChangeEvent, forwardRef, ReactNode, Ref, useId } from 'react';
 
 import clsx from 'clsx';
 
-export interface RadioProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface RadioProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * State controlling activated radio group
    */
