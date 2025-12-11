@@ -23,6 +23,9 @@ export interface SegmentedOption {
  */
 export interface SegmentedControlProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
+  // Excluded because they are redefined below with different signatures:
+  // - onChange: takes (value: string) instead of React.ChangeEvent
+  // - defaultValue: excluded by design choice to simplify the API (only controlled mode with value prop is supported)
   'onChange' | 'defaultValue'
 > {
   /**
