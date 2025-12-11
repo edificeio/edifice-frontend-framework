@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { Segmented as AntSegmented } from 'antd';
 
 /**
@@ -65,21 +66,20 @@ export interface SegmentedControlProps extends Omit<
  * />
  * ```
  */
-const SegmentedControl = ({
-  options,
-  value,
-  onChange,
-  ...htmlProps
-}: SegmentedControlProps) => {
-  const antProps = {
-    options,
-    value,
-    onChange,
-    ...htmlProps,
-  };
+const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
+  ({ options, value, onChange, ...htmlProps }, ref) => {
+    const antProps = {
+      options,
+      value,
+      onChange,
+      ...htmlProps,
+      ref,
+    };
 
-  return <AntSegmented {...antProps} />;
-};
+    return <AntSegmented {...antProps} />;
+  },
+);
 
 SegmentedControl.displayName = 'SegmentedControl';
+
 export default SegmentedControl;
