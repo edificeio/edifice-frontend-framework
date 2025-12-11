@@ -72,8 +72,8 @@ const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
       options,
       value,
       onChange,
-      ...htmlProps,
       ref,
+      ...htmlProps,
     };
 
     return <AntSegmented {...antProps} />;
