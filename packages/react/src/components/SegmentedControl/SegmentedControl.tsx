@@ -1,4 +1,3 @@
-import { forwardRef, Ref } from 'react';
 import { Segmented as AntSegmented } from 'antd';
 
 /**
@@ -20,8 +19,12 @@ export interface SegmentedOption {
  *
  * Minimal interface that only exposes what is necessary.
  * Ant Design implementation is hidden and no Ant Design-specific props are exposed.
+ * Standard HTML div attributes are supported (passed through to the underlying DOM element).
  */
-export interface SegmentedControlProps {
+export interface SegmentedControlProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  'onChange'
+> {
   /**
    * Segmented control options
    */
@@ -34,10 +37,6 @@ export interface SegmentedControlProps {
    * Callback called when value changes
    */
   onChange?: (value: string) => void;
-  /**
-   * Optional CSS class name
-   */
-  className?: string;
 }
 
 /**
@@ -63,29 +62,20 @@ export interface SegmentedControlProps {
  * />
  * ```
  */
-const SegmentedControl = forwardRef(
-  (
-    {
-      options,
-      value,
-      onChange,
-      className,
-      ...restProps
-    }: SegmentedControlProps,
-    ref: Ref<HTMLDivElement>,
-  ) => {
-    const antProps = {
-      options,
-      value,
-      onChange,
-      className,
-      ...restProps,
-    };
+const SegmentedControl = ({
+  options,
+  value,
+  onChange,
+  ...htmlProps
+}: SegmentedControlProps) => {
+  const antProps = {
+    options,
+    value,
+    onChange,
+    ...htmlProps,
+  } as any;
 
-    return <AntSegmented ref={ref} {...antProps} />;
-  },
-);
-
-SegmentedControl.displayName = 'SegmentedControl';
+  return <AntSegmented {...antProps} />;
+};
 
 export default SegmentedControl;
