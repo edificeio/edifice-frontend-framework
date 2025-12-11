@@ -23,7 +23,7 @@ export interface SegmentedOption {
  */
 export interface SegmentedControlProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
-  'onChange'
+  'onChange' | 'defaultValue'
 > {
   /**
    * Segmented control options
@@ -73,7 +73,7 @@ const SegmentedControl = ({
     value,
     onChange,
     ...htmlProps,
-  } as any;
+  };
 
   return <AntSegmented {...antProps} />;
 };
