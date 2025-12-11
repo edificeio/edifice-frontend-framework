@@ -81,4 +81,5 @@ const SegmentedControl = ({
   return <AntSegmented {...antProps} />;
 };
 
+SegmentedControl.displayName = 'SegmentedControl';
 export default SegmentedControl;
