@@ -56,7 +56,7 @@ export class RightService {
   }
 
   /**
-   * Check wether a user has the expected right for a ressource
+   * Check wether a user has the expected right for a resource
    * @param user the userId and groupId concerned by the check
    * @param expect the expected right to check
    * @param rights array of Right for the resource

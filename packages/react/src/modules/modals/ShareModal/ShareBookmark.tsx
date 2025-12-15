@@ -1,4 +1,4 @@
-import { Ref } from 'react';
+import { Ref, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -15,9 +15,16 @@ export const ShareBookmark = ({
   bookmark: BookmarkProps;
   refBookmark: Ref<HTMLInputElement>;
   onBookmarkChange: () => void;
-  onSave: () => void;
+  onSave: () => Promise<void>;
 }) => {
   const { t } = useTranslation();
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveClick = async () => {
+    setIsSaving(true);
+    await onSave();
+    setIsSaving(false);
+  };
 
   return (
     <div className="mt-16">
@@ -39,10 +46,11 @@ export const ShareBookmark = ({
           type="button"
           color="primary"
           variant="ghost"
-          disabled={bookmark.name.length === 0}
+          disabled={bookmark.name.length === 0 || isSaving}
           leftIcon={<IconSave />}
-          onClick={onSave}
+          onClick={handleSaveClick}
           className="text-nowrap"
+          isLoading={isSaving}
         >
           {t('explorer.modal.share.sharebookmark.save')}
         </Button>

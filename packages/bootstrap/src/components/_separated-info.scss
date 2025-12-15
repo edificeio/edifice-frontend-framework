@@ -1,0 +1,13 @@
+@use '../abstracts/' as *;
+
+.separated-info {
+  color: $gray-700;
+
+  &.flex-row > :not(:first-child)::before {
+    content: '';
+    margin: $spacer-12;
+    height: 1.6rem;
+    border: 0;
+    border-left: 1px solid $gray-500;
+  }
+}
