@@ -48,7 +48,7 @@ const BubbleMenuEditInformationPane = ({
       editor.off('selectionUpdate', updateCurrentType);
       editor.off('transaction', updateCurrentType);
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editor]);
 
   const InformationPaneTypeItems: ToolbarItem[] = useMemo(() => {
@@ -60,8 +60,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconInfoCircle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.info'),
-          'className':
-            currentType === 'info' ? 'is-selected' : '',
+          'className': currentType === 'info' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -81,8 +80,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconSuccessOutline />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.success'),
-          'className':
-            currentType === 'success' ? 'is-selected' : '',
+          'className': currentType === 'success' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -102,8 +100,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconAlertTriangle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.warning'),
-          'className':
-            currentType === 'warning' ? 'is-selected' : '',
+          'className': currentType === 'warning' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -125,8 +122,7 @@ const BubbleMenuEditInformationPane = ({
           'aria-label': t(
             'tiptap.tooltip.bubblemenu.information.pane.question',
           ),
-          'className':
-            currentType === 'question' ? 'is-selected' : '',
+          'className': currentType === 'question' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
