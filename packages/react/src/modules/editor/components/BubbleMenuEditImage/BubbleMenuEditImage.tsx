@@ -64,7 +64,7 @@ const BubbleMenuEditImage = ({
         })
         .run();
     },
-    [editor]
+    [editor],
   );
 
   const ImageSizeItems: ToolbarItem[] = useMemo(() => {
@@ -221,10 +221,10 @@ const BubbleMenuEditImage = ({
       getReferencedVirtualElement={() => reference}
     >
       {editable && (
-        <Toolbar 
-          key={"toolbar-edit-image"}
-          className="p-8" 
-          items={ImageSizeItems} 
+        <Toolbar
+          key={'toolbar-edit-image'}
+          className="p-8"
+          items={ImageSizeItems}
         />
       )}
     </BubbleMenu>
