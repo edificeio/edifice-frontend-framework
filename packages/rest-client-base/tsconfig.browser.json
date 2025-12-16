@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "paths": {
+      "@decorators/custom-type.decorator": [
+        "decorators/custom-type.decorator.browser"
+      ]
+    }
+  }
+}
