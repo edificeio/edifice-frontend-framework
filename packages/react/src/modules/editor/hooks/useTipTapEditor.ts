@@ -9,7 +9,9 @@ import { SpeechRecognition } from '@edifice.io/tiptap-extensions/speech-recognit
 import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis';
 import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
 import { Mathematics } from '@tiptap/extension-mathematics';
-import { Color, TextStyleKit, FontFamily } from '@tiptap/extension-text-style';
+import Color from '@tiptap/extension-color';
+import FontFamily from '@tiptap/extension-font-family';
+import { TextStyleKit } from '@tiptap/extension-text-style';
 import { Focus, Placeholder } from '@tiptap/extensions';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
