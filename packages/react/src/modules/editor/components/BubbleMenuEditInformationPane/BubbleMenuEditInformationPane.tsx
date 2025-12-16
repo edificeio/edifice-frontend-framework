@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
@@ -20,10 +20,36 @@ const BubbleMenuEditInformationPane = ({
   editable: boolean;
 }) => {
   const { t } = useTranslation();
+  const [currentType, setCurrentType] = useState<string | null>(null);
 
-  const { selection } = editor.view.state;
+  const getSelectedNode = () => {
+    const { $anchor } = editor.view.state.selection;
+    for (let depth = $anchor.depth; depth >= 0; depth--) {
+      const node = $anchor.node(depth);
+      if (node.type.name === 'information-pane') {
+        return node;
+      }
+    }
+    return null;
+  };
 
-  const selectedNode = selection.$from.node(1);
+  useEffect(() => {
+    const updateCurrentType = () => {
+      const selectedNode = getSelectedNode();
+      setCurrentType(selectedNode?.attrs?.type || null);
+    };
+
+    updateCurrentType();
+
+    editor.on('selectionUpdate', updateCurrentType);
+    editor.on('transaction', updateCurrentType);
+
+    return () => {
+      editor.off('selectionUpdate', updateCurrentType);
+      editor.off('transaction', updateCurrentType);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor]);
 
   const InformationPaneTypeItems: ToolbarItem[] = useMemo(() => {
     return [
@@ -35,7 +61,7 @@ const BubbleMenuEditInformationPane = ({
           'icon': <IconInfoCircle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.info'),
           'className':
-            selectedNode?.attrs?.type === 'info' ? 'is-selected' : '',
+            currentType === 'info' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -56,7 +82,7 @@ const BubbleMenuEditInformationPane = ({
           'icon': <IconSuccessOutline />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.success'),
           'className':
-            selectedNode?.attrs?.type === 'success' ? 'is-selected' : '',
+            currentType === 'success' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -77,7 +103,7 @@ const BubbleMenuEditInformationPane = ({
           'icon': <IconAlertTriangle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.warning'),
           'className':
-            selectedNode?.attrs?.type === 'warning' ? 'is-selected' : '',
+            currentType === 'warning' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -100,7 +126,7 @@ const BubbleMenuEditInformationPane = ({
             'tiptap.tooltip.bubblemenu.information.pane.question',
           ),
           'className':
-            selectedNode?.attrs?.type === 'question' ? 'is-selected' : '',
+            currentType === 'question' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -134,8 +160,7 @@ const BubbleMenuEditInformationPane = ({
         },
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, selectedNode]);
+  }, [t, editor, currentType]);
 
   const reference = useMemo(() => {
     return {
