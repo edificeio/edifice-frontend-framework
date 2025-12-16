@@ -3,6 +3,7 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
+import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
   IconImageSizeLarge,
@@ -29,28 +30,17 @@ const BubbleMenuEditImage = ({
   editable: boolean;
 }) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
   const [currentSize, setCurrentSize] = useState<string | null>(null);
   const [currentWidth, setCurrentWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    const updateCurrentAttributes = () => {
-      const { selection } = editor.view.state;
-      const selectedNode = editor.view.state.doc.nodeAt(selection.anchor);
+    const { selection } = editor.view.state;
+    const selectedNode = editor.view.state.doc.nodeAt(selection.anchor);
 
-      setCurrentSize(selectedNode?.attrs?.size || null);
-      setCurrentWidth(selectedNode?.attrs?.width || null);
-    };
-
-    updateCurrentAttributes();
-
-    editor.on('selectionUpdate', updateCurrentAttributes);
-    editor.on('transaction', updateCurrentAttributes);
-
-    return () => {
-      editor.off('selectionUpdate', updateCurrentAttributes);
-      editor.off('transaction', updateCurrentAttributes);
-    };
-  }, [editor]);
+    setCurrentSize(selectedNode?.attrs?.size || null);
+    setCurrentWidth(selectedNode?.attrs?.width || null);
+  }, [editor, editorState]);
 
   const handleButtonClick = useCallback(
     (buttonSize: ButtonSize) => {
@@ -222,7 +212,7 @@ const BubbleMenuEditImage = ({
     >
       {editable && (
         <Toolbar
-          key={'toolbar-edit-image'}
+          key={`toolbar-${currentSize}-${currentWidth}`}
           className="p-8"
           items={ImageSizeItems}
         />

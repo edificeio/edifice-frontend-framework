@@ -3,6 +3,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
+import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
   IconAlertTriangle,
@@ -20,6 +21,7 @@ const BubbleMenuEditInformationPane = ({
   editable: boolean;
 }) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
   const [currentType, setCurrentType] = useState<string | null>(null);
 
   const getSelectedNode = () => {
@@ -34,22 +36,9 @@ const BubbleMenuEditInformationPane = ({
   };
 
   useEffect(() => {
-    const updateCurrentType = () => {
-      const selectedNode = getSelectedNode();
-      setCurrentType(selectedNode?.attrs?.type || null);
-    };
-
-    updateCurrentType();
-
-    editor.on('selectionUpdate', updateCurrentType);
-    editor.on('transaction', updateCurrentType);
-
-    return () => {
-      editor.off('selectionUpdate', updateCurrentType);
-      editor.off('transaction', updateCurrentType);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor]);
+    const selectedNode = getSelectedNode();
+    setCurrentType(selectedNode?.attrs?.type || null);
+  }, [editor, editorState]);
 
   const InformationPaneTypeItems: ToolbarItem[] = useMemo(() => {
     return [
