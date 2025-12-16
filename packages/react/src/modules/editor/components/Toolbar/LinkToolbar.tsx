@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Editor } from '@tiptap/react';
-import { FloatingMenu } from '@tiptap/react/menus';
+import { BubbleMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
+
+import { useEditorState } from '../../hooks/useEditorState';
 
 import { Toolbar, ToolbarItem } from '../../../../components/Toolbar';
 import {
@@ -32,6 +34,7 @@ const LinkToolbar = ({
   onUnlink,
 }: LinkToolbarProps) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
 
   // Current Linker node (or Hyperlink mark) attributes
   const [linkAttrs, setLinkAttrs] = useState<Record<string, any> | undefined>();
@@ -87,8 +90,7 @@ const LinkToolbar = ({
     else if (editor?.isActive('hyperlink'))
       setLinkAttrs(editor.getAttributes('hyperlink'));
     else setLinkAttrs(undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor?.state]);
+  }, [editor, editorState]);
 
   const handleShouldShow = () =>
     (editor?.isEditable &&
@@ -98,13 +100,13 @@ const LinkToolbar = ({
   return (
     <>
       {editor && (
-        <FloatingMenu
+        <BubbleMenu
           editor={editor}
           options={floatingOptions}
           shouldShow={handleShouldShow}
         >
           <Toolbar className="p-4" items={LinkToolbarItems} />
-        </FloatingMenu>
+        </BubbleMenu>
       )}
     </>
   );
