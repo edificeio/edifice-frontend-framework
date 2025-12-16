@@ -1,9 +1,6 @@
 import { RefAttributes, useEffect, useMemo, useState } from 'react';
 
-import {
-  Editor,
-  findParentNodeClosestToPos,
-} from '@tiptap/react';
+import { Editor, findParentNodeClosestToPos } from '@tiptap/react';
 import { FloatingMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
 
