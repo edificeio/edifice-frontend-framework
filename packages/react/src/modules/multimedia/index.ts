@@ -5,6 +5,7 @@ export * from './ImagePicker';
 export * from './FileCard';
 export * from './Linker';
 export * from './MediaLibrary';
+export * from './UploadCard';
 export * from './VideoEmbed';
 export * from './VideoRecorder';
 export * from './Workspace';
