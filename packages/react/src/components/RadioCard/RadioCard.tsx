@@ -1,55 +1,60 @@
-import { ChangeEvent, forwardRef, Ref } from 'react';
+import { ChangeEvent, forwardRef, Ref, useMemo } from 'react';
 
 import clsx from 'clsx';
-import { Flex } from '../Flex';
-import Radio from '../Radio/Radio';
+import { RadioCardContext } from './RadioCardContext';
+import RadioCardTitle from './RadioCardTitle';
+import RadioCardContent from './RadioCardContent';
 
 export interface RadioCardProps {
   /**
    * The currently selected value in the radio group.
    */
   selectedValue: string;
+
   /**
    * The value associated with this specific radio card.
    */
   value: string;
-  /**
-   * The main label text for the radio card.
-   */
-  label: string;
+
+  /* Children Node */
+  children: React.ReactNode;
+
   /**
    * Callback function triggered when the radio card selection changes.
    */
-
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+
   /**
    * Optional additional CSS class names to apply to the radio card.
    */
   className?: string;
-  /**
-   * Optional description text displayed below the label.
-   */
-  description?: string;
+
   /**
    * Optional model value associated with the radio card, can be a string, boolean, or number.
    */
   model?: string | boolean | number;
+
   /**
    * Optional name for the radio group, used to group radio cards together.
    */
   groupName?: string;
+
+  /**
+   * Optional hide Radio Button
+   */
+  hideRadioButton?: boolean;
 }
 
-const RadioCard = forwardRef(
+const Root = forwardRef(
   (
     {
       selectedValue,
       value,
       onChange,
-      description,
-      label,
+      children,
       model = '',
       groupName = 'group',
+      hideRadioButton = false,
       ...restProps
     }: RadioCardProps,
     ref: Ref<HTMLLabelElement>,
@@ -68,46 +73,45 @@ const RadioCard = forwardRef(
       }
     };
 
+    const values = useMemo(
+      () => ({
+        value,
+        model,
+        groupName,
+        isSelected,
+        onChange,
+        hideRadioButton,
+      }),
+      [value, model, groupName, isSelected, onChange, hideRadioButton],
+    );
+
     return (
-      <label
-        ref={ref}
-        role="button"
-        tabIndex={0}
-        className={clsx(
-          'border py-24 border-2 rounded-3',
-          isSelected && 'border-secondary',
-          !isSelected && 'border-light',
-          restProps.className,
-        )}
-        onKeyDown={handleKeyDown}
-        {...restProps}
-      >
-        <Flex justify="between" className="px-24">
-          <h4 className="mb-8" id={`radio-card-label-${value}`}>
-            {label}
-          </h4>
-          <Radio
-            model={model}
-            name={groupName}
-            value={value}
-            checked={isSelected}
-            onChange={onChange}
-            aria-labelledby={`radio-card-label-${value}`}
-          />
-        </Flex>
-        {description && (
-          <p
-            id={`radio-card-description-${value}`}
-            className="px-24 text-gray-700 pe-32"
-          >
-            {description}
-          </p>
-        )}
-      </label>
+      <RadioCardContext.Provider value={values}>
+        <label
+          ref={ref}
+          role="button"
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+          {...restProps}
+          className={clsx(
+            'border py-24 border-2 rounded-3',
+            isSelected && 'border-secondary',
+            !isSelected && 'border-light',
+            restProps.className,
+          )}
+        >
+          {children}
+        </label>
+      </RadioCardContext.Provider>
     );
   },
 );
 
-RadioCard.displayName = 'RadioCard';
+Root.displayName = 'RadioCard';
+
+const RadioCard = Object.assign(Root, {
+  Title: RadioCardTitle,
+  Content: RadioCardContent,
+});
 
 export default RadioCard;
