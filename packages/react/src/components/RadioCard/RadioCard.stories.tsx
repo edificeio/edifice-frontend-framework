@@ -11,7 +11,6 @@ const meta: Meta<typeof RadioCard> = {
   title: 'Forms/RadioCard',
   component: RadioCard,
   args: {
-    label: '',
     value: '',
     model: '',
     onChange: () => {},
@@ -42,22 +41,22 @@ export const Base: Story = {
 
     const options = [
       {
-        label: 'Classe préparatoire',
+        title: 'Classe préparatoire',
         value: 'CP',
-        description:
-          'Première année du cycle primaire, axée sur l’apprentissage de la lecture, de l’écriture et des bases en mathématiques.',
+        content:
+          "Première année du cycle primaire, axée sur l'apprentissage de la lecture, de l'écriture et des bases en mathématiques.",
       },
       {
-        label: 'Cours élémentaire 1',
+        title: 'Cours élémentaire 1',
         value: 'CM1',
-        description:
+        content:
           'Avant-dernière année du primaire, où les élèves approfondissent leurs connaissances fondamentales et développent leur autonomie.',
       },
       {
-        label: 'Cours élémentaire 2',
+        title: 'Cours élémentaire 2',
         value: 'CM2',
-        description:
-          'Dernière année du primaire, préparant les élèves à l’entrée au collège avec un renforcement des acquis scolaires.',
+        content:
+          "Dernière année du primaire, préparant les élèves à l'entrée au collège avec un renforcement des acquis scolaires.",
       },
     ];
 
@@ -68,12 +67,15 @@ export const Base: Story = {
             {options.map((option, index) => (
               <RadioCard
                 key={index}
-                label={option.label}
                 value={option.value}
                 selectedValue={selectedValue}
-                description={option.description}
                 onChange={handleChange}
-              />
+              >
+                <RadioCard.Title>{option.title}</RadioCard.Title>
+                <RadioCard.Content>
+                  <p className="px-24 text-gray-700 pe-32">{option.content}</p>
+                </RadioCard.Content>
+              </RadioCard>
             ))}
           </Flex>
         </div>
