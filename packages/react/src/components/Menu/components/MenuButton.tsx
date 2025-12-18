@@ -35,14 +35,14 @@ export const MenuButton = (props: Partial<MenuButtonProps>) => {
       {...childProps}
       style={size === 'lg' ? { height: 'auto' } : undefined}
     >
-      <span
-        className={clsx('text-truncate', {
+      <div
+        className={clsx('text-truncate w-100 text-start', {
           'text-truncate-2 text-start ms-0': size === 'lg',
         })}
         style={{ overflowWrap: 'break-word' }}
       >
         {children}
-      </span>
+      </div>
     </Button>
   );
 };
