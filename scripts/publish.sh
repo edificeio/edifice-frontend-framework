@@ -84,7 +84,7 @@ publish () {
   if [ "$DRY_RUN" = "true" ]; then
     docker compose run -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm publish -r --no-git-checks --tag $TAG_BRANCH --dry-run"
   else
-    docker compose run -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm publish -r --no-git-checks --tag $TAG_BRANCH"
+    docker compose run -e NPM_TOKEN=$NPM_TOKEN --rm -u "$USER_UID:$GROUP_GID" node sh -c "pnpm publish -r --no-git-checks --tag $TAG_BRANCH --access public"
   fi
 }
 

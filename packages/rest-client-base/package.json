@@ -1,0 +1,58 @@
+{
+  "name": "@edifice.io/rest-client-base",
+  "version": "2.5.4",
+  "description": "Abstract base for Edifice client SDKs (no application-specific logic)",
+  "private": false,
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "main": "./dist/node/index.js",
+  "module": "./dist/browser/index.js",
+  "types": "./dist/node/index.d.ts",
+  "bin": {
+    "rest-client-base": "./dist/node/cli.cjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "default": "./dist/browser/index.js"
+    },
+    "./react-native": {
+      "types": "./dist/react-native/index.d.ts",
+      "default": "./dist/react-native/index.js"
+    }
+  },
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "format": "prettier --write src",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "build": "pnpm run build:node && pnpm run build:browser && pnpm run build:react-native",
+    "build:node": "vite build --config vite.config.node.ts && tsc src/bin/cli.ts --outDir dist/node --module commonjs --target ES2020 && mv dist/node/cli.js dist/node/cli.cjs",
+    "build:browser": "vite build --config vite.config.browser.ts",
+    "build:react-native": "vite build --config vite.config.react-native.ts",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/node && tsc --emitDeclarationOnly -p tsconfig.browser.json --outDir dist/browser && tsc --emitDeclarationOnly -p tsconfig.browser.json --outDir dist/react-native"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "glob": "11.0.0",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.14.2",
+    "@edifice.io/client": "workspace:*",
+    "@nestjs/swagger": "11.2.0",
+    "path": "0.12.7",
+    "vite": "5.4.14",
+    "vite-plugin-dts": "4.5.4"
+  }
+}
