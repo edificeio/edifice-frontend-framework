@@ -37,7 +37,6 @@ export const Attachment = Node.create<AttachmentOptions>({
   renderHTML({ HTMLAttributes }) {
     const links = HTMLAttributes.links;
 
-    console.log('Rendering links in Attachment node:', links);
     const renderedLinks = links.map((el) => {
       return [
         'a',
