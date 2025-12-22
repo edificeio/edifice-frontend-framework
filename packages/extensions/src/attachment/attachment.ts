@@ -12,6 +12,12 @@ declare module '@tiptap/core' {
     };
   }
 }
+interface AttachmentAttrsProps {
+  name: string;
+  href: string;
+  dataDocumentId: string;
+  dataContentType: string;
+}
 
 export const Attachment = Node.create<AttachmentOptions>({
   name: 'attachments',
@@ -41,10 +47,10 @@ export const Attachment = Node.create<AttachmentOptions>({
       return [
         'a',
         {
-          name: el.name,
-          href: el.href,
-          documentId: el.documentId,
-          dataContentType: el.dataContentType,
+          'name': el.name,
+          'href': el.href,
+          'data-document-id': el['data-document-id'],
+          'data-content-type': el['data-content-type'],
         },
         el.name,
       ];
@@ -59,22 +65,22 @@ export const Attachment = Node.create<AttachmentOptions>({
         default: [],
         parseHTML: (element) => {
           const links = element.getElementsByTagName('a');
-          const parsedLinks = [];
+          const parsedLinks: AttachmentAttrsProps[] = [];
 
           for (let i = 0; i < links.length; i++) {
             const link = links[i];
             const href = link.getAttribute('href');
             const name = link.textContent;
             const regexResult = href.match(/([^/]+$)/);
-            const documentId =
+            const dataDocumentId =
               link.getAttribute('data-document-id') ||
               (regexResult && regexResult[0]);
             const dataContentType = link.getAttribute('data-content-type');
 
             parsedLinks.push({
-              href,
-              name,
-              documentId,
+              href: href,
+              name: name,
+              dataDocumentId,
               dataContentType,
             });
           }
@@ -83,11 +89,11 @@ export const Attachment = Node.create<AttachmentOptions>({
         },
         renderHTML: (attributes) => {
           return {
-            links: attributes.links.map((link) => ({
-              href: link.href,
-              name: link.name,
-              documentId: link.documentId,
-              dataContentType: link.dataContentType,
+            links: attributes.links.map((link: AttachmentAttrsProps) => ({
+              'href': link.href,
+              'name': link.name,
+              'data-document-id': link.dataDocumentId,
+              'data-content-type': link.dataContentType,
             })),
           };
         },

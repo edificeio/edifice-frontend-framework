@@ -15,7 +15,7 @@ interface AttachmentProps {
 interface AttachmentAttrsProps {
   name: string;
   href: string;
-  documentId: string;
+  dataDocumentId: string;
   dataContentType: string;
 }
 
@@ -62,6 +62,7 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                     <>
                       <a
                         href={attachment.href}
+                        data-document-id={attachment.dataDocumentId}
                         data-content-type={attachment.dataContentType}
                         download
                       >
@@ -81,7 +82,7 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                           icon={<IconDelete />}
                           variant="ghost"
                           onClick={() =>
-                            handleDelete(index, attachment.documentId)
+                            handleDelete(index, attachment.dataDocumentId)
                           }
                         />
                       )}
