@@ -66,16 +66,16 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
             const href = link.getAttribute('href');
             const name = link.textContent;
             const regexResult = href.match(/([^/]+$)/);
-            const documentId =
+            const dataDocumentId =
               link.getAttribute('data-document-id') ||
               (regexResult && regexResult[0]);
             const dataContentType = link.getAttribute('data-content-type');
 
             parsedLinks.push({
-              'href': href,
-              'name': name,
-              'data-document-id': documentId,
-              'data-content-type': dataContentType,
+              href: href,
+              name: name,
+              dataDocumentId,
+              dataContentType,
             });
           }
 
@@ -84,10 +84,10 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
         renderHTML: (attributes) => {
           return {
             links: attributes.links.map((link) => ({
-              'href': link['href'],
-              'name': link['name'],
-              'data-document-id': link['data-document-id'],
-              'data-content-type': link['data-content-type'],
+              'href': link.href,
+              'name': link.name,
+              'data-document-id': link.dataDocumentId,
+              'data-content-type': link.dataContentType,
             })),
           };
         },
