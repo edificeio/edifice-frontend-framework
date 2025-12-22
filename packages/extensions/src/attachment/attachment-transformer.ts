@@ -37,7 +37,6 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
   renderHTML({ HTMLAttributes }) {
     const links = HTMLAttributes.links;
 
-    console.log('Rendering links:', links);
     const renderedLinks = links.map((el) => {
       return [
         'a',
