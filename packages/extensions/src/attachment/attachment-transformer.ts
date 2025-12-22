@@ -37,14 +37,15 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
   renderHTML({ HTMLAttributes }) {
     const links = HTMLAttributes.links;
 
+    console.log('Rendering links:', links);
     const renderedLinks = links.map((el) => {
       return [
         'a',
         {
-          name: el.name,
-          href: el.href,
-          documentId: el.documentId,
-          dataContentType: el.dataContentType,
+          'name': el.name,
+          'href': el.href,
+          'data-document-id': el['data-document-id'],
+          'data-content-type': el['data-content-type'],
         },
         el.name,
       ];
@@ -72,10 +73,10 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
             const dataContentType = link.getAttribute('data-content-type');
 
             parsedLinks.push({
-              href,
-              name,
-              documentId,
-              dataContentType,
+              'href': href,
+              'name': name,
+              'data-document-id': documentId,
+              'data-content-type': dataContentType,
             });
           }
 
@@ -84,10 +85,10 @@ export const AttachmentTransformer = Node.create<AttachmentOptions>({
         renderHTML: (attributes) => {
           return {
             links: attributes.links.map((link) => ({
-              href: link.href,
-              name: link.name,
-              documentId: link.documentId,
-              dataContentType: link.dataContentType,
+              'href': link['href'],
+              'name': link['name'],
+              'data-document-id': link['data-document-id'],
+              'data-content-type': link['data-content-type'],
             })),
           };
         },
