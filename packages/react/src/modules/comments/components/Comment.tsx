@@ -11,9 +11,9 @@ import { CommentAvatar } from './CommentAvatar';
 import { CommentDate } from './CommentDate';
 import { CommentTitle } from './CommentTitle';
 //import { DeleteModal } from './DeleteModal';
-import { TextCounter } from './TextCounter';
 import { CommentDeleted } from './CommentDeleted';
 import { CommentReplies } from './CommentReplies';
+import { TextCounter } from './TextCounter';
 
 const DeleteModal = lazy(() => import('./DeleteModal'));
 
@@ -69,6 +69,11 @@ export const Comment = ({
   ) => {
     resizeTextarea();
     setValue(event.target.value);
+  };
+
+  const handleDeleteComment = (id: string) => {
+    onDeleteComment(id);
+    setIsDeleteModalOpen(false);
   };
 
   return (
@@ -195,7 +200,7 @@ export const Comment = ({
               <DeleteModal
                 isOpen={isDeleteModalOpen}
                 onCancel={() => setIsDeleteModalOpen(false)}
-                onSuccess={() => onDeleteComment(id)}
+                onSuccess={() => handleDeleteComment(id)}
               />
             )}
           </Suspense>

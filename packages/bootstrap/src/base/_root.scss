@@ -1,0 +1,19 @@
+@use '../abstracts/' as *;
+
+// Custom CSS variables for Edifice
+// This file is imported after Bootstrap's root.scss to add our custom CSS variables
+:root {
+  /* Spacers */
+
+  --#{$prefix}spacer-0: #{$spacer-0};
+  --#{$prefix}spacer-2: #{$spacer-2};
+  --#{$prefix}spacer-4: #{$spacer-4};
+  --#{$prefix}spacer-8: #{$spacer-8};
+  --#{$prefix}spacer-12: #{$spacer-12};
+  --#{$prefix}spacer-16: #{$spacer-16};
+  --#{$prefix}spacer-24: #{$spacer-24};
+  --#{$prefix}spacer-32: #{$spacer-32};
+  --#{$prefix}spacer-40: #{$spacer-40};
+  --#{$prefix}spacer-48: #{$spacer-48};
+  --#{$prefix}spacer-64: #{$spacer-64};
+}

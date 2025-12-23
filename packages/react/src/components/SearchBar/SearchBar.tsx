@@ -10,8 +10,10 @@ import FormControl from '../Form/FormControl';
 /**
  * Base props shared by both SearchBar variants
  */
-export interface BaseProps
-  extends Omit<React.ComponentPropsWithoutRef<'input'>, 'size'> {
+export interface BaseProps extends Omit<
+  React.ComponentPropsWithoutRef<'input'>,
+  'size'
+> {
   /**
    * String or template literal key for i18next translation
    */

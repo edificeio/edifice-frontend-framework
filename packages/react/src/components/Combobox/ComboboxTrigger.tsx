@@ -11,8 +11,7 @@ import { useDropdownContext } from '../Dropdown/DropdownContext';
 import { FormControl } from '../Form';
 import Input from '../Input/Input';
 
-export interface ComboboxTriggerProps
-  extends React.ComponentPropsWithRef<'input'> {
+export interface ComboboxTriggerProps extends React.ComponentPropsWithRef<'input'> {
   handleSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleSearchInputKeyUp: (event: KeyboardEvent<HTMLInputElement>) => void;
   value: string;

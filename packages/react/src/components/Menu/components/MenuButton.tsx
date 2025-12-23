@@ -7,10 +7,13 @@ export type MenuButtonProps = Pick<
   'children' | 'leftIcon' | 'rightIcon' | 'onClick'
 > & {
   selected: boolean;
+  className?: string;
+  size?: 'md' | 'lg';
 };
 
 export const MenuButton = (props: Partial<MenuButtonProps>) => {
-  const { selected, leftIcon, rightIcon, onClick, children } = props;
+  const { selected, leftIcon, rightIcon, onClick, children, className, size } =
+    props;
 
   const { childProps } = useMenuContext();
 
@@ -18,15 +21,28 @@ export const MenuButton = (props: Partial<MenuButtonProps>) => {
     <Button
       variant="ghost"
       color="tertiary"
-      className={clsx('stack w-100', {
-        selected: selected,
-      })}
+      className={clsx(
+        'stack w-100 overflow-hidden',
+        {
+          'selected': selected,
+          'menu-button-lg': size === 'lg',
+        },
+        className,
+      )}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       onClick={onClick}
       {...childProps}
+      style={size === 'lg' ? { height: 'auto' } : undefined}
     >
-      {children}
+      <div
+        className={clsx('text-truncate w-100 text-start', {
+          'text-truncate-2 text-start ms-0': size === 'lg',
+        })}
+        style={{ overflowWrap: 'break-word' }}
+      >
+        {children}
+      </div>
     </Button>
   );
 };
