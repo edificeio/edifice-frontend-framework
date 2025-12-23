@@ -16,8 +16,7 @@ import { Dropdown } from '../Dropdown';
 import { Loading } from '../Loading';
 import ComboboxTrigger from './ComboboxTrigger';
 
-export interface ComboboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface ComboboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   onSearchInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   options: OptionListItemType[];
   value: string;

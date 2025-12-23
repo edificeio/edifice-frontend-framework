@@ -35,7 +35,7 @@ const Flex = forwardRef<HTMLElement, FlexProps>(
       align && `align-items-${align}`,
       justify && `justify-content-${justify}`,
       gap && `gap-${gap}`,
-      wrap && `flex-${wrap}`,
+      wrap && `flex-${wrap === 'reverse' ? 'wrap-reverse' : wrap}`,
       className,
     );
 

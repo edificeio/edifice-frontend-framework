@@ -7,8 +7,10 @@ import { useFormControl } from '../Form/FormContext';
 
 export type OmitLabelProps = 'htmlFor';
 
-export interface LabelProps
-  extends Omit<React.ComponentPropsWithRef<'label'>, OmitLabelProps> {
+export interface LabelProps extends Omit<
+  React.ComponentPropsWithRef<'label'>,
+  OmitLabelProps
+> {
   /**
    * Display Icon to the left
    */

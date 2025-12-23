@@ -117,7 +117,7 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
             const link = (result as WorkspaceElement[])[i];
             innerHtml += `<a href="/workspace/${
               link.public ? 'pub/' : ''
-            }document/${link._id}">${link.name}
+            }document/${link._id}" data-content-type="${link.metadata?.['content-type']}">${link.name}
             </a>`;
           }
           const richContent = `<div class="attachments">

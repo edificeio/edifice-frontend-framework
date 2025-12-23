@@ -7,12 +7,13 @@ import {
   type ShareRightAction,
   type ShareRightActionDisplayName,
   type ShareRightWithVisibles,
+  type ShareUrls,
 } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import { useToast, useUser } from '../../../../hooks';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
-import { ShareOptions, ShareResourceMutation } from '../ShareModal';
+import { ShareOptions, ShareResourceMutation } from '../ShareResources';
 
 interface UseShareResourceModalProps {
   /**
@@ -29,11 +30,16 @@ interface UseShareResourceModalProps {
   resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareResource?: ShareResourceMutation;
   onSuccess: () => void;
-  setIsLoading: (value: boolean) => void;
+  setIsLoading?: (value: boolean) => void;
+  resourceShareRights?: ShareRightWithVisibles;
+  resourceShareRightActions?: ShareRightAction[];
+  filteredActions?: ShareRightActionDisplayName[];
+  shareUrls?: ShareUrls;
 }
 
 type State = {
   isSharing: boolean;
+  isDirty?: boolean;
   shareRights: ShareRightWithVisibles;
   shareRightActions: ShareRightAction[];
 };
@@ -47,6 +53,7 @@ export type ShareAction =
 
 const initialState: State = {
   isSharing: false,
+  isDirty: false,
   shareRights: {
     rights: [],
     visibleBookmarks: [],
@@ -61,11 +68,11 @@ function reducer(state: State, action: ShareAction) {
     case 'init':
       return { ...state, ...action.payload };
     case 'deleteRow':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'updateShareRights':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'toggleRight':
-      return { ...state, shareRights: action.payload };
+      return { ...state, shareRights: action.payload, isDirty: true };
     case 'isSharing':
       return { ...state, isSharing: action.payload };
     default:
@@ -80,6 +87,8 @@ export default function useShare({
   shareResource,
   setIsLoading,
   onSuccess,
+  filteredActions,
+  shareUrls,
 }: UseShareResourceModalProps) {
   const { appCode } = useEdificeClient();
   const { user, avatar } = useUser();
@@ -95,14 +104,25 @@ export default function useShare({
     (async () => {
       try {
         const [shareRightActions, shareRights] = await Promise.all([
-          odeServices.share().getActionsForApp(appCode),
-          odeServices.share().getRightsForResource(appCode, resourceId),
+          odeServices
+            .share()
+            .getActionsForApp(appCode, shareUrls?.getShareMapping),
+          odeServices
+            .share()
+            .getRightsForResource(appCode, resourceId, shareUrls),
         ]);
+
+        // filter actions if needed
+        const filteredShareRightActions = filteredActions
+          ? shareRightActions.filter((action) =>
+              filteredActions.includes(action.id),
+            )
+          : shareRightActions;
 
         dispatch({
           type: 'init',
           payload: {
-            shareRightActions,
+            shareRightActions: filteredShareRightActions,
             shareRights,
           },
         });
@@ -110,7 +130,7 @@ export default function useShare({
         console.error(error);
       }
       {
-        setIsLoading(false);
+        setIsLoading?.(false);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -214,7 +234,7 @@ export default function useShare({
     }
   };
 
-  const handleShare = async () => {
+  const handleShare = async (notify = true) => {
     dispatch({
       type: 'isSharing',
       payload: true,
@@ -253,12 +273,19 @@ export default function useShare({
           resourceId: resourceId,
           rights: shares,
         });
-        notifySuccess(result);
+        if (notify) {
+          notifySuccess(result);
+        }
       } else {
         const result = await odeServices
           .share()
-          .saveRights(appCode, resourceId, shares);
-        notifySuccess(result);
+          .saveRights(appCode, resourceId, shares, shareUrls);
+        if (notify) {
+          notifySuccess(result);
+        }
+      }
+      if (shareUrls?.getResourceRights) {
+        odeServices.cache().clearCache(shareUrls.getResourceRights);
       }
       onSuccess();
     } catch (error) {
@@ -309,5 +336,6 @@ export default function useShare({
     handleDeleteRow,
     handleShare,
     toggleRight,
+    isDirty: !!state.isDirty,
   };
 }
