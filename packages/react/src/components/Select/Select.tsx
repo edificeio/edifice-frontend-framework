@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import SelectTrigger from './SelectTrigger';
 import Dropdown, { DropdownProps } from '../Dropdown/Dropdown';
 import { DropdownTriggerProps } from '../Dropdown/DropdownTrigger';
+import SelectTrigger from './SelectTrigger';
 
 export interface OptionsType {
   /**
@@ -22,8 +22,9 @@ export interface OptionsType {
 }
 
 export interface SelectProps
-  extends Omit<DropdownProps, 'children'>,
-    Omit<DropdownTriggerProps, 'badgeContent'> {
+  extends
+    Omit<DropdownProps, 'children'>,
+    Omit<DropdownTriggerProps, 'badgeContent' | 'defaultValue'> {
   /**
    * Controlled value
    */
@@ -40,6 +41,10 @@ export interface SelectProps
    * Callback to get value
    */
   onValueChange?: (option: OptionsType | string) => void;
+  /**
+   * Default value
+   */
+  defaultValue?: string;
 }
 
 /**
@@ -58,6 +63,7 @@ const Select = ({
   disabled,
   placeholderOption,
   onValueChange,
+  defaultValue,
 }: SelectProps) => {
   const [localValue, setLocalValue] = useState<OptionsType | string>();
 
@@ -79,6 +85,19 @@ const Select = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localValue]);
 
+  useEffect(() => {
+    if (defaultValue) {
+      const foundOption = options.find((option) => {
+        const value = typeof option === 'object' ? option.value : option;
+        return value === defaultValue;
+      });
+      if (foundOption !== undefined) {
+        setLocalValue(foundOption);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const label = typeof localValue === 'object' ? localValue.label : localValue;
   const iconChange =
     typeof localValue === 'object' ? localValue.icon : undefined;
@@ -87,7 +106,9 @@ const Select = ({
     <Dropdown overflow={overflow} block={block}>
       <SelectTrigger
         icon={iconChange || icon}
-        label={t(label || placeholderOption)}
+        label={
+          <span className="text-truncate">{t(label || placeholderOption)}</span>
+        }
         variant={variant}
         size={size}
         disabled={disabled}

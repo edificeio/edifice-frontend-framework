@@ -6,10 +6,6 @@
 
       span {
         justify-content: start;
-
-        & > *:nth-child(2) {
-          margin-left: auto;
-        }
       }
 
       &.selected {
@@ -20,6 +16,18 @@
       &.selected:hover {
         --edifice-btn-bg: var(--edifice-secondary-200);
         --edifice-btn-hover-bg: var(--edifice-secondary-200);
+      }
+    }
+
+    &.menu-button-lg {
+      height: auto;
+
+      svg {
+        width: inherit;
+        min-width: 2.4rem;
+        height: inherit;
+        min-height: 2.4rem;
+        margin: 0.8rem;
       }
     }
   }

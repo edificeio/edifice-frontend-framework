@@ -24,6 +24,7 @@ export { default as IconCantoo } from './IconCantoo';
 export { default as IconCenter } from './IconCenter';
 export { default as IconCheck } from './IconCheck';
 export { default as IconChecklist } from './IconChecklist';
+export { default as IconClockAlert } from './IconClockAlert';
 export { default as IconClock } from './IconClock';
 export { default as IconCloseFullScreen } from './IconCloseFullScreen';
 export { default as IconClose } from './IconClose';

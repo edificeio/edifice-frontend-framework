@@ -60,7 +60,11 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                   name={attachment.name}
                   options={
                     <>
-                      <a href={attachment.href} download>
+                      <a
+                        href={attachment.href}
+                        data-content-type={attachment.dataContentType}
+                        download
+                      >
                         <IconButton
                           aria-label={t('tiptap.attachments.download')}
                           color="tertiary"
