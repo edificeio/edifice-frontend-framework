@@ -135,6 +135,7 @@ export { default as IconSplitCells } from './IconSplitCells';
 export { default as IconSquareRoot } from './IconSquareRoot';
 export { default as IconStarFull } from './IconStarFull';
 export { default as IconStar } from './IconStar';
+export { default as IconSubmitToValidate } from './IconSubmitToValidate';
 export { default as IconSubscript } from './IconSubscript';
 export { default as IconSuccessFill } from './IconSuccessFill';
 export { default as IconSuccessOutline } from './IconSuccessOutline';
