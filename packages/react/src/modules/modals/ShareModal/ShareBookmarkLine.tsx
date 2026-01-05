@@ -13,10 +13,10 @@ import {
   IconRafterDown,
   IconUsers,
 } from '../../icons/components';
-import { hasRight } from './utils/hasRight';
-import { showShareRightLine } from './utils/showShareRightLine';
 import { useShareRightDisabled } from './hooks/useShareRightDisabled';
 import { useShareRightVisible } from './hooks/useShareRightVisible';
+import { hasRight } from './utils/hasRight';
+import { showShareRightLine } from './utils/showShareRightLine';
 
 export const ShareBookmarkLine = ({
   shareRights,
@@ -115,12 +115,14 @@ export const ShareBookmarkLine = ({
                 checked={hasRight(shareRight, shareRightAction)}
                 onChange={() => toggleRight(shareRight, shareRightAction.id)}
                 disabled={isDisabled}
+                data-testid={`share-right-${shareRightAction.id}-checkbox`}
               />
             </td>
           ))}
           <td>
             {!shareRight.isBookmarkMember && !isDisabled && (
               <IconButton
+                data-testid="share-right-close-button"
                 aria-label={t('close')}
                 color="tertiary"
                 icon={<IconClose />}

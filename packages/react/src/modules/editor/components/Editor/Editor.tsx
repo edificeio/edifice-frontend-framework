@@ -187,6 +187,7 @@ const Editor = forwardRef(
           )}
           <Flex direction="row">
             <EditorContent
+              data-testid="editor-content"
               id={id ?? editorId}
               editor={editor}
               className={contentClass}
