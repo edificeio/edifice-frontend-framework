@@ -416,6 +416,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
         </div>
         <div className="mt-16">
           <Button
+            data-testid="share-bookmark-show-button"
             color="tertiary"
             leftIcon={<IconBookmark />}
             rightIcon={
