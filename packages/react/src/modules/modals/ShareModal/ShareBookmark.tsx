@@ -34,6 +34,7 @@ export const ShareBookmark = ({
       >
         <div className="flex-fill">
           <FormControl.Input
+            data-testid="share-bookmark-name-input"
             key={bookmark.id}
             ref={refBookmark}
             onChange={onBookmarkChange}
@@ -43,6 +44,7 @@ export const ShareBookmark = ({
           />
         </div>
         <Button
+          data-testid="share-bookmark-save-button"
           type="button"
           color="primary"
           variant="ghost"
