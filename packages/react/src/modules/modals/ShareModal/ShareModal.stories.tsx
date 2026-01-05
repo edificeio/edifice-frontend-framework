@@ -26,9 +26,5 @@ export const Default: Story = {
     shareOptions: mockShareOptions,
     onSuccess: () => alert('Shared!'),
   },
-  render: (args) => (
-    <>
-      <ShareModal {...args} isOpen={true} />
-    </>
-  ),
+  render: (args) => <ShareModal {...args} isOpen={true} />,
 };

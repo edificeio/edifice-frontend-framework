@@ -1,6 +1,6 @@
 import { ShareRightActionDisplayName } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
+import { useRef } from 'react';
 import ShareResources, {
   ShareOptions,
   ShareResourcesRef,
@@ -36,9 +36,10 @@ export default meta;
 type Story = StoryObj<typeof ShareResources>;
 
 export const Default: Story = {
-  render: (args, { ref }) => (
-    <ShareResources {...args} ref={ref as React.Ref<ShareResourcesRef>} />
-  ),
+  render: (args) => {
+    const ref = useRef<ShareResourcesRef>(null);
+    return <ShareResources {...args} ref={ref} />;
+  },
 };
 
 export const OverrideUrls: Story = {
@@ -53,9 +54,10 @@ export const OverrideUrls: Story = {
       filteredActions: ['read', 'comment'] as ShareRightActionDisplayName[],
     },
   },
-  render: (args, { ref }) => (
-    <ShareResources {...args} ref={ref as React.Ref<ShareResourcesRef>} />
-  ),
+  render: (args) => {
+    const ref = useRef<ShareResourcesRef>(null);
+    return <ShareResources {...args} ref={ref} />;
+  },
 };
 
 export const FilterActions: Story = {
@@ -65,7 +67,8 @@ export const FilterActions: Story = {
       filteredActions: ['read', 'comment'] as ShareRightActionDisplayName[],
     },
   },
-  render: (args, { ref }) => (
-    <ShareResources {...args} ref={ref as React.Ref<ShareResourcesRef>} />
-  ),
+  render: (args) => {
+    const ref = useRef<ShareResourcesRef>(null);
+    return <ShareResources {...args} ref={ref} />;
+  },
 };
