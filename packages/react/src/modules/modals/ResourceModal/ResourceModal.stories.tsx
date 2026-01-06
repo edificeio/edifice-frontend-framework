@@ -1,11 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react';
 
 import { ResourceModal } from './ResourceModal';
-import { FormControl } from '../../../components';
+import { Button, FormControl } from '../../../components';
+import { useToggle } from '../../../hooks';
 
 const meta: Meta<typeof ResourceModal> = {
   title: 'Modules/ResourceModal',
   component: ResourceModal,
+  decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
   parameters: {
     layout: 'centered',
     docs: {
@@ -78,6 +80,37 @@ export const Create: Story = {
     mode: 'create',
     currentFolder: { id: 'default' },
   },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    function handleOpenModal() {
+      toggle(true);
+    }
+
+    function handleCloseModal() {
+      toggle(false);
+    }
+
+    return (
+      <div style={{ padding: '2em' }}>
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open Resource Modal
+        </Button>
+        {isOpen && (
+          <ResourceModal
+            {...args}
+            isOpen={isOpen}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </div>
+    );
+  },
 };
 
 /**
@@ -104,6 +137,37 @@ export const CreateWithContribution: Story = {
       </div>
     ),
   },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    function handleOpenModal() {
+      toggle(true);
+    }
+
+    function handleCloseModal() {
+      toggle(false);
+    }
+
+    return (
+      <div style={{ padding: '2em' }}>
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open Resource Modal
+        </Button>
+        {isOpen && (
+          <ResourceModal
+            {...args}
+            isOpen={isOpen}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </div>
+    );
+  },
 };
 
 /**
@@ -114,6 +178,37 @@ export const CreateWithCustomApp: Story = {
     mode: 'create',
     appCode: 'blog',
     currentFolder: { id: 'default' },
+  },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    function handleOpenModal() {
+      toggle(true);
+    }
+
+    function handleCloseModal() {
+      toggle(false);
+    }
+
+    return (
+      <div style={{ padding: '2em' }}>
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open Resource Modal
+        </Button>
+        {isOpen && (
+          <ResourceModal
+            {...args}
+            isOpen={isOpen}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </div>
+    );
   },
 };
 
@@ -133,6 +228,37 @@ export const CreateWithCustomTranslations: Story = {
       create: 'Create Custom',
     },
   },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    function handleOpenModal() {
+      toggle(true);
+    }
+
+    function handleCloseModal() {
+      toggle(false);
+    }
+
+    return (
+      <div style={{ padding: '2em' }}>
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open Resource Modal
+        </Button>
+        {isOpen && (
+          <ResourceModal
+            {...args}
+            isOpen={isOpen}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </div>
+    );
+  },
 };
 
 /**
@@ -151,5 +277,36 @@ export const Update: Story = {
           'For actual implementation, this would require a valid resource ID and proper mocking of the resource API',
       },
     },
+  },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    function handleOpenModal() {
+      toggle(true);
+    }
+
+    function handleCloseModal() {
+      toggle(false);
+    }
+
+    return (
+      <div style={{ padding: '2em' }}>
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open Resource Modal
+        </Button>
+        {isOpen && (
+          <ResourceModal
+            {...args}
+            isOpen={isOpen}
+            onCancel={handleCloseModal}
+          />
+        )}
+      </div>
+    );
   },
 };
