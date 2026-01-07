@@ -11,6 +11,7 @@ import {
   PutShareResponse,
   RightStringified,
   ShareRight,
+  ShareRightAction,
   ShareRightActionDisplayName,
   ShareUrls,
 } from '@edifice.io/client';
@@ -60,6 +61,12 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  *   resourceRights: [],
  *   resourceCreatorId: 'user-67890',
  *   filteredActions: ['read', 'contrib'],
+ *   defaultActions: [
+ *     {
+ *       id: 'read',
+ *       displayName: 'read',
+ *     },
+ * ],
  *   shareUrls: {
  *     getResourceRights: '/api/V1/thread/shares', (get endpoint)
  *     saveResourceRights: '/api/V1/thread/shares', (put endpoint)
@@ -75,6 +82,12 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  *   resourceRights: [],
  *   resourceCreatorId: 'user-67890',
  *   filteredActions: ['read', 'contrib'],
+ *   defaultActions: [
+ *     {
+ *       id: 'read',
+ *       displayName: 'read',
+ *     },
+ *   ],
  *   shareUrls: {
  *     getResourceRights: '/api/V1/info/shares', (get endpoint)
  *     saveResourceRights: '/api/V1/info/shares', (put endpoint)
@@ -89,6 +102,7 @@ export type ShareOptions = {
   resourceCreatorId: string;
   filteredActions?: ShareRightActionDisplayName[];
   shareUrls?: ShareUrls;
+  defaultActions?: ShareRightAction[];
 };
 
 /**
@@ -235,6 +249,16 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       resourceRights,
       filteredActions,
       shareUrls,
+      defaultActions = [
+        {
+          id: 'read',
+          displayName: 'read',
+        },
+        {
+          id: 'comment',
+          displayName: 'comment',
+        },
+      ],
     } = shareOptions;
 
     const [isLoading, setIsLoading] = useState(true);
@@ -274,6 +298,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       shareRights,
       shareDispatch,
       urlResourceRights: shareUrls?.getResourceRights,
+      defaultActions,
     });
 
     const {
