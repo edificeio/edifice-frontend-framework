@@ -4,36 +4,9 @@ import useZoom from '../../hooks/useZoom/useZoom';
 import ToolbarViewer from './ToolbarViewer';
 import { Flex } from '../Flex';
 import { useEffect, useState } from 'react';
-import { MediaWrapper } from './MediaWraper';
-import { MediaLibraryType } from 'dist';
+import { MediaWrapper } from './MediaWrapper';
+import { MediaLibraryType } from 'src/modules/multimedia';
 
-/**
- * A divider component that renders a horizontal or vertical line to separate content.
- *
- * @param props - The component props
- * @param props.children - Content to be displayed inside the divider
- * @param props.vertical - Whether the divider is vertical. Defaults to false
- * @param props.className - Optional CSS class name for additional styling of the divider
- * @default 'border-gray-500'
- * @param props.style - Optional inline styles for the divider
- *
- * @returns A React component that renders a divider with the specified properties
- *
- * @example
- * ```tsx
- * // Basic horizontal divider
- * <Divider />
- *
- * // Divider with text content
- * <Divider>Section Title</Divider>
- *
- * // Vertical divider
- * <Divider vertical />
- *
- * // Custom colored divider
- * <Divider className="border-red-500" />
- * ```
- */
 export interface MediaProps {
   name: string;
   url: string;
@@ -59,6 +32,7 @@ const MediaViewer = ({
   useEffect(() => {
     setCurrentIndex(initialIndex);
   }, [initialIndex]);
+
   return (
     <div className="media-viewer">
       <ToolbarViewer
@@ -88,6 +62,7 @@ const MediaViewer = ({
           >
             {media.map((item, index) => (
               <MediaWrapper
+                key={index}
                 mediaUrl={item.url}
                 mediaType={item.type}
                 mimeType={item.mimeType}

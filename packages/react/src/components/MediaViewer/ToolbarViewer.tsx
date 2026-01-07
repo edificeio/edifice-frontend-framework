@@ -1,4 +1,5 @@
 import { Flex, IconButton } from '@edifice.io/react';
+import { useEffect } from 'react';
 import {
   IconClose,
   IconDownload,
@@ -19,6 +20,18 @@ export default function ToolbarViewer({
   mediaUrl?: string;
   currentIndex: number;
 }) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   return (
     <Flex className="media-viewer-toolbar p-8" align="center">
       <Flex gap="8" align="center" style={{ minWidth: '50%' }}>
@@ -37,13 +50,18 @@ export default function ToolbarViewer({
         )}
         {mediaUrl && (
           <Flex className="ms-8" gap="8" align="center">
-            <a href={mediaUrl} download target="_blank">
+            <a
+              href={mediaUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconButton
                 icon={<IconDownload color="#fff" />}
                 variant="ghost"
               />
             </a>
-            <a href={mediaUrl} target="_blank">
+            <a href={mediaUrl} target="_blank" rel="noopener noreferrer">
               <IconButton
                 icon={<IconExternalLink color="#fff" />}
                 variant="ghost"
