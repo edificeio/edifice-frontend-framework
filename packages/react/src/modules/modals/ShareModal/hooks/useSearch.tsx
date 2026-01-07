@@ -14,7 +14,7 @@ import { OptionListItemType } from '../../../../components';
 import { useIsAdml } from '../../../../hooks';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { IconBookmark } from '../../../icons/components';
-import { ShareOptions } from '../ShareModal';
+import { ShareOptions } from '../ShareResources';
 import { ShareAction } from './useShare';
 
 type State = {
@@ -58,29 +58,29 @@ function reducer(state: State, action: Action) {
   }
 }
 
-const defaultActions: ShareRightAction[] = [
-  {
-    id: 'read',
-    displayName: 'read',
-  },
-  {
-    id: 'comment',
-    displayName: 'comment',
-  },
-];
-
 export const useSearch = ({
   resourceId,
   resourceCreatorId,
   shareRights,
   shareDispatch,
   urlResourceRights,
+  defaultActions = [
+    {
+      id: 'read',
+      displayName: 'read',
+    },
+    {
+      id: 'comment',
+      displayName: 'comment',
+    },
+  ],
 }: {
   resourceId: ShareOptions['resourceCreatorId'];
   resourceCreatorId: ShareOptions['resourceCreatorId'];
   shareRights: ShareRightWithVisibles;
   shareDispatch: Dispatch<ShareAction>;
   urlResourceRights?: string;
+  defaultActions?: ShareRightAction[];
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -250,16 +250,7 @@ export const useSearch = ({
         rightsToAdd = [
           {
             ...shareSubject,
-            actions: [
-              {
-                id: 'read',
-                displayName: 'read',
-              },
-              {
-                id: 'comment',
-                displayName: 'comment',
-              },
-            ],
+            actions: defaultActions,
           },
         ];
       }

@@ -11,6 +11,7 @@ import {
   PutShareResponse,
   RightStringified,
   ShareRight,
+  ShareRightAction,
   ShareRightActionDisplayName,
   ShareUrls,
 } from '@edifice.io/client';
@@ -89,6 +90,7 @@ export type ShareOptions = {
   resourceCreatorId: string;
   filteredActions?: ShareRightActionDisplayName[];
   shareUrls?: ShareUrls;
+  defaultActions?: ShareRightAction[];
 };
 
 /**
@@ -235,6 +237,16 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       resourceRights,
       filteredActions,
       shareUrls,
+      defaultActions = [
+        {
+          id: 'read',
+          displayName: 'read',
+        },
+        {
+          id: 'comment',
+          displayName: 'comment',
+        },
+      ],
     } = shareOptions;
 
     const [isLoading, setIsLoading] = useState(true);
@@ -274,6 +286,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
       shareRights,
       shareDispatch,
       urlResourceRights: shareUrls?.getResourceRights,
+      defaultActions,
     });
 
     const {
