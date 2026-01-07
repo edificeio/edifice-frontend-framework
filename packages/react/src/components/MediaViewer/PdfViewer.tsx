@@ -1,6 +1,6 @@
-import { LoadingScreen } from "@edifice.io/react";
-import { useRef, useState } from "react";
-import { Document, Page } from "react-pdf";
+import { LoadingScreen } from '@edifice.io/react';
+import { useRef, useState } from 'react';
+import { Document, Page } from 'react-pdf';
 
 export default function PdfViewer({
   mediaUrl,
@@ -59,9 +59,9 @@ export default function PdfViewer({
     <div
       style={{
         width: `calc(600px * ${scale})`,
-        height: "calc(100vh - 52px)",
-        overflowY: "auto",
-        marginTop: "20px",
+        height: 'calc(100vh - 52px)',
+        overflowY: 'auto',
+        marginTop: '20px',
       }}
     >
       <Document
@@ -73,7 +73,7 @@ export default function PdfViewer({
           <div
             key={index}
             ref={(el) => (pagesRef.current[index] = el!)}
-            style={{ marginBottom: 32, transformOrigin: "top center" }}
+            style={{ marginBottom: 32, transformOrigin: 'top center' }}
           >
             <Page
               className="pdf-page"

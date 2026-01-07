@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 interface SmartEllipsisProps {
   text: string;
@@ -36,16 +36,13 @@ export default function SmartEllipsis({ text }: SmartEllipsisProps) {
 
   useEffect(() => {
     updateText();
-    window.addEventListener("resize", updateText);
-    return () => window.removeEventListener("resize", updateText);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    window.addEventListener('resize', updateText);
+    return () => window.removeEventListener('resize', updateText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text]);
 
   return (
-    <span
-      ref={ref}
-      className="smart-ellipsis"
-    >
+    <span ref={ref} className="smart-ellipsis">
       {displayText}
     </span>
   );
