@@ -30,6 +30,7 @@ const acceptedTypes = (type: MediaLibraryType) => {
       acceptedTypes.push('image/webp');
       acceptedTypes.push('image/gif');
       acceptedTypes.push('image/avif');
+      acceptedTypes.push('image/heic');
       break;
     default:
       break;
