@@ -1,7 +1,7 @@
 .media-viewer {
   position: fixed;
   inset: 0;
-  background: #000000cc;
+  background: #000c;
   align-items: center;
   z-index: 9999;
 
@@ -43,7 +43,6 @@
   .media-viewer-toolbar-zoom-container {
     height: 50px;
     position: absolute;
-    bottom: 0px;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -59,12 +58,14 @@
 
   .slick-slider {
     height: 100%;
+
     .slick-arrow {
       height: 52px !important;
       width: 52px !important;
       background-color: #00000080 !important;
       border-radius: 16px !important;
     }
+
     .slick-arrow.slick-next::after {
       top: 50%;
       left: 50%;

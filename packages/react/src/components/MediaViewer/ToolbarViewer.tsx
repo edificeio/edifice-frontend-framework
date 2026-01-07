@@ -27,10 +27,14 @@ export default function ToolbarViewer({
           onClick={onClose}
           variant="ghost"
         />
-        <SmartEllipsis text={mediaName}/>
+        <SmartEllipsis text={mediaName} />
       </Flex>
       <Flex gap="8" align="center" justify="between" className="w-100">
-        {nbMedia ? <p>{`${currentIndex + 1}/${nbMedia} `}</p> : <p>{`${currentIndex + 1}`}</p>}
+        {nbMedia ? (
+          <p>{`${currentIndex + 1}/${nbMedia} `}</p>
+        ) : (
+          <p>{`${currentIndex + 1}`}</p>
+        )}
         {mediaUrl && (
           <Flex className="ms-8" gap="8" align="center">
             <a href={mediaUrl} download target="_blank">

@@ -96,14 +96,10 @@ export const MediaWrapper = ({
       );
     case 'hyperlink':
     case 'attachment':
-      return (
-        mimeType && mimeType === "application/pdf" ? (
+      return mimeType && mimeType === 'application/pdf' ? (
         <PdfViewer mediaUrl={mediaUrl} scale={scale} />
       ) : (
-        <Flex
-          direction="column"
-          align="center"
-        >
+        <Flex direction="column" align="center">
           <>
             <div
               className="bg-gray-300 w-100 d-flex justify-content-center align-items-center rounded-2 mb-8"
@@ -140,7 +136,6 @@ export const MediaWrapper = ({
             </a>
           </>
         </Flex>
-      )
       );
     default:
       return null;

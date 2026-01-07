@@ -35,10 +35,10 @@ import { MediaLibraryType } from 'dist';
  * ```
  */
 export interface MediaProps {
-    name: string;
-    url: string;
-    type: MediaLibraryType;
-    mimeType?: string;
+  name: string;
+  url: string;
+  type: MediaLibraryType;
+  mimeType?: string;
 }
 
 interface MediaViewerProps {
