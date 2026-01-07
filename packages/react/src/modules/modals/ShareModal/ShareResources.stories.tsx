@@ -72,3 +72,21 @@ export const FilterActions: Story = {
     return <ShareResources {...args} ref={ref} />;
   },
 };
+
+export const DefaultActions: Story = {
+  args: {
+    shareOptions: {
+      ...mockShareOptions,
+      defaultActions: [
+        {
+          id: 'read',
+          displayName: 'read',
+        },
+      ],
+    },
+  },
+  render: (args) => {
+    const ref = useRef<ShareResourcesRef>(null);
+    return <ShareResources {...args} ref={ref} />;
+  },
+};
