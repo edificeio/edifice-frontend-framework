@@ -61,6 +61,12 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  *   resourceRights: [],
  *   resourceCreatorId: 'user-67890',
  *   filteredActions: ['read', 'contrib'],
+ *   defaultActions: [
+ *     {
+ *       id: 'read',
+ *       displayName: 'read',
+ *     },
+ * ],
  *   shareUrls: {
  *     getResourceRights: '/api/V1/thread/shares', (get endpoint)
  *     saveResourceRights: '/api/V1/thread/shares', (put endpoint)
@@ -76,6 +82,12 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  *   resourceRights: [],
  *   resourceCreatorId: 'user-67890',
  *   filteredActions: ['read', 'contrib'],
+ *   defaultActions: [
+ *     {
+ *       id: 'read',
+ *       displayName: 'read',
+ *     },
+ *   ],
  *   shareUrls: {
  *     getResourceRights: '/api/V1/info/shares', (get endpoint)
  *     saveResourceRights: '/api/V1/info/shares', (put endpoint)
