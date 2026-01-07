@@ -1,4 +1,5 @@
 import { ChangeEvent, useRef, useState } from 'react';
+import heic2any from 'heic2any';
 
 const useDropzone = (props?: {
   /**
@@ -60,8 +61,13 @@ const useDropzone = (props?: {
     return filteredFiles;
   };
 
-  const addFiles = (files: File[]) => {
-    const sortedFiles = files.sort((a, b) => b.lastModified - a.lastModified);
+  const addFiles = async (files: File[]) => {
+    // #PEDAGO-3263: Convert HEIC/HEIF images to JPEG.
+    const convertedFiles = await convertHEICImages(files);
+
+    const sortedFiles = convertedFiles.sort(
+      (a, b) => b.lastModified - a.lastModified,
+    );
     let filesToAdd = sortedFiles.map(
       (file) =>
         // #WB-3377: Remove special characters from the file name. (it can cause issues with vertx which replace it or remove it)
@@ -77,6 +83,36 @@ const useDropzone = (props?: {
     } else {
       setFiles((prevFiles) => [...prevFiles, ...files]);
     }
+  };
+
+  /**
+   * Convert HEIC/HEIF images to JPEG format if found.
+   * @param files selected files
+   * @returns a Promise resolving to an array of Files with HEIC/HEIF images converted to JPEGs.
+   */
+  const convertHEICImages = async (files: File[]): Promise<File[]> => {
+    return Promise.all(
+      files.map(async (file) => {
+        if (file.type === 'image/heic' || file.type === 'image/heif') {
+          try {
+            const converted = await heic2any({
+              blob: file,
+              toType: 'image/jpeg',
+            });
+            const newFile = new File(
+              [converted as Blob],
+              file.name.replace(/\.(heic|heif)$/i, '.jpeg'),
+              { type: 'image/jpeg' },
+            );
+            return newFile;
+          } catch (error) {
+            console.error(`Failed to convert HEIC image: ${file.name}`, error);
+            return file; // Return original file if conversion fails
+          }
+        }
+        return file;
+      }),
+    );
   };
 
   const cleanFiles = () => {
@@ -102,11 +138,13 @@ const useDropzone = (props?: {
     setDragging(false);
   };
 
-  const handleDrop = <T extends HTMLElement>(event: React.DragEvent<T>) => {
+  const handleDrop = async <T extends HTMLElement>(
+    event: React.DragEvent<T>,
+  ) => {
     handleDragLeave(event);
     const files = event.dataTransfer?.files;
     if (files) {
-      addFiles([...files]);
+      await addFiles([...files]);
       if (inputRef?.current) {
         inputRef.current.files = files;
       }
