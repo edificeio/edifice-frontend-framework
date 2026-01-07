@@ -13,45 +13,6 @@ export default function PdfViewer({
 
   const pagesRef = useRef<HTMLDivElement[]>([]);
 
-  /* useEffect(() => {
-    let timer: number | undefined;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let mostVisible = null;
-        let maxRatio = 0;
-
-        entries.forEach((entry) => {
-          if (entry.intersectionRatio > maxRatio) {
-            maxRatio = entry.intersectionRatio;
-            mostVisible = entry.target;
-          }
-        });
-
-        if (mostVisible) {
-          const index = pagesRef.current.indexOf(mostVisible as HTMLDivElement);
-
-          if (timer) clearTimeout(timer);
-
-          timer = window.setTimeout(() => {
-            setCurrentPage(index + 1);
-          }, 50); // 0.5 sec
-        }
-      },
-      {
-        root: null,
-        threshold: Array.from({ length: 101 }, (_, i) => i / 100),
-      },
-    );
-
-    pagesRef.current.forEach((el) => el && observer.observe(el));
-
-    return () => {
-      observer.disconnect();
-      if (timer) clearTimeout(timer);
-    };
-  }, [numPages]); */
-
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };

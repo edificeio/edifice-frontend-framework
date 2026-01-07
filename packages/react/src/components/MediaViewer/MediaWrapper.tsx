@@ -68,9 +68,7 @@ export const MediaWrapper = ({
             className="media-audio"
             controls
             style={audioStyle}
-          >
-            <track default kind="captions" srcLang="fr" src=""></track>
-          </audio>
+          />
         </Flex>
       );
     case 'video':
@@ -88,6 +86,7 @@ export const MediaWrapper = ({
       return (
         <Flex justify="center" align="center">
           <iframe
+            title="Embedded media content"
             src={mediaUrl}
             className="media-video"
             style={iframeMediaStyle}
@@ -100,41 +99,40 @@ export const MediaWrapper = ({
         <PdfViewer mediaUrl={mediaUrl} scale={scale} />
       ) : (
         <Flex direction="column" align="center">
-          <>
-            <div
-              className="bg-gray-300 w-100 d-flex justify-content-center align-items-center rounded-2 mb-8"
-              style={{ maxWidth: '500px', height: '200px' }}
+          <div
+            className="bg-gray-300 w-100 d-flex justify-content-center align-items-center rounded-2 mb-8"
+            style={{ maxWidth: '500px', height: '200px' }}
+          >
+            {mediaType === 'hyperlink' ? (
+              <IconLink width={40} height={40} color="#B0B0B0" />
+            ) : (
+              <IconTextPage width={40} height={40} color="#B0B0B0" />
+            )}
+          </div>
+          <a
+            className="w-100 d-flex justify-content-center"
+            href={mediaUrl}
+            download={mediaType === 'hyperlink' ? false : true}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button
+              className="w-100"
+              style={{ height: '40px', maxWidth: '500px' }}
+              leftIcon={
+                mediaType === 'hyperlink' ? (
+                  <IconExternalLink />
+                ) : (
+                  <IconDownload />
+                )
+              }
+              color="tertiary"
             >
-              {mediaType === 'hyperlink' ? (
-                <IconLink width={40} height={40} color="#B0B0B0" />
-              ) : (
-                <IconTextPage width={40} height={40} color="#B0B0B0" />
-              )}
-            </div>
-            <a
-              className="w-100 d-flex justify-content-center"
-              href={mediaUrl}
-              download={mediaType === 'hyperlink' ? false : true}
-              target="_blank"
-            >
-              <Button
-                className="w-100"
-                style={{ height: '40px', maxWidth: '500px' }}
-                leftIcon={
-                  mediaType === 'hyperlink' ? (
-                    <IconExternalLink />
-                  ) : (
-                    <IconDownload />
-                  )
-                }
-                color="tertiary"
-              >
-                {mediaType === 'hyperlink'
-                  ? t('mediaWrapper.attachement.open')
-                  : t('mediaWrapper.attachement.download')}
-              </Button>
-            </a>
-          </>
+              {mediaType === 'hyperlink'
+                ? t('mediaWrapper.attachment.open')
+                : t('mediaWrapper.attachment.download')}
+            </Button>
+          </a>
         </Flex>
       );
     default:
