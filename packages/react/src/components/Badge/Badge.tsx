@@ -1,7 +1,8 @@
 import { forwardRef, ReactNode, Ref } from 'react';
 
-import { UserProfile } from '@edifice.io/client';
+import { IWebApp, UserProfile } from '@edifice.io/client';
 import clsx from 'clsx';
+import { useEdificeIcons } from '../../hooks/useEdificeIcons';
 
 export type BadgeRef = HTMLSpanElement;
 
@@ -40,10 +41,16 @@ export type LinkBadgeVariant = {
  * Beta Badge is used to indicate that a feature is in beta phase.
  * The color prop allows to customize the badge color to match the app color.
  * Defaults to black if not provided.
+ * Beta Badge has a fixed text 'BÊTA' unless children is provided.
+ * If app is provided, the color of the Beta Badge is derived from the application colors.
+ * Example:
+ * <Badge variant={{ type: 'beta', color: '#823AA1', app: myApp }} />
+ * where myApp is of type IWebApp.
  */
 export type BetaBadgeVariant = {
   type: 'beta';
-  color?: string; // Hex color code for the badge color (the app color)
+  color?: string;
+  app?: IWebApp;
 };
 
 export type BadgeVariants =
@@ -84,6 +91,22 @@ const Badge = forwardRef(
     }: BadgeProps,
     ref: Ref<BadgeRef>,
   ) => {
+    // Colors for the Beta Badge
+    const { getIconClass, getBackgroundLightIconClass, getBorderIconClass } =
+      useEdificeIcons();
+    let badgeColorClassName = '';
+    if (variant.type === 'beta' && variant.app) {
+      const colorAppClassName = getIconClass(variant.app);
+      const backgroundLightAppClassName = getBackgroundLightIconClass(
+        variant.app,
+      );
+      const borderAppClassName = getBorderIconClass(variant.app);
+      badgeColorClassName = `${colorAppClassName} ${backgroundLightAppClassName} ${borderAppClassName}`;
+    }
+    // End of Colors for the Beta Badge
+
+    console.log(badgeColorClassName);
+
     const classes = clsx(
       'badge rounded-pill',
       (variant.type === 'content' || variant.type === 'user') &&
@@ -100,6 +123,7 @@ const Badge = forwardRef(
         `badge-profile-${variant.profile.toLowerCase()}`,
       variant.type === 'link' && 'badge-link border border-0',
       variant.type === 'chip' && 'bg-gray-200',
+      variant.type === 'beta' && badgeColorClassName,
       className,
     );
 

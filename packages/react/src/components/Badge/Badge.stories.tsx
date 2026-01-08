@@ -249,10 +249,51 @@ export const BadgeNotification: Story = {
   },
 };
 
-export const BadgeBeta: Story = {
+export const BadgeBetaCommunities: Story = {
   args: {
     children: null,
-    variant: { type: 'beta', color: '#823AA1' },
+    variant: {
+      type: 'beta',
+      color: '#823AA1',
+      app: {
+        name: 'communities',
+        address: '',
+        display: false,
+        displayName: 'Communities',
+        icon: '',
+        isExternal: false,
+        scope: [],
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Badge of type `beta` is used to indicate that a feature or component is in beta status. You can customize the color of the badge using the `color` property, which accepts a hex color code.',
+      },
+    },
+  },
+  render: (args: BadgeProps) => {
+    return <Badge {...args} />;
+  },
+};
+
+export const BadgeBetaBlog: Story = {
+  args: {
+    children: null,
+    variant: {
+      type: 'beta',
+      app: {
+        name: 'blog',
+        address: '',
+        display: false,
+        displayName: 'Blog',
+        icon: '',
+        isExternal: false,
+        scope: [],
+      },
+    },
   },
   parameters: {
     docs: {

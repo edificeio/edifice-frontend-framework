@@ -113,3 +113,35 @@
     }
   }
 }
+
+.border-app {
+  //applications
+  @each $app, $data in $icons-applications {
+    [data-product='neo'] & {
+      &-#{$app} {
+        border-color: map.get($data, 'neo');
+      }
+    }
+
+    [data-product='one'] & {
+      &-#{$app} {
+        border-color: map.get($data, 'one');
+      }
+    }
+  }
+
+  //connectors
+  @each $app, $data in $icons-connectors {
+    [data-product='neo'] & {
+      &-#{$app} {
+        border-color: map.get($data, 'neo');
+      }
+    }
+
+    [data-product='one'] & {
+      &-#{$app} {
+        border-color: map.get($data, 'one');
+      }
+    }
+  }
+}

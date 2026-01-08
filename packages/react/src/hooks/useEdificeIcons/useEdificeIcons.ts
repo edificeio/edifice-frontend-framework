@@ -141,6 +141,17 @@ export default function useEdificeIcons() {
 
   /**
    *
+   * @param app an IWebApp, or an app prefix
+   * @return the CSS class used to style icons
+   */
+  function getBorderIconClass(app: IWebApp | string): string {
+    const appCode = getIconCode(app);
+    if (appCode) return `border-app-${appCode}`;
+    return `border-app-placeholder`;
+  }
+
+  /**
+   *
    * @param widget
    * @return the CSS class of a widget
    */
@@ -152,6 +163,7 @@ export default function useEdificeIcons() {
     getIconClass,
     getBackgroundIconClass,
     getBackgroundLightIconClass,
+    getBorderIconClass,
     getIconCode,
     getWidgetIconClass,
     isIconUrl,
