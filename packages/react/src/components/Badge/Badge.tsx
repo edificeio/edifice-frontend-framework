@@ -35,12 +35,24 @@ export type LinkBadgeVariant = {
   type: 'link';
 };
 
+/**
+ * Badge variant : beta.
+ * Beta Badge is used to indicate that a feature is in beta phase.
+ * The color prop allows to customize the badge color to match the app color.
+ * Defaults to black if not provided.
+ */
+export type BetaBadgeVariant = {
+  type: 'beta';
+  color?: string; // Hex color code for the badge color (the app color)
+};
+
 export type BadgeVariants =
   | NotificationBadgeVariant
   | ContentBadgeVariant
   | ProfileBadgeVariant
   | ChipBadgeVariant
-  | LinkBadgeVariant;
+  | LinkBadgeVariant
+  | BetaBadgeVariant;
 
 export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   /**
@@ -50,6 +62,7 @@ export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   variant?: BadgeVariants;
   /**
    * Text or icon (or whatever) to render as children elements.
+   * Defaults to 'BÊTA' for beta variant.
    */
   children?: ReactNode;
   /**
@@ -90,13 +103,24 @@ const Badge = forwardRef(
       className,
     );
 
+    const getBetaStyle = () => {
+      if (variant.type !== 'beta') return undefined;
+
+      const color = variant.color ?? '#000000';
+      return {
+        borderColor: color,
+        color: color,
+        backgroundColor: `${color}10`, // the 2 last hexadecimal numbers are for opacity
+      };
+    };
+
     return (
-      <span ref={ref} className={classes} {...restProps}>
-        {variant.type === 'chip' ? (
+      <span ref={ref} className={classes} style={getBetaStyle()} {...restProps}>
+        {variant.type === 'chip' && (
           <div className="d-flex fw-800 align-items-center">{children}</div>
-        ) : (
-          children
         )}
+        {variant.type === 'beta' && (children ?? 'BÊTA')}
+        {variant.type !== 'chip' && variant.type !== 'beta' && children}
       </span>
     );
   },
