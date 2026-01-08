@@ -230,6 +230,8 @@ i18n.use(initReactI18next).init({
         'audience.reaction.modal.more': 'More',
         'audience.reaction.modal.header': 'Reactions',
         'editor.preview.moreMedia': '+[[mediaCount]] images',
+        'mediaWrapper.attachment.open': 'Open link',
+        'mediaWrapper.attachment.download': 'Download',
       },
     },
   },
