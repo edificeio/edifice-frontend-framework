@@ -45,6 +45,16 @@ export interface DatePickerProps extends Omit<
    * @default 'DD / MM / YYYY'
    */
   dateFormat?: string;
+
+  /**
+   * Minimum selectable date
+   */
+  minDate?: Date;
+
+  /**
+   * Maximum selectable date
+   */
+  maxDate?: Date;
 }
 
 /**
@@ -63,26 +73,41 @@ export interface DatePickerProps extends Omit<
  *   value={date}
  *   onChange={(date) => setDate(date)}
  *   dateFormat="YYYY-MM-DD"
+ *   minDate={new Date(today.setDate(today.getDate() - 2))}
+ *   maxDate={new Date(today.setDate(today.getDate() + 3))}
  * />
  * ```
  */
 const DatePicker = forwardRef<
   ComponentRef<typeof AntDatePicker>,
   DatePickerProps
->(({ value = new Date(), onChange, dateFormat = 'DD / MM / YYYY' }, ref) => {
-  const handleChange = (date: Dayjs | null) => {
-    onChange?.(date ? date.toDate() : undefined);
-  };
-
-  const antProps = {
-    value: dayjs(value),
-    onChange: handleChange,
-    format: dateFormat,
+>(
+  (
+    {
+      value = new Date(),
+      onChange,
+      dateFormat = 'DD / MM / YYYY',
+      minDate,
+      maxDate,
+    },
     ref,
-  };
+  ) => {
+    const handleChange = (date: Dayjs | null) => {
+      onChange?.(date ? date.toDate() : undefined);
+    };
 
-  return <AntDatePicker {...antProps} />;
-});
+    const antProps = {
+      value: dayjs(value),
+      onChange: handleChange,
+      format: dateFormat,
+      minDate: minDate ? dayjs(minDate) : undefined,
+      maxDate: maxDate ? dayjs(maxDate) : undefined,
+      ref,
+    };
+
+    return <AntDatePicker {...antProps} />;
+  },
+);
 
 DatePicker.displayName = 'DatePicker';
 
