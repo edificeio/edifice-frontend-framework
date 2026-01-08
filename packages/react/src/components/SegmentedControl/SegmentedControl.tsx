@@ -68,8 +68,19 @@ export interface SegmentedControlProps extends Omit<
  */
 const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
   ({ options, value, onChange, ...htmlProps }, ref) => {
+    const transformedOptions = options.map((option) => {
+      return {
+        ...option,
+        label: (
+          <span data-testid={`segmented-option-${option.value}`}>
+            {option.label}
+          </span>
+        ),
+      };
+    });
+
     const antProps = {
-      options,
+      options: transformedOptions,
       value,
       onChange,
       ref,
