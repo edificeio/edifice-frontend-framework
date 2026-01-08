@@ -1,7 +1,8 @@
 import { forwardRef, ReactNode, Ref } from 'react';
 
-import { UserProfile } from '@edifice.io/client';
+import { IWebApp, UserProfile } from '@edifice.io/client';
 import clsx from 'clsx';
+import { useEdificeIcons } from '../../hooks/useEdificeIcons';
 
 export type BadgeRef = HTMLSpanElement;
 
@@ -35,12 +36,27 @@ export type LinkBadgeVariant = {
   type: 'link';
 };
 
+/**
+ * Badge variant : beta.
+ * Beta Badge is used to indicate that a feature is in beta phase.
+ * Beta Badge has a fixed text 'BÊTA' unless children is provided.
+ * If app is provided, the color of the Beta Badge is derived from the application colors.
+ * Example:
+ * <Badge variant={{ type: 'beta', app: myApp }} />
+ * where myApp is of type IWebApp.
+ */
+export type BetaBadgeVariant = {
+  type: 'beta';
+  app?: IWebApp;
+};
+
 export type BadgeVariants =
   | NotificationBadgeVariant
   | ContentBadgeVariant
   | ProfileBadgeVariant
   | ChipBadgeVariant
-  | LinkBadgeVariant;
+  | LinkBadgeVariant
+  | BetaBadgeVariant;
 
 export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   /**
@@ -50,6 +66,7 @@ export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   variant?: BadgeVariants;
   /**
    * Text or icon (or whatever) to render as children elements.
+   * Defaults to 'BÊTA' for beta variant.
    */
   children?: ReactNode;
   /**
@@ -71,6 +88,22 @@ const Badge = forwardRef(
     }: BadgeProps,
     ref: Ref<BadgeRef>,
   ) => {
+    // Colors for the Beta Badge
+    const { getIconClass, getBackgroundLightIconClass, getBorderIconClass } =
+      useEdificeIcons();
+    let badgeColorClassName = '';
+    if (variant.type === 'beta' && variant.app) {
+      const colorAppClassName = getIconClass(variant.app);
+      const backgroundLightAppClassName = getBackgroundLightIconClass(
+        variant.app,
+      );
+      const borderAppClassName = getBorderIconClass(variant.app);
+      badgeColorClassName = `${colorAppClassName} ${backgroundLightAppClassName} ${borderAppClassName}`;
+    }
+    // End of Colors for the Beta Badge
+
+    console.log(badgeColorClassName);
+
     const classes = clsx(
       'badge rounded-pill',
       (variant.type === 'content' || variant.type === 'user') &&
@@ -87,16 +120,17 @@ const Badge = forwardRef(
         `badge-profile-${variant.profile.toLowerCase()}`,
       variant.type === 'link' && 'badge-link border border-0',
       variant.type === 'chip' && 'bg-gray-200',
+      variant.type === 'beta' && badgeColorClassName,
       className,
     );
 
     return (
       <span ref={ref} className={classes} {...restProps}>
-        {variant.type === 'chip' ? (
+        {variant.type === 'chip' && (
           <div className="d-flex fw-800 align-items-center">{children}</div>
-        ) : (
-          children
         )}
+        {variant.type === 'beta' && (children ?? 'BÊTA')}
+        {variant.type !== 'chip' && variant.type !== 'beta' && children}
       </span>
     );
   },
