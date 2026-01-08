@@ -32,7 +32,7 @@ export interface DatePickerProps extends Omit<
 > {
   /**
    * Selected date value
-   * @default new Date()
+   * @default today's date
    */
   value?: Date;
   /**
@@ -83,13 +83,7 @@ const DatePicker = forwardRef<
   DatePickerProps
 >(
   (
-    {
-      value = new Date(),
-      onChange,
-      dateFormat = 'DD / MM / YYYY',
-      minDate,
-      maxDate,
-    },
+    { value, onChange, dateFormat = 'DD / MM / YYYY', minDate, maxDate },
     ref,
   ) => {
     const handleChange = (date: Dayjs | null) => {

@@ -28,7 +28,9 @@ interface AntProviderProps {
  */
 export const AntProvider: React.FC<AntProviderProps> = ({ children }) => {
   const { currentLanguage } = useEdificeClient();
-  const locale = currentLanguage ? antdLocaleMap[currentLanguage] : frFR;
+  const locale = currentLanguage
+    ? (antdLocaleMap[currentLanguage] ?? frFR)
+    : frFR;
   return (
     <ConfigProvider theme={antTheme} locale={locale}>
       {children}

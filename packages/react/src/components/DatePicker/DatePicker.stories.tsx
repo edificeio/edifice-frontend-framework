@@ -7,7 +7,12 @@ import DatePicker from './DatePicker';
 const meta: Meta<typeof DatePicker> = {
   title: 'Forms/DatePicker',
   component: DatePicker,
-
+  argTypes: {
+    value: {
+      control: { type: 'date' },
+      description: 'Selected date value',
+    },
+  },
   parameters: {
     docs: {
       description: {
@@ -26,7 +31,7 @@ export const Default: Story = {
   args: {
     value: new Date(),
     dateFormat: 'DD / MM / YYYY',
-    minDate: new Date(today.setDate(today.getDate() - 2)),
+    minDate: undefined,
     maxDate: new Date(today.setDate(today.getDate() + 3)),
     onChange: (date) => {
       console.log('Selected date:', date);
