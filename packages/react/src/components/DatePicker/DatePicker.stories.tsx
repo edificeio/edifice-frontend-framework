@@ -14,8 +14,8 @@ const meta: Meta<typeof DatePicker> = {
         type: 'select',
       },
       options: [
+        'DD / MM / YYYY',
         'YYYY-MM-DD',
-        'DD/MM/YYYY',
         'MM/DD/YYYY',
         'DD-MM-YYYY',
         'MM-DD-YYYY',
@@ -28,25 +28,25 @@ const meta: Meta<typeof DatePicker> = {
       table: {
         type: { summary: 'string' },
         category: 'Props',
-        defaultValue: { summary: 'undefined' },
+        defaultValue: { summary: 'DD / MM / YYYY' },
       },
     },
     value: {
       description:
-        'The currently selected date (Dayjs object). Use this for controlled components.',
+        'The currently selected date (Date object). Use this for controlled components.',
       control: { type: 'date' },
       table: {
-        type: { summary: 'Dayjs | null' },
+        type: { summary: 'Date | null' },
         category: 'Props',
       },
     },
     onChange: {
       description:
-        'Callback function called when the date changes. Receives the new date (Dayjs | null) as parameter.',
+        'Callback function called when the date changes. Receives the new date (Date | null) as parameter.',
       action: 'changed',
       table: {
         type: {
-          summary: '(date: Dayjs | null) => void',
+          summary: '(date: Date | null) => void',
         },
         category: 'Props',
       },
@@ -67,13 +67,14 @@ type Story = StoryObj<typeof DatePicker>;
 
 export const Default: Story = {
   args: {
-    dateFormat: 'MMMM DD, YYYY',
+    dateFormat: 'DD / MM / YYYY',
   },
   render: (args) => {
     const [date, setDate] = useState<Date | undefined>(args.value);
     return (
       <DatePicker
         {...args}
+        // maxDate={new Date()}
         value={date}
         data-testid="date-picker-default"
         dateFormat={args.dateFormat}

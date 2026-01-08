@@ -3,6 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 import { forwardRef } from 'react';
+import type { ComponentRef } from 'react';
 
 // Import dayjs locales
 import 'dayjs/locale/de.js';
@@ -41,7 +42,7 @@ export interface DatePickerProps extends Omit<
 
   /**
    * Date format to display in the picker
-   * @default 'YYY-MM-DD'
+   * @default 'DD / MM / YYYY'
    */
   dateFormat?: string;
 }
@@ -65,22 +66,23 @@ export interface DatePickerProps extends Omit<
  * />
  * ```
  */
-const DatePicker = forwardRef<any, DatePickerProps>(
-  ({ value = new Date(), onChange, dateFormat }, ref) => {
-    const handleChange = (date: Dayjs | null) => {
-      onChange?.(date ? date.toDate() : undefined);
-    };
+const DatePicker = forwardRef<
+  ComponentRef<typeof AntDatePicker>,
+  DatePickerProps
+>(({ value = new Date(), onChange, dateFormat = 'DD / MM / YYYY' }, ref) => {
+  const handleChange = (date: Dayjs | null) => {
+    onChange?.(date ? date.toDate() : undefined);
+  };
 
-    const antProps = {
-      value: dayjs(value),
-      onChange: handleChange,
-      format: dateFormat,
-      ref,
-    };
+  const antProps = {
+    value: dayjs(value),
+    onChange: handleChange,
+    format: dateFormat,
+    ref,
+  };
 
-    return <AntDatePicker {...antProps} />;
-  },
-);
+  return <AntDatePicker {...antProps} />;
+});
 
 DatePicker.displayName = 'DatePicker';
 
