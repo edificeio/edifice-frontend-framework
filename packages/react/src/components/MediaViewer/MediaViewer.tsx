@@ -17,21 +17,21 @@ export interface MediaProps {
 interface MediaViewerProps {
   onClose: () => void;
   media: MediaProps[];
-  initialIndex?: number;
+  indexMedia?: number;
 }
 
 const MediaViewer = ({
   onClose,
   media,
-  initialIndex = 0,
+  indexMedia = 0,
 }: MediaViewerProps) => {
   const { zoomIn, zoomOut, setScale, scale } = useZoom(1);
 
-  const [currentIndex, setCurrentIndex] = useState<number>(initialIndex);
+  const [currentIndex, setCurrentIndex] = useState<number>(indexMedia);
 
   useEffect(() => {
-    setCurrentIndex(initialIndex);
-  }, [initialIndex]);
+    setCurrentIndex(indexMedia);
+  }, [indexMedia]);
 
   return (
     <div className="media-viewer">
@@ -48,7 +48,7 @@ const MediaViewer = ({
           onClick={(e) => e.stopPropagation()}
         >
           <Carousel
-            initialSlide={initialIndex}
+            initialSlide={indexMedia}
             dots={false}
             arrows
             draggable
