@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Stage } from '@pixi/react';
+import { Application } from '@pixi/react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -152,14 +152,12 @@ const ImageEditor = ({
             historyCount={historyCount}
           />
           <div className="position-relative d-flex flex-column align-items-center justify-content-center flex-grow-1 w-100 image-editor">
-            <Stage
-              onMount={(app) => setApplication(app)}
-              options={{
-                preserveDrawingBuffer: true,
-                backgroundAlpha: 0,
-                resolution: 1,
-              }}
-            ></Stage>
+            <Application
+              onInit={(app) => setApplication(app)}
+              preserveDrawingBuffer
+              backgroundAlpha={0}
+              resolution={1}
+            />
             {!!loading && (
               <div className="position-absolute top-0 start-0 bottom-0 end-0 m-10 d-flex align-items-center justify-content-center bg-black opacity-25">
                 <LoadingScreen />

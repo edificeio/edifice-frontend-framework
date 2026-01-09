@@ -2,7 +2,7 @@ import illuSearch from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-searc
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 
 import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { Button } from '../../../components/Button';
 import OnboardingModal from './OnboardingModal';

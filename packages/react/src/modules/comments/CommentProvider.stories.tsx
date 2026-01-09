@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { CommentProvider } from '.';
 
 import { Dispatch, SetStateAction, useState } from 'react';

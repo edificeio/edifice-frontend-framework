@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { ToolbarItem } from '..';

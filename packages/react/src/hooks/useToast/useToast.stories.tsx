@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Toaster } from 'react-hot-toast';
 import Button from '../../components/Button/Button';
 import useToast from './useToast';

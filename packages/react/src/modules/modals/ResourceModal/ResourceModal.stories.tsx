@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ResourceModal } from './ResourceModal';
 import { Button, FormControl } from '../../../components';

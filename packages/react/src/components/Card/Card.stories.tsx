@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { useState } from 'react';
 import { IconPaperclip, IconUsers } from '../../modules/icons/components';

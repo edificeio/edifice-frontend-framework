@@ -1,4 +1,4 @@
-import { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { I18nextProvider } from 'react-i18next';

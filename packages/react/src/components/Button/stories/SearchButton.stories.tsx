@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconSearch, IconUserSearch } from '../../../modules/icons/components';
 import SearchButton from '../SearchButton';
