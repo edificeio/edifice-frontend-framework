@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ReactionDetailsData } from '@edifice.io/client';
 import { Button } from '../../../components';

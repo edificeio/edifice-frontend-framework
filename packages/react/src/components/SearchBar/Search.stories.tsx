@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import SearchBar, { SearchBarProps } from './SearchBar';
 import { useState } from 'react';
 
