@@ -45,7 +45,8 @@ export interface HeaderProps {
 
 const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
   const { t } = useTranslation();
-  const { messages, msgLink, zimbraWorkflow } = useConversation();
+  const { messages, msgLink, zimbraWorkflow, carbonioPreauth } =
+    useConversation();
   const { user, avatar } = useUser();
   const { currentLanguage, currentApp } = useEdificeClient();
   const hasOldHelpEnableWorkflow =
@@ -128,6 +129,17 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       )}
                       <VisuallyHidden>{t('navbar.messages')}</VisuallyHidden>
                     </a>
+                  </NavItem>
+                )}
+                {carbonioPreauth && (
+                  <NavItem>
+                    <NavLink
+                      className="position-relative"
+                      link="/auth/carbonio/preauth"
+                      translate={t('conversation')}
+                    >
+                      <IconNeoMessaging color="#fff" />
+                    </NavLink>
                   </NavItem>
                 )}
                 <NavItem>
@@ -311,6 +323,17 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                         {messages}
                       </Badge>
                     )}
+                  </NavLink>
+                </NavItem>
+              )}
+              {carbonioPreauth && (
+                <NavItem>
+                  <NavLink
+                    className="position-relative"
+                    link="/auth/carbonio/preauth"
+                    translate={t('conversation')}
+                  >
+                    <IconNeoMessaging color="#fff" />
                   </NavLink>
                 </NavItem>
               )}

@@ -13,6 +13,10 @@ const useConversation = () => {
     'fr.openent.zimbra.controllers.ZimbraController|preauth',
   );
 
+  const carbonioPreauth = useHasWorkflow(
+    'org.entcore.auth.controllers.CarbonioPreauthController|preauth',
+  );
+
   /**
    * Count conversation app
    */
@@ -24,13 +28,19 @@ const useConversation = () => {
 
   const { data: messages } = useQuery({
     queryKey: ['folder', 'count', 'inbox'],
-    queryFn: async () =>
-      await odeServices
+    queryFn: async () => {
+      // No message count for carbonio
+      if (carbonioPreauth) {
+        return null;
+      }
+
+      return await odeServices
         .http()
         .get(
           zimbraWorkflow ? '/zimbra/count/INBOX' : '/conversation/count/inbox',
           { queryParams },
-        ),
+        );
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
@@ -64,6 +74,7 @@ const useConversation = () => {
     messages: messages ? messages.count : 0,
     msgLink,
     zimbraWorkflow,
+    carbonioPreauth,
   } as const;
 };
 
