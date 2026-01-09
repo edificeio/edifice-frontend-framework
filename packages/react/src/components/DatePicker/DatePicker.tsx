@@ -31,8 +31,8 @@ export interface DatePickerProps extends Omit<
   'onChange' | 'value'
 > {
   /**
-   * Selected date value
-   * @default today's date
+   * Selected date values
+   * @default today's date is setted by ant design if no value is provided
    */
   value?: Date;
   /**
@@ -91,7 +91,7 @@ const DatePicker = forwardRef<
     };
 
     const antProps = {
-      value: dayjs(value),
+      value: value ? dayjs(value) : undefined,
       onChange: handleChange,
       format: dateFormat,
       minDate: minDate ? dayjs(minDate) : undefined,

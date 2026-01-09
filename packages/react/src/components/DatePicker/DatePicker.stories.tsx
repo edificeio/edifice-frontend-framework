@@ -32,7 +32,11 @@ export const Default: Story = {
     value: new Date(),
     dateFormat: 'DD / MM / YYYY',
     minDate: undefined,
-    maxDate: new Date(today.setDate(today.getDate() + 3)),
+    maxDate: new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() + 3,
+    ),
     onChange: (date) => {
       console.log('Selected date:', date);
     },
@@ -41,7 +45,6 @@ export const Default: Story = {
     const [date, setDate] = useState<Date | undefined>(args.value);
     return (
       <DatePicker
-        {...args}
         maxDate={args.maxDate}
         minDate={args.minDate}
         value={date}
