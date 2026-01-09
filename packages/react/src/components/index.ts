@@ -12,6 +12,7 @@ export * from './Card';
 export * from './Checkbox';
 export * from './ColorPicker';
 export * from './Combobox';
+export * from './DatePicker';
 export * from './Divider';
 export * from './Dropdown';
 export * from './Dropzone';
