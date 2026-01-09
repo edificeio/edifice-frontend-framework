@@ -39,10 +39,14 @@ export class ShareService {
     urlResourceRights?: string,
   ): Promise<ShareSubject[]> {
     const cleanSearchText = StringUtils.removeAccents(searchText).toLowerCase();
-    const response = await this.cache.httpGetJson<GetResourceRightPayload>(
-      urlResourceRights ||
-        `/${app}/share/json/${resourceId}?search=${searchText}`,
-    );
+    let getUrl = `/${app}/share/json/${resourceId}?search=${searchText}`;
+    if (urlResourceRights) {
+      getUrl = urlResourceRights.includes('?search=')
+        ? `${urlResourceRights}${searchText}`
+        : `${urlResourceRights}?search=${searchText}`;
+    }
+    const response =
+      await this.cache.httpGetJson<GetResourceRightPayload>(getUrl);
     const resUsers = response.users.visibles
       .filter(({ username, firstName, lastName, login }) => {
         const cleanLastName = StringUtils.removeAccents(
@@ -161,10 +165,14 @@ export class ShareService {
     // fetch bookmarks
     const visibleBookmarks = await this.directory.getBookMarks();
     // get rights for this resources
-    const url = `/${app}/share/json/${resourceId}?search=`;
-    const rightsPayload = await this.cache.httpGetJson<GetResourceRightPayload>(
-      shareUrls?.getResourceRights || url,
-    );
+    let url = `/${app}/share/json/${resourceId}?search=`;
+    if (shareUrls?.getResourceRights) {
+      url = shareUrls.getResourceRights.includes('?search=')
+        ? shareUrls.getResourceRights
+        : `${shareUrls.getResourceRights}?search=`;
+    }
+    const rightsPayload =
+      await this.cache.httpGetJson<GetResourceRightPayload>(url);
     // get mapping between rights and normalized rights
     const sharingMap = await this.getShareMapping(
       app,
@@ -344,13 +352,18 @@ export class ShareService {
       rights,
       urls?.getShareMapping,
     );
-    const url =
+    const putUrl =
       urls?.saveResourceRights || `/${app}/share/resource/${resourceId}`;
+
+    let getUrl = `/${app}/share/json/${resourceId}?search=`;
+    if (urls?.getResourceRights) {
+      getUrl = urls.getResourceRights.includes('?search=')
+        ? urls.getResourceRights
+        : `${urls.getResourceRights}?search=`;
+    }
     //clear cache for rights
-    this.cache.clearCache(
-      urls?.getResourceRights || `/${app}/share/json/${resourceId}?search=`,
-    );
-    const res = await this.http.putJson<PutShareResponse>(url, payload);
+    this.cache.clearCache(getUrl);
+    const res = await this.http.putJson<PutShareResponse>(putUrl, payload);
     return res;
   }
 
