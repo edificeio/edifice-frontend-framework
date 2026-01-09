@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
 const config: StorybookConfig = {
   stories: [
@@ -10,17 +11,16 @@ const config: StorybookConfig = {
   ],
   staticDirs: ['../public'],
   addons: [
-    getAbsolutePath('@storybook/addon-a11y'),
-    getAbsolutePath('@storybook/addon-links'),
-    getAbsolutePath('@storybook/addon-essentials'),
-    getAbsolutePath('@storybook/addon-interactions'),
-    getAbsolutePath('@chromatic-com/storybook'),
+    '@storybook/addon-a11y',
+    '@storybook/addon-links',
+    '@storybook/addon-docs',
+    '@chromatic-com/storybook',
   ],
   typescript: {
     reactDocgen: 'react-docgen',
   },
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: '@storybook/react-vite',
     options: { strictMode: false },
   },
   docs: {},
@@ -33,8 +33,8 @@ const config: StorybookConfig = {
       resolve: {
         alias: {
           '@images': resolve(
-            __dirname,
-            'node_modules/@edifice.io/bootstrap/dist/images',
+            dirname(fileURLToPath(import.meta.url)),
+            '../node_modules/@edifice.io/bootstrap/dist/images',
           ),
         },
       },
@@ -42,7 +42,3 @@ const config: StorybookConfig = {
   },
 };
 export default config;
-
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, 'package.json')));
-}
