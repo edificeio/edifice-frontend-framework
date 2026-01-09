@@ -21,7 +21,7 @@
     }
 
     &:hover {
-      background-color: rgba(var(--#{$prefix}secondary, 0.1));
+      background-color: rgb(var(--#{$prefix}secondary) / 10%);
 
       .figure-caption {
         color: var(--#{$prefix}secondary);
