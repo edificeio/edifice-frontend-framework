@@ -36,18 +36,18 @@ export class ShareService {
     app: string,
     resourceId: string,
     searchText: string,
-    urlRessourceRights?: string,
+    urlResourceRights?: string,
   ) {
-    if (!urlRessourceRights) {
+    if (!urlResourceRights) {
       return `/${app}/share/json/${resourceId}?search=${searchText}`;
     }
-    if (urlRessourceRights.includes('?search=')) {
-      const [beforeSearch] = urlRessourceRights.split('?search=');
+    if (urlResourceRights.includes('?search=')) {
+      const [beforeSearch] = urlResourceRights.split('?search=');
       return `${beforeSearch}?search=${searchText}`;
-    } else if (urlRessourceRights.includes('?')) {
-      return `${urlRessourceRights}&search=${searchText}`;
+    } else if (urlResourceRights.includes('?')) {
+      return `${urlResourceRights}&search=${searchText}`;
     } else {
-      return `${urlRessourceRights}?search=${searchText}`;
+      return `${urlResourceRights}?search=${searchText}`;
     }
   }
 
