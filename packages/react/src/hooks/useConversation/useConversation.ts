@@ -24,13 +24,14 @@ const useConversation = () => {
 
   const { data: messages } = useQuery({
     queryKey: ['folder', 'count', 'inbox'],
-    queryFn: async () =>
-      await odeServices
+    queryFn: async () => {
+      return await odeServices
         .http()
         .get(
           zimbraWorkflow ? '/zimbra/count/INBOX' : '/conversation/count/inbox',
           { queryParams },
-        ),
+        );
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
