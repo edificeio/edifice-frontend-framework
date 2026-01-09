@@ -1,5 +1,5 @@
 import { ShareRightActionDisplayName } from '@edifice.io/client';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef } from 'react';
 import ShareResources, {
   ShareOptions,
