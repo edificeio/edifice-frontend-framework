@@ -53,6 +53,11 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
       'org.entcore.portal.controllers.PortalController|oldHelpEnable',
     ) || false;
 
+  const hasCarbonioPreauthWorkflow =
+    useHasWorkflow(
+      'org.entcore.auth.controllers.CarbonioPreauthController|preauth',
+    ) || false;
+
   const {
     isModalOpen: isHelpOpen,
     setIsModalOpen: setIsHelpOpen,
@@ -126,6 +131,14 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                           {messages}
                         </Badge>
                       )}
+                      <VisuallyHidden>{t('navbar.messages')}</VisuallyHidden>
+                    </a>
+                  </NavItem>
+                )}
+                {hasCarbonioPreauthWorkflow && (
+                  <NavItem>
+                    <a href="/auth/carbonio/preauth" className="nav-link">
+                      <IconOneMessaging className="icon notification" />
                       <VisuallyHidden>{t('navbar.messages')}</VisuallyHidden>
                     </a>
                   </NavItem>
@@ -311,6 +324,17 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                         {messages}
                       </Badge>
                     )}
+                  </NavLink>
+                </NavItem>
+              )}
+              {hasCarbonioPreauthWorkflow && (
+                <NavItem>
+                  <NavLink
+                    className="position-relative"
+                    link="/auth/carbonio/preauth"
+                    translate={t('conversation')}
+                  >
+                    <IconNeoMessaging color="#fff" />
                   </NavLink>
                 </NavItem>
               )}
