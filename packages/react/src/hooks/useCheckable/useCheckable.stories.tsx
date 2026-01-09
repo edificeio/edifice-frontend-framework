@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Checkbox, Table } from '../..';
 import { useCheckable } from './useCheckable';
 
