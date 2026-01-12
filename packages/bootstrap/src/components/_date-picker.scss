@@ -1,6 +1,0 @@
-@use '../abstracts/' as *;
-@use '../vendors/bootstrap';
-
-.edifice.ant-picker-dropdown {
-  --ant-date-picker-z-index-popup: 1056; // to be hidden by modal
-}
