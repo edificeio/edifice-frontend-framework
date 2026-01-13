@@ -254,6 +254,7 @@ export interface IWebApp {
   prefix?: string; // "/mindmap"
   scope: Array<string>; // [""]
   target?: any; // "_blank"
+  version?: string; // "BETA"
 }
 
 //-------------------------------------
