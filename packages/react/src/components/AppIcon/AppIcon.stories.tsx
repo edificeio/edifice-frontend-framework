@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import AppIcon, { AppIconProps } from './AppIcon';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

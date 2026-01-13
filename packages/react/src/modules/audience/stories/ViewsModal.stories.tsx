@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ViewsDetails } from '@edifice.io/client';
 import { useToggle } from '../../../hooks';
