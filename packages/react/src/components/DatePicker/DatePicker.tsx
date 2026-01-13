@@ -99,7 +99,13 @@ const DatePicker = forwardRef<
       ref,
     };
 
-    return <AntDatePicker {...antProps} />;
+    const setPopupContainer = (triggerNode: HTMLElement) => {
+      return triggerNode.parentElement || document.body;
+    };
+
+    return (
+      <AntDatePicker {...antProps} getPopupContainer={setPopupContainer} />
+    );
   },
 );
 
