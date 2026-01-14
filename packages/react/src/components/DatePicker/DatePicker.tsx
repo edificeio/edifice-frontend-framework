@@ -24,11 +24,9 @@ dayjs.extend(localeData);
  * Standard HTML div attributes are supported (passed through to the underlying DOM element).
  */
 export interface DatePickerProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
+  React.HTMLAttributes<HTMLElement>,
   // Excluded because they are redefined below with different signatures:
-  // - onChange: takes (date: string | null) instead of React.ChangeEvent
-  // - defaultValue: excluded by design choice to simplify the API (only controlled mode with value prop is supported)
-  'onChange' | 'value'
+  'onChange' | 'value' | 'defaultValue' // defaultValue is excluded by design choice to simplify the API (only controlled mode with value prop is supported)
 > {
   /**
    * Selected date values
@@ -78,12 +76,20 @@ export interface DatePickerProps extends Omit<
  * />
  * ```
  */
+
 const DatePicker = forwardRef<
   ComponentRef<typeof AntDatePicker>,
   DatePickerProps
 >(
   (
-    { value, onChange, dateFormat = 'DD / MM / YYYY', minDate, maxDate },
+    {
+      value,
+      onChange,
+      dateFormat = 'DD / MM / YYYY',
+      minDate,
+      maxDate,
+      ...htmlProps
+    },
     ref,
   ) => {
     const handleChange = (date: Dayjs | null) => {
@@ -97,6 +103,7 @@ const DatePicker = forwardRef<
       minDate: minDate ? dayjs(minDate) : undefined,
       maxDate: maxDate ? dayjs(maxDate) : undefined,
       ref,
+      ...htmlProps,
     };
 
     const setPopupContainer = (triggerNode: HTMLElement) => {
