@@ -147,7 +147,8 @@
     "react-popper": "^2.3.0",
     "react-slugify": "^3.0.3",
     "swiper": "^10.1.0",
-    "ua-parser-js": "^1.0.36"
+    "ua-parser-js": "^1.0.36",
+    "react-pdf": "10.2.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-pure-annotations": "^7.23.3",
