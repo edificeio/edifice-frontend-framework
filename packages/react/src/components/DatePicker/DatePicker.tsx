@@ -3,7 +3,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import localeData from 'dayjs/plugin/localeData';
 import weekday from 'dayjs/plugin/weekday';
 import { forwardRef } from 'react';
-import type { ComponentRef } from 'react';
 
 // Import dayjs locales
 import 'dayjs/locale/de.js';
@@ -56,6 +55,10 @@ export interface DatePickerProps extends Omit<
 }
 
 /**
+ * Type for DatePicker ref
+ */
+
+/**
  * DatePicker component
  *
  * Date picker component for selecting a date.
@@ -76,11 +79,7 @@ export interface DatePickerProps extends Omit<
  * />
  * ```
  */
-
-const DatePicker = forwardRef<
-  ComponentRef<typeof AntDatePicker>,
-  DatePickerProps
->(
+const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
   (
     {
       value,
@@ -102,7 +101,7 @@ const DatePicker = forwardRef<
       format: dateFormat,
       minDate: minDate ? dayjs(minDate) : undefined,
       maxDate: maxDate ? dayjs(maxDate) : undefined,
-      ref,
+      ref: ref as any, // Cast necessary because AntDatePicker expects a specific type, but our API exposes only HTMLElement to avoid dependency on Ant Design-specific features.
       ...htmlProps,
     };
 
