@@ -1,4 +1,8 @@
-import { IconMinus, IconPlus, IconZoomIn } from 'src/modules/icons/components';
+import {
+  IconMinus,
+  IconPlus,
+  IconZoomIn,
+} from '../../modules/icons/components';
 import { IconButton } from '../Button';
 import { Flex } from '../Flex';
 
