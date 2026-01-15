@@ -1,4 +1,3 @@
-import { Image, MediaLibraryType } from '@edifice.io/react';
 import IconTextPage from '../../modules/icons/components/IconTextPage';
 import IconLink from '../../modules/icons/components/IconLink';
 import IconHeadphone from '../../modules/icons/components/IconHeadphone';
@@ -8,6 +7,8 @@ import { Flex } from '../Flex';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../Button';
 import PdfViewer from './PdfViewer';
+import { MediaLibraryType } from 'src/modules/multimedia';
+import { Image } from '../Image';
 
 export const MediaWrapper = ({
   mediaUrl,
