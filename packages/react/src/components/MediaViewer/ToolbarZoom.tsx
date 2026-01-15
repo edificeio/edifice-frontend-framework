@@ -1,5 +1,6 @@
-import { Flex, IconButton } from '@edifice.io/react';
-import { IconMinus, IconPlus, IconZoomIn } from '@edifice.io/react/icons';
+import { IconMinus, IconPlus, IconZoomIn } from 'src/modules/icons/components';
+import { IconButton } from '../Button';
+import { Flex } from '../Flex';
 
 export default function ToolbarZoom({
   zoomIn,
