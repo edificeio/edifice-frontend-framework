@@ -57,13 +57,14 @@ const MediaViewer = ({ onClose, media, indexMedia = 0 }: MediaViewerProps) => {
             }}
           >
             {media.map((item, index) => (
-              <MediaWrapper
-                key={index}
-                mediaUrl={item.url}
-                mediaType={item.type}
-                mimeType={item.mimeType}
-                scale={index === currentIndex ? scale : 1}
-              />
+              <div key={index} className="viewer-slide">
+                <MediaWrapper
+                  mediaUrl={item.url}
+                  mediaType={item.type}
+                  mimeType={item.mimeType}
+                  scale={index === currentIndex ? scale : 1}
+                />
+              </div>
             ))}
           </Carousel>
           <ToolbarZoom zoomIn={zoomIn} zoomOut={zoomOut} />

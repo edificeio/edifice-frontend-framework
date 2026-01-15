@@ -27,6 +27,7 @@ export const MediaWrapper = ({
     flex: 'none',
     height: '100%',
     transform: `scale(${scale})`,
+    maxHeight: '70vh',
   };
   const audioStyle: React.CSSProperties = { width: '100%', maxWidth: '500px' };
 
