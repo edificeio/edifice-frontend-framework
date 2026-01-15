@@ -57,12 +57,14 @@ export const MediaWrapper = ({
     case 'audio':
       return (
         <Flex direction="column" align="center" style={{ height: '200px' }}>
-          <div
-            className="bg-gray-300 h-100 w-100 d-flex justify-content-center align-items-center rounded-2 mb-8"
+          <Flex
+            justify="center"
+            align="center"
+            className="bg-gray-300 h-100 w-100 rounded-2 mb-8"
             style={{ maxWidth: '500px' }}
           >
             <IconHeadphone width={40} height={40} color="#B0B0B0" />
-          </div>
+          </Flex>
           <audio
             src={mediaUrl}
             className="media-audio"
@@ -99,8 +101,10 @@ export const MediaWrapper = ({
         <PdfViewer mediaUrl={mediaUrl} scale={scale} />
       ) : (
         <Flex direction="column" align="center">
-          <div
-            className="bg-gray-300 w-100 d-flex justify-content-center align-items-center rounded-2 mb-8"
+          <Flex
+            justify="center"
+            align="center"
+            className="bg-gray-300 w-100 rounded-2 mb-8"
             style={{ maxWidth: '500px', height: '200px' }}
           >
             {mediaType === 'hyperlink' ? (
@@ -108,7 +112,7 @@ export const MediaWrapper = ({
             ) : (
               <IconTextPage width={40} height={40} color="#B0B0B0" />
             )}
-          </div>
+          </Flex>
           <a
             className="w-100 d-flex justify-content-center"
             href={mediaUrl}
