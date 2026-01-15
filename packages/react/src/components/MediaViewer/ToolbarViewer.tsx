@@ -1,4 +1,3 @@
-import { Flex, IconButton } from '@edifice.io/react';
 import { useEffect } from 'react';
 import {
   IconClose,
@@ -6,6 +5,8 @@ import {
   IconExternalLink,
 } from '../../modules/icons/components';
 import { SmartEllipsis } from '../SmartEllipsis';
+import { Flex } from '../Flex';
+import { IconButton } from '../Button';
 
 export default function ToolbarViewer({
   onClose,

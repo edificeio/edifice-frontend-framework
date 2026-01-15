@@ -1,6 +1,6 @@
-import { LoadingScreen } from '@edifice.io/react';
 import { useRef, useState } from 'react';
 import { Document, Page } from 'react-pdf';
+import { LoadingScreen } from '../LoadingScreen';
 
 export default function PdfViewer({
   mediaUrl,

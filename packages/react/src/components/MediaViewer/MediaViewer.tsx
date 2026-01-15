@@ -20,11 +20,7 @@ interface MediaViewerProps {
   indexMedia?: number;
 }
 
-const MediaViewer = ({
-  onClose,
-  media,
-  indexMedia = 0,
-}: MediaViewerProps) => {
+const MediaViewer = ({ onClose, media, indexMedia = 0 }: MediaViewerProps) => {
   const { zoomIn, zoomOut, setScale, scale } = useZoom(1);
 
   const [currentIndex, setCurrentIndex] = useState<number>(indexMedia);
