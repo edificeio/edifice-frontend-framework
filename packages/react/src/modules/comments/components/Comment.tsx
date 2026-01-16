@@ -87,6 +87,7 @@ export const Comment = ({
       {!comment.deleted && (
         <>
           <div
+            data-testid="div-comment-read"
             key={id}
             className={`${
               isEditing
@@ -134,6 +135,7 @@ export const Comment = ({
                         maxLength={options.maxCommentLength as number}
                       />
                       <Button
+                        data-testid="comment-save"
                         type="submit"
                         variant="ghost"
                         size="sm"
@@ -165,6 +167,7 @@ export const Comment = ({
                       )}
                       {userId === authorId && (
                         <Button
+                          data-testid="comment-edit"
                           variant="ghost"
                           color="tertiary"
                           size="sm"
@@ -178,6 +181,7 @@ export const Comment = ({
                       )}
                       {(userId === authorId || userRights?.manager) && (
                         <Button
+                          data-testid="comment-delete"
                           variant="ghost"
                           color="tertiary"
                           size="sm"
