@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
-import { Button, EmptyScreen } from '../../..';
+import { Button, EmptyScreen, Heading } from '../../..';
 import { CommentForm } from '../components/CommentForm';
-import { CommentHeader } from '../components/CommentHeader';
 import { CommentList } from '../components/CommentList';
 import {
   DEFAULT_ADD_COMMENTS,
@@ -88,11 +87,17 @@ const CommentProvider = ({
   return (
     <CommentContext.Provider value={values}>
       <div className="my-24">
-        <CommentHeader title={title} />
+        <Heading
+          data-testid="comments-info-count-text"
+          level="h3"
+          headingStyle="h3"
+        >
+          {title}
+        </Heading>
 
         <div className="my-24">
           {user && <CommentForm userId={user.userId} />}
-          {!profilesQueries.isLoading ? (
+          {!profilesQueries.isLoading && (
             <>
               <CommentList />
 
@@ -107,7 +112,7 @@ const CommentProvider = ({
                 </Button>
               )}
             </>
-          ) : null}
+          )}
         </div>
 
         {!displayedComments.length && type === 'edit' && (

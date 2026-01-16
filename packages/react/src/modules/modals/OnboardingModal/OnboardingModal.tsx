@@ -116,6 +116,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
     return createPortal(
       <Modal
         id="onboarding-modal"
+        data-testid="modal-onboarding"
         size="md"
         isOpen={isOpen}
         focusId="nextButtonId"
@@ -159,6 +160,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
         </Modal.Body>
         <Modal.Footer>
           <Button
+            data-testid="modal-onboarding-later"
             type="button"
             color="tertiary"
             variant="ghost"
@@ -169,6 +171,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
 
           {swiperProgress > 0 && (
             <Button
+              data-testid="modal-onboarding-previous"
               type="button"
               color="primary"
               variant="outline"
@@ -180,6 +183,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
           {swiperProgress < 1 && (
             <Button
               id="nextButtonId"
+              data-testid="modal-onboarding-next"
               type="button"
               color="primary"
               variant="filled"
@@ -190,6 +194,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
           )}
           {swiperProgress === 1 && (
             <Button
+              data-testid="modal-onboarding-close"
               type="button"
               color="primary"
               variant="filled"

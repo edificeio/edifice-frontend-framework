@@ -5,7 +5,7 @@
  * @see Source    https://github.com/opendigitaleducation/edifice-ui/blob/main/packages/core/src/Modal/Modal.tsx
  * @see WAI-ARIA  https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
  */
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, Ref, useEffect } from 'react';
 
 import { animated, useTransition } from '@react-spring/web';
 import clsx from 'clsx';
@@ -25,8 +25,12 @@ export interface ModalProps {
   /**
    * Modal id (useful when multiple modal on the same page)
    */
-
   id: string;
+
+  /**
+   * Modal testid
+   */
+  ['data-testid']?: string;
 
   /**
    * Is Modal Open
@@ -67,113 +71,118 @@ export interface ModalProps {
 /**
  * Modal Component
  */
-const Root = forwardRef<ModalElement, ModalProps>((props, ref) => {
-  const {
-    id,
-    isOpen,
-    onModalClose,
-    size = 'md',
-    viewport = false,
-    scrollable = false,
-    focusId,
-    children,
-  } = props;
+const Root = forwardRef(
+  (
+    {
+      id,
+      isOpen,
+      onModalClose,
+      size = 'md',
+      viewport = false,
+      scrollable = false,
+      focusId,
+      children,
+      ...otherDivProps
+    }: ModalProps,
+    ref: Ref<ModalElement>,
+  ) => {
+    const ariaLabelId = `aria_label_${id}`;
+    const ariaDescriptionId = `aria_desc_${id}`;
 
-  const ariaLabelId = `aria_label_${id}`;
-  const ariaDescriptionId = `aria_desc_${id}`;
+    const modalRef = useClickOutside(onModalClose);
+    const trapRef = useTrapFocus(isOpen);
 
-  const modalRef = useClickOutside(onModalClose);
-  const trapRef = useTrapFocus(isOpen);
+    useKeyPress(onModalClose, ['Escape']);
 
-  useKeyPress(onModalClose, ['Escape']);
-
-  useEffect(() => {
-    if (isOpen) {
-      // a11y: trap focus into modal
-      // a11y: prevent body scrolling while modale is active
-      document.body.style.overflow = 'hidden';
-      // a11y: set focus to focusId element
-      // (if focusId is not setted then focus will go to close button at top right corner cf. ModalHeader)
-      if (focusId) {
-        const elem = document.getElementById(focusId);
-        elem?.focus();
+    useEffect(() => {
+      if (isOpen) {
+        // a11y: trap focus into modal
+        // a11y: prevent body scrolling while modale is active
+        document.body.style.overflow = 'hidden';
+        // a11y: set focus to focusId element
+        // (if focusId is not setted then focus will go to close button at top right corner cf. ModalHeader)
+        if (focusId) {
+          const elem = document.getElementById(focusId);
+          elem?.focus();
+        }
       }
-    }
 
-    return () => {
-      document.body.style.overflow = '';
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }, [focusId, isOpen]);
+
+    const modalClasses = clsx('modal fade', {
+      'show d-block': isOpen,
+      'modal-scrollable': scrollable,
+      'viewport': viewport,
+      [`modal-${size}`]: size,
+    });
+
+    const dialogClasses = clsx('modal-dialog');
+
+    const modalContextValue: ModalContextProps = {
+      ariaLabelId,
+      ariaDescriptionId,
+      focusId,
     };
-  }, [focusId, isOpen]);
 
-  const modalClasses = clsx('modal fade', {
-    'show d-block': isOpen,
-    'modal-scrollable': scrollable,
-    'viewport': viewport,
-    [`modal-${size}`]: size,
-  });
+    const transition = useTransition(isOpen, {
+      from: {
+        x: -50,
+        opacity: 0,
+      },
+      enter: {
+        x: 0,
+        opacity: 1,
+      },
+      leave: {
+        x: 50,
+        opacity: 0,
+      },
+    });
 
-  const dialogClasses = clsx('modal-dialog');
-
-  const modalContextValue: ModalContextProps = {
-    ariaLabelId,
-    ariaDescriptionId,
-    focusId,
-  };
-
-  const transition = useTransition(isOpen, {
-    from: {
-      x: -50,
-      opacity: 0,
-    },
-    enter: {
-      x: 0,
-      opacity: 1,
-    },
-    leave: {
-      x: 50,
-      opacity: 0,
-    },
-  });
-
-  return (
-    <ModalContext.Provider value={modalContextValue}>
-      {transition((style, isOpen) => (
-        <>
-          {isOpen && (
-            <animated.div
-              id={id}
-              ref={ref}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={ariaLabelId}
-              aria-describedby={ariaDescriptionId}
-              className={modalClasses}
-              style={style}
-              tabIndex={-1}
-            >
-              <div
-                id={`${id}_ref`}
-                ref={(node) => {
-                  modalRef.current = node;
-                  if (isOpen) trapRef.current = node;
-                }}
-                className={dialogClasses}
+    return (
+      <ModalContext.Provider value={modalContextValue}>
+        {transition((style, isOpen) => (
+          <>
+            {isOpen && (
+              <animated.div
+                id={id}
+                ref={ref}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={ariaLabelId}
+                aria-describedby={ariaDescriptionId}
+                className={modalClasses}
+                style={style}
+                tabIndex={-1}
+                {...otherDivProps}
               >
-                <div className="modal-content">{children}</div>
-              </div>
-            </animated.div>
-          )}
-          {isOpen && (
-            <animated.div
-              className="modal-backdrop fade show"
-              style={{ opacity: 0.65 }}
-            ></animated.div>
-          )}
-        </>
-      ))}
-    </ModalContext.Provider>
-  );
-});
+                <div
+                  id={`${id}_ref`}
+                  ref={(node) => {
+                    modalRef.current = node;
+                    if (isOpen) trapRef.current = node;
+                  }}
+                  className={dialogClasses}
+                >
+                  <div className="modal-content">{children}</div>
+                </div>
+              </animated.div>
+            )}
+            {isOpen && (
+              <animated.div
+                className="modal-backdrop fade show"
+                style={{ opacity: 0.65 }}
+              ></animated.div>
+            )}
+          </>
+        ))}
+      </ModalContext.Provider>
+    );
+  },
+);
 
 const Modal = Object.assign(Root, {
   Header: ModalHeader,
