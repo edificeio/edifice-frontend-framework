@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/rest-client-base",
-  "version": "2.5.4",
+  "version": "2.5.7",
   "description": "Abstract base for Edifice client SDKs (no application-specific logic)",
   "private": false,
   "license": "AGPL-3.0",
