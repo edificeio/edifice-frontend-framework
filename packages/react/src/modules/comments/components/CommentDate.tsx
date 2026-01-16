@@ -21,19 +21,12 @@ export const CommentDate = ({
       date: fromNow(date),
     });
 
-  if (updatedAt) {
-    return (
-      <>
-        <span className="small text-gray-700">|</span>
-        <span className="small text-gray-700">{getUpdatedDate(updatedAt)}</span>
-      </>
-    );
-  }
-
-  return createdAt ? (
+  return updatedAt || createdAt ? (
     <>
       <span className="small text-gray-700">|</span>
-      <span className="small text-gray-700">{getPublishedDate(createdAt)}</span>
+      <span data-testid="comment-info-date" className="small text-gray-700">
+        {updatedAt ? getUpdatedDate(updatedAt) : getPublishedDate(createdAt)}
+      </span>
     </>
   ) : null;
 };
