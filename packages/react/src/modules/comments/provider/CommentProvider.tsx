@@ -91,6 +91,7 @@ const CommentProvider = ({
           data-testid="comments-info-count-text"
           level="h3"
           headingStyle="h3"
+          className={displayedComments.length === 0 ? 'd-print-none' : ''}
         >
           {title}
         </Heading>
@@ -116,7 +117,7 @@ const CommentProvider = ({
         </div>
 
         {!displayedComments.length && type === 'edit' && (
-          <div className="comments-emptyscreen">
+          <div className="comments-emptyscreen d-print-none">
             <div className="comments-emptyscreen-wrapper">
               <EmptyScreen imageSrc={emptyscreenPath} size={150} />
             </div>
