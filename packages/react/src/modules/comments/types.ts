@@ -78,7 +78,9 @@ interface EditRootProps extends BaseProps {
    */
   callbacks: CommentCallbacks;
   /**
-   * Rights to perform CRUD on comment
+   * Rights to perform CRUD on comment (type=`edit` required):
+   * - manager => delete
+   * Also, comment's author can update, delete
    */
   rights?: Record<RightRole, boolean>;
 }
