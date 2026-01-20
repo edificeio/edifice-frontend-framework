@@ -20,7 +20,15 @@ const useConversation = () => {
   /**
    * Get message count for zimbra or chat app
    */
-  const queryParams = { unread: true, _: new Date().getTime() };
+  const queryParams = {
+    unread: true,
+    _: new Date().getTime(),
+  };
+
+  if (!zimbraWorkflow) {
+    queryParams['queryparam_token'] = new Date().getTime();
+    // To force backend cache to refresh
+  }
 
   const { data: messages } = useQuery({
     queryKey: ['folder', 'count', 'inbox'],
