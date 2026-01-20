@@ -1,0 +1,69 @@
+@use '../abstracts/' as *;
+@use '../vendors/bootstrap';
+
+.promotion-card {
+  border-width: 3px;
+  border-style: solid;
+  border-color: var(--#{$prefix}white);
+  border-radius: $spacer-24;
+  background-color: var(--#{$prefix}white);
+  position: relative;
+  min-height: 217px;
+  overflow: hidden;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    min-width: 120px;
+    min-height: 30px;
+    border-bottom-left-radius: $spacer-12;
+  }
+
+  &-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    padding: $spacer-24 $spacer-24 $spacer-24 105px;
+  }
+
+  &-title {
+    font-size: 2.2rem;
+  }
+
+  &-description {
+    font-size: 1.6rem;
+  }
+
+  &-icon {
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: $spacer-24;
+
+    & svg {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &-actions {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-top: $spacer-16;
+  }
+}
