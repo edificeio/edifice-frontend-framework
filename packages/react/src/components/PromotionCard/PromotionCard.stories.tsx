@@ -92,7 +92,7 @@ export const WithCustomBorder: Story = {
 
 export const WithCustomBackground: Story = {
   args: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f2f2f2',
   },
   render: (args: PromotionCardProps) => {
     return (
