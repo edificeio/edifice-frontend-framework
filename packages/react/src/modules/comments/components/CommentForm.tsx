@@ -34,7 +34,7 @@ export const CommentForm = ({
     type === 'edit' && (
       <div
         data-testid="div-comment-create"
-        className="border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200"
+        className="border rounded-3 p-12 pb-8 d-flex gap-12 bg-gray-200 d-print-none"
       >
         <CommentAvatar id={userId as string} />
         <div className="d-flex flex-column flex-fill gap-4">
