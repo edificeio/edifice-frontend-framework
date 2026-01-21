@@ -1,6 +1,6 @@
 import PromotionCardBody from './PromotionCardBody';
 import PromotionCardDescription from './PromotionCardDescription';
-import PromotionCardAction from './PromotionCardAction';
+import PromotionCardFooter from './PromotionCardFooter';
 import PromotionCardHeader from './PromotionCardHeader';
 import PromotionCardIcon from './PromotionCardIcon';
 import PromotionCardTitle from './PromotionCardTitle';
@@ -74,7 +74,7 @@ const PromotionCard = Object.assign(Root, {
   Icon: PromotionCardIcon,
   Title: PromotionCardTitle,
   Description: PromotionCardDescription,
-  Action: PromotionCardAction,
+  Footer: PromotionCardFooter,
 });
 
 export default PromotionCard;

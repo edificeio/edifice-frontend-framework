@@ -11,7 +11,7 @@ const PromotionCardTitle = ({
 }: PromotionCardTitleProps) => {
   const classNames = clsx('promotion-card-title', className);
 
-  return <div className={classNames}>{children}</div>;
+  return <h3 className={classNames}>{children}</h3>;
 };
 
 PromotionCardTitle.displayName = 'PromotionCardTitle';

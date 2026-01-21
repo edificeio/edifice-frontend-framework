@@ -2,13 +2,13 @@
 @use '../vendors/bootstrap';
 
 .promotion-card {
-  border-width: 3px;
+  border-width: 4px;
   border-style: solid;
   border-color: var(--#{$prefix}white);
   border-radius: $spacer-24;
   background-color: var(--#{$prefix}white);
+  box-shadow: 0 8px 32px 0 #{$gray-800}14;
   position: relative;
-  min-height: 217px;
   overflow: hidden;
 
   &-header {
@@ -30,11 +30,7 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
-    padding: $spacer-24 $spacer-24 $spacer-24 105px;
-  }
-
-  &-title {
-    font-size: 2.2rem;
+    padding: $spacer-24 $spacer-24 $spacer-0 105px;
   }
 
   &-description {
@@ -60,10 +56,11 @@
     }
   }
 
-  &-actions {
+  &-footer {
     display: flex;
     justify-content: start;
     align-items: center;
-    padding-top: $spacer-16;
+    gap: $spacer-12;
+    padding: $spacer-16 $spacer-24 $spacer-24 105px;
   }
 }
