@@ -96,7 +96,7 @@ const FileCard = ({
       },
       ppt: {
         icon: '.PPT',
-        color: 'bg-yellow-200',
+        color: 'bg-red-200',
       },
       img: {
         icon: <IconLandscape width={22} height={22} />,
