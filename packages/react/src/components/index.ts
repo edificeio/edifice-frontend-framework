@@ -34,6 +34,7 @@ export * from './Menu';
 export * from './Modal';
 export * from './Popover';
 export * from './PreventPropagation';
+export * from './PromotionCard';
 export * from './Radio';
 export * from './RadioCard';
 export * from './SearchBar';
