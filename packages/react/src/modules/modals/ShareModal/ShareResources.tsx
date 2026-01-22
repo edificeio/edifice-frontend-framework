@@ -18,6 +18,7 @@ import {
 import { UseMutationResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
+import { useDirectory } from 'src/hooks';
 import {
   Avatar,
   Button,
@@ -318,6 +319,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
         setIsSavingBookmark(false);
       });
     };
+    const { getAvatarURL } = useDirectory();
 
     useImperativeHandle(
       ref,
@@ -336,6 +338,8 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
     }, [isSavingBookmark, isSharing, onSubmit]);
 
     const { t } = useTranslation();
+
+    const userIsAuthor = currentIsAuthor();
 
     const searchPlaceholder = showSearchAdmlHint()
       ? t('explorer.search.adml.hint')
@@ -404,29 +408,32 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
                 </tr>
               </thead>
               <tbody>
-                {currentIsAuthor() && (
-                  <tr>
-                    <th scope="row">
-                      <Avatar
-                        alt={t('explorer.modal.share.avatar.me.alt')}
-                        size="xs"
-                        src={myAvatar}
-                        variant="circle"
-                      />
-                    </th>
-                    <td>{t('share.me')}</td>
-                    {shareRightActions.map((shareRightAction) => (
-                      <td
-                        key={shareRightAction.displayName}
-                        style={{ width: '80px' }}
-                        className="text-center text-white"
-                      >
-                        <Checkbox checked={true} disabled />
-                      </td>
-                    ))}
-                    <td></td>
-                  </tr>
-                )}
+                {/* Add a disabled line about the resource owner. */}
+                <tr>
+                  <th scope="row">
+                    <Avatar
+                      alt={t('explorer.modal.share.avatar.me.alt')}
+                      size="xs"
+                      src={
+                        userIsAuthor
+                          ? myAvatar
+                          : getAvatarURL(resourceCreatorId, 'user')
+                      }
+                      variant="circle"
+                    />
+                  </th>
+                  <td>{userIsAuthor ? t('share.me') : t('share.author')}</td>
+                  {shareRightActions.map((shareRightAction) => (
+                    <td
+                      key={shareRightAction.displayName}
+                      style={{ width: '80px' }}
+                      className="text-center text-white"
+                    >
+                      <Checkbox checked={true} disabled />
+                    </td>
+                  ))}
+                  <td></td>
+                </tr>
                 <ShareBookmarkLine
                   showBookmark={showBookmark}
                   shareRightActions={shareRightActions}
