@@ -6,7 +6,7 @@
   flex-direction: column;
   min-width: 400px;
   min-height: 200px;
-  border-width: 4px;
+  border-width: 3px;
   border-style: solid;
   border-color: var(--#{$prefix}white);
   border-radius: $spacer-24;
@@ -38,6 +38,10 @@
     padding: $spacer-24 $spacer-24 $spacer-0 105px;
   }
 
+  &-title {
+    padding-bottom: 1.2rem;
+  }
+
   &-description {
     font-size: 1.6rem;
   }
@@ -45,8 +49,8 @@
   &-icon {
     z-index: 0;
     position: absolute;
-    left: 0;
-    top: 0;
+    left: -1px;
+    top: -1px;
     width: 120px;
     height: 120px;
     border-radius: $spacer-24;
@@ -66,7 +70,7 @@
     justify-content: start;
     align-items: center;
     gap: $spacer-12;
-    padding: $spacer-0 $spacer-24 $spacer-24 105px;
+    padding: $spacer-16 $spacer-24 $spacer-24 105px;
     margin-top: auto;
   }
 }
