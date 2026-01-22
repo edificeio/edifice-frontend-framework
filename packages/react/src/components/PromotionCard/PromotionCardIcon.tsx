@@ -1,14 +1,14 @@
 import { clsx } from 'clsx';
 
 export interface PromotionCardIconProps {
-  backgroundColor: string;
   icon: React.ReactNode;
+  backgroundColor?: string;
   className?: string;
 }
 
 const PromotionCardIcon = ({
-  backgroundColor,
   icon,
+  backgroundColor,
   className,
 }: PromotionCardIconProps) => {
   const classNames = clsx('promotion-card-icon', className);
