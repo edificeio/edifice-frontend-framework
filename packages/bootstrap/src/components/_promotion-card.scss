@@ -2,6 +2,10 @@
 @use '../vendors/bootstrap';
 
 .promotion-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+  min-height: 200px;
   border-width: 4px;
   border-style: solid;
   border-color: var(--#{$prefix}white);
@@ -26,6 +30,7 @@
   }
 
   &-body {
+    flex: 1;
     position: relative;
     z-index: 1;
     display: flex;
@@ -61,6 +66,7 @@
     justify-content: start;
     align-items: center;
     gap: $spacer-12;
-    padding: $spacer-16 $spacer-24 $spacer-24 105px;
+    padding: $spacer-0 $spacer-24 $spacer-24 105px;
+    margin-top: auto;
   }
 }
