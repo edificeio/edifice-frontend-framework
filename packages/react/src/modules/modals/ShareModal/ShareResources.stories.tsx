@@ -42,10 +42,11 @@ export const Default: Story = {
   },
 };
 
-export const OverrideUrls: Story = {
+export const OverrideUrlsAndCreatorName: Story = {
   args: {
     shareOptions: {
       ...mockShareOptions,
+      resourceCreatorDisplayName: 'User 1',
       shareUrls: {
         getResourceRights: '/actualites/api/v1/infos/resource-1/shares',
         saveResourceRights: '/actualites/api/v1/infos/resource-1/shares',

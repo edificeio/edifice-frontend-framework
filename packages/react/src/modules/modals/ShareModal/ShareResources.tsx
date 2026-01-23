@@ -18,7 +18,6 @@ import {
 import { UseMutationResult } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
-import { useDirectory } from 'src/hooks';
 import {
   Avatar,
   Button,
@@ -29,6 +28,7 @@ import {
   Tooltip,
   VisuallyHidden,
 } from '../../../components';
+import { useDirectory } from '../../../hooks';
 import {
   IconBookmark,
   IconInfoCircle,
@@ -47,6 +47,7 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  * @property {ID} resourceId - Unique identifier of the resource to share
  * @property {RightStringified[]} resourceRights - Current rights assigned to the resource
  * @property {string} resourceCreatorId - User ID of the resource creator
+ * @property {string} resourceCreatorDisplayName - (optional) Name of the resource creator to display
  * @property {ShareRightActionDisplayName[]} [filteredActions] - Optional list of allowed actions to display
  * @property {ShareUrls} [shareUrls] - Optional custom URLs for API endpoints related to sharing operations default endpoints are used if not provided
  * default: {
@@ -82,6 +83,7 @@ import { useShareBookmark } from './hooks/useShareBookmark';
  *   resourceId: '12345',
  *   resourceRights: [],
  *   resourceCreatorId: 'user-67890',
+ *   resourceCreatorDisplayName: 'Jim',
  *   filteredActions: ['read', 'contrib'],
  *   defaultActions: [
  *     {
@@ -101,6 +103,7 @@ export type ShareOptions = {
   resourceId: ID;
   resourceRights: RightStringified[];
   resourceCreatorId: string;
+  resourceCreatorDisplayName?: string;
   filteredActions?: ShareRightActionDisplayName[];
   shareUrls?: ShareUrls;
   defaultActions?: ShareRightAction[];
@@ -247,6 +250,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
     const {
       resourceId,
       resourceCreatorId,
+      resourceCreatorDisplayName,
       resourceRights,
       filteredActions,
       shareUrls,
@@ -422,7 +426,11 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
                       variant="circle"
                     />
                   </th>
-                  <td>{userIsAuthor ? t('share.me') : t('share.author')}</td>
+                  <td>
+                    {userIsAuthor
+                      ? t('share.me')
+                      : (resourceCreatorDisplayName ?? t('share.author'))}
+                  </td>
                   {shareRightActions.map((shareRightAction) => (
                     <td
                       key={shareRightAction.displayName}
