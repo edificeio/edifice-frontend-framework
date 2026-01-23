@@ -107,11 +107,7 @@ export * from './Button';
 
 ## Adding Icons
 
-To add a new icon to the library, follow these steps:
-
-1. Add the SVG file in `packages/react/src/modules/assets`
-2. Build the frontend-framework: `pnpm run build`
-3. A component will be generated in `packages/react/src/modules/icons/components` and will be exportable
+https://edifice-community.atlassian.net/wiki/spaces/ODE/pages/4371611649/Overview#Ajout-de-l%E2%80%99ic%C3%B4ne
 
 ## Dev
 
