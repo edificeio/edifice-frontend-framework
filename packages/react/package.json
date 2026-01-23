@@ -174,7 +174,7 @@
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:",
-    "rollup-plugin-pure": "^0.2.1",
+    "rollup-plugin-pure": "catalog:",
     "rollup-plugin-visualizer": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
