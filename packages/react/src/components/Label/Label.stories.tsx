@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { IconMail } from '../../modules/icons/components';
 import { FormControl } from '../Form';
 import Label from './Label';
