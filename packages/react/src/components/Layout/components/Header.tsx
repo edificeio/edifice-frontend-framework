@@ -137,7 +137,11 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                 )}
                 {hasCarbonioPreauthWorkflow && (
                   <NavItem>
-                    <a href="/auth/carbonio/preauth" className="nav-link">
+                    <a
+                      href="/auth/carbonio/preauth"
+                      target="_blank"
+                      className="nav-link"
+                    >
                       <IconOneMessaging className="icon notification" />
                       <VisuallyHidden>{t('navbar.messages')}</VisuallyHidden>
                     </a>
@@ -329,13 +333,14 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
               )}
               {hasCarbonioPreauthWorkflow && (
                 <NavItem>
-                  <NavLink
-                    className="position-relative"
-                    link="/auth/carbonio/preauth"
-                    translate={t('conversation')}
+                  <a
+                    className="nav-link position-relative"
+                    href="/auth/carbonio/preauth"
+                    target="_blank"
                   >
                     <IconNeoMessaging color="#fff" />
-                  </NavLink>
+                    <VisuallyHidden>{t('conversation')}</VisuallyHidden>
+                  </a>
                 </NavItem>
               )}
               {currentLanguage === 'fr' && hasOldHelpEnableWorkflow ? (
