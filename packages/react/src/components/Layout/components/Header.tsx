@@ -137,7 +137,11 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                 )}
                 {hasCarbonioPreauthWorkflow && (
                   <NavItem>
-                    <a href="/auth/carbonio/preauth" className="nav-link">
+                    <a
+                      href="/auth/carbonio/preauth"
+                      target="_blank"
+                      className="nav-link"
+                    >
                       <IconOneMessaging className="icon notification" />
                       <VisuallyHidden>{t('navbar.messages')}</VisuallyHidden>
                     </a>
@@ -333,6 +337,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                     className="position-relative"
                     link="/auth/carbonio/preauth"
                     translate={t('conversation')}
+                    {...({ target: '_blank' } as any)} // Workaround to open link in a new tab
                   >
                     <IconNeoMessaging color="#fff" />
                   </NavLink>
