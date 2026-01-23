@@ -17,6 +17,7 @@ export { default as IconBlur } from './IconBlur';
 export { default as IconBookmark } from './IconBookmark';
 export { default as IconBulletList } from './IconBulletList';
 export { default as IconBurgerMenu } from './IconBurgerMenu';
+export { default as IconCalendarEdit } from './IconCalendarEdit';
 export { default as IconCalendarLight } from './IconCalendarLight';
 export { default as IconCalendar } from './IconCalendar';
 export { default as IconCamera } from './IconCamera';

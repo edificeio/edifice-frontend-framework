@@ -105,6 +105,15 @@ export interface ButtonProps {
 export * from './Button';
 ```
 
+## Adding Icons
+
+To add a new icon to the library, follow these steps:
+
+1. Add the SVG file in `packages/react/src/modules/assets`
+2. Build the frontend-framework: `pnpm run build`
+3. A component will be generated in `packages/react/src/modules/icons/components` and will be exportable
+
 ## Dev
 
 You can build your component using `Storybook`. See [README](../../docs//README.md)
+
