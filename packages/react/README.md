@@ -105,6 +105,11 @@ export interface ButtonProps {
 export * from './Button';
 ```
 
+## Adding Icons
+
+https://edifice-community.atlassian.net/wiki/spaces/ODE/pages/4371611649/Overview#Ajout-de-l%E2%80%99ic%C3%B4ne
+
 ## Dev
 
 You can build your component using `Storybook`. See [README](../../docs//README.md)
+
