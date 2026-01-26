@@ -17,6 +17,8 @@ export const WidgetAppsFooter = () => {
   );
 };
 
+const appToOpenOnBlank = ['Administration'];
+
 export const WidgetAppsBody = ({
   bookmarkedApps,
 }: {
@@ -36,7 +38,9 @@ export const WidgetAppsBody = ({
             href={app.address}
             className="bookmarked-app"
             target={
-              app.isExternal || app.category === 'connector'
+              appToOpenOnBlank.includes(app.name) ||
+              app.isExternal ||
+              app.category === 'connector'
                 ? '_blank'
                 : undefined
             }
