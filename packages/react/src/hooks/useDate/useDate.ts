@@ -182,10 +182,10 @@ export default function useDate() {
     [currentLanguage, parseDate],
   );
 
-  /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/plugin/is-same for more details.
+  /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/query/is-same for more details.
    * @param date - The first date to compare.
    * @param date2 - The second date to compare.
-   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). default is 'day'.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). Default is 'day'.
    * @returns True if the dates are the same, false otherwise.
    */
   const dateIsSame = useCallback(
@@ -195,10 +195,10 @@ export default function useDate() {
     [],
   );
 
-  /** Check if a date is same or after another date. See https://day.js.org/docs/en/plugin/is-same-or-after for more details.
+  /** Check if a date is same or after another date. See https://day.js.org/docs/en/query/is-same-or-after for more details.
    * @param date - The date to check.
    * @param date2 - The date to compare to.
-   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). default is 'day'.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). Default is 'day'.
    * @returns True if the date is same or after the other date, false otherwise.
    */
   const dateIsSameOrAfter = useCallback(
