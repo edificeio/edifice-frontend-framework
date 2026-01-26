@@ -44,6 +44,13 @@ export const WidgetAppsBody = ({
                 ? '_blank'
                 : undefined
             }
+            rel={
+              appToOpenOnBlank.includes(app.name) ||
+              app.isExternal ||
+              app.category === 'connector'
+                ? 'noopener noreferrer'
+                : undefined
+            }
           >
             <AppIcon app={app} size="32" />
           </a>
