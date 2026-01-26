@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs, OpUnitType } from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isToday from 'dayjs/plugin/isToday';
 
 /**
  * DO NOT REMOVE .js extensions from dayjs imports
@@ -20,6 +22,8 @@ import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeC
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isToday);
 
 export type MongoDate = {
   $date: number | string;
@@ -178,9 +182,46 @@ export default function useDate() {
     [currentLanguage, parseDate],
   );
 
+  /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/plugin/is-same for more details.
+   * @param date - The first date to compare.
+   * @param date2 - The second date to compare.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). default is 'day'.
+   * @returns True if the dates are the same, false otherwise.
+   */
+  const dateIsSame = useCallback(
+    (date: Date, date2: Date, unit: OpUnitType = 'day'): boolean => {
+      return dayjs(date).isSame(dayjs(date2), unit);
+    },
+    [],
+  );
+
+  /** Check if a date is same or after another date. See https://day.js.org/docs/en/plugin/is-same-or-after for more details.
+   * @param date - The date to check.
+   * @param date2 - The date to compare to.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). default is 'day'.
+   * @returns True if the date is same or after the other date, false otherwise.
+   */
+  const dateIsSameOrAfter = useCallback(
+    (date: Date, date2: Date, unit: OpUnitType = 'day'): boolean => {
+      return dayjs(date).isSameOrAfter(dayjs(date2), unit);
+    },
+    [],
+  );
+
+  /** Check if a date is today. See https://day.js.org/docs/en/plugin/is-today for more details.
+   * @param date - The date to check.
+   * @returns True if the date is today, false otherwise.
+   */
+  const dateIsToday = useCallback((date: Date): boolean => {
+    return dayjs(date).isToday();
+  }, []);
+
   return {
     fromNow,
     formatDate,
     formatTimeAgo,
+    dateIsSame,
+    dateIsSameOrAfter,
+    dateIsToday,
   };
 }
