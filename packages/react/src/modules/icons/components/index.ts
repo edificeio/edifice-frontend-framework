@@ -1,5 +1,6 @@
 export { default as IconAddUser } from './IconAddUser';
 export { default as IconAdd } from './IconAdd';
+export { default as IconAdjustSettings } from './IconAdjustSettings';
 export { default as IconAlertCircle } from './IconAlertCircle';
 export { default as IconAlertTriangle } from './IconAlertTriangle';
 export { default as IconAlignCenter } from './IconAlignCenter';
