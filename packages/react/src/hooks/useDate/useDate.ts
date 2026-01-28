@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs, OpUnitType } from 'dayjs';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+import isToday from 'dayjs/plugin/isToday';
 
 /**
  * DO NOT REMOVE .js extensions from dayjs imports
@@ -20,6 +22,8 @@ import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeC
 dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
+dayjs.extend(isSameOrAfter);
+dayjs.extend(isToday);
 
 export type MongoDate = {
   $date: number | string;
@@ -29,7 +33,7 @@ export type IsoDate = string; // "2021-03-24T16:36:05.398" or "1980-01-13"
 export type NumberDate = number;
 
 /** Date formats we are going to deal with. */
-export type CoreDate = IsoDate | MongoDate | NumberDate;
+export type CoreDate = IsoDate | MongoDate | NumberDate | Date;
 
 /**
  * Custom React hook for date parsing, formatting, and localization.
@@ -84,6 +88,8 @@ export default function useDate() {
           return undefined;
         } else if ('string' === typeof date) {
           computedDate = parseDate(date);
+        } else if (date instanceof Date) {
+          computedDate = dayjs(date).locale(currentLanguage as string);
         } else if ('number' === typeof date) {
           computedDate = dayjs(date).locale(currentLanguage as string);
         } else if ('number' === typeof date.$date) {
@@ -178,9 +184,54 @@ export default function useDate() {
     [currentLanguage, parseDate],
   );
 
+  /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/query/is-same for more details.
+   * @param date - The first date to compare.
+   * @param date2 - The second date to compare.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). Default is 'day'.
+   * @returns True if the dates are the same, false otherwise.
+   */
+  const dateIsSame = useCallback(
+    (date: CoreDate, date2: CoreDate, unit: OpUnitType = 'day'): boolean => {
+      const computedDate = toComputedDate(date);
+      const computedDate2 = toComputedDate(date2);
+      return computedDate?.isSame(computedDate2, unit) ?? false;
+    },
+    [currentLanguage, parseDate],
+  );
+
+  /** Check if a date is same or after another date. See https://day.js.org/docs/en/query/is-same-or-after for more details.
+   * @param date - The date to check.
+   * @param date2 - The date to compare to.
+   * @param unit - The unit to use for the comparison ('day', 'month', 'year', etc.). Default is 'day'.
+   * @returns True if the date is same or after the other date, false otherwise.
+   */
+  const dateIsSameOrAfter = useCallback(
+    (date: CoreDate, date2: CoreDate, unit: OpUnitType = 'day'): boolean => {
+      const computedDate = toComputedDate(date);
+      const computedDate2 = toComputedDate(date2);
+      return computedDate?.isSameOrAfter(computedDate2, unit) ?? false;
+    },
+    [currentLanguage, parseDate],
+  );
+
+  /** Check if a date is today. See https://day.js.org/docs/en/plugin/is-today for more details.
+   * @param date - The date to check.
+   * @returns True if the date is today, false otherwise.
+   */
+  const dateIsToday = useCallback(
+    (date: CoreDate): boolean => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isToday() ?? false;
+    },
+    [currentLanguage, parseDate],
+  );
+
   return {
     fromNow,
     formatDate,
     formatTimeAgo,
+    dateIsSame,
+    dateIsSameOrAfter,
+    dateIsToday,
   };
 }
