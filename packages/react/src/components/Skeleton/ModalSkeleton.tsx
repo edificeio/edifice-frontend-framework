@@ -67,7 +67,9 @@ const Root = ({
         <div className={dialogClasses}>
           <div className="modal-content placeholder">
             <div className="modal-header">
-              <h2 className="modal-title">----------</h2>
+              <h2 className="modal-title" aria-hidden>
+                &nbsp;
+              </h2>
               <ButtonSkeleton className="btn-close" color="tertiary" />
             </div>
             <div className="modal-body">{children}</div>
