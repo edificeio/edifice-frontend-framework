@@ -13,7 +13,7 @@ export interface ViewsCounterProps
 const ViewsCounter = forwardRef(
   (
     { viewsCounter, onClick, className, ...restProps }: ViewsCounterProps,
-    forwardRef: Ref<HTMLButtonElement>,
+    ref: Ref<HTMLButtonElement>,
   ) => {
     const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
@@ -27,7 +27,7 @@ const ViewsCounter = forwardRef(
 
     return (
       <Button
-        ref={forwardRef}
+        ref={ref}
         rightIcon={<IconSee />}
         className={className}
         onClick={handleButtonClick}
