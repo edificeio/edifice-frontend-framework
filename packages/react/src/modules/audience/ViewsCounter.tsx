@@ -1,50 +1,46 @@
 import { StringUtils } from '@edifice.io/utilities';
 import clsx from 'clsx';
+import { forwardRef, Ref } from 'react';
 import { Button } from '../../components';
 import { IconSee } from '../icons/components';
 
-export interface ViewsCounterProps {
-  /**
-   * The number of views to display.
-   *
-   */
+export interface ViewsCounterProps
+  extends React.ComponentPropsWithRef<'button'> {
+  /** The number of views to display. */
   viewsCounter: number;
-  /**
-   * Optional click handler for the counter button.
-   */
-  onClick?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
-  /**
-   * Optional CSS class name to apply to the counter component.
-   */
-  className?: string;
 }
 
-const ViewsCounter = ({
-  viewsCounter,
-  onClick,
-  className,
-}: ViewsCounterProps) => {
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    onClick?.();
-  };
+const ViewsCounter = forwardRef(
+  (
+    { viewsCounter, onClick, className, ...restProps }: ViewsCounterProps,
+    forwardRef: Ref<HTMLButtonElement>,
+  ) => {
+    const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onClick?.(event);
+    };
 
-  className = clsx('text-gray-700 fw-normal py-4 px-8 btn-icon', className);
+    const isDisabled = viewsCounter <= 0;
 
-  return (
-    <Button
-      rightIcon={<IconSee />}
-      variant="ghost"
-      type="button"
-      className={className}
-      onClick={handleButtonClick}
-      disabled={!viewsCounter}
-    >
-      {StringUtils.toCounter(viewsCounter)}
-    </Button>
-  );
-};
+    className = clsx('text-gray-700 fw-normal py-4 px-8 btn-icon', className);
+
+    return (
+      <Button
+        ref={forwardRef}
+        rightIcon={<IconSee />}
+        className={className}
+        onClick={handleButtonClick}
+        disabled={isDisabled}
+        {...restProps}
+        color={'tertiary'}
+        variant="ghost"
+      >
+        {StringUtils.toCounter(viewsCounter)}
+      </Button>
+    );
+  },
+);
 
 ViewsCounter.displayName = 'ViewsCounter';
 
