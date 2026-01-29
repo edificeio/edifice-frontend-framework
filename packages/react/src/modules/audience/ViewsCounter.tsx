@@ -33,7 +33,7 @@ const ViewsCounter = forwardRef(
         onClick={handleButtonClick}
         disabled={isDisabled}
         {...restProps}
-        color={'tertiary'}
+        color="tertiary"
         variant="ghost"
       >
         {StringUtils.toCounter(viewsCounter)}
