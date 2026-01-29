@@ -55,7 +55,7 @@ const Root = ({
     },
   });
 
-  return transition((style, _isOpen) => (
+  return transition((style) => (
     <>
       <animated.div
         role="dialog"
