@@ -70,6 +70,7 @@ export { default as IconImageSizeSmall } from './IconImageSizeSmall';
 export { default as IconInbox } from './IconInbox';
 export { default as IconInfoCircle } from './IconInfoCircle';
 export { default as IconInfoRectangle } from './IconInfoRectangle';
+export { default as IconLabel } from './IconLabel';
 export { default as IconLandscape } from './IconLandscape';
 export { default as IconLibrary } from './IconLibrary';
 export { default as IconLink } from './IconLink';
