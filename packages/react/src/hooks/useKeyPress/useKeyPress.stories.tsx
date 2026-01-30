@@ -1,6 +1,6 @@
 import useKeyPress from './useKeyPress';
 // @ts-ignore
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import Button from '../../components/Button/Button';
 
