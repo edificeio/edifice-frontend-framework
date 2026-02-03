@@ -1,0 +1,206 @@
+import { Button, IconButton } from '@edifice.io/react';
+import {
+  IconDelete,
+  IconDownload,
+  IconFolderAdd,
+  IconPlus,
+} from '@edifice.io/react/icons';
+import clsx from 'clsx';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import './AddAttachments.css';
+import { SingleAttachment } from './components/SingleAttachment';
+import { Attachment } from './models/attachment';
+
+function fileToAttachment(file: File): Attachment {
+  return {
+    id: `${file.name}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+    charset: 'UTF-8',
+    contentTransferEncoding: 'binary',
+    contentType: file.type || 'application/octet-stream',
+    filename: file.name,
+    name: file.name,
+    size: file.size,
+  };
+}
+
+export interface AddAttachmentsProps {
+  attachments: Attachment[];
+  onFilesSelected: (files: File[]) => void;
+  onRemoveAttachment: (attachmentId: string) => void;
+  editMode?: boolean;
+  isMutating?: boolean;
+  onCopyToWorkspace?: (attachments: Attachment[]) => void;
+  /** Si fourni, chaque pièce jointe affiche un bouton télécharger avec l'URL retournée. */
+  getDownloadUrl?: (attachmentId: string) => string;
+  /** Si fourni et qu'il y a plusieurs pièces jointes, affiche un bouton « télécharger tout ». */
+  downloadAllUrl?: string;
+}
+
+export function AddAttachments({
+  attachments,
+  onFilesSelected,
+  onRemoveAttachment,
+  editMode = false,
+  isMutating = false,
+  onCopyToWorkspace,
+  getDownloadUrl,
+  downloadAllUrl,
+}: AddAttachmentsProps) {
+  const { t } = useTranslation();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [optimisticAttachments, setOptimisticAttachments] = useState<
+    Attachment[]
+  >([]);
+  const prevAttachmentsLengthRef = useRef(attachments.length);
+
+  const displayedAttachments = [...attachments, ...optimisticAttachments];
+
+  useEffect(() => {
+    if (attachments.length > prevAttachmentsLengthRef.current) {
+      setOptimisticAttachments([]);
+    }
+    prevAttachmentsLengthRef.current = attachments.length;
+  }, [attachments.length]);
+
+  if (!editMode && !displayedAttachments.length) return null;
+
+  const resetInputValue = () => {
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
+  const handleAttachClick = () => inputRef?.current?.click();
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length > 0) {
+      onFilesSelected(files);
+      const newOptimistic = files.map(fileToAttachment);
+      setOptimisticAttachments((prev) => [...prev, ...newOptimistic]);
+    }
+    resetInputValue();
+  };
+
+  const handleDetachAllClick = () => {
+    setOptimisticAttachments([]);
+    attachments.forEach((attachment) => {
+      onRemoveAttachment(attachment.id);
+    });
+    resetInputValue();
+  };
+
+  const handleDetachClick = (attachmentId: string) => {
+    const isOptimistic = optimisticAttachments.some(
+      (a) => a.id === attachmentId,
+    );
+    if (isOptimistic) {
+      setOptimisticAttachments((prev) =>
+        prev.filter((a) => a.id !== attachmentId),
+      );
+    } else {
+      onRemoveAttachment(attachmentId);
+    }
+    resetInputValue();
+  };
+
+  const className = clsx(
+    'bg-gray-200 rounded px-12 py-8 message-attachments align-self-start gap-8 d-flex flex-column',
+    { 'border add-attachments-edit mx-16': editMode },
+  );
+
+  return (
+    <div
+      className={className}
+      style={{ maxWidth: '-webkit-fill-available' }}
+      data-drag-handle
+    >
+      {!!displayedAttachments.length && (
+        <>
+          <div className="d-flex align-items-center justify-content-between border-bottom">
+            <span className="caption fw-bold my-8">{t('attachments')}</span>
+            {displayedAttachments.length > 1 && (
+              <div>
+                {onCopyToWorkspace && displayedAttachments.length > 1 && (
+                  <IconButton
+                    title={t('conversation.copy.all.toworkspace')}
+                    color="tertiary"
+                    type="button"
+                    icon={<IconFolderAdd />}
+                    onClick={() => onCopyToWorkspace(displayedAttachments)}
+                    variant="ghost"
+                  />
+                )}
+                {downloadAllUrl && displayedAttachments.length > 1 && (
+                  <a href={downloadAllUrl} download>
+                    <IconButton
+                      title={t('download.all.attachment')}
+                      color="tertiary"
+                      type="button"
+                      icon={<IconDownload />}
+                      variant="ghost"
+                    />
+                  </a>
+                )}
+                {editMode && (
+                  <IconButton
+                    title={t('remove.all.attachment')}
+                    color="danger"
+                    type="button"
+                    icon={<IconDelete />}
+                    variant="ghost"
+                    onClick={handleDetachAllClick}
+                    disabled={isMutating}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+          <ul className="d-flex gap-8 flex-column list-unstyled m-0">
+            {displayedAttachments.map((attachment) => (
+              <li key={attachment.id} className="mw-100">
+                <SingleAttachment
+                  attachment={attachment}
+                  editMode={editMode}
+                  onDelete={handleDetachClick}
+                  onCopyToWorkspace={
+                    onCopyToWorkspace
+                      ? (attachment) => onCopyToWorkspace([attachment])
+                      : undefined
+                  }
+                  getDownloadUrl={getDownloadUrl}
+                  disabled={isMutating}
+                />
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+      {editMode && (
+        <>
+          <Button
+            color="secondary"
+            variant="ghost"
+            isLoading={isMutating}
+            onClick={handleAttachClick}
+            disabled={isMutating}
+            className="align-self-start"
+            leftIcon={<IconPlus />}
+          >
+            {t('add.attachment')}
+          </Button>
+          <input
+            ref={inputRef}
+            multiple={true}
+            type="file"
+            name="attachment-input"
+            id="attachment-input"
+            onChange={handleFileChange}
+            hidden
+          />
+        </>
+      )}
+    </div>
+  );
+}
