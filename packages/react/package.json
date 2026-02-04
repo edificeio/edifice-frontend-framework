@@ -91,7 +91,7 @@
     "@edifice.io/bootstrap": "workspace:*",
     "@edifice.io/tiptap-extensions": "workspace:*",
     "@edifice.io/utilities": "workspace:*",
-    "@floating-ui/dom": "^1.6.0",
+    "@floating-ui/dom": "1.6.0",
     "@floating-ui/react": "0.26.0",
     "@pixi/mixin-get-child-by-name": "7.4.2",
     "@pixi/react": "7.1.2",
