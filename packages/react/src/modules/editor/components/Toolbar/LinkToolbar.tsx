@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Editor } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';

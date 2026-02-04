@@ -5,15 +5,15 @@ import { Editor } from '@tiptap/react';
 /**
  * Hook to track editor state changes in Tiptap v3.
  * Replaces the pattern of using `editor?.state` in useEffect dependencies.
- * 
+ *
  * @param editor - The Tiptap editor instance
  * @returns A counter that increments on each editor update
- * 
+ *
  * @example
  * ```tsx
  * const { editor } = useEditorContext();
  * const editorState = useEditorState(editor);
- * 
+ *
  * useEffect(() => {
  *   const attrs = editor?.getAttributes('textStyle');
  *   // ... do something with attrs
@@ -31,12 +31,10 @@ export const useEditorState = (editor: Editor | null | undefined): number => {
     };
 
     // Listen to both selection changes and content updates
-    editor.on('selectionUpdate', handleUpdate);
-    editor.on('transaction', handleUpdate);
+    editor.on('update', handleUpdate);
 
     return () => {
-      editor.off('selectionUpdate', handleUpdate);
-      editor.off('transaction', handleUpdate);
+      editor.off('update', handleUpdate);
     };
   }, [editor]);
 

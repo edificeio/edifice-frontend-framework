@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from 'react';
 
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
+import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
@@ -24,19 +25,16 @@ const BubbleMenuEditInformationPane = ({
   const editorState = useEditorState(editor);
   const [currentType, setCurrentType] = useState<string | null>(null);
 
-  const getSelectedNode = () => {
+  useEffect(() => {
     const { $anchor } = editor.view.state.selection;
+    let selectedNode = null;
     for (let depth = $anchor.depth; depth >= 0; depth--) {
       const node = $anchor.node(depth);
       if (node.type.name === 'information-pane') {
-        return node;
+        selectedNode = node;
+        break;
       }
     }
-    return null;
-  };
-
-  useEffect(() => {
-    const selectedNode = getSelectedNode();
     setCurrentType(selectedNode?.attrs?.type || null);
   }, [editor, editorState]);
 
@@ -188,19 +186,14 @@ const BubbleMenuEditInformationPane = ({
   const floatingOptions = useMemo(() => {
     return {
       placement: 'bottom' as const,
-      middleware: [
-        {
-          name: 'offset',
-          options: { mainAxis: 0, crossAxis: 0 },
-        },
-      ],
-      strategy: 'fixed' as const,
+      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      strategy: 'absolute' as const,
     };
   }, []);
 
   return (
     <BubbleMenu
-      shouldShow={({ editor }) => {
+      shouldShow={({ editor }: { editor: Editor }) => {
         return editor.isActive('information-pane');
       }}
       editor={editor}
