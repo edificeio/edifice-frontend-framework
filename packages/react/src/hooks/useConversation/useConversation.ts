@@ -20,7 +20,7 @@ const useConversation = () => {
   /**
    * Get message count for zimbra or chat app
    */
-  const queryParams = {
+  const queryParams: Record<string, boolean | number> = {
     unread: true,
     _: new Date().getTime(),
   };

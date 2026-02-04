@@ -18,4 +18,8 @@ export default meta;
 
 type Story = StoryObj<typeof VideoEmbed>;
 
-export const Base: Story = {};
+export const Base: Story = {
+  args: {
+    onSuccess: (resource?: string) => console.log('onSuccess', resource),
+  },
+};

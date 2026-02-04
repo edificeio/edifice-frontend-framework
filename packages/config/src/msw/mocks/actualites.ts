@@ -211,7 +211,7 @@ export const handlers = [
   http.get('/actualites/api/v1/rights/sharing', () => {
     return HttpResponse.json(mockSharing);
   }),
-  http.get('/actualites/share/json/resource-1?search=', () => {
+  http.get('/actualites/share/json/resource-1', () => {
     return HttpResponse.json(mockShareResources);
   }),
   http.get('/actualites/api/v1/infos/resource-1/shares', () => {

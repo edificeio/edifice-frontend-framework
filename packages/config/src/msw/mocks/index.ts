@@ -1,4 +1,5 @@
 export { handlers as authHandlers } from './auth';
+export { handlers as embedHandlers } from './embed';
 export { handlers as blogHandlers } from './blog';
 export { handlers as commonHandlers } from './common';
 export { handlers as publicConfigHandlers } from './config';

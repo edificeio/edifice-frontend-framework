@@ -69,6 +69,7 @@ export const useShareBookmark = ({
             {
               displayName: name,
               id: res.id,
+              notVisibleCount: 0,
             },
           ],
         },
