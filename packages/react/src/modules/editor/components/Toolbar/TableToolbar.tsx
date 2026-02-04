@@ -2,6 +2,7 @@ import { RefAttributes, useEffect, useMemo, useState } from 'react';
 
 import { Editor, findParentNodeClosestToPos } from '@tiptap/react';
 import { FloatingMenu } from '@tiptap/react/menus';
+import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
 
 import { IconButtonProps, Toolbar } from '../../../../components';
@@ -40,13 +41,8 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
 
     return {
       placement: 'bottom' as const,
-      middleware: [
-        {
-          name: 'offset',
-          options: { mainAxis: 0, crossAxis: 0 },
-        },
-      ],
-      strategy: 'fixed' as const,
+      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      strategy: 'absolute' as const,
       // popperOptions: {modifiers: [ /*see popper v2 modifiers*/ ]},
       // Try to get the bounding rect of the table.
       getReferenceClientRect: () => {

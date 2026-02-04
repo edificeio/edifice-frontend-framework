@@ -5,6 +5,7 @@ import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
+import { offset } from '@floating-ui/dom';
 import {
   IconImageSizeLarge,
   IconImageSizeMedium,
@@ -190,13 +191,8 @@ const BubbleMenuEditImage = ({
   const floatingOptions = useMemo(() => {
     return {
       placement: 'bottom-start' as const,
-      middleware: [
-        {
-          name: 'offset',
-          options: { mainAxis: 0, crossAxis: 0 },
-        },
-      ],
-      strategy: 'fixed' as const,
+      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      strategy: 'absolute' as const,
     };
   }, []);
 
