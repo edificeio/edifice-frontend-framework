@@ -46,7 +46,8 @@
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",
     "axios": "^1.7.7",
-    "core-js": "^3.35.1"
+    "core-js": "^3.35.1",
+    "ua-parser-js": "2.0.9"
   },
   "devDependencies": {
     "@edifice.io/config": "workspace:*",
