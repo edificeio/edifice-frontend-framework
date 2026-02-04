@@ -82,5 +82,10 @@
   "packageManager": "pnpm@9.12.2",
   "engines": {
     "node": "20 || 22"
+  },
+  "msw": {
+    "workerDirectory": [
+      "apps/docs/public"
+    ]
   }
 }
