@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { WorkspaceElement } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Toolbar, ToolbarItem } from '../../../components';

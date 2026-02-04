@@ -1,9 +1,14 @@
 import { odeServices, WorkspaceElement } from '@edifice.io/client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useToast } from '../useToast';
-import { useTranslation } from 'react-i18next';
+
+export interface CreateFolderParams {
+  folderName: string;
+  folderParentId?: string;
+}
 
 function useWorkspaceFolders() {
   const queryClient = useQueryClient();
@@ -23,10 +28,6 @@ function useWorkspaceFolders() {
       queryFn: () => odeServices.workspace().listSharedFolders(true),
     });
 
-  interface CreateFolderParams {
-    folderName: string;
-    folderParentId?: string;
-  }
   const createFolderMutation = useMutation({
     mutationFn: ({ folderName, folderParentId }: CreateFolderParams) =>
       odeServices.workspace().createFolder(folderName, folderParentId),

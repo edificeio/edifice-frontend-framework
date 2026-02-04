@@ -1,8 +1,8 @@
-import { ChangeEvent } from 'react';
 import clsx from 'clsx';
+import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { IconSearch, IconClose } from '../../modules/icons/components';
+import { IconClose, IconSearch } from '../../modules/icons/components';
 import { Size } from '../../types';
 import { SearchButton } from '../Button';
 import FormControl from '../Form/FormControl';
@@ -10,7 +10,7 @@ import FormControl from '../Form/FormControl';
 /**
  * Base props shared by both SearchBar variants
  */
-export interface BaseProps extends Omit<
+interface BaseProps extends Omit<
   React.ComponentPropsWithoutRef<'input'>,
   'size'
 > {
@@ -88,7 +88,7 @@ type DynamicSearchBar = {
 /**
  * Props for the SearchBar component
  */
-export type Props = DefaultSearchBar | DynamicSearchBar;
+type Props = DefaultSearchBar | DynamicSearchBar;
 export type SearchBarProps = BaseProps & Props;
 
 /**
