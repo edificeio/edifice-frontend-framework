@@ -127,19 +127,8 @@ const Badge = forwardRef(
       className,
     );
 
-    const getBetaStyle = () => {
-      if (variant.type !== 'beta') return undefined;
-
-      const color = variant.color ?? '#000000';
-      return {
-        borderColor: color,
-        color: color,
-        backgroundColor: `${color}10`, // the 2 last hexadecimal numbers are for opacity
-      };
-    };
-
     return (
-      <span ref={ref} className={classes} style={getBetaStyle()} {...restProps}>
+      <span ref={ref} className={classes} {...restProps}>
         {variant.type === 'chip' && (
           <div className="d-flex fw-800 align-items-center">{children}</div>
         )}
