@@ -254,7 +254,6 @@ export const BadgeBetaCommunities: Story = {
     children: null,
     variant: {
       type: 'beta',
-      color: '#823AA1',
       app: {
         name: 'communities',
         address: '',
