@@ -3,7 +3,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const SvgIconRender = ({
+const SvgIconSubmission = ({
   title,
   titleId,
   ...props
@@ -25,4 +25,4 @@ const SvgIconRender = ({
     />
   </svg>
 );
-export default SvgIconRender;
+export default SvgIconSubmission;
