@@ -1,57 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { odeServices } from '@edifice.io/client';
+import { usePreferences } from '../../../hooks/usePreferences';
 
-// TODO : use new hook usePreference
-/**
- * getPreference API
- * @returns check onboarding trash param
- */
-const getOnboardingTrash = async (key: string) => {
-  const res = await odeServices.conf().getPreference<{ key: boolean }>(key);
-  return res;
-};
-
-// TODO : use new hook usePreference
-/**
- * savePreference API
- * @returns set onboarding trash param
- */
-const saveOnboardingTrash = async (key: string) => {
-  const result = await odeServices
-    .conf()
-    .savePreference(key, JSON.stringify({ key: false }));
-
-  return result;
-};
-
-export const useOnboardingModal = (id: string) => {
+export const useOnboardingModal = <T>(
+  id: string,
+  applyDisplayRule: (previousState?: T) => [boolean, newState: T | undefined],
+) => {
+  const state = useRef<T | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const [isOnboarding, setIsOnboarding] = useState(false);
+  const { getPreference, savePreference } = usePreferences<{
+    key: T;
+  }>(id);
 
   useEffect(() => {
     (async () => {
-      const response: { key: boolean } = await getOnboardingTrash(id);
+      const response = await getPreference();
 
       if (response) {
         const { key } = response;
-        if (key === true) {
+        const [open, newKeyValue] = applyDisplayRule(key);
+        if (open) {
           setIsOpen(true);
         }
-        setIsOnboarding(key);
-
-        return;
+        setIsOnboarding(open);
+        state.current = newKeyValue;
+      } else {
+        setIsOnboarding(true);
+        setIsOpen(true);
+        state.current = undefined;
       }
-      setIsOnboarding(true);
-      setIsOpen(true);
     })();
-  }, [id]);
+  }, [getPreference, applyDisplayRule]);
 
-  const handleSavePreference = async () => {
-    await saveOnboardingTrash(id);
+  const handleSavePreference = useCallback(async () => {
+    if (state.current) await savePreference({ key: state.current });
     setIsOpen(false);
     setIsOnboarding(false);
-  };
+  }, [savePreference, setIsOpen, setIsOnboarding]);
 
   return {
     isOpen,

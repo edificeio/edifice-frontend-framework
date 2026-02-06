@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Button, Image, Modal } from '../../../components';
 import { useOnboardingModal } from './useOnboardingModal';
+
 interface ModalItemsProps {
   /**
    * /onboarding/*.svg
@@ -50,23 +51,46 @@ export interface OnboardingModalRef {
   handleSavePreference: () => void;
 }
 
-interface OnboardingProps {
+interface OnboardingProps<T = boolean> {
   id: string;
   items: ModalItemsProps[];
   modalOptions?: ModalOptionsProps;
   isOnboardingChange?: (isOnboarding: boolean) => void;
+  /**
+   * Allow the parent component to control the rule for showing / hiding the modal.
+   *
+   * If undefined, the component will manage a visible/hidden state on its own.
+   *
+   * If defined, this function will be called with the previous known state has a parameter (if any).
+   * It can then compute a new state, and return an array containing 2 values :
+   *   1. a boolean, indicating that the modal should be shown when truthy, or hidden if falsy;
+   *   2. the new state to persist when onboarding is done;
+   *
+   * Note that the user may close the modal without finishing his onboarding.
+   * In this case, the new state will not be persisted.
+   */
+  onDisplayRuleCheck?: (previousState: T | undefined) => [boolean, newState: T];
 }
 
 const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
   (
-    { id, items, modalOptions = {}, isOnboardingChange }: OnboardingProps,
+    {
+      id,
+      items,
+      modalOptions = {},
+      isOnboardingChange,
+      onDisplayRuleCheck = (previousState: boolean | undefined) => [
+        previousState === true,
+        false,
+      ],
+    }: OnboardingProps,
     ref,
   ) => {
     const [swiperInstance, setSwiperInstance] = useState<any>();
     const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
     const { isOpen, isOnboarding, setIsOpen, handleSavePreference } =
-      useOnboardingModal(id);
+      useOnboardingModal(id, onDisplayRuleCheck);
 
     useImperativeHandle(ref, () => ({
       setIsOpen,
@@ -75,9 +99,7 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
 
     // Effect to notify child component about onboarding state change
     useEffect(() => {
-      if (isOnboardingChange) {
-        isOnboardingChange(isOnboarding);
-      }
+      isOnboardingChange?.(isOnboarding);
     }, [isOnboarding, isOnboardingChange]);
 
     useEffect(() => {

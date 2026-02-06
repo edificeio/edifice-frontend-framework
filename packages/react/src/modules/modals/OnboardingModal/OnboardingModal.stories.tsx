@@ -81,7 +81,7 @@ export const Default: Story = {
     },
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     function handleOpenModal() {
       setIsOpen(true);
@@ -106,6 +106,58 @@ export const Default: Story = {
     docs: {
       description: {
         story: 'Onboarding modal with step navigation',
+      },
+    },
+  },
+};
+
+export const CustomDisplayRule: Story = {
+  args: {
+    id: ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
+    items: [
+      {
+        title: 'Custom display rule',
+        src: illuTrash,
+        alt: 'Onboarding Illustration',
+        text: 'Aliquam eu velit massa. Pellentesque finibus semper nisl sed eleifend. Maecenas maximus cursus ipsum. Curabitur a pretium ex. Cras aliquet malesuada nisi eget consequat. In vitae ligula urna. Nunc gravida lectus diam, vel congue velit pretium vel.',
+      },
+    ],
+    modalOptions: {
+      closeText: 'Close',
+    },
+    onDisplayRuleCheck: (previousState?: boolean) => {
+      alert(
+        `From previous state ${previousState}, should open or close ?\nOpen !`,
+      );
+      return [true, false];
+    },
+  },
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleOpenModal() {
+      setIsOpen(true);
+    }
+
+    return (
+      <>
+        <div id="portal" />
+        <Button
+          type="button"
+          variant="filled"
+          color="primary"
+          onClick={handleOpenModal}
+        >
+          Open onboarding
+        </Button>
+        {isOpen && <OnboardingModal {...args} />}
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Onboarding modal with step navigation and ',
       },
     },
   },

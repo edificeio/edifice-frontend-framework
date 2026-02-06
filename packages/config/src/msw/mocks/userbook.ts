@@ -2,11 +2,16 @@ import { http, HttpResponse } from 'msw';
 
 export const ONBOARDING_MODAL_PREFERENCE_IDENTIFIER = 'onboarding-modal';
 export const handlers = [
-  http.get(`/userbook/preference/${ONBOARDING_MODAL_PREFERENCE_IDENTIFIER}`, () => {
-    return HttpResponse.json({
-      preference: 'false',
-    });
-  }),
+  http.get(
+    `/userbook/preference/${ONBOARDING_MODAL_PREFERENCE_IDENTIFIER}`,
+    () => {
+      return HttpResponse.json(
+        JSON.stringify({
+          preference: { key: false },
+        }),
+      );
+    },
+  ),
   http.get('/userbook/api/person', () => {
     return HttpResponse.json({
       status: 'ok',
