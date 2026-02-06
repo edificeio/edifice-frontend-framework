@@ -1,12 +1,9 @@
+import '@edifice.io/bootstrap/dist/index.css';
+import { EdificeClientProvider, EdificeThemeProvider } from '@edifice.io/react';
 import { Preview } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
 import { I18nextProvider } from 'react-i18next';
-import '../../../packages/bootstrap/dist/index.css';
-import {
-  EdificeClientProvider,
-  EdificeThemeProvider,
-} from '../../../packages/react/src/providers';
 
 import i18n from '../i18n';
 import React from 'react';

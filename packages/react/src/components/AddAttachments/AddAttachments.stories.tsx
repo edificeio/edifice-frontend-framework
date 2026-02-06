@@ -64,6 +64,7 @@ export const Base: Story = {
     editMode: true,
     onFilesSelected: fn(),
     onRemoveAttachment: fn(),
+    onCopyToWorkspace: fn(),
   },
 };
 
@@ -83,6 +84,12 @@ export const ModeEdition: Story = {
         onRemoveAttachment={(attachmentId) => {
           args.onRemoveAttachment(attachmentId);
           setAttachments((prev) => prev.filter((a) => a.id !== attachmentId));
+        }}
+        onCopyToWorkspace={async (attachments, folderId) => {
+          if (args.onCopyToWorkspace) {
+            await args.onCopyToWorkspace(attachments, folderId);
+          }
+          return true;
         }}
         editMode={true}
       />

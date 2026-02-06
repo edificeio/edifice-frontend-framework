@@ -2,22 +2,26 @@ import { Button, Modal } from '@edifice.io/react';
 import { WorkspaceFolders } from '@edifice.io/react/multimedia';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { Attachment } from '../models/attachment';
 
-interface AddMessageAttachmentToWorkspaceModalProps {
+interface AddAttachmentToWorkspaceModalProps {
   attachments: Attachment[];
   onModalClose: () => void;
   isOpen?: boolean;
+  onCopyToWorkspace: (
+    attachments: Attachment[],
+    folderId: string,
+  ) => Promise<boolean>;
 }
-export function AddMessageAttachmentToWorkspaceModal({
+export function AddAttachmentToWorkspaceModal({
   attachments,
   isOpen = false,
   onModalClose,
-}: AddMessageAttachmentToWorkspaceModalProps) {
+  onCopyToWorkspace,
+}: AddAttachmentToWorkspaceModalProps) {
   const { t } = useTranslation();
-  //TODO: Implement the logic to add the attachments to the workspace
-  // const { copyToWorkspace } = useMessageAttachments();
   const [selectedFolderIdToCopyFile, setSelectedFolderIdToCopyFile] = useState<
     string | undefined
   >(undefined);
@@ -31,18 +35,21 @@ export function AddMessageAttachmentToWorkspaceModal({
   const handleAddAttachmentToWorkspace = async () => {
     if (selectedFolderIdToCopyFile === undefined) return;
     setIsLoading(true);
-    //TODO: Implement the logic to add the attachments to the workspace
-    // const isSuccess = await copyToWorkspace(
-    //   attachments,
-    //   selectedFolderIdToCopyFile,
-    // );
-    // if (isSuccess) {
-    //   onModalClose();
-    // }
+
+    const isSuccess = await onCopyToWorkspace(
+      attachments,
+      selectedFolderIdToCopyFile,
+    );
+
+    if (isSuccess) {
+      onModalClose();
+    } else {
+      toast.error(t('attachments.add.to.folder.modal.error'));
+    }
+
     setIsLoading(false);
   };
 
-  // Make the button accessible when is disabled change to false
   useEffect(() => {
     setDisabled(selectedFolderIdToCopyFile === undefined);
   }, [selectedFolderIdToCopyFile]);

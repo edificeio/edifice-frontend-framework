@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './AddAttachments.css';
+import { AddAttachmentToWorkspaceModal } from './components/AddAttachmentToWorkspaceModal';
 import { SingleAttachment } from './components/SingleAttachment';
 import { Attachment } from './models/attachment';
 
@@ -30,7 +31,10 @@ export interface AddAttachmentsProps {
   onRemoveAttachment: (attachmentId: string) => void;
   editMode?: boolean;
   isMutating?: boolean;
-  onCopyToWorkspace?: (attachments: Attachment[]) => void;
+  onCopyToWorkspace?: (
+    attachments: Attachment[],
+    folderId: string,
+  ) => Promise<boolean>;
   /** Si fourni, chaque pièce jointe affiche un bouton télécharger avec l'URL retournée. */
   getDownloadUrl?: (attachmentId: string) => string;
   /** Si fourni et qu'il y a plusieurs pièces jointes, affiche un bouton « télécharger tout ». */
@@ -52,6 +56,9 @@ export function AddAttachments({
   const [optimisticAttachments, setOptimisticAttachments] = useState<
     Attachment[]
   >([]);
+  const [attachmentsToAddToWorkspace, setAttachmentsToAddToWorkspace] =
+    useState<Attachment[] | undefined>(undefined);
+
   const prevAttachmentsLengthRef = useRef(attachments.length);
 
   const displayedAttachments = [...attachments, ...optimisticAttachments];
@@ -105,6 +112,10 @@ export function AddAttachments({
     resetInputValue();
   };
 
+  const handleCopyToWorkspace = (attachments: Attachment[]) => {
+    setAttachmentsToAddToWorkspace(attachments);
+  };
+
   const className = clsx(
     'bg-gray-200 rounded px-12 py-8 message-attachments align-self-start gap-8 d-flex flex-column',
     { 'border add-attachments-edit mx-16': editMode },
@@ -122,13 +133,13 @@ export function AddAttachments({
             <span className="caption fw-bold my-8">{t('attachments')}</span>
             {displayedAttachments.length > 1 && (
               <div>
-                {onCopyToWorkspace && displayedAttachments.length > 1 && (
+                {displayedAttachments.length > 1 && (
                   <IconButton
                     title={t('conversation.copy.all.toworkspace')}
                     color="tertiary"
                     type="button"
                     icon={<IconFolderAdd />}
-                    onClick={() => onCopyToWorkspace(displayedAttachments)}
+                    onClick={() => handleCopyToWorkspace(displayedAttachments)}
                     variant="ghost"
                   />
                 )}
@@ -164,10 +175,8 @@ export function AddAttachments({
                   attachment={attachment}
                   editMode={editMode}
                   onDelete={handleDetachClick}
-                  onCopyToWorkspace={
-                    onCopyToWorkspace
-                      ? (attachment) => onCopyToWorkspace([attachment])
-                      : undefined
+                  onCopyToWorkspace={(attachment) =>
+                    handleCopyToWorkspace([attachment])
                   }
                   getDownloadUrl={getDownloadUrl}
                   disabled={isMutating}
@@ -200,6 +209,14 @@ export function AddAttachments({
             hidden
           />
         </>
+      )}
+      {onCopyToWorkspace && !!attachmentsToAddToWorkspace && (
+        <AddAttachmentToWorkspaceModal
+          isOpen
+          onModalClose={() => setAttachmentsToAddToWorkspace(undefined)}
+          attachments={attachmentsToAddToWorkspace}
+          onCopyToWorkspace={onCopyToWorkspace}
+        />
       )}
     </div>
   );
