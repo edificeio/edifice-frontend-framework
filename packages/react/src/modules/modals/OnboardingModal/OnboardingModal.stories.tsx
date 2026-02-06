@@ -157,7 +157,7 @@ export const CustomDisplayRule: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Onboarding modal with step navigation and ',
+        story: 'Onboarding modal with custom display rule',
       },
     },
   },
