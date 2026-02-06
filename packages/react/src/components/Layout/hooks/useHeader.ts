@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useId, useMemo, useState } from 'react';
 
 import { IUserInfo } from '@edifice.io/client';
