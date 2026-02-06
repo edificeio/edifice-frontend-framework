@@ -40,14 +40,14 @@ export const WidgetAppsBody = ({
             target={
               appToOpenOnBlank.includes(app.name) ||
               app.isExternal ||
-              app.category === 'connector'
+              app.target === '_blank'
                 ? '_blank'
                 : undefined
             }
             rel={
               appToOpenOnBlank.includes(app.name) ||
               app.isExternal ||
-              app.category === 'connector'
+              app.target === '_blank'
                 ? 'noopener noreferrer'
                 : undefined
             }

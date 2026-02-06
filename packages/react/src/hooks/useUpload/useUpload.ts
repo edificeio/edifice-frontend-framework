@@ -9,10 +9,10 @@ import {
 } from '@edifice.io/client';
 
 import { getOrGenerateBlobId } from '@edifice.io/utilities';
+import { useTranslation } from 'react-i18next';
 import { useBrowserInfo } from '../../hooks';
 import { Status } from '../../types';
 import { useWorkspaceFile } from '../useWorkspaceFile';
-import { useTranslation } from 'react-i18next';
 
 const useUpload = (
   visibility?: WorkspaceVisibility,
@@ -142,8 +142,8 @@ const useUpload = (
         children: [],
         created: new Date(),
         _shared: [],
-        _isShared: false,
-        owner: { userId: '', displayName: '' },
+        isShared: false,
+        owner: '',
       };
       return resVideo;
     } else if (uploadResponse.state === 'error') {

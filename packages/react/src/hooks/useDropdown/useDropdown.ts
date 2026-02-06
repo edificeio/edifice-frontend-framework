@@ -184,7 +184,9 @@ const useDropdown = (
           if (!openOnSpace) {
             break;
           }
-        // intentional fallthrough
+          openDropdown();
+          flag = true;
+          break;
         case KEYS.Enter:
         case KEYS.ArrowDown:
         case KEYS.Down:
