@@ -322,7 +322,7 @@ export const HideLabelOnMobile: Story = {
     items: [
       {
         type: 'button',
-        name: 'Label',
+        name: 'record',
         props: {
           disabled: false,
           leftIcon: <IconRecord />,
@@ -332,7 +332,7 @@ export const HideLabelOnMobile: Story = {
       },
       {
         type: 'button',
-        name: 'Label',
+        name: 'save',
         props: {
           disabled: false,
           leftIcon: <IconSave />,

@@ -116,11 +116,26 @@ export const MultiInputGroup: Story = {
 export const CheckboxRadio: Story = {
   render: (args) => {
     const [value, setValue] = useState<string>('CM1');
+    const [isChecked, setIsChecked] = useState(false);
+    const [isIndeterminate, setIsIndeterminate] = useState(true);
+
+    const handleCheckboxChange = () => {
+      setIsChecked((prev) => {
+        setIsIndeterminate(prev);
+        return !prev && !isIndeterminate;
+      });
+    };
+
     return (
       <div>
         <FormControl id="addline" className="input-group mb-12">
           <div className="input-group-text">
-            <Checkbox {...Indeterminate.args} />
+            <Checkbox
+              {...Indeterminate.args}
+              checked={isChecked}
+              indeterminate={isIndeterminate}
+              onChange={handleCheckboxChange}
+            />
           </div>
           <Input type="text" placeholder="Add this line" size="lg" />
         </FormControl>

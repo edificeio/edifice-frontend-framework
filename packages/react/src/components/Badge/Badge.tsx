@@ -105,8 +105,6 @@ const Badge = forwardRef(
     }
     // End of Colors for the Beta Badge
 
-    console.log(badgeColorClassName);
-
     const classes = clsx(
       'badge rounded-pill',
       (variant.type === 'content' || variant.type === 'user') &&
