@@ -166,21 +166,11 @@ interface ShareResourceProps {
 }
 
 /**
- * Ref interface exposed by ShareResources component
+ * Ref interface exposed by ShareResources component.
+ * Use useRef with this type and call ref.current?.handleShare() to trigger share programmatically.
  *
  * @interface ShareResourcesRef
  * @property {() => void} handleShare - Method to trigger the share operation
- *
- * @example
- * ```tsx
- * const ref = useRef<ShareResourcesRef>(null);
- *
- * // Trigger share programmatically
- * ref.current?.handleShare();
- *
- * // Check sharing status
- * const sharing = ref.current?.isSharing();
- * ```
  */
 export interface ShareResourcesRef {
   handleShare: (notify?: boolean) => void;
@@ -191,46 +181,7 @@ export interface ShareResourcesRef {
  *
  * A component for managing resource sharing permissions with users and groups.
  * Provides search functionality, bookmark management, and granular rights control.
- *
- * @example
- * ```tsx
- * import { useRef } from 'react';
- * import ShareResources, { ShareResourcesRef, ShareOptions } from './ShareResources';
- *
- * function MyComponent() {
- *   const shareRef = useRef<ShareResourcesRef>(null);
- *
- *   const shareOptions: ShareOptions = {
- *     resourceId: '123',
- *     resourceRights: [],
- *     resourceCreatorId: 'user-456',
- *     filteredActions: ['read', 'contrib'],
- *     urls: {
- *       getResourceRights: '/api/share/rights',
- *       putResourceRights: '/api/share/update'
- *     }
- *   };
- *
- *   const handleSave = () => {
- *     if (shareRef.current) {
- *       shareRef.current.handleShare();
- *     }
- *   };
- *
- *   return (
- *     <>
- *       <ShareResources
- *         ref={shareRef}
- *         shareOptions={shareOptions}
- *         onSuccess={() => console.log('Shared successfully')}
- *         onChange={(rights, isDirty) => console.log('Rights changed:', isDirty)}
- *         onSubmit={(isSubmitting) => console.log('Submitting share...', isSubmitting)}
- *       />
- *       <button onClick={handleSave}>Save Changes</button>
- *     </>
- *   );
- * }
- * ```
+ * Use forwardRef to get a ref with handleShare(). See ShareResourcesRef interface.
  *
  * @component
  * @forwardRef
