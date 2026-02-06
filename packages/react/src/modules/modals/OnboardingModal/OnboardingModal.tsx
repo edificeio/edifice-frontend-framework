@@ -57,17 +57,17 @@ interface OnboardingProps<T = boolean> {
   modalOptions?: ModalOptionsProps;
   isOnboardingChange?: (isOnboarding: boolean) => void;
   /**
-   * Allow the parent component to control the rule for showing / hiding the modal.
+   * Allow the parent component to control the rule for showing/hiding the modal.
    *
    * If undefined, the component will manage a visible/hidden state on its own.
    *
-   * If defined, this function will be called with the previous known state has a parameter (if any).
-   * It can then compute a new state, and return an array containing 2 values :
-   *   1. a boolean, indicating that the modal should be shown when truthy, or hidden if falsy;
-   *   2. the new state to persist when onboarding is done;
+   * If defined, this function is called with the previously known state (if any).
+   * It can then compute a new state and return an array containing 2 values:
+   *   1. a boolean indicating whether the modal should be shown when truthy or hidden if falsy;
+   *   2. the new state to persist when onboarding is done.
    *
-   * Note that the user may close the modal without finishing his onboarding.
-   * In this case, the new state will not be persisted.
+   * Note that the user may close the modal without finishing their onboarding.
+   * In this case, the new state is not persisted.
    */
   onDisplayRuleCheck?: (previousState: T | undefined) => [boolean, newState: T];
 }
