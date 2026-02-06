@@ -26,24 +26,24 @@
   "scripts": {
     "build": "rm -rf dist && cp -r assets dist && pnpm run compile",
     "clean": "rm -rf dist",
-    "compile": "sass --load-path=node_modules/ --style=compressed src/index.scss dist/index.css",
+    "compile": "sass --load-path=node_modules/ --style=compressed --quiet-deps --silence-deprecation=import src/index.scss dist/index.css",
     "fix": "stylelint src/**/*.scss --fix",
     "format": "pnpm format:write && pnpm format:check",
     "format:check": "npx prettier --check src/**/*.scss",
     "format:write": "npx prettier --write src/**/*.scss",
     "generate-commit-version": "node scripts/version.cjs",
     "lint": "stylelint src/**/*.scss",
-    "watch": "sass --watch --load-path=node_modules/ --style=compressed src/index.scss dist/index.css"
+    "watch": "sass --watch --load-path=node_modules/ --style=compressed --quiet-deps --silence-deprecation=import src/index.scss dist/index.css"
   },
   "dependencies": {
     "@popperjs/core": "2.11.8",
-    "bootstrap": "5.3.2"
+    "bootstrap": "5.3.8"
   },
   "devDependencies": {
     "sass": "1.97.3",
-    "stylelint": "16.26.1",
-    "stylelint-config-recommended-scss": "14.1.0",
-    "stylelint-config-standard": "36.0.1"
+    "stylelint": "17.1.1",
+    "stylelint-config-recommended-scss": "17.0.0",
+    "stylelint-config-standard": "40.0.0"
   },
   "publishConfig": {
     "access": "public"

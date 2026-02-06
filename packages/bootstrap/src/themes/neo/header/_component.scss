@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "../../../abstracts/" as *;
 @use "../../../vendors/bootstrap";
 
@@ -20,7 +21,7 @@
     .navbar {
       --#{$prefix}navbar-padding-y: #{$navbar-padding-y};
       width: 100%;
-      background: linear-gradient(to bottom, $secondary, darken($secondary, 5%));
+      background: linear-gradient(to bottom, $secondary, color.adjust($secondary, $lightness: -5%));
       box-shadow: $box-shadow;
 
       .container {
