@@ -1,16 +1,33 @@
 import { http, HttpResponse } from 'msw';
 
+const ownerFolders = [
+  { _id: '0576e0dd-129b-4244-b36a-49bda713d273', name: 'Travaux en classe', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', eType: 'folder' },
+  { _id: '50c1b81b-d8b7-4474-9d69-b5e441b31a8c', name: 'Edumedia', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', eType: 'folder' },
+  { _id: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf', name: 'Test', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', eType: 'folder' },
+  { _id: 'd1ce8d21-0c5f-4c2b-bdf4-b5da1b8b3b2e', name: 'Sub Test', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', eParent: 'a1aac5c0-6bfe-4308-8c43-812378e2d9bf', eType: 'folder' },
+];
+
+const sharedFolders = [
+  { _id: 'cdfc982f-421a-462f-9045-90f292bb3f33', name: 'Images', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', isShared: true, eType: 'folder' },
+  { _id: 'ddfc982f-421a-462f-9045-90f292bb3f34', name: 'Sub Images', owner: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', eParent: 'cdfc982f-421a-462f-9045-90f292bb3f33', isShared: true, eType: 'folder' },
+];
+
 export const handlers = [
+  http.get('/workspace/folders/list', ({ request }) => {
+    const url = new URL(request.url);
+    const filter = url.searchParams.get('filter');
+    if (filter === 'owner') {
+      return HttpResponse.json(ownerFolders);
+    }
+    if (filter === 'shared') {
+      return HttpResponse.json(sharedFolders);
+    }
+    return HttpResponse.json([]);
+  }),
   http.get('/workspace/quota/user/91c22b66-ba1b-4fde-a3fe-95219cc18d4a', () => {
     return HttpResponse.json({ quota: 104857600, storage: 27683216 });
   }),
-  http.get('/workspace/document/:id', ({ request }) => {
-    const url = new URL(request.url);
-    const thumbnail = url.searchParams.get('thumbnail');
-
-    if (thumbnail !== '48x48') {
-      return HttpResponse.json({ error: 'Not Found' }, { status: 404 });
-    }
+  http.get('/workspace/document/:id', () => {
     return HttpResponse.text('https://mdbcdn.b-cdn.net/img/new/avatars/4.webp');
   }),
   http.get('/workspace/documents', ({ request }) => {

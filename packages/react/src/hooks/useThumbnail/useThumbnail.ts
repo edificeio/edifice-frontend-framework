@@ -15,7 +15,10 @@ type LazyLoadOptions = {
  *        with respect to the [`intersectionOptions`](https://github.com/thebuilder/react-intersection-observer/tree/dceba7f52aebea4d62d539bc55a1db129226bb6c?tab=readme-ov-file#options)
  * @return `true` if `src` is available, or false otherwise, or `null` while not tested.
  */
-export default function useThumbnail(src: string, options?: LazyLoadOptions) {
+export default function useThumbnail(
+  src: string | null | undefined,
+  options?: LazyLoadOptions,
+) {
   const [status, setStatus] = useState<boolean | null>(null);
 
   // If defined, wait for the currentRef to be "InView" to check if its thumbnail exists.
@@ -32,6 +35,11 @@ export default function useThumbnail(src: string, options?: LazyLoadOptions) {
 
   useEffect(() => {
     if (options?.ref === undefined || inView) {
+      if (!src) {
+        setStatus(false);
+        return;
+      }
+
       const img = new Image();
       img.src = src;
 
@@ -49,7 +57,7 @@ export default function useThumbnail(src: string, options?: LazyLoadOptions) {
         setStatus(null);
       };
     }
-  }, [inView]);
+  }, [inView, src]);
 
   return status;
 }
