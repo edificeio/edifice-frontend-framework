@@ -1,5 +1,5 @@
 import { Button, Modal } from '@edifice.io/react';
-import { WorkspaceFolders } from '@edifice.io/react/multimedia';
+import { WorkspaceFolders } from '../../../modules/multimedia';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-hot-toast';
