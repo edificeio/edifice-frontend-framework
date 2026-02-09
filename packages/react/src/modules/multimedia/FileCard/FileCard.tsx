@@ -137,7 +137,7 @@ const FileCard = ({
         ? odeServices.workspace().getThumbnailUrl(doc)
         : null;
 
-  const hasThumbnail = useThumbnail(mediaSrc!, { ref });
+  const hasThumbnail = useThumbnail(mediaSrc, { ref });
 
   const imageStyles = hasThumbnail && {
     backgroundImage: `url(${mediaSrc})`,

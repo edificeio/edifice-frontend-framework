@@ -157,7 +157,7 @@ export const Base: Story = {
         </Table.Thead>
         <Table.Tbody>
           {data.map((item) => (
-            <Table.Tr>
+            <Table.Tr key={item.id}>
               <Table.Td>
                 <div className="d-flex gap-8 align-items-center">
                   <IconChecklist width={20} height={20} />{' '}
@@ -230,7 +230,7 @@ export const TableWithRowSelection: Story = {
         </Table.Thead>
         <Table.Tbody>
           {data.map((item) => (
-            <Table.Tr>
+            <Table.Tr key={item.id}>
               <Table.Td>
                 <Checkbox
                   checked={selectedItems.includes(item.id)}

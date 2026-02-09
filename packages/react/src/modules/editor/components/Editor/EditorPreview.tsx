@@ -107,7 +107,7 @@ const EditorPreview = ({
             className={clsx('position-relative col-12 col-md-4 ', {
               'd-none d-md-block': index >= 1,
             })}
-            key={media.url}
+            key={`${index}-${media.url}`}
           >
             <Image
               alt={media.alt}
