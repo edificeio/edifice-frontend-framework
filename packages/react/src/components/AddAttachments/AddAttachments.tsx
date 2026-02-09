@@ -133,7 +133,7 @@ export function AddAttachments({
             <span className="caption fw-bold my-8">{t('attachments')}</span>
             {displayedAttachments.length > 1 && (
               <div>
-                {displayedAttachments.length > 1 && (
+                {onCopyToWorkspace && displayedAttachments.length > 1 && (
                   <IconButton
                     title={t('conversation.copy.all.toworkspace')}
                     color="tertiary"
@@ -175,8 +175,10 @@ export function AddAttachments({
                   attachment={attachment}
                   editMode={editMode}
                   onDelete={handleDetachClick}
-                  onCopyToWorkspace={(attachment) =>
-                    handleCopyToWorkspace([attachment])
+                  onCopyToWorkspace={
+                    onCopyToWorkspace
+                      ? (attachment) => handleCopyToWorkspace([attachment])
+                      : undefined
                   }
                   getDownloadUrl={getDownloadUrl}
                   disabled={isMutating}
