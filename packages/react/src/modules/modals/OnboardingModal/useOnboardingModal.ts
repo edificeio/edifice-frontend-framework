@@ -4,7 +4,10 @@ import { usePreferences } from '../../../hooks/usePreferences';
 
 export const useOnboardingModal = <T>(
   id: string,
-  applyDisplayRule: (previousState?: T) => [boolean, newState: T | undefined],
+  applyDisplayRule: (previousState?: T) => {
+    display: boolean;
+    nextState: T;
+  },
 ) => {
   const state = useRef<T | undefined>();
   const [isOpen, setIsOpen] = useState(false);
@@ -19,12 +22,12 @@ export const useOnboardingModal = <T>(
 
       if (response) {
         const { key } = response;
-        const [open, newKeyValue] = applyDisplayRule(key);
-        if (open) {
+        const { display, nextState } = applyDisplayRule(key);
+        if (display) {
           setIsOpen(true);
         }
-        setIsOnboarding(open);
-        state.current = newKeyValue;
+        setIsOnboarding(display);
+        state.current = nextState;
       } else {
         setIsOnboarding(true);
         setIsOpen(true);

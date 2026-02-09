@@ -51,7 +51,17 @@ export interface OnboardingModalRef {
   handleSavePreference: () => void;
 }
 
-interface OnboardingProps<T = boolean> {
+/**
+ * Result of a custom display check. Must contain the following data :
+ * - display: a boolean indicating whether the modal should be shown when truthy or hidden if falsy;
+ * - nextState: the next state to persist when onboarding is done.
+ */
+export interface DisplayRuleCheckResult<T> {
+  display: boolean;
+  nextState: T;
+}
+
+interface OnboardingProps {
   id: string;
   items: ModalItemsProps[];
   modalOptions?: ModalOptionsProps;
@@ -62,14 +72,14 @@ interface OnboardingProps<T = boolean> {
    * If undefined, the component will manage a visible/hidden state on its own.
    *
    * If defined, this function is called with the previously known state (if any).
-   * It can then compute a new state and return an array containing 2 values:
-   *   1. a boolean indicating whether the modal should be shown when truthy or hidden if falsy;
-   *   2. the new state to persist when onboarding is done.
+   * It can then compute a new state and return a DisplayRuleCheckResult.
    *
    * Note that the user may close the modal without finishing their onboarding.
-   * In this case, the new state is not persisted.
+   * In this case, the next state is not persisted.
    */
-  onDisplayRuleCheck?: (previousState: T | undefined) => [boolean, newState: T];
+  onDisplayRuleCheck?: <T = boolean>(
+    previousState?: T,
+  ) => DisplayRuleCheckResult<T>;
 }
 
 const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
@@ -79,11 +89,11 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
       items,
       modalOptions = {},
       isOnboardingChange,
-      onDisplayRuleCheck = (previousState: boolean | undefined) => [
-        previousState === true,
-        false,
-      ],
-    }: OnboardingProps,
+      onDisplayRuleCheck = <T = boolean,>(previousState?: T) => ({
+        display: previousState === true,
+        nextState: false as T,
+      }),
+    },
     ref,
   ) => {
     const [swiperInstance, setSwiperInstance] = useState<any>();

@@ -4,8 +4,9 @@ import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.
 import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { useDate } from 'src/hooks';
 import { Button } from '../../../components/Button';
-import OnboardingModal from './OnboardingModal';
+import OnboardingModal, { DisplayRuleCheckResult } from './OnboardingModal';
 
 const meta: Meta<typeof OnboardingModal> = {
   title: 'Modules/Modals/OnboardingModal',
@@ -111,6 +112,8 @@ export const Default: Story = {
   },
 };
 
+type CustomOnboardingModalState = { type: 'Date'; value: string };
+
 export const CustomDisplayRule: Story = {
   args: {
     id: ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
@@ -125,18 +128,30 @@ export const CustomDisplayRule: Story = {
     modalOptions: {
       closeText: 'Close',
     },
-    onDisplayRuleCheck: (previousState?: boolean) => {
-      alert(
-        `From previous state ${previousState}, should open or close ?\nOpen !`,
-      );
-      return [true, false];
-    },
   },
   render: (args) => {
+    const { fromNow } = useDate();
     const [isOpen, setIsOpen] = useState(false);
 
     function handleOpenModal() {
       setIsOpen(true);
+    }
+
+    function onDisplayRuleCheck(previousState?: CustomOnboardingModalState) {
+      const nowUTC = new Date();
+      const latestDate = previousState ? new Date(previousState.value) : nowUTC;
+
+      alert(
+        `From previous state ${JSON.stringify(previousState)},\nshould onboarding be shown ?\nIt is ${fromNow(latestDate)}, so display it !`,
+      );
+
+      return {
+        display: latestDate.getTime() > nowUTC.getTime(),
+        nextState: {
+          type: 'Date',
+          value: nowUTC.toISOString(),
+        } as CustomOnboardingModalState,
+      } as DisplayRuleCheckResult<CustomOnboardingModalState>;
     }
 
     return (
@@ -150,7 +165,9 @@ export const CustomDisplayRule: Story = {
         >
           Open onboarding
         </Button>
-        {isOpen && <OnboardingModal {...args} />}
+        {isOpen && (
+          <OnboardingModal {...args} onDisplayRuleCheck={onDisplayRuleCheck} />
+        )}
       </>
     );
   },
