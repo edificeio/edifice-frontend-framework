@@ -8,8 +8,8 @@ import {
   EdificeThemeProvider,
 } from '../../../packages/react/src/providers';
 
-import i18n from '../i18n';
 import React from 'react';
+import i18n from '../i18n';
 
 import {
   actualitesHandlers,
@@ -17,6 +17,7 @@ import {
   blogHandlers,
   commonHandlers,
   directoryHandlers,
+  embedHandlers,
   publicConfigHandlers,
   shareHandlers,
   themeHandlers,
@@ -87,6 +88,7 @@ const preview: Preview = {
     msw: {
       handlers: {
         config: publicConfigHandlers,
+        embed: embedHandlers,
         userbook: userbookHandlers,
         theme: themeHandlers,
         directory: directoryHandlers,
