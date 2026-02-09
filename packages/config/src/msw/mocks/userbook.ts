@@ -5,11 +5,9 @@ export const handlers = [
   http.get(
     `/userbook/preference/${ONBOARDING_MODAL_PREFERENCE_IDENTIFIER}`,
     () => {
-      return HttpResponse.json(
-        JSON.stringify({
-          preference: { key: false },
-        }),
-      );
+      return HttpResponse.json({
+        preference: JSON.stringify({ key: false }),
+      });
     },
   ),
   http.get('/userbook/api/person', () => {
