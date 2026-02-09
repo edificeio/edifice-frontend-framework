@@ -4,8 +4,8 @@ import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.
 import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { useDate } from 'src/hooks';
 import { Button } from '../../../components/Button';
+import { useDate } from '../../../hooks';
 import OnboardingModal, { DisplayRuleCheckResult } from './OnboardingModal';
 
 const meta: Meta<typeof OnboardingModal> = {
@@ -124,8 +124,16 @@ export const CustomDisplayRule: Story = {
         alt: 'Onboarding Illustration',
         text: 'Aliquam eu velit massa. Pellentesque finibus semper nisl sed eleifend. Maecenas maximus cursus ipsum. Curabitur a pretium ex. Cras aliquet malesuada nisi eget consequat. In vitae ligula urna. Nunc gravida lectus diam, vel congue velit pretium vel.',
       },
+      {
+        title: 'Second onboarding title',
+        src: illuSearch,
+        alt: 'Onboarding Illustration 2',
+        text: 'Vestibulum bibendum orci magna, et pellentesque lectus feugiat vitae. Phasellus accumsan sagittis quam, eget pharetra velit condimentum sed.',
+      },
     ],
     modalOptions: {
+      prevText: 'Previous',
+      nextText: 'Next',
       closeText: 'Close',
     },
   },
@@ -137,21 +145,32 @@ export const CustomDisplayRule: Story = {
       setIsOpen(true);
     }
 
-    function onDisplayRuleCheck(previousState?: CustomOnboardingModalState) {
+    function onDisplayRuleCheck<T>(
+      previousState?: T,
+    ): DisplayRuleCheckResult<T> {
       const nowUTC = new Date();
-      const latestDate = previousState ? new Date(previousState.value) : nowUTC;
+
+      const oneYearAgo = new Date().setFullYear(nowUTC.getFullYear() - 1);
+      const fakePreviousState =
+        previousState === false
+          ? {
+              type: 'Date',
+              value: new Date(oneYearAgo).toISOString(),
+            }
+          : (previousState as CustomOnboardingModalState);
+      const lastDisplayDate = new Date(fakePreviousState.value);
 
       alert(
-        `From previous state ${JSON.stringify(previousState)},\nshould onboarding be shown ?\nIt is ${fromNow(latestDate)}, so display it !`,
+        `From previous state ${JSON.stringify(fakePreviousState)},\nshould onboarding be shown ?\nIt is ${fromNow(lastDisplayDate)}, so display it !`,
       );
 
       return {
-        display: latestDate.getTime() > nowUTC.getTime(),
+        display: lastDisplayDate.getTime() < nowUTC.getTime(),
         nextState: {
           type: 'Date',
           value: nowUTC.toISOString(),
-        } as CustomOnboardingModalState,
-      } as DisplayRuleCheckResult<CustomOnboardingModalState>;
+        },
+      } as DisplayRuleCheckResult<T>;
     }
 
     return (

@@ -61,7 +61,7 @@ export interface DisplayRuleCheckResult<T> {
   nextState: T;
 }
 
-interface OnboardingProps {
+export interface OnboardingProps {
   id: string;
   items: ModalItemsProps[];
   modalOptions?: ModalOptionsProps;
@@ -72,14 +72,12 @@ interface OnboardingProps {
    * If undefined, the component will manage a visible/hidden state on its own.
    *
    * If defined, this function is called with the previously known state (if any).
-   * It can then compute a new state and return a DisplayRuleCheckResult.
+   * It can then compute the next state and return a DisplayRuleCheckResult.
    *
    * Note that the user may close the modal without finishing their onboarding.
    * In this case, the next state is not persisted.
    */
-  onDisplayRuleCheck?: <T = boolean>(
-    previousState?: T,
-  ) => DisplayRuleCheckResult<T>;
+  onDisplayRuleCheck?: <T>(previousState?: T) => DisplayRuleCheckResult<T>;
 }
 
 const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
