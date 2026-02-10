@@ -6,6 +6,7 @@ import { AppConf } from './AppConf';
 import { transport } from '../transport/Framework';
 import { Analytics } from './Analytics';
 import { notify } from '../notify/Framework';
+import { setDeviceCookies } from '../utilities/deviceDetection';
 
 //-------------------------------------
 export class ConfigurationFramework implements IConfigurationFramework {
@@ -25,6 +26,11 @@ export class ConfigurationFramework implements IConfigurationFramework {
     //apps; -> pinnedApps;
   };
   readonly User = new User();
+
+  constructor() {
+    // detect device info and set cookies (needed for stats)
+    setDeviceCookies();
+  }
 
   async initialize(
     version?: string | null,
