@@ -8,7 +8,6 @@ import {
 import clsx from 'clsx';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './AddAttachments.css';
 import { AddAttachmentToWorkspaceModal } from './components/AddAttachmentToWorkspaceModal';
 import { SingleAttachment } from './components/SingleAttachment';
 import { Attachment } from './models/attachment';
@@ -100,11 +99,11 @@ export function AddAttachments({
 
   const handleDetachClick = (attachmentId: string) => {
     const isOptimistic = optimisticAttachments.some(
-      (a) => a.id === attachmentId,
+      (attachment) => attachment.id === attachmentId,
     );
     if (isOptimistic) {
       setOptimisticAttachments((prev) =>
-        prev.filter((a) => a.id !== attachmentId),
+        prev.filter((attachment) => attachment.id !== attachmentId),
       );
     } else {
       onRemoveAttachment(attachmentId);
@@ -117,16 +116,12 @@ export function AddAttachments({
   };
 
   const className = clsx(
-    'bg-gray-200 rounded px-12 py-8 message-attachments align-self-start gap-8 d-flex flex-column',
+    'bg-gray-200 rounded px-12 py-8 message-attachments align-self-start gap-8 d-flex flex-column mw-100',
     { 'border add-attachments-edit mx-16': editMode },
   );
 
   return (
-    <div
-      className={className}
-      style={{ maxWidth: '-webkit-fill-available' }}
-      data-drag-handle
-    >
+    <div className={className} data-drag-handle>
       {!!displayedAttachments.length && (
         <>
           <div className="d-flex align-items-center justify-content-between border-bottom">

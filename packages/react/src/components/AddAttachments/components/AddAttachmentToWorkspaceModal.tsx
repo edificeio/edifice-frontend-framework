@@ -1,9 +1,9 @@
 import { Button, Modal } from '@edifice.io/react';
-import { WorkspaceFolders } from '../../../modules/multimedia';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
+import { WorkspaceFolders } from '../../../modules/multimedia';
 import { Attachment } from '../models/attachment';
 
 interface AddAttachmentToWorkspaceModalProps {
@@ -85,7 +85,6 @@ export function AddAttachmentToWorkspaceModal({
           {t('attachments.add.to.folder.modal.cancel')}
         </Button>
         <Button
-          type="submit"
           color="primary"
           variant="filled"
           onClick={handleAddAttachmentToWorkspace}

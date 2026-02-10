@@ -46,6 +46,7 @@ export function SingleAttachment({
               icon={<IconFolderAdd />}
               variant="ghost"
               onClick={() => onCopyToWorkspace(attachment)}
+              disabled={disabled}
             />
           )}
           {downloadUrl !== undefined && (
@@ -56,6 +57,7 @@ export function SingleAttachment({
                 type="button"
                 icon={<IconDownload />}
                 variant="ghost"
+                disabled={disabled}
               />
             </a>
           )}
