@@ -1,12 +1,25 @@
 import { http, HttpResponse } from 'msw';
 
 export const ONBOARDING_MODAL_PREFERENCE_IDENTIFIER = 'onboarding-modal';
+export const ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER =
+  'onboarding-modal-custom';
 export const handlers = [
   http.get(
     `/userbook/preference/${ONBOARDING_MODAL_PREFERENCE_IDENTIFIER}`,
     () => {
       return HttpResponse.json({
         preference: JSON.stringify({ key: false }),
+      });
+    },
+  ),
+  http.get(
+    `/userbook/preference/${ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER}`,
+    () => {
+      return HttpResponse.json({
+        preference: JSON.stringify({
+          type: 'Date',
+          value: '2025-02-09T09:00:00.000Z',
+        }),
       });
     },
   ),

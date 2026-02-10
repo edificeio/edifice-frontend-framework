@@ -1,7 +1,10 @@
 import illuSearch from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-search.svg';
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 
-import { ONBOARDING_MODAL_PREFERENCE_IDENTIFIER } from '@edifice.io/config/src/msw/mocks/userbook';
+import {
+  ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER,
+  ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
+} from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { Button } from '../../../components/Button';
@@ -112,11 +115,11 @@ export const Default: Story = {
   },
 };
 
-type CustomOnboardingModalState = { type: 'Date'; value: string };
+type OnboardingModalCustomState = { type: 'Date'; value: string };
 
 export const CustomDisplayRule: Story = {
   args: {
-    id: ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
+    id: ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER,
     items: [
       {
         title: 'Custom display rule',
@@ -145,23 +148,19 @@ export const CustomDisplayRule: Story = {
       setIsOpen(true);
     }
 
-    function onDisplayRuleCheck<T>(
-      previousState?: T,
-    ): DisplayRuleCheckResult<T> {
+    function onDisplayRuleCheck(
+      previousState?: OnboardingModalCustomState,
+    ): DisplayRuleCheckResult<OnboardingModalCustomState> {
       const nowUTC = new Date();
 
-      const oneYearAgo = new Date().setFullYear(nowUTC.getFullYear() - 1);
-      const fakePreviousState =
-        previousState === false
-          ? {
-              type: 'Date',
-              value: new Date(oneYearAgo).toISOString(),
-            }
-          : (previousState as CustomOnboardingModalState);
-      const lastDisplayDate = new Date(fakePreviousState.value);
+      console.log(previousState);
+
+      const lastDisplayDate = previousState
+        ? new Date(previousState.value)
+        : nowUTC;
 
       alert(
-        `From previous state ${JSON.stringify(fakePreviousState)},\nshould onboarding be shown ?\nIt is ${fromNow(lastDisplayDate)}, so display it !`,
+        `From previous state ${JSON.stringify(lastDisplayDate)},\nshould onboarding be shown ?\nIt is ${fromNow(lastDisplayDate)}, so display it !`,
       );
 
       return {
@@ -170,7 +169,7 @@ export const CustomDisplayRule: Story = {
           type: 'Date',
           value: nowUTC.toISOString(),
         },
-      } as DisplayRuleCheckResult<T>;
+      };
     }
 
     return (
