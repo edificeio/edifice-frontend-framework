@@ -1,4 +1,4 @@
-import { Button, IconButton } from '@edifice.io/react';
+import { Button, Flex, IconButton } from '@edifice.io/react';
 import {
   IconDelete,
   IconDownload,
@@ -124,11 +124,16 @@ export function AddAttachments({
     <div className={className} data-drag-handle>
       {!!displayedAttachments.length && (
         <>
-          <div className="d-flex align-items-center justify-content-between border-bottom">
+          <Flex
+            direction="row"
+            align="center"
+            justify="between"
+            className="border-bottom"
+          >
             <span className="caption fw-bold my-8">{t('attachments')}</span>
             {displayedAttachments.length > 1 && (
               <div>
-                {onCopyToWorkspace && displayedAttachments.length > 1 && (
+                {onCopyToWorkspace && (
                   <IconButton
                     title={t('conversation.copy.all.toworkspace')}
                     color="tertiary"
@@ -138,7 +143,7 @@ export function AddAttachments({
                     variant="ghost"
                   />
                 )}
-                {downloadAllUrl && displayedAttachments.length > 1 && (
+                {downloadAllUrl && (
                   <a href={downloadAllUrl} download>
                     <IconButton
                       title={t('download.all.attachment')}
@@ -162,7 +167,7 @@ export function AddAttachments({
                 )}
               </div>
             )}
-          </div>
+          </Flex>
           <ul className="d-flex gap-8 flex-column list-unstyled m-0">
             {displayedAttachments.map((attachment) => (
               <li key={attachment.id} className="mw-100">
