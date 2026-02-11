@@ -1,8 +1,11 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 
-import { BubbleMenu, BubbleMenuProps, Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
+import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
+import { offset } from '@floating-ui/dom';
 import {
   IconImageSizeLarge,
   IconImageSizeMedium,
@@ -28,22 +31,32 @@ const BubbleMenuEditImage = ({
   editable: boolean;
 }) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
+  const [currentSize, setCurrentSize] = useState<string | null>(null);
+  const [currentWidth, setCurrentWidth] = useState<number | null>(null);
 
-  const { selection } = editor.view.state;
+  useEffect(() => {
+    const { selection } = editor.view.state;
+    const selectedNode = editor.view.state.doc.nodeAt(selection.anchor);
 
-  const selectedNode = editor.view.state.doc.nodeAt(selection.anchor);
+    setCurrentSize(selectedNode?.attrs?.size || null);
+    setCurrentWidth(selectedNode?.attrs?.width || null);
+  }, [editor, editorState]);
 
-  const handleButtonClick = (buttonSize: ButtonSize) => {
-    editor
-      .chain()
-      .focus()
-      .setAttributes({
-        width: buttonSize.width,
-        height: buttonSize.height,
-        size: buttonSize.size,
-      })
-      .run();
-  };
+  const handleButtonClick = useCallback(
+    (buttonSize: ButtonSize) => {
+      editor
+        .chain()
+        .focus()
+        .updateAttributes('custom-image', {
+          width: buttonSize.width,
+          height: buttonSize.height,
+          size: buttonSize.size,
+        })
+        .run();
+    },
+    [editor],
+  );
 
   const ImageSizeItems: ToolbarItem[] = useMemo(() => {
     return [
@@ -75,8 +88,7 @@ const BubbleMenuEditImage = ({
           'aria-label': t('tiptap.tooltip.bubblemenu.image.small'),
           'color': 'tertiary',
           'className':
-            selectedNode?.attrs?.size === 'small' &&
-            selectedNode?.attrs?.width === 250
+            currentSize === 'small' && currentWidth === 250
               ? 'is-selected'
               : '',
           'onClick': () =>
@@ -99,8 +111,7 @@ const BubbleMenuEditImage = ({
           'aria-label': t('tiptap.tooltip.bubblemenu.image.medium'),
           'color': 'tertiary',
           'className':
-            selectedNode?.attrs?.size === 'medium' &&
-            selectedNode?.attrs?.width === 350
+            currentSize === 'medium' && currentWidth === 350
               ? 'is-selected'
               : '',
           'onClick': () =>
@@ -123,8 +134,7 @@ const BubbleMenuEditImage = ({
           'aria-label': t('tiptap.tooltip.bubblemenu.image.big'),
           'color': 'tertiary',
           'className':
-            selectedNode?.attrs?.size === 'large' &&
-            selectedNode?.attrs?.width === 500
+            currentSize === 'large' && currentWidth === 500
               ? 'is-selected'
               : '',
           'onClick': () =>
@@ -140,10 +150,9 @@ const BubbleMenuEditImage = ({
         },
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, selectedNode]);
+  }, [t, currentSize, currentWidth, onEditImage, handleButtonClick]);
 
-  const tippyOptions: BubbleMenuProps['tippyOptions'] = useMemo(() => {
+  const reference = useMemo(() => {
     // Adjust a DOMRect to make it visible at a correct place.
     function adjustRect(rect: DOMRect) {
       let yOffset = 0;
@@ -156,14 +165,9 @@ const BubbleMenuEditImage = ({
       }
       return new DOMRect(rect.x, rect.y - yOffset, rect.width, rect.height);
     }
-
+    // Try to get the bounding rect of the image
     return {
-      placement: 'bottom-start',
-      offset: [0, 0],
-      zIndex: 999,
-      duration: 100,
-      // Try to get the bounding rect of the table.
-      getReferenceClientRect: () => {
+      getBoundingClientRect: () => {
         const parentDiv = editor?.isActive('custom-image')
           ? editor.state.selection.$anchor
           : null;
@@ -179,11 +183,18 @@ const BubbleMenuEditImage = ({
           }
         }
 
-        // This should never happen... but it keeps the transpiler happy.
         return new DOMRect(0, 0, 100, 100);
       },
     };
   }, [editor]);
+
+  const floatingOptions = useMemo(() => {
+    return {
+      placement: 'bottom-start' as const,
+      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      strategy: 'absolute' as const,
+    };
+  }, []);
 
   return (
     <BubbleMenu
@@ -192,9 +203,16 @@ const BubbleMenuEditImage = ({
         return editor.isActive('custom-image') && !openEditImage;
       }}
       editor={editor}
-      tippyOptions={tippyOptions}
+      options={floatingOptions}
+      getReferencedVirtualElement={() => reference}
     >
-      {editable && <Toolbar className="p-8" items={ImageSizeItems} />}
+      {editable && (
+        <Toolbar
+          key={`toolbar-${currentSize}-${currentWidth}`}
+          className="p-8"
+          items={ImageSizeItems}
+        />
+      )}
     </BubbleMenu>
   );
 };
