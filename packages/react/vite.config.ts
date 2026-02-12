@@ -54,6 +54,7 @@ export default defineConfig({
         /^@edifice\.io\/bootstrap\/.*/,
         /^dayjs\/plugin\/.+\.js$/,
         /^dayjs\/locale\/.+\.js$/,
+        /^antd\/locale\/.+/,
         /^swiper\/.*/,
         /^@edifice-ui\/icons\/.*/,
       ],
