@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { DocumentProps, PageProps } from 'react-pdf';
+import type { DocumentProps, PageProps } from 'react-pdf';
 import { LoadingScreen } from '../LoadingScreen';
 
 export default function PdfViewer({
