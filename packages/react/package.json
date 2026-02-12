@@ -75,6 +75,7 @@
   "scripts": {
     "build": "pnpm build:icons && vite build",
     "build:icons": "svgr src/modules/icons/assets --config-file ./svgr.config.cjs",
+    "build:analyze": "vite build --mode analyze",
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check \"src/**/*.{ts,tsx}\"",
@@ -92,7 +93,7 @@
     "@edifice.io/tiptap-extensions": "workspace:*",
     "@edifice.io/utilities": "workspace:*",
     "@floating-ui/react": "0.26.0",
-    "@pixi/mixin-get-child-by-name": "7.4.3",
+    "@pixi/mixin-get-child-by-name": "7.4.2",
     "@pixi/react": "7.1.2",
     "@popperjs/core": "2.11.8",
     "@tiptap/core": "2.11.0",
