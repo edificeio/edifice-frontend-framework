@@ -13,7 +13,7 @@ export const useOnboardingModal = <T>(
   const [isOpen, setIsOpen] = useState(false);
   const [isOnboarding, setIsOnboarding] = useState(false);
   const { getPreference, savePreference } = usePreferences<{
-    key: T;
+    key?: T;
   }>(id);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const useOnboardingModal = <T>(
   }, [getPreference, applyDisplayRule]);
 
   const handleSavePreference = useCallback(async () => {
-    if (state.current) await savePreference({ key: state.current });
+    await savePreference({ key: state.current });
     setIsOpen(false);
     setIsOnboarding(false);
   }, [savePreference, setIsOpen, setIsOnboarding]);
