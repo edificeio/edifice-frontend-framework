@@ -153,8 +153,6 @@ export const CustomDisplayRule: Story = {
     ): DisplayRuleCheckResult<OnboardingModalCustomState> {
       const nowUTC = new Date();
 
-      console.log(previousState);
-
       const lastDisplayDate = previousState
         ? new Date(previousState.value)
         : nowUTC;

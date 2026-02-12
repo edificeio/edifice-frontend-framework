@@ -17,8 +17,10 @@ export const handlers = [
     () => {
       return HttpResponse.json({
         preference: JSON.stringify({
-          type: 'Date',
-          value: '2025-02-09T09:00:00.000Z',
+          key: {
+            type: 'Date',
+            value: '2025-02-09T09:00:00.000Z',
+          },
         }),
       });
     },
