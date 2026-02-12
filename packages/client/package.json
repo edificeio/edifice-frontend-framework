@@ -55,7 +55,7 @@
     "jasmine": "5.1.0",
     "rimraf": "5.0.5",
     "rollup-plugin-visualizer": "catalog:",
-    "typedoc": "0.25.7",
+    "typedoc": "0.28.16",
     "typedoc-plugin-markdown": "3.17.1",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:"
