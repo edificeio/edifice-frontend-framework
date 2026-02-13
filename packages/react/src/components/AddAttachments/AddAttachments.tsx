@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   IconDelete,
@@ -10,24 +10,17 @@ import {
 import { Button, Flex, IconButton } from '../index';
 import { AddAttachmentToWorkspaceModal } from './components/AddAttachmentToWorkspaceModal';
 import { SingleAttachment } from './components/SingleAttachment';
+import { useFileToAttachment } from './hooks/useFileToAttachment';
 import { Attachment } from './models/attachment';
 
-function fileToAttachment(file: File): Attachment {
-  return {
-    id: `${file.name}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
-    charset: 'UTF-8',
-    contentTransferEncoding: 'binary',
-    contentType: file.type || 'application/octet-stream',
-    filename: file.name,
-    name: file.name,
-    size: file.size,
-  };
-}
+export type AttachmentType = Attachment;
+export { useFileToAttachment } from './hooks/useFileToAttachment';
 
 export interface AddAttachmentsProps {
   attachments: Attachment[];
-  onFilesSelected: (files: File[]) => void;
-  onRemoveAttachment: (attachmentId: string) => void;
+  onChange?: (attachments: Attachment[]) => void;
+  onFilesSelected?: (files: File[]) => void;
+  onRemoveAttachment?: (attachmentId: string) => void;
   editMode?: boolean;
   isMutating?: boolean;
   onCopyToWorkspace?: (
@@ -42,6 +35,7 @@ export interface AddAttachmentsProps {
 
 export const AddAttachments = ({
   attachments,
+  onChange,
   onFilesSelected,
   onRemoveAttachment,
   editMode = false,
@@ -52,24 +46,11 @@ export const AddAttachments = ({
 }: AddAttachmentsProps) => {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [optimisticAttachments, setOptimisticAttachments] = useState<
-    Attachment[]
-  >([]);
+  const fileToAttachment = useFileToAttachment();
   const [attachmentsToAddToWorkspace, setAttachmentsToAddToWorkspace] =
     useState<Attachment[] | undefined>(undefined);
 
-  const prevAttachmentsLengthRef = useRef(attachments.length);
-
-  const displayedAttachments = [...attachments, ...optimisticAttachments];
-
-  useEffect(() => {
-    if (attachments.length > prevAttachmentsLengthRef.current) {
-      setOptimisticAttachments([]);
-    }
-    prevAttachmentsLengthRef.current = attachments.length;
-  }, [attachments.length]);
-
-  if (!editMode && !displayedAttachments.length) return null;
+  if (!editMode && !attachments.length) return null;
 
   const resetInputValue = () => {
     if (inputRef.current) {
@@ -82,32 +63,23 @@ export const AddAttachments = ({
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []);
     if (files.length > 0) {
-      onFilesSelected(files);
-      const newOptimistic = files.map(fileToAttachment);
-      setOptimisticAttachments((prev) => [...prev, ...newOptimistic]);
+      const newAttachments = files.map(fileToAttachment);
+      onChange?.([...attachments, ...newAttachments]);
+      onFilesSelected?.(files);
     }
     resetInputValue();
   };
 
   const handleDetachAllClick = () => {
-    setOptimisticAttachments([]);
-    attachments.forEach((attachment) => {
-      onRemoveAttachment(attachment.id);
-    });
+    onChange?.([]);
+    attachments.forEach((a) => onRemoveAttachment?.(a.id));
     resetInputValue();
   };
 
   const handleDetachClick = (attachmentId: string) => {
-    const isOptimistic = optimisticAttachments.some(
-      (attachment) => attachment.id === attachmentId,
-    );
-    if (isOptimistic) {
-      setOptimisticAttachments((prev) =>
-        prev.filter((attachment) => attachment.id !== attachmentId),
-      );
-    } else {
-      onRemoveAttachment(attachmentId);
-    }
+    const next = attachments.filter((a) => a.id !== attachmentId);
+    onChange?.(next);
+    onRemoveAttachment?.(attachmentId);
     resetInputValue();
   };
 
@@ -122,7 +94,7 @@ export const AddAttachments = ({
 
   return (
     <div className={className} data-drag-handle>
-      {!!displayedAttachments.length && (
+      {!!attachments.length && (
         <>
           <Flex
             direction="row"
@@ -131,7 +103,7 @@ export const AddAttachments = ({
             className="border-bottom"
           >
             <span className="caption fw-bold my-8">{t('attachments')}</span>
-            {displayedAttachments.length > 1 && (
+            {attachments.length > 1 && (
               <div>
                 {onCopyToWorkspace && (
                   <IconButton
@@ -139,7 +111,7 @@ export const AddAttachments = ({
                     color="tertiary"
                     type="button"
                     icon={<IconFolderAdd />}
-                    onClick={() => handleCopyToWorkspace(displayedAttachments)}
+                    onClick={() => handleCopyToWorkspace(attachments)}
                     variant="ghost"
                   />
                 )}
@@ -169,8 +141,11 @@ export const AddAttachments = ({
             )}
           </Flex>
           <ul className="d-flex gap-8 flex-column list-unstyled m-0">
-            {displayedAttachments.map((attachment) => (
-              <li key={attachment.id} className="mw-100">
+            {attachments.map((attachment) => (
+              <li
+                key={`${attachment.id}-${attachment.name}`}
+                className="mw-100"
+              >
                 <SingleAttachment
                   attachment={attachment}
                   editMode={editMode}

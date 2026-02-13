@@ -57,7 +57,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "AddAttachments displays a list of attachments and handles adding (file selection). Files are passed to the parent via onFilesSelected; the UI updates immediately (optimistic list). Optional options: onCopyToWorkspace ('copy to workspace' buttons), getDownloadUrl (download button per attachment), downloadAllUrl ('download all' button when multiple attachments). Edit mode (add/remove) or view mode (read-only).\n\n**Why does the 'Copy to workspace' modal appear at the top of the page (first story)?** The modal is rendered via `createPortal` in a single DOM element (`document.getElementById('portal')`). In Docs mode, each story is wrapped by the decorator that adds a `<div id=\"portal\" />`. There can therefore be multiple elements with `id=\"portal\"` on the page; `getElementById` only returns the **first one**. All modals are therefore rendered in this first portal, hence the display at the top.",
+          'AddAttachments displays a list of attachments controlled by the parent. On each change (add/remove), onChange receives the full list. onFilesSelected and onRemoveAttachment remain available (e.g. for upload, side-effects). Options: onCopyToWorkspace, getDownloadUrl, downloadAllUrl. Edit mode (add/remove) or view mode (read-only).\n\n**Why does the \'Copy to workspace\' modal appear at the top of the page (first story)?** The modal is rendered via createPortal in a single DOM element (`document.getElementById(\'portal\')`). In Docs mode, each story is wrapped by the decorator that adds a `<div id="portal" />`. There can therefore be multiple elements with `id="portal"` on the page; `getElementById` only returns the **first one**. All modals are therefore rendered in this first portal, hence the display at the top.',
       },
     },
   },
@@ -69,6 +69,19 @@ type Story = StoryObj<typeof AddAttachments>;
 
 /** Liste vide en mode édition : uniquement le bouton « Ajouter une pièce jointe ». */
 export const ListeVide: Story = {
+  render: (args) => {
+    const [attachments, setAttachments] = useState<Attachment[]>([]);
+    return (
+      <AddAttachments
+        {...args}
+        attachments={attachments}
+        onChange={setAttachments}
+        onFilesSelected={args.onFilesSelected}
+        onRemoveAttachment={args.onRemoveAttachment}
+        editMode={true}
+      />
+    );
+  },
   args: {
     attachments: [],
     editMode: true,
@@ -87,25 +100,9 @@ export const ModeEdition: Story = {
       <AddAttachments
         {...args}
         attachments={attachments}
-        onFilesSelected={(files) => {
-          args.onFilesSelected?.(files);
-          setAttachments((prev) => [
-            ...prev,
-            ...files.map((f) => ({
-              id: `${f.name}-${Date.now()}`,
-              charset: 'UTF-8',
-              contentTransferEncoding: 'binary',
-              contentType: f.type || 'application/octet-stream',
-              filename: f.name,
-              name: f.name,
-              size: f.size,
-            })),
-          ]);
-        }}
-        onRemoveAttachment={(id) => {
-          args.onRemoveAttachment?.(id);
-          setAttachments((prev) => prev.filter((a) => a.id !== id));
-        }}
+        onChange={setAttachments}
+        onFilesSelected={args.onFilesSelected}
+        onRemoveAttachment={args.onRemoveAttachment}
         editMode={true}
       />
     );
@@ -220,25 +217,9 @@ export const ToutesOptions: Story = {
       <AddAttachments
         {...args}
         attachments={attachments}
-        onFilesSelected={(files) => {
-          args.onFilesSelected?.(files);
-          setAttachments((prev) => [
-            ...prev,
-            ...files.map((f) => ({
-              id: `${f.name}-${Date.now()}`,
-              charset: 'UTF-8',
-              contentTransferEncoding: 'binary',
-              contentType: f.type || 'application/octet-stream',
-              filename: f.name,
-              name: f.name,
-              size: f.size,
-            })),
-          ]);
-        }}
-        onRemoveAttachment={(id) => {
-          args.onRemoveAttachment?.(id);
-          setAttachments((prev) => prev.filter((a) => a.id !== id));
-        }}
+        onChange={setAttachments}
+        onFilesSelected={args.onFilesSelected}
+        onRemoveAttachment={args.onRemoveAttachment}
         onCopyToWorkspace={createCopyToWorkspaceHandler(
           args.onCopyToWorkspace ?? (() => {}),
         )}
