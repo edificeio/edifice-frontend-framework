@@ -1,4 +1,4 @@
-import { Button, Modal } from '@edifice.io/react';
+import { Button, Modal } from '../../..';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-hot-toast';

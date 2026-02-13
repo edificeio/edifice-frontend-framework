@@ -1,12 +1,12 @@
 import {
   Attachment as AttachmentComponent,
   IconButton,
-} from '@edifice.io/react';
+} from '../../..';
 import {
   IconDelete,
   IconDownload,
   IconFolderAdd,
-} from '@edifice.io/react/icons';
+} from '../../../modules/icons/components';
 import { useTranslation } from 'react-i18next';
 import { Attachment } from '../models/attachment';
 
