@@ -3,7 +3,7 @@ import { StoryObj } from '@storybook/react';
 import { IconDelete, IconDownload } from '../../modules/icons/components';
 import { IconButton } from '../Button';
 import { Grid } from '../Grid';
-import Attachment, { AttachmentProps } from './Attachment';
+import Attachment from './Attachment';
 
 const meta = {
   title: 'Components/Attachment',
@@ -25,7 +25,7 @@ export default meta;
 type Story = StoryObj<typeof Attachment>;
 
 export const Base: Story = {
-  render: (args: AttachmentProps) => {
+  render: (args) => {
     return (
       <Attachment
         name={args.name}
