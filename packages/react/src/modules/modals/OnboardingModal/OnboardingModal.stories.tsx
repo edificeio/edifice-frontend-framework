@@ -6,10 +6,13 @@ import {
   ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
 } from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useState } from 'react';
+import { useRef } from 'react';
 import { Button } from '../../../components/Button';
 import { useDate } from '../../../hooks';
-import OnboardingModal, { DisplayRuleCheckResult } from './OnboardingModal';
+import OnboardingModal, {
+  DisplayRuleCheckResult,
+  OnboardingModalRef,
+} from './OnboardingModal';
 
 const meta: Meta<typeof OnboardingModal> = {
   title: 'Modules/Modals/OnboardingModal',
@@ -85,10 +88,10 @@ export const Default: Story = {
     },
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const onboardingModalRef = useRef<OnboardingModalRef>(null);
 
     function handleOpenModal() {
-      setIsOpen(true);
+      onboardingModalRef.current?.setIsOpen(true);
     }
 
     return (
@@ -102,7 +105,7 @@ export const Default: Story = {
         >
           Open onboarding
         </Button>
-        {isOpen && <OnboardingModal {...args} />}
+        <OnboardingModal ref={onboardingModalRef} {...args} />
       </>
     );
   },
@@ -142,10 +145,10 @@ export const CustomDisplayRule: Story = {
   },
   render: (args) => {
     const { fromNow } = useDate();
-    const [isOpen, setIsOpen] = useState(false);
+    const onboardingModalRef = useRef<OnboardingModalRef>(null);
 
     function handleOpenModal() {
-      setIsOpen(true);
+      onboardingModalRef.current?.setIsOpen(true);
     }
 
     function onDisplayRuleCheck(
@@ -181,9 +184,11 @@ export const CustomDisplayRule: Story = {
         >
           Open onboarding
         </Button>
-        {isOpen && (
-          <OnboardingModal {...args} onDisplayRuleCheck={onDisplayRuleCheck} />
-        )}
+        <OnboardingModal
+          ref={onboardingModalRef}
+          {...args}
+          onDisplayRuleCheck={onDisplayRuleCheck}
+        />
       </>
     );
   },

@@ -23,9 +23,7 @@ export const useOnboardingModal = <T>(
       if (response) {
         const { key } = response;
         const { display, nextState } = applyDisplayRule(key);
-        if (display) {
-          setIsOpen(true);
-        }
+        setIsOpen(display);
         setIsOnboarding(display);
         state.current = nextState;
       } else {
@@ -34,7 +32,7 @@ export const useOnboardingModal = <T>(
         state.current = undefined;
       }
     })();
-  }, [getPreference, applyDisplayRule]);
+  }, []);
 
   const handleSavePreference = useCallback(async () => {
     await savePreference({ key: state.current });
