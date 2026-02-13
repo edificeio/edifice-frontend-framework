@@ -1,4 +1,5 @@
 export * from './ActionBar';
+export * from './AddAttachments';
 export * from './Alert';
 export * from './AppHeader';
 export * from './AppIcon';
