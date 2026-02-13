@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { Button, Image, Modal } from '../../../components';
 import { useOnboardingModal } from './useOnboardingModal';
+
 interface ModalItemsProps {
   /**
    * /onboarding/*.svg
@@ -50,70 +51,99 @@ export interface OnboardingModalRef {
   handleSavePreference: () => void;
 }
 
-interface OnboardingProps {
+/**
+ * Result of a custom display check. Must contain the following data :
+ * - display: a boolean indicating whether the modal should be shown when truthy or hidden if falsy;
+ * - nextState: the next state to persist when onboarding is done.
+ */
+export interface DisplayRuleCheckResult<T> {
+  display: boolean;
+  nextState: T;
+}
+
+export interface OnboardingProps<T = boolean> {
   id: string;
   items: ModalItemsProps[];
   modalOptions?: ModalOptionsProps;
   isOnboardingChange?: (isOnboarding: boolean) => void;
+  /**
+   * Allow the parent component to control the rule for showing/hiding the modal.
+   *
+   * If undefined, the component will manage a visible/hidden state on its own.
+   *
+   * If defined, this function is called with the previously known state (if any).
+   * It can then compute the next state and return a DisplayRuleCheckResult.
+   *
+   * Note that the user may close the modal without finishing their onboarding.
+   * In this case, the next state is not persisted.
+   */
+  onDisplayRuleCheck?: (previousState?: T) => DisplayRuleCheckResult<T>;
 }
 
-const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
-  (
-    { id, items, modalOptions = {}, isOnboardingChange }: OnboardingProps,
-    ref,
-  ) => {
-    const [swiperInstance, setSwiperInstance] = useState<any>();
-    const [swiperProgress, setSwiperprogress] = useState<number>(0);
+/* Composant interne nécessaire afin de typer correctement la forwardRef en TS. */
+const OnboardingModalInner = <T = boolean,>(
+  {
+    id,
+    items,
+    modalOptions = {},
+    isOnboardingChange,
+    onDisplayRuleCheck = (previousState?: T) => ({
+      display: previousState === true,
+      nextState: false as T,
+    }),
+  }: OnboardingProps<T>,
+  ref: React.Ref<OnboardingModalRef>,
+) => {
+  const [swiperInstance, setSwiperInstance] = useState<any>();
+  const [swiperProgress, setSwiperprogress] = useState<number>(0);
 
-    const { isOpen, isOnboarding, setIsOpen, handleSavePreference } =
-      useOnboardingModal(id);
+  const { isOpen, isOnboarding, setIsOpen, handleSavePreference } =
+    useOnboardingModal(id, onDisplayRuleCheck);
 
-    useImperativeHandle(ref, () => ({
-      setIsOpen,
-      handleSavePreference,
-    }));
+  useImperativeHandle(ref, () => ({
+    setIsOpen,
+    handleSavePreference,
+  }));
 
-    // Effect to notify child component about onboarding state change
-    useEffect(() => {
-      if (isOnboardingChange) {
-        isOnboardingChange(isOnboarding);
-      }
-    }, [isOnboarding, isOnboardingChange]);
+  // Effect to notify child component about onboarding state change
+  useEffect(() => {
+    isOnboardingChange?.(isOnboarding);
+  }, [isOnboarding, isOnboardingChange]);
 
-    useEffect(() => {
-      const link = document.createElement('link');
-      link.href =
-        'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
-      link.rel = 'stylesheet';
-      link.type = 'text/css';
+  useEffect(() => {
+    const link = document.createElement('link');
+    link.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
 
-      document.head.appendChild(link);
+    document.head.appendChild(link);
 
-      return () => {
-        document.head.removeChild(link);
-      };
-    }, []);
-
-    const { t } = useTranslation();
-
-    const { title, prevText, closeText, nextText } = modalOptions;
-    const currentTitle =
-      swiperInstance?.activeIndex != undefined &&
-      items[swiperInstance?.activeIndex]?.title
-        ? items[swiperInstance.activeIndex].title
-        : title;
-
-    const handleCloseWithPreference = () => {
-      handleSavePreference();
-      setSwiperprogress(0);
+    return () => {
+      document.head.removeChild(link);
     };
+  }, []);
 
-    const handleCloseWithoutPreference = () => {
-      setIsOpen(false);
-      setSwiperprogress(0);
-    };
+  const { t } = useTranslation();
 
-    return createPortal(
+  const { title, prevText, closeText, nextText } = modalOptions;
+  const currentTitle =
+    swiperInstance?.activeIndex != undefined &&
+    items[swiperInstance?.activeIndex]?.title
+      ? items[swiperInstance.activeIndex].title
+      : title;
+
+  const handleCloseWithPreference = () => {
+    handleSavePreference();
+    setSwiperprogress(0);
+  };
+
+  const handleCloseWithoutPreference = () => {
+    setIsOpen(false);
+    setSwiperprogress(0);
+  };
+
+  return createPortal(
+    isOpen && (
       <Modal
         id="onboarding-modal"
         data-testid="modal-onboarding"
@@ -210,11 +240,17 @@ const OnboardingModal = forwardRef<OnboardingModalRef, OnboardingProps>(
             </Button>
           )}
         </Modal.Footer>
-      </Modal>,
-      (document.getElementById('portal') as HTMLElement) || document.body,
-    );
-  },
-);
+      </Modal>
+    ),
+    (document.getElementById('portal') as HTMLElement) || document.body,
+  );
+};
+
+const OnboardingModal = forwardRef(OnboardingModalInner) as (<T = boolean>(
+  props: OnboardingProps<T> & { ref?: React.Ref<OnboardingModalRef> },
+) => ReturnType<typeof OnboardingModalInner>) & {
+  displayName?: string;
+};
 
 OnboardingModal.displayName = 'OnboardingModal';
 
