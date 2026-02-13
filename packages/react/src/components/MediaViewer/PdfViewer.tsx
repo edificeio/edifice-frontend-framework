@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react';
-import { Document, Page } from 'react-pdf';
+import { ComponentType, useEffect, useRef, useState } from 'react';
+import type { DocumentProps, PageProps } from 'react-pdf';
 import { LoadingScreen } from '../LoadingScreen';
 
 export default function PdfViewer({
@@ -10,12 +10,38 @@ export default function PdfViewer({
   scale?: number;
 }) {
   const [numPages, setNumPages] = useState<number | null>(null);
+  const [Document, setDocument] = useState<ComponentType<DocumentProps> | null>(
+    null,
+  );
+  const [Page, setPage] = useState<ComponentType<PageProps> | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const pagesRef = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    // Dynamic import of react-pdf to avoid DOMMatrix issues in test environments
+    const loadReactPdf = async () => {
+      try {
+        const reactPdf = await import('react-pdf');
+        setDocument(() => reactPdf.Document);
+        setPage(() => reactPdf.Page);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to load react-pdf:', error);
+      }
+    };
+
+    loadReactPdf();
+  }, []);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
   };
+
+  if (isLoading || !Document || !Page) {
+    return <LoadingScreen />;
+  }
+
   return (
     <div
       style={{
