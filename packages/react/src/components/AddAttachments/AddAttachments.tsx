@@ -1,13 +1,13 @@
-import { Button, Flex, IconButton } from '@edifice.io/react';
+import clsx from 'clsx';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   IconDelete,
   IconDownload,
   IconFolderAdd,
   IconPlus,
-} from '@edifice.io/react/icons';
-import clsx from 'clsx';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+} from '../../modules/icons/components';
+import { Button, Flex, IconButton } from '../index';
 import { AddAttachmentToWorkspaceModal } from './components/AddAttachmentToWorkspaceModal';
 import { SingleAttachment } from './components/SingleAttachment';
 import { Attachment } from './models/attachment';
@@ -40,7 +40,7 @@ export interface AddAttachmentsProps {
   downloadAllUrl?: string;
 }
 
-export function AddAttachments({
+export const AddAttachments = ({
   attachments,
   onFilesSelected,
   onRemoveAttachment,
@@ -49,7 +49,7 @@ export function AddAttachments({
   onCopyToWorkspace,
   getDownloadUrl,
   downloadAllUrl,
-}: AddAttachmentsProps) {
+}: AddAttachmentsProps) => {
   const { t } = useTranslation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [optimisticAttachments, setOptimisticAttachments] = useState<
@@ -222,4 +222,8 @@ export function AddAttachments({
       )}
     </div>
   );
-}
+};
+
+AddAttachments.displayName = 'AddAttachments';
+
+export default AddAttachments;

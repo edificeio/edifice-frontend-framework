@@ -159,6 +159,11 @@ export function setDeviceCookies(): DeviceInfo {
     return info;
   } catch (e) {
     console.warn('Device detection failed, using Unknown values:', e);
-    return { osName: 'Unknown', osVersion: 'Unknown', deviceType: 'Unknown', deviceName: 'Unknown' };
+    return {
+      osName: 'Unknown',
+      osVersion: 'Unknown',
+      deviceType: 'Unknown',
+      deviceName: 'Unknown',
+    };
   }
 }
