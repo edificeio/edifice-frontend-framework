@@ -1,4 +1,4 @@
-import UAParser from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
 
 export default function useBrowserInfo(userAgent?: string) {
   const uaParser = new UAParser(userAgent);
