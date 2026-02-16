@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import noAvatar from '@edifice.io/bootstrap/dist/images/avatar/no-avatar.svg';
 import Avatar from './Avatar';

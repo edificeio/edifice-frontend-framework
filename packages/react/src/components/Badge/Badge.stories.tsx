@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconHourglass } from '../../modules/icons/components';
 import Badge, { BadgeProps } from './Badge';

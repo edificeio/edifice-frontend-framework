@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import PreventPropagation from './PreventPropagation';
 import { Button } from '../Button';
 import { Switch } from '../Switch';

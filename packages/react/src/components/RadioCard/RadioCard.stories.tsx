@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import RadioCard, { RadioCardProps } from './RadioCard';
 import { Flex } from '../Flex';

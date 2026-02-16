@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { RefAttributes } from 'react';
 import { Dropdown, IconButton, IconButtonProps, Toolbar } from '..';
 import {

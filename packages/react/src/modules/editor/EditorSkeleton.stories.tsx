@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import EditorSkeleton from './components/Editor/EditorSkeleton';
 
 const meta: Meta<typeof EditorSkeleton> = {
