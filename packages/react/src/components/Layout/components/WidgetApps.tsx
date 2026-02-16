@@ -26,6 +26,13 @@ export const WidgetAppsBody = ({
 }) => {
   const { t } = useTranslation();
 
+  //FI : this helper exists also on entcore/portal
+  const getAppName = (data: IWebApp): string => {
+    return data.prefix && data.prefix.length > 1
+      ? t(data.prefix.substring(1))
+      : t(data.displayName) || '';
+  };
+
   return (
     <div className="widget-body d-flex flex-wrap">
       {!bookmarkedApps.length && (
@@ -36,6 +43,7 @@ export const WidgetAppsBody = ({
           <a
             key={index}
             href={app.address}
+            title={getAppName(app)}
             className="bookmarked-app"
             target={
               appToOpenOnBlank.includes(app.name) ||
