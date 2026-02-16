@@ -6,7 +6,7 @@ import {
   ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
 } from '@edifice.io/config/src/msw/mocks/userbook';
 import type { Meta, StoryObj } from '@storybook/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { useDate } from '../../../hooks';
 import OnboardingModal, {
@@ -146,6 +146,9 @@ export const CustomDisplayRule: Story = {
   render: (args) => {
     const { fromNow } = useDate();
     const onboardingModalRef = useRef<OnboardingModalRef>(null);
+    const [displayRule, setDisplayRule] = useState(
+      '...Please wait while checking display rule...',
+    );
 
     function handleOpenModal() {
       onboardingModalRef.current?.setIsOpen(true);
@@ -160,8 +163,8 @@ export const CustomDisplayRule: Story = {
         ? new Date(previousState.value)
         : nowUTC;
 
-      alert(
-        `From previous state ${JSON.stringify(lastDisplayDate)},\nshould onboarding be shown ?\nIt is ${fromNow(lastDisplayDate)}, so display it !`,
+      setDisplayRule(
+        `D'après l'état précédent (${JSON.stringify(lastDisplayDate)}),\nfaut-il afficher la modale d'onboarding ?\nC'est ${fromNow(lastDisplayDate)}, donc affichons-la !`,
       );
 
       return {
@@ -184,6 +187,8 @@ export const CustomDisplayRule: Story = {
         >
           Open onboarding
         </Button>
+        <br />
+        <p>{displayRule}</p>
         <OnboardingModal
           ref={onboardingModalRef}
           {...args}
