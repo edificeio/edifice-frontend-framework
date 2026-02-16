@@ -26,9 +26,9 @@ export const WidgetAppsBody = ({
 }) => {
   const { t } = useTranslation();
 
-  //TODO : this helper exists also on entcore/portal , we should factorize it
+  //FI : this helper exists also on entcore/portal
   const getAppName = (data: IWebApp): string => {
-    return data.prefix
+    return data.prefix && data.prefix.length > 1
       ? t(data.prefix.substring(1))
       : t(data.displayName) || '';
   };
