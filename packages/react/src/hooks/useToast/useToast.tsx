@@ -12,6 +12,7 @@ export interface CustomToastOptions {
 }
 
 const DEFAULT_POSITION = 'top-right';
+const DEFAULT_DURATION = 5000;
 
 export default function useToast() {
   const toasts = {
@@ -27,7 +28,7 @@ export default function useToast() {
         </Alert>,
         {
           id: options?.id,
-          duration: options?.duration,
+          duration: options?.duration ?? DEFAULT_DURATION,
           position: options?.position ?? DEFAULT_POSITION,
         },
       ),
@@ -43,7 +44,7 @@ export default function useToast() {
         </Alert>,
         {
           id: options?.id,
-          duration: options?.duration,
+          duration: options?.duration ?? DEFAULT_DURATION,
           position: options?.position ?? DEFAULT_POSITION,
         },
       ),
@@ -59,7 +60,7 @@ export default function useToast() {
         </Alert>,
         {
           id: options?.id,
-          duration: options?.duration,
+          duration: options?.duration ?? DEFAULT_DURATION,
           position: options?.position ?? DEFAULT_POSITION,
         },
       ),
@@ -75,7 +76,7 @@ export default function useToast() {
         </Alert>,
         {
           id: options?.id,
-          duration: options?.duration,
+          duration: options?.duration ?? DEFAULT_DURATION,
           position: options?.position ?? DEFAULT_POSITION,
         },
       ),
