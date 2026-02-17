@@ -1,7 +1,4 @@
-import {
-  Attachment as AttachmentComponent,
-  IconButton,
-} from '../../..';
+import { Attachment as AttachmentComponent, IconButton } from '../../..';
 import {
   IconDelete,
   IconDownload,
