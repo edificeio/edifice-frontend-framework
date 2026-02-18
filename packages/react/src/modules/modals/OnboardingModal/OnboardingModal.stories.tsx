@@ -17,47 +17,20 @@ import OnboardingModal, {
 const meta: Meta<typeof OnboardingModal> = {
   title: 'Modules/Modals/OnboardingModal',
   component: OnboardingModal,
-  decorators: [(Story) => <div style={{ height: '35em' }}>{Story()}</div>],
-  argTypes: {
-    'id': {
-      description: 'Unique identifier for the modal',
-      control: 'text',
-    },
-    'items': {
-      description: 'List of items to display in the carousel',
-      control: 'object',
-    },
-    'items[].src': {
-      description: 'Image path for each slide',
-      control: 'text',
-    },
-    'items[].alt': {
-      description: 'Alternative text for the image',
-      control: 'text',
-    },
-    'items[].text': {
-      description: 'Descriptive text under the image',
-      control: 'text',
-    },
-    'modalOptions': {
-      description: 'Modal configuration options',
-      control: 'object',
-    },
-    'modalOptions.title': {
-      description: 'Modal title',
-      control: 'text',
-    },
-    'modalOptions.prevText': {
-      description: 'Previous button text',
-      control: 'text',
-    },
-    'modalOptions.nextText': {
-      description: 'Next button text',
-      control: 'text',
-    },
-    'modalOptions.closeText': {
-      description: 'Close button text',
-      control: 'text',
+  decorators: [
+    (Story) => (
+      <div style={{ height: '35em' }}>
+        <div id="portal" />
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'Onboarding modal with carousel navigation to guide users through features or updates. Supports custom display rules to control when the modal should be shown.',
+      },
     },
   },
 };
@@ -65,7 +38,7 @@ const meta: Meta<typeof OnboardingModal> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Base: Story = {
   args: {
     id: ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
     items: [
@@ -96,7 +69,6 @@ export const Default: Story = {
 
     return (
       <>
-        <div id="portal" />
         <Button
           type="button"
           variant="filled"
@@ -112,7 +84,8 @@ export const Default: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Onboarding modal with step navigation',
+        story:
+          'Basic onboarding modal with carousel navigation. Users can navigate through multiple screens using Previous/Next buttons.',
       },
     },
   },
@@ -128,7 +101,7 @@ export const CustomDisplayRule: Story = {
         title: 'Custom display rule',
         src: illuTrash,
         alt: 'Onboarding Illustration',
-        text: 'Aliquam eu velit massa. Pellentesque finibus semper nisl sed eleifend. Maecenas maximus cursus ipsum. Curabitur a pretium ex. Cras aliquet malesuada nisi eget consequat. In vitae ligula urna. Nunc gravida lectus diam, vel congue velit pretium vel.',
+        text: '',
       },
       {
         title: 'Second onboarding title',
@@ -176,19 +149,19 @@ export const CustomDisplayRule: Story = {
       };
     }
 
+    // Some feedback for the story reader.
+    args.items[0].text = displayRule;
+
     return (
       <>
-        <div id="portal" />
         <Button
           type="button"
           variant="filled"
           color="primary"
           onClick={handleOpenModal}
         >
-          Open onboarding
+          Open onboarding but check custom display rule
         </Button>
-        <br />
-        <p>{displayRule}</p>
         <OnboardingModal
           ref={onboardingModalRef}
           {...args}
@@ -200,7 +173,8 @@ export const CustomDisplayRule: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Onboarding modal with custom display rule',
+        story:
+          'Onboarding modal with a custom display rule. The `onDisplayRuleCheck` callback allows you to control when the modal should be displayed based on custom logic and previous state.',
       },
     },
   },
