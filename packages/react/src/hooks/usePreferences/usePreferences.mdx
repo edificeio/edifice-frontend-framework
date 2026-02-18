@@ -11,21 +11,22 @@ The `usePreferences` hook provides methods to get and save user preferences.
 ```typescript
 import usePreferences from './usePreferences';
 
-const { getPreference, savePreference } = usePreferences('preferenceName');
+const { getPreference, savePreference } =
+  usePreferences<PreferenceType>('preferenceName');
 
 const fetchPreference = async () => {
-  const preference = await getPreference();
+  const preference: PreferenceType = await getPreference();
   console.log(preference);
 };
 
-const storePreference = async (value: any) => {
+const storePreference = async (value: PreferenceType) => {
   await savePreference(value);
 };
 ```
 
 ## API
 
-### `usePreferences(name: string)`
+### `usePreferences<PreferenceType>(name: string)`
 
 #### Parameters
 
@@ -36,18 +37,18 @@ const storePreference = async (value: any) => {
 - `getPreference` (`function`): An asynchronous function to get the preference.
 - `savePreference` (`function`): An asynchronous function to save the preference.
 
-### `getPreference(): Promise<any>`
+### `getPreference(): Promise<PreferenceType>`
 
 Fetches the preference value.
 
-### `savePreference(value: any): Promise<void>`
+### `savePreference(value: PreferenceType): Promise<void>`
 
 Saves the preference value.
 
 ## Example
 
 ```typescript
-    const { getPreference, savePreference } = usePreferences('examplePreference');
+    const { getPreference, savePreference } = usePreferences<{key: string}>('examplePreference');
 
     // Example usage
     const handleGetPreference = async () => {
