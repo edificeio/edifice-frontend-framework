@@ -27,6 +27,15 @@ const meta: Meta<typeof SegmentedControl> = {
         category: 'Props',
       },
     },
+    variant: {
+      description:
+        'Variant of the segmented control, affecting its styling. Can be "default" or "ghost".',
+      control: { type: 'radio', options: ['default', 'ghost'] },
+      table: {
+        type: { summary: 'string' },
+        category: 'Props',
+      },
+    },
     onChange: {
       description:
         'Callback function called when the selected value changes. Receives the new value (string) as parameter.',

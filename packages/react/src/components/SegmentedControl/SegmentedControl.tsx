@@ -1,5 +1,6 @@
-import { forwardRef } from 'react';
 import { Segmented as AntSegmented } from 'antd';
+import clsx from 'clsx';
+import { forwardRef } from 'react';
 
 /**
  * Simple option for SegmentedControl
@@ -38,6 +39,14 @@ export interface SegmentedControlProps extends Omit<
    */
   value?: string;
   /**
+   * Variant of the segmented control, affecting its styling.
+   * - 'default': standard segmented control with borders.
+   * - 'ghost': borderless segmented control, relying on background and text color for distinction.
+   *
+   * @default 'default'
+   */
+  variant?: 'default' | 'ghost';
+  /**
    * Callback called when value changes
    */
   onChange?: (value: string) => void;
@@ -67,7 +76,10 @@ export interface SegmentedControlProps extends Omit<
  * ```
  */
 const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
-  ({ options, value, onChange, ...htmlProps }, ref) => {
+  (
+    { options, value, onChange, variant = 'default', className, ...htmlProps },
+    ref,
+  ) => {
     const transformedOptions = options.map((option) => {
       return {
         ...option,
@@ -78,12 +90,14 @@ const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
         ),
       };
     });
+    const classNames = clsx(className, { ghost: variant === 'ghost' });
 
     const antProps = {
       options: transformedOptions,
       value,
       onChange,
       ref,
+      className: classNames,
       ...htmlProps,
     };
 
