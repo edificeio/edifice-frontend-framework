@@ -471,7 +471,7 @@ const ShareResources = forwardRef<ShareResourcesRef, ShareResourceProps>(
             }
             type="button"
             variant="ghost"
-            className="fw-normal"
+            className="fw-normal text-start"
             onClick={() => toggleBookmarkInput(!showBookmarkInput)}
           >
             {t('share.save.sharebookmark')}
