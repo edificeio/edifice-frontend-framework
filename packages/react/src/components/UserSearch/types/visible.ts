@@ -1,0 +1,19 @@
+export enum VisibleType {
+  User = 'User',
+  Group = 'Group',
+  ShareBookmark = 'ShareBookmark',
+  BroadcastGroup = 'BroadcastGroup',
+}
+
+export type Visible = {
+  id: string;
+  displayName: string;
+  profile?: string;
+  nbUsers?: number;
+  structureName?: string;
+  groupType?: string;
+  usedIn?: ('TO' | 'CC' | 'CCI')[];
+  type: VisibleType;
+  children?: { id: string; displayName: string }[];
+  relatives?: { id: string; displayName: string }[];
+};
