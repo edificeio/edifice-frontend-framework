@@ -12,6 +12,10 @@
 
   border: 1px solid var(--#{$prefix}secondary-200);
 
+  &.ghost {
+    border: 0;
+  }
+
   .ant-segmented-group {
     gap: var(--#{$prefix}spacer-4);
   }
