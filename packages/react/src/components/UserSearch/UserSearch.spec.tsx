@@ -3,11 +3,6 @@ import { UserSearch } from './UserSearch';
 import type { Visible } from './types/visible';
 import { VisibleType } from './types/visible';
 
-vi.mock('react-pdf', () => ({
-  Document: () => null,
-  Page: () => null,
-}));
-
 const mockVisibles: Visible[] = [
   {
     id: 'user-1',

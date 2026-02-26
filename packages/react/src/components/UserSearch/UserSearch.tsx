@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { type ReactNode, ChangeEvent, useEffect, useState } from 'react';
 import { useDebounce } from '../../hooks';
 import {
   IconBookmark,
@@ -38,14 +38,17 @@ export const UserSearch = ({
   // Minimum characters required before search: 3 for admin contexts, 1 otherwise
   const searchMinLength = isAdmlcOrAdmc ? 3 : 1;
 
-  const getIcon = (type: VisibleType) => {
+  const getIcon = (type: VisibleType): ReactNode => {
     switch (type) {
       case VisibleType.User:
         return <IconUser />;
       case VisibleType.Group:
+      case VisibleType.BroadcastGroup:
         return <IconGroupAvatar />;
       case VisibleType.ShareBookmark:
         return <IconBookmark />;
+      default:
+        return null;
     }
   };
 
@@ -70,15 +73,28 @@ export const UserSearch = ({
     let cancelled = false;
     async function getResults() {
       setIsLoading(true);
-      const response = await getSearchResults(debouncedSearchInputValue);
-      if (cancelled) return;
-      setIsLoading(false);
-      const rawResults = [...bookmarks, ...response.results];
-      setSearchResults(filterResults(rawResults));
+      try {
+        const response = await getSearchResults(debouncedSearchInputValue);
+        if (!cancelled) {
+          const rawResults = [...bookmarks, ...response.results];
+          setSearchResults(filterResults(rawResults));
+        }
+      } catch {
+        if (!cancelled) {
+          setSearchResults(filterResults(bookmarks));
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
     }
 
     if (debouncedSearchInputValue.length >= searchMinLength) {
       getResults();
+    } else {
+      // When search term is too short, show only bookmarks (filtered) to avoid stale API results
+      setSearchResults(filterResults(bookmarks));
     }
 
     return () => {

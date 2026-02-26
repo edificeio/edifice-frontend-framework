@@ -52,4 +52,5 @@ export * from './Toolbar';
 export * from './Tooltip';
 export * from './Tree';
 export * from './TreeView';
+export * from './UserSearch';
 export * from './VisuallyHidden';

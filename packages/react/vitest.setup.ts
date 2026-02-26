@@ -16,6 +16,11 @@ import { QueryCache } from '@tanstack/react-query';
 
 const queryCache = new QueryCache();
 
+vi.mock('react-pdf', () => ({
+  Document: () => null,
+  Page: () => null,
+}));
+
 afterEach(() => {
   queryCache.clear();
 });
