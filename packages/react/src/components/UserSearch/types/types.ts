@@ -10,6 +10,10 @@ export interface UserSearchProps {
   onSearchResultsChange?: (searchResult: Visible) => void;
 }
 
+export interface UserSearchRef {
+  removeSharing: (recipientId: string) => void;
+}
+
 export interface SearchResponse {
   results: Visible[];
 }

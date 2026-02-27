@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen, waitFor } from '~/setup';
-import { UserSearch } from './UserSearch';
+import { createRef } from 'react';
+import { UserSearch, type UserSearchRef } from './UserSearch';
 import type { Visible } from './types/visible';
 import { VisibleType } from './types/visible';
 
@@ -246,6 +247,56 @@ describe('UserSearch', () => {
         const labels = items.map((el) => el.textContent ?? '');
         expect(labels.some((l) => l.includes('Marie Dupont'))).toBe(false);
         expect(labels.some((l) => l.includes('Jean Martin'))).toBe(true);
+      });
+    });
+  });
+
+  describe('removeSharing (ref)', () => {
+    it('removes recipientId from sharingsIds so the item reappears in results', async () => {
+      vi.useFakeTimers();
+      const getSearchResults = vi
+        .fn()
+        .mockResolvedValue({ results: mockVisibles });
+      const ref = createRef<UserSearchRef>();
+      render(
+        <UserSearch
+          ref={ref}
+          getSearchResults={getSearchResults}
+          initialSharings={[
+            {
+              recipientId: 'user-1',
+              recipientType: 'user',
+              permission: ['read'],
+              displayName: 'Marie Dupont',
+            },
+          ]}
+        />,
+      );
+      const input = getInput();
+      fireEvent.change(input, { target: { value: 'marie' } });
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+        await vi.runAllTimersAsync();
+        vi.useRealTimers();
+      });
+      await waitFor(() => {
+        expect(screen.getByText('Jean Martin')).toBeInTheDocument();
+      });
+      expect(screen.queryByText('Marie Dupont')).not.toBeInTheDocument();
+
+      act(() => {
+        ref.current?.removeSharing('user-1');
+      });
+
+      vi.useFakeTimers();
+      fireEvent.change(input, { target: { value: 'mar' } });
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+        await vi.runAllTimersAsync();
+        vi.useRealTimers();
+      });
+      await waitFor(() => {
+        expect(screen.getByText('Marie Dupont')).toBeInTheDocument();
       });
     });
   });

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { UserSearch } from './UserSearch';
+import { useRef, useState } from 'react';
+import { UserSearch, type UserSearchRef } from './UserSearch';
 import type { Visible } from './types/visible';
 import { VisibleType } from './types/visible';
 
@@ -125,6 +126,78 @@ export const WithInitialSharings: Story = {
       description: {
         story:
           "Les éléments déjà partagés (ex. Marie Dupont) n'apparaissent pas dans les résultats de recherche.",
+      },
+    },
+  },
+};
+
+export const WithRemoveSharing: Story = {
+  render: (args) => {
+    const ref = useRef<UserSearchRef>(null);
+    const [removed, setRemoved] = useState<string[]>([]);
+    return (
+      <div>
+        <div
+          style={{
+            marginBottom: '8px',
+            display: 'flex',
+            gap: '8px',
+            flexWrap: 'wrap',
+          }}
+        >
+          {[
+            { recipientId: 'user-1', displayName: 'Marie Dupont' },
+            { recipientId: 'user-2', displayName: 'Jean Martin' },
+          ].map(
+            (item) =>
+              !removed.includes(item.recipientId) && (
+                <button
+                  key={item.recipientId}
+                  type="button"
+                  onClick={() => {
+                    ref.current?.removeSharing(item.recipientId);
+                    setRemoved((prev) => [...prev, item.recipientId]);
+                  }}
+                  style={{
+                    padding: '4px 8px',
+                    borderRadius: '4px',
+                    border: '1px solid #ccc',
+                  }}
+                >
+                  {item.displayName} ×
+                </button>
+              ),
+          )}
+        </div>
+        <UserSearch
+          {...args}
+          ref={ref}
+          initialSharings={args.initialSharings}
+        />
+      </div>
+    );
+  },
+  args: {
+    initialSharings: [
+      {
+        recipientId: 'user-1',
+        recipientType: 'user',
+        permission: ['read'],
+        displayName: 'Marie Dupont',
+      },
+      {
+        recipientId: 'user-2',
+        recipientType: 'user',
+        permission: ['read'],
+        displayName: 'Jean Martin',
+      },
+    ],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Cliquez sur un chip pour retirer un partage. L'élément réapparaîtra dans les résultats de recherche.",
       },
     },
   },
