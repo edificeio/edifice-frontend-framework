@@ -95,23 +95,21 @@ const useDropzone = (props?: {
       return [];
     }
 
-    // Dynamic import of the heic2any library to avoid lib initial calls of
+    // Dynamic import of the heic-to library to avoid lib initial calls of
     // HTMLCanvasElement.getContext and Worker (not available in JSDom)
     // Import only if there is at least one HEIC/HEIF image
-    let heic2any: any;
-    const hasHEICImages = files.some((file) =>
-      HEIC_MIME_TYPES.includes(file.type),
-    );
-    if (hasHEICImages) {
-      heic2any = (await import('heic2any')).default;
+    let heicToLib: any;
+
+    if (files.some((file) => HEIC_MIME_TYPES.includes(file.type))) {
+      heicToLib = await import('heic-to');
     }
 
     return Promise.all(
       files.map(async (file) => {
         //  Convert only HEIC/HEIF images
-        if (HEIC_MIME_TYPES.includes(file.type) && heic2any) {
+        if (heicToLib.isHeic(file)) {
           try {
-            const converted = await heic2any({
+            const converted = await heicToLib.heicTo({
               blob: file,
               toType: 'image/jpeg',
             });
