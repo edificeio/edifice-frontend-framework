@@ -31,8 +31,8 @@ function getInput() {
 }
 
 describe('UserSearch', () => {
-  describe('Rendu initial', () => {
-    it('affiche le placeholder par défaut', () => {
+  describe('Initial render', () => {
+    it('displays the default placeholder', () => {
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       render(<UserSearch getSearchResults={getSearchResults} />);
       expect(getInput()).toHaveAttribute(
@@ -41,7 +41,7 @@ describe('UserSearch', () => {
       );
     });
 
-    it('affiche le placeholder personnalisé', () => {
+    it('displays the custom placeholder', () => {
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       render(
         <UserSearch
@@ -55,7 +55,7 @@ describe('UserSearch', () => {
       );
     });
 
-    it("affiche les bookmarks comme options initiales à l'ouverture du dropdown", async () => {
+    it('displays bookmarks as initial options when opening the dropdown', async () => {
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       const { user } = render(
         <UserSearch
@@ -71,7 +71,7 @@ describe('UserSearch', () => {
       });
     });
 
-    it("n'appelle pas getSearchResults avant searchMinLength caractères (isAdmlcOrAdmc)", async () => {
+    it('does not call getSearchResults before searchMinLength characters (isAdmlcOrAdmc)', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       render(
@@ -91,8 +91,8 @@ describe('UserSearch', () => {
     });
   });
 
-  describe('Saisie et debounce', () => {
-    it('met à jour la valeur affichée à chaque frappe', async () => {
+  describe('Typing and debounce', () => {
+    it('updates the displayed value on each keystroke', async () => {
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       const { user } = render(
         <UserSearch getSearchResults={getSearchResults} />,
@@ -102,7 +102,7 @@ describe('UserSearch', () => {
       expect(input).toHaveValue('test');
     });
 
-    it('appelle getSearchResults après 500 ms de debounce avec la valeur saisie', async () => {
+    it('calls getSearchResults after 500ms debounce with the typed value', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });
       render(<UserSearch getSearchResults={getSearchResults} />);
@@ -119,8 +119,8 @@ describe('UserSearch', () => {
     });
   });
 
-  describe('Résultats et chargement', () => {
-    it('affiche bookmarks + résultats API après résolution, hors sharings', async () => {
+  describe('Results and loading', () => {
+    it('displays bookmarks + API results after resolution, excluding sharings', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi
         .fn()
@@ -146,7 +146,7 @@ describe('UserSearch', () => {
       expect(screen.getByText('Favori Mathématiques')).toBeInTheDocument();
     });
 
-    it("affiche l'état de chargement pendant l'appel à getSearchResults", async () => {
+    it('displays loading state during getSearchResults call', async () => {
       vi.useFakeTimers();
       let resolveSearch: (value: { results: Visible[] }) => void;
       const getSearchResults = vi.fn().mockImplementation(
@@ -176,8 +176,8 @@ describe('UserSearch', () => {
     });
   });
 
-  describe('Sélection et callback', () => {
-    it('appelle onSearchResultsChange avec le Visible lors de la sélection', async () => {
+  describe('Selection and callback', () => {
+    it('calls onSearchResultsChange with the Visible on selection', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi
         .fn()
@@ -211,7 +211,7 @@ describe('UserSearch', () => {
       );
     });
 
-    it("retire l'élément sélectionné de la liste", async () => {
+    it('removes the selected item from the list', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi
         .fn()
@@ -251,7 +251,7 @@ describe('UserSearch', () => {
   });
 
   describe('initialSharings', () => {
-    it("exclut les résultats dont l'id est dans initialSharings", async () => {
+    it('excludes results whose id is in initialSharings', async () => {
       vi.useFakeTimers();
       const getSearchResults = vi
         .fn()
