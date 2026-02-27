@@ -1,20 +1,24 @@
 import { AbstractBehaviourService } from './AbstractBehaviourService';
 
-type ActualitesData = {
-  _id: number;
-  status: number;
+type InfoData = {
+  id: number;
+  status: 'PUBLISHED';
   title: string;
   content: string;
-  thread_id: number;
-  is_headline: boolean;
-  owner: string;
-  username: string;
-  number_of_comments: number;
+  threadId: number;
+  headline: boolean;
+  owner: { id: string; displayName: string; deleted: boolean };
+  numberOfComments: number;
   shared?: any;
   created: string;
   modified: string;
-  thread_title: string;
-  thread_icon: string;
+  threadIcon: string;
+};
+
+type ThreadData = {
+  id: number;
+  title: string;
+  icon: string;
 };
 
 export class ActualitesBehaviour extends AbstractBehaviourService {
@@ -22,25 +26,30 @@ export class ActualitesBehaviour extends AbstractBehaviourService {
   RESOURCE = 'actualites';
 
   async loadResources() {
-    const infos = await this.httpGet<ActualitesData[]>(
-      '/actualites/linker/infos',
+    const [infos, threads] = await Promise.all([
+      this.httpGet<InfoData[]>('/actualites/api/v1/infos/linker'),
+      this.httpGet<ThreadData[]>('/actualites/api/v1/threads?viewHidden=true'),
+    ]);
+
+    const threadsMap: Map<number, ThreadData> = threads.reduce(
+      (map, thread) => map.set(thread.id, thread),
+      new Map<number, ThreadData>(),
     );
 
     return infos.map((data) => {
       let threadIcon;
-      if (!data.thread_icon) {
+      if (!data.threadIcon) {
         threadIcon = '/img/icons/glyphicons_036_file.png';
       } else {
-        threadIcon = data.thread_icon + '?thumbnail=48x48';
+        threadIcon = data.threadIcon + '?thumbnail=48x48';
       }
       return this.dataToResource({
-        title: data.title + ' [' + data.thread_title + ']',
-        ownerName: data.username,
-        owner: data.owner,
+        title: data.title + ' [' + threadsMap.get(data.threadId)?.title + ']',
+        ownerName: data.owner.displayName,
+        owner: data.owner.id,
         icon: threadIcon,
-        path:
-          '/actualites#/view/thread/' + data.thread_id + '/info/' + data._id,
-        _id: `${data.thread_id}#${data._id}`,
+        path: '/actualites/threads/' + data.threadId + '?info=' + data.id,
+        _id: `${data.threadId}#${data.id}`,
         shared: data.shared && data.shared.length >= 0 ? true : false,
         modified: data.modified,
       });
