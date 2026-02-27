@@ -28,7 +28,7 @@ export class ActualitesBehaviour extends AbstractBehaviourService {
   async loadResources() {
     const [infos, threads] = await Promise.all([
       this.httpGet<InfoData[]>('/actualites/api/v1/infos/linker'),
-      this.httpGet<ThreadData[]>('/actualites/api/v1/threads?viewHidden=true'),
+      this.httpGet<ThreadData[]>('/actualites/api/v1/threads'),
     ]);
 
     const threadsMap: Map<number, ThreadData> = threads.reduce(
