@@ -1,7 +1,8 @@
 @use '../abstracts/' as *;
 
 .combobox-trigger {
-  min-width: 30rem;
+  width: 30rem;
+  max-width: 100%;
 
   &.input-group {
     input,
