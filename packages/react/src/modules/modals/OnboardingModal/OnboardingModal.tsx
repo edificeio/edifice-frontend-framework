@@ -210,7 +210,7 @@ const OnboardingModalInner = <T = boolean,>(
                 {t(prevText || 'explorer.modal.onboarding.trash.prev')}
               </Button>
             )}
-            {swiperProgress < 1 && (
+            {items.length > 1 && swiperProgress < 1 && (
               <Button
                 id="nextButtonId"
                 data-testid="modal-onboarding-next"
@@ -222,7 +222,7 @@ const OnboardingModalInner = <T = boolean,>(
                 {t(nextText || 'explorer.modal.onboarding.trash.next')}
               </Button>
             )}
-            {swiperProgress === 1 && (
+            {(items.length === 1 || swiperProgress === 1) && (
               <Button
                 data-testid="modal-onboarding-close"
                 type="button"
