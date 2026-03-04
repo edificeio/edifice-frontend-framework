@@ -107,7 +107,7 @@ const useDropzone = (props?: {
     return Promise.all(
       files.map(async (file) => {
         //  Convert only HEIC/HEIF images
-        if (heicToLib.isHeic(file)) {
+        if (heicToLib && heicToLib.isHeic(file)) {
           try {
             const converted = await heicToLib.heicTo({
               blob: file,
