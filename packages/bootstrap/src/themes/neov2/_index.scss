@@ -1,0 +1,8 @@
+// Thème neov2 – basé sur l'API de thème (theme-api.scss).
+// Les overrides spécifiques au thème sont organisés par composant dans le dossier overrides/.
+
+@use "../theme-api" as theme;
+@use "../configs/neov2" as *;
+@use "overrides";
+
+@include theme.theme-vars("neov2", $theme-neov2);
