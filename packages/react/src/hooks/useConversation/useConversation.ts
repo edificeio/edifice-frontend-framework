@@ -25,18 +25,15 @@ const useConversation = () => {
     _: new Date().getTime(),
   };
 
-  if (!zimbraWorkflow) {
-    queryParams['queryparam_token'] = new Date().getTime();
-    // To force backend cache to refresh
-  }
-
   const { data: messages } = useQuery({
     queryKey: ['folder', 'count', 'inbox'],
     queryFn: async () => {
       return await odeServices
         .http()
         .get(
-          zimbraWorkflow ? '/zimbra/count/INBOX' : '/conversation/count/inbox',
+          zimbraWorkflow
+            ? '/zimbra/count/INBOX'
+            : '/conversation/api/count/inbox',
           { queryParams },
         );
     },
