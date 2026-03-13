@@ -19,17 +19,20 @@ export const useOnboardingModal = <T>(
   useEffect(() => {
     (async () => {
       const response = await getPreference();
-
-      if (response || applyDisplayRule) {
-        const { display, nextState } = applyDisplayRule(
-          response ? response.key : undefined,
-        );
-        setIsOpen(display);
-        setIsOnboarding(display);
-        state.current = nextState;
+      if (response) {
+        if (applyDisplayRule) {
+          const { display, nextState } = applyDisplayRule(response.key);
+          setIsOpen(display);
+          setIsOnboarding(display);
+          state.current = nextState;
+        } else {
+          if (response.key === true) setIsOpen(true);
+          setIsOnboarding(!!response.key);
+          state.current = undefined;
+        }
       } else {
-        setIsOnboarding(true);
         setIsOpen(true);
+        setIsOnboarding(true);
         state.current = undefined;
       }
     })();
