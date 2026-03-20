@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import MediaViewer from './MediaViewer';
-import { Button } from '../Button';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { Button } from '../Button';
+import MediaViewer from './MediaViewer';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof MediaViewer> = {
