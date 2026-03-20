@@ -38,6 +38,11 @@ const config: StorybookConfig = {
           ),
         },
       },
+      optimizeDeps: {
+        esbuildOptions: {
+          sourcemap: false,
+        },
+      },
     });
   },
 };

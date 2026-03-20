@@ -102,16 +102,27 @@ export async function updateImage(
   // Remove previous sprite if exists
   const previous = application.stage.getChildByName(spriteName, true);
   previous?.removeFromParent();
-  // Create texture from datasource
-  const texture =
-    imgDatasource instanceof HTMLImageElement
-      ? PIXI.Texture.from(imgDatasource)
-      : imgDatasource instanceof PIXI.Sprite
-        ? imgDatasource
-        : await PIXI.Assets.load<PIXI.Texture>(imgDatasource);
-  // Create sprite from texture and set name
-  const sprite =
-    texture instanceof PIXI.Sprite ? texture : new PIXI.Sprite(texture);
+  // Create sprite from datasource
+  let sprite: PIXI.Sprite;
+  if (imgDatasource instanceof PIXI.Sprite) {
+    sprite = imgDatasource;
+  } else if (imgDatasource instanceof HTMLImageElement) {
+    sprite = new PIXI.Sprite(PIXI.Texture.from(imgDatasource));
+  } else {
+    // Load image via HTMLImageElement to support URLs without file extensions
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = imgDatasource;
+    await new Promise<void>((resolve, reject) => {
+      if (img.complete) {
+        resolve();
+      } else {
+        img.onload = () => resolve();
+        img.onerror = reject;
+      }
+    });
+    sprite = new PIXI.Sprite(PIXI.Texture.from(img));
+  }
   sprite.interactive = true;
   sprite.name = spriteName;
   // If settings are defined => resize accordingly
