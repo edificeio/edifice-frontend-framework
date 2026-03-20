@@ -8,7 +8,6 @@ import {
   EdificeThemeProvider,
 } from '../../../packages/react/src/providers';
 
-import React from 'react';
 import i18n from '../i18n';
 
 import {

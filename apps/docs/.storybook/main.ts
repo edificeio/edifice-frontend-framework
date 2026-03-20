@@ -4,8 +4,8 @@ import { fileURLToPath } from 'url';
 
 const config: StorybookConfig = {
   stories: [
-    '../../../packages/**/src/**/*.stories.@(js|jsx|ts|tsx)',
-    '../../../packages/**/src/**/*.mdx',
+    '../../../packages/react/src/**/*.stories.@(js|jsx|ts|tsx)',
+    '../../../packages/react/src/**/*.mdx',
     '../src/stories/**/*.stories.@(js|jsx|ts|tsx)',
     '../src/stories/**/*.mdx',
   ],
@@ -29,6 +29,9 @@ const config: StorybookConfig = {
     const { mergeConfig } = await import('vite');
 
     return mergeConfig(config, {
+      esbuild: {
+        jsx: 'automatic',
+      },
       // Add dependencies to pre-optimization
       resolve: {
         alias: {
@@ -39,6 +42,15 @@ const config: StorybookConfig = {
         },
       },
       optimizeDeps: {
+        include: [
+          'react',
+          'react-dom',
+          'react/jsx-runtime',
+          'react-i18next',
+          'i18next',
+          '@tanstack/react-query',
+          'msw-storybook-addon',
+        ],
         esbuildOptions: {
           sourcemap: false,
         },
