@@ -42,7 +42,7 @@ export const MultipleSchools: Story = {
       },
       {
         id: 'school-2',
-        name: 'Lycée Louise Michel',
+        name: 'Lycée Jeanne Ferry de Loisette en Royan',
         UAI: '0098765Z',
         classes: [],
         exports: [],
@@ -50,7 +50,7 @@ export const MultipleSchools: Story = {
     ],
     selectedSchool: {
       id: 'school-2',
-      name: 'Lycée Louise Michel',
+      name: 'Lycée Jeanne Ferry de Loisette en Royan',
       UAI: '0098765Z',
       classes: [],
       exports: [],

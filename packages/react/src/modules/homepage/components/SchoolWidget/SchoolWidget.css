@@ -1,0 +1,26 @@
+:root {
+  --school-widget-border-color: #ffe5a3;
+  --school-widget-bg-color: #fefaec;
+  --school-widget-selected-color: #383838;
+}
+
+.school-widget {
+  padding: 1.4rem 0.4rem;
+  border: 1px solid var(--school-widget-border-color);
+  border-radius: 2.4rem;
+
+  background-color: var(--school-widget-bg-color);
+  background-image: url('./SchoolWidgetBackground.svg');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+.school-widget__selected {
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+  color: var(--school-widget-selected-color);
+  font-size: 1.6rem;
+  line-height: 2.2rem;
+  margin: 0.8rem;
+}

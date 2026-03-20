@@ -1,4 +1,5 @@
 import { School } from '@edifice.io/client';
+import './SchoolWidget.css';
 
 export interface SchoolWidgetProps {
   selectedSchool: School | undefined;
@@ -15,15 +16,9 @@ const SchoolWidget = ({
 
   return (
     <div className="school-widget">
-      {!selectedSchool ? (
-        <p>Aucun établissement trouvé.</p>
-      ) : (
-        <div>
-          <strong>{selectedSchool.name}</strong>
-          {selectedSchool.UAI && <span>UAI : {selectedSchool.UAI}</span>}
-        </div>
-
-        /* 
+      {selectedSchool ? (
+        <div className="school-widget__selected">{selectedSchool.name}</div>
+      ) : /* 
             hasManySchools ? (
         <ul role="list">
           {schools.map((school) => (
@@ -42,7 +37,7 @@ const SchoolWidget = ({
         </div>
       )
       */
-      )}
+      null}
     </div>
   );
 };
