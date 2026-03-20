@@ -341,9 +341,9 @@ export function save(application: PIXI.Application): PIXI.Sprite | undefined {
   removeControl(application);
   if (size) {
     // Clone stage
-    const stageTexture = application.renderer
-      .generateTexture(application.stage)
-      .clone();
+    const stageTexture = application.renderer.generateTexture(
+      application.stage,
+    );
     const clonedStage = new PIXI.Sprite(stageTexture);
     // Apply new size to the stage
     clonedStage.width = size.width;

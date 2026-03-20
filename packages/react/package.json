@@ -94,7 +94,7 @@
     "@edifice.io/utilities": "workspace:*",
     "@floating-ui/react": "0.26.0",
     "@pixi/mixin-get-child-by-name": "7.4.2",
-    "@pixi/react": "8.0.5",
+    "@pixi/react": "8.0.0-beta.16",
     "@popperjs/core": "2.11.8",
     "@tiptap/core": "2.11.0",
     "@tiptap/extension-blockquote": "2.11.0",

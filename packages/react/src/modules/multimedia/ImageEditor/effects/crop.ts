@@ -62,9 +62,7 @@ function drawBackground(
   if (sprite === null || sprite === undefined) return;
   const spriteBounds = sprite.getBounds();
   // Clone the stage
-  const stageTexture = application.renderer
-    .generateTexture(application.stage)
-    .clone();
+  const stageTexture = application.renderer.generateTexture(application.stage);
   const clonedStage = new PIXI.Sprite(stageTexture);
   clonedStage.height = spriteBounds.height;
   clonedStage.width = spriteBounds.width;
@@ -361,20 +359,21 @@ export function save(application: PIXI.Application): PIXI.Sprite | undefined {
   // Remove controls before cloning stage
   stop(application);
   // Clone stage
-  const stageTexture = application.renderer
-    .generateTexture(application.stage)
-    .clone();
+  const stageTexture = application.renderer.generateTexture(application.stage);
   const clonedStage = new PIXI.Sprite(stageTexture);
   // Compute bounds and round lower to avoid overflow
   const maskBounds = mask.getBounds();
-  const bounds = new PIXI.Rectangle(
+  const frame = new PIXI.Rectangle(
     Math.floor(maskBounds.x),
     Math.floor(maskBounds.y),
     Math.floor(maskBounds.width),
     Math.floor(maskBounds.height),
   );
   // Apply crop to the cloned stage
-  const cropped = new PIXI.Texture(clonedStage.texture.baseTexture, bounds);
+  const cropped = new PIXI.Texture({
+    source: clonedStage.texture.source,
+    frame,
+  });
   const sprite = new PIXI.Sprite(cropped);
   return sprite;
 }

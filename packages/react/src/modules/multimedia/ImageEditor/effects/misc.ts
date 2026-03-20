@@ -108,10 +108,10 @@ export async function updateImage(
       ? PIXI.Texture.from(imgDatasource)
       : imgDatasource instanceof PIXI.Sprite
         ? imgDatasource
-        : await PIXI.Texture.fromURL(imgDatasource);
+        : await PIXI.Assets.load<PIXI.Texture>(imgDatasource);
   // Create sprite from texture and set name
   const sprite =
-    texture instanceof PIXI.Sprite ? texture : PIXI.Sprite.from(texture, {});
+    texture instanceof PIXI.Sprite ? texture : new PIXI.Sprite(texture);
   sprite.interactive = true;
   sprite.name = spriteName;
   // If settings are defined => resize accordingly

@@ -67,7 +67,8 @@ export const Column = ({
   as,
   ...restProps
 }: GridColProps) => {
-  const Component = as || 'div';
+  // Cast needed for polymorphic component pattern - props are typed via GridColProps
+  const Component = (as || 'div') as React.FC<Record<string, unknown>>;
   const classes = clsx(
     {
       [`g-col-${sm}`]: sm,

@@ -39,10 +39,13 @@ const Flex = forwardRef<HTMLElement, FlexProps>(
       className,
     );
 
+    // Cast needed for polymorphic component pattern - props are typed via FlexProps
+    const Element = Component as React.FC<Record<string, unknown>>;
+
     return (
-      <Component ref={ref} className={classes} {...restProps}>
+      <Element ref={ref} className={classes} {...restProps}>
         {children}
-      </Component>
+      </Element>
     );
   },
 );
