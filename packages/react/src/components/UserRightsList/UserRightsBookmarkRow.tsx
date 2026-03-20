@@ -42,7 +42,6 @@ const UserRightsBookmarkRow = ({
       </td>
       <td>
         <Button
-          type="button"
           color="tertiary"
           variant="ghost"
           className="fw-normal ps-0"
@@ -63,10 +62,7 @@ const UserRightsBookmarkRow = ({
         </Button>
       </td>
       {Object.entries(resourceRights).map(([rightName]) => (
-        <td
-          key={rightName}
-          data-testid={`user-rights-list-bookmark-${rightName}-checkbox`}
-        >
+        <td key={rightName}>
           <Checkbox
             checked={bookmark.permission.includes(rightName)}
             onChange={() =>
@@ -74,6 +70,7 @@ const UserRightsBookmarkRow = ({
             }
             disabled={isReadOnly}
             aria-label={`${bookmark.name} - ${rightName}`}
+            data-testid={`user-rights-list-bookmark-${rightName}-checkbox`}
           />
         </td>
       ))}
@@ -86,7 +83,6 @@ const UserRightsBookmarkRow = ({
             icon={<IconClose />}
             title={`${t('close')} ${bookmark.name}`}
             variant="ghost"
-            type="button"
           />
         )}
       </td>

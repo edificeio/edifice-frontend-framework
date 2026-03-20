@@ -101,10 +101,11 @@ export const useSharingItems = ({
     shouldAdd: boolean,
   ) => {
     setItems((prev) => {
-      const nextItems = prev.map((sharing) => {
-        if (!ids.has(sharing.recipientId)) return sharing;
-        return applyRight(sharing, rightName, shouldAdd);
-      });
+      const nextItems = prev.map((sharing) =>
+        ids.has(sharing.recipientId)
+          ? applyRight(sharing, rightName, shouldAdd)
+          : sharing,
+      );
       onChange(nextItems);
       return nextItems;
     });

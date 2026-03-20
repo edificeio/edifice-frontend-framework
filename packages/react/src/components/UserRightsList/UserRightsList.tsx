@@ -15,12 +15,12 @@ import {
 import { useTranslation } from 'react-i18next';
 import { IconBookmark, IconRafterDown } from '../../modules/icons/components';
 import { useEdificeClient } from '../../providers';
+import { SharingItem } from '../../types';
 import { Button } from '../Button';
 import { LoadingScreen } from '../LoadingScreen';
-import { SharingItem } from '../../types';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { useBookmarkEntries } from './hooks/useBookmarkEntries';
 import { createRightsHelpers } from './helpers/rightsHelpers';
+import { useBookmarkEntries } from './hooks/useBookmarkEntries';
 import { useSharingItems } from './hooks/useSharingItems';
 import { SaveBookmark } from './SaveBookmark';
 import { BookmarkInput, ResourceRights, isBookmarkInput } from './types/types';
@@ -161,7 +161,6 @@ export const UserRightsList = forwardRef<
                 ref={tableRef}
                 tabIndex={-1}
                 className="table border align-middle"
-                aria-label="Liste des droits de partage"
               >
                 <thead>
                   <tr>

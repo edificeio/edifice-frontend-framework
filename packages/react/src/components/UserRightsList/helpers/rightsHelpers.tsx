@@ -33,7 +33,7 @@ export const createRightsHelpers = (resourceRights: ResourceRights) => {
     return {
       recipientId: user.userId ?? '',
       recipientType: 'user',
-      displayName: user.firstName + ' ' + user.lastName,
+      displayName: user.username,
       permission: Object.keys(resourceRights),
     };
   };

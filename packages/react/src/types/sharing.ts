@@ -1,4 +1,5 @@
-export type SearchResultType = 'user' | 'group' | 'bookmark';
+export type AvatarType = 'user' | 'group';
+export type SearchResultType = AvatarType | 'bookmark';
 
 export interface SharingItem {
   recipientId: string;

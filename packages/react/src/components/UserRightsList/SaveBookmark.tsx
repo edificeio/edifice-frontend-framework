@@ -49,7 +49,6 @@ export const SaveBookmark = ({ onSave }: SaveBookmarkProps) => {
         </div>
         <Button
           data-testid="common-save-bookmark-save-button"
-          type="button"
           color="primary"
           variant="ghost"
           disabled={bookmarkName.length === 0 || isSaving}

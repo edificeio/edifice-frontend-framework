@@ -3,6 +3,7 @@
  * Liste des rights pour une resource
  */
 
+import type { SharingItem } from '../../../types';
 export type { SearchResultType, SharingItem } from '../../../types';
 
 export type ResourceRightName =

@@ -8,6 +8,7 @@ import { IconClose } from '../../modules/icons/components';
 import { Avatar } from '../Avatar';
 import { IconButton } from '../Button';
 import { Checkbox } from '../Checkbox';
+import { AvatarType } from '../../types';
 import { ResourceRightName, ResourceRights, SharingItem } from './types/types';
 
 interface UserRightsItemProps {
@@ -52,7 +53,7 @@ const UserRightsItem = ({
     >
       <td>
         <Avatar
-          src={getAvatarURL(item.recipientId, item.recipientType)}
+          src={getAvatarURL(item.recipientId, item.recipientType as AvatarType)}
           size="xs"
           alt={item.displayName}
           variant="circle"
