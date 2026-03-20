@@ -16,6 +16,7 @@ interface UserRightsItemProps {
   isReadOnly: boolean;
   isDeletable?: boolean;
   rowClassName?: string;
+  bookmarkName?: string;
   onChange?: (item: SharingItem, rightName: ResourceRightName) => void;
   onDeleteItem?: (item: SharingItem) => void;
 }
@@ -26,6 +27,7 @@ const UserRightsItem = ({
   isReadOnly,
   isDeletable = true,
   rowClassName,
+  bookmarkName,
   onChange,
   onDeleteItem,
 }: UserRightsItemProps) => {
@@ -42,16 +44,15 @@ const UserRightsItem = ({
 
   return (
     <tr
-      key={item.recipientId}
       data-testid="user-rights-list-item-row"
       className={rowClassName}
+      aria-label={
+        bookmarkName ? `${item.displayName} - ${bookmarkName}` : undefined
+      }
     >
       <td>
         <Avatar
-          src={getAvatarURL(
-            item.recipientId,
-            item.recipientType === 'bookmark' ? 'group' : item.recipientType,
-          )}
+          src={getAvatarURL(item.recipientId, item.recipientType)}
           size="xs"
           alt={item.displayName}
           variant="circle"
@@ -67,6 +68,7 @@ const UserRightsItem = ({
             checked={item.permission.includes(rightName)}
             onChange={() => handleChange(rightName as ResourceRightName)}
             disabled={isReadOnly}
+            aria-label={`${item.displayName} - ${rightName}`}
           />
         </td>
       ))}
@@ -77,7 +79,7 @@ const UserRightsItem = ({
             color="tertiary"
             onClick={() => handleDeleteItem()}
             icon={<IconClose />}
-            title={t('close')}
+            title={`${t('close')} ${item.displayName}`}
             variant="ghost"
             type="button"
           />

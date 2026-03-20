@@ -46,9 +46,10 @@ const UserRightsBookmarkRow = ({
           color="tertiary"
           variant="ghost"
           className="fw-normal ps-0"
+          aria-expanded={bookmark.isExpanded}
           rightIcon={
             <IconRafterDown
-              title={t('show')}
+              title={bookmark.isExpanded ? t('hide') : t('show')}
               className="w-16 min-w-0"
               style={{
                 transition: 'rotate 0.2s ease-out',
@@ -72,6 +73,7 @@ const UserRightsBookmarkRow = ({
               onToggleRight(bookmark.id, rightName as ResourceRightName)
             }
             disabled={isReadOnly}
+            aria-label={`${bookmark.name} - ${rightName}`}
           />
         </td>
       ))}
@@ -82,7 +84,7 @@ const UserRightsBookmarkRow = ({
             color="tertiary"
             onClick={() => onDelete(bookmark.id)}
             icon={<IconClose />}
-            title={t('close')}
+            title={`${t('close')} ${bookmark.name}`}
             variant="ghost"
             type="button"
           />

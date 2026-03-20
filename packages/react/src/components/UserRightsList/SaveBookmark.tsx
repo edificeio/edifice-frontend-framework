@@ -23,8 +23,12 @@ export const SaveBookmark = ({ onSave }: SaveBookmarkProps) => {
 
   const handleSaveClick = async () => {
     setIsSaving(true);
-    await onSave(bookmarkName);
-    setIsSaving(false);
+    try {
+      await onSave(bookmarkName);
+      setBookmarkName('');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (

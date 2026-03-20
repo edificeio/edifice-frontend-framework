@@ -1,8 +1,13 @@
+/**
+ * Pure utility functions for permission manipulation.
+ * Handles right toggle with requires/excludes logic and transitive removal.
+ */
 import { IUserInfo } from '@edifice.io/client';
-import { SharingItem } from 'src/components/UserSearch';
+import { SharingItem } from '../../../types';
 import { ResourceRightName, ResourceRights } from '../types/types';
 
-export const useRights = (resourceRights: ResourceRights) => {
+export const createRightsHelpers = (resourceRights: ResourceRights) => {
+  /** Builds a SharingItem representing the resource owner with all rights. */
   const getOwnerItem = (
     ownerId: string,
     user: IUserInfo | undefined,
@@ -26,13 +31,18 @@ export const useRights = (resourceRights: ResourceRights) => {
 
   const createOwnerItem = (user: IUserInfo): SharingItem => {
     return {
-      recipientId: user?.userId ?? '',
+      recipientId: user.userId ?? '',
       recipientType: 'user',
-      displayName: user?.firstName + ' ' + user?.lastName,
+      displayName: user.firstName + ' ' + user.lastName,
       permission: Object.keys(resourceRights),
     };
   };
 
+  /**
+   * Sets a right on or off for an item.
+   * When adding: includes required rights and removes excluded ones.
+   * When removing: transitively removes all rights that depend on the removed one.
+   */
   const applyRight = (
     item: SharingItem,
     rightName: ResourceRightName,
@@ -46,29 +56,29 @@ export const useRights = (resourceRights: ResourceRights) => {
       newPermission = [
         ...new Set([
           ...item.permission.filter(
-            (p) => !excludes.includes(p as ResourceRightName),
+            (perm) => !excludes.includes(perm as ResourceRightName),
           ),
           ...requires,
           rightName,
         ]),
       ];
     } else {
-      // Retrait : retirer ce droit + tous les droits qui en dépendent (transitivité)
+      // Collect this right + all rights that transitively depend on it
       const toRemove = new Set<string>([rightName]);
       let changed = true;
       while (changed) {
         changed = false;
-        for (const [name, def] of Object.entries(resourceRights)) {
+        for (const [name, definition] of Object.entries(resourceRights)) {
           if (
             !toRemove.has(name) &&
-            def.requires.some((r) => toRemove.has(r))
+            definition.requires.some((required) => toRemove.has(required))
           ) {
             toRemove.add(name);
             changed = true;
           }
         }
       }
-      newPermission = item.permission.filter((p) => !toRemove.has(p));
+      newPermission = item.permission.filter((perm) => !toRemove.has(perm));
     }
 
     return {
@@ -77,6 +87,7 @@ export const useRights = (resourceRights: ResourceRights) => {
     };
   };
 
+  /** Toggles a right: adds it if absent, removes it (with dependents) if present. */
   const toggleRight = (
     item: SharingItem,
     rightName: ResourceRightName,

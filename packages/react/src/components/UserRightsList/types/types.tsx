@@ -3,6 +3,8 @@
  * Liste des rights pour une resource
  */
 
+export type { SearchResultType, SharingItem } from '../../../types';
+
 export type ResourceRightName =
   | 'read'
   | 'contrib'
@@ -18,15 +20,6 @@ export type ResourceRightDefinition = {
 };
 
 export type ResourceRights = Record<ResourceRightName, ResourceRightDefinition>;
-
-export interface SharingItem {
-  recipientId: string;
-  recipientType: SearchResultType;
-  permission: string[];
-  displayName: string;
-}
-
-export type SearchResultType = 'user' | 'group' | 'bookmark';
 
 export interface BookmarkUser {
   id: string;

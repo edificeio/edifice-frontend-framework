@@ -5,6 +5,10 @@ import { useEffect, useRef } from 'react';
 import { UserRightsList } from './UserRightsList';
 import type { BookmarkInput, ResourceRights, SharingItem } from './types/types';
 
+// ---------------------------------------------------------------------------
+// Mock data
+// ---------------------------------------------------------------------------
+
 const mockResourceRights: ResourceRights = {
   read: { priority: 1, default: true, requires: [], excludes: [] },
   contrib: {
@@ -54,79 +58,6 @@ const mockInitialSharings: SharingItem[] = [
   },
 ];
 
-const meta: Meta<typeof UserRightsList> = {
-  title: 'Components/UserRightsList',
-  component: UserRightsList,
-  decorators: [(Story) => <div style={{ minHeight: '200px' }}>{Story()}</div>],
-  args: {
-    resourceRights: mockResourceRights,
-    isReadOnly: false,
-    isLoading: false,
-    ownerId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', // packages/config/src/msw/mocks/directory.ts
-    isCreating: true,
-    initialSharings: mockInitialSharings,
-    onChange: fn(),
-    onAddItem: fn(),
-    onDeleteItem: fn(),
-    onSaveBookmark: fn(),
-  },
-};
-
-export default meta;
-
-type Story = StoryObj<typeof UserRightsList>;
-
-export const Default: Story = {};
-
-export const ReadOnly: Story = {
-  args: {
-    isReadOnly: true,
-  },
-};
-
-export const Loading: Story = {
-  args: {
-    isLoading: true,
-  },
-};
-
-export const Empty: Story = {
-  args: {
-    initialSharings: [],
-  },
-};
-
-export const WithoutSaveBookmark: Story = {
-  args: {
-    onSaveBookmark: undefined,
-  },
-};
-
-export const WithRef: Story = {
-  render: (args) => {
-    const ref = useRef<ComponentRef<typeof UserRightsList>>(null);
-    return (
-      <div>
-        <UserRightsList {...args} ref={ref} />
-        <button
-          type="button"
-          onClick={() => {
-            ref.current?.addItem({
-              recipientId: 'user-new',
-              recipientType: 'user',
-              permission: ['read'],
-              displayName: 'Nouvel utilisateur',
-            });
-          }}
-          style={{ marginTop: '1rem' }}
-        >
-          Ajouter via ref
-        </button>
-      </div>
-    );
-  },
-};
-
 const mockBookmark1: BookmarkInput = {
   id: '_9a1d29c3d2864ed8a3d72198fadf4a96',
   name: 'Parents délégués CE2',
@@ -175,6 +106,112 @@ const mockBookmark2: BookmarkInput = {
   ],
 };
 
+// ---------------------------------------------------------------------------
+// Meta
+// ---------------------------------------------------------------------------
+
+const meta: Meta<typeof UserRightsList> = {
+  title: 'Components/UserRightsList',
+  component: UserRightsList,
+  decorators: [(Story) => <div style={{ minHeight: '200px' }}>{Story()}</div>],
+  args: {
+    resourceRights: mockResourceRights,
+    isReadOnly: false,
+    isLoading: false,
+    ownerId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a',
+    isCreating: true,
+    initialSharings: mockInitialSharings,
+    onChange: fn(),
+    onAddItems: fn(),
+    onDeleteItems: fn(),
+    onSaveBookmark: fn(),
+  },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The UserRightsList component displays a table of sharing permissions for a resource. ' +
+          'Each row represents a user, group, or bookmark with checkboxes for each right (read, contrib, publish, manager, comment). ' +
+          'Rights support dependencies (requires/excludes) and transitive removal. ' +
+          'Items can be added externally via a ref (`addItem`), which accepts either a `SharingItem` (user/group) or a `BookmarkInput` (group of users). ' +
+          'Bookmarks appear as collapsible rows at the top of the list; toggling a right on a bookmark applies it to all its users. ' +
+          'Parent notifications use batch callbacks (`onAddItems`, `onDeleteItems`) for efficient handling of bulk operations like bookmark insertion/deletion. ' +
+          'The component also supports saving the current sharing configuration as a bookmark via `onSaveBookmark`.',
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof UserRightsList>;
+
+// ---------------------------------------------------------------------------
+// Stories
+// ---------------------------------------------------------------------------
+
+/** Default editable list with pre-populated users and a group. */
+export const Default: Story = {};
+
+/** All rows are read-only: checkboxes are disabled and delete buttons are hidden. */
+export const ReadOnly: Story = {
+  args: {
+    isReadOnly: true,
+  },
+};
+
+/** Displays a loading spinner instead of the table. */
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+  },
+};
+
+/** Empty list with only the owner row visible. */
+export const Empty: Story = {
+  args: {
+    initialSharings: [],
+  },
+};
+
+/** Hides the "Save as bookmark" button when onSaveBookmark is not provided. */
+export const WithoutSaveBookmark: Story = {
+  args: {
+    onSaveBookmark: undefined,
+  },
+};
+
+/** Demonstrates adding a user programmatically via the ref's `addItem` method. */
+export const WithRef: Story = {
+  render: (args) => {
+    const ref = useRef<ComponentRef<typeof UserRightsList>>(null);
+    return (
+      <div>
+        <UserRightsList {...args} ref={ref} />
+        <button
+          type="button"
+          onClick={() => {
+            ref.current?.addItem({
+              recipientId: 'user-new',
+              recipientType: 'user',
+              permission: ['read'],
+              displayName: 'Nouvel utilisateur',
+            });
+          }}
+          style={{ marginTop: '1rem' }}
+        >
+          Ajouter via ref
+        </button>
+      </div>
+    );
+  },
+};
+
+/**
+ * Demonstrates bookmark support.
+ * A first bookmark is loaded on mount; a second can be added via the button.
+ * Bookmarks are collapsible rows whose right toggles apply to all their users.
+ */
 export const WithBookmark: Story = {
   render: (args) => {
     const ref = useRef<ComponentRef<typeof UserRightsList>>(null);
