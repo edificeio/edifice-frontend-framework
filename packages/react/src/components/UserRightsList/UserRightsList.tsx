@@ -2,8 +2,9 @@
  * Sharing rights list for a resource.
  * Displays the owner, shared users/groups with their permissions,
  * and optionally a block to save the configuration as a bookmark.
+ * Supports adding bookmarks which appear as collapsible groups of users.
  */
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { Fragment, forwardRef, useImperativeHandle, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconBookmark, IconRafterDown } from '../../modules/icons/components';
 import { useEdificeClient } from '../../providers';
@@ -13,7 +14,14 @@ import { SharingItem } from '../UserSearch';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { useRights } from './hooks/useRights';
 import { SaveBookmark } from './SaveBookmark';
-import { ResourceRightName, ResourceRights } from './types/types';
+import {
+  BookmarkInput,
+  BookmarkState,
+  ResourceRightName,
+  ResourceRights,
+  isBookmarkInput,
+} from './types/types';
+import UserRightsBookmarkRow from './UserRightsBookmarkRow';
 import UserRightsItem from './UserRightsItem';
 
 interface UserRightsListProps {
@@ -33,7 +41,7 @@ interface UserRightsListProps {
 }
 
 interface UserRightsListRef {
-  addItem: (item: SharingItem) => void;
+  addItem: (item: SharingItem | BookmarkInput) => void;
 }
 
 export const UserRightsList = forwardRef<
@@ -56,25 +64,95 @@ export const UserRightsList = forwardRef<
     ref,
   ) => {
     const [items, setItems] = useState<SharingItem[]>(initialSharings ?? []);
+    const [bookmarkEntries, setBookmarkEntries] = useState<BookmarkState[]>([]);
     const [showBookmarkInput, setBookmarkInput] = useState<boolean>(false);
     const { t } = useTranslation();
     const { user } = useEdificeClient();
-    const { toggleRight, getOwnerItem } = useRights(resourceRights);
+    const { applyRight, toggleRight, getOwnerItem } = useRights(resourceRights);
 
     const ownerItem = getOwnerItem(ownerId, user, isCreating);
 
-    /** Adds a sharing to the list and notifies the parent. */
-    const handleAddItem = (item: SharingItem) => {
-      setItems((prev) => [...prev, item]);
-      onAddItem(item);
+    const bookmarkUserIds = new Set(bookmarkEntries.flatMap((b) => b.userIds));
+    const regularItems = items.filter(
+      (i) => !bookmarkUserIds.has(i.recipientId),
+    );
+
+    const getDefaultPermissions = (): string[] =>
+      Object.entries(resourceRights)
+        .filter(([, def]) => def.default)
+        .map(([name]) => name);
+
+    /** Adds a sharing item or a bookmark to the list. */
+    const handleAddItem = (item: SharingItem | BookmarkInput) => {
+      if (isBookmarkInput(item)) {
+        handleAddBookmark(item);
+      } else {
+        setItems((prev) => [...prev, item]);
+        onAddItem(item);
+      }
+    };
+
+    /** Adds a bookmark: creates user SharingItems and a BookmarkState entry. */
+    const handleAddBookmark = (bookmark: BookmarkInput) => {
+      const defaultPermissions = getDefaultPermissions();
+
+      const newUsers: SharingItem[] = bookmark.users.map((u) => ({
+        recipientId: u.id,
+        recipientType: 'user' as const,
+        displayName: u.displayName,
+        permission: [...defaultPermissions],
+      }));
+
+      const bookmarkState: BookmarkState = {
+        id: bookmark.id,
+        name: bookmark.name,
+        permission: [...defaultPermissions],
+        userIds: bookmark.users.map((u) => u.id),
+        isExpanded: false,
+      };
+
+      setItems((prev) => {
+        const nextItems = [...prev, ...newUsers];
+        onChange(nextItems);
+        return nextItems;
+      });
+      setBookmarkEntries((prev) => [...prev, bookmarkState]);
+
+      newUsers.forEach((u) => onAddItem(u));
     };
 
     /** Removes a sharing from the list and notifies the parent. */
     const handleDeleteItem = (item: SharingItem) => {
-      setItems((prev) =>
-        prev.filter((i) => i.recipientId !== item.recipientId),
-      );
+      setItems((prev) => {
+        const nextItems = prev.filter(
+          (i) => i.recipientId !== item.recipientId,
+        );
+        onChange(nextItems);
+        return nextItems;
+      });
       onDeleteItem(item);
+    };
+
+    /** Removes a bookmark and all its associated users. */
+    const handleDeleteBookmark = (bookmarkId: string) => {
+      const bookmark = bookmarkEntries.find((b) => b.id === bookmarkId);
+      if (!bookmark) return;
+
+      const userIdsToRemove = new Set(bookmark.userIds);
+      const removedItems = items.filter((i) =>
+        userIdsToRemove.has(i.recipientId),
+      );
+
+      setItems((prev) => {
+        const nextItems = prev.filter(
+          (i) => !userIdsToRemove.has(i.recipientId),
+        );
+        onChange(nextItems);
+        return nextItems;
+      });
+      setBookmarkEntries((prev) => prev.filter((b) => b.id !== bookmarkId));
+
+      removedItems.forEach((item) => onDeleteItem(item));
     };
 
     /** Updates a sharing's permissions (toggle right) and notifies the parent. */
@@ -89,6 +167,55 @@ export const UserRightsList = forwardRef<
       });
     };
 
+    /** Toggles a right on a bookmark row, applying the change to all its users. */
+    const handleBookmarkRightChange = (
+      bookmarkId: string,
+      rightName: ResourceRightName,
+    ) => {
+      const bookmark = bookmarkEntries.find((b) => b.id === bookmarkId);
+      if (!bookmark) return;
+
+      const hasRight = bookmark.permission.includes(rightName);
+      const shouldAdd = !hasRight;
+
+      // Toggle the bookmark's own permission display
+      const fakeItem: SharingItem = {
+        recipientId: bookmark.id,
+        recipientType: 'bookmark',
+        displayName: bookmark.name,
+        permission: bookmark.permission,
+      };
+      const toggledBookmark = toggleRight(fakeItem, rightName);
+
+      setBookmarkEntries((prev) =>
+        prev.map((b) =>
+          b.id === bookmarkId
+            ? { ...b, permission: toggledBookmark.permission }
+            : b,
+        ),
+      );
+
+      // Apply the same change to all users of this bookmark
+      const userIdsSet = new Set(bookmark.userIds);
+      setItems((prev) => {
+        const nextItems = prev.map((item) => {
+          if (!userIdsSet.has(item.recipientId)) return item;
+          return applyRight(item, rightName, shouldAdd);
+        });
+        onChange(nextItems);
+        return nextItems;
+      });
+    };
+
+    /** Toggles the expanded/collapsed state of a bookmark. */
+    const handleToggleBookmarkExpand = (bookmarkId: string) => {
+      setBookmarkEntries((prev) =>
+        prev.map((b) =>
+          b.id === bookmarkId ? { ...b, isExpanded: !b.isExpanded } : b,
+        ),
+      );
+    };
+
     /** Triggers bookmark save with the entered name and current list. */
     const handleOnSaveBookmark = (bookmarkName: string) => {
       if (!onSaveBookmark) {
@@ -101,7 +228,7 @@ export const UserRightsList = forwardRef<
       setBookmarkInput((prev) => !prev);
     };
 
-    /** Exposes addItem so a sharing can be added from outside (e.g. via ref). */
+    /** Exposes addItem so a sharing or bookmark can be added from outside (e.g. via ref). */
     useImperativeHandle(ref, () => ({
       addItem: handleAddItem,
     }));
@@ -137,14 +264,46 @@ export const UserRightsList = forwardRef<
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Add a disabled line about the resource owner. */}
+                  {/* Owner row (always read-only). */}
                   <UserRightsItem
                     key={ownerItem?.recipientId}
                     item={ownerItem}
                     resourceRights={resourceRights}
                     isReadOnly={true}
                   />
-                  {items.map((item) => (
+                  {/* Bookmark entries with their associated users. */}
+                  {bookmarkEntries.map((bookmark) => (
+                    <Fragment key={bookmark.id}>
+                      <UserRightsBookmarkRow
+                        bookmark={bookmark}
+                        resourceRights={resourceRights}
+                        isReadOnly={isReadOnly}
+                        onToggleRight={handleBookmarkRightChange}
+                        onDelete={handleDeleteBookmark}
+                        onToggleExpand={handleToggleBookmarkExpand}
+                      />
+                      {bookmark.isExpanded &&
+                        bookmark.userIds.map((userId) => {
+                          const item = items.find(
+                            (i) => i.recipientId === userId,
+                          );
+                          if (!item) return null;
+                          return (
+                            <UserRightsItem
+                              key={item.recipientId}
+                              item={item}
+                              resourceRights={resourceRights}
+                              isReadOnly={isReadOnly}
+                              isDeletable={false}
+                              rowClassName="bg-light"
+                              onChange={handleChange}
+                            />
+                          );
+                        })}
+                    </Fragment>
+                  ))}
+                  {/* Regular (non-bookmark) items. */}
+                  {regularItems.map((item) => (
                     <UserRightsItem
                       key={item.recipientId}
                       item={item}

@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 import type { ComponentRef } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { UserRightsList } from './UserRightsList';
-import type { ResourceRights, SharingItem } from './types/types';
+import type { BookmarkInput, ResourceRights, SharingItem } from './types/types';
 
 const mockResourceRights: ResourceRights = {
   read: { priority: 1, default: true, requires: [], excludes: [] },
@@ -16,13 +16,13 @@ const mockResourceRights: ResourceRights = {
   publish: {
     priority: 3,
     default: false,
-    requires: ['contrib'],
+    requires: ['contrib', 'read'],
     excludes: [],
   },
   manager: {
     priority: 4,
     default: false,
-    requires: ['publish'],
+    requires: ['publish', 'contrib', 'read'],
     excludes: [],
   },
   comment: {
@@ -121,6 +121,77 @@ export const WithRef: Story = {
           style={{ marginTop: '1rem' }}
         >
           Ajouter via ref
+        </button>
+      </div>
+    );
+  },
+};
+
+const mockBookmark1: BookmarkInput = {
+  id: '_9a1d29c3d2864ed8a3d72198fadf4a96',
+  name: 'Parents délégués CE2',
+  notVisibleCount: 0,
+  groups: [],
+  users: [
+    {
+      displayName: 'CARPENTIER Béatrice',
+      profile: 'Relative',
+      id: 'c0824335-ab0e-41fb-9ed3-d5c28a93087d',
+      activationCode: false,
+    },
+    {
+      displayName: 'ROUSTIN Christophe',
+      profile: 'Relative',
+      id: '6a7495f8-bec7-4f68-b891-0b05c6e8e0ce',
+      activationCode: false,
+    },
+  ],
+};
+
+const mockBookmark2: BookmarkInput = {
+  id: '_b7e3f1a2c4d5e6f7a8b9c0d1e2f3a4b5',
+  name: 'Équipe pédagogique CM1',
+  notVisibleCount: 0,
+  groups: [],
+  users: [
+    {
+      displayName: 'DURAND Sophie',
+      profile: 'Teacher',
+      id: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+      activationCode: false,
+    },
+    {
+      displayName: 'MOREAU Philippe',
+      profile: 'Teacher',
+      id: 'f9e8d7c6-b5a4-3210-fedc-ba9876543210',
+      activationCode: false,
+    },
+    {
+      displayName: 'LEFEBVRE Claire',
+      profile: 'Teacher',
+      id: 'd4c3b2a1-0987-6543-210f-edcba9876543',
+      activationCode: false,
+    },
+  ],
+};
+
+export const WithBookmark: Story = {
+  render: (args) => {
+    const ref = useRef<ComponentRef<typeof UserRightsList>>(null);
+    useEffect(() => {
+      ref.current?.addItem(mockBookmark1);
+    }, []);
+    return (
+      <div>
+        <UserRightsList {...args} ref={ref} />
+        <button
+          type="button"
+          onClick={() => {
+            ref.current?.addItem(mockBookmark2);
+          }}
+          style={{ marginTop: '1rem' }}
+        >
+          Ajouter un bookmark
         </button>
       </div>
     );

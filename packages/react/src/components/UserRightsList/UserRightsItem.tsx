@@ -14,6 +14,8 @@ interface UserRightsItemProps {
   item: SharingItem;
   resourceRights: ResourceRights;
   isReadOnly: boolean;
+  isDeletable?: boolean;
+  rowClassName?: string;
   onChange?: (item: SharingItem, rightName: ResourceRightName) => void;
   onDeleteItem?: (item: SharingItem) => void;
 }
@@ -22,6 +24,8 @@ const UserRightsItem = ({
   item,
   resourceRights,
   isReadOnly,
+  isDeletable = true,
+  rowClassName,
   onChange,
   onDeleteItem,
 }: UserRightsItemProps) => {
@@ -37,7 +41,11 @@ const UserRightsItem = ({
   };
 
   return (
-    <tr key={item.recipientId} data-testid="user-rights-list-item-row">
+    <tr
+      key={item.recipientId}
+      data-testid="user-rights-list-item-row"
+      className={rowClassName}
+    >
       <td>
         <Avatar
           src={getAvatarURL(
@@ -63,7 +71,7 @@ const UserRightsItem = ({
         </td>
       ))}
       <td>
-        {!isReadOnly && (
+        {!isReadOnly && isDeletable && (
           <IconButton
             data-testid="user-rights-list-close-button"
             color="tertiary"

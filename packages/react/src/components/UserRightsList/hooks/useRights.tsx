@@ -33,18 +33,16 @@ export const useRights = (resourceRights: ResourceRights) => {
     };
   };
 
-  const toggleRight = (
+  const applyRight = (
     item: SharingItem,
     rightName: ResourceRightName,
+    add: boolean,
   ): SharingItem => {
     const { requires, excludes } = resourceRights[rightName];
-    const hasRight = item.permission.includes(rightName);
-    const addRight = !hasRight;
 
     let newPermission: string[];
 
-    if (addRight) {
-      // Ajout : retirer les excludes, ajouter les requires + le droit sélectionné
+    if (add) {
       newPermission = [
         ...new Set([
           ...item.permission.filter(
@@ -55,8 +53,22 @@ export const useRights = (resourceRights: ResourceRights) => {
         ]),
       ];
     } else {
-      // Retrait : seul ce droit est retiré
-      newPermission = item.permission.filter((p) => p !== rightName);
+      // Retrait : retirer ce droit + tous les droits qui en dépendent (transitivité)
+      const toRemove = new Set<string>([rightName]);
+      let changed = true;
+      while (changed) {
+        changed = false;
+        for (const [name, def] of Object.entries(resourceRights)) {
+          if (
+            !toRemove.has(name) &&
+            def.requires.some((r) => toRemove.has(r))
+          ) {
+            toRemove.add(name);
+            changed = true;
+          }
+        }
+      }
+      newPermission = item.permission.filter((p) => !toRemove.has(p));
     }
 
     return {
@@ -65,7 +77,16 @@ export const useRights = (resourceRights: ResourceRights) => {
     };
   };
 
+  const toggleRight = (
+    item: SharingItem,
+    rightName: ResourceRightName,
+  ): SharingItem => {
+    const hasRight = item.permission.includes(rightName);
+    return applyRight(item, rightName, !hasRight);
+  };
+
   return {
+    applyRight,
     toggleRight,
     createOwnerItem,
     getOwnerItem,
