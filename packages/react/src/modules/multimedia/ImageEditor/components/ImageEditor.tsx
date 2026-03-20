@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-import { Application } from '@pixi/react';
+import * as PIXI from 'pixi.js';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -61,6 +61,31 @@ const ImageEditor = ({
   const [legend, setLegend] = useState(legendParam ?? '');
   // Whether the image has been edited or the text has been changed
   const [dirty, setDirty] = useState<boolean>(false);
+  // PIXI app ref for cleanup
+  const appRef = useRef<PIXI.Application | null>(null);
+
+  // Callback ref: initializes PIXI when the container is mounted in the DOM
+  const containerRef = useCallback((node: HTMLDivElement | null) => {
+    if (node && !appRef.current) {
+      const app = new PIXI.Application();
+      appRef.current = app;
+      app
+        .init({
+          backgroundAlpha: 0,
+          resolution: 1,
+          preserveDrawingBuffer: true,
+        })
+        .then(() => {
+          node.appendChild(app.canvas);
+          setApplication(app);
+        });
+    }
+    if (!node && appRef.current) {
+      appRef.current.destroy(true);
+      appRef.current = null;
+    }
+  }, []);
+
   // Load Image Editor action
   const {
     toBlob,
@@ -152,11 +177,9 @@ const ImageEditor = ({
             historyCount={historyCount}
           />
           <div className="position-relative d-flex flex-column align-items-center justify-content-center flex-grow-1 w-100 image-editor">
-            <Application
-              onInit={(app) => setApplication(app)}
-              preserveDrawingBuffer
-              backgroundAlpha={0}
-              resolution={1}
+            <div
+              ref={containerRef}
+              className="d-flex justify-content-center w-100"
             />
             {!!loading && (
               <div className="position-absolute top-0 start-0 bottom-0 end-0 m-10 d-flex align-items-center justify-content-center bg-black opacity-25">

@@ -7,6 +7,7 @@ import useHistoryTool from './useHistoryTool';
 import useImageEffects from './useImageEffects';
 import {
   DEFAULT_SPRITE_NAME,
+  autoResize,
   updateImage,
   saveAsBlob,
   saveAsDataURL,
@@ -86,6 +87,22 @@ export default function useImageEditor({
       () => setLoading(false),
     );
   }, [application, imageSrc, spriteName]);
+
+  // Re-run autoResize on window resize
+  useEffect(() => {
+    if (!application) return undefined;
+    const handleResize = () => {
+      const sprite = application.stage.getChildByName(
+        spriteName,
+        true,
+      ) as PIXI.Sprite | null;
+      if (sprite) {
+        autoResize(application, sprite);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [application, spriteName]);
 
   return {
     historyCount,
