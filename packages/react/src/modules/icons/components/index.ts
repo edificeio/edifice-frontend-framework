@@ -95,6 +95,8 @@ export { default as IconNotification } from './IconNotification';
 export { default as IconOptions } from './IconOptions';
 export { default as IconOrderedList } from './IconOrderedList';
 export { default as IconPaperclip } from './IconPaperclip';
+export { default as IconParcoursCitoyen } from './IconParcoursCitoyen';
+export { default as IconParcoursSecours } from './IconParcoursSecours';
 export { default as IconPause } from './IconPause';
 export { default as IconPinOff } from './IconPinOff';
 export { default as IconPinOn } from './IconPinOn';
