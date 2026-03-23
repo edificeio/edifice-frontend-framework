@@ -60,6 +60,7 @@ export function updateImageFromBlob(
   image.src = imageUrl;
   return new Promise<PIXI.Sprite | null>((resolve) => {
     image.onload = async () => {
+      URL.revokeObjectURL(imageUrl);
       await updateImage(application, {
         spriteName,
         imgDatasource: image,
@@ -170,7 +171,7 @@ export function autoResize(
   sprite: PIXI.Sprite,
 ): void {
   // Get parent html object
-  const parent = application.view.parentNode as HTMLElement | undefined;
+  const parent = application.canvas.parentNode as HTMLElement | undefined;
   const maxMobileWidth = window.innerWidth - MODAL_HORIZONTAL_PADDING;
   const parentWidth = Math.max(parent?.offsetWidth ?? 0, MIN_WIDTH);
   const newSize = constraintSize(
@@ -193,9 +194,9 @@ export function autoResize(
   const { height: newHeight, width: newWidth } = newSize;
 
   // Anchor the sprite to the middle (for rotation)
-  if (application.view?.style) {
-    application.view.style.width = `${newWidth}px`;
-    application.view.style.height = `${newHeight}px`;
+  if (application.canvas?.style) {
+    application.canvas.style.width = `${newWidth}px`;
+    application.canvas.style.height = `${newHeight}px`;
   }
 }
 
@@ -243,8 +244,8 @@ export function constraintSize(
  */
 export function saveAsBlob(application: PIXI.Application): Promise<Blob> {
   return new Promise<Blob>((resolve, reject) => {
-    if (application?.view?.toBlob) {
-      application.view.toBlob(
+    if (application?.canvas?.toBlob) {
+      application.canvas.toBlob(
         (blob) => {
           blob ? resolve(blob) : reject('EXTRACT_FAILED');
         },
@@ -265,7 +266,7 @@ export function saveAsBlob(application: PIXI.Application): Promise<Blob> {
 export function saveAsDataURL(
   application: PIXI.Application,
 ): string | undefined {
-  return application.view.toDataURL?.();
+  return application.canvas.toDataURL?.();
 }
 
 /**
@@ -275,9 +276,10 @@ export function saveAsDataURL(
  * @returns The scale percentage.
  */
 export function getApplicationScale(application: PIXI.Application) {
-  if (application.view.getBoundingClientRect) {
+  if (application.canvas.getBoundingClientRect) {
     return (
-      application.view.getBoundingClientRect()!.width / application.view.width
+      application.canvas.getBoundingClientRect()!.width /
+      application.canvas.width
     );
   }
   return 1;
@@ -285,7 +287,7 @@ export function getApplicationScale(application: PIXI.Application) {
 
 export function toBlob(application: PIXI.Application) {
   return new Promise<Blob>((resolve, reject) => {
-    application.view.toBlob?.(
+    application.canvas.toBlob?.(
       (blob) => {
         if (blob) {
           resolve(blob);

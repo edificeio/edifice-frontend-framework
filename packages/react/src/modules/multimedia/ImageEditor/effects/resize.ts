@@ -94,7 +94,7 @@ function resizeContainer(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
-  if (sprite === undefined || sprite === null) return;
+  if (!sprite) return;
   // Check whether sprite has been rotated
   const isRotated = sprite.rotation % Math.PI !== 0;
   // If sprite is rotated a multiple of 90°=>width and height are swapped
@@ -172,13 +172,7 @@ function drawCorner(
     CONTROL_NAME,
     true,
   ) as PIXI.Graphics | null;
-  if (
-    sprite === null ||
-    sprite === undefined ||
-    container === null ||
-    container === undefined
-  )
-    return;
+  if (!sprite || !container) return;
   // Compute position of the container
   const position = computeCornerPosition(cornerType, container);
   // Draw and add the corner
@@ -192,8 +186,8 @@ function drawCorner(
   // Add listener to redraw container while moving corner
   corner.interactive = true;
   let enable = false;
-  application.stage.on('pointermove', (event: PIXI.FederatedMouseEvent) => {
-    if (enable === false) return;
+  const handlePointerMove = (event: PIXI.FederatedMouseEvent) => {
+    if (!enable) return;
     const localPosition = application.stage.toLocal(event.global);
     resizeContainer(application, {
       cornerType,
@@ -201,23 +195,24 @@ function drawCorner(
       container,
       spriteName,
     });
-  });
-  // stop tracking on pointer up
-  const handlePointerUp = () => {
-    enable = false;
   };
-  globalThis.addEventListener('pointerup', handlePointerUp);
-  // stop listening pointerup when corner is destroyed
-  corner.once('destroyed', () => {
-    // cancel listener
-    corner.off('pointerdown');
-    globalThis.removeEventListener('pointerup', handlePointerUp);
-  });
+  application.stage.on('pointermove', handlePointerMove);
   // Enable tracking on pointerdown
   const handlePointerDown = () => {
     enable = true;
   };
   corner.on('pointerdown', handlePointerDown);
+  // stop tracking on pointer up
+  const handlePointerUp = () => {
+    enable = false;
+  };
+  globalThis.addEventListener('pointerup', handlePointerUp);
+  // Remove all listeners when corner is destroyed
+  corner.once('destroyed', () => {
+    corner.off('pointerdown');
+    application.stage.off('pointermove', handlePointerMove);
+    globalThis.removeEventListener('pointerup', handlePointerUp);
+  });
   // add to sprite
   container.addChild(corner);
 }
@@ -238,7 +233,7 @@ function drawContainer(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
-  if (sprite === null || sprite === undefined) return;
+  if (!sprite) return;
   // Clone the stage
   const stageTexture = application.renderer.generateTexture(application.stage);
   const clonedStage = new PIXI.Sprite(stageTexture);

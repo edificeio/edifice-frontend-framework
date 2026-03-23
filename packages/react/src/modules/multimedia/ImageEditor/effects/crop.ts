@@ -59,7 +59,7 @@ function drawBackground(
   const sprite = application.stage.getChildByName(
     spriteName,
   ) as PIXI.Sprite | null;
-  if (sprite === null || sprite === undefined) return;
+  if (!sprite) return;
   const spriteBounds = sprite.getBounds();
   // Clone the stage
   const stageTexture = application.renderer.generateTexture(application.stage);
@@ -156,13 +156,13 @@ function refreshCorners(application: PIXI.Application): void {
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  if (mask === undefined || mask === null) return;
+  if (!mask) return;
   CORNERS.forEach((cornerType) => {
     const corner = application.stage.getChildByName(
       getCornerName(cornerType),
       true,
     );
-    if (corner === undefined || corner === null) return;
+    if (!corner) return;
     const position = computeCornerPosition(cornerType, {
       height: mask.height,
       width: mask.width,
@@ -206,14 +206,7 @@ function drawCorner(
   const sprite = application.stage.getChildByName(
     spriteName,
   ) as PIXI.Sprite | null;
-  if (
-    sprite === null ||
-    sprite === undefined ||
-    background === null ||
-    background === undefined ||
-    mask === undefined ||
-    mask === null
-  ) {
+  if (!sprite || !background || !mask) {
     return;
   }
   // Compute corner position
@@ -234,27 +227,28 @@ function drawCorner(
   corner.interactive = true;
   // Add mouse event move => on corner move redraw mask
   let enable = false;
-  application.stage.on('pointermove', (event: PIXI.FederatedMouseEvent) => {
-    if (enable === false) return;
+  const handlePointerMove = (event: PIXI.FederatedMouseEvent) => {
+    if (!enable) return;
     const localPosition = background.toLocal(event.global);
     corner.position.x = localPosition.x;
     corner.position.y = localPosition.y;
     moveMask(application, cornerType, localPosition);
-  });
+  };
+  application.stage.on('pointermove', handlePointerMove);
   // Add mouse down event => on pointer down start moving mask
   const handlePointerDown = () => {
     enable = true;
   };
   corner.on('pointerdown', handlePointerDown);
-  // Add mouse up event => on pointer down stop moving mask
+  // Add mouse up event => on pointer up stop moving mask
   const handlePointerUp = () => {
     enable = false;
   };
   globalThis.addEventListener('pointerup', handlePointerUp);
-  // Remove listeners when corner destroyed
+  // Remove all listeners when corner destroyed
   corner.once('destroyed', () => {
-    // cancel listener
     corner.off('pointerdown');
+    application.stage.off('pointermove', handlePointerMove);
     globalThis.removeEventListener('pointerup', handlePointerUp);
   });
   // Add corner
@@ -277,7 +271,7 @@ function moveMask(
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  if (mask === undefined || mask === null) return;
+  if (!mask) return;
   const right = mask.position.x + mask.width;
   const bottom = mask.position.y + mask.height;
   switch (cornerType) {
@@ -354,8 +348,8 @@ export function save(application: PIXI.Application): PIXI.Sprite | undefined {
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  // Stop if mask does not exists
-  if (mask === undefined || mask === null) return;
+  // Stop if mask does not exist
+  if (!mask) return;
   // Remove controls before cloning stage
   stop(application);
   // Clone stage

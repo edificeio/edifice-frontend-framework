@@ -64,7 +64,7 @@ const useHistoryTool = ({
         | PIXI.Sprite
         | null
         | undefined;
-      if (sprite === undefined || sprite === null) {
+      if (!sprite) {
         return;
       }
       const promise = toBlob(application);

@@ -55,37 +55,12 @@ const ImageEditor = ({
   >(undefined);
   // Whether we are saving or not
   const [isSaving, setSaving] = useState(false);
-  // Store the alt text modofied by the input text
+  // Store the alt text modified by the input text
   const [altText, setAltText] = useState(altTextParam ?? '');
-  // Store the legend text modofied by the input text
+  // Store the legend text modified by the input text
   const [legend, setLegend] = useState(legendParam ?? '');
   // Whether the image has been edited or the text has been changed
   const [dirty, setDirty] = useState<boolean>(false);
-  // PIXI app ref for cleanup
-  const appRef = useRef<PIXI.Application | null>(null);
-
-  // Callback ref: initializes PIXI when the container is mounted in the DOM
-  const containerRef = useCallback((node: HTMLDivElement | null) => {
-    if (node && !appRef.current) {
-      const app = new PIXI.Application();
-      appRef.current = app;
-      app
-        .init({
-          backgroundAlpha: 0,
-          resolution: 1,
-          preserveDrawingBuffer: true,
-        })
-        .then(() => {
-          node.appendChild(app.canvas);
-          setApplication(app);
-        });
-    }
-    if (!node && appRef.current) {
-      appRef.current.destroy(true);
-      appRef.current = null;
-    }
-  }, []);
-
   // Load Image Editor action
   const {
     toBlob,
@@ -103,6 +78,42 @@ const ImageEditor = ({
   } = useImageEditor({
     imageSrc,
   });
+
+  // PIXI app ref for cleanup
+  const appRef = useRef<PIXI.Application | null>(null);
+
+  // Callback ref: initializes PIXI when the container is mounted in the DOM
+  const containerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node && !appRef.current) {
+        const app = new PIXI.Application();
+        appRef.current = app;
+        app
+          .init({
+            backgroundAlpha: 0,
+            resolution: 1,
+            preserveDrawingBuffer: true,
+          })
+          .then(() => {
+            // Guard against unmount during async init
+            if (appRef.current !== app) return;
+            node.appendChild(app.canvas);
+            setApplication(app);
+          })
+          .catch(() => {
+            // Init failed — clean up if still referenced
+            if (appRef.current === app) {
+              appRef.current = null;
+            }
+          });
+      }
+      if (!node && appRef.current) {
+        appRef.current.destroy(true);
+        appRef.current = null;
+      }
+    },
+    [setApplication],
+  );
   // A function to remove all opened controllers and backup changes if needed
   const stopAll = () => {
     stopBlur();
@@ -181,7 +192,7 @@ const ImageEditor = ({
               ref={containerRef}
               className="d-flex justify-content-center w-100"
             />
-            {!!loading && (
+            {loading && (
               <div className="position-absolute top-0 start-0 bottom-0 end-0 m-10 d-flex align-items-center justify-content-center bg-black opacity-25">
                 <LoadingScreen />
               </div>
