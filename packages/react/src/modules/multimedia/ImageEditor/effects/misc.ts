@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js';
 
+import { BLUR_LAYER_NAME } from './constants';
+
 // Define (in pixel) the minimal height the sprite should have
 const MIN_HEIGHT = 100;
 // Define (in pixel) the minimal width the sprite should have
@@ -15,11 +17,8 @@ const DEFAULT_QUALITY = 0.5;
 export const DEFAULT_SPRITE_NAME = 'image';
 
 /**
- * A structure that define all setting of an image
- * - positon
- * - scale
- * - size
- * - size of the stage
+ * A structure that defines all settings of an image:
+ * position, scale, size, and size of the stage
  */
 export interface ImageSettings {
   stage: {
@@ -35,13 +34,12 @@ export interface ImageSettings {
   };
 }
 /**
- *  This function update the image content using Blob datasource
+ * Update the image content using a Blob datasource
  *
  * @param application the PIXI.Application context
  * @param param.spriteName the name of the sprite in the context
- * @param param.imgDatasource the img data could be one of: string url, HTMLImageElement, PIXI.Sprite
- * @param param.stageSize?: { width: number; height: number };
- * @param param.spriteSize?: { width: number; height: number };
+ * @param param.imgDatasource the Blob data to load as image
+ * @param param.settings optional image settings to restore position/scale/rotation
  */
 export function updateImageFromBlob(
   application: PIXI.Application,
@@ -58,7 +56,7 @@ export function updateImageFromBlob(
   const imageUrl = URL.createObjectURL(imgDatasource);
   const image = new Image();
   image.src = imageUrl;
-  return new Promise<PIXI.Sprite | null>((resolve) => {
+  return new Promise<PIXI.Sprite | null>((resolve, reject) => {
     image.onload = async () => {
       URL.revokeObjectURL(imageUrl);
       await updateImage(application, {
@@ -68,22 +66,25 @@ export function updateImageFromBlob(
       });
 
       // get new sprite
-      const newSprite = application?.stage.getChildByName(
+      const newSprite = application?.stage.getChildByLabel(
         spriteName,
         true,
       ) as PIXI.Sprite | null;
       resolve(newSprite);
     };
+    image.onerror = () => {
+      URL.revokeObjectURL(imageUrl);
+      reject(new Error('Failed to load image from Blob'));
+    };
   });
 }
 /**
- *  This function update the image content for the sprite in the PIXI.Application context
+ * Update the image content for the sprite in the PIXI.Application context
  *
  * @param application the PIXI.Application context
  * @param param.spriteName the name of the sprite in the context
- * @param param.imgDatasource the img data could be one of: string url, HTMLImageElement, PIXI.Sprite
- * @param param.spriteSize
- * @param param.stageSize
+ * @param param.imgDatasource the image source: a URL string, HTMLImageElement, or PIXI.Sprite
+ * @param param.settings optional image settings to restore position/scale/rotation
  */
 export async function updateImage(
   application: PIXI.Application,
@@ -100,9 +101,11 @@ export async function updateImage(
   if (application === undefined || application.stage === null) {
     return;
   }
-  // Remove previous sprite if exists
-  const previous = application.stage.getChildByName(spriteName, true);
+  // Remove previous sprite and any blur layer left from a previous edit
+  const previous = application.stage.getChildByLabel(spriteName, true);
   previous?.removeFromParent();
+  const blurLayer = application.stage.getChildByLabel(BLUR_LAYER_NAME);
+  blurLayer?.removeFromParent();
   // Create sprite from datasource
   let sprite: PIXI.Sprite;
   if (imgDatasource instanceof PIXI.Sprite) {
@@ -125,7 +128,7 @@ export async function updateImage(
     sprite = new PIXI.Sprite(PIXI.Texture.from(img));
   }
   sprite.interactive = true;
-  sprite.name = spriteName;
+  sprite.label = spriteName;
   // If settings are defined => resize accordingly
   if (settings) {
     const {
@@ -193,7 +196,7 @@ export function autoResize(
   // Define the new width to the parentWidth
   const { height: newHeight, width: newWidth } = newSize;
 
-  // Anchor the sprite to the middle (for rotation)
+  // Set CSS size to keep image quality while fitting the container
   if (application.canvas?.style) {
     application.canvas.style.width = `${newWidth}px`;
     application.canvas.style.height = `${newHeight}px`;
@@ -270,10 +273,9 @@ export function saveAsDataURL(
 }
 
 /**
- * Calculates the scale percentage for a PIXI.Sprite or the application view based on the parent container's dimensions.
+ * Calculates the scale ratio between the CSS display size and the actual canvas size.
  * @param application - The PIXI.Application instance.
- * @param sprite - The PIXI.Sprite instance (optional).
- * @returns The scale percentage.
+ * @returns The scale ratio (CSS width / canvas width).
  */
 export function getApplicationScale(application: PIXI.Application) {
   if (application.canvas.getBoundingClientRect) {

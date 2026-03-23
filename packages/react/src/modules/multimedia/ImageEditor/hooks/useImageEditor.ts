@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 import * as PIXI from 'pixi.js';
 
-import '@pixi/mixin-get-child-by-name';
 import useHistoryTool from './useHistoryTool';
 import useImageEffects from './useImageEffects';
 import {
@@ -92,7 +91,7 @@ export default function useImageEditor({
   useEffect(() => {
     if (!application) return undefined;
     const handleResize = () => {
-      const sprite = application.stage.getChildByName(
+      const sprite = application.stage.getChildByLabel(
         spriteName,
         true,
       ) as PIXI.Sprite | null;

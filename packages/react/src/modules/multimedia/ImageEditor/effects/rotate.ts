@@ -17,7 +17,7 @@ export async function rotate(
   application: PIXI.Application,
   spriteName: string,
 ): Promise<void> {
-  const sprite = application?.stage.getChildByName(
+  const sprite = application?.stage.getChildByLabel(
     spriteName,
     true,
   ) as PIXI.Sprite | null;

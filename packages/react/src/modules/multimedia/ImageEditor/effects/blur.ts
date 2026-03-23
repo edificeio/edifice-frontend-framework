@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
 
 import { aggregate } from '../utilities/aggregate';
+import { BLUR_LAYER_NAME } from './constants';
 import { getApplicationScale } from './misc';
 
 //
-// Global constants used for crop effects
+// Global constants used for blur effects
 //
 
 // Define the radius (pixel) of the brush used to apply blur
@@ -19,10 +20,27 @@ const CURSOR_NAME = 'BRUSH_CURSOR';
 //
 
 /**
- * This function draw brush  graphical object for each points
+ * Get or create the blur layer Container in the stage.
+ * Using a Container (not a Sprite) avoids the v8 deprecation warning
+ * "Only Containers will be allowed to add children".
+ */
+function getOrCreateBlurLayer(application: PIXI.Application): PIXI.Container {
+  let layer = application.stage.getChildByLabel(
+    BLUR_LAYER_NAME,
+  ) as PIXI.Container | null;
+  if (!layer) {
+    layer = new PIXI.Container();
+    layer.label = BLUR_LAYER_NAME;
+    application.stage.addChild(layer);
+  }
+  return layer;
+}
+
+/**
+ * This function draws brush graphical objects for each point
  *
  * @param points a list of PIXI.Point used to draw brush
- * @returns a graphical object that draw brush for each of theses points
+ * @returns a graphical object that draws brush for each of these points
  */
 function drawBrush(
   points: Array<PIXI.Point | undefined>,
@@ -31,22 +49,20 @@ function drawBrush(
   const container = new PIXI.Graphics();
   for (const point of points) {
     if (point) {
-      container.beginFill(0xffffff, 1);
-      container.drawCircle(point.x, point.y, BRUSH_SIZE / scale);
-      container.lineStyle(0);
-      container.endFill();
+      container.circle(point.x, point.y, BRUSH_SIZE / scale);
+      container.fill({ color: 0xffffff, alpha: 1 });
     }
   }
   return container;
 }
 
 /**
- * This function create a mouse event listener that merge and aggregate mouse events
- * The aggregated events are used to draw brush and apply blur filter to the stage
- * If the spriteName has not been found in the context, the listener do nothing
+ * This function creates a mouse event listener that merges and aggregates mouse events.
+ * The aggregated events are used to draw brush and apply blur filter to the stage.
+ * If the spriteName has not been found in the context, the listener does nothing.
  *
  * @param application The PIXI.Application context
- * @param {spriteName} arg The name of the sprite identifying the original image
+ * @param spriteName The name of the sprite identifying the original image
  * @returns A mouse event listener
  */
 function drawBlurListener(
@@ -60,13 +76,12 @@ function drawBlurListener(
     },
     (points: Array<PIXI.Point | undefined>) => {
       // Search for sprite
-      const child = application.stage.getChildByName(spriteName);
+      const child = application.stage.getChildByLabel(spriteName);
       const scale = getApplicationScale(application);
       if (!child) return;
+      const sprite = child as PIXI.Sprite;
       // Create a sprite by copying texture and apply blurFilter
-      const newSprite = new PIXI.Sprite((child as PIXI.Sprite).texture);
-      // Apply blur filter to the new sprite, quality for big image (fix lag issue)
-
+      const newSprite = new PIXI.Sprite(sprite.texture);
       newSprite.filters = [
         new PIXI.BlurFilter({
           strength: 8,
@@ -74,18 +89,21 @@ function drawBlurListener(
           resolution: Math.min(scale, 1),
         }),
       ];
-      newSprite.width = (child as PIXI.Sprite).width;
-      newSprite.height = (child as PIXI.Sprite).height;
-      // Resize the new sprite to match the original
+      newSprite.width = sprite.width;
+      newSprite.height = sprite.height;
       newSprite.scale = new PIXI.Point(1, 1);
-      newSprite.anchor = (child as PIXI.Sprite).anchor;
-      newSprite.mask = drawBrush(points, scale);
-      (child as PIXI.Sprite).addChild(newSprite);
+      newSprite.anchor = sprite.anchor;
+      // Add blur sprite and its mask to the blur layer Container
+      const blurLayer = getOrCreateBlurLayer(application);
+      const brushMask = drawBrush(points, scale);
+      blurLayer.addChild(brushMask);
+      newSprite.mask = brushMask;
+      blurLayer.addChild(newSprite);
     },
   );
 }
 /**
- * This function draw the graphical cursor use to apply the blur effect
+ * This function draws the graphical cursor used to apply the blur effect
  *
  * @param application The PIXI.Application context
  * @returns the PIXI.Graphics object representing the cursor
@@ -95,26 +113,25 @@ function drawCursor(application: PIXI.Application): PIXI.Graphics {
   removeCursor(application);
   const scale = getApplicationScale(application);
   const circle = new PIXI.Graphics();
-  circle.lineStyle(Math.max(1, 1 / scale), 0xff0000);
-  circle.drawCircle(0, 0, BRUSH_SIZE / scale);
-  circle.endFill();
-  circle.name = CURSOR_NAME;
+  circle.circle(0, 0, BRUSH_SIZE / scale);
+  circle.stroke({ width: Math.max(1, 1 / scale), color: 0xff0000 });
+  circle.label = CURSOR_NAME;
   application.stage.addChild(circle);
   return circle;
 }
 /**
- * This function remove cursor if exists in context
+ * This function removes cursor if it exists in context
  *
  * @param application The PIXI.Application context
  */
 function removeCursor(application: PIXI.Application) {
-  const child = application.stage.getChildByName(CURSOR_NAME);
+  const child = application.stage.getChildByLabel(CURSOR_NAME);
   if (child) {
     child.removeFromParent();
   }
 }
 /**
- *  Move the cursor graphical controler while mouse is moving
+ * Move the cursor graphical controller while mouse is moving
  *
  * @param application the PIXI.Application context
  * @returns A mouse event listener
@@ -123,7 +140,7 @@ function moveCursorListener(application: PIXI.Application) {
   return (event: PIXI.FederatedMouseEvent) => {
     if (!application) return;
     const point = application.stage.toLocal(event.global);
-    const child = application.stage.getChildByName(CURSOR_NAME, true);
+    const child = application.stage.getChildByLabel(CURSOR_NAME, true);
     if (child) {
       child.position.x = point.x;
       child.position.y = point.y;
@@ -131,13 +148,13 @@ function moveCursorListener(application: PIXI.Application) {
   };
 }
 /**
- * This function start the blur controler
+ * This function starts the blur controller:
  * - drawing cursor
  * - listening mouse move to move cursor
- * - listening
+ * - listening pointer events to apply blur
  *
- * @param application
- * @param param1
+ * @param application The PIXI.Application context
+ * @param spriteName The name of the sprite identifying the original image
  */
 export function start(
   application: PIXI.Application,
@@ -151,6 +168,8 @@ export function start(
   application.stage.on('pointermove', cursorListener);
   const blurListener = drawBlurListener(application, { spriteName });
   application.stage.on('pointerdown', () => {
+    // Remove first to avoid accumulating duplicate listeners on repeated clicks
+    application.stage.off('pointermove', blurListener);
     application.stage.on('pointermove', blurListener);
   });
   // Stop listening move when cursor is up
@@ -164,7 +183,9 @@ export function start(
   });
 }
 /**
- * This function remove cursor and all mouse event listeners
+ * This function removes cursor and all mouse event listeners.
+ * The blur layer is kept on stage so it gets captured by toBlob/generateTexture
+ * when the image is saved or another operation is applied.
  *
  * @param application the PIXI.Application context
  */

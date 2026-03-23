@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 
 //
-// Global constants used for crop effects
+// Global constants used for resize effects
 //
 
 // Define the radius (pixel) of the corner
@@ -16,8 +16,8 @@ type CornerType = 'TOP_LEFT' | 'TOP_RIGHT' | 'BOTTOM_LEFT' | 'BOTTOM_RIGHT';
 //
 
 /**
- * This function generate names for corner objects
- * @param corner COrnerType identifying one corner
+ * This function generates names for corner objects
+ * @param index CornerType identifying one corner
  * @returns A name identifying the corner object
  */
 function getCornerName(index: CornerType) {
@@ -25,15 +25,13 @@ function getCornerName(index: CornerType) {
 }
 
 /**
- * This function compute coordinate (x,y) and angles (start,end) of a corner according to the CornerType
- * - (x,y) are coordinate of the corner in pixel relative to the parent
- * - (start, end) are angles between 0 and 2PI used to draw the corner relative using the Arc tool
+ * This function computes coordinate (x,y) and angles (start,end) of a corner according to the CornerType
  *
- * @param cornerType a CornerType for which we want to compute angles and coordinates
- * @param bounds bounds of the Cropped Texture (which is also the parent of the corner)
+ * @param position The CornerType for which we want to compute angles and coordinates
+ * @param sprite The Graphics container used to compute corner positions
  * @returns the coordinates and the angles
  */
-function computeCornerPosition(position: CornerType, sprite: PIXI.Graphics) {
+function computeCornerPosition(position: CornerType, sprite: PIXI.Container) {
   const left = sprite.x;
   const top = sprite.y;
   switch (position) {
@@ -87,10 +85,10 @@ function resizeContainer(
     spriteName: string;
     cornerType: CornerType;
     position: { x: number; y: number };
-    container: PIXI.Graphics;
+    container: PIXI.Container;
   },
 ): void {
-  const sprite = application.stage.getChildByName(
+  const sprite = application.stage.getChildByLabel(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
@@ -142,7 +140,7 @@ function removeCorner(
   application: PIXI.Application,
   cornerType: CornerType,
 ): void {
-  const previous = application.stage.getChildByName(
+  const previous = application.stage.getChildByLabel(
     getCornerName(cornerType),
     true,
   );
@@ -163,26 +161,25 @@ function drawCorner(
   // Delete corner before redraw if needed
   removeCorner(application, cornerType);
   // Search for sprite
-  const sprite = application.stage.getChildByName(
+  const sprite = application.stage.getChildByLabel(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
   // Search for container
-  const container = application.stage.getChildByName(
+  const container = application.stage.getChildByLabel(
     CONTROL_NAME,
     true,
-  ) as PIXI.Graphics | null;
+  ) as PIXI.Container | null;
   if (!sprite || !container) return;
   // Compute position of the container
   const position = computeCornerPosition(cornerType, container);
   // Draw and add the corner
   const corner = new PIXI.Graphics();
-  corner.beginFill(0x4bafd5, 1);
   corner.arc(0, 0, POINT_RADIUS, position.start, position.end);
   corner.lineTo(0, 0);
-  corner.endFill();
+  corner.fill({ color: 0x4bafd5, alpha: 1 });
   corner.position = new PIXI.Point(position.x, position.y);
-  corner.name = getCornerName(cornerType);
+  corner.label = getCornerName(cornerType);
   // Add listener to redraw container while moving corner
   corner.interactive = true;
   let enable = false;
@@ -229,7 +226,7 @@ function drawContainer(
   spriteName: string,
 ): void {
   removeContainer(application);
-  const sprite = application.stage.getChildByName(
+  const sprite = application.stage.getChildByLabel(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
@@ -241,15 +238,19 @@ function drawContainer(
   application.stage.children.forEach((child) => {
     child.alpha = 0;
   });
-  // Draw and add the container
-  const container = new PIXI.Graphics();
-  container.drawRect(0, 0, sprite.width, sprite.height);
-  container.name = CONTROL_NAME;
+  // Create a Container to hold all resize control elements
+  const container = new PIXI.Container();
+  container.label = CONTROL_NAME;
   container.interactive = true;
   container.interactiveChildren = true;
+  // Draw the invisible bounding rect (used for hit area and size tracking)
+  const bounds = new PIXI.Graphics();
+  bounds.rect(0, 0, sprite.width, sprite.height);
+  bounds.fill({ color: 0x000000, alpha: 0 });
   application.stage.interactive = true;
   application.stage.interactiveChildren = true;
   application.stage.addChild(container);
+  container.addChild(bounds);
   container.addChild(clonedStage);
 }
 /**
@@ -257,10 +258,10 @@ function drawContainer(
  * @param application the PIXI.Application context
  */
 function removeContainer(application: PIXI.Application): void {
-  const container = application.stage.getChildByName(
+  const container = application.stage.getChildByLabel(
     CONTROL_NAME,
     true,
-  ) as PIXI.Graphics | null;
+  ) as PIXI.Container | null;
   container?.removeFromParent();
   // display all child
   application.stage.children.forEach((child) => {
@@ -303,12 +304,9 @@ export function start(application: PIXI.Application, spriteName: string): void {
   drawControl(application, spriteName);
 }
 /**
- * If {saveChanges} is true remove all graphical controls then resize the sprite
- * If {saveChanges} is false remove all graphical controls and keep original size
+ * Remove all graphical controls and mouse event listeners
  *
  * @param application the PIXI.Application context
- * @param param.saveChanges true if we should save the resize
- * @param param.spriteName the name of the sprite representing the original image
  */
 export function stop(application: PIXI.Application): void {
   removeControl(application);
@@ -316,18 +314,17 @@ export function stop(application: PIXI.Application): void {
   application.render();
 }
 /**
+ * Apply the resize and return the result as a PIXI.Sprite
  *
  * @param application the PIXI.Application context
- * @param spriteName  the name of the sprite representing the image
- * @param size the target size of the image {width, height}
- * @returns a PIXI.Sprite with a image resized or undefined if not found
+ * @returns a PIXI.Sprite with the resized image or undefined if no resize was applied
  */
 export function save(application: PIXI.Application): PIXI.Sprite | undefined {
   // Search for container
-  const container = application?.stage?.getChildByName(
+  const container = application?.stage?.getChildByLabel(
     CONTROL_NAME,
     true,
-  ) as PIXI.Graphics | null;
+  ) as PIXI.Container | null;
   // Get target size
   const size = container
     ? { height: container.height, width: container.width }

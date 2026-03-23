@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import * as PIXI from 'pixi.js';
 import { useTranslation } from 'react-i18next';
@@ -61,6 +61,13 @@ const ImageEditor = ({
   const [legend, setLegend] = useState(legendParam ?? '');
   // Whether the image has been edited or the text has been changed
   const [dirty, setDirty] = useState<boolean>(false);
+
+  // Sync local state when props change (e.g. modal reopened with a different image)
+  useEffect(() => {
+    setAltText(altTextParam ?? '');
+    setLegend(legendParam ?? '');
+    setDirty(false);
+  }, [altTextParam, legendParam]);
   // Load Image Editor action
   const {
     toBlob,
@@ -114,7 +121,9 @@ const ImageEditor = ({
     },
     [setApplication],
   );
-  // A function to remove all opened controllers and backup changes if needed
+  // Stop the current operation and save its result if applicable.
+  // `currentOperation` refers to the *previous* operation still in progress,
+  // since `setCurrentOperation` is called after `stopAll`.
   const stopAll = () => {
     stopBlur();
     stopCrop(currentOperation === 'CROP');
@@ -141,7 +150,7 @@ const ImageEditor = ({
   };
   // A handle to trigger actions on toolbar action
   const handleOperation = async (operation: ImageEditorAction) => {
-    // Stop Remove all previous graphical controllers
+    // Stop and save the previous operation before starting the new one
     stopAll();
     // Save the current operation
     setCurrentOperation(operation);
