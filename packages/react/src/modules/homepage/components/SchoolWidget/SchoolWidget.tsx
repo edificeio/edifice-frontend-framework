@@ -1,7 +1,6 @@
 import { School } from '@edifice.io/client';
 import { Dropdown, Flex, IconButton, useToggle } from '@edifice.io/react';
 import { IconRafterDown } from '@edifice.io/react/icons';
-import { RefAttributes } from 'react';
 import { useTranslation } from 'react-i18next';
 import './SchoolWidget.css';
 
@@ -44,7 +43,9 @@ const SchoolWidget = ({
           <b>{selectedSchool.name}</b>
           {hasManySchools && (
             <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
-              {(triggerProps: RefAttributes<HTMLButtonElement>) => (
+              {(
+                triggerProps: React.ComponentPropsWithRef<typeof IconButton>,
+              ) => (
                 <>
                   <IconButton
                     {...triggerProps}

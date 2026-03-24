@@ -11,15 +11,18 @@ export function useUserSchools() {
 
   const schools = userDescription?.schools;
 
+  // Select a default school
   useEffect(() => {
     setSelectedSchool(schools?.[0]);
   }, []);
 
+  // Memoize user's preferences for this widget, depending on the 'lookup' function availability.
   useEffect(() => {
     const userPref = lookup?.(WIDGET_NAME.SCHOOL)?.userPref;
     setUserPreferences(userPref);
   }, [lookup]);
 
+  // Select the user's prefered school
   useEffect(() => {
     if (userPreferences?.schoolId && Array.isArray(schools)) {
       const index = schools.findIndex(
@@ -39,6 +42,7 @@ export function useUserSchools() {
     handleSelectedSchoolChange: (school: School) => {
       setSelectedSchool(school);
       if (userPreferences) {
+        // Update user's preferences and save them
         userPreferences.schoolId = school.id;
         saveUserPreferences();
       }
