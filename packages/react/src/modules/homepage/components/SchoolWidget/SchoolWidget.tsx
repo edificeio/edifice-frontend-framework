@@ -1,7 +1,7 @@
 import { School } from '@edifice.io/client';
-import { Dropdown, Flex, IconButton, useToggle } from '@edifice.io/react';
-import { IconRafterDown } from '@edifice.io/react/icons';
 import { useTranslation } from 'react-i18next';
+import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
+import { IconRafterDown } from '../../../../modules/icons/components';
 import './SchoolWidget.css';
 
 export interface SchoolWidgetProps {
@@ -23,10 +23,10 @@ const SchoolWidget = ({
   const widgetStyle = { padding: '1.4rem 0.4rem' };
   const containerStyle = { padding: '0.8rem' };
   const selectedSchoolStyle = {
-    'padding': '.4rem 2.9rem',
-    'font-size': '1.6rem',
-    'line-height': '2.2rem',
-    'color': 'var(--school-widget-selected-color)',
+    padding: '.4rem 2.9rem',
+    fontSize: '1.6rem',
+    lineHeight: '2.2rem',
+    color: 'var(--school-widget-selected-color)',
   };
 
   if (!selectedSchool) return null;

@@ -34,7 +34,7 @@ export function useUserSchools() {
     } else {
       setSelectedSchool(undefined);
     }
-  }, [userPreferences]);
+  }, [userPreferences, schools]);
 
   return {
     schools: schools ?? [],
