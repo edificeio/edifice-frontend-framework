@@ -59,6 +59,8 @@ export interface InternalLinkerProps {
   applicationList?: ApplicationOption[];
   /** Whether to show the application selector */
   showApplicationSelector?: boolean;
+  /** Disable application selecetor */
+  disableApplicationSelector?: boolean;
   /** Optional callback to filter resources after loading. Applied in addition to search filters. */
   resourceFilter?: (resource: ILinkedResource) => boolean;
 }
@@ -73,6 +75,7 @@ export const InternalLinker = ({
   resourceList,
   applicationList,
   showApplicationSelector = true,
+  disableApplicationSelector = false,
   resourceFilter,
 }: InternalLinkerProps) => {
   const { t } = useTranslation();
@@ -345,6 +348,7 @@ export const InternalLinker = ({
                 }
                 variant="ghost"
                 size="md"
+                disabled={disableApplicationSelector}
               />
               <Dropdown.Menu>
                 {options?.map((option) => (
