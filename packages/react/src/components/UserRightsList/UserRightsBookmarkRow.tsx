@@ -8,6 +8,7 @@ import {
   IconClose,
   IconRafterDown,
 } from '../../modules/icons/components';
+import { getRotateTransitionStyle } from '../../utilities';
 import { Button, IconButton } from '../Button';
 import { Checkbox } from '../Checkbox';
 import {
@@ -50,10 +51,7 @@ const UserRightsBookmarkRow = ({
             <IconRafterDown
               title={bookmark.isExpanded ? t('hide') : t('show')}
               className="w-16 min-w-0"
-              style={{
-                transition: 'rotate 0.2s ease-out',
-                rotate: bookmark.isExpanded ? '-180deg' : '0deg',
-              }}
+              style={getRotateTransitionStyle(bookmark.isExpanded)}
             />
           }
           onClick={() => onToggleExpand(bookmark.id)}

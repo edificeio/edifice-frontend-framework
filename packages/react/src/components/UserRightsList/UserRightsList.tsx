@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { IconBookmark, IconRafterDown } from '../../modules/icons/components';
 import { useEdificeClient } from '../../providers';
 import { SharingItem } from '../../types';
+import { getRotateTransitionStyle } from '../../utilities';
 import { Button } from '../Button';
 import { LoadingScreen } from '../LoadingScreen';
 import { VisuallyHidden } from '../VisuallyHidden';
@@ -249,10 +250,7 @@ export const UserRightsList = forwardRef<
                     <IconRafterDown
                       title={t('show')}
                       className="w-16 min-w-0"
-                      style={{
-                        transition: 'rotate 0.2s ease-out',
-                        rotate: showBookmarkInput ? '-180deg' : '0deg',
-                      }}
+                      style={getRotateTransitionStyle(showBookmarkInput)}
                     />
                   }
                   type="button"

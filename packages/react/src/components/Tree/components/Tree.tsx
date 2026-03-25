@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Ref, forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
+import { getRotateTransitionStyle } from '../../../utilities';
 import { useTree } from '../hooks/useTree';
 import { TreeNodeProps, TreeProps } from '../types';
 
@@ -140,9 +141,7 @@ export const TreeNode = forwardRef(
               >
                 <IconRafterRight
                   width={16}
-                  style={{
-                    transform: expanded ? 'rotate(90deg)' : '',
-                  }}
+                  style={getRotateTransitionStyle(expanded, { degrees: 90 })}
                 />
               </div>
             ) : (
