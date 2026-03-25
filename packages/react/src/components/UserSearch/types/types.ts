@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
+import { SearchResultType, SharingItem } from '../../../types';
 import { Visible } from './visible';
+
+export type { SearchResultType, SharingItem };
 
 export interface UserSearchProps {
   placeholder?: string;
@@ -18,18 +21,9 @@ export interface SearchResponse {
   results: Visible[];
 }
 
-export type SearchResultType = 'user' | 'group' | 'bookmark';
-
 export interface SearchResultBase {
   id: string;
   displayName: string;
   icon: ReactNode;
   type: SearchResultType;
-}
-
-export interface SharingItem {
-  recipientId: string;
-  recipientType: SearchResultType;
-  permission: string[];
-  displayName: string;
 }

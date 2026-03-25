@@ -52,5 +52,6 @@ export * from './Toolbar';
 export * from './Tooltip';
 export * from './Tree';
 export * from './TreeView';
+export * from './UserRightsList';
 export * from './UserSearch';
 export * from './VisuallyHidden';

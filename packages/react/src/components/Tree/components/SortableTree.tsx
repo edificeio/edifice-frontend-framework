@@ -11,7 +11,7 @@ import { CSSProperties, Ref, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
-import { mergeRefs } from '../../../utilities';
+import { getRotateTransitionStyle, mergeRefs } from '../../../utilities';
 import { useTree } from '../hooks/useTree';
 import { useTreeSortable } from '../hooks/useTreeSortable';
 import {
@@ -239,9 +239,7 @@ const TreeNode = forwardRef(
               >
                 <IconRafterRight
                   width={16}
-                  style={{
-                    transform: expanded ? 'rotate(90deg)' : '',
-                  }}
+                  style={getRotateTransitionStyle(expanded, { degrees: 90 })}
                 />
               </div>
             )}

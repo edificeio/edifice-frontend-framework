@@ -1,6 +1,7 @@
-import { act, fireEvent, render, screen, waitFor } from '~/setup';
 import { createRef } from 'react';
-import { UserSearch, type UserSearchRef } from './UserSearch';
+import { act, fireEvent, render, screen, waitFor } from '~/setup';
+import { UserSearch } from './UserSearch';
+import type { UserSearchRef } from './types/types';
 import type { Visible } from './types/visible';
 import { VisibleType } from './types/visible';
 
