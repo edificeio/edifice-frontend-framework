@@ -43,52 +43,46 @@ const useHistoryTool = ({
     setHistory([]);
   }, [application]);
   const restore = async () => {
-    const imgData = history.pop();
-    if (imgData) {
-      onRestore(await imgData.backup, imgData);
-      setHistory(history.filter((current) => current !== imgData));
-    }
+    if (history.length === 0) return;
+    const imgData = history[history.length - 1];
+    onRestore(await imgData.backup, imgData);
+    setHistory(history.slice(0, -1));
   };
-  const listSize = (arr: HistoryState[]) => {
-    if (arr.length > maxSize) {
-      arr.splice(0, arr.length - maxSize);
-    }
-    return arr;
+  const trimHistory = (arr: HistoryState[]): HistoryState[] => {
+    return arr.length > maxSize ? arr.slice(arr.length - maxSize) : arr;
   };
   const historize = async <T extends (...args: any[]) => any>(callback: T) => {
-    {
-      if (!application) {
-        return;
-      }
-      const sprite = application.stage.getChildByName(spriteName, true) as
-        | PIXI.Sprite
-        | null
-        | undefined;
-      if (sprite === undefined || sprite === null) {
-        return;
-      }
-      const promise = toBlob(application);
-      const state: HistoryState = {
-        backup: promise,
-        sprite: {
-          rotation: sprite.rotation,
-          size: { width: sprite.width, height: sprite.height },
-          position: { x: sprite.position.x, y: sprite.position.y },
-          scale: { x: sprite.scale.x, y: sprite.scale.y },
-          anchor: { x: sprite.anchor.x, y: sprite.anchor.y },
-        },
-        stage: {
-          size: {
-            width: application.stage.width,
-            height: application.stage.height,
-          },
-          scale: { x: application.stage.scale.x, y: application.stage.scale.y },
-        },
-      };
-      setHistory([...listSize(history), state]);
-      await promise;
-      return callback.call(callback);
+    if (!application) {
+      return;
     }
+    const sprite = application.stage.getChildByLabel(spriteName, true) as
+      | PIXI.Sprite
+      | null
+      | undefined;
+    if (!sprite) {
+      return;
+    }
+    const promise = toBlob(application);
+    const state: HistoryState = {
+      backup: promise,
+      sprite: {
+        rotation: sprite.rotation,
+        size: { width: sprite.width, height: sprite.height },
+        position: { x: sprite.position.x, y: sprite.position.y },
+        scale: { x: sprite.scale.x, y: sprite.scale.y },
+        anchor: { x: sprite.anchor.x, y: sprite.anchor.y },
+      },
+      stage: {
+        size: {
+          width: application.stage.width,
+          height: application.stage.height,
+        },
+        scale: { x: application.stage.scale.x, y: application.stage.scale.y },
+      },
+    };
+    setHistory(trimHistory([...history, state]));
+    await promise;
+    return callback.call(callback);
   };
 
   return {

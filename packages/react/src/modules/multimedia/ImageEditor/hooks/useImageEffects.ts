@@ -31,7 +31,10 @@ export default function useImageEffects({
     if (!application) return;
     if (save) {
       const result = cropEffect.save(application);
-      result && onSave(result);
+      if (result) {
+        onSave(result);
+        return; // save() already cleaned up controls internally
+      }
     }
     cropEffect.stop(application);
   };

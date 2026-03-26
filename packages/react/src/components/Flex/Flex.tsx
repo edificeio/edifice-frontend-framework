@@ -39,10 +39,18 @@ const Flex = forwardRef<HTMLElement, FlexProps>(
       className,
     );
 
+    // Polymorphic component: ElementType resolves props to `never` in JSX.
+    // External API is typed via FlexProps, so the internal cast is safe.
+    const Element = Component as React.ElementType;
+
     return (
-      <Component ref={ref} className={classes} {...restProps}>
+      <Element
+        ref={ref as React.Ref<unknown>}
+        className={classes}
+        {...restProps}
+      >
         {children}
-      </Component>
+      </Element>
     );
   },
 );

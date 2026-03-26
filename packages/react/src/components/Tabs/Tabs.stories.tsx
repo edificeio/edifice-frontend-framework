@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { IconLandscape } from '../../modules/icons/components';
 import { Badge } from '../Badge';
 import Tabs from './components/Tabs';

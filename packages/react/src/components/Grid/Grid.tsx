@@ -67,7 +67,9 @@ export const Column = ({
   as,
   ...restProps
 }: GridColProps) => {
-  const Component = as || 'div';
+  // Polymorphic component: ElementType resolves props to `never` in JSX.
+  // External API is typed via GridColProps, so the internal cast is safe.
+  const Component = (as || 'div') as React.ElementType;
   const classes = clsx(
     {
       [`g-col-${sm}`]: sm,

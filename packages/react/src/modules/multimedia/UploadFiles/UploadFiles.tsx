@@ -1,10 +1,14 @@
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 
 import { customSize } from '@edifice.io/utilities';
-import { useEffect, useRef } from 'react';
+import { Suspense, lazy, useEffect, useRef } from 'react';
+import { LoadingScreen } from '../../../components';
 import { useUploadFiles } from '../../../hooks';
-import { ImageEditor } from '../ImageEditor';
 import { UploadCard } from '../UploadCard';
+
+const ImageEditor = lazy(
+  async () => await import('../ImageEditor/components/ImageEditor'),
+);
 
 const UploadFiles = ({
   onFilesChange,
@@ -106,15 +110,17 @@ const UploadFiles = ({
         );
       })}
       {editingImage && (
-        <ImageEditor
-          altText={editingImage.alt}
-          legend={editingImage.title}
-          image={getUrl(editingImage, true)}
-          isOpen={!!editingImage}
-          onCancel={() => setEditingImage(undefined)}
-          onSave={updateImage}
-          onError={console.error}
-        />
+        <Suspense fallback={<LoadingScreen position={false} />}>
+          <ImageEditor
+            altText={editingImage.alt}
+            legend={editingImage.title}
+            image={getUrl(editingImage, true)}
+            isOpen={!!editingImage}
+            onCancel={() => setEditingImage(undefined)}
+            onSave={updateImage}
+            onError={console.error}
+          />
+        </Suspense>
       )}
     </>
   );

@@ -1,6 +1,6 @@
-import { StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
 import { Grid } from '../Grid';
 import { AddAttachments } from './AddAttachments';
 import { Attachment } from './models/attachment';

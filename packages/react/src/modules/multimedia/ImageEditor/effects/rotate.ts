@@ -17,12 +17,11 @@ export async function rotate(
   application: PIXI.Application,
   spriteName: string,
 ): Promise<void> {
-  const sprite = application?.stage.getChildByName(
+  const sprite = application?.stage.getChildByLabel(
     spriteName,
     true,
   ) as PIXI.Sprite | null;
   if (application && sprite) {
-    if (!application) return undefined;
     // create blob
     const blobBefore = await toBlob(application);
     // replace sprite using blob
@@ -37,7 +36,7 @@ export async function rotate(
     // fix maxHeight to avoid resize modal
     let backupOldMaxHeight: string | undefined = undefined;
     let backupOldVisibility: string | undefined = undefined;
-    const canvas = application.view as any as HTMLElement;
+    const canvas = application.canvas as HTMLElement;
     if (canvas.style) {
       backupOldMaxHeight = canvas.style.maxHeight ?? '';
       backupOldVisibility = canvas.style.visibility ?? '';

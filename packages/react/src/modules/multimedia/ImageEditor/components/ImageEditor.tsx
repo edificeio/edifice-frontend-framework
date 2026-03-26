@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { Stage } from '@pixi/react';
+import * as PIXI from 'pixi.js';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -55,12 +55,19 @@ const ImageEditor = ({
   >(undefined);
   // Whether we are saving or not
   const [isSaving, setSaving] = useState(false);
-  // Store the alt text modofied by the input text
+  // Store the alt text modified by the input text
   const [altText, setAltText] = useState(altTextParam ?? '');
-  // Store the legend text modofied by the input text
+  // Store the legend text modified by the input text
   const [legend, setLegend] = useState(legendParam ?? '');
   // Whether the image has been edited or the text has been changed
   const [dirty, setDirty] = useState<boolean>(false);
+
+  // Sync local state when props change (e.g. modal reopened with a different image)
+  useEffect(() => {
+    setAltText(altTextParam ?? '');
+    setLegend(legendParam ?? '');
+    setDirty(false);
+  }, [altTextParam, legendParam]);
   // Load Image Editor action
   const {
     toBlob,
@@ -78,7 +85,45 @@ const ImageEditor = ({
   } = useImageEditor({
     imageSrc,
   });
-  // A function to remove all opened controllers and backup changes if needed
+
+  // PIXI app ref for cleanup
+  const appRef = useRef<PIXI.Application | null>(null);
+
+  // Callback ref: initializes PIXI when the container is mounted in the DOM
+  const containerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (node && !appRef.current) {
+        const app = new PIXI.Application();
+        appRef.current = app;
+        app
+          .init({
+            backgroundAlpha: 0,
+            resolution: 1,
+            preserveDrawingBuffer: true,
+          })
+          .then(() => {
+            // Guard against unmount during async init
+            if (appRef.current !== app) return;
+            node.appendChild(app.canvas);
+            setApplication(app);
+          })
+          .catch(() => {
+            // Init failed — clean up if still referenced
+            if (appRef.current === app) {
+              appRef.current = null;
+            }
+          });
+      }
+      if (!node && appRef.current) {
+        appRef.current.destroy(true);
+        appRef.current = null;
+      }
+    },
+    [setApplication],
+  );
+  // Stop the current operation and save its result if applicable.
+  // `currentOperation` refers to the *previous* operation still in progress,
+  // since `setCurrentOperation` is called after `stopAll`.
   const stopAll = () => {
     stopBlur();
     stopCrop(currentOperation === 'CROP');
@@ -105,7 +150,7 @@ const ImageEditor = ({
   };
   // A handle to trigger actions on toolbar action
   const handleOperation = async (operation: ImageEditorAction) => {
-    // Stop Remove all previous graphical controllers
+    // Stop and save the previous operation before starting the new one
     stopAll();
     // Save the current operation
     setCurrentOperation(operation);
@@ -152,15 +197,11 @@ const ImageEditor = ({
             historyCount={historyCount}
           />
           <div className="position-relative d-flex flex-column align-items-center justify-content-center flex-grow-1 w-100 image-editor">
-            <Stage
-              onMount={(app) => setApplication(app)}
-              options={{
-                preserveDrawingBuffer: true,
-                backgroundAlpha: 0,
-                resolution: 1,
-              }}
-            ></Stage>
-            {!!loading && (
+            <div
+              ref={containerRef}
+              className="d-flex justify-content-center w-100"
+            />
+            {loading && (
               <div className="position-absolute top-0 start-0 bottom-0 end-0 m-10 d-flex align-items-center justify-content-center bg-black opacity-25">
                 <LoadingScreen />
               </div>
