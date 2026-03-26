@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import useToggle from '../../hooks/useToggle/useToggle';
 import { Button } from '../Button';

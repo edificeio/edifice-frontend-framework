@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import ConfirmModal from './ConfirmModal';
 import { Button } from '../../../components/Button';
 import { useToggle } from '@uidotdev/usehooks';

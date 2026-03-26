@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import SortableTree from '../components/SortableTree';
 import { SortableTreeProps, UpdateTreeData } from '../types';
 

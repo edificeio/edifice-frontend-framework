@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react';
 
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { IconBookmark, IconClose } from '../../modules/icons/components';
 import { IconButton } from '../Button';
 import { Dropdown } from '../Dropdown';

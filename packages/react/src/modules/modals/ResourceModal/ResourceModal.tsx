@@ -417,7 +417,7 @@ export const ResourceModal = ({
         {...mediaLibraryHandlers}
       />
     </Modal>,
-    document.getElementById('portal') as HTMLElement,
+    (document.getElementById('portal') as HTMLElement) || document.body,
   );
 };
 

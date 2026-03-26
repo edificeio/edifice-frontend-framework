@@ -1,4 +1,4 @@
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-vite';
 
 import { IconDelete, IconDownload } from '../../modules/icons/components';
 import { IconButton } from '../Button';

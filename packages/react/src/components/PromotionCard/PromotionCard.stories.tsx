@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import PromotionCard, { PromotionCardProps } from './PromotionCard';
-import { Button } from '../Button';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { IconEdit, IconMinus, IconPlus } from '../../modules/icons/components';
+import { Button } from '../Button';
+import PromotionCard, { PromotionCardProps } from './PromotionCard';
 
 const meta: Meta<typeof PromotionCard> = {
   title: 'Components/PromotionCard',

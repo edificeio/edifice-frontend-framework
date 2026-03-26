@@ -1,7 +1,7 @@
 import Button from '../../components/Button/Button';
 import Heading from '../../components/Heading/Heading';
 import useToggle from './useToggle';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 const meta: Meta<typeof useToggle> = {
   title: 'Hooks/useToggle',

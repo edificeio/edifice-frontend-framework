@@ -1,4 +1,4 @@
-import { StoryObj } from '@storybook/react';
+import { StoryObj } from '@storybook/react-vite';
 
 import { Ref, useEffect, useRef } from 'react';
 import { Button } from '../Button';

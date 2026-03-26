@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconAlertCircle } from '../../modules/icons/components';
 import { Button } from '../Button';

@@ -1,5 +1,5 @@
 import imagePlaceholder from '@edifice.io/bootstrap/dist/images/common/image-placeholder.png';
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import useImage from './useImage';
 
 const meta: Meta<typeof useImage> = {

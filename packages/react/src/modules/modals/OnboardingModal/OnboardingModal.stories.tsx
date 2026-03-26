@@ -5,7 +5,7 @@ import {
   ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER,
   ONBOARDING_MODAL_PREFERENCE_IDENTIFIER,
 } from '@edifice.io/config/src/msw/mocks/userbook';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import { Button } from '../../../components/Button';
 import { useDate } from '../../../hooks';

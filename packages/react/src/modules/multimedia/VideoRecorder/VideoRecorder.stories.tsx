@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import VideoRecorder from './VideoRecorder';
 
 const meta: Meta<typeof VideoRecorder> = {

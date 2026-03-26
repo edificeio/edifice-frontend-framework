@@ -34,7 +34,7 @@ const CROP_MASK_NAME = 'CROP_MASK_NAME';
 
 /**
  * This function generate names for corner objects
- * @param corner COrnerType identifying one corner
+ * @param corner CornerType identifying one corner
  * @returns A name identifying the corner object
  */
 function getCornerName(corner: CornerType) {
@@ -49,48 +49,47 @@ function getCornerName(corner: CornerType) {
  * If the sprite does not exists in this context this function do nothing
  *
  * @param application The PIXI.Application context
- * @param {spriteName:string} {spriteName} The name of the sprite in the context
+ * @param spriteName The name of the sprite in the context
  */
 function drawBackground(
   application: PIXI.Application,
   { spriteName }: { spriteName: string },
 ): void {
   removeBackground(application);
-  const sprite = application.stage.getChildByName(
+  const sprite = application.stage.getChildByLabel(
     spriteName,
   ) as PIXI.Sprite | null;
-  if (sprite === null || sprite === undefined) return;
+  if (!sprite) return;
   const spriteBounds = sprite.getBounds();
   // Clone the stage
-  const stageTexture = application.renderer
-    .generateTexture(application.stage)
-    .clone();
+  const stageTexture = application.renderer.generateTexture(application.stage);
   const clonedStage = new PIXI.Sprite(stageTexture);
   clonedStage.height = spriteBounds.height;
   clonedStage.width = spriteBounds.width;
   clonedStage.position = new PIXI.Point(0, 0);
-  // Draw the background
-  const background = new PIXI.Graphics();
-  background.beginFill(0xffffff, 0.5);
-  background.drawRect(0, 0, spriteBounds.width, spriteBounds.height);
-  background.endFill();
-  background.name = CROP_BACKGROUND_NAME;
+  // Create a Container to hold all crop overlay elements
+  const background = new PIXI.Container();
+  background.label = CROP_BACKGROUND_NAME;
   background.position = new PIXI.Point(spriteBounds.x, spriteBounds.y);
+  // Draw the semi-transparent backdrop
+  const backdrop = new PIXI.Graphics();
+  backdrop.rect(0, 0, spriteBounds.width, spriteBounds.height);
+  backdrop.fill({ color: 0xffffff, alpha: 0.5 });
   // Draw the mask to apply to the cloned stage
   const rectMask = new PIXI.Graphics();
-  rectMask.beginFill(0x000000, 1);
-  rectMask.drawRect(
+  rectMask.rect(
     0,
     0,
     spriteBounds.width - 2 * PADDING,
     spriteBounds.height - 2 * PADDING,
   );
-  rectMask.endFill();
+  rectMask.fill({ color: 0x000000, alpha: 1 });
   rectMask.position = new PIXI.Point(PADDING, PADDING);
-  rectMask.name = CROP_MASK_NAME;
+  rectMask.label = CROP_MASK_NAME;
   // Apply the mask to the cloned stage and add children
   clonedStage.mask = rectMask;
   application.stage.addChild(background);
+  background.addChild(backdrop);
   background.addChild(rectMask);
   background.addChild(clonedStage);
 }
@@ -101,7 +100,7 @@ function drawBackground(
  * @param application The PIXI.Application context
  */
 function removeBackground(application: PIXI.Application): void {
-  const child = application.stage.getChildByName(CROP_BACKGROUND_NAME, true);
+  const child = application.stage.getChildByLabel(CROP_BACKGROUND_NAME, true);
   child?.removeFromParent();
 }
 /**
@@ -154,17 +153,17 @@ function computeCornerPosition(
  * @param application  The PIXI.Application context
  */
 function refreshCorners(application: PIXI.Application): void {
-  const mask = application.stage.getChildByName(
+  const mask = application.stage.getChildByLabel(
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  if (mask === undefined || mask === null) return;
+  if (!mask) return;
   CORNERS.forEach((cornerType) => {
-    const corner = application.stage.getChildByName(
+    const corner = application.stage.getChildByLabel(
       getCornerName(cornerType),
       true,
     );
-    if (corner === undefined || corner === null) return;
+    if (!corner) return;
     const position = computeCornerPosition(cornerType, {
       height: mask.height,
       width: mask.width,
@@ -180,7 +179,7 @@ function refreshCorners(application: PIXI.Application): void {
  *
  * @param application The PIXI.Application context
  * @param cornerType The cornerType identifying the corner we are drawing
- * @param { spriteName:string } {spriteName} The sprite name identifying the original image
+ * @param spriteName The sprite name identifying the original image
  */
 function drawCorner(
   application: PIXI.Application,
@@ -188,34 +187,27 @@ function drawCorner(
   { spriteName }: { spriteName: string },
 ): void {
   // Delete corner if exists before redrawing
-  const previous = application.stage.getChildByName(
+  const previous = application.stage.getChildByLabel(
     getCornerName(cornerType),
     true,
   );
   const scale = getApplicationScale(application);
   previous?.removeFromParent();
   // Search for background
-  const background = application.stage.getChildByName(
+  const background = application.stage.getChildByLabel(
     CROP_BACKGROUND_NAME,
     true,
-  ) as PIXI.Graphics | null;
+  ) as PIXI.Container | null;
   // Search for mask
-  const mask = application.stage.getChildByName(
+  const mask = application.stage.getChildByLabel(
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
   // Search for sprite
-  const sprite = application.stage.getChildByName(
+  const sprite = application.stage.getChildByLabel(
     spriteName,
   ) as PIXI.Sprite | null;
-  if (
-    sprite === null ||
-    sprite === undefined ||
-    background === null ||
-    background === undefined ||
-    mask === undefined ||
-    mask === null
-  ) {
+  if (!sprite || !background || !mask) {
     return;
   }
   // Compute corner position
@@ -225,38 +217,38 @@ function drawCorner(
     x: mask.x,
     y: mask.y,
   });
-  //Draw corner
+  // Draw corner
   const corner = new PIXI.Graphics();
-  corner.beginFill(0x4bafd5, 1);
   corner.arc(0, 0, POINT_RADIUS / scale, position.start, position.end);
   corner.lineTo(0, 0);
-  corner.endFill();
+  corner.fill({ color: 0x4bafd5, alpha: 1 });
   corner.position = new PIXI.Point(position.x, position.y);
-  corner.name = getCornerName(cornerType);
+  corner.label = getCornerName(cornerType);
   corner.interactive = true;
   // Add mouse event move => on corner move redraw mask
   let enable = false;
-  application.stage.on('pointermove', (event: PIXI.FederatedMouseEvent) => {
-    if (enable === false) return;
+  const handlePointerMove = (event: PIXI.FederatedMouseEvent) => {
+    if (!enable) return;
     const localPosition = background.toLocal(event.global);
     corner.position.x = localPosition.x;
     corner.position.y = localPosition.y;
     moveMask(application, cornerType, localPosition);
-  });
+  };
+  application.stage.on('pointermove', handlePointerMove);
   // Add mouse down event => on pointer down start moving mask
   const handlePointerDown = () => {
     enable = true;
   };
   corner.on('pointerdown', handlePointerDown);
-  // Add mouse up event => on pointer down stop moving mask
+  // Add mouse up event => on pointer up stop moving mask
   const handlePointerUp = () => {
     enable = false;
   };
   globalThis.addEventListener('pointerup', handlePointerUp);
-  // Remove listeners when corner destroyed
+  // Remove all listeners when corner destroyed
   corner.once('destroyed', () => {
-    // cancel listener
     corner.off('pointerdown');
+    application.stage.off('pointermove', handlePointerMove);
     globalThis.removeEventListener('pointerup', handlePointerUp);
   });
   // Add corner
@@ -275,11 +267,11 @@ function moveMask(
   cornerType: CornerType,
   position: { x: number; y: number },
 ): void {
-  const mask = application.stage.getChildByName(
+  const mask = application.stage.getChildByLabel(
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  if (mask === undefined || mask === null) return;
+  if (!mask) return;
   const right = mask.position.x + mask.width;
   const bottom = mask.position.y + mask.height;
   switch (cornerType) {
@@ -317,7 +309,7 @@ function moveMask(
  * - A mask applied to the original image
  *
  * @param application The PIXI.Application context
- * @param {spriteName:string} {spriteName} The sprite name identifying the original image
+ * @param spriteName The sprite name identifying the original image
  */
 export function start(
   application: PIXI.Application,
@@ -344,37 +336,43 @@ export function stop(application: PIXI.Application) {
   application.render();
 }
 /**
- * This function apply a crop to the imageSrc and return the result as a PIXI.Sprite object
+ * This function applies a crop and returns the result as a PIXI.Sprite object
  *
- * @param application
- * @param imageSrc a string URI of the image to crop
- * @returns a PIXI.Sprite with a imageSrc cropped or undefined if the image has not been cropped
+ * @param application The PIXI.Application context
+ * @returns a PIXI.Sprite with the cropped image or undefined if no crop area was defined
  */
 export function save(application: PIXI.Application): PIXI.Sprite | undefined {
   // Search for mask in this context
-  const mask = application.stage.getChildByName(
+  const mask = application.stage.getChildByLabel(
     CROP_MASK_NAME,
     true,
   ) as PIXI.Graphics | null;
-  // Stop if mask does not exists
-  if (mask === undefined || mask === null) return;
-  // Remove controls before cloning stage
-  stop(application);
-  // Clone stage
-  const stageTexture = application.renderer
-    .generateTexture(application.stage)
-    .clone();
-  const clonedStage = new PIXI.Sprite(stageTexture);
-  // Compute bounds and round lower to avoid overflow
-  const maskBounds = mask.getBounds();
-  const bounds = new PIXI.Rectangle(
-    Math.floor(maskBounds.x),
-    Math.floor(maskBounds.y),
-    Math.floor(maskBounds.width),
-    Math.floor(maskBounds.height),
+
+  // Stop if mask does not exist
+  if (!mask) return;
+  // Compute crop frame in stage coordinates using mask position + background offset
+  // (getBounds() returns zeros on scaled Graphics in v8)
+  const background = application.stage.getChildByLabel(
+    CROP_BACKGROUND_NAME,
+    true,
   );
-  // Apply crop to the cloned stage
-  const cropped = new PIXI.Texture(clonedStage.texture.baseTexture, bounds);
-  const sprite = new PIXI.Sprite(cropped);
-  return sprite;
+  const offsetX = background?.x ?? 0;
+  const offsetY = background?.y ?? 0;
+  const frame = new PIXI.Rectangle(
+    Math.floor(offsetX + mask.x),
+    Math.floor(offsetY + mask.y),
+    Math.floor(mask.width),
+    Math.floor(mask.height),
+  );
+  // Hide the crop overlay so it's not captured in the texture
+  if (background) background.visible = false;
+  // Generate texture of only the cropped region
+  const croppedTexture = application.renderer.generateTexture({
+    target: application.stage,
+    frame,
+  });
+  // Clean up controls (remove background and listeners)
+  removeBackground(application);
+  application.stage.off('pointermove');
+  return new PIXI.Sprite(croppedTexture);
 }

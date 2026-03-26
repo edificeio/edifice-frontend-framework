@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import LoadingScreen from './LoadingScreen';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

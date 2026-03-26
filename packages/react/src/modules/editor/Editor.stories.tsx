@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Content } from '@tiptap/react';
 import Editor from './components/Editor/Editor';
 

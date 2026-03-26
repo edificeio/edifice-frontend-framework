@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import Stepper, { StepperProps } from './Stepper';
 import { Button } from '../Button';
 import { Flex } from '../Flex';
