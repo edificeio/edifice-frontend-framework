@@ -1,15 +1,20 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
 .school-widget {
   --school-widget-border-color: #ffe5a3;
   --school-widget-bg-color: #fefaec;
   --school-widget-selected-color: #383838;
+
+  --school-widget-border-radius: var(--#{$prefix}border-radius-2xl);
 }
 
 .school-widget {
   border: 1px solid var(--school-widget-border-color);
-  border-radius: 2.4rem;
+  border-radius: var(--school-widget-border-radius);
 
   background-color: var(--school-widget-bg-color);
-  background-image: url('./SchoolWidgetBackground.svg');
+  background-image: url('./images/homepage/SchoolWidgetBackground.svg');
   background-repeat: no-repeat;
-  background-position: bottom right;
+  background-position: top right;
 }

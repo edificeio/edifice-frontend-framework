@@ -2,7 +2,6 @@ import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
 import { IconRafterDown } from '../../../../modules/icons/components';
-import './SchoolWidget.css';
 
 export interface SchoolWidgetProps {
   selectedSchool: School | undefined;
