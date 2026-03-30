@@ -19,22 +19,13 @@ const SchoolWidget = ({
 
   const hasManySchools = schools && schools.length > 1;
 
-  const widgetStyle = { padding: '1.4rem 0.4rem' };
-  const containerStyle = { padding: '0.8rem' };
-  const selectedSchoolStyle = {
-    padding: '.4rem 2.9rem',
-    fontSize: '1.6rem',
-    lineHeight: '2.2rem',
-    color: 'var(--school-widget-selected-color)',
-  };
-
   if (!selectedSchool) return null;
 
   return (
-    <div className="school-widget" style={widgetStyle}>
-      <div style={containerStyle}>
+    <div className="school-widget">
+      <div className="school-widget-container">
         <Flex
-          style={selectedSchoolStyle}
+          className="school-widget-selected"
           justify="center"
           gap="4"
           align="center"
