@@ -3,12 +3,13 @@
 @use '../abstracts/' as *;
 @use '../themes/neo/icons' as *;
 @use '../themes/one/icons' as *;
-@use '../themes/neov2/icons' as *;
 
+/**
+  New Edifice themes will not have to define rules specifics for app and connector icons
+**/
 $theme-icons: (
   'neo': $neo-icons,
   'one': $one-icons,
-  'neov2': $neov2-icons,
 );
 
 @each $product, $config in $theme-icons {
@@ -22,7 +23,7 @@ $theme-icons: (
           color: $color;
         }
       }
-      
+
       @each $app, $color in $connectors {
         &-#{$app} {
           color: $color;

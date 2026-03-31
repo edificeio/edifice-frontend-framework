@@ -1,0 +1,60 @@
+// Configuration du thème edifice2d.
+
+@use 'primitives' as *;
+
+$edifice2d: (
+    name: 'edifice2d',
+    color: (
+        text: (
+            default: $grey-900,
+            subText: $grey-800,
+            button: (
+                primary: (
+                    default: $blue-900,
+                    disable: $white
+                ),
+                other: (
+                    default: $blue-900,
+                    disable: $blue-300
+                )
+            )
+        ),
+        primary: (
+            pale: $yellow-200,
+            light: $yellow-300,
+            default: $yellow-400,
+            dark: $yellow-500,
+        )
+    ),
+    font: (
+        family: (
+            title: 'Urbanist',
+            body: 'Arimo'
+        ),
+        weight: (
+            bold: 700,
+            regular: 500
+        ),
+        size: (
+            xl: 32px,
+            l: 26px,
+            m: 22px,
+            s: 18px,
+            default: 16px,
+            small: 14px,
+            caption: 12px,
+        ),
+        lineHeight: (
+            xl: 36px,
+            l: 32px,
+            m: 28px,
+            s: 26px,
+            xs: 22px,
+            2xs: 20px,
+            3xs: 18px,
+        )
+    ),
+    radius: (
+        button: $border-radius-pill
+    )
+);

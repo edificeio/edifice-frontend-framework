@@ -1,58 +1,73 @@
+// stylelint-disable at-rule-empty-line-before
 // =============================================================================
 // Theme API – Contrat pour les thèmes basés sur une map de configuration
 // =============================================================================
 // Ce module fournit des mixins pour générer les variables CSS d'un thème
-// à partir d'une map Sass. Utilisé par le thème neov2 (et futurs thèmes).
+// à partir d'une map Sass. Utilisé par le thème edifice2d (et futurs thèmes).
 // Les thèmes "one" et "neo" utilisent encore l'ancienne mécanique.
 // CONTRAT DE LA MAP DE THÈME
 // --------------------------
 // La config doit fournir au minimum :
-//   $theme-<name>: (
-//     name: '<name>',           // identifiant data-product
-//     colors: (                 // clés → valeurs (couleurs hex/rgb/var)
-//       primary: #...,
-//       primary-200: #...,
-//       secondary: #...,
-//       ...
+//   $<name>: (
+//     name: '<name>',
+//     color: (
+//       text: (
+//         default: ...,
+//         subText: ...,
+//       ),
+//       primary: (
+//         pale: ...,
+//         light: ...,
+//         default: ...,
+//         dark: ...,
+//       ),
 //     ),
-//     typography: ( ... ),      // optionnel
-//     layout: ( ... ),          // optionnel
-//     components: ( ... ),      // optionnel
+//     font: (
+//       family: ( title: ..., body: ... ),
+//       weight: ( bold: ..., regular: ... ),
+//       size: ( ... ),
+//       lineHeight: ( ... ),
+//     ),
+//     radius: ( ... ),
 //   );
 // =============================================================================
 
+@use 'sass:list';
 @use 'sass:map';
+@use 'sass:meta';
 @use '../abstracts/variables' as vars;
 
+/// Génère récursivement des variables CSS à partir d'une map imbriquée.
+/// Les clés sont jointes par des tirets : color.text.default → --prefix-color-text-default
+@mixin _emit-vars($data, $prefix-parts: ()) {
+  @each $key, $value in $data {
+    $parts: list.append($prefix-parts, $key);
+
+    @if meta.type-of($value) == 'map' {
+      @include _emit-vars($value, $parts);
+    } @else {
+      $var-name: '';
+
+      @each $p in $parts {
+        @if $var-name == '' {
+          $var-name: '#{$p}';
+        } @else {
+          $var-name: '#{$var-name}-#{$p}';
+        }
+      }
+      --#{vars.$prefix}#{$var-name}: #{$value};
+    }
+  }
+}
+
 @mixin theme-vars($product, $config) {
-  $colors: map.get($config, colors);
-  $typography: map.get($config, typography);
-  $layout: map.get($config, layout);
-  $components: map.get($config, components);
-
-  [data-product="#{$product}"] {
-    @if $colors {
-      @each $key, $value in $colors {
-        --#{vars.$prefix}#{$key}: #{$value};
-      }
-    }
-
-    @if $typography {
-      @each $key, $value in $typography {
-        --#{vars.$prefix}#{$key}: #{$value};
-      }
-    }
-
-    @if $layout {
-      @each $key, $value in $layout {
-        --#{vars.$prefix}#{$key}: #{$value};
-      }
-    }
-
-    @if $components {
-      @each $component, $vars-map in $components {
-        @each $key, $value in $vars-map {
-          --#{vars.$prefix}#{$key}: #{$value};
+  [data-product='#{$product}'] {
+    @each $section-key, $section-value in $config {
+      @if $section-key != 'name' {
+        @if meta.type-of($section-value) == 'map' {
+          @include _emit-vars($section-value, ($section-key));
+        } @else {
+          --#{vars.$prefix}#{$section-key}: #{$section-value};
         }
       }
     }
@@ -60,9 +75,7 @@
 }
 
 @mixin theme-variant($product, $variant, $variant-config) {
-  [data-product="#{$product}"][data-theme="#{$variant}"] {
-    @each $key, $value in $variant-config {
-      --#{vars.$prefix}#{$key}: #{$value};
-    }
+  [data-product='#{$product}'][data-theme='#{$variant}'] {
+    @include _emit-vars($variant-config);
   }
 }
