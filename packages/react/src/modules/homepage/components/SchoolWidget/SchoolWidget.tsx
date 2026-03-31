@@ -1,7 +1,8 @@
 import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
-import { IconRafterDown } from '../../../../modules/icons/components';
+import { IconRafterUp } from '../../../../modules/icons/components';
+import { getRotateTransitionStyle } from '../../../../utilities';
 
 export interface SchoolWidgetProps {
   selectedSchool: School | undefined;
@@ -43,12 +44,11 @@ const SchoolWidget = ({
                     color="tertiary"
                     variant="ghost"
                     icon={
-                      <IconRafterDown
+                      <IconRafterUp
                         className="w-16 min-w-0"
-                        style={{
-                          transition: 'rotate 0.2s ease-out',
-                          rotate: isExpanded ? '0deg' : '-180deg',
-                        }}
+                        style={getRotateTransitionStyle(isExpanded, {
+                          degrees: 180,
+                        })}
                       />
                     }
                   />
