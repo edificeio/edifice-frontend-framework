@@ -149,6 +149,18 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                     </a>
                   </NavItem>
                 )}
+                {communitiesWorkflow && (
+                  <NavItem>
+                    <NavLink
+                      link="/communities"
+                      translate={t('navbar.community')}
+                    >
+                      <IconCommunities
+                        className="icon communities text-purple-500"
+                      />
+                    </NavLink>
+                  </NavItem>
+                )}
                 <NavItem>
                   <NavLink
                     link="/userbook/mon-compte"
