@@ -86,5 +86,10 @@
     "workerDirectory": [
       "apps/docs/public"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@rushstack/terminal": "0.22.3"
+    }
   }
 }
