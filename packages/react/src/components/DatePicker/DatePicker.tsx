@@ -22,11 +22,12 @@ dayjs.extend(localeData);
  * Ant Design implementation is hidden and no Ant Design-specific props are exposed.
  * Standard HTML div attributes are supported (passed through to the underlying DOM element).
  */
-export interface DatePickerProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  // Excluded because they are redefined below with different signatures:
-  'onChange' | 'value' | 'defaultValue' // defaultValue is excluded by design choice to simplify the API (only controlled mode with value prop is supported)
-> {
+export interface DatePickerProps
+  extends Omit<
+    React.HTMLAttributes<HTMLElement>,
+    // Excluded because they are redefined below with different signatures:
+    'onChange' | 'value' | 'defaultValue' // defaultValue is excluded by design choice to simplify the API (only controlled mode with value prop is supported)
+  > {
   /**
    * Selected date values
    * @default today's date is setted by ant design if no value is provided

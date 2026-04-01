@@ -57,6 +57,7 @@ export default function useHeader({
   const communityWorkflow = useHasWorkflow(
     'net.atos.entng.community.controllers.CommunityController|view',
   );
+  const communitiesWorkflow = useHasWorkflow('community.access');
   const conversationWorflow = useHasWorkflow(
     'org.entcore.conversation.controllers.ConversationController|view',
   );
@@ -80,6 +81,7 @@ export default function useHeader({
       userName,
       welcomeUser,
       communityWorkflow,
+      communitiesWorkflow,
       conversationWorflow,
       searchWorkflow,
       isCollapsed,
@@ -88,6 +90,7 @@ export default function useHeader({
     [
       appsRef,
       bookmarkedApps,
+      communitiesWorkflow,
       communityWorkflow,
       conversationWorflow,
       isAppsHovered,

@@ -22,8 +22,7 @@ export interface OptionsType {
 }
 
 export interface SelectProps
-  extends
-    Omit<DropdownProps, 'children'>,
+  extends Omit<DropdownProps, 'children'>,
     Omit<DropdownTriggerProps, 'badgeContent' | 'defaultValue'> {
   /**
    * Controlled value
