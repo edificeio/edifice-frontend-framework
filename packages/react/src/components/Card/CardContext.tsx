@@ -4,10 +4,8 @@ import { IWebApp } from '@edifice.io/client';
 
 import { CardProps } from './Card';
 
-export interface CardContextProps extends Omit<
-  CardProps,
-  'children' | 'className'
-> {
+export interface CardContextProps
+  extends Omit<CardProps, 'children' | 'className'> {
   app?: IWebApp | undefined;
   appCode: string | undefined;
   isSelectable?: boolean;
