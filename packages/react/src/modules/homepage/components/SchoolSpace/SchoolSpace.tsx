@@ -1,20 +1,20 @@
 import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
-import { IconRafterUp } from '../../../../modules/icons/components';
 import { getRotateTransitionStyle } from '../../../../utilities';
+import { IconRafterUp } from '../../../icons/components';
 
-export interface SchoolWidgetProps {
+export interface SchoolSpaceProps {
   selectedSchool: School | undefined;
   onSelectedSchoolChange?: (schoolIndex: number) => void;
   schools?: School[];
 }
 
-const SchoolWidget = ({
+const SchoolSpace = ({
   schools,
   selectedSchool,
   onSelectedSchoolChange,
-}: SchoolWidgetProps) => {
+}: SchoolSpaceProps) => {
   const [isExpanded, toggleExpanded] = useToggle(false);
   const { t } = useTranslation();
 
@@ -23,10 +23,10 @@ const SchoolWidget = ({
   if (!selectedSchool) return null;
 
   return (
-    <div className="school-widget">
-      <div className="school-widget-container">
+    <div className="school-space">
+      <div className="school-space-container">
         <Flex
-          className="school-widget-selected"
+          className="school-space-selected"
           justify="center"
           gap="4"
           align="center"
@@ -75,6 +75,6 @@ const SchoolWidget = ({
   );
 };
 
-SchoolWidget.displayName = 'SchoolWidget';
+SchoolSpace.displayName = 'SchoolSpace';
 
-export default SchoolWidget;
+export default SchoolSpace;

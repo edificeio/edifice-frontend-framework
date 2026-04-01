@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SchoolWidget, { SchoolWidgetProps } from './SchoolWidget';
+import SchoolSpace, { SchoolSpaceProps } from './SchoolSpace';
 
-const meta: Meta<typeof SchoolWidget> = {
-  title: 'Modules/Homepage/SchoolWidget',
-  component: SchoolWidget,
+const meta: Meta<typeof SchoolSpace> = {
+  title: 'Modules/Homepage/SchoolSpace',
+  component: SchoolSpace,
   decorators: [
     (Story) => (
       <div style={{ height: '35em' }}>
@@ -16,18 +16,18 @@ const meta: Meta<typeof SchoolWidget> = {
     docs: {
       description: {
         component:
-          "Ce storybook documente le composant SchoolWidget, un widget de sélection d'école avec plusieurs variantes possibles.",
+          "Ce storybook documente le composant SchoolSpace, un widget de sélection d'école avec plusieurs variantes possibles.",
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof SchoolWidget>;
+type Story = StoryObj<typeof SchoolSpace>;
 
-const renderWithProps = (props: SchoolWidgetProps) => () => (
+const renderWithProps = (props: SchoolSpaceProps) => () => (
   <div style={{ maxWidth: 397 }}>
-    <SchoolWidget {...props} />
+    <SchoolSpace {...props} />
   </div>
 );
 

@@ -1,7 +1,7 @@
 @use '../../abstracts/' as *;
 @use '../../vendors/bootstrap';
 
-.school-widget {
+.school-space {
   --border-color: #ffe5a3;
   --background-color: #fefaec;
   --border-radius: var(--#{$prefix}border-radius-2xl);
@@ -12,7 +12,7 @@
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   background-color: var(--background-color);
-  background-image: url('./images/homepage/SchoolWidgetBackground.svg');
+  background-image: url('./images/homepage/SchoolSpaceBackground.svg');
   background-repeat: no-repeat;
   background-position: top right;
 
