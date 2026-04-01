@@ -13,10 +13,8 @@ export type OmitInputProps =
   | 'id'
   | 'readOnly';
 
-export interface InputProps extends Omit<
-  React.ComponentPropsWithRef<'input'>,
-  OmitInputProps
-> {
+export interface InputProps
+  extends Omit<React.ComponentPropsWithRef<'input'>, OmitInputProps> {
   /**
    * Control size of input
    */

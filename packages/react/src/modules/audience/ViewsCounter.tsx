@@ -4,7 +4,8 @@ import { forwardRef, Ref } from 'react';
 import { Button } from '../../components';
 import { IconSee } from '../icons/components';
 
-export interface ViewsCounterProps extends React.ComponentPropsWithRef<'button'> {
+export interface ViewsCounterProps
+  extends React.ComponentPropsWithRef<'button'> {
   /** The number of views to display. */
   viewsCounter: number;
 }

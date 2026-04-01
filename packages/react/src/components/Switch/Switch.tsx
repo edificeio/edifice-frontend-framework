@@ -1,10 +1,8 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
-export interface SwitchProps extends Omit<
-  InputHTMLAttributes<HTMLInputElement>,
-  'size'
-> {
+export interface SwitchProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
    * The label of the switch
    */
