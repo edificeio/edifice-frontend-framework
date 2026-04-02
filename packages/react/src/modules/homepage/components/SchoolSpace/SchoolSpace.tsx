@@ -4,6 +4,10 @@ import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { IconRafterUp } from '../../../icons/components';
 
+/**
+ * SchoolSpace component displays the currently selected school and provides
+ * a dropdown menu to switch between multiple schools if available.
+ */
 export interface SchoolSpaceProps {
   selectedSchool: School | undefined;
   onSelectedSchoolChange?: (schoolIndex: number) => void;
@@ -18,8 +22,10 @@ const SchoolSpace = ({
   const [isExpanded, toggleExpanded] = useToggle(false);
   const { t } = useTranslation();
 
+  // Only show dropdown if there are multiple schools to choose from
   const hasManySchools = schools && schools.length > 1;
 
+  // Do not render anything if no school is selected
   if (!selectedSchool) return null;
 
   return (
