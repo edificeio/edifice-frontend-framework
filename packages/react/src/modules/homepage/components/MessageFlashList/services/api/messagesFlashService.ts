@@ -1,18 +1,10 @@
 import { IFlashMessageModel, odeServices } from '@edifice.io/client';
 
 /**
- * Creates a message flash service with the specified base URL.
+ * Creates a message flash service with methods to interact with flash messages.
  *
  * @param baseURL The base URL for the message flash service API.
- * @returns A service to interact with message flash.
- */
-/**
- * Creates a message flash service with methods to interact with flash messages.
- * @param baseURL - The base URL for API endpoints
- * @returns An object containing methods to manage flash messages
- * @returns {Object} Service object
- * @returns {Function} getMessagesFlash - Retrieves all flash messages for the current user
- * @returns {Function} markAsRead - Marks a specific flash message as read
+ * @returns A service exposing methods to retrieve flash messages and mark them as read.
  */
 export const createMessagesFlashService = (baseURL: string) => ({
   /**
