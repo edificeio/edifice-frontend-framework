@@ -53,7 +53,7 @@ const preview: Preview = {
       defaultValue: 'one',
       toolbar: {
         icon: 'switchalt',
-        items: ['one', 'neo', 'edifice2d', 'side-by-side'],
+        items: ['one', 'neo', 'edifice2d', 'edifice1d', 'side-by-side'],
       },
     },
     app: {
@@ -135,6 +135,7 @@ const preview: Preview = {
                 <StoryTheme themePath="one" />
                 <StoryTheme themePath="neo" />
                 <StoryTheme themePath="edifice2d" />
+                <StoryTheme themePath="edifice1d" />
               </>
             );
           }
@@ -146,6 +147,9 @@ const preview: Preview = {
           }
           case 'edifice2d': {
             return <StoryTheme themePath="edifice2d" />;
+          }
+          case 'edifice1d': {
+            return <StoryTheme themePath="edifice1d" />;
           }
           case 'default': {
             return <StoryTheme themePath={theme} />;
