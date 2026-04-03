@@ -89,7 +89,7 @@ function Homepage() {
 
 ##### MessageFlashListContainer
 
-No props required - handles its own data fetching and state. Returns `null` if no messages are available or on error states (except for network errors).
+No props required - handles its own data fetching and state. Returns `null` if no messages are available or if an error occurs.
 
 ##### useMessageFlashList Hook
 
