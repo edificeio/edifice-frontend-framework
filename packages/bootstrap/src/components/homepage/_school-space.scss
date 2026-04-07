@@ -1,0 +1,35 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
+.school-space {
+  --border-color: #ffe5a3;
+  --background-color: #fefaec;
+  --border-radius: var(--#{$prefix}border-radius-2xl);
+  --px: 1.4rem;
+  --py: var(--#{$prefix}spacer-4);
+
+  padding: var(--py) var(--px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  background-image: url('./images/homepage/SchoolSpaceBackground.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+
+  &-container {
+    --px: var(--#{$prefix}spacer-8);
+    --py: var(--#{$prefix}spacer-8);
+
+    padding: var(--py) var(--px);
+  }
+
+  &-selected {
+    --color: #383838;
+    --px: var(--#{$prefix}spacer-12);
+    --py: var(--#{$prefix}spacer-4);
+
+    padding: var(--py) var(--px);
+    line-height: 2.2rem;
+    color: var(--color);
+  }
+}
