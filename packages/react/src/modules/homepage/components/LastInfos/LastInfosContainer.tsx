@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { TextSkeleton } from '../../../../components';
+import { TextSkeleton, Flex } from '../../../../components';
 import LastInfos from './LastInfos';
 import './LastInfosContainer.css';
 import { useLastInfos } from './useLastInfos';
@@ -10,7 +10,7 @@ export function LastInfosContainer() {
 
   return (
     <div className="last-infos-container">
-      <div className="last-infos-header">
+      <Flex gap={4} justify:"space-between" className="last-infos-header">
         {t('last-infos-widget.widget.title')}
         <a href="/actualites" title={t('last-infos-widget.widget.see.all')}>
           {t('last-infos-widget.widget.see.more')}
@@ -25,7 +25,13 @@ export function LastInfosContainer() {
             <TextSkeleton size="lg" />
           </>
         ) : infos ? (
-          infos.map((info) => <LastInfos info={info} />)
+          infos.map(({ thread, ...otherProps }) => (
+            <LastInfos
+              icon={thread.icon}
+              thread={thread.title}
+              {...otherProps}
+            />
+          ))
         ) : (
           error?.message
         )}

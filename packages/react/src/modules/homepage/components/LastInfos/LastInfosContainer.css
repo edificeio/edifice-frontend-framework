@@ -1,3 +1,18 @@
-.last-infos-container {
-  background-color: red;
+.last-infos {
+  &-container {
+    --border-color: #FFF;
+    --px: var(--#{$prefix}spacer-8);
+    --py: var(--#{$prefix}spacer-8);
+    --gap: var(--#{$prefix}spacer-4);
+
+    background-color: transparent;
+    border: 2px solid var(--border-color);
+    padding: var(--py) var(--px);
+
+    &-header {
+      --border-radius: 2xl;
+
+      border-radius: var(--border-radius);
+    }
+  }
 }

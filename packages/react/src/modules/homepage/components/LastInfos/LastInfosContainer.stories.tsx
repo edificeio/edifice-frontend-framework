@@ -7,7 +7,7 @@ const meta: Meta<typeof LastInfosContainer> = {
   component: LastInfosContainer,
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '1rem' }}>
+      <div style={{ maxWidth: 397 }}>
         <Story />
       </div>
     ),

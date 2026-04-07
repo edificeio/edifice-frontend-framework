@@ -7,7 +7,6 @@ export interface LastInfosModel {
     id: number; // 221
     icon: string; // "/workspace/document/36a04526-15a2-4e8f-adb6-cca75630e50d"
     title: string; // "News collège Denis Poisson"
-    sharedRights: [];
   };
   title: string; // "xx"
   username: string; // "DEVAULX ALAIN"
