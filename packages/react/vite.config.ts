@@ -91,7 +91,7 @@ export default defineConfig({
     watch: false,
     globals: true,
     environment: 'jsdom',
-    include: ['src/**/*.spec.tsx'],
+    include: ['src/**/*.spec.tsx', 'src/**/*.spec.ts'],
     setupFiles: ['./vitest.setup.ts'],
     reporters: ['default'],
   },
