@@ -18,15 +18,17 @@ export type ResourceRightDefinition = {
   default: boolean;
   requires: ResourceRightName[];
   excludes: ResourceRightName[];
-  defaultName?: string;
+  displayName?: string;
   isReadOnlyCheckbox?: boolean;
 };
 
-export type ResourceRights = {
-  [K in ResourceRightName]?: ResourceRightDefinition;
-} & {
-  [K in ResourceRightName]: { [P in K]: ResourceRightDefinition };
-}[ResourceRightName];
+type AtLeastOne<T extends object> = Partial<T> &
+  {
+    [K in keyof T]: Pick<T, K>;
+  }[keyof T];
+export type ResourceRights = AtLeastOne<
+  Record<ResourceRightName, ResourceRightDefinition>
+>;
 
 export interface BookmarkUser {
   id: string;

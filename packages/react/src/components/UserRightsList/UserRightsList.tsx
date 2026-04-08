@@ -178,7 +178,7 @@ export const UserRightsList = forwardRef<
                     {Object.entries(resourceRights).map(
                       ([rightName, rightDef]) => (
                         <th key={rightName}>
-                          {rightDef.defaultName ?? rightName}
+                          {rightDef.displayName ?? rightName}
                         </th>
                       ),
                     )}
