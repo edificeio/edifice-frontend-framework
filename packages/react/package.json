@@ -65,6 +65,10 @@
     "./widgets": {
       "import": "./dist/widgets.js",
       "types": "./dist/modules/widgets/index.d.ts"
+    },
+    "./homepage": {
+      "import": "./dist/homepage.js",
+      "types": "./dist/modules/homepage/index.d.ts"
     }
   },
   "module": "dist/index.js",
