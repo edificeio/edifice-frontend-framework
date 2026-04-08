@@ -1,0 +1,91 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
+.message-flash {
+  --message-flash-border-color: #828282;
+  --message-flash-bg-color: #f2f2f2;
+  --message-flash-border-radius: var(--#{$prefix}border-radius-2xl);
+  --message-flash-px: var(--#{$prefix}spacer-12);
+  --message-flash-py: var(--#{$prefix}spacer-12);
+
+  --message-flash-icon-size: 50px;
+  --message-flash-icon-color: var(--#{$prefix}white);
+  --message-flash-icon-bg-color: #c7c7c7;
+  --message-flash-box-shadow: var(--#{$prefix}box-shadow);
+
+  display: grid;
+  grid-template-areas: 'icon content';
+  grid-template-columns: auto 1fr;
+  gap: var(--#{$prefix}spacer-12);
+  position: relative;
+
+  background-color: var(--message-flash-bg-color);
+  background-image: url('./images/homepage/MessageFlashBackground-Grey.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+
+  padding: var(--message-flash-py) var(--message-flash-px);
+
+  &-orange {
+    --message-flash-border-color: #e5a800;
+    --message-flash-bg-color: #fcf3cf;
+    --message-flash-icon-bg-color: #ffc403;
+    background-image: url('./images/homepage/MessageFlashBackground-Orange.svg');
+  }
+
+  &-green {
+    --message-flash-border-color: #2caa69;
+    --message-flash-bg-color: #e2f9ed;
+    --message-flash-icon-bg-color: #2caa69;
+    background-image: url('./images/homepage/MessageFlashBackground-Green.svg');
+  }
+
+  &-blue {
+    --message-flash-border-color: #3030d1;
+    --message-flash-bg-color: #e6ebfe;
+    --message-flash-icon-bg-color: #5555f7;
+    background-image: url('./images/homepage/MessageFlashBackground-Blue.svg');
+  }
+
+  &-red {
+    --message-flash-border-color: #dc0404;
+    --message-flash-bg-color: #ffebeb;
+    --message-flash-icon-bg-color: #f63131;
+    background-image: url('./images/homepage/MessageFlashBackground-Red.svg');
+  }
+
+  border: 1px solid var(--message-flash-border-color);
+  border-radius: var(--message-flash-border-radius);
+  box-shadow: var(--message-flash-box-shadow);
+
+  &-icon {
+    grid-area: icon;
+    width: var(--message-flash-icon-size);
+    height: var(--message-flash-icon-size);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--message-flash-icon-bg-color);
+    color: var(--message-flash-icon-color);
+  }
+
+  .card-body {
+    grid-area: content;
+  }
+
+  &-content {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:focus-within,
+  &:hover {
+    border-color: var(--message-flash-border-color) !important;
+  }
+
+  &-close-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+}
