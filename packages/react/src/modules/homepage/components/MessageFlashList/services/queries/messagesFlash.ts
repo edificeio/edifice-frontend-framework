@@ -39,7 +39,7 @@ export const useMarkAsRead = () => {
           oldMessages.filter((msg) => msg.id !== message.id),
       );
     },
-    onError(error, variables, onMutateResult, context) {
+    onError() {
       queryClient.invalidateQueries({ queryKey: messagesFlashQueryKeys.all() });
     },
   });

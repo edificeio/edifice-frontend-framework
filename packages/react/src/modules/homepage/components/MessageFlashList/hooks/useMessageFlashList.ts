@@ -1,7 +1,10 @@
 import { IFlashMessageModel } from '@edifice.io/client';
-import { useMarkAsRead, useMessagesFlash } from '../services';
+import {
+  useMarkAsRead,
+  useMessagesFlash,
+} from '../services/queries/messagesFlash';
 
-export interface UseMessageFlashListReturn {
+export interface UseMessageFlashListContainerReturn {
   /** Array of flash messages */
   messages: IFlashMessageModel[] | undefined;
   /** Loading state for fetching messages */
@@ -16,18 +19,19 @@ export interface UseMessageFlashListReturn {
  * Custom hook that provides flash messages data and handlers with exposed loading states
  * @returns Object containing messages, loading state, error state, and mark as read handler
  */
-export const useMessageFlashList = (): UseMessageFlashListReturn => {
-  const { data: messages, isLoading, error } = useMessagesFlash();
-  const markAsReadMessage = useMarkAsRead();
+export const useMessageFlashListContainer =
+  (): UseMessageFlashListContainerReturn => {
+    const { data: messages, isLoading, error } = useMessagesFlash();
+    const markAsReadMessage = useMarkAsRead();
 
-  const handleMarkAsRead = (message: IFlashMessageModel) => {
-    markAsReadMessage.mutate(message);
-  };
+    const handleMarkAsRead = (message: IFlashMessageModel) => {
+      markAsReadMessage.mutate(message);
+    };
 
-  return {
-    messages,
-    isLoading,
-    error,
-    handleMarkAsRead,
+    return {
+      messages,
+      isLoading,
+      error,
+      handleMarkAsRead,
+    };
   };
-};

@@ -14,12 +14,7 @@ const MessageFlashList = ({
   onCloseMessage,
 }: MessageFlashListProps) => {
   return (
-    <section
-      role="region"
-      aria-label="Flash messages"
-      aria-live="polite"
-      className="message-flash-list"
-    >
+    <section role="region" className="message-flash-list">
       <Flex direction="column" gap="16" role="list">
         {messages.map((message) => (
           <div key={message.id} role="listitem">

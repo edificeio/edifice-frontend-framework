@@ -1,8 +1,8 @@
-import { useMessageFlashList } from './hooks';
+import { useMessageFlashListContainer } from './hooks/useMessageFlashList';
 import MessageFlashList from './MessageFlashList';
 
 export const MessageFlashListContainer = () => {
-  const { messages, error, handleMarkAsRead } = useMessageFlashList();
+  const { messages, error, handleMarkAsRead } = useMessageFlashListContainer();
 
   // No messages or loading state
   if (!messages || messages.length === 0 || error) {

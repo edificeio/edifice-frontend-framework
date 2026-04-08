@@ -85,7 +85,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
 
   const classes = clsx(
     'message-flash',
-    message.color ? `message-flash--${message.color}` : null,
+    message.color ? `message-flash-${message.color}` : null,
   );
   const classesContent = clsx(
     'message-flash-content',
