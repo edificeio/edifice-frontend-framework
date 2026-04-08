@@ -18,9 +18,15 @@ export type ResourceRightDefinition = {
   default: boolean;
   requires: ResourceRightName[];
   excludes: ResourceRightName[];
+  defaultName?: string;
+  isReadOnlyCheckbox?: boolean;
 };
 
-export type ResourceRights = Record<ResourceRightName, ResourceRightDefinition>;
+export type ResourceRights = {
+  [K in ResourceRightName]?: ResourceRightDefinition;
+} & {
+  [K in ResourceRightName]: { [P in K]: ResourceRightDefinition };
+}[ResourceRightName];
 
 export interface BookmarkUser {
   id: string;
