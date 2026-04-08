@@ -9,6 +9,7 @@ export interface LastInfosModel {
     title: string; // "News collège Denis Poisson"
   };
   title: string; // "xx"
+  content: string; // "yy"
   username: string; // "DEVAULX ALAIN"
   id: number; // 597
 }

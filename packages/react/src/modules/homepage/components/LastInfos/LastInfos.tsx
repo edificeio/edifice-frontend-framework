@@ -24,7 +24,7 @@ export interface LastInfosProps {
 }
 
 const LastInfos = ({ title }: LastInfosProps) => {
-  return title;
+  return <div>{title}</div>;
 };
 
 LastInfos.displayName = 'LastInfos';
