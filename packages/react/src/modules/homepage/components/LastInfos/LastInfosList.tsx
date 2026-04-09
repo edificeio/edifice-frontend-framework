@@ -19,14 +19,15 @@ export function LastInfosList({ infos }: LastInfosListProps) {
   return (
     <Flex gap="4" direction="column" className="last-infos-list">
       <Flex justify="between" align="center" className="last-infos-list-header">
-        <h4>{t('last-infos-widget.widget.title')}</h4>
+        <h4 className="fw-bold">{t('last-infos-widget.widget.title')}</h4>
         <Button
           color="tertiary"
           variant="ghost"
+          className="rounded-pill fw-bold"
           rightIcon={<IconArrowRight />}
           onClick={handleSeeMoreClick}
         >
-          <h5>{t('last-infos-widget.widget.see.more')}</h5>
+          {t('last-infos-widget.widget.see.more')}
         </Button>
       </Flex>
 
@@ -38,7 +39,9 @@ export function LastInfosList({ infos }: LastInfosListProps) {
             text={t('last-infos-widget.widget.empty')}
           />
         ) : (
-          infos.map((infosProps) => <LastInfos {...infosProps} />)
+          infos.map((infosProps) => (
+            <LastInfos key={infosProps.id} {...infosProps} />
+          ))
         )}
       </Flex>
     </Flex>

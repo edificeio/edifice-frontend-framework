@@ -1,5 +1,6 @@
 import { TextSkeleton } from '../../../../components';
 import { LastInfosProps } from './LastInfos';
+import { LastInfosList } from './LastInfosList';
 import { useLastInfos } from './useLastInfos';
 
 export function LastInfosContainer() {
@@ -14,16 +15,21 @@ export function LastInfosContainer() {
   ) : error ? (
     error.message
   ) : (
-    infos?.map(
-      ({ content, title, username, thread }) =>
-        ({
-          content,
-          title,
-          username,
-          icon: thread.icon,
-          thread: thread.title,
-        }) satisfies LastInfosProps,
-    )
+    <LastInfosList
+      infos={
+        infos?.map(
+          ({ id, content, title, username, thread }) =>
+            ({
+              id,
+              content,
+              title,
+              username,
+              icon: thread.icon,
+              thread: thread.title,
+            }) satisfies LastInfosProps,
+        ) ?? []
+      }
+    />
   );
 }
 
