@@ -34,6 +34,7 @@ export function LastInfosList({ infos }: LastInfosListProps) {
         {infos.length === 0 ? (
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
+            size={64}
             text={t('last-infos-widget.widget.empty')}
           />
         ) : (
