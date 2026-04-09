@@ -174,7 +174,7 @@ const OnboardingModalInner = <T = boolean,>(
                     <Image
                       width="270"
                       height="140"
-                      className="mx-auto my-12"
+                      className="mx-auto my-12 onboarding-modal-image"
                       loading="lazy"
                       src={item.src}
                       alt={t(item.alt)}
