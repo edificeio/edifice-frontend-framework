@@ -84,40 +84,40 @@ const LastInfos = ({
 
   return (
     <article
-      className={clsx('last-infos-item', {
-        'last-infos-item-headline': isHeadline,
+      className={clsx('last-infos-card', {
+        'last-infos-card-headline': isHeadline,
       })}
     >
-      <header className="last-infos-item-header">
-        <div className="last-infos-item-thread">
+      <header className="last-infos-card-header">
+        <div className="last-infos-card-thread">
           <img
             src={icon}
             alt={thread}
-            className="last-infos-item-thread-icon"
+            className="last-infos-card-thread-icon"
             loading="lazy"
           />
-          <span className="last-infos-item-thread-name">{thread}</span>
+          <span className="last-infos-card-thread-name">{thread}</span>
         </div>
-        <time className="last-infos-item-date">
+        <time className="last-infos-card-date">
           {formatDate(publicationDate)}
         </time>
       </header>
 
-      <p className="last-infos-item-excerpt">{excerpt}</p>
+      <p className="last-infos-card-excerpt">{excerpt}</p>
 
       {previewImages.length > 0 && (
-        <div className="last-infos-item-medias">
+        <div className="last-infos-card-medias">
           {previewImages.map((image, index) => (
-            <div className="last-infos-item-media" key={`${image}-${index}`}>
+            <div className="last-infos-card-media" key={`${image}-${index}`}>
               <img
                 src={image}
                 alt=""
-                className="last-infos-item-media-image"
+                className="last-infos-card-media-image"
                 loading="lazy"
               />
 
               {hasMoreImages && index === 2 && (
-                <div className="last-infos-item-media-overlay">
+                <div className="last-infos-card-media-overlay">
                   +{remainingImagesCount}
                 </div>
               )}
