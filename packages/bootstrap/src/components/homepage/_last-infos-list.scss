@@ -13,7 +13,24 @@
   &-header {
     --px: #{$spacer-8};
     --py: #{$spacer-0};
+    --border-radius: var(--edifice-border-radius-2xl);
 
     padding: var(--py) var(--px);
+  }
+
+  &-title {
+    font-family: var(--edifice-font-family-title);
+    font-weight: var(--edifice-font-weight-bold);
+    font-size: var(--edifice-font-size-s);
+    line-height: var(--edifice-font-lineheight-s);
+    color: var(--edifice-grey-900);
+  }
+
+  &-seemore {
+    font-family: var(--edifice-font-family-title);
+    font-weight: var(--edifice-font-weight-bold);
+    font-size: var(--edifice-font-size-default);
+    line-height: var(--edifice-font-lineheight-s);
+    color: var(--edifice-color-text-button-other-default);
   }
 }

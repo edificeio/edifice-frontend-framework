@@ -6,26 +6,40 @@ import LastInfos, { LastInfosProps } from './LastInfos';
 import illuLastInfosEmptyScreen from '@edifice.io/bootstrap/dist/images/homepage/illu-last-infos-beta.svg';
 
 export interface LastInfosListProps {
+  /** List of Info to display. */
   infos: Array<LastInfosProps>;
+
+  /** Handle a click on an info. If undefined, Actualites will be opened to read the info details. */
+  onInfoClick?: (threadId: number | string, id: number | string) => void;
+
+  /** Handle a click on the "See more" button. If undefined, Actualites will be opened. */
+  onSeeMoreClick?: () => void;
 }
 
-export function LastInfosList({ infos }: LastInfosListProps) {
+export function LastInfosList({
+  infos,
+  onInfoClick: handleInfoClick = (
+    threadId: number | string,
+    id: number | string,
+  ) => {
+    window.open(`/actualites/threads/${threadId}?info=${id}`, '_self');
+  },
+  onSeeMoreClick: handleSeeMoreClick = () => {
+    window.open('/actualites', '_self');
+  },
+}: LastInfosListProps) {
   const { t } = useTranslation();
 
-  const handleSeeMoreClick = () => {
-    window.open('/actualites', '_self');
-  };
-
   return (
-    <Flex gap="4" direction="column" className="last-infos-list">
+    <Flex gap="8" direction="column" className="last-infos-list">
       <Flex justify="between" align="center" className="last-infos-list-header">
-        <h4 className="fw-bold">
+        <h2 className="last-infos-list-title">
           {t('homepage.widget.last-infos-list.title')}
-        </h4>
+        </h2>
         <Button
           color="tertiary"
           variant="ghost"
-          className="rounded-pill fw-bold"
+          className="last-infos-list-seemore"
           rightIcon={<IconArrowRight />}
           onClick={handleSeeMoreClick}
         >
@@ -42,7 +56,11 @@ export function LastInfosList({ infos }: LastInfosListProps) {
           />
         ) : (
           infos.map((infosProps) => (
-            <LastInfos key={infosProps.id} {...infosProps} />
+            <LastInfos
+              key={infosProps.id}
+              onClick={handleInfoClick}
+              {...infosProps}
+            />
           ))
         )}
       </Flex>
