@@ -103,15 +103,7 @@ const DropdownItem = ({
 
   if (isFiltered) {
     return (
-      <div
-        aria-hidden="true"
-        style={{
-          visibility: 'hidden',
-          height: 0,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-        }}
-      >
+      <div aria-hidden="true" style={{ display: 'none' }}>
         <div className="dropdown-item">
           <div className="d-flex gap-8 align-items-center">
             {icon}
