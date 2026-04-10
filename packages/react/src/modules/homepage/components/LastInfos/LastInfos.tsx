@@ -1,3 +1,9 @@
+import { useMemo } from 'react';
+
+import clsx from 'clsx';
+
+import { useDate } from '../../../../hooks/useDate';
+
 export interface LastInfosProps {
   /**
    * ID of the info.
@@ -22,13 +28,105 @@ export interface LastInfosProps {
    */
   content: string;
   /**
+   * Publication date in ISO format.
+   */
+  publicationDate: string;
+  /**
+   * Whether the info is highlighted.
+   */
+  isHeadline: boolean;
+  /**
    * Name of the user who posted this info.
    */
   username: string;
 }
 
-const LastInfos = ({ title }: LastInfosProps) => {
-  return <div>{title}</div>;
+const LastInfos = ({
+  icon,
+  thread,
+  content,
+  publicationDate,
+  isHeadline,
+}: LastInfosProps) => {
+  const { formatDate } = useDate();
+
+  const { excerpt, images } = useMemo(() => {
+    if (!content) {
+      return { excerpt: '', images: [] as string[] };
+    }
+
+    if (typeof DOMParser === 'undefined') {
+      const plainText = content.replace(/<[^>]*>/g, ' ').trim();
+      return { excerpt: plainText, images: [] as string[] };
+    }
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    const imageSources = Array.from(doc.querySelectorAll('img'))
+      .map((image) => image.getAttribute('src') ?? '')
+      .filter((src) => src.trim().length > 0);
+
+    Array.from(
+      doc.querySelectorAll('img, video, iframe, audio, embed'),
+    ).forEach((mediaElement) => {
+      mediaElement.parentNode?.removeChild(mediaElement);
+    });
+
+    return {
+      excerpt: (doc.body.textContent ?? '').trim(),
+      images: imageSources,
+    };
+  }, [content]);
+
+  const previewImages = images.slice(0, 3);
+  const hasMoreImages = images.length > 2;
+  const remainingImagesCount = Math.max(images.length - 2, 0);
+
+  return (
+    <article
+      className={clsx('last-infos-item', {
+        'last-infos-item-headline': isHeadline,
+      })}
+    >
+      <header className="last-infos-item-header">
+        <div className="last-infos-item-thread">
+          <img
+            src={icon}
+            alt={thread}
+            className="last-infos-item-thread-icon"
+            loading="lazy"
+          />
+          <span className="last-infos-item-thread-name">{thread}</span>
+        </div>
+        <time className="last-infos-item-date">
+          {formatDate(publicationDate)}
+        </time>
+      </header>
+
+      <p className="last-infos-item-excerpt">{excerpt}</p>
+
+      {previewImages.length > 0 && (
+        <div className="last-infos-item-medias">
+          {previewImages.map((image, index) => (
+            <div className="last-infos-item-media" key={`${image}-${index}`}>
+              <img
+                src={image}
+                alt=""
+                className="last-infos-item-media-image"
+                loading="lazy"
+              />
+
+              {hasMoreImages && index === 2 && (
+                <div className="last-infos-item-media-overlay">
+                  +{remainingImagesCount}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </article>
+  );
 };
 
 LastInfos.displayName = 'LastInfos';
