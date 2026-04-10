@@ -133,16 +133,17 @@ const useDropdown = (
     }
   }, [activeIndex]);
 
+  const visibleItemCount = () =>
+    Object.values(itemRefs.current).filter(Boolean).length;
+
   const nextItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex((prevIndex) => (prevIndex + 1) % itemCount);
+    const count = visibleItemCount();
+    setActiveIndex((prevIndex) => (prevIndex + 1) % count);
   };
 
   const previousItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex((prevIndex) => (prevIndex - 1 + itemCount) % itemCount);
+    const count = visibleItemCount();
+    setActiveIndex((prevIndex) => (prevIndex - 1 + count) % count);
   };
 
   const firstItem = () => {
@@ -150,9 +151,7 @@ const useDropdown = (
   };
 
   const lastItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex(itemCount - 1);
+    setActiveIndex(visibleItemCount() - 1);
   };
 
   const openDropdown = useCallback(() => {
@@ -213,7 +212,9 @@ const useDropdown = (
 
   const onMenuItemMouseEnter = (event: React.MouseEvent) => {
     if (focusOnMouseEnter) {
-      const items: HTMLElement[] = Object.values(itemRefs.current);
+      const items = Object.values(itemRefs.current).filter(
+        (item): item is HTMLElement => !!item,
+      );
 
       const index = items.findIndex(
         (item) => item.id === event.currentTarget.getAttribute('id'),

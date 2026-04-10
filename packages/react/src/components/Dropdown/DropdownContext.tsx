@@ -5,6 +5,11 @@ import { UseDropdownProps } from '../../hooks/useDropdown/useDropdown';
 type OmittedProps = Omit<UseDropdownProps, 'triggerRef' | 'menuRef'>;
 export interface DropdownContextProps extends OmittedProps {
   block?: boolean;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  hasMatches: boolean;
+  reportMatch: (id: string, isMatch: boolean) => void;
+  unregisterMatch: (id: string) => void;
 }
 
 export const DropdownContext = createContext<DropdownContextProps | null>(

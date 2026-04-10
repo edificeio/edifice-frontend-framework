@@ -7,7 +7,8 @@ import { IconRafterUp } from '../../modules/icons/components';
 import { Badge } from '../Badge';
 import { useDropdownContext } from './DropdownContext';
 
-export interface DropdownTriggerProps extends React.ComponentPropsWithRef<'button'> {
+export interface DropdownTriggerProps
+  extends React.ComponentPropsWithRef<'button'> {
   /**
    * Dropdown trigger title
    */

@@ -1,4 +1,4 @@
-import { ReactNode, useId } from 'react';
+import { ReactNode, useId, useLayoutEffect } from 'react';
 
 import clsx from 'clsx';
 
@@ -22,6 +22,11 @@ interface DropdownCheckboxItem {
    * OnKeyDown handler
    */
   onChange: (value: string | number) => void;
+  /**
+   * Value used to filter this item when `Dropdown.SearchInput` is present.
+   * If provided, the item is hidden when the search query doesn't match.
+   */
+  searchValue?: string;
 }
 
 const DropdownCheckboxItem = ({
@@ -29,11 +34,24 @@ const DropdownCheckboxItem = ({
   value,
   model,
   onChange,
+  searchValue,
 }: DropdownCheckboxItem) => {
-  const { itemProps, itemRefs, isFocused } = useDropdownContext();
+  const {
+    itemProps,
+    itemRefs,
+    isFocused,
+    searchQuery,
+    reportMatch,
+    unregisterMatch,
+  } = useDropdownContext();
+  const id = useId();
+
   const { onMenuItemKeyDown, onMenuItemMouseEnter } = itemProps;
 
-  const id = useId();
+  const isFiltered =
+    searchValue !== undefined &&
+    searchQuery !== '' &&
+    !searchValue.toLowerCase().includes(searchQuery.toLowerCase());
 
   const checked = model.includes(value);
 
@@ -47,6 +65,32 @@ const DropdownCheckboxItem = ({
   const dropdownCheckboxItem = clsx('dropdown-item c-pointer', {
     focus: isFocused === id,
   });
+
+  useLayoutEffect(() => {
+    if (searchValue === undefined) return;
+    reportMatch(id, !isFiltered);
+    return () => unregisterMatch(id);
+  }, [id, isFiltered, searchValue, reportMatch, unregisterMatch]);
+
+  if (isFiltered) {
+    return (
+      <div
+        aria-hidden="true"
+        style={{
+          visibility: 'hidden',
+          height: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+        }}
+      >
+        <div className="dropdown-item">
+          <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
