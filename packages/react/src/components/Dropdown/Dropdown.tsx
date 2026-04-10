@@ -1,9 +1,12 @@
 import {
   forwardRef,
   ReactNode,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useMemo,
+  useRef,
+  useState,
 } from 'react';
 
 import { Placement } from '@floating-ui/react';
@@ -17,6 +20,7 @@ import DropdownItem from './DropdownItem';
 import DropdownMenu from './DropdownMenu';
 import DropdownMenuGroup from './DropdownMenuGroup';
 import DropdownRadioItem from './DropdownRadioItem';
+import DropdownSearchInput from './DropdownSearchInput';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
 
@@ -120,6 +124,24 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
     }: DropdownProps,
     refDropdown,
   ) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [hasMatches, setHasMatches] = useState(true);
+    const matchMapRef = useRef<Map<string, boolean>>(new Map());
+
+    const reportMatch = useCallback((id: string, isMatch: boolean) => {
+      matchMapRef.current.set(id, isMatch);
+      const next = [...matchMapRef.current.values()].some(Boolean);
+      setHasMatches((prev) => (prev !== next ? next : prev));
+    }, []);
+
+    const unregisterMatch = useCallback((id: string) => {
+      matchMapRef.current.delete(id);
+      const next =
+        matchMapRef.current.size === 0 ||
+        [...matchMapRef.current.values()].some(Boolean);
+      setHasMatches((prev) => (prev !== next ? next : prev));
+    }, []);
+
     const {
       visible,
       isFocused,
@@ -167,6 +189,11 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
         setVisible,
         openDropdown,
         closeDropdown,
+        searchQuery,
+        setSearchQuery,
+        hasMatches,
+        reportMatch,
+        unregisterMatch,
       }),
       [
         visible,
@@ -179,6 +206,10 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
         setVisible,
         openDropdown,
         closeDropdown,
+        searchQuery,
+        hasMatches,
+        reportMatch,
+        unregisterMatch,
       ],
     );
 
@@ -190,6 +221,7 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
 
     useEffect(() => {
       onToggle?.(visible);
+      if (!visible) setSearchQuery('');
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [visible]);
 
@@ -216,6 +248,7 @@ const Dropdown = Object.assign(Root, {
   CheckboxItem: DropdownCheckboxItem,
   RadioItem: DropdownRadioItem,
   MenuGroup: DropdownMenuGroup,
+  SearchInput: DropdownSearchInput,
 });
 
 export default Dropdown;

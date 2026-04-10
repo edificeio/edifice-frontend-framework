@@ -1,4 +1,4 @@
-import { ReactNode, useId } from 'react';
+import { ReactNode, useId, useLayoutEffect } from 'react';
 
 import clsx from 'clsx';
 
@@ -34,6 +34,11 @@ export interface DropdownItemProps {
    * Disabled status
    */
   disabled?: boolean;
+  /**
+   * Value used to filter this item when `Dropdown.SearchInput` is present.
+   * If provided, the item is hidden when the search query doesn't match.
+   */
+  searchValue?: string;
 }
 
 const DropdownItem = ({
@@ -44,11 +49,32 @@ const DropdownItem = ({
   className,
   minWidth,
   disabled,
+  searchValue,
   ...restProps
 }: DropdownItemProps) => {
-  const { itemProps, itemRefs, isFocused } = useDropdownContext();
+  const {
+    itemProps,
+    itemRefs,
+    isFocused,
+    searchQuery,
+    reportMatch,
+    unregisterMatch,
+  } = useDropdownContext();
+  const id = useId();
+
   const { onMenuItemKeyDown, onMenuItemMouseEnter, onMenuItemClick } =
     itemProps;
+
+  const isFiltered =
+    searchValue !== undefined &&
+    searchQuery !== '' &&
+    !searchValue.toLowerCase().includes(searchQuery.toLowerCase());
+
+  useLayoutEffect(() => {
+    if (searchValue === undefined) return;
+    reportMatch(id, !isFiltered);
+    return () => unregisterMatch(id);
+  }, [id, isFiltered, searchValue, reportMatch, unregisterMatch]);
 
   const handleOnClick = (event: React.MouseEvent) => {
     if (disabled) {
@@ -62,8 +88,6 @@ const DropdownItem = ({
     }
   };
 
-  const id = useId();
-
   const dropdownItem = clsx(
     'dropdown-item',
     {
@@ -76,6 +100,27 @@ const DropdownItem = ({
   const style = {
     ...(minWidth && { minWidth: `${minWidth}px` }),
   };
+
+  if (isFiltered) {
+    return (
+      <div
+        aria-hidden="true"
+        style={{
+          visibility: 'hidden',
+          height: 0,
+          overflow: 'hidden',
+          pointerEvents: 'none',
+        }}
+      >
+        <div className="dropdown-item">
+          <div className="d-flex gap-8 align-items-center">
+            {icon}
+            {children}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
