@@ -245,6 +245,12 @@ i18n.use(initReactI18next).init({
         'editor.preview.moreMedia': '+[[mediaCount]] images',
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
+        //----------------- LastInfosList -----------------
+        'homepage.widget.last-infos-list.empty':
+          'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
+        'homepage.widget.last-infos-list.see.more': 'Voir plus',
+        'homepage.widget.last-infos-list.title': 'Dernières actualités',
+        //------------------------------------------------------
       },
     },
   },
