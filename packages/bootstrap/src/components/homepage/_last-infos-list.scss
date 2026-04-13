@@ -3,13 +3,11 @@
 
 .last-infos-list {
   --background-color: #FFF;
-  --border-color: #FFF;
   --px: var(--#{$prefix}spacer-8);
   --py: var(--#{$prefix}spacer-8);
   --border-radius: var(--#{$prefix}border-radius-2xl);
 
   background-color: var(--background-color);
-  border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
   padding: var(--py) var(--px);
 

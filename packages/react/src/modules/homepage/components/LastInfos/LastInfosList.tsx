@@ -19,7 +19,9 @@ export function LastInfosList({ infos }: LastInfosListProps) {
   return (
     <Flex gap="4" direction="column" className="last-infos-list">
       <Flex justify="between" align="center" className="last-infos-list-header">
-        <h4 className="fw-bold">{t('last-infos-widget.widget.title')}</h4>
+        <h4 className="fw-bold">
+          {t('homepage.widget.last-infos-list.title')}
+        </h4>
         <Button
           color="tertiary"
           variant="ghost"
@@ -27,7 +29,7 @@ export function LastInfosList({ infos }: LastInfosListProps) {
           rightIcon={<IconArrowRight />}
           onClick={handleSeeMoreClick}
         >
-          {t('last-infos-widget.widget.see.more')}
+          {t('homepage.widget.last-infos-list.see.more')}
         </Button>
       </Flex>
 
@@ -36,7 +38,7 @@ export function LastInfosList({ infos }: LastInfosListProps) {
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
             size={64}
-            text={t('last-infos-widget.widget.empty')}
+            text={t('homepage.widget.last-infos-list.empty')}
           />
         ) : (
           infos.map((infosProps) => (
