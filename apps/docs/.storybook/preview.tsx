@@ -8,6 +8,7 @@ import {
   EdificeThemeProvider,
 } from '../../../packages/react/src/providers';
 
+import React from 'react';
 import i18n from '../i18n';
 
 import {
@@ -132,10 +133,10 @@ const preview: Preview = {
         switch (theme) {
           case 'side-by-side': {
             return (
-              <>
+              <React.Fragment>
                 <StoryTheme themePath="one" />
                 <StoryTheme themePath="neo" />
-              </>
+              </React.Fragment>
             );
           }
           case 'one': {
