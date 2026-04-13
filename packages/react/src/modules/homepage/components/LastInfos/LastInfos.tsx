@@ -141,7 +141,7 @@ const LastInfos = ({
       <Flex gap="4" direction="column" className="last-infos-card-content">
         <p className="last-infos-card-title fw-bold">{title}</p>
 
-        <p className="last-infos-card-excerpt text-truncate-2">{excerpt}</p>
+        <p className="last-infos-card-excerpt">{excerpt}</p>
 
         {previewImages.length > 0 && (
           <div className="last-infos-card-medias">
