@@ -27,11 +27,17 @@ const meta: Meta<typeof LastInfosList> = {
 export default meta;
 type Story = StoryObj<typeof LastInfosList>;
 
-const renderWithProps = (props: LastInfosListProps) => () => (
-  <div style={{ maxWidth: 397 }}>
-    <LastInfosList {...props} />
-  </div>
-);
+const renderWithProps = (props: LastInfosListProps) => () => {
+  function handleInfoClick(threadId: number | string, id: number | string) {
+    alert(`Info ID=${id} has been clicked `);
+  }
+
+  return (
+    <div style={{ maxWidth: 397 }}>
+      <LastInfosList {...props} onInfoClick={handleInfoClick} />
+    </div>
+  );
+};
 
 export const Default: Story = {
   render: renderWithProps({
@@ -46,7 +52,8 @@ export const Default: Story = {
           title,
           username,
           icon: thread.icon,
-          thread: thread.title,
+          threadId: thread.id,
+          threadName: thread.title,
           publicationDate: modifiedDate,
           isHeadline: index === 0,
         }) satisfies LastInfosProps,

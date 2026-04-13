@@ -6,15 +6,29 @@ import LastInfos, { LastInfosProps } from './LastInfos';
 import illuLastInfosEmptyScreen from '@edifice.io/bootstrap/dist/images/homepage/illu-last-infos-beta.svg';
 
 export interface LastInfosListProps {
+  /** List of Info to display. */
   infos: Array<LastInfosProps>;
+
+  /** Handle a click on an info. If undefined, Actualites will be opened to read the info details. */
+  onInfoClick?: (threadId: number | string, id: number | string) => void;
+
+  /** Handle a click on the "See more" button. If undefined, Actualites will be opened. */
+  onSeeMoreClick?: () => void;
 }
 
-export function LastInfosList({ infos }: LastInfosListProps) {
-  const { t } = useTranslation();
-
-  const handleSeeMoreClick = () => {
+export function LastInfosList({
+  infos,
+  onInfoClick: handleInfoClick = (
+    threadId: number | string,
+    id: number | string,
+  ) => {
+    window.open(`/actualites/threads/${threadId}?info=${id}`, '_self');
+  },
+  onSeeMoreClick: handleSeeMoreClick = () => {
     window.open('/actualites', '_self');
-  };
+  },
+}: LastInfosListProps) {
+  const { t } = useTranslation();
 
   return (
     <Flex gap="4" direction="column" className="last-infos-list">
@@ -42,7 +56,11 @@ export function LastInfosList({ infos }: LastInfosListProps) {
           />
         ) : (
           infos.map((infosProps) => (
-            <LastInfos key={infosProps.id} {...infosProps} />
+            <LastInfos
+              key={infosProps.id}
+              onClick={handleInfoClick}
+              {...infosProps}
+            />
           ))
         )}
       </Flex>

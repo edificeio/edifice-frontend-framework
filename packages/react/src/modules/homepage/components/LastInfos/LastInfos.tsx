@@ -9,17 +9,21 @@ export interface LastInfosProps {
   /**
    * ID of the info.
    */
-  id: number;
+  id: number | string;
   /**
    * URL of the icon to display in the upper left corner.
    * i.e. "/workspace/document/36a04526-15a2-4e8f-adb6-cca75630e50d"
    */
   icon: string;
   /**
+   * ID of the thread to be displayed next to the icon.
+   */
+  threadId: number | string;
+  /**
    * Name of the thread to be displayed next to the icon.
    * i.e. "Informations importantes"
    */
-  thread: string;
+  threadName: string;
   /**
    * Title of the info.
    */
@@ -40,15 +44,22 @@ export interface LastInfosProps {
    * Name of the user who posted this info.
    */
   username: string;
+  /**
+   * Handle the click event.
+   */
+  onClick?: (threadId: number | string, id: number | string) => void;
 }
 
 const LastInfos = ({
+  id,
   icon,
-  thread,
+  threadId,
+  threadName,
   content,
   publicationDate,
   isHeadline,
   title,
+  onClick,
 }: LastInfosProps) => {
   const { formatDate } = useDate();
 
@@ -84,12 +95,24 @@ const LastInfos = ({
   const hasMoreImages = images.length > 2;
   const remainingImagesCount = Math.max(images.length - 2, 0);
 
+  const actionLabel = `${threadName} - ${title}`;
+
   return (
     <article
       className={clsx('last-infos-card', {
         'last-infos-card-headline': isHeadline,
+        'last-infos-card-clickable': Boolean(onClick),
       })}
     >
+      {onClick && (
+        <button
+          type="button"
+          className="last-infos-card-action"
+          onClick={() => onClick(threadId, id)}
+          aria-label={actionLabel}
+        />
+      )}
+
       <header className="last-infos-card-header">
         <Flex
           gap="8"
@@ -99,13 +122,13 @@ const LastInfos = ({
         >
           <img
             src={icon}
-            alt={thread}
+            alt={threadName}
             width={24}
             height={24}
             loading="lazy"
             className="last-infos-card-thread-icon"
           />
-          <span className="last-infos-card-thread-name">{thread}</span>
+          <span className="last-infos-card-thread-name">{threadName}</span>
         </Flex>
         <time className="last-infos-card-date">
           {formatDate(publicationDate, 'short')}
