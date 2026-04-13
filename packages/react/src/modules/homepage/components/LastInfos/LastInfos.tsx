@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import clsx from 'clsx';
 
+import { Flex } from '../../../../components';
 import { useDate } from '../../../../hooks/useDate';
 
 export interface LastInfosProps {
@@ -47,6 +48,7 @@ const LastInfos = ({
   content,
   publicationDate,
   isHeadline,
+  title,
 }: LastInfosProps) => {
   const { formatDate } = useDate();
 
@@ -89,42 +91,53 @@ const LastInfos = ({
       })}
     >
       <header className="last-infos-card-header">
-        <div className="last-infos-card-thread">
+        <Flex
+          gap="8"
+          align="center"
+          justify="start"
+          className="last-infos-card-thread"
+        >
           <img
             src={icon}
             alt={thread}
-            className="last-infos-card-thread-icon"
+            width={24}
+            height={24}
             loading="lazy"
+            className="last-infos-card-thread-icon"
           />
           <span className="last-infos-card-thread-name">{thread}</span>
-        </div>
+        </Flex>
         <time className="last-infos-card-date">
-          {formatDate(publicationDate)}
+          {formatDate(publicationDate, 'short')}
         </time>
       </header>
 
-      <p className="last-infos-card-excerpt">{excerpt}</p>
+      <Flex gap="4" direction="column" className="last-infos-card-content">
+        <p className="last-infos-card-title fw-bold">{title}</p>
 
-      {previewImages.length > 0 && (
-        <div className="last-infos-card-medias">
-          {previewImages.map((image, index) => (
-            <div className="last-infos-card-media" key={`${image}-${index}`}>
-              <img
-                src={image}
-                alt=""
-                className="last-infos-card-media-image"
-                loading="lazy"
-              />
+        <p className="last-infos-card-excerpt text-truncate-2">{excerpt}</p>
 
-              {hasMoreImages && index === 2 && (
-                <div className="last-infos-card-media-overlay">
-                  +{remainingImagesCount}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+        {previewImages.length > 0 && (
+          <div className="last-infos-card-medias">
+            {previewImages.map((image, index) => (
+              <div className="last-infos-card-media" key={`${image}-${index}`}>
+                <img
+                  src={image}
+                  alt=""
+                  className="last-infos-card-media-image"
+                  loading="lazy"
+                />
+
+                {hasMoreImages && index === 2 && (
+                  <div className="last-infos-card-media-overlay">
+                    +{remainingImagesCount}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </Flex>
     </article>
   );
 };
