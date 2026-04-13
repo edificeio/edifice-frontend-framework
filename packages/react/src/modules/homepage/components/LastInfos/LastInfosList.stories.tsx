@@ -29,12 +29,20 @@ type Story = StoryObj<typeof LastInfosList>;
 
 const renderWithProps = (props: LastInfosListProps) => () => {
   function handleInfoClick(threadId: number | string, id: number | string) {
-    alert(`Info ID=${id} has been clicked `);
+    alert(`Info ID=${id} was clicked`);
+  }
+
+  function handleSeeMoreClick() {
+    alert(`See more was clicked`);
   }
 
   return (
     <div style={{ maxWidth: 397 }}>
-      <LastInfosList {...props} onInfoClick={handleInfoClick} />
+      <LastInfosList
+        {...props}
+        onSeeMoreClick={handleSeeMoreClick}
+        onInfoClick={handleInfoClick}
+      />
     </div>
   );
 };
