@@ -92,8 +92,11 @@ const LastInfos = ({
   }, [content]);
 
   const previewImages = images.slice(0, 3);
-  const hasMoreImages = images.length > 2;
-  const remainingImagesCount = Math.max(images.length - 2, 0);
+  const hasMoreImages = images.length > previewImages.length;
+  const remainingImagesCount = Math.max(
+    images.length - previewImages.length,
+    0,
+  );
 
   const actionLabel = `${threadName} - ${title}`;
 
