@@ -66,11 +66,13 @@ const UserRightsItem = ({
           data-testid={`user-rights-list-item-${rightName}-checkbox`}
         >
           <Checkbox
-            checked={
-              rightDef.isReadOnlyCheckbox ?? item.permission.includes(rightName)
+            checked={item.permission.includes(rightName)}
+            onChange={
+              isReadOnly || rightDef.isReadOnlyCheckbox
+                ? undefined
+                : () => handleChange(rightName as ResourceRightName)
             }
-            onChange={() => handleChange(rightName as ResourceRightName)}
-            disabled={isReadOnly}
+            disabled={isReadOnly || rightDef.isReadOnlyCheckbox}
             aria-label={`${item.displayName} - ${rightName}`}
           />
         </td>
