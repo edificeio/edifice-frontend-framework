@@ -60,15 +60,19 @@ const UserRightsItem = ({
         />
       </td>
       <td>{item.displayName}</td>
-      {Object.entries(resourceRights).map(([rightName]) => (
+      {Object.entries(resourceRights).map(([rightName, rightDef]) => (
         <td
           key={rightName}
           data-testid={`user-rights-list-item-${rightName}-checkbox`}
         >
           <Checkbox
             checked={item.permission.includes(rightName)}
-            onChange={() => handleChange(rightName as ResourceRightName)}
-            disabled={isReadOnly}
+            onChange={
+              isReadOnly || rightDef.isReadOnlyCheckbox
+                ? undefined
+                : () => handleChange(rightName as ResourceRightName)
+            }
+            disabled={isReadOnly || rightDef.isReadOnlyCheckbox}
             aria-label={`${item.displayName} - ${rightName}`}
           />
         </td>

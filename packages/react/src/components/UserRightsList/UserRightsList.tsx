@@ -175,9 +175,13 @@ export const UserRightsList = forwardRef<
                         {t('explorer.modal.share.search.placeholder')}
                       </VisuallyHidden>
                     </th>
-                    {Object.entries(resourceRights).map(([rightName]) => (
-                      <th key={rightName}>{rightName}</th>
-                    ))}
+                    {Object.entries(resourceRights).map(
+                      ([rightName, rightDef]) => (
+                        <th key={rightName}>
+                          {rightDef.displayName ?? rightName}
+                        </th>
+                      ),
+                    )}
                     {!isReadOnly && (
                       <th scope="col">
                         <VisuallyHidden>{t('close')}</VisuallyHidden>
