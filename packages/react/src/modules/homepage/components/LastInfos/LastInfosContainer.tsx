@@ -18,7 +18,15 @@ export function LastInfosContainer() {
     <LastInfosList
       infos={
         infos?.map(
-          ({ id, content, title, username, thread, modifiedDate, headline }) =>
+          ({
+            id,
+            content,
+            title,
+            username,
+            thread,
+            modifiedDate,
+            isHeadline,
+          }) =>
             ({
               id,
               content,
@@ -28,7 +36,7 @@ export function LastInfosContainer() {
               threadId: thread.id,
               threadName: thread.title,
               publicationDate: modifiedDate,
-              isHeadline: headline ?? false,
+              isHeadline,
             }) satisfies LastInfosProps,
         ) ?? []
       }
