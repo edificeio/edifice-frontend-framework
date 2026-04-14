@@ -59,14 +59,14 @@ const UserRightsBookmarkRow = ({
           {bookmark.name}
         </Button>
       </td>
-      {Object.entries(resourceRights).map(([rightName]) => (
+      {Object.entries(resourceRights).map(([rightName, rightDef]) => (
         <td key={rightName}>
           <Checkbox
             checked={bookmark.permission.includes(rightName)}
             onChange={() =>
               onToggleRight(bookmark.id, rightName as ResourceRightName)
             }
-            disabled={isReadOnly}
+            disabled={isReadOnly || rightDef.isReadOnlyCheckbox}
             aria-label={`${bookmark.name} - ${rightName}`}
             data-testid={`user-rights-list-bookmark-${rightName}-checkbox`}
           />
