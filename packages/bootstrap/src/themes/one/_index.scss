@@ -1,9 +1,13 @@
 @use "sass:map";
 @use "../../abstracts/" as *;
 @use "../../vendors/bootstrap";
+@use "../theme-api" as theme;
+@use "../configs/one" as *;
 
 @use "header";
 @use "buttons";
+
+@include theme.theme-vars("one", $one);
 
 $container-spacings: (
   "xs": 0rem,
