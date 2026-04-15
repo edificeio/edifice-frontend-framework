@@ -54,7 +54,7 @@ const preview: Preview = {
       defaultValue: 'one',
       toolbar: {
         icon: 'switchalt',
-        items: ['one', 'neo', 'side-by-side'],
+        items: ['one', 'neo', 'edifice2d', 'side-by-side'],
       },
     },
     app: {
@@ -132,10 +132,11 @@ const preview: Preview = {
         switch (theme) {
           case 'side-by-side': {
             return (
-              <React.Fragment>
+              <>
                 <StoryTheme themePath="one" />
                 <StoryTheme themePath="neo" />
-              </React.Fragment>
+                <StoryTheme themePath="edifice2d" />
+              </>
             );
           }
           case 'one': {
@@ -143,6 +144,9 @@ const preview: Preview = {
           }
           case 'neo': {
             return <StoryTheme themePath="neo" />;
+          }
+          case 'edifice2d': {
+            return <StoryTheme themePath="edifice2d" />;
           }
           case 'default': {
             return <StoryTheme themePath={theme} />;
