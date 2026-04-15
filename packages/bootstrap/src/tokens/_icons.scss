@@ -1,146 +1,83 @@
 @use 'sass:color';
 @use 'sass:map';
 @use '../abstracts/' as *;
+@use '../themes/neo/icons' as *;
+@use '../themes/one/icons' as *;
 
-.color-app {
-  //applications
-  @each $app, $data in $icons-applications {
-    [data-product='neo'] & {
-      &-#{$app} {
-        color: map.get($data, 'neo');
+/**
+  New Edifice themes will not have to define rules specifics for app and connector icons
+**/
+$theme-icons: (
+  'neo': $neo-icons,
+  'one': $one-icons,
+);
+
+@each $product, $config in $theme-icons {
+  $applications: map.get($config, 'applications');
+  $connectors: map.get($config, 'connectors');
+
+  [data-product='#{$product}'] {
+    .color-app {
+      @each $app, $color in $applications {
+        &-#{$app} {
+          color: $color;
+        }
+      }
+
+      @each $app, $color in $connectors {
+        &-#{$app} {
+          color: $color;
+        }
       }
     }
 
-    [data-product='one'] & {
-      &-#{$app} {
-        color: map.get($data, 'one');
+    .bg-app {
+      @each $app, $color in $applications {
+        &-#{$app} {
+          background-color: $color;
+        }
       }
-    }
-  }
 
-  //connectors
-  @each $app, $data in $icons-connectors {
-    [data-product='neo'] & {
-      &-#{$app} {
-        color: map.get($data, 'neo');
-      }
-    }
-
-    [data-product='one'] & {
-      &-#{$app} {
-        color: map.get($data, 'one');
-      }
-    }
-  }
-}
-
-.bg-app {
-  //applications
-  @each $app, $data in $icons-applications {
-    [data-product='neo'] & {
-      &-#{$app} {
-        background-color: map.get($data, 'neo');
+      @each $app, $color in $connectors {
+        &-#{$app} {
+          background-color: $color;
+        }
       }
     }
 
-    [data-product='one'] & {
-      &-#{$app} {
-        background-color: map.get($data, 'one');
+    .bg-light {
+      @each $app, $color in $applications {
+        &-#{$app} {
+          background-color: color.scale(
+            $color,
+            $lightness: 90%,
+            $saturation: 5%
+          );
+        }
       }
-    }
-  }
 
-  //connectors
-  @each $app, $data in $icons-connectors {
-    [data-product='neo'] & {
-      &-#{$app} {
-        background-color: map.get($data, 'neo');
-      }
-    }
-
-    [data-product='one'] & {
-      &-#{$app} {
-        background-color: map.get($data, 'one');
-      }
-    }
-  }
-}
-
-.bg-light {
-  // applications
-  @each $app, $data in $icons-applications {
-    [data-product='neo'] & {
-      &-#{$app} {
-        background-color: color.scale(
-          map.get($data, 'neo'),
-          $lightness: 90%,
-          $saturation: 5%
-        );
+      @each $app, $color in $connectors {
+        &-#{$app} {
+          background-color: color.scale(
+            $color,
+            $lightness: 90%,
+            $saturation: 5%
+          );
+        }
       }
     }
 
-    [data-product='one'] & {
-      &-#{$app} {
-        background-color: color.scale(
-          map.get($data, 'one'),
-          $lightness: 90%,
-          $saturation: 5%
-        );
+    .border-app {
+      @each $app, $color in $applications {
+        &-#{$app} {
+          border-color: $color;
+        }
       }
-    }
-  }
 
-  //connectors
-  @each $app, $data in $icons-connectors {
-    [data-product='neo'] & {
-      &-#{$app} {
-        background-color: color.scale(
-          map.get($data, 'neo'),
-          $lightness: 90%,
-          $saturation: 5%
-        );
-      }
-    }
-
-    [data-product='one'] & {
-      &-#{$app} {
-        background-color: color.scale(
-          map.get($data, 'one'),
-          $lightness: 90%,
-          $saturation: 5%
-        );
-      }
-    }
-  }
-}
-
-.border-app {
-  //applications
-  @each $app, $data in $icons-applications {
-    [data-product='neo'] & {
-      &-#{$app} {
-        border-color: map.get($data, 'neo');
-      }
-    }
-
-    [data-product='one'] & {
-      &-#{$app} {
-        border-color: map.get($data, 'one');
-      }
-    }
-  }
-
-  //connectors
-  @each $app, $data in $icons-connectors {
-    [data-product='neo'] & {
-      &-#{$app} {
-        border-color: map.get($data, 'neo');
-      }
-    }
-
-    [data-product='one'] & {
-      &-#{$app} {
-        border-color: map.get($data, 'one');
+      @each $app, $color in $connectors {
+        &-#{$app} {
+          border-color: $color;
+        }
       }
     }
   }
