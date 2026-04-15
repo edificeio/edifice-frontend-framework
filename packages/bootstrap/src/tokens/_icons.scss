@@ -1,6 +1,8 @@
 @use 'sass:color';
 @use 'sass:map';
 @use '../abstracts/' as *;
+@use '../themes/neo/icons' as *;
+@use '../themes/one/icons' as *;
 
 $all-icons: map.merge($icons-applications, $icons-connectors);
 

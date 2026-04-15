@@ -1,0 +1,110 @@
+$black: #000;
+$white: #FFF;
+
+$grey-900: #383838;
+$grey-800: #696969;
+$grey-700: #828282;
+$grey-500: #C7C7C7;
+$grey-300: #E4E4E4;
+$grey-200: #F2F2F2;
+$grey-100: #F7F7F7;
+
+$orange-900: #A82400;
+$orange-700: #E73404;
+$orange-500: #FC5E29;
+$orange-400: #FF8261;
+$orange-300: #FFC1B2;
+$orange-200: #FFEBE5;
+$orange-100: #FFF7F5;
+
+$yellow-900: #9E7400;
+$yellow-700: #E5A800;
+$yellow-500: #FFC403;
+$yellow-400: #FFD357;
+$yellow-300: #FFE5A3;
+$yellow-200: #FCF3CF;
+$yellow-100: #FEFAEC;
+
+$blue-900: #1C1C73;
+$blue-700: #3030D1;
+$blue-500: #5555F7;
+$blue-400: #738EFC;
+$blue-300: #C8D3FE;
+$blue-200: #E6EBFE;
+$blue-100: #F5F7FF;
+
+$green-900: #238050;
+$green-700: #2CAA69;
+$green-500: #33C77D;
+$green-400: #64DB9E;
+$green-300: #BDF0D5;
+$green-200: #E2F9ED;
+$green-100: #F2FCF7;
+
+$pink-900: #9D399D;
+$pink-700: #E26AE2;
+$pink-500: #FC94FF;
+$pink-400: #FDBFFF;
+$pink-300: #FDD7FE;
+$pink-200: #FEECFE;
+$pink-100: #FFF5FF;
+
+$info-700: $blue-700;
+$info-500: $blue-500;
+$info-300: $blue-300;
+$info-200: $blue-200;
+
+$error-700: #DC0404;
+$error-500: #F63131;
+$error-300: #FFBDBD;
+$error-200: #FFEBEB;
+
+$warning-700: $yellow-700;
+$warning-500: $yellow-500;
+$warning-300: $yellow-300;
+$warning-200: $yellow-200;
+
+$success-700: $green-700;
+$success-500: $green-500;
+$success-300: $green-300;
+$success-200: $green-200;
+
+$accessible-blue: #648FFF;
+$accessible-deepBlue: #785EF0;
+$accessible-lavender: #DC267F;
+
+$numbers-0: 0px;
+$numbers-2: 2px;
+$numbers-4: 4px;
+$numbers-8: 8px;
+$numbers-12: 12px;
+$numbers-16: 16px;
+$numbers-24: 24px;
+$numbers-32: 32px;
+$numbers-40: 40px;
+$numbers-48: 48px;
+$numbers-64: 64px;
+$numbers-128: 128px;
+
+$spacer-0: $numbers-0;
+$spacer-2: $numbers-2;
+$spacer-4: $numbers-4;
+$spacer-8: $numbers-8;
+$spacer-12: $numbers-12;
+$spacer-16: $numbers-16;
+$spacer-24: $numbers-24;
+$spacer-32: $numbers-32;
+$spacer-40: $numbers-40;
+$spacer-48: $numbers-48;
+$spacer-64: $numbers-64;
+
+$border-radius-sm: $numbers-4;
+$border-radius-md: $numbers-8;
+$border-radius-lg: $numbers-12;
+$border-radius-xl: $numbers-16;
+$border-radius-2xl: $numbers-24;
+$border-radius-3xl: $numbers-32;
+$border-radius-pill: $numbers-128;
+
+$font-size-root: 62.5%;
+$font-size-base: 1.6rem;
