@@ -1,2 +1,6 @@
+@use "../theme-api" as theme;
+@use "../configs/neo" as *;
 @use "buttons";
 @use "header";
+
+@include theme.theme-vars("neo", $neo);
