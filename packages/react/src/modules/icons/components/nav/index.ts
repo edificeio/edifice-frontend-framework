@@ -1,11 +1,16 @@
 export { default as IconCommunities } from './IconCommunities';
+export { default as IconCommunitiesBeta } from './IconCommunitiesBeta';
 export { default as IconCommunity } from './IconCommunity';
 export { default as IconDisconnect } from './IconDisconnect';
 export { default as IconHome } from './IconHome';
+export { default as IconHomeBeta } from './IconHomeBeta';
+export { default as IconMessagesBeta } from './IconMessagesBeta';
 export { default as IconMyApps } from './IconMyApps';
+export { default as IconMyAppsBeta } from './IconMyAppsBeta';
 export { default as IconNeoAssistance } from './IconNeoAssistance';
 export { default as IconNeoMessaging } from './IconNeoMessaging';
 export { default as IconNewRelease } from './IconNewRelease';
+export { default as IconNotificationsBeta } from './IconNotificationsBeta';
 export { default as IconOneAssistance } from './IconOneAssistance';
 export { default as IconOneMessaging } from './IconOneMessaging';
 export { default as IconOneProfile } from './IconOneProfile';
