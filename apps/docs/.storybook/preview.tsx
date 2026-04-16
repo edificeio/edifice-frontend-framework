@@ -76,6 +76,7 @@ const preview: Preview = {
           'Introduction',
           ['Welcome', 'Getting Started', '*'],
           'Design System',
+          'Edifice Design System',
           'Components',
           ['Base', '*'],
           'Forms',

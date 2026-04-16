@@ -1,0 +1,290 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Edifice Design System/Themes" />
+
+<style>
+  {`
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .theme-card {
+      border: 1px solid #e4e4e4;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .theme-card-header {
+      padding: 16px;
+      font-weight: bold;
+      font-size: 16px;
+      color: white;
+    }
+    .theme-card-body {
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .theme-card-body strong { display: inline-block; min-width: 140px; color: #696969; }
+    .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .vars-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+    .vars-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #e4e4e4; }
+    .vars-table td { padding: 7px 12px; border-bottom: 1px solid #f2f2f2; font-family: monospace; }
+    .vars-table td:first-child { color: #5555F7; }
+    .vars-table td:last-child { color: #696969; font-size: 13px; }
+    .section-title { margin-top: 40px; }
+  `}
+</style>
+
+# Thèmes
+
+Chaque thème est défini par une map Sass qui alimente des CSS custom properties scoped sur `[data-product]`.
+
+---
+
+## Comparatif
+
+<div className="theme-grid">
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#2A9CC8' }}>
+      Neo
+    </div>
+    <div className="theme-card-body">
+      <div>
+        <strong>Couleur primaire</strong>{' '}
+        <span className="swatch" style={{ background: '#2A9CC8' }}></span>Sky
+        Blue 400
+      </div>
+      <div>
+        <strong>Police titre</strong> Urbanist
+      </div>
+      <div>
+        <strong>Police corps</strong> Arimo
+      </div>
+      <div>
+        <strong>Bold</strong> 700
+      </div>
+      <div>
+        <strong>Radius bouton</strong> pill (12.8rem)
+      </div>
+    </div>
+  </div>
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#FC5E29' }}>
+      One
+    </div>
+    <div className="theme-card-body">
+      <div>
+        <strong>Couleur primaire</strong>{' '}
+        <span className="swatch" style={{ background: '#FF8261' }}></span>Orange
+        400
+      </div>
+      <div>
+        <strong>Police titre</strong> Playpen Sans
+      </div>
+      <div>
+        <strong>Police corps</strong> Arimo
+      </div>
+      <div>
+        <strong>Bold</strong> 600
+      </div>
+      <div>
+        <strong>Radius bouton</strong> lg (12px)
+      </div>
+    </div>
+  </div>
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#FFD357' }}>
+      Edifice2D
+    </div>
+    <div className="theme-card-body">
+      <div>
+        <strong>Couleur primaire</strong>{' '}
+        <span className="swatch" style={{ background: '#FFD357' }}></span>Yellow
+        400
+      </div>
+      <div>
+        <strong>Police titre</strong> Urbanist
+      </div>
+      <div>
+        <strong>Police corps</strong> Arimo
+      </div>
+      <div>
+        <strong>Bold</strong> 700
+      </div>
+      <div>
+        <strong>Radius bouton</strong> pill (128px)
+      </div>
+    </div>
+  </div>
+</div>
+
+---
+
+## CSS custom properties générées
+
+Ces variables sont scopées sur `[data-product="<theme>"]` et accessibles dans tout le DOM enfant.
+
+### Couleurs
+
+<table className="vars-table">
+  <thead>
+    <tr>
+      <th>CSS custom property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>--edifice-color-text-default</td>
+      <td>Couleur de texte principale</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-text-subText</td>
+      <td>Couleur de texte secondaire</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-text-button-primary-default</td>
+      <td>Texte bouton primaire (état normal)</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-text-button-primary-disable</td>
+      <td>Texte bouton primaire (désactivé)</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-text-button-other-default</td>
+      <td>Texte bouton autre (état normal)</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-text-button-other-disable</td>
+      <td>Texte bouton autre (désactivé)</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-primary-pale</td>
+      <td>Couleur primaire — très claire</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-primary-light</td>
+      <td>Couleur primaire — claire</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-primary-default</td>
+      <td>Couleur primaire — par défaut</td>
+    </tr>
+    <tr>
+      <td>--edifice-color-primary-dark</td>
+      <td>Couleur primaire — foncée</td>
+    </tr>
+  </tbody>
+</table>
+
+### Typographie
+
+<table className="vars-table">
+  <thead>
+    <tr>
+      <th>CSS custom property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>--edifice-font-family-title</td>
+      <td>Police des titres</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-family-body</td>
+      <td>Police du corps de texte</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-weight-bold</td>
+      <td>Graisse gras</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-weight-regular</td>
+      <td>Graisse normale</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-xl</td>
+      <td>Taille de texte XL</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-l</td>
+      <td>Taille de texte L</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-m</td>
+      <td>Taille de texte M</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-s</td>
+      <td>Taille de texte S</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-default</td>
+      <td>Taille de texte par défaut</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-small</td>
+      <td>Taille de texte petite</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-size-caption</td>
+      <td>Taille de texte caption</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-xl</td>
+      <td>Hauteur de ligne XL</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-l</td>
+      <td>Hauteur de ligne L</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-m</td>
+      <td>Hauteur de ligne M</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-s</td>
+      <td>Hauteur de ligne S</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-xs</td>
+      <td>Hauteur de ligne XS</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-2xs</td>
+      <td>Hauteur de ligne 2XS</td>
+    </tr>
+    <tr>
+      <td>--edifice-font-lineHeight-3xs</td>
+      <td>Hauteur de ligne 3XS</td>
+    </tr>
+  </tbody>
+</table>
+
+### Radius
+
+<table className="vars-table">
+  <thead>
+    <tr>
+      <th>CSS custom property</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>--edifice-radius-button</td>
+      <td>Rayon des boutons (pill ou lg selon le thème)</td>
+    </tr>
+  </tbody>
+</table>
