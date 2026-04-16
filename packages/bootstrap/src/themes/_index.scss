@@ -1,8 +1,7 @@
 @use 'theme-api' as theme;
-@use 'configs/primitives' as prim;
-@include theme.primitive-vars(prim);
 @forward 'neo';
 @forward 'one';
 @forward 'edifice2d';
 @forward 'overrides';
 @forward 'skins';
+@include theme.primitive-vars();

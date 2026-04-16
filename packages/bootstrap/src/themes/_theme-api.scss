@@ -36,6 +36,7 @@
 @use 'sass:map';
 @use 'sass:meta';
 @use '../abstracts/variables' as vars;
+@use 'configs/primitives' as prim;
 
 /// Génère récursivement des variables CSS à partir d'une map imbriquée.
 /// Les clés sont jointes par des tirets : color.text.default → --prefix-color-text-default
@@ -60,9 +61,9 @@
   }
 }
 
-@mixin primitive-vars($primitives-module) {
+@mixin primitive-vars() {
   :root {
-    @include _emit-vars(meta.module-variables($primitives-module));
+    @include _emit-vars(meta.module-variables(prim));
   }
 }
 
