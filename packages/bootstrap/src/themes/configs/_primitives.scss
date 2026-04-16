@@ -33,6 +33,14 @@ $blue-300: #C8D3FE;
 $blue-200: #E6EBFE;
 $blue-100: #F5F7FF;
 
+$skyBlue-900: #1B5A78;
+$skyBlue-700: #2F7EA7;
+$skyBlue-500: #278DB5;
+$skyBlue-400: #2A9CC8;
+$skyBlue-300: #B9E3F8;
+$skyBlue-200: #E5F5FF;
+$skyBlue-100: #F2FAFF;
+
 $green-900: #238050;
 $green-700: #2CAA69;
 $green-500: #33C77D;
@@ -73,18 +81,18 @@ $accessible-blue: #648FFF;
 $accessible-deepBlue: #785EF0;
 $accessible-lavender: #DC267F;
 
-$numbers-0: 0px;
-$numbers-2: 2px;
-$numbers-4: 4px;
-$numbers-8: 8px;
-$numbers-12: 12px;
-$numbers-16: 16px;
-$numbers-24: 24px;
-$numbers-32: 32px;
-$numbers-40: 40px;
-$numbers-48: 48px;
-$numbers-64: 64px;
-$numbers-128: 128px;
+$numbers-0: 0;
+$numbers-2: 0.2rem;
+$numbers-4: 0.4rem;
+$numbers-8: 0.8rem;
+$numbers-12: 1.2rem;
+$numbers-16: 1.6rem;
+$numbers-24: 2.4rem;
+$numbers-32: 3.2rem;
+$numbers-40: 4.0rem;
+$numbers-48: 4.8rem;
+$numbers-64: 6.4rem;
+$numbers-128: 12.8rem;
 
 $spacer-0: $numbers-0;
 $spacer-2: $numbers-2;
