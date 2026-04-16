@@ -1,0 +1,187 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Edifice Design System/How to use" />
+
+# How to use
+
+Guide pratique pour utiliser le système de thèmes Edifice dans une application.
+
+---
+
+## 1. Activer un thème
+
+Positionner l'attribut `data-product` sur le conteneur racine de l'application.
+
+```html
+<!-- Thème Neo -->
+<div data-product="neo">
+  ...
+</div>
+
+<!-- Thème One -->
+<div data-product="one">
+  ...
+</div>
+
+<!-- Thème Edifice2D -->
+<div data-product="edifice2d">
+  ...
+</div>
+```
+
+Toutes les CSS custom properties du thème sont automatiquement disponibles dans l'arbre DOM enfant.
+
+---
+
+## 2. Utiliser les variables de thème
+
+Une fois le thème activé, utiliser les variables avec `var()` dans les styles.
+
+**En CSS :**
+
+```css
+.my-title {
+  color: var(--edifice-color-text-default);
+  font-family: var(--edifice-font-family-title);
+  font-size: var(--edifice-font-size-xl);
+}
+
+.my-button {
+  border-radius: var(--edifice-radius-button);
+  color: var(--edifice-color-text-button-primary-default);
+  background-color: var(--edifice-color-primary-default);
+}
+```
+
+**En React (style inline) :**
+
+```tsx
+<h1 style={{ color: "var(--edifice-color-text-default)" }}>
+  Titre
+</h1>
+```
+
+**En SCSS :**
+
+```scss
+.my-component {
+  color: var(--edifice-color-text-default);
+  background: var(--edifice-color-primary-pale);
+
+  &:hover {
+    background: var(--edifice-color-primary-light);
+  }
+}
+```
+
+---
+
+## 3. Utiliser les primitives
+
+Les primitives sont disponibles dans `:root`, sans avoir besoin d'activer un thème.
+
+```css
+.my-element {
+  padding: var(--edifice-numbers-16);         /* 16px */
+  border-radius: var(--edifice-border-radius-md); /* 8px */
+  color: var(--edifice-grey-900);
+}
+```
+
+Référence complète dans la page [Primitives](?path=/docs/edifice-design-system-primitives--docs).
+
+---
+
+## 4. Créer une variante
+
+Une variante surcharge certaines variables d'un thème pour une déclinaison spécifique (collectivité, partenaire...).
+
+**Côté HTML :** ajouter `data-theme` en plus de `data-product`.
+
+```html
+<div data-product="neo" data-theme="ma-variante">
+  ...
+</div>
+```
+
+**Côté SCSS :** appeler le mixin `theme-variant()` dans le fichier d'overrides du thème.
+
+```scss
+@use '../../theme-api' as theme;
+@use '../../configs/primitives' as *;
+
+@include theme.theme-variant('neo', 'ma-variante', (
+  color: (
+    primary: (
+      default: $orange-400,
+      dark: $orange-500,
+      light: $orange-300,
+      pale: $orange-200,
+    )
+  )
+));
+```
+
+---
+
+## 5. Ajouter un nouveau thème
+
+Checklist pour créer un thème `mytheme` :
+
+**1. Créer la config** dans `packages/bootstrap/src/themes/configs/_mytheme.scss` :
+
+```scss
+@use 'primitives' as *;
+
+$mytheme: (
+  name: 'mytheme',
+  color: (
+    text: (
+      default: $grey-900,
+      subText: $grey-800,
+      button: (
+        primary: ( default: $blue-900, disable: $white ),
+        other:   ( default: $blue-900, disable: $blue-300 )
+      )
+    ),
+    primary: (
+      pale: $green-200,
+      light: $green-300,
+      default: $green-500,
+      dark: $green-700,
+    )
+  ),
+  font: (
+    family: ( title: 'Arimo', body: 'Arimo' ),
+    weight: ( bold: 700, regular: 400 ),
+    size: (
+      xl: $numbers-32, l: $numbers-26, m: $numbers-22,
+      s: $numbers-18, default: $numbers-16, small: $numbers-14, caption: $numbers-12,
+    ),
+    lineHeight: (
+      xl: $numbers-36, l: $numbers-32, m: $numbers-28,
+      s: $numbers-26, xs: $numbers-22, 2xs: $numbers-20, 3xs: $numbers-18,
+    )
+  ),
+  radius: (
+    button: $border-radius-md
+  )
+);
+```
+
+**2. Créer l'index du thème** dans `packages/bootstrap/src/themes/mytheme/_index.scss` :
+
+```scss
+@use '../theme-api' as theme;
+@use '../configs/mytheme' as *;
+
+@include theme.theme-vars('mytheme', $mytheme);
+```
+
+**3. Exposer dans l'index global** `packages/bootstrap/src/themes/_index.scss` :
+
+```scss
+@forward 'mytheme';
+```
+
+**4. Tester** en posant `data-product="mytheme"` sur un conteneur et en vérifiant les variables dans les DevTools.
