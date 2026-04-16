@@ -60,6 +60,12 @@
   }
 }
 
+@mixin primitive-vars($primitives-module) {
+  :root {
+    @include _emit-vars(meta.module-variables($primitives-module));
+  }
+}
+
 @mixin theme-vars($product, $config) {
   [data-product='#{$product}'] {
     @each $section-key, $section-value in $config {

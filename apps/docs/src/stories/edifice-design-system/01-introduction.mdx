@@ -1,0 +1,74 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Edifice Design System/Introduction" />
+
+<style>
+  {`
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 24px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .arch-layer {
+      padding: 16px 20px;
+      border-radius: 8px;
+      border: 1px solid #e4e4e4;
+    }
+    .arch-layer.l1 { background: #F5F7FF; border-color: #C8D3FE; }
+    .arch-layer.l2 { background: #FEFAEC; border-color: #FFE5A3; }
+    .arch-layer.l3 { background: #F2FCF7; border-color: #BDF0D5; }
+    .arch-layer .title { font-weight: bold; margin-bottom: 4px; font-family: sans-serif; }
+    .arch-layer .selector { color: #5555F7; }
+    .arch-layer .desc { color: #696969; font-family: sans-serif; font-size: 13px; margin-top: 4px; }
+    .file-link { font-family: monospace; font-size: 13px; color: #5555F7; }
+  `}
+</style>
+
+# Edifice Design System
+
+Le système de thèmes d'Edifice repose sur une architecture en trois couches qui sépare clairement les valeurs primitives, les décisions de design par thème, et les surcharges par composant.
+
+## Architecture
+
+<div className="arch-diagram">
+  <div className="arch-layer l1">
+    <div className="title">Couche 1 — Primitives</div>
+    <div className="selector"><code>:root {'{'} --edifice-grey-900, --edifice-numbers-8, --edifice-border-radius-md, ... {'}'}</code></div>
+    <div className="desc">Tokens de base communs à tous les thèmes. Générés une seule fois au niveau global.</div>
+  </div>
+  <div className="arch-layer l2">
+    <div className="title">Couche 2 — Thème</div>
+    <div className="selector"><code>[data-product="neo"] {'{'} --edifice-color-text-default, --edifice-font-family-title, ... {'}'}</code></div>
+    <div className="desc">Variables sémantiques générées depuis la map de config de chaque thème (neo / one / edifice2d).</div>
+  </div>
+  <div className="arch-layer l3">
+    <div className="title">Couche 3 — Variante</div>
+    <div className="selector"><code>[data-product="neo"][data-theme="na"] {'{'} --edifice-color-primary-default, ... {'}'}</code></div>
+    <div className="desc">Surcharges spécifiques à une déclinaison du thème (collectivité, partenaire, etc.).</div>
+  </div>
+</div>
+
+## Fichiers source
+
+<table>
+  <thead>
+    <tr><th>Rôle</th><th>Fichier</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Tokens primitifs</td><td><code>packages/bootstrap/src/themes/configs/_primitives.scss</code></td></tr>
+    <tr><td>Config thème Edifice2D</td><td><code>packages/bootstrap/src/themes/configs/_edifice2d.scss</code></td></tr>
+    <tr><td>Config thème Neo</td><td><code>packages/bootstrap/src/themes/configs/_neo.scss</code></td></tr>
+    <tr><td>Config thème One</td><td><code>packages/bootstrap/src/themes/configs/_one.scss</code></td></tr>
+    <tr><td>API (mixins)</td><td><code>packages/bootstrap/src/themes/_theme-api.scss</code></td></tr>
+    <tr><td>Point d'entrée</td><td><code>packages/bootstrap/src/themes/_index.scss</code></td></tr>
+  </tbody>
+</table>
+
+## Pourquoi ce système ?
+
+L'ancienne approche déclarait les couleurs et la typographie directement en variables Sass Bootstrap (`$primary`, `$font-family-sans-serif`…). Ces variables étaient résolues à la compilation — impossible de changer de thème à l'exécution.
+
+Le nouveau système génère des **CSS custom properties** scoped par `data-product`. Changer de thème revient à changer un attribut HTML : les valeurs changent dynamiquement sans recompilation.
