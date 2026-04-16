@@ -1,0 +1,203 @@
+import { Meta } from "@storybook/blocks";
+import { Colors } from "../../components/Colors";
+import { TokenTable, TokenRow } from "../../components/TokenRow";
+
+<Meta title="Edifice Design System/Primitives" />
+
+<style>
+  {`
+    * { box-sizing: border-box; }
+    .h2, .h3 { margin-top: 50px; border-bottom: 0; }
+    .flex { display: flex; gap: 24px; flex-wrap: wrap; }
+    .ctn-card { width: 200px; box-shadow: 0px 2px 6px 0px #00000026; border-radius: 8px; }
+    .name-color { font-weight: bold; }
+    .name-color, .hexa-color, .variable { margin: 0; line-height: 22px; font-size: 13px; }
+    .background-color { height: 80px; border-radius: 8px 8px 0 0; }
+    .description-color { padding: 12px; border-radius: 0 0 8px 8px; background: #FFFFFF; }
+  `}
+</style>
+
+# Primitives
+
+Les primitives sont les valeurs de base du design system. Elles sont émises dans `:root` et disponibles globalement sous le préfixe `--edifice-`.
+
+---
+
+## Gris
+
+<div className="flex">
+  <Colors color="Grey 900" hexa="#383838" nameVar="$grey-900" cssVar="--edifice-grey-900" />
+  <Colors color="Grey 800" hexa="#696969" nameVar="$grey-800" cssVar="--edifice-grey-800" />
+  <Colors color="Grey 700" hexa="#828282" nameVar="$grey-700" cssVar="--edifice-grey-700" />
+  <Colors color="Grey 500" hexa="#C7C7C7" nameVar="$grey-500" cssVar="--edifice-grey-500" />
+  <Colors color="Grey 300" hexa="#E4E4E4" nameVar="$grey-300" cssVar="--edifice-grey-300" />
+  <Colors color="Grey 200" hexa="#F2F2F2" nameVar="$grey-200" cssVar="--edifice-grey-200" />
+  <Colors color="Grey 100" hexa="#F7F7F7" nameVar="$grey-100" cssVar="--edifice-grey-100" />
+</div>
+
+---
+
+## Orange
+
+<div className="flex">
+  <Colors color="Orange 900" hexa="#A82400" nameVar="$orange-900" cssVar="--edifice-orange-900" />
+  <Colors color="Orange 700" hexa="#E73404" nameVar="$orange-700" cssVar="--edifice-orange-700" />
+  <Colors color="Orange 500" hexa="#FC5E29" nameVar="$orange-500" cssVar="--edifice-orange-500" />
+  <Colors color="Orange 400" hexa="#FF8261" nameVar="$orange-400" cssVar="--edifice-orange-400" />
+  <Colors color="Orange 300" hexa="#FFC1B2" nameVar="$orange-300" cssVar="--edifice-orange-300" />
+  <Colors color="Orange 200" hexa="#FFEBE5" nameVar="$orange-200" cssVar="--edifice-orange-200" />
+  <Colors color="Orange 100" hexa="#FFF7F5" nameVar="$orange-100" cssVar="--edifice-orange-100" />
+</div>
+
+---
+
+## Jaune
+
+<div className="flex">
+  <Colors color="Yellow 900" hexa="#9E7400" nameVar="$yellow-900" cssVar="--edifice-yellow-900" />
+  <Colors color="Yellow 700" hexa="#E5A800" nameVar="$yellow-700" cssVar="--edifice-yellow-700" />
+  <Colors color="Yellow 500" hexa="#FFC403" nameVar="$yellow-500" cssVar="--edifice-yellow-500" />
+  <Colors color="Yellow 400" hexa="#FFD357" nameVar="$yellow-400" cssVar="--edifice-yellow-400" />
+  <Colors color="Yellow 300" hexa="#FFE5A3" nameVar="$yellow-300" cssVar="--edifice-yellow-300" />
+  <Colors color="Yellow 200" hexa="#FCF3CF" nameVar="$yellow-200" cssVar="--edifice-yellow-200" />
+  <Colors color="Yellow 100" hexa="#FEFAEC" nameVar="$yellow-100" cssVar="--edifice-yellow-100" />
+</div>
+
+---
+
+## Bleu
+
+<div className="flex">
+  <Colors color="Blue 900" hexa="#1C1C73" nameVar="$blue-900" cssVar="--edifice-blue-900" />
+  <Colors color="Blue 700" hexa="#3030D1" nameVar="$blue-700" cssVar="--edifice-blue-700" />
+  <Colors color="Blue 500" hexa="#5555F7" nameVar="$blue-500" cssVar="--edifice-blue-500" />
+  <Colors color="Blue 400" hexa="#738EFC" nameVar="$blue-400" cssVar="--edifice-blue-400" />
+  <Colors color="Blue 300" hexa="#C8D3FE" nameVar="$blue-300" cssVar="--edifice-blue-300" />
+  <Colors color="Blue 200" hexa="#E6EBFE" nameVar="$blue-200" cssVar="--edifice-blue-200" />
+  <Colors color="Blue 100" hexa="#F5F7FF" nameVar="$blue-100" cssVar="--edifice-blue-100" />
+</div>
+
+---
+
+## Vert
+
+<div className="flex">
+  <Colors color="Green 900" hexa="#238050" nameVar="$green-900" cssVar="--edifice-green-900" />
+  <Colors color="Green 700" hexa="#2CAA69" nameVar="$green-700" cssVar="--edifice-green-700" />
+  <Colors color="Green 500" hexa="#33C77D" nameVar="$green-500" cssVar="--edifice-green-500" />
+  <Colors color="Green 400" hexa="#64DB9E" nameVar="$green-400" cssVar="--edifice-green-400" />
+  <Colors color="Green 300" hexa="#BDF0D5" nameVar="$green-300" cssVar="--edifice-green-300" />
+  <Colors color="Green 200" hexa="#E2F9ED" nameVar="$green-200" cssVar="--edifice-green-200" />
+  <Colors color="Green 100" hexa="#F2FCF7" nameVar="$green-100" cssVar="--edifice-green-100" />
+</div>
+
+---
+
+## Sky Blue
+
+<div className="flex">
+  <Colors color="Sky Blue 900" hexa="#1B5A78" nameVar="$skyBlue-900" cssVar="--edifice-skyBlue-900" />
+  <Colors color="Sky Blue 700" hexa="#2F7EA7" nameVar="$skyBlue-700" cssVar="--edifice-skyBlue-700" />
+  <Colors color="Sky Blue 500" hexa="#278DB5" nameVar="$skyBlue-500" cssVar="--edifice-skyBlue-500" />
+  <Colors color="Sky Blue 400" hexa="#2A9CC8" nameVar="$skyBlue-400" cssVar="--edifice-skyBlue-400" />
+  <Colors color="Sky Blue 300" hexa="#B9E3F8" nameVar="$skyBlue-300" cssVar="--edifice-skyBlue-300" />
+  <Colors color="Sky Blue 200" hexa="#E5F5FF" nameVar="$skyBlue-200" cssVar="--edifice-skyBlue-200" />
+  <Colors color="Sky Blue 100" hexa="#F2FAFF" nameVar="$skyBlue-100" cssVar="--edifice-skyBlue-100" />
+</div>
+
+---
+
+## Rose
+
+<div className="flex">
+  <Colors color="Pink 900" hexa="#9D399D" nameVar="$pink-900" cssVar="--edifice-pink-900" />
+  <Colors color="Pink 700" hexa="#E26AE2" nameVar="$pink-700" cssVar="--edifice-pink-700" />
+  <Colors color="Pink 500" hexa="#FC94FF" nameVar="$pink-500" cssVar="--edifice-pink-500" />
+  <Colors color="Pink 400" hexa="#FDBFFF" nameVar="$pink-400" cssVar="--edifice-pink-400" />
+  <Colors color="Pink 300" hexa="#FDD7FE" nameVar="$pink-300" cssVar="--edifice-pink-300" />
+  <Colors color="Pink 200" hexa="#FEECFE" nameVar="$pink-200" cssVar="--edifice-pink-200" />
+  <Colors color="Pink 100" hexa="#FFF5FF" nameVar="$pink-100" cssVar="--edifice-pink-100" />
+</div>
+
+---
+
+## Couleurs sémantiques
+
+### Info
+
+<div className="flex">
+  <Colors color="Info 700" hexa="#3030D1" nameVar="$info-700" cssVar="--edifice-info-700" />
+  <Colors color="Info 500" hexa="#5555F7" nameVar="$info-500" cssVar="--edifice-info-500" />
+  <Colors color="Info 300" hexa="#C8D3FE" nameVar="$info-300" cssVar="--edifice-info-300" />
+  <Colors color="Info 200" hexa="#E6EBFE" nameVar="$info-200" cssVar="--edifice-info-200" />
+</div>
+
+### Erreur
+
+<div className="flex">
+  <Colors color="Error 700" hexa="#DC0404" nameVar="$error-700" cssVar="--edifice-error-700" />
+  <Colors color="Error 500" hexa="#F63131" nameVar="$error-500" cssVar="--edifice-error-500" />
+  <Colors color="Error 300" hexa="#FFBDBD" nameVar="$error-300" cssVar="--edifice-error-300" />
+  <Colors color="Error 200" hexa="#FFEBEB" nameVar="$error-200" cssVar="--edifice-error-200" />
+</div>
+
+### Avertissement
+
+<div className="flex">
+  <Colors color="Warning 700" hexa="#E5A800" nameVar="$warning-700" cssVar="--edifice-warning-700" />
+  <Colors color="Warning 500" hexa="#FFC403" nameVar="$warning-500" cssVar="--edifice-warning-500" />
+  <Colors color="Warning 300" hexa="#FFE5A3" nameVar="$warning-300" cssVar="--edifice-warning-300" />
+  <Colors color="Warning 200" hexa="#FCF3CF" nameVar="$warning-200" cssVar="--edifice-warning-200" />
+</div>
+
+### Succès
+
+<div className="flex">
+  <Colors color="Success 700" hexa="#2CAA69" nameVar="$success-700" cssVar="--edifice-success-700" />
+  <Colors color="Success 500" hexa="#33C77D" nameVar="$success-500" cssVar="--edifice-success-500" />
+  <Colors color="Success 300" hexa="#BDF0D5" nameVar="$success-300" cssVar="--edifice-success-300" />
+  <Colors color="Success 200" hexa="#E2F9ED" nameVar="$success-200" cssVar="--edifice-success-200" />
+</div>
+
+---
+
+## Couleurs accessibles
+
+<div className="flex">
+  <Colors color="Blue" hexa="#648FFF" nameVar="$accessible-blue" cssVar="--edifice-accessible-blue" />
+  <Colors color="Deep Blue" hexa="#785EF0" nameVar="$accessible-deepBlue" cssVar="--edifice-accessible-deepBlue" />
+  <Colors color="Lavender" hexa="#DC267F" nameVar="$accessible-lavender" cssVar="--edifice-accessible-lavender" />
+</div>
+
+---
+
+## Spacing / Numbers
+
+<TokenTable>
+  <TokenRow name="$numbers-0"   cssVar="--edifice-numbers-0"   value="0" />
+  <TokenRow name="$numbers-2"   cssVar="--edifice-numbers-2"   value="0.2rem" />
+  <TokenRow name="$numbers-4"   cssVar="--edifice-numbers-4"   value="0.4rem" />
+  <TokenRow name="$numbers-8"   cssVar="--edifice-numbers-8"   value="0.8rem" />
+  <TokenRow name="$numbers-12"  cssVar="--edifice-numbers-12"  value="1.2rem" />
+  <TokenRow name="$numbers-16"  cssVar="--edifice-numbers-16"  value="1.6rem" />
+  <TokenRow name="$numbers-24"  cssVar="--edifice-numbers-24"  value="2.4rem" />
+  <TokenRow name="$numbers-32"  cssVar="--edifice-numbers-32"  value="3.2rem" />
+  <TokenRow name="$numbers-40"  cssVar="--edifice-numbers-40"  value="4.0rem" />
+  <TokenRow name="$numbers-48"  cssVar="--edifice-numbers-48"  value="4.8rem" />
+  <TokenRow name="$numbers-64"  cssVar="--edifice-numbers-64"  value="6.4rem" />
+  <TokenRow name="$numbers-128" cssVar="--edifice-numbers-128" value="12.8rem" />
+</TokenTable>
+
+---
+
+## Border Radius
+
+<TokenTable>
+  <TokenRow name="$border-radius-sm"   cssVar="--edifice-border-radius-sm"   value="0.4rem" />
+  <TokenRow name="$border-radius-md"   cssVar="--edifice-border-radius-md"   value="0.8rem" />
+  <TokenRow name="$border-radius-lg"   cssVar="--edifice-border-radius-lg"   value="1.2rem" />
+  <TokenRow name="$border-radius-xl"   cssVar="--edifice-border-radius-xl"   value="1.6rem" />
+  <TokenRow name="$border-radius-2xl"  cssVar="--edifice-border-radius-2xl"  value="2.4rem" />
+  <TokenRow name="$border-radius-3xl"  cssVar="--edifice-border-radius-3xl"  value="3.2rem" />
+  <TokenRow name="$border-radius-pill" cssVar="--edifice-border-radius-pill" value="12.8rem" />
+</TokenTable>
