@@ -125,7 +125,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
           <IconInfoCircle />
         )}
       </div>
-      <Card.Body>
+      <Card.Body space="0">
         <Flex direction="column">
           <Card.Title>{message.title}</Card.Title>
           <div ref={contentRef} className={classesContent}>
