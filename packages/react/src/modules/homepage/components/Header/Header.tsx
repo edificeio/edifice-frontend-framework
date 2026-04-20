@@ -5,16 +5,26 @@ import {
   Avatar,
   Badge,
   LogoBeta,
+  Popover,
+  PopoverBody,
   VisuallyHidden,
 } from '../../../../components';
-import { useConversation, useHasWorkflow, useUser } from '../../../../hooks';
+import {
+  useConversation,
+  useHasWorkflow,
+  useHover,
+  useUser,
+} from '../../../../hooks';
 
+import { useId } from 'react';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
 import { NavItem } from '../../../../components/Layout/components/NavItem';
 import { NavLink } from '../../../../components/Layout/components/NavLink';
 import useHeader from '../../../../components/Layout/hooks/useHeader';
+import { useEdificeTheme } from '../../../../providers/';
 import {
   IconCommunitiesBeta,
+  IconDisconnect,
   IconHomeBeta,
   IconMessagesBeta,
   IconMyAppsBeta,
@@ -38,12 +48,23 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
 
   const { userAvatar, userName, communityWorkflow, conversationWorflow } =
     useHeader({ user, avatar });
+  const { theme } = useEdificeTheme();
 
   const hasMessages = messages > 0;
 
+  /**
+   * useHover hook
+   */
+  const [userRef, isUserHovered] = useHover<HTMLLIElement>();
+
+  /**
+   * IDs for Popover Component
+   */
+  const popoverUserId = useId();
+
   return (
     <header className={classes}>
-      <Navbar>
+      <Navbar className="px-24 py-8">
         <LogoBeta src={`${src}/img/illustrations/logo.png`} />
         <ul className="navbar-nav">
           <NavItem>
@@ -94,7 +115,13 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
               <IconMyAppsBeta />
             </NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem
+            className="position-relative"
+            ref={userRef}
+            id={popoverUserId}
+            aria-haspopup="true"
+            aria-expanded={isUserHovered}
+          >
             <NavLink
               link="/userbook/mon-compte"
               translate={t('navbar.myaccount')}
@@ -109,6 +136,25 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
                 height="32"
               />
             </NavLink>
+            <Popover
+              className="top-100 widget"
+              id={popoverUserId}
+              isVisible={isUserHovered}
+            >
+              <PopoverBody>
+                <a
+                  href={
+                    '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
+                  }
+                  className="nav-link"
+                >
+                  <IconDisconnect className="icon logout" />
+                  <span id="logout-label" className="nav-text">
+                    {t('navbar.disconnect')}
+                  </span>
+                </a>
+              </PopoverBody>
+            </Popover>
           </NavItem>
         </ul>
       </Navbar>

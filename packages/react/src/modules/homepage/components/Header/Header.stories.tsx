@@ -61,42 +61,6 @@ export const CustomTheme: Story = {
 };
 
 /**
- * Header with production theme assets.
- * Uses production-like theme configuration.
- */
-export const ProductionTheme: Story = {
-  args: {
-    src: '/theme/one',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Header configured with production theme assets showing the standard Edifice ONE appearance.',
-      },
-    },
-  },
-};
-
-/**
- * Header without theme source for testing edge cases.
- * When src is undefined, the header should gracefully handle missing assets.
- */
-export const NoThemeSource: Story = {
-  args: {
-    src: undefined,
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Header with no theme source specified to test how the component handles missing assets.',
-      },
-    },
-  },
-};
-
-/**
  * Mobile responsive header demonstration.
  * Shows how the header adapts to mobile viewport sizes.
  */

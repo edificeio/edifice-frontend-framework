@@ -1,5 +1,5 @@
-@use '../abstracts/' as *;
-@use '../vendors/bootstrap';
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
 
 .header .navbar {
   --#{$prefix}navbar-padding-y: 0.8rem;
@@ -64,6 +64,7 @@
 
     grid-area: links;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
