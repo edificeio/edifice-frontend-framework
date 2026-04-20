@@ -30,6 +30,7 @@ export * from './List';
 export * from './Loading';
 export * from './LoadingScreen';
 export * from './Logo';
+export * from './LogoBeta';
 export * from './MediaViewer';
 export * from './Menu';
 export * from './Modal';
