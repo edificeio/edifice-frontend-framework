@@ -213,9 +213,9 @@ export const mockLastInfos = [
     thread: {
       id: 1,
       icon,
-      title: 'News collège Denis Poisson',
+      title: 'News collège A',
     },
-    title: 'latest news',
+    title: 'latest news with a very very VERY long title with no use other than testing !!',
     content: 'blah blah 1',
     username: 'Jean Aymar',
     id: 16,
@@ -223,9 +223,9 @@ export const mockLastInfos = [
   {
     modifiedDate: '2021-03-23T01:01:00.000+02',
     thread: {
-      id: 1,
+      id: 2,
       icon,
-      title: 'News collège Denis Poisson',
+      title: 'News Ecole B',
     },
     title: 'another info',
     content: 'blah blah plus ancien',
@@ -237,7 +237,7 @@ export const mockLastInfos = [
     thread: {
       id: 1,
       icon,
-      title: 'News collège Denis Poisson',
+      title: 'News collège A',
     },
     title: 'older info',
     content: 'blah blah encore plus ancien',
@@ -249,12 +249,37 @@ export const mockLastInfos = [
     thread: {
       id: 1,
       icon,
-      title: 'News collège Denis Poisson',
+      title: 'News collège A',
     },
     title: 'oldest info',
     content: 'blah blah périmé',
     username: 'Jean Aymar',
     id: 13,
+  },
+  {
+    modifiedDate: '2021-03-20T16:36:05.398+02',
+    thread: {
+      id: 3,
+      icon,
+      title: 'News école C',
+    },
+    title: 'fresh news',
+    content: 'not so fresh',
+    username: 'Jean Aymar',
+    id: 12,
+  },
+  {
+    modifiedDate: '2021-03-19T16:36:05.398+02',
+    thread: {
+      id: 3,
+      icon,
+      title: 'News école C',
+    },
+    title: 'brand new',
+    content:
+      '<p>An HTML news is usually the thing to be rendered</p><br><p>So nice, right ?</p><p>But what if is it very long ? Do you see any ellipsis ? I wonder. Well... not at the moment.</p>',
+    username: 'Jean Aymar',
+    id: 12,
   },
 ];
 

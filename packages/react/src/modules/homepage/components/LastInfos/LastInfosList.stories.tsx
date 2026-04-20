@@ -27,22 +27,49 @@ const meta: Meta<typeof LastInfosList> = {
 export default meta;
 type Story = StoryObj<typeof LastInfosList>;
 
-const renderWithProps = (props: LastInfosListProps) => () => (
-  <div style={{ maxWidth: 397 }}>
-    <LastInfosList {...props} />
-  </div>
-);
+const renderWithProps = (props: LastInfosListProps) => () => {
+  function handleInfoClick(threadId: number | string, id: number | string) {
+    alert(`Info ID=${id} was clicked`);
+  }
+
+  function handleSeeMoreClick() {
+    alert(`See more was clicked`);
+  }
+
+  return (
+    <div style={{ maxWidth: 397 }}>
+      <LastInfosList
+        {...props}
+        onSeeMoreClick={handleSeeMoreClick}
+        onInfoClick={handleInfoClick}
+      />
+    </div>
+  );
+};
 
 export const Default: Story = {
   render: renderWithProps({
     infos: mockLastInfos.map(
-      ({ content, title, username, thread }) =>
+      ({ content, title, username, thread, id, modifiedDate }, index) =>
         ({
-          content,
+          id,
+          content:
+            index === 0
+              ? `${content} <img src="https://picsum.photos/id/1015/300/180" alt="img 1" />`
+              : index === 1
+                ? `${content} <img src="https://picsum.photos/id/1015/300/180" alt="img 1" /> <img src="https://picsum.photos/id/1016/300/180" alt="img 2" />`
+                : index === 2
+                  ? `${content} <img src="https://picsum.photos/id/1015/300/180" alt="img 1" /> <img src="https://picsum.photos/id/1016/300/180" alt="img 2" /> <img src="https://picsum.photos/id/1024/300/180" alt="img 3" />`
+                  : index === 3
+                    ? `${content} <img src="https://picsum.photos/id/1015/300/180" alt="img 1" /> <img src="https://picsum.photos/id/1016/300/180" alt="img 2" /> <img src="https://picsum.photos/id/1024/300/180" alt="img 3" /> <img src="https://picsum.photos/id/1036/300/180" alt="img 4" />`
+                    : content,
           title,
           username,
           icon: thread.icon,
-          thread: thread.title,
+          threadId: thread.id,
+          threadName: thread.title,
+          publicationDate: modifiedDate,
+          isHeadline: index === 0,
         }) satisfies LastInfosProps,
     ),
   }),

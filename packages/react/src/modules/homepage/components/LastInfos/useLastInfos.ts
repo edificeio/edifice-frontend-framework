@@ -3,6 +3,7 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 
 export interface LastInfosModel {
   modifiedDate: string; // "2021-03-24T16:36:05.398"
+  isHeadline: boolean;
   thread: {
     id: number; // 221
     icon: string; // "/workspace/document/36a04526-15a2-4e8f-adb6-cca75630e50d"
