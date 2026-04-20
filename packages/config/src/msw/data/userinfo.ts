@@ -80,6 +80,16 @@ export const userInfo = {
       displayName: 'workspace.document.add',
       type: 'SECURED_ACTION_WORKFLOW',
     },
+    {
+      name: 'net.atos.entng.community.controllers.CommunityController|view',
+      displayName: 'community.view',
+      type: 'SECURED_ACTION_WORKFLOW',
+    },
+    {
+      name: 'org.entcore.conversation.controllers.ConversationController|view',
+      displayName: 'conversation.view',
+      type: 'SECURED_ACTION_WORKFLOW',
+    },
   ],
   apps: [
     {
