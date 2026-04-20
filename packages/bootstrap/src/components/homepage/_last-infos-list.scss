@@ -2,7 +2,7 @@
 @use '../../vendors/bootstrap';
 
 .last-infos-list {
-  --background-color: #FFF;
+  --background-color: var(--#{$prefix}white);
   --px: var(--#{$prefix}spacer-8);
   --py: var(--#{$prefix}spacer-8);
   --border-radius: var(--#{$prefix}border-radius-2xl);
@@ -14,7 +14,25 @@
   &-header {
     --px: var(--#{$prefix}spacer-4);
     --py: 0;
+    --border-radius: var(--#{$prefix}border-radius-2xl);
 
+    border-radius: var(--border-radius);
     padding: var(--py) var(--px);
+  }
+
+  &-title {
+    font-family: var(--#{$prefix}font-family-title);
+    font-weight: var(--#{$prefix}font-weight-bold);
+    font-size: var(--#{$prefix}font-size-s);
+    line-height: var(--#{$prefix}font-lineHeight-s);
+    color: var(--#{$prefix}grey-900);
+  }
+
+  &-seemore {
+    font-family: var(--#{$prefix}font-family-title);
+    font-weight: var(--#{$prefix}font-weight-bold);
+    font-size: var(--#{$prefix}font-size-default);
+    line-height: var(--#{$prefix}font-lineHeight-s);
+    color: var(--#{$prefix}color-text-button-other-default);
   }
 }

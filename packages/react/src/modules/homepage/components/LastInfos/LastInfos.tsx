@@ -139,7 +139,7 @@ const LastInfos = ({
       </header>
 
       <Flex gap="4" direction="column" className="last-infos-card-content">
-        <p className="last-infos-card-title fw-bold">{title}</p>
+        <p className="last-infos-card-title">{title}</p>
 
         <p className="last-infos-card-excerpt">{excerpt}</p>
 

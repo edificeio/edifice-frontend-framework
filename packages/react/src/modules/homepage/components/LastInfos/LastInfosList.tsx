@@ -31,15 +31,15 @@ export function LastInfosList({
   const { t } = useTranslation();
 
   return (
-    <Flex gap="4" direction="column" className="last-infos-list">
+    <Flex gap="8" direction="column" className="last-infos-list">
       <Flex justify="between" align="center" className="last-infos-list-header">
-        <h4 className="fw-bold">
+        <h2 className="last-infos-list-title">
           {t('homepage.widget.last-infos-list.title')}
-        </h4>
+        </h2>
         <Button
           color="tertiary"
           variant="ghost"
-          className="rounded-pill fw-bold"
+          className="last-infos-list-seemore"
           rightIcon={<IconArrowRight />}
           onClick={handleSeeMoreClick}
         >

@@ -215,7 +215,7 @@ export const mockLastInfos = [
       icon,
       title: 'News collège A',
     },
-    title: 'latest news',
+    title: 'latest news with a very very VERY long title with no use other than testing !!',
     content: 'blah blah 1',
     username: 'Jean Aymar',
     id: 16,

@@ -2,8 +2,8 @@
 @use '../../vendors/bootstrap';
 
 .last-infos-card {
-    --background-color: #FFEBE5;
-    --background-color-headline: #FCF3CF;
+    --background-color: var(--#{$prefix}orange-200);
+    --background-color-headline: var(--#{$prefix}yellow-200);
     --border-radius: var(--#{$prefix}border-radius-xl);
     --px: var(--#{$prefix}spacer-4);
     --py: var(--#{$prefix}spacer-4);
@@ -51,10 +51,10 @@
     }
 
     &-content {
-        --background-color: #FFF;
+        --background-color: var(--#{$prefix}white);
         --border-radius: 12px;
-        --py: var(--#{$prefix}spacer-16);
-        --px: var(--#{$prefix}spacer-12);
+        --py: var(--#{$prefix}spacer-12);
+        --px: var(--#{$prefix}spacer-16);
 
         background-color: var(--background-color);
         border-radius: var(--border-radius);
@@ -69,7 +69,7 @@
     }
 
     &-thread-icon {
-        --border-radius: 8px;
+        --border-radius: var(--#{$prefix}radius-8);
 
         border-radius: var(--border-radius);
     }
@@ -89,6 +89,10 @@
 
     &-date {
         display: none;
+    }
+
+    &-title {
+        font-weight: var(--#{$prefix}font-weight-bold);
     }
 
     &-excerpt {
