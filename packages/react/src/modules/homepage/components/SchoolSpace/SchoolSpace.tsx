@@ -30,53 +30,49 @@ const SchoolSpace = ({
 
   return (
     <div className="school-space">
-      <div className="school-space-container">
-        <Flex
-          className="school-space-selected"
-          justify="center"
-          gap="4"
-          align="center"
-        >
-          <b>{selectedSchool.name}</b>
-          {hasManySchools && (
-            <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
-              {(
-                triggerProps: React.ComponentPropsWithRef<typeof IconButton>,
-              ) => (
-                <>
-                  <IconButton
-                    {...triggerProps}
-                    aria-label={t('show')}
-                    color="tertiary"
-                    variant="ghost"
-                    icon={
-                      <IconRafterUp
-                        className="w-16 min-w-0"
-                        style={getRotateTransitionStyle(isExpanded, {
-                          degrees: 180,
-                        })}
-                      />
-                    }
-                  />
-                  <Dropdown.Menu>
-                    {schools.map((school, index) => (
-                      <Dropdown.Item
-                        key={school.id}
-                        onClick={() => onSelectedSchoolChange?.(index)}
-                      >
-                        <Flex direction="column">
-                          <p>{school.name}</p>
-                          {school.UAI && <p>UAI : {school.UAI}</p>}
-                        </Flex>
-                      </Dropdown.Item>
-                    ))}
-                  </Dropdown.Menu>
-                </>
-              )}
-            </Dropdown>
-          )}
-        </Flex>
-      </div>
+      <Flex
+        className="school-space-container"
+        justify="center"
+        gap="4"
+        align="center"
+      >
+        <b>{selectedSchool.name}</b>
+        {hasManySchools && (
+          <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
+            {(triggerProps: React.ComponentPropsWithRef<typeof IconButton>) => (
+              <>
+                <IconButton
+                  {...triggerProps}
+                  aria-label={t('show')}
+                  color="tertiary"
+                  variant="ghost"
+                  icon={
+                    <IconRafterUp
+                      className="w-16 min-w-0"
+                      style={getRotateTransitionStyle(isExpanded, {
+                        degrees: 180,
+                      })}
+                    />
+                  }
+                />
+                <Dropdown.Menu>
+                  {schools.map((school, index) => (
+                    <Dropdown.Item
+                      key={school.id}
+                      onClick={() => onSelectedSchoolChange?.(index)}
+                    >
+                      <Flex direction="column">
+                        <p>{school.name}</p>
+                        {school.UAI && <p>UAI : {school.UAI}</p>}
+                      </Flex>
+                    </Dropdown.Item>
+                  ))}
+                </Dropdown.Menu>
+              </>
+            )}
+          </Dropdown>
+        )}
+      </Flex>
     </div>
   );
 };
