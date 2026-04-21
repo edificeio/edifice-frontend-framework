@@ -1,5 +1,6 @@
 /// <reference types="vitest/config" />
 
+import url from '@rollup/plugin-url';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { PluginPure } from 'rollup-plugin-pure';
@@ -41,6 +42,9 @@ export default defineConfig({
       formats: ['es'],
     },
     rollupOptions: {
+      plugins: [
+        url({ limit: Infinity }) as PluginOption,
+      ],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',
@@ -51,7 +55,7 @@ export default defineConfig({
         'react/jsx-runtime',
         '@edifice.io/client',
         /^@edifice\.io\/tiptap-extensions\/.*/,
-        /^@edifice\.io\/bootstrap\/.*/,
+        /^@edifice\.io\/bootstrap\/(?!dist\/images\/).*/,
         /^dayjs\/plugin\/.+\.js$/,
         /^dayjs\/locale\/.+\.js$/,
         /^antd\/locale\/.+/,
