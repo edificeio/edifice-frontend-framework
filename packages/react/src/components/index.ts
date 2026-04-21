@@ -33,6 +33,7 @@ export * from './Logo';
 export * from './MediaViewer';
 export * from './Menu';
 export * from './Modal';
+export * from './Pagination';
 export * from './Popover';
 export * from './PreventPropagation';
 export * from './PromotionCard';

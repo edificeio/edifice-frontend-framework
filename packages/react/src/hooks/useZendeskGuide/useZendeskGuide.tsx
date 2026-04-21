@@ -236,7 +236,7 @@ export default function useZendeskGuide() {
                   },
                 });
                 (window as any).zE('webWidget', 'close');
-                window.open('/support', '_blank');
+                window.open('/support/tickets/new', '_blank');
               }
             },
           );

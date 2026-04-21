@@ -1,8 +1,10 @@
-import { ReactNode, useId } from 'react';
+import { ReactNode } from 'react';
 
 import clsx from 'clsx';
 
 import { useDropdownContext } from './DropdownContext';
+import { useDropdownItemFilter } from './useDropdownItemFilter';
+import DropdownItemHidden from './DropdownItemHidden';
 import { Checkbox } from '../Checkbox';
 
 interface DropdownCheckboxItem {
@@ -22,6 +24,11 @@ interface DropdownCheckboxItem {
    * OnKeyDown handler
    */
   onChange: (value: string | number) => void;
+  /**
+   * Value used to filter this item when `Dropdown.SearchInput` is present.
+   * If provided, the item is hidden when the search query doesn't match.
+   */
+  searchValue?: string;
 }
 
 const DropdownCheckboxItem = ({
@@ -29,11 +36,12 @@ const DropdownCheckboxItem = ({
   value,
   model,
   onChange,
+  searchValue,
 }: DropdownCheckboxItem) => {
   const { itemProps, itemRefs, isFocused } = useDropdownContext();
-  const { onMenuItemKeyDown, onMenuItemMouseEnter } = itemProps;
+  const { id, isFiltered } = useDropdownItemFilter(searchValue);
 
-  const id = useId();
+  const { onMenuItemKeyDown, onMenuItemMouseEnter } = itemProps;
 
   const checked = model.includes(value);
 
@@ -48,6 +56,17 @@ const DropdownCheckboxItem = ({
     focus: isFocused === id,
   });
 
+  const content = (
+    <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
+      {children}
+      <Checkbox {...checkboxProps} />
+    </div>
+  );
+
+  if (isFiltered) {
+    return <DropdownItemHidden collapse>{content}</DropdownItemHidden>;
+  }
+
   return (
     <div
       id={id}
@@ -60,10 +79,7 @@ const DropdownCheckboxItem = ({
       tabIndex={checked ? 0 : -1}
       className={dropdownCheckboxItem}
     >
-      <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
-        {children}
-        <Checkbox {...checkboxProps} />
-      </div>
+      {content}
     </div>
   );
 };

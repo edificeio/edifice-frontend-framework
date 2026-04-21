@@ -133,16 +133,21 @@ const useDropdown = (
     }
   }, [activeIndex]);
 
+  const getVisibleItems = () =>
+    Object.values(itemRefs.current).filter(
+      (item): item is HTMLElement => !!item,
+    );
+
   const nextItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex((prevIndex) => (prevIndex + 1) % itemCount);
+    const count = getVisibleItems().length;
+    if (count === 0) return;
+    setActiveIndex((prevIndex) => (prevIndex + 1) % count);
   };
 
   const previousItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex((prevIndex) => (prevIndex - 1 + itemCount) % itemCount);
+    const count = getVisibleItems().length;
+    if (count === 0) return;
+    setActiveIndex((prevIndex) => (prevIndex - 1 + count) % count);
   };
 
   const firstItem = () => {
@@ -150,9 +155,9 @@ const useDropdown = (
   };
 
   const lastItem = () => {
-    const items = Object.values(itemRefs.current);
-    const itemCount = items.length;
-    setActiveIndex(itemCount - 1);
+    const count = getVisibleItems().length;
+    if (count === 0) return;
+    setActiveIndex(count - 1);
   };
 
   const openDropdown = useCallback(() => {
@@ -213,7 +218,9 @@ const useDropdown = (
 
   const onMenuItemMouseEnter = (event: React.MouseEvent) => {
     if (focusOnMouseEnter) {
-      const items: HTMLElement[] = Object.values(itemRefs.current);
+      const items = Object.values(itemRefs.current).filter(
+        (item): item is HTMLElement => !!item,
+      );
 
       const index = items.findIndex(
         (item) => item.id === event.currentTarget.getAttribute('id'),
@@ -242,9 +249,8 @@ const useDropdown = (
           case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
-              const currentItem = Object.values(itemRefs.current)[
-                activeIndex
-              ] as HTMLElement;
+              const currentItem = getVisibleItems()[activeIndex];
+              if (!currentItem) break;
               const role = currentItem.getAttribute('role');
 
               if (role === 'menuitem') {
