@@ -25,6 +25,48 @@ const meta: Meta<typeof Dropdown> = {
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
+export const WithSearch: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Ajout de `Dropdown.SearchInput` avec `searchValue` sur chaque item pour filtrer dynamiquement la liste de sélection unique.',
+      },
+    },
+  },
+  render: (args) => {
+    const [value, setValue] = useState<string>('');
+
+    const radioOptions = [
+      { label: 'Classe préparatoire', value: 'CP' },
+      { label: 'Cours élémentaire 1', value: 'CE1' },
+      { label: 'Cours élémentaire 2', value: 'CE2' },
+      { label: 'Cours moyen 1', value: 'CM1' },
+      { label: 'Cours moyen 2', value: 'CM2' },
+    ];
+
+    return (
+      <Dropdown>
+        <Dropdown.Trigger label={args.label} icon={args.icon} />
+        <Dropdown.Menu>
+          <Dropdown.SearchInput placeholder="Rechercher..." />
+          {radioOptions.map((option) => (
+            <Dropdown.RadioItem
+              key={option.value}
+              value={option.value}
+              model={value}
+              onChange={setValue}
+              searchValue={option.label}
+            >
+              {option.label}
+            </Dropdown.RadioItem>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+};
+
 export const RadioGroup: Story = {
   render: (args) => {
     const [value, setValue] = useState<string>('');

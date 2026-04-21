@@ -1,8 +1,10 @@
-import { ReactNode, useId, useLayoutEffect } from 'react';
+import { ReactNode } from 'react';
 
 import clsx from 'clsx';
 
 import { useDropdownContext } from './DropdownContext';
+import { useDropdownItemFilter } from './useDropdownItemFilter';
+import DropdownItemHidden from './DropdownItemHidden';
 import { Checkbox } from '../Checkbox';
 
 interface DropdownCheckboxItem {
@@ -36,22 +38,10 @@ const DropdownCheckboxItem = ({
   onChange,
   searchValue,
 }: DropdownCheckboxItem) => {
-  const {
-    itemProps,
-    itemRefs,
-    isFocused,
-    searchQuery,
-    reportMatch,
-    unregisterMatch,
-  } = useDropdownContext();
-  const id = useId();
+  const { itemProps, itemRefs, isFocused } = useDropdownContext();
+  const { id, isFiltered } = useDropdownItemFilter(searchValue);
 
   const { onMenuItemKeyDown, onMenuItemMouseEnter } = itemProps;
-
-  const isFiltered =
-    searchValue !== undefined &&
-    searchQuery !== '' &&
-    !searchValue.toLowerCase().includes(searchQuery.toLowerCase());
 
   const checked = model.includes(value);
 
@@ -66,30 +56,15 @@ const DropdownCheckboxItem = ({
     focus: isFocused === id,
   });
 
-  useLayoutEffect(() => {
-    if (searchValue === undefined) return;
-    reportMatch(id, !isFiltered);
-    return () => unregisterMatch(id);
-  }, [id, isFiltered, searchValue, reportMatch, unregisterMatch]);
+  const content = (
+    <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
+      {children}
+      <Checkbox {...checkboxProps} />
+    </div>
+  );
 
   if (isFiltered) {
-    return (
-      <div
-        aria-hidden="true"
-        style={{
-          visibility: 'hidden',
-          height: 0,
-          overflow: 'hidden',
-          pointerEvents: 'none',
-        }}
-      >
-        <div className="dropdown-item">
-          <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
-            {children}
-          </div>
-        </div>
-      </div>
-    );
+    return <DropdownItemHidden collapse>{content}</DropdownItemHidden>;
   }
 
   return (
@@ -104,10 +79,7 @@ const DropdownCheckboxItem = ({
       tabIndex={checked ? 0 : -1}
       className={dropdownCheckboxItem}
     >
-      <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
-        {children}
-        <Checkbox {...checkboxProps} />
-      </div>
+      {content}
     </div>
   );
 };
