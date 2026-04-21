@@ -1,7 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 
-import { BubbleMenu, BubbleMenuProps, Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
+import { Editor } from '@tiptap/react';
+import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
+import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
 import {
   IconAlertTriangle,
@@ -19,10 +22,21 @@ const BubbleMenuEditInformationPane = ({
   editable: boolean;
 }) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
+  const [currentType, setCurrentType] = useState<string | null>(null);
 
-  const { selection } = editor.view.state;
-
-  const selectedNode = selection.$from.node(1);
+  useEffect(() => {
+    const { $anchor } = editor.view.state.selection;
+    let selectedNode = null;
+    for (let depth = $anchor.depth; depth >= 0; depth--) {
+      const node = $anchor.node(depth);
+      if (node.type.name === 'information-pane') {
+        selectedNode = node;
+        break;
+      }
+    }
+    setCurrentType(selectedNode?.attrs?.type || null);
+  }, [editor, editorState]);
 
   const InformationPaneTypeItems: ToolbarItem[] = useMemo(() => {
     return [
@@ -33,8 +47,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconInfoCircle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.info'),
-          'className':
-            selectedNode?.attrs?.type === 'info' ? 'is-selected' : '',
+          'className': currentType === 'info' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -54,8 +67,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconSuccessOutline />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.success'),
-          'className':
-            selectedNode?.attrs?.type === 'success' ? 'is-selected' : '',
+          'className': currentType === 'success' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -75,8 +87,7 @@ const BubbleMenuEditInformationPane = ({
           'size': 'lg',
           'icon': <IconAlertTriangle />,
           'aria-label': t('tiptap.tooltip.bubblemenu.information.pane.warning'),
-          'className':
-            selectedNode?.attrs?.type === 'warning' ? 'is-selected' : '',
+          'className': currentType === 'warning' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -98,8 +109,7 @@ const BubbleMenuEditInformationPane = ({
           'aria-label': t(
             'tiptap.tooltip.bubblemenu.information.pane.question',
           ),
-          'className':
-            selectedNode?.attrs?.type === 'question' ? 'is-selected' : '',
+          'className': currentType === 'question' ? 'is-selected' : '',
           'onClick': () =>
             editor
               .chain()
@@ -133,16 +143,11 @@ const BubbleMenuEditInformationPane = ({
         },
       },
     ];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [t, selectedNode]);
+  }, [t, editor, currentType]);
 
-  const tippyOptions: BubbleMenuProps['tippyOptions'] = useMemo(() => {
+  const reference = useMemo(() => {
     return {
-      placement: 'bottom',
-      offset: [0, 0],
-      zIndex: 999,
-      duration: 100,
-      getReferenceClientRect: () => {
+      getBoundingClientRect: () => {
         const { state } = editor;
         const { $anchor } = state.selection;
 
@@ -156,14 +161,16 @@ const BubbleMenuEditInformationPane = ({
         }
 
         if (informationPanePos !== null) {
-          let domNode = editor.view.nodeDOM(informationPanePos);
+          let domNode = editor.view.nodeDOM(
+            informationPanePos,
+          ) as HTMLElement | null;
 
           while (
             domNode &&
             domNode instanceof HTMLElement &&
             !domNode.classList.contains('information-pane')
           ) {
-            domNode = domNode.children[0];
+            domNode = domNode.children[0] as HTMLElement | null;
           }
 
           if (domNode instanceof HTMLElement) {
@@ -176,13 +183,22 @@ const BubbleMenuEditInformationPane = ({
     };
   }, [editor]);
 
+  const floatingOptions = useMemo(() => {
+    return {
+      placement: 'bottom' as const,
+      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      strategy: 'absolute' as const,
+    };
+  }, []);
+
   return (
     <BubbleMenu
-      shouldShow={({ editor }) => {
+      shouldShow={({ editor }: { editor: Editor }) => {
         return editor.isActive('information-pane');
       }}
       editor={editor}
-      tippyOptions={tippyOptions}
+      options={floatingOptions}
+      getReferencedVirtualElement={() => reference}
     >
       {editable && <Toolbar className="p-8" items={InformationPaneTypeItems} />}
     </BubbleMenu>
