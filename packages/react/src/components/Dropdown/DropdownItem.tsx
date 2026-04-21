@@ -1,8 +1,10 @@
-import { ReactNode, useId, useLayoutEffect } from 'react';
+import { ReactNode } from 'react';
 
 import clsx from 'clsx';
 
 import { useDropdownContext } from './DropdownContext';
+import { useDropdownItemFilter } from './useDropdownItemFilter';
+import DropdownItemHidden from './DropdownItemHidden';
 
 export interface DropdownItemProps {
   /**
@@ -52,29 +54,11 @@ const DropdownItem = ({
   searchValue,
   ...restProps
 }: DropdownItemProps) => {
-  const {
-    itemProps,
-    itemRefs,
-    isFocused,
-    searchQuery,
-    reportMatch,
-    unregisterMatch,
-  } = useDropdownContext();
-  const id = useId();
+  const { itemProps, itemRefs, isFocused } = useDropdownContext();
+  const { id, isFiltered } = useDropdownItemFilter(searchValue);
 
   const { onMenuItemKeyDown, onMenuItemMouseEnter, onMenuItemClick } =
     itemProps;
-
-  const isFiltered =
-    searchValue !== undefined &&
-    searchQuery !== '' &&
-    !searchValue.toLowerCase().includes(searchQuery.toLowerCase());
-
-  useLayoutEffect(() => {
-    if (searchValue === undefined) return;
-    reportMatch(id, !isFiltered);
-    return () => unregisterMatch(id);
-  }, [id, isFiltered, searchValue, reportMatch, unregisterMatch]);
 
   const handleOnClick = (event: React.MouseEvent) => {
     if (disabled) {
@@ -101,17 +85,15 @@ const DropdownItem = ({
     ...(minWidth && { minWidth: `${minWidth}px` }),
   };
 
+  const content = (
+    <div className="d-flex gap-8 align-items-center">
+      {icon}
+      {children}
+    </div>
+  );
+
   if (isFiltered) {
-    return (
-      <div aria-hidden="true" style={{ display: 'none' }}>
-        <div className="dropdown-item">
-          <div className="d-flex gap-8 align-items-center">
-            {icon}
-            {children}
-          </div>
-        </div>
-      </div>
-    );
+    return <DropdownItemHidden>{content}</DropdownItemHidden>;
   }
 
   return (
@@ -128,10 +110,7 @@ const DropdownItem = ({
       onKeyDown={(event) => onMenuItemKeyDown(event, onClick)}
       {...restProps}
     >
-      <div className="d-flex gap-8 align-items-center">
-        {icon}
-        {children}
-      </div>
+      {content}
     </div>
   );
 };
