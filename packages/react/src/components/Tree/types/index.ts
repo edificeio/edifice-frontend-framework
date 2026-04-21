@@ -104,7 +104,8 @@ export interface SharedTreeProps {
 }
 
 export interface TreeNodeProps
-  extends ComponentPropsWithRef<'li'>, SharedTreeProps {
+  extends ComponentPropsWithRef<'li'>,
+    SharedTreeProps {
   /**
    * Node data
    */

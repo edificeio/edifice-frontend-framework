@@ -79,6 +79,58 @@ export const CheckboxGroup: Story = {
   },
 };
 
+export const WithSearch: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Ajout de `Dropdown.SearchInput` avec `searchValue` sur chaque item pour filtrer dynamiquement la liste.',
+      },
+    },
+  },
+  render: (args) => {
+    const [selected, setSelected] = useState<(string | number)[]>([]);
+
+    const toggle = (value: string | number) => {
+      setSelected((prev) =>
+        prev.includes(value)
+          ? prev.filter((v) => v !== value)
+          : [...prev, value],
+      );
+    };
+
+    const checkboxOptions = [
+      { label: 'Choice 1', value: 1 },
+      { label: 'Choice 2', value: 2 },
+      { label: 'Choice 3', value: 3 },
+    ];
+
+    return (
+      <Dropdown>
+        <Dropdown.Trigger
+          label="Dropdown"
+          icon={<IconFilter />}
+          badgeContent={selected.length || args.badgeContent}
+        />
+        <Dropdown.Menu>
+          <Dropdown.SearchInput placeholder="Rechercher..." />
+          {checkboxOptions.map((option, index) => (
+            <Dropdown.CheckboxItem
+              key={index}
+              value={option.value}
+              model={selected}
+              onChange={toggle}
+              searchValue={option.label}
+            >
+              {option.label}
+            </Dropdown.CheckboxItem>
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+    );
+  },
+};
+
 export const BadgeContent: Story = {
   render: (args) => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<

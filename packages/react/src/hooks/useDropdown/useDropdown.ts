@@ -133,16 +133,20 @@ const useDropdown = (
     }
   }, [activeIndex]);
 
-  const visibleItemCount = () =>
-    Object.values(itemRefs.current).filter(Boolean).length;
+  const getVisibleItems = () =>
+    Object.values(itemRefs.current).filter(
+      (item): item is HTMLElement => !!item,
+    );
 
   const nextItem = () => {
-    const count = visibleItemCount();
+    const count = getVisibleItems().length;
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex + 1) % count);
   };
 
   const previousItem = () => {
-    const count = visibleItemCount();
+    const count = getVisibleItems().length;
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex - 1 + count) % count);
   };
 
@@ -151,7 +155,9 @@ const useDropdown = (
   };
 
   const lastItem = () => {
-    setActiveIndex(visibleItemCount() - 1);
+    const count = getVisibleItems().length;
+    if (count === 0) return;
+    setActiveIndex(count - 1);
   };
 
   const openDropdown = useCallback(() => {
@@ -243,9 +249,8 @@ const useDropdown = (
           case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
-              const currentItem = Object.values(itemRefs.current)[
-                activeIndex
-              ] as HTMLElement;
+              const currentItem = getVisibleItems()[activeIndex];
+              if (!currentItem) break;
               const role = currentItem.getAttribute('role');
 
               if (role === 'menuitem') {
