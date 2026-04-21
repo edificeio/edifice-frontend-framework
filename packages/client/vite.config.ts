@@ -16,7 +16,7 @@ export default defineConfig({
       formats: ['cjs', 'es'],
     },
     rollupOptions: {
-      external: [...Object.keys(dependencies)],
+      //external: [...Object.keys(dependencies)],
     },
   },
   plugins: [
