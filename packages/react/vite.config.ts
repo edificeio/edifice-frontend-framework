@@ -100,3 +100,55 @@ export default defineConfig({
     reporters: ['default'],
   },
 });
+
+export const reactEsmConfig = defineConfig({
+  build: {
+    lib: {
+      entry: {
+        'react': resolve(__dirname, 'src/shims/react.ts'),
+      },
+      formats: ['es'],
+      fileName: () => 'react.js',
+    },
+    outDir: 'dist/react-esm',
+    rollupOptions: {
+      external: [],
+      output: {
+        preserveModules: false,
+      },
+    },
+  },
+  plugins: [
+    react({
+      babel: {
+        plugins: ['@babel/plugin-transform-react-pure-annotations'],
+      },
+    }),
+  ],
+});
+
+export const reactDomEsmConfig = defineConfig({
+  build: {
+    lib: {
+      entry: {
+        'react-dom': resolve(__dirname, 'src/shims/react-dom.ts'),
+      },
+      formats: ['es'],
+      fileName: () => 'react-dom.js',
+    },
+    outDir: 'dist/react-esm',
+    rollupOptions: {
+      external: [],
+      output: {
+        preserveModules: false,
+      },
+    },
+  },
+  plugins: [
+    react({
+      babel: {
+        plugins: ['@babel/plugin-transform-react-pure-annotations'],
+      },
+    }),
+  ],
+});

@@ -73,8 +73,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:icons && vite build",
+    "build": "pnpm build:icons && vite build && vite build --config reactEsmConfig && vite build --config reactDomEsmConfig",
     "build:icons": "svgr src/modules/icons/assets --config-file ./svgr.config.cjs",
+    "build:react-esm": "vite build --config reactEsmConfig && vite build --config reactDomEsmConfig",
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "pnpm run format:write && pnpm run format:check",
     "format:check": "npx prettier --check \"src/**/*.{ts,tsx}\"",
@@ -136,6 +137,8 @@
     "antd": "^5.29.1",
     "clsx": "catalog:",
     "dayjs": "1.11.19",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "emoji-picker-react": "4.5.2",
     "heic-to": "1.4.2",
     "html-react-parser": "4.2.1",
@@ -186,8 +189,6 @@
   "peerDependencies": {
     "@react-spring/web": "catalog:",
     "@tanstack/react-query": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:"
   },
