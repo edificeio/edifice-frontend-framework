@@ -34,7 +34,7 @@ export default defineConfig({
           },
         },
       ],
-      external: [...Object.keys(dependencies)],
+      //external: [...Object.keys(dependencies)],
     },
   },
   plugins: [
