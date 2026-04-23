@@ -44,7 +44,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
       'org.entcore.auth.controllers.CarbonioPreauthController|preauth',
     ) || false;
 
-  const classes = clsx('header d-print-none no-2d no-1d');
+  const classes = clsx('header-beta d-print-none no-2d no-1d');
 
   const { userAvatar, userName, communityWorkflow, conversationWorflow } =
     useHeader({ user, avatar });
@@ -68,13 +68,21 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
         <LogoBeta src={`${src}/img/illustrations/logo.png`} />
         <ul className="navbar-nav">
           <NavItem>
-            <NavLink link="/timeline/timeline" translate={t('navbar.home')}>
+            <NavLink
+              link="/timeline/timeline"
+              translate={t('navbar.home')}
+              data-testid="header-home-button"
+            >
               <IconHomeBeta />
             </NavLink>
           </NavItem>
           {communityWorkflow && (
             <NavItem>
-              <NavLink link="/community" translate={t('navbar.community')}>
+              <NavLink
+                link="/community"
+                translate={t('navbar.community')}
+                data-testid="header-community-button"
+              >
                 <IconCommunitiesBeta className="icon community" />
               </NavLink>
             </NavItem>
@@ -85,6 +93,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
                 className="position-relative"
                 link="/conversation/conversation"
                 translate={t('conversation')}
+                data-testid="header-messagerie-button"
               >
                 <IconMessagesBeta />
                 {hasMessages && (
@@ -104,6 +113,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
                 className="nav-link position-relative"
                 href="/auth/carbonio/preauth"
                 target="_blank"
+                data-testid="header-messagerie-button"
               >
                 <IconMessagesBeta />
                 <VisuallyHidden>{t('conversation')}</VisuallyHidden>
@@ -111,7 +121,11 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
             </NavItem>
           )}
           <NavItem>
-            <NavLink link="/welcome" translate={t('navbar.applications')}>
+            <NavLink
+              link="/welcome"
+              translate={t('navbar.applications')}
+              data-testid="header-my-apps-button"
+            >
               <IconMyAppsBeta />
             </NavLink>
           </NavItem>
@@ -121,10 +135,12 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
             id={popoverUserId}
             aria-haspopup="true"
             aria-expanded={isUserHovered}
+            data-testid="header-user-menu-button"
           >
             <NavLink
               link="/userbook/mon-compte"
               translate={t('navbar.myaccount')}
+              data-testid="header-user-profile-button"
             >
               <Avatar
                 alt={userName}
@@ -146,7 +162,8 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
                   href={
                     '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
                   }
-                  className="nav-link"
+                  className="nav-link d-flex align-items-center gap-8"
+                  data-testid="header-logout-button"
                 >
                   <IconDisconnect className="icon logout" />
                   <span id="logout-label" className="nav-text">
