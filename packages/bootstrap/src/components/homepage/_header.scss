@@ -1,7 +1,7 @@
 @use '../../abstracts/' as *;
 @use '../../vendors/bootstrap';
 
-.header .navbar {
+.header-beta .navbar {
   --#{$prefix}navbar-padding-y: 0.8rem;
   --#{$prefix}navbar-padding-x: 0.8rem;
   --#{$prefix}navbar-background: $white;
@@ -77,6 +77,10 @@
       height: var(--navbar-nav-link-icon-size);
     }
 
+    .popover svg {
+      --navbar-nav-link-icon-size: 2.2rem;
+    }
+
     @include bootstrap.media-breakpoint-up(sm) {
       column-gap: var(--navbar-nav-gap);
       justify-content: flex-end;
@@ -87,6 +91,10 @@
 
       svg {
         --navbar-nav-link-icon-size: 3.2rem;
+      }
+
+      .popover svg {
+        --navbar-nav-link-icon-size: 2.2rem;
       }
 
       .avatar {
