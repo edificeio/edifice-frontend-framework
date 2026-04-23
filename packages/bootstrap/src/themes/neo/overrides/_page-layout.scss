@@ -1,0 +1,9 @@
+[data-product='neo'] .pagelayout {
+  --pagelayout-headerheight: 8.5rem;
+}
+
+@media (width <= 767.98px) {
+  [data-product='neo'] .pagelayout {
+    --pagelayout-headerheight: 6.1rem;
+  }
+}

@@ -1,0 +1,7 @@
+// Thème edifice1d – basé sur l'API de thème (theme-api.scss).
+
+@use "../theme-api" as theme;
+@use "../configs/edifice1d" as *;
+@use "overrides";
+
+@include theme.theme-vars("edifice1d", $edifice1d);

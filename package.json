@@ -82,6 +82,11 @@
   "resolutions": {
     "katex": "0.16.33"
   },
+  "pnpm": {
+    "overrides": {
+      "@rushstack/terminal": "0.22.3"
+    }
+  },
   "packageManager": "pnpm@9.12.2",
   "engines": {
     "node": "20 || 22"

@@ -1,6 +1,6 @@
 @use "sass:map";
 @use "./mixins";
-@use "../../../abstracts/" as *;
+@use "../../../../abstracts/" as *;
 
 [data-product="neo"] {
   .btn {

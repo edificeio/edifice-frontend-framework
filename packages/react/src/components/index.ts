@@ -26,6 +26,7 @@ export * from './Image';
 export * from './Input';
 export * from './Label';
 export * from './Layout';
+export * from './PageLayout';
 export * from './List';
 export * from './Loading';
 export * from './LoadingScreen';
