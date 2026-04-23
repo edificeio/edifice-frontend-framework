@@ -5,7 +5,7 @@ export const handlers = [
     return HttpResponse.json({
       template: '/public/template/portal.html',
       logoutCallback: '',
-      skin: '/assets/themes/cg77/skins/default/',
+      skin: '/assets/skins/default/',
       themeName: 'cg77',
       skinName: 'default',
     });

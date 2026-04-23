@@ -1,60 +1,134 @@
 // Configuration du thème neo.
 
 @use 'primitives' as *;
+@use 'primitives-legacy' as *;
 
 $neo: (
-    name: 'neo',
-    color: (
-        text: (
-            default: $grey-900,
-            subText: $grey-800,
-            button: (
-                primary: (
-                    default: $blue-900,
-                    disable: $white
-                ),
-                other: (
-                    default: $blue-900,
-                    disable: $blue-300
-                )
-            )
-        ),
+  name: 'neo',
+  color: (
+    text: (
+      default: $grey-900,
+      subtext: $grey-800,
+      button: (
         primary: (
-            pale: $skyBlue-200,
-            light: $skyBlue-300,
-            default: $skyBlue-400,
-            dark: $skyBlue-500,
-        )
+          filled: (
+            default: $white,
+            disable: $white,
+          ),
+          other: (
+            default: $neo-orange-500,
+            disable: $neo-orange-300,
+          ),
+        ),
+        secondary: (
+          filled: (
+            default: $white,
+            disable: $white,
+          ),
+          other: (
+            default: $neo-blue-500,
+            disable: $neo-blue-300,
+          ),
+        ),
+        tertiary: (
+          filled: (
+            default: $grey-900,
+            disable: $grey-500,
+          ),
+          other: (
+            default: $grey-900,
+            disable: $grey-500,
+          ),
+        ),
+      ),
     ),
-    font: (
-        family: (
-            title: 'Urbanist',
-            body: 'Arimo'
-        ),
-        weight: (
-            bold: 700,
-            regular: 500
-        ),
-        size: (
-            xl: 3.2rem,
-            l: 2.6rem,
-            m: 2.2rem,
-            s: 1.8rem,
-            default: 1.6rem,
-            small: 1.4rem,
-            caption: 1.2rem,
-        ),
-        lineHeight: (
-            xl: 3.6rem,
-            l: 3.2rem,
-            m: 2.8rem,
-            s: 2.6rem,
-            xs: 2.2rem,
-            2xs: 2.0rem,
-            3xs: 1.8rem,
-        )
+    buttons: (
+      primary: (
+        pale: $neo-orange-200,
+        light: $neo-orange-300,
+        default: $neo-orange-500,
+        dark: $neo-orange-700,
+      ),
+      secondary: (
+        pale: $neo-blue-200,
+        light: $neo-blue-300,
+        default: $neo-blue-500,
+        dark: $neo-blue-700,
+      ),
+      tertiary: (
+        pale: $grey-100,
+        light: $grey-200,
+        default: $grey-300,
+        dark: $grey-500,
+      ),
     ),
-    radius: (
-        button: $border-radius-pill
-    )
+    primary: (
+      pale: $neo-orange-200,
+      light: $neo-orange-300,
+      default: $neo-orange-500,
+      dark: $neo-orange-700,
+    ),
+    support: (
+      danger: (
+        700: $danger-700,
+        500: $danger-500,
+        300: $danger-300,
+        200: $danger-200,
+      ),
+      success: (
+        700: $success-700,
+        500: $success-500,
+        300: $success-300,
+        200: $success-200,
+      ),
+      info: (
+        700: $info-700,
+        500: $info-500,
+        300: $info-300,
+        200: $info-200,
+      ),
+      warning: (
+        700: $warning-700,
+        500: $warning-500,
+        300: $warning-300,
+        200: $warning-200,
+      ),
+    ),
+  ),
+  font: (
+    family: (
+      title: 'Comfortaa',
+      body: 'Roboto',
+    ),
+    weight: (
+      bold: 700,
+      regular: 500,
+    ),
+    size: (
+      xl: 3.2rem,
+      l: 2.6rem,
+      m: 2.2rem,
+      s: 1.8rem,
+      default: 1.6rem,
+      small: 1.4rem,
+      caption: 1.2rem,
+    ),
+    lineheight: (
+      xl: 3.6rem,
+      l: 3.2rem,
+      m: 2.8rem,
+      s: 2.6rem,
+      xs: 2.2rem,
+      2xs: 2rem,
+      3xs: 1.8rem,
+    ),
+    button: (
+      family: 'Roboto',
+      size: 1.6rem,
+      lineheight: 2.6rem,
+    ),
+  ),
+  radius: (
+    button: $border-radius-md,
+  ),
 );

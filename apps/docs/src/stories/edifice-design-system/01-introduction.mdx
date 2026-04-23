@@ -42,7 +42,7 @@ Le système de thèmes d'Edifice repose sur une architecture en trois couches qu
   <div className="arch-layer l2">
     <div className="title">Couche 2 — Thème</div>
     <div className="selector"><code>[data-product="neo"] {'{'} --edifice-color-text-default, --edifice-font-family-title, ... {'}'}</code></div>
-    <div className="desc">Variables sémantiques générées depuis la map de config de chaque thème (neo / one / edifice2d).</div>
+    <div className="desc">Variables sémantiques générées depuis la map de config de chaque thème (neo / one / edifice2d / edifice1d).</div>
   </div>
   <div className="arch-layer l3">
     <div className="title">Couche 3 — Variante</div>
@@ -59,7 +59,9 @@ Le système de thèmes d'Edifice repose sur une architecture en trois couches qu
   </thead>
   <tbody>
     <tr><td>Tokens primitifs</td><td><code>packages/bootstrap/src/themes/configs/_primitives.scss</code></td></tr>
+    <tr><td>Tokens legacy (neo / one)</td><td><code>packages/bootstrap/src/themes/configs/_primitives-legacy.scss</code></td></tr>
     <tr><td>Config thème Edifice2D</td><td><code>packages/bootstrap/src/themes/configs/_edifice2d.scss</code></td></tr>
+    <tr><td>Config thème Edifice1D</td><td><code>packages/bootstrap/src/themes/configs/_edifice1d.scss</code></td></tr>
     <tr><td>Config thème Neo</td><td><code>packages/bootstrap/src/themes/configs/_neo.scss</code></td></tr>
     <tr><td>Config thème One</td><td><code>packages/bootstrap/src/themes/configs/_one.scss</code></td></tr>
     <tr><td>API (mixins)</td><td><code>packages/bootstrap/src/themes/_theme-api.scss</code></td></tr>
