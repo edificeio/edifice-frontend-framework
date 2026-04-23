@@ -1,10 +1,9 @@
-// Configuration du thème one.
+// Configuration du thème edifice1d.
 
 @use 'primitives' as *;
-@use 'primitives-legacy' as *;
 
-$one: (
-  name: 'one',
+$edifice1d: (
+  name: 'edifice1d',
   color: (
     text: (
       default: $grey-900,
@@ -16,8 +15,8 @@ $one: (
             disable: $white,
           ),
           other: (
-            default: $neo-blue-500,
-            disable: $neo-blue-300,
+            default: $blue-900,
+            disable: $blue-300,
           ),
         ),
         secondary: (
@@ -26,47 +25,47 @@ $one: (
             disable: $white,
           ),
           other: (
-            default: $neo-orange-500,
-            disable: $neo-orange-300,
+            default: $blue-900,
+            disable: $blue-300,
           ),
         ),
         tertiary: (
           filled: (
-            default: $grey-900,
-            disable: $grey-500,
+            default: $white,
+            disable: $white,
           ),
           other: (
-            default: $grey-900,
-            disable: $grey-500,
+            default: $blue-900,
+            disable: $blue-300,
           ),
         ),
       ),
     ),
     buttons: (
       primary: (
-        pale: $neo-blue-200,
-        light: $neo-blue-300,
-        default: $neo-blue-500,
-        dark: $neo-blue-700,
+        pale: $orange-200,
+        light: $orange-300,
+        default: $orange-500,
+        dark: $orange-700,
       ),
       secondary: (
-        pale: $neo-orange-200,
-        light: $neo-orange-300,
-        default: $neo-orange-500,
-        dark: $neo-orange-700,
+        pale: $orange-200,
+        light: $orange-300,
+        default: $orange-500,
+        dark: $orange-700,
       ),
       tertiary: (
-        pale: $grey-100,
-        light: $grey-200,
-        default: $grey-300,
-        dark: $grey-500,
+        pale: $orange-200,
+        light: $orange-300,
+        default: $orange-500,
+        dark: $orange-700,
       ),
     ),
     primary: (
-      pale: $neo-blue-200,
-      light: $neo-blue-300,
-      default: $neo-blue-500,
-      dark: $neo-blue-700,
+      pale: $orange-200,
+      light: $orange-300,
+      default: $orange-500,
+      dark: $orange-700,
     ),
     support: (
       danger: (
@@ -97,11 +96,11 @@ $one: (
   ),
   font: (
     family: (
-      title: 'KG June Bug',
+      title: 'Playpen Sans',
       body: 'Arimo',
     ),
     weight: (
-      bold: 700,
+      bold: 600,
       regular: 500,
     ),
     size: (
@@ -123,9 +122,9 @@ $one: (
       3xs: 1.8rem,
     ),
     button: (
-      family: 'KG June Bug',
-      size: 2.2rem,
-      lineheight: 2.8rem,
+      family: 'Playpen Sans',
+      size: 1.6rem,
+      lineheight: 2.6rem,
     ),
   ),
   radius: (
