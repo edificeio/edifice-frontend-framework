@@ -1,15 +1,15 @@
-@use "../../../abstracts/" as *;
+@use "../../../../abstracts/" as *;
 
 @mixin variant-button-filled(
-  $color: var(--#{$prefix}primary),
-  $dark: var(--#{$prefix}primary-800),
-  $light: var(--#{$prefix}primary-300),
-  $text: var(--#{$prefix}white),
+  $color: $primary,
+  $dark: $primary-800,
+  $light: $primary-300,
+  $text: $white,
   $box-shadow: transparent
 ) {
   --#{$prefix}btn-active-bg: #{$dark};
-  --#{$prefix}btn-active-border-color: #{$dark};
-  --#{$prefix}btn-active-box-shadow-color: transparent;
+  --#{$prefix}btn-active-border-color: #{$light};
+  --#{$prefix}btn-active-box-shadow-color: #{$box-shadow};
   --#{$prefix}btn-active-color: #{$text};
   --#{$prefix}btn-bg: #{$color};
   --#{$prefix}btn-border-color: #{$color};
@@ -17,18 +17,16 @@
   --#{$prefix}btn-disabled-bg: #{$light};
   --#{$prefix}btn-disabled-border-color: #{$light};
   --#{$prefix}btn-disabled-color: #{$text};
-  --#{$prefix}btn-focus-box-shadow-color: transparent;
-  --#{$prefix}btn-hover-bg: #{$color};
+  --#{$prefix}btn-hover-bg: #{$dark};
   --#{$prefix}btn-hover-border-color: #{$dark};
   --#{$prefix}btn-hover-color: #{$text};
 }
 
 @mixin variant-button-outlined(
-  $color: var(--#{$prefix}primary),
-  $dark: var(--#{$prefix}primary-800),
-  $pale: var(--#{$prefix}primary-200),
-  $light: var(--#{$prefix}primary-300),
-  $text: var(--#{$prefix}white),
+  $color: $primary,
+  $dark: $primary-800,
+  $pale: $primary-200,
+  $light: $primary-300,
   $box-shadow: transparent
 ) {
   --#{$prefix}btn-active-bg: #{$pale};
@@ -37,22 +35,23 @@
   --#{$prefix}btn-active-color: #{$dark};
   --#{$prefix}btn-bg: transparent;
   --#{$prefix}btn-border-color: #{$color};
+  --#{$prefix}btn-border-radius: 0.8rem;
+  --#{$prefix}btn-border-width: 0.1rem;
   --#{$prefix}btn-color: #{$color};
   --#{$prefix}btn-disabled-bg: transparent;
   --#{$prefix}btn-disabled-border-color: #{$light};
   --#{$prefix}btn-disabled-color: #{$light};
   --#{$prefix}btn-disabled-opacity: 1;
-  --#{$prefix}btn-focus-box-shadow-color: transparent;
   --#{$prefix}btn-hover-bg: transparent;
   --#{$prefix}btn-hover-border-color: #{$dark};
   --#{$prefix}btn-hover-color: #{$dark};
-  --#{$prefix}btn-font-family: var(--#{$prefix}family-primary);
+  --#{$prefix}btn-active-box-shadow-width: 0;
 }
 
 @mixin variant-button-ghost(
-  $color: var(--#{$prefix}primary),
-  $dark: var(--#{$prefix}primary-800),
-  $light: var(--#{$prefix}primary-300),
+  $color: $primary,
+  $dark: $primary-800,
+  $light: $primary-300,
   $box-shadow: transparent
 ) {
   --#{$prefix}btn-active-bg: #{$gray-400};
@@ -61,26 +60,16 @@
   --#{$prefix}btn-active-color: #{$dark};
   --#{$prefix}btn-bg: transparent;
   --#{$prefix}btn-border-color: transparent;
+  --#{$prefix}btn-border-radius: 0.8rem;
   --#{$prefix}btn-border-width: 0.1rem;
   --#{$prefix}btn-color: #{$color};
   --#{$prefix}btn-disabled-bg: transparent;
   --#{$prefix}btn-disabled-border-color: transparent;
   --#{$prefix}btn-disabled-color: #{$light};
   --#{$prefix}btn-disabled-opacity: 1;
-  --#{$prefix}btn-focus-bg: #{$gray-200};
-  --#{$prefix}btn-focus-border-color: #{$gray-300};
-  --#{$prefix}btn-focus-box-shadow-color: transparent;
-  --#{$prefix}btn-focus-color: #{$color};
-  --#{$prefix}btn-font-family: #{$btn-font-family};
-  --#{$prefix}btn-font-size: 1.6rem;
   --#{$prefix}btn-font-weight: 700;
   --#{$prefix}btn-hover-bg: #{$gray-300};
   --#{$prefix}btn-hover-border-color: transparent;
   --#{$prefix}btn-hover-color: #{$dark};
   --#{$prefix}btn-line-height: 1;
-  --#{$prefix}btn-font-family: var(--#{$prefix}font-sans-serif);
-  --#{$prefix}btn-border-radius: 0.8rem;
-
-  text-transform: none;
 }
-
