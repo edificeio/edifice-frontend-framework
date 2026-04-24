@@ -120,3 +120,32 @@ $clients-crna-700: #b6002c;
 $clients-crna-500: #ed0039;
 $clients-crna-300: #f6b3c3;
 $clients-crna-200: #ffdee6;
+
+/** Text variables **/
+$text-color-default: $grey-900;
+$text-color-subtext: $grey-800;
+
+/** Font variables **/
+$font-family-urbanist: 'Urbanist';
+$font-family-playpensans: 'Playpen Sans';
+$font-family-arimo: 'Arimo';
+
+$font-size-xl: 3.2rem;
+$font-size-l: 2.6rem;
+$font-size-m: 2.2rem;
+$font-size-s: 1.8rem;
+$font-size-default: 1.6rem;
+$font-size-small: 1.4rem;
+$font-size-caption: 1.2rem;
+
+$font-weight-bold: 700;
+$font-weight-medium: 600;
+$font-weight-regular: 500;
+
+$font-lineheight-xl: 3.6rem;
+$font-lineheight-l: 3.2rem;
+$font-lineheight-m: 2.8rem;
+$font-lineheight-s: 2.6rem;
+$font-lineheight-xs: 2.2rem;
+$font-lineheight-2xs: 2rem;
+$font-lineheight-3xs: 1.8rem;
