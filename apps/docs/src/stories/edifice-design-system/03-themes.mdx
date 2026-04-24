@@ -1,0 +1,225 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Edifice Design System/Themes" />
+
+<style>
+  {`
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .theme-card {
+      border: 1px solid #e4e4e4;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .theme-card-header {
+      padding: 16px;
+      font-weight: bold;
+      font-size: 16px;
+      color: white;
+    }
+    .theme-card-header.dark-text {
+      color: #383838;
+    }
+    .theme-card-body {
+      padding: 16px;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+    .theme-card-body strong { display: inline-block; min-width: 150px; color: #696969; }
+    .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    .vars-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+    .vars-table th { text-align: left; padding: 8px 12px; border-bottom: 2px solid #e4e4e4; }
+    .vars-table td { padding: 7px 12px; border-bottom: 1px solid #f2f2f2; font-family: monospace; }
+    .vars-table td:first-child { color: #5555F7; }
+    .vars-table td:last-child { color: #696969; font-size: 13px; }
+  `}
+</style>
+
+# Thèmes
+
+Chaque thème est défini par une map Sass qui alimente des CSS custom properties scoped sur `[data-product]`.
+
+---
+
+## Comparatif
+
+<div className="theme-grid">
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#ff8d2e' }}>Neo</div>
+    <div className="theme-card-body">
+      <div><strong>Couleur primaire</strong><span className="swatch" style={{ background: '#ff8d2e' }}></span>neo-orange-500</div>
+      <div><strong>Secondaire</strong><span className="swatch" style={{ background: '#2a9cc8' }}></span>neo-blue-500</div>
+      <div><strong>Tertiaire</strong><span className="swatch" style={{ background: '#e4e4e4' }}></span>grey-300</div>
+      <div><strong>Police titre</strong>Comfortaa</div>
+      <div><strong>Police corps</strong>Roboto</div>
+      <div><strong>Police bouton</strong>Roboto</div>
+      <div><strong>Bold</strong>700</div>
+      <div><strong>Radius bouton</strong>md (0.8rem)</div>
+    </div>
+  </div>
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#2a9cc8' }}>One</div>
+    <div className="theme-card-body">
+      <div><strong>Couleur primaire</strong><span className="swatch" style={{ background: '#2a9cc8' }}></span>neo-blue-500</div>
+      <div><strong>Secondaire</strong><span className="swatch" style={{ background: '#ff8d2e' }}></span>neo-orange-500</div>
+      <div><strong>Tertiaire</strong><span className="swatch" style={{ background: '#e4e4e4' }}></span>grey-300</div>
+      <div><strong>Police titre</strong>KG June Bug</div>
+      <div><strong>Police corps</strong>Arimo</div>
+      <div><strong>Police bouton</strong>KG June Bug (2.2rem)</div>
+      <div><strong>Bold</strong>700</div>
+      <div><strong>Radius bouton</strong>lg (1.2rem)</div>
+    </div>
+  </div>
+  <div className="theme-card">
+    <div className="theme-card-header dark-text" style={{ background: '#ffd357' }}>Edifice2D</div>
+    <div className="theme-card-body">
+      <div><strong>Couleur primaire</strong><span className="swatch" style={{ background: '#ffd357' }}></span>yellow-400</div>
+      <div><strong>Secondaire</strong><span className="swatch" style={{ background: '#ffd357' }}></span>yellow-400</div>
+      <div><strong>Tertiaire</strong><span className="swatch" style={{ background: '#ffd357' }}></span>yellow-400</div>
+      <div><strong>Police titre</strong>Urbanist</div>
+      <div><strong>Police corps</strong>Arimo</div>
+      <div><strong>Police bouton</strong>Urbanist</div>
+      <div><strong>Bold</strong>700</div>
+      <div><strong>Radius bouton</strong>pill (12.8rem)</div>
+    </div>
+  </div>
+  <div className="theme-card">
+    <div className="theme-card-header" style={{ background: '#fc5e29' }}>Edifice1D</div>
+    <div className="theme-card-body">
+      <div><strong>Couleur primaire</strong><span className="swatch" style={{ background: '#fc5e29' }}></span>orange-500</div>
+      <div><strong>Secondaire</strong><span className="swatch" style={{ background: '#fc5e29' }}></span>orange-500</div>
+      <div><strong>Tertiaire</strong><span className="swatch" style={{ background: '#fc5e29' }}></span>orange-500</div>
+      <div><strong>Police titre</strong>Playpen Sans</div>
+      <div><strong>Police corps</strong>Arimo</div>
+      <div><strong>Police bouton</strong>Playpen Sans</div>
+      <div><strong>Bold</strong>600</div>
+      <div><strong>Radius bouton</strong>lg (1.2rem)</div>
+    </div>
+  </div>
+</div>
+
+---
+
+## CSS custom properties générées
+
+Ces variables sont scopées sur `[data-product="<theme>"]` et accessibles dans tout le DOM enfant.
+
+### Couleurs — texte
+
+<table className="vars-table">
+  <thead><tr><th>CSS custom property</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>--edifice-color-text-default</td><td>Couleur de texte principale</td></tr>
+    <tr><td>--edifice-color-text-subtext</td><td>Couleur de texte secondaire</td></tr>
+    <tr><td>--edifice-color-text-button-primary-filled-default</td><td>Texte bouton primary filled (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-primary-filled-disable</td><td>Texte bouton primary filled (désactivé)</td></tr>
+    <tr><td>--edifice-color-text-button-primary-other-default</td><td>Texte bouton primary other (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-primary-other-disable</td><td>Texte bouton primary other (désactivé)</td></tr>
+    <tr><td>--edifice-color-text-button-secondary-filled-default</td><td>Texte bouton secondary filled (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-secondary-filled-disable</td><td>Texte bouton secondary filled (désactivé)</td></tr>
+    <tr><td>--edifice-color-text-button-secondary-other-default</td><td>Texte bouton secondary other (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-secondary-other-disable</td><td>Texte bouton secondary other (désactivé)</td></tr>
+    <tr><td>--edifice-color-text-button-tertiary-filled-default</td><td>Texte bouton tertiary filled (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-tertiary-filled-disable</td><td>Texte bouton tertiary filled (désactivé)</td></tr>
+    <tr><td>--edifice-color-text-button-tertiary-other-default</td><td>Texte bouton tertiary other (normal)</td></tr>
+    <tr><td>--edifice-color-text-button-tertiary-other-disable</td><td>Texte bouton tertiary other (désactivé)</td></tr>
+  </tbody>
+</table>
+
+### Couleurs — boutons
+
+<table className="vars-table">
+  <thead><tr><th>CSS custom property</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>--edifice-color-buttons-primary-pale</td><td>Couleur bouton primary — très claire</td></tr>
+    <tr><td>--edifice-color-buttons-primary-light</td><td>Couleur bouton primary — claire</td></tr>
+    <tr><td>--edifice-color-buttons-primary-default</td><td>Couleur bouton primary — par défaut</td></tr>
+    <tr><td>--edifice-color-buttons-primary-dark</td><td>Couleur bouton primary — foncée</td></tr>
+    <tr><td>--edifice-color-buttons-secondary-pale</td><td>Couleur bouton secondary — très claire</td></tr>
+    <tr><td>--edifice-color-buttons-secondary-light</td><td>Couleur bouton secondary — claire</td></tr>
+    <tr><td>--edifice-color-buttons-secondary-default</td><td>Couleur bouton secondary — par défaut</td></tr>
+    <tr><td>--edifice-color-buttons-secondary-dark</td><td>Couleur bouton secondary — foncée</td></tr>
+    <tr><td>--edifice-color-buttons-tertiary-pale</td><td>Couleur bouton tertiary — très claire</td></tr>
+    <tr><td>--edifice-color-buttons-tertiary-light</td><td>Couleur bouton tertiary — claire</td></tr>
+    <tr><td>--edifice-color-buttons-tertiary-default</td><td>Couleur bouton tertiary — par défaut</td></tr>
+    <tr><td>--edifice-color-buttons-tertiary-dark</td><td>Couleur bouton tertiary — foncée</td></tr>
+  </tbody>
+</table>
+
+### Couleurs — primaire & support
+
+<table className="vars-table">
+  <thead><tr><th>CSS custom property</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>--edifice-color-primary-pale</td><td>Couleur primaire — très claire</td></tr>
+    <tr><td>--edifice-color-primary-light</td><td>Couleur primaire — claire</td></tr>
+    <tr><td>--edifice-color-primary-default</td><td>Couleur primaire — par défaut</td></tr>
+    <tr><td>--edifice-color-primary-dark</td><td>Couleur primaire — foncée</td></tr>
+    <tr><td>--edifice-color-support-danger-700</td><td>Danger — foncé</td></tr>
+    <tr><td>--edifice-color-support-danger-500</td><td>Danger — par défaut</td></tr>
+    <tr><td>--edifice-color-support-danger-300</td><td>Danger — clair</td></tr>
+    <tr><td>--edifice-color-support-danger-200</td><td>Danger — très clair</td></tr>
+    <tr><td>--edifice-color-support-success-700</td><td>Succès — foncé</td></tr>
+    <tr><td>--edifice-color-support-success-500</td><td>Succès — par défaut</td></tr>
+    <tr><td>--edifice-color-support-success-300</td><td>Succès — clair</td></tr>
+    <tr><td>--edifice-color-support-success-200</td><td>Succès — très clair</td></tr>
+    <tr><td>--edifice-color-support-info-700</td><td>Info — foncé</td></tr>
+    <tr><td>--edifice-color-support-info-500</td><td>Info — par défaut</td></tr>
+    <tr><td>--edifice-color-support-info-300</td><td>Info — clair</td></tr>
+    <tr><td>--edifice-color-support-info-200</td><td>Info — très clair</td></tr>
+    <tr><td>--edifice-color-support-warning-700</td><td>Warning — foncé</td></tr>
+    <tr><td>--edifice-color-support-warning-500</td><td>Warning — par défaut</td></tr>
+    <tr><td>--edifice-color-support-warning-300</td><td>Warning — clair</td></tr>
+    <tr><td>--edifice-color-support-warning-200</td><td>Warning — très clair</td></tr>
+  </tbody>
+</table>
+
+### Typographie
+
+<table className="vars-table">
+  <thead><tr><th>CSS custom property</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>--edifice-font-family-title</td><td>Police des titres</td></tr>
+    <tr><td>--edifice-font-family-body</td><td>Police du corps de texte</td></tr>
+    <tr><td>--edifice-font-weight-bold</td><td>Graisse gras</td></tr>
+    <tr><td>--edifice-font-weight-regular</td><td>Graisse normale</td></tr>
+    <tr><td>--edifice-font-size-xl</td><td>3.2rem</td></tr>
+    <tr><td>--edifice-font-size-l</td><td>2.6rem</td></tr>
+    <tr><td>--edifice-font-size-m</td><td>2.2rem</td></tr>
+    <tr><td>--edifice-font-size-s</td><td>1.8rem</td></tr>
+    <tr><td>--edifice-font-size-default</td><td>1.6rem</td></tr>
+    <tr><td>--edifice-font-size-small</td><td>1.4rem</td></tr>
+    <tr><td>--edifice-font-size-caption</td><td>1.2rem</td></tr>
+    <tr><td>--edifice-font-lineheight-xl</td><td>3.6rem</td></tr>
+    <tr><td>--edifice-font-lineheight-l</td><td>3.2rem</td></tr>
+    <tr><td>--edifice-font-lineheight-m</td><td>2.8rem</td></tr>
+    <tr><td>--edifice-font-lineheight-s</td><td>2.6rem</td></tr>
+    <tr><td>--edifice-font-lineheight-xs</td><td>2.2rem</td></tr>
+    <tr><td>--edifice-font-lineheight-2xs</td><td>2rem</td></tr>
+    <tr><td>--edifice-font-lineheight-3xs</td><td>1.8rem</td></tr>
+    <tr><td>--edifice-font-button-family</td><td>Police des boutons (variable par thème)</td></tr>
+    <tr><td>--edifice-font-button-size</td><td>Taille de texte des boutons (variable par thème)</td></tr>
+    <tr><td>--edifice-font-button-lineheight</td><td>Hauteur de ligne des boutons (variable par thème)</td></tr>
+  </tbody>
+</table>
+
+### Radius
+
+<table className="vars-table">
+  <thead><tr><th>CSS custom property</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td>--edifice-radius-button</td><td>Rayon des boutons (md, lg ou pill selon le thème)</td></tr>
+  </tbody>
+</table>

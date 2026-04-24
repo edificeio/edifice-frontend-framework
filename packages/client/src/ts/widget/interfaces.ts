@@ -74,8 +74,3 @@ export type WidgetUserPref = {
 } & {
   [pref in WidgetSpecificUserPrefs]?: any;
 };
-
-//-------------------------------------
-// WIDGETS
-//-------------------------------------
-export * from './LastInfos.widget';

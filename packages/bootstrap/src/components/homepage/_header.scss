@@ -1,0 +1,98 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
+.header-beta .navbar {
+  --#{$prefix}navbar-padding-y: 0.8rem;
+  --#{$prefix}navbar-padding-x: 0.8rem;
+  --#{$prefix}navbar-background: $white;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: 'links';
+  width: 100%;
+  background: var(--#{$prefix}navbar-background);
+  border-bottom: 2px solid;
+  border-image-slice: 1;
+  border-width: 2px;
+  border-image-source: linear-gradient(67.55deg, #ffc403, #fc94ff);
+  box-shadow: var(--#{$prefix}box-shadow);
+
+  @include bootstrap.media-breakpoint-up(md) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'logo links';
+  }
+
+  &-brand {
+    --#{$prefix}navbar-brand-padding-y: #{$navbar-brand-padding-y};
+    --#{$prefix}navbar-brand-padding-x: #{$navbar-brand-padding-x};
+    --#{$prefix}navbar-brand-margin-end: #{$navbar-brand-margin-end};
+    --#{$prefix}navbar-brand-logo-height: 30px;
+
+    grid-area: logo;
+
+    .logo {
+      display: none;
+      height: var(--#{$prefix}navbar-brand-logo-height);
+      object-fit: contain;
+      object-position: left;
+      max-width: 100%;
+      width: auto;
+    }
+
+    @include bootstrap.media-breakpoint-up(md) {
+      --#{$prefix}navbar-brand-logo-height: 20px;
+
+      .logo {
+        display: inline-block;
+      }
+    }
+
+    @include bootstrap.media-breakpoint-up(lg) {
+      --#{$prefix}navbar-brand-logo-height: 24px;
+    }
+  }
+
+  &-nav {
+    --navbar-nav-gap: 0.8rem;
+    --navbar-nav-link-icon-size: 2.4rem;
+    --#{$prefix}nav-link-padding-y: 0.4rem;
+    --#{$prefix}nav-link-padding-x: 0.4rem;
+
+    grid-area: links;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: var(--navbar-nav-gap);
+    justify-content: space-between;
+
+    .avatar {
+      --#{$prefix}avatar-size: 2.4rem;
+    }
+
+    svg {
+      width: var(--navbar-nav-link-icon-size);
+      height: var(--navbar-nav-link-icon-size);
+    }
+
+    .popover svg {
+      --navbar-nav-link-icon-size: 2.2rem;
+    }
+
+    @include bootstrap.media-breakpoint-up(md) {
+      --navbar-nav-gap: 2.4rem;
+      justify-content: flex-end;
+
+      svg {
+        --navbar-nav-link-icon-size: 3.2rem;
+      }
+
+      .popover svg {
+        --navbar-nav-link-icon-size: 2.2rem;
+      }
+
+      .avatar {
+        --#{$prefix}avatar-size: 3.2rem;
+      }
+    }
+  }
+}

@@ -1,4 +1,8 @@
+@use 'theme-api' as theme;
 @forward 'neo';
 @forward 'one';
+@forward 'edifice2d';
+@forward 'edifice1d';
 @forward 'overrides';
 @forward 'skins';
+@include theme.primitive-vars();

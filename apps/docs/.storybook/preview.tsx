@@ -8,8 +8,8 @@ import {
   EdificeThemeProvider,
 } from '../../../packages/react/src/providers';
 
-import i18n from '../i18n';
 import React from 'react';
+import i18n from '../i18n';
 
 import {
   actualitesHandlers,
@@ -20,6 +20,7 @@ import {
   publicConfigHandlers,
   shareHandlers,
   themeHandlers,
+  timelineHandlers,
   userbookHandlers,
   wikiHandlers,
   workspaceHandlers,
@@ -52,7 +53,7 @@ const preview: Preview = {
       defaultValue: 'one',
       toolbar: {
         icon: 'switchalt',
-        items: ['one', 'neo', 'side-by-side'],
+        items: ['one', 'neo', 'edifice2d', 'edifice1d', 'side-by-side'],
       },
     },
     app: {
@@ -74,6 +75,7 @@ const preview: Preview = {
           'Introduction',
           ['Welcome', 'Getting Started', '*'],
           'Design System',
+          'Edifice Design System',
           'Components',
           ['Base', '*'],
           'Forms',
@@ -97,6 +99,7 @@ const preview: Preview = {
         blog: blogHandlers,
         share: shareHandlers,
         actualites: actualitesHandlers,
+        timeline: timelineHandlers,
       },
     },
   },
@@ -131,6 +134,8 @@ const preview: Preview = {
               <>
                 <StoryTheme themePath="one" />
                 <StoryTheme themePath="neo" />
+                <StoryTheme themePath="edifice2d" />
+                <StoryTheme themePath="edifice1d" />
               </>
             );
           }
@@ -139,6 +144,12 @@ const preview: Preview = {
           }
           case 'neo': {
             return <StoryTheme themePath="neo" />;
+          }
+          case 'edifice2d': {
+            return <StoryTheme themePath="edifice2d" />;
+          }
+          case 'edifice1d': {
+            return <StoryTheme themePath="edifice1d" />;
           }
           case 'default': {
             return <StoryTheme themePath={theme} />;

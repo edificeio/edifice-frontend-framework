@@ -1,0 +1,151 @@
+$black: #000;
+$white: #fff;
+
+$grey-900: #383838;
+$grey-800: #696969;
+$grey-700: #828282;
+$grey-500: #c7c7c7;
+$grey-300: #e4e4e4;
+$grey-200: #f2f2f2;
+$grey-100: #f7f7f7;
+
+$orange-900: #a82400;
+$orange-700: #e73404;
+$orange-500: #fc5e29;
+$orange-400: #ff8261;
+$orange-300: #ffc1b2;
+$orange-200: #ffebe5;
+$orange-100: #fff7f5;
+
+$yellow-900: #9e7400;
+$yellow-700: #e5a800;
+$yellow-500: #ffc403;
+$yellow-400: #ffd357;
+$yellow-300: #ffe5a3;
+$yellow-200: #fcf3cf;
+$yellow-100: #fefaec;
+
+$blue-900: #1c1c73;
+$blue-700: #3030d1;
+$blue-500: #5555f7;
+$blue-400: #738efc;
+$blue-300: #c8d3fe;
+$blue-200: #e6ebfe;
+$blue-100: #f5f7ff;
+
+$green-900: #238050;
+$green-700: #2caa69;
+$green-500: #33c77d;
+$green-400: #64db9e;
+$green-300: #bdf0d5;
+$green-200: #e2f9ed;
+$green-100: #f2fcf7;
+
+$pink-900: #9d399d;
+$pink-700: #e26ae2;
+$pink-500: #fc94ff;
+$pink-400: #fdbfff;
+$pink-300: #fdd7fe;
+$pink-200: #feecfe;
+$pink-100: #fff5ff;
+
+$info-700: $blue-700;
+$info-500: $blue-500;
+$info-300: $blue-300;
+$info-200: $blue-200;
+
+$danger-700: #dc0404;
+$danger-500: #f63131;
+$danger-300: #ffbdbd;
+$danger-200: #ffebeb;
+
+$warning-700: $yellow-700;
+$warning-500: $yellow-500;
+$warning-300: $yellow-300;
+$warning-200: $yellow-200;
+
+$success-700: $green-700;
+$success-500: $green-500;
+$success-300: $green-300;
+$success-200: $green-200;
+
+$accessible-blue: #648fff;
+$accessible-deepBlue: #785ef0;
+$accessible-lavender: #dc267f;
+$accessible-salamander: #fe6100;
+$accessible-sunshade: #ffb000;
+$accessible-chick: #f3ea14;
+
+$numbers-0: 0;
+$numbers-2: 0.2rem;
+$numbers-4: 0.4rem;
+$numbers-8: 0.8rem;
+$numbers-12: 1.2rem;
+$numbers-16: 1.6rem;
+$numbers-24: 2.4rem;
+$numbers-32: 3.2rem;
+$numbers-40: 4rem;
+$numbers-48: 4.8rem;
+$numbers-64: 6.4rem;
+$numbers-128: 12.8rem;
+
+$spacer-0: $numbers-0;
+$spacer-2: $numbers-2;
+$spacer-4: $numbers-4;
+$spacer-8: $numbers-8;
+$spacer-12: $numbers-12;
+$spacer-16: $numbers-16;
+$spacer-24: $numbers-24;
+$spacer-32: $numbers-32;
+$spacer-40: $numbers-40;
+$spacer-48: $numbers-48;
+$spacer-64: $numbers-64;
+
+$border-radius-sm: $numbers-4;
+$border-radius-md: $numbers-8;
+$border-radius-lg: $numbers-12;
+$border-radius-xl: $numbers-16;
+$border-radius-2xl: $numbers-24;
+$border-radius-3xl: $numbers-32;
+$border-radius-pill: $numbers-128;
+
+$font-size-root: 62.5%;
+$font-size-base: 1.6rem;
+
+$container-max-width: 1360px;
+$gutters: $spacer-24;
+
+/** Client specifics **/
+$clients-crna-700: #b6002c;
+$clients-crna-500: #ed0039;
+$clients-crna-300: #f6b3c3;
+$clients-crna-200: #ffdee6;
+
+/** Text variables **/
+$text-color-default: $grey-900;
+$text-color-subtext: $grey-800;
+
+/** Font variables **/
+$font-family-urbanist: 'Urbanist';
+$font-family-playpensans: 'Playpen Sans';
+$font-family-arimo: 'Arimo';
+
+$font-size-xl: 3.2rem;
+$font-size-l: 2.6rem;
+$font-size-m: 2.2rem;
+$font-size-s: 1.8rem;
+$font-size-default: 1.6rem;
+$font-size-small: 1.4rem;
+$font-size-caption: 1.2rem;
+
+$font-weight-bold: 700;
+$font-weight-medium: 600;
+$font-weight-regular: 500;
+
+$font-lineheight-xl: 3.6rem;
+$font-lineheight-l: 3.2rem;
+$font-lineheight-m: 2.8rem;
+$font-lineheight-s: 2.6rem;
+$font-lineheight-xs: 2.2rem;
+$font-lineheight-2xs: 2rem;
+$font-lineheight-3xs: 1.8rem;
