@@ -43,31 +43,13 @@ type Story = StoryObj<typeof Header>;
 export const Default: Story = {};
 
 /**
- * Header with custom theme source for branding and styling.
- * Configure the src prop to point to custom theme assets.
- */
-export const CustomTheme: Story = {
-  args: {
-    src: '/theme/custom',
-  },
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Header configured with a custom theme source to demonstrate how different visual themes can be applied.',
-      },
-    },
-  },
-};
-
-/**
  * Mobile responsive header demonstration.
  * Shows how the header adapts to mobile viewport sizes.
  */
 export const Mobile: Story = {
   parameters: {
     viewport: {
-      defaultViewport: 'mobile1',
+      defaultViewport: 'mobile',
     },
     docs: {
       description: {
