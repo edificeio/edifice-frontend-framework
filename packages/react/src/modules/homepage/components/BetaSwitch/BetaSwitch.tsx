@@ -15,24 +15,24 @@ const BetaSwitch = ({
   onSwitchClick,
 }: BetaSwitchProps) => {
   const { t } = useTranslation();
+  // const { lg } = useBreakpoint();
 
   return (
-    <Flex direction="row">
-      <p>
-        <strong>{t('betaSwitch.title')}</strong>
-        {t('betaSwitch.description')}
-      </p>
-      <Button
-        data-testid="beta-switch-button"
-        isLoading={isSwitching}
-        color="tertiary"
-        variant="outline"
-        disabled={isSwitching}
-        onClick={onSwitchClick}
-      >
-        {t('betaSwitch.button')}
-      </Button>
-    </Flex>
+    <div className="beta-switch">
+      <Flex direction="row">
+        <p>
+          <strong>{t('betaSwitch.title')}</strong> {t('betaSwitch.description')}
+        </p>
+        <Button
+          data-testid="beta-switch-button"
+          isLoading={isSwitching}
+          disabled={isSwitching}
+          onClick={onSwitchClick}
+        >
+          {t('betaSwitch.button')}
+        </Button>
+      </Flex>
+    </div>
   );
 };
 

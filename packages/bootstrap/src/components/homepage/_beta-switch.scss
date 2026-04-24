@@ -1,0 +1,9 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
+.beta-switch {
+  background: linear-gradient(67.55deg, var(--edifice-yellow-200) 0%, var(--edifice-pink-200) 100%);
+  padding: var(--#{$prefix}spacer-16) var(--#{$prefix}spacer-12);
+  border: 1px solid var(--edifice-color-primary-default);
+  border-radius: var(--edifice-border-radius-xl);
+}
