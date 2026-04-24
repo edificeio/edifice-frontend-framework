@@ -250,7 +250,12 @@ i18n.use(initReactI18next).init({
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
         'homepage.widget.last-infos-list.see.more': 'Voir plus',
         'homepage.widget.last-infos-list.title': 'Dernières actualités',
-        //------------------------------------------------------
+        //----------------- BetaSwitch -----------------
+        'betaSwitch.button': 'Quittez la Bêta',
+        'betaSwitch.title': "L'ancienne version vous manque ?",
+        'betaSwitch.description':
+          'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
+        'betaSwitch.error': "Erreur de paramétrage de la page d'accueil",
       },
     },
   },
