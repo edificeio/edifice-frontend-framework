@@ -7,8 +7,6 @@ $one: (
   name: 'one',
   color: (
     text: (
-      default: $grey-900,
-      subtext: $grey-800,
       button: (
         primary: (
           filled: (
@@ -97,35 +95,22 @@ $one: (
   ),
   font: (
     family: (
-      title: 'KG June Bug',
-      body: 'Arimo',
+      title: $legacy-font-family-kgjunebug,
+      body: $font-family-arimo,
     ),
     weight: (
-      bold: 700,
-      regular: 500,
-    ),
-    size: (
-      xl: 3.2rem,
-      l: 2.6rem,
-      m: 2.2rem,
-      s: 1.8rem,
-      default: 1.6rem,
-      small: 1.4rem,
-      caption: 1.2rem,
-    ),
-    lineheight: (
-      xl: 3.6rem,
-      l: 3.2rem,
-      m: 2.8rem,
-      s: 2.6rem,
-      xs: 2.2rem,
-      2xs: 2rem,
-      3xs: 1.8rem,
+      bold: $font-weight-bold,
+      regular: $font-weight-regular,
     ),
     button: (
-      family: 'KG June Bug',
-      size: 2.2rem,
-      lineheight: 2.8rem,
+      family: $legacy-font-family-kgjunebug,
+      size: $font-size-m,
+      lineheight: $font-lineheight-m,
+      tertiary: (
+        family: $font-family-arimo,
+        size: $font-size-default,
+        lineheight: $font-lineheight-s,
+      ),
     ),
   ),
   radius: (
