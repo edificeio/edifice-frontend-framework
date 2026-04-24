@@ -3,6 +3,7 @@ import { IOdeServices } from '../services/OdeServices';
 import { ServiceRegistry } from './ServiceRegistry';
 import { AbstractBehaviourService } from './behaviours/AbstractBehaviourService';
 import { ActualitesBehaviour } from './behaviours/ActualitesBehaviour';
+import { AppointmentsBehaviour } from './behaviours/AppointmentsBehaviour';
 import { BlogBehaviour } from './behaviours/BlogBehaviour';
 import { CollaborativewallBehaviour } from './behaviours/CollaborativewallBehaviour';
 import { CommunityBehaviour } from './behaviours/CommunityBehaviour';
@@ -136,6 +137,9 @@ export class SnipletsService {
         break;
       case 'magneto':
         service = new MagnetoBehaviour(context);
+        break;
+      case 'appointments':
+        service = new AppointmentsBehaviour(context);
         break;
       default:
         throw ERROR_CODE.NOT_SUPPORTED;
