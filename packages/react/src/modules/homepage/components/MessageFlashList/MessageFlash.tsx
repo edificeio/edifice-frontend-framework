@@ -104,16 +104,18 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
 
   return (
     <Card className={classes} isClickable={false} isSelectable={false}>
-      <IconButton
-        variant="ghost"
-        color="tertiary"
-        icon={<IconClose />}
-        onClick={handleClose}
-        className="message-flash-close-button"
-        data-testid={'message-flash-close-button'}
-        aria-label={t('close.message', { title: message.title })}
-        title={t('close.message', { title: message.title })}
-      />
+      {((hasOverflow && !isCollapsed) || !hasOverflow) && (
+        <IconButton
+          variant="ghost"
+          color="tertiary"
+          icon={<IconClose />}
+          onClick={handleClose}
+          className="message-flash-close-button"
+          data-testid={'message-flash-close-button'}
+          aria-label={t('close.message', { title: message.title })}
+          title={t('close.message', { title: message.title })}
+        />
+      )}
       <div
         className="message-flash-icon"
         role="img"
