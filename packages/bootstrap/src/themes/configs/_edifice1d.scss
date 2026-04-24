@@ -6,8 +6,6 @@ $edifice1d: (
   name: 'edifice1d',
   color: (
     text: (
-      default: $grey-900,
-      subtext: $grey-800,
       button: (
         primary: (
           filled: (
@@ -96,35 +94,22 @@ $edifice1d: (
   ),
   font: (
     family: (
-      title: 'Playpen Sans',
-      body: 'Arimo',
+      title: $font-family-playpensans,
+      body: $font-family-arimo,
     ),
     weight: (
-      bold: 600,
-      regular: 500,
-    ),
-    size: (
-      xl: 3.2rem,
-      l: 2.6rem,
-      m: 2.2rem,
-      s: 1.8rem,
-      default: 1.6rem,
-      small: 1.4rem,
-      caption: 1.2rem,
-    ),
-    lineheight: (
-      xl: 3.6rem,
-      l: 3.2rem,
-      m: 2.8rem,
-      s: 2.6rem,
-      xs: 2.2rem,
-      2xs: 2rem,
-      3xs: 1.8rem,
+      bold: $font-weight-medium,
+      regular: $font-weight-regular,
     ),
     button: (
-      family: 'Playpen Sans',
-      size: 1.6rem,
-      lineheight: 2.6rem,
+      family: $font-family-playpensans,
+      size: $font-size-default,
+      lineheight: $font-lineheight-s,
+      tertiary: (
+        family: $font-family-playpensans,
+        size: $font-size-default,
+        lineheight: $font-lineheight-s,
+      ),
     ),
   ),
   radius: (
