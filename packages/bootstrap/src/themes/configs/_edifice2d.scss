@@ -1,0 +1,118 @@
+// Configuration du thème edifice2d.
+
+@use 'primitives' as *;
+
+$edifice2d: (
+  name: 'edifice2d',
+  color: (
+    text: (
+      button: (
+        primary: (
+          filled: (
+            default: $blue-900,
+            disable: $white,
+          ),
+          other: (
+            default: $blue-900,
+            disable: $blue-300,
+          ),
+        ),
+        secondary: (
+          filled: (
+            default: $blue-900,
+            disable: $white,
+          ),
+          other: (
+            default: $blue-900,
+            disable: $blue-300,
+          ),
+        ),
+        tertiary: (
+          filled: (
+            default: $blue-900,
+            disable: $white,
+          ),
+          other: (
+            default: $blue-900,
+            disable: $blue-300,
+          ),
+        ),
+      ),
+    ),
+    buttons: (
+      primary: (
+        pale: $yellow-200,
+        light: $yellow-300,
+        default: $yellow-400,
+        dark: $yellow-500,
+      ),
+      secondary: (
+        pale: $yellow-200,
+        light: $yellow-300,
+        default: $yellow-400,
+        dark: $yellow-500,
+      ),
+      tertiary: (
+        pale: $yellow-200,
+        light: $yellow-300,
+        default: $yellow-400,
+        dark: $yellow-500,
+      ),
+    ),
+    primary: (
+      pale: $yellow-200,
+      light: $yellow-300,
+      default: $yellow-400,
+      dark: $yellow-500,
+    ),
+    support: (
+      danger: (
+        700: $danger-700,
+        500: $danger-500,
+        300: $danger-300,
+        200: $danger-200,
+      ),
+      success: (
+        700: $success-700,
+        500: $success-500,
+        300: $success-300,
+        200: $success-200,
+      ),
+      info: (
+        700: $info-700,
+        500: $info-500,
+        300: $info-300,
+        200: $info-200,
+      ),
+      warning: (
+        700: $warning-700,
+        500: $warning-500,
+        300: $warning-300,
+        200: $warning-200,
+      ),
+    ),
+  ),
+  font: (
+    family: (
+      title: $font-family-urbanist,
+      body: $font-family-arimo,
+    ),
+    weight: (
+      bold: $font-weight-bold,
+      regular: $font-weight-regular,
+    ),
+    button: (
+      family: $font-family-urbanist,
+      size: $font-size-default,
+      lineheight: $font-lineheight-s,
+      tertiary: (
+        family: $font-family-urbanist,
+        size: $font-size-default,
+        lineheight: $font-lineheight-s,
+      ),
+    ),
+  ),
+  radius: (
+    button: $border-radius-pill,
+  ),
+);

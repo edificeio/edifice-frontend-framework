@@ -1,0 +1,16 @@
+@use "../../../../abstracts/colors";
+@use "../../../../abstracts/variables" as vars;
+
+$navbar-brand-padding-y: 0;
+$navbar-brand-padding-x: 0;
+$navbar-brand-margin-end: 0;
+$navbar-padding-y: 0;
+
+$navbar-color-100: var(--#{vars.$prefix}info);
+$navbar-color-200: var(--#{vars.$prefix}secondary);
+
+$navbar-badge-padding-x: 0.55em;
+$navbar-badge-padding-y: 0.35em;
+$navbar-badge-font-size: 0.55em;
+
+

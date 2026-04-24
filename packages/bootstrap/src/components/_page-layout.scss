@@ -1,0 +1,345 @@
+@use '../themes/configs/primitives' as *;
+
+// ==========================================================================
+// PageLayout — Page layout with optional sidebars, breadcrumb & overlay
+// ==========================================================================
+
+.pagelayout {
+  --pagelayout-headerheight: 5.8rem;
+
+  min-height: 100vh;
+
+  // --- Header (fixed) ---
+
+  &-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1060;
+  }
+
+  &-headerspacer {
+    height: var(--pagelayout-headerheight);
+  }
+
+  // --- Grid area assignments ---
+
+  &-breadcrumb {
+    grid-area: breadcrumb;
+  }
+
+  &-sidebarleft {
+    grid-area: sidebarLeft;
+    padding-inline: var(--pagelayout-sidebarleft-padding-x, #{$spacer-24});
+  }
+
+  &-content {
+    grid-area: content;
+    padding-inline: var(--pagelayout-content-padding-x, #{$spacer-32});
+  }
+
+  &-sidebarright {
+    grid-area: sidebarRight;
+    padding-inline: var(--pagelayout-sidebarright-padding-x, #{$spacer-24});
+  }
+
+  // --- Main area (grid container for sidebars + content) ---
+
+  &-mainarea {
+    display: grid;
+    column-gap: 0;
+    grid-template-columns: 1fr;
+    grid-template-areas: 'content';
+
+    &.has-gap {
+      column-gap: $gutters;
+    }
+
+    &.has-both-sidebars {
+      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-areas: 'sidebarLeft content sidebarRight';
+    }
+
+    &.has-left-sidebar-only {
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas: 'sidebarLeft content';
+    }
+
+    &.has-right-sidebar-only {
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas: 'content sidebarRight';
+    }
+
+    // Padding contextuel — :where() réduit la spécificité à (0,1,0)
+    // pour que les modifiers --no-padding puissent toujours l'emporter
+    :where(&.has-both-sidebars) {
+      .pagelayout-sidebarleft {
+        --pagelayout-sidebarleft-padding-x: #{$spacer-16};
+      }
+
+      .pagelayout-content {
+        --pagelayout-content-padding-x: #{$spacer-32};
+      }
+
+      .pagelayout-sidebarright {
+        --pagelayout-sidebarright-padding-x: #{$spacer-16};
+      }
+    }
+
+    :where(&.has-left-sidebar-only) {
+      .pagelayout-sidebarleft {
+        --pagelayout-sidebarleft-padding-x: #{$spacer-24};
+      }
+
+      .pagelayout-content {
+        --pagelayout-content-padding-x: #{$spacer-64};
+      }
+    }
+
+    :where(&.has-right-sidebar-only) {
+      .pagelayout-content {
+        --pagelayout-content-padding-x: #{$spacer-64};
+      }
+
+      .pagelayout-sidebarright {
+        --pagelayout-sidebarright-padding-x: #{$spacer-24};
+      }
+    }
+  }
+
+  // --- Overlay panel (slides in from the right) ---
+
+  &-overlaybackdrop {
+    position: fixed;
+    inset: var(--pagelayout-headerheight, 0) 0 0;
+    background: rgb(0 0 0 / 30%);
+    z-index: 1040;
+  }
+
+  &-overlay {
+    position: fixed;
+    top: var(--pagelayout-headerheight, 0);
+    right: 0;
+    bottom: 0;
+    z-index: 1050;
+    width: 25%;
+    background: $white;
+    box-shadow: 0 0.2rem 0.6em rgb(0 0 0 / 15%);
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+
+    &-open {
+      transform: translateX(0);
+    }
+  }
+
+  // Overlay width = 33% when 0 or 1 sidebar
+  &-mainarea:not(.has-both-sidebars) ~ &-overlay {
+    width: 33.333%;
+  }
+}
+
+// ==========================================================================
+// No-padding modifiers — disable padding on a specific column
+// ==========================================================================
+
+.pagelayout-sidebarleft--no-padding {
+  --pagelayout-sidebarleft-padding-x: 0;
+}
+
+.pagelayout-content--no-padding {
+  --pagelayout-content-padding-x: 0;
+}
+
+.pagelayout-sidebarright--no-padding {
+  --pagelayout-sidebarright-padding-x: 0;
+}
+
+// ==========================================================================
+// Scroll mode: columns — columns fill viewport, each scrolls independently
+// ==========================================================================
+
+.pagelayout-scroll-columns {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .pagelayout-header {
+    position: static;
+    flex-shrink: 0;
+  }
+
+  .pagelayout-headerspacer {
+    display: none;
+  }
+
+  .pagelayout-mainarea {
+    flex: 1;
+    min-height: 0; // required: flex item with overflow must have min-height: 0
+    align-items: stretch;
+  }
+
+  .pagelayout-sidebarleft,
+  .pagelayout-content {
+    overflow-y: auto;
+  }
+
+  // Reset fullpage animation overrides, allow independent scroll
+  .pagelayout-sidebarright {
+    overflow: hidden auto;
+    display: block;
+  }
+
+  .pagelayout-sidebarright-inner {
+    min-height: 100%;
+  }
+}
+
+// ==========================================================================
+// Variant: centered (default)
+// Sidebars + content centered within a max-width container.
+// Breadcrumb is outside mainarea → full container width.
+// ==========================================================================
+
+.pagelayout-centered {
+  .pagelayout-breadcrumb,
+  .pagelayout-mainarea {
+    max-width: 136rem;
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+// ==========================================================================
+// Variant: fullpage
+// Sidebars extend to screen edges, content centered.
+// Breadcrumb is inside mainarea → scoped to content column.
+// ==========================================================================
+
+.pagelayout-fullpage .pagelayout-mainarea {
+  transition: grid-template-columns 0.3s ease-in-out;
+
+  // Override grid-template to include breadcrumb row
+
+  grid-template-areas:
+    'breadcrumb'
+    'content';
+
+  &.has-both-sidebars {
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas:
+      'breadcrumb  breadcrumb breadcrumb  '
+      'sidebarLeft content    sidebarRight';
+  }
+
+  // 3-column grid with right column at 0fr so CSS can interpolate to has-both-sidebars
+  &.has-left-sidebar-only {
+    grid-template-columns: 1fr 3fr 0fr;
+    grid-template-areas:
+      'breadcrumb  breadcrumb breadcrumb  '
+      'sidebarLeft content    sidebarRight';
+  }
+
+  &.has-right-sidebar-only {
+    grid-template-areas:
+      'breadcrumb .            '
+      'content    sidebarRight';
+  }
+
+  // Right sidebar: grid cell clips, inner wrapper keeps fixed width
+  // → content reveals from right to left as the column grows, no reflow
+  .pagelayout-sidebarright {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .pagelayout-sidebarright-inner {
+    min-width: 25%;
+    width: 100%;
+    flex-shrink: 0;
+  }
+}
+
+// In fullpage + columns mode: breadcrumb row auto, content row fills remaining height
+.pagelayout-fullpage.pagelayout-scroll-columns .pagelayout-mainarea {
+  grid-template-rows: auto 1fr;
+}
+
+// ==========================================================================
+// Scroll mode: page — normal page scroll, breadcrumb becomes sticky
+// ==========================================================================
+
+.pagelayout-scroll-page {
+  .pagelayout-header {
+    position: static;
+  }
+
+  .pagelayout-headerspacer {
+    display: none;
+  }
+
+  .pagelayout-breadcrumb {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: $white;
+  }
+}
+
+// ==========================================================================
+// Responsive — single-column stack below md (768px)
+// Order: header · breadcrumb · sidebarLeft · content · sidebarRight
+// ==========================================================================
+
+@media (width <= 767.98px) {
+  .pagelayout {
+    --pagelayout-headerheight: 5rem;
+  }
+
+  .pagelayout-overlay,
+  .pagelayout-mainarea:not(.has-both-sidebars) ~ .pagelayout-overlay {
+    width: 100%;
+  }
+
+  // scroll-columns: revert to normal page scroll on mobile
+  .pagelayout-scroll-columns {
+    height: auto;
+    overflow: visible;
+    display: block;
+
+    .pagelayout-mainarea {
+      flex: none;
+      min-height: 0;
+      align-items: start;
+    }
+
+    .pagelayout-sidebarleft,
+    .pagelayout-content,
+    .pagelayout-sidebarright {
+      overflow-y: visible;
+    }
+  }
+
+  // Selectors cover all specificity levels:
+  // (0,2,0) — base mainarea + centered has-* variants
+  // (0,3,0) — fullpage has-* variants + fullpage+scroll-columns
+  .pagelayout .pagelayout-mainarea,
+  .pagelayout-fullpage .pagelayout-mainarea.has-both-sidebars,
+  .pagelayout-fullpage .pagelayout-mainarea.has-left-sidebar-only,
+  .pagelayout-fullpage .pagelayout-mainarea.has-right-sidebar-only,
+  .pagelayout-fullpage.pagelayout-scroll-columns .pagelayout-mainarea {
+    grid-template: 1fr / auto;
+    grid-template-areas:
+      'breadcrumb'
+      'sidebarLeft'
+      'content'
+      'sidebarRight';
+    // grid-template-rows: auto;
+
+    transition: none;
+  }
+}

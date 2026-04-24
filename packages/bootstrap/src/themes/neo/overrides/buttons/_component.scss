@@ -1,0 +1,146 @@
+@use "sass:map";
+@use "./mixins";
+@use "../../../../abstracts/" as *;
+
+[data-product="neo"] {
+  .btn {
+    &:hover,
+    &.hover,
+    &:focus-visible {
+      > span {
+        transform: translateY(-0.2rem);
+      }
+    }
+
+    &:active,
+    &.active {
+      box-shadow: inset 0 0 0 var(--#{$prefix}btn-active-box-shadow-width)
+        var(--#{$prefix}btn-active-border-color);
+
+      > span {
+        transform: translateY(0);
+      }
+    }
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 var(--#{$prefix}btn-active-box-shadow-width)
+        var(--#{$prefix}btn-hover-border-color);
+    }
+  }
+
+  // Filled Button
+  @each $value, $key in $button-colors {
+    .btn-#{$value} {
+      @include mixins.variant-button-filled(
+        map.get($key, "base"),
+        map.get($key, "dark"),
+        map.get($key, "light"),
+        map.get($key, "text"),
+        map.get($key, "box-shadow")
+      );
+    }
+
+    @if ($value == "tertiary") {
+      .btn-#{$value} {
+        &:disabled,
+        &.disabled {
+          --#{$prefix}btn-bg: var(--#{$prefix}gray-200);
+          --#{$prefix}btn-color: var(--#{$prefix}gray-600);
+        }
+      }
+
+      &[data-state="selected"],
+      &.is-selected {
+        background-color:var(--#{$prefix}secondary-200);
+      }
+    }
+  }
+
+  // Outlined Button
+  @each $value, $key in $button-colors {
+    @if ($value == "tertiary") {
+      .btn-outline-#{$value} {
+        --#{$prefix}btn-active-bg: var(--#{$prefix}gray-200);
+        --#{$prefix}btn-active-border-color: var(--#{$prefix}gray-600);
+        --#{$prefix}btn-active-box-shadow-color: transparent;
+        --#{$prefix}btn-active-color: var(--#{$prefix}gray-900);
+        --#{$prefix}btn-bg: transparent;
+        --#{$prefix}btn-border-color: var(--#{$prefix}gray-500);
+        --#{$prefix}btn-border-radius: 0.8rem;
+        --#{$prefix}btn-border-width: 0.1rem;
+        --#{$prefix}btn-color: var(--#{$prefix}gray-800);
+        --#{$prefix}btn-disabled-bg: transparent;
+        --#{$prefix}btn-disabled-border-color: var(--#{$prefix}gray-400);
+        --#{$prefix}btn-disabled-color: var(--#{$prefix}gray-500);
+        --#{$prefix}btn-disabled-opacity: 1;
+        --#{$prefix}btn-hover-bg: transparent;
+        --#{$prefix}btn-hover-border-color: var(--#{$prefix}gray-500);
+        --#{$prefix}btn-hover-color: var(--#{$prefix}gray-800);
+
+        &:focus-visible {
+        --#{$prefix}btn-hover-bg: var(--#{$prefix}gray-200);
+        --#{$prefix}btn-hover-border-color: var(--#{$prefix}gray-600);
+        --#{$prefix}btn-focus-box-shadow-color: transparent;
+        --#{$prefix}btn-hover-color: var(--#{$prefix}gray-800);
+        }
+      }
+    } @else {
+      .btn-outline-#{$value} {
+        @include mixins.variant-button-outlined(
+          map.get($key, "base"),
+          map.get($key, "dark"),
+          map.get($key, "pale"),
+          map.get($key, "light"),
+          map.get($key, "box-shadow")
+        );
+      }
+    }
+  }
+
+  // Ghost Button
+  @each $value, $key in $button-colors {
+    .btn-ghost-#{$value} {
+      
+      &:hover,
+      &.hover,
+      &:focus-visible {
+        > span {
+          transform: translateY(0);
+        }
+      }
+
+      @include mixins.variant-button-ghost(
+        map.get($key, "base"),
+        map.get($key, "dark"),
+        map.get($key, "light"),
+        map.get($key, "box-shadow")
+      );
+
+      @if ($value == "tertiary") {
+        --#{$prefix}btn-color: #{$gray-800};
+        --#{$prefix}btn-hover-color: #{$gray-800};
+
+        &:hover,
+        &.hover {
+          --#{$prefix}btn-hover-color: #{$gray-800};
+        }
+
+        &:first-child:active,
+        &:active,
+        &.active {
+          --#{$prefix}btn-active-color: #{$black};
+        }
+
+        &:disabled,
+        &.disabled {
+          --#{$prefix}btn-disabled-color: #{$gray-500};
+        }
+        
+        &[state="selected"],
+        &.is-selected {
+          background-color:var(--#{$prefix}secondary-200);
+        }
+      }
+    }
+  }
+}

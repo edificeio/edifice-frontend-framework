@@ -1,0 +1,188 @@
+@use "sass:map";
+@use "../../../../abstracts/" as *;
+@use "./mixins";
+
+[data-product="one"] {
+  .btn {
+    --#{$prefix}btn-font-family: var(--#{$prefix}family-primary);
+    --#{$prefix}btn-font-size: 2.2rem;
+    --#{$prefix}btn-font-weight: 400;
+    --#{$prefix}btn-border-radius: 1.2rem;
+    text-transform: uppercase;
+
+    &:not(
+        .btn-icon,
+        .btn-search,
+        .btn-ghost-primary,
+        .btn-ghost-secondary,
+        .btn-ghost-tertiary,
+        .btn-ghost-danger
+      ) {
+      svg {
+        transform: translateY(-0.2rem);
+      }
+    }
+
+    &:hover,
+    &.hover {
+      &:not(.btn-search) {
+        transform: translateY(-0.2rem);
+        box-shadow: 0 0.2rem 0 0 var(--#{$prefix}btn-hover-border-color);
+      }
+
+      &:is(.btn-search) {
+        span {
+          transform: translateY(-0.2rem);
+        }
+      }
+    }
+
+    &:active,
+    &.active {
+      &:not(.btn-search) {
+        transform: translateY(0);
+        box-shadow: none;
+      }
+    }
+
+    &:not(.btn-icon):focus-visible {
+      --#{$prefix}btn-border-width: 0.1rem;
+      box-shadow: inset 0 0 0 0.1rem var(--#{$prefix}btn-hover-border-color);
+    }
+  }
+
+  // Filled Button
+  @each $value, $key in $button-colors {
+    .btn-#{$value} {
+      @include mixins.variant-button-filled(
+        map.get($key, "base"),
+        map.get($key, "dark"),
+        map.get($key, "light"),
+        map.get($key, "text"),
+        map.get($key, "box-shadow")
+      );
+
+      &.btn-filled {
+        &:hover,
+        &.hover {
+          --#{$prefix}btn-border-width: 0.1rem;
+        }
+
+        &:active,
+        &.active {
+          --#{$prefix}btn-border-width: 0.1rem;
+        }
+      }
+    }
+
+    @if ($value == "tertiary") {
+      .btn-#{$value} {
+        &:disabled,
+        &.disabled {
+          --#{$prefix}btn-disabled-bg: #{$gray-200};
+          --#{$prefix}btn-disabled-color: #{$gray-600};
+        }
+      }
+    }
+  }
+
+  // Outlined Button
+  @each $value, $key in $button-colors {
+    .btn-outline-#{$value} {
+      @include mixins.variant-button-outlined(
+        map.get($key, "base"),
+        map.get($key, "dark"),
+        map.get($key, "pale"),
+        map.get($key, "light"),
+        map.get($key, "text"),
+        map.get($key, "box-shadow")
+      );
+
+      &:active,
+      &.active {
+        transform: translateX(0);
+      }
+
+      &:focus-visible {
+        --#{$prefix}btn-border-width: 0.1rem;
+
+        box-shadow: 0 0 0 0.1rem var(--#{$prefix}btn-hover-border-color);
+      }
+
+      @if ($value == "tertiary") {
+        --#{$prefix}btn-color: #{$gray-700};
+        --#{$prefix}btn-border-color: #{$gray-500};
+
+        &:hover,
+        &.hover {
+          --#{$prefix}btn-hover-color: #{$gray-800};
+          --#{$prefix}btn-hover-border-color: #{$gray-600};
+        }
+
+        &:active,
+        &.active {
+          --#{$prefix}btn-active-border-color: #{$gray-600};
+          --#{$prefix}btn-active-color: #{$gray-800};
+        }
+
+        &:focus-visible {
+          --#{$prefix}btn-hover-color: #{$gray-800};
+          --#{$prefix}btn-hover-border-color: #{$gray-500};
+        }
+      }
+    }
+  }
+
+  // Ghost Button
+  @each $value, $key in $button-colors {
+    .btn-ghost-#{$value} {
+        &:hover,
+        &.hover {
+        &:not(.btn-search) {
+          transform: translateY(0);
+        }
+      }
+
+      @include mixins.variant-button-ghost(
+        map.get($key, "base"),
+        map.get($key, "dark"),
+        map.get($key, "light"),
+        map.get($key, "box-shadow")
+      );
+
+      @if ($value == "tertiary") {
+        --#{$prefix}btn-color: #{$gray-800};
+
+        &:focus-visible {
+        --#{$prefix}btn-hover-color: #{$gray-800};
+        }
+
+        &:hover,
+        &.hover {
+          --#{$prefix}btn-hover-color: #{$gray-800};
+        }
+
+        &:first-child:active,
+        &:active,
+        &.active {
+          --#{$prefix}btn-active-color: #{$black};
+        }
+
+        &:disabled,
+        &.disabled {
+          --#{$prefix}btn-disabled-color: #{$gray-500};
+        }
+
+        &[state="selected"],
+        &.is-selected {
+          background-color:var(--#{$prefix}secondary-200);
+        }
+      }
+
+      &[data-state="selected"],
+      &.is-selected {
+        background-color:var(--#{$prefix}secondary-200);
+      }
+    }
+  }
+}

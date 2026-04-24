@@ -1,0 +1,208 @@
+@use "../../../../abstracts/" as *;
+@use "../../../../vendors/bootstrap";
+
+[data-product="neo"] {
+  .header {
+    &.no-1d {
+      .collapse:not(.show) {
+        @include bootstrap.media-breakpoint-up(md) {
+          display: inline-flex;
+        }
+      }
+    }
+
+    .container-fluid {
+      @include bootstrap.media-breakpoint-up(md) {
+        padding-inline: 0;
+      }
+    }
+
+    .navbar {
+      --#{$prefix}navbar-padding-y: #{$navbar-padding-y};
+      width: 100%;
+      background: linear-gradient(to bottom, $secondary, darken($secondary, 5%));
+      box-shadow: $box-shadow;
+
+      .container {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .navbar-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--#{$prefix}white);
+      }
+
+      .navbar-nav {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .navbar-brand {
+        --#{$prefix}navbar-brand-padding-y: #{$navbar-brand-padding-y};
+        --#{$prefix}navbar-brand-padding-x: #{$navbar-brand-padding-x};
+        --#{$prefix}navbar-brand-margin-end: #{$navbar-brand-margin-end};
+
+        .logo {
+          height: 30px;
+          object-fit: contain;
+          object-position: left;
+          max-width: 100%;
+          width: auto;
+        }
+
+        @include bootstrap.media-breakpoint-up(md) {
+          padding: 0;
+          margin-right: 0;
+
+          .logo {
+            display: inline-block;
+            height: 52px;
+          }
+        }
+      }
+
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        align-self: self-end;
+        padding: $spacer-8;
+        align-items: center;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        border-radius: 0;
+
+        &:hover {
+          border-bottom: 3px solid var(--#{$prefix}primary);
+        }
+
+        &:not(.dropdown-item) {
+          .nav-text {
+            @include bootstrap.visually-hidden;
+          }
+        }
+
+        .badge {
+          --#{$prefix}badge-padding-x: #{$navbar-badge-padding-x};
+          --#{$prefix}badge-padding-y: #{$navbar-badge-padding-y};
+          --#{$prefix}badge-font-size: #{$navbar-badge-font-size};
+          right: 0;
+          top: $spacer-4;
+
+          @include bootstrap.media-breakpoint-up(md) {
+            top: $spacer-12;
+          }
+        }
+
+        @include bootstrap.media-breakpoint-up(md) {
+          padding: $spacer-16 $spacer-8;
+          > svg {
+            width: 3.2rem;
+            height: 3.2rem;
+          }
+        }
+      }
+
+      .dropdown-menu {
+        position: absolute !important;
+        padding: $spacer-8;
+        background-color: $white;
+        display: none;
+
+        .icon {
+          color: var(--#{$prefix}gray-800);
+          width: 1.6rem;
+          height: 1.6rem;
+        }
+
+        .dropdown-item {
+          border-radius: $border-radius !important;
+          gap: $spacer-8;
+          font-size: 1.2rem;
+          width: 100%;
+
+          @include bootstrap.media-breakpoint-up(md) {
+            border-radius: 0 !important;
+
+            &.nav-link {
+              background-color: transparent;
+              &:hover {
+                background-color: transparent;
+              }
+            }
+          }
+
+          @include bootstrap.media-breakpoint-down(md) {
+            &.nav-link {
+              border-bottom: 0;
+              &:hover {
+                border-bottom: 0;
+              }
+            }
+          }
+        }
+
+        .dropdown-divider {
+          margin-block: $spacer-4;
+        }
+
+        @include bootstrap.media-breakpoint-down(md) {
+          .avatar {
+            --#{$prefix}avatar-size: 2rem;
+          }
+
+          &.show {
+            display: block !important;
+          }
+        }
+
+        @include bootstrap.media-breakpoint-up(md) {
+          position: static !important;
+          display: flex;
+          background: transparent;
+          flex-direction: row;
+          padding: 0;
+          border-radius: 0;
+          border: 0;
+          box-shadow: none;
+
+          .icon {
+            color: var(--#{$prefix}white);
+
+            width: 3.2rem;
+            height: 3.2rem;
+          }
+
+          .nav-text {
+            @include bootstrap.visually-hidden;
+          }
+        }
+      }
+
+      .dropdown-menu-end {
+        right: 0;
+      }
+
+    }
+
+    i.ic-help::before {
+      content: "";
+      display: block;
+      width: 2.4rem;
+      height: 2.4rem;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' color='%23fff'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12ZM7.123 7.667C8.276 5.958 9.745 5 12.013 5 14.425 5 17 6.941 17 9.5c0 2.113-1.377 2.932-2.418 3.552-.633.376-1.142.68-1.142 1.154v.169a.693.693 0 0 1-.682.703h-2.06a.693.693 0 0 1-.681-.703v-.287c0-1.768 1.269-2.5 2.266-3.075l.073-.042c.863-.499 1.392-.838 1.392-1.499 0-.874-1.082-1.454-1.956-1.454-1.112 0-1.64.53-2.351 1.449a.668.668 0 0 1-.945.121L7.27 8.63a.718.718 0 0 1-.147-.963ZM9.76 17.97c0-1.12.883-2.03 1.969-2.03 1.085 0 1.968.91 1.968 2.03 0 1.119-.883 2.029-1.968 2.029-1.086 0-1.969-.91-1.969-2.03Z' fill='currentColor'%3E%3C/path%3E%3C/svg%3E");
+    }
+
+    @include bootstrap.media-breakpoint-up(md) {
+      i.ic-help::before {
+        width: 3.2rem;
+        height: 3.2rem;
+      }
+    }
+  }
+}
