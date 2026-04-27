@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import BetaSwitch, { BetaSwitchProps } from './BetaSwitch';
+import { BetaSwitch, BetaSwitchProps } from './BetaSwitch';
 
 const meta: Meta<typeof BetaSwitch> = {
   title: 'Modules/Homepage/BetaSwitch',
