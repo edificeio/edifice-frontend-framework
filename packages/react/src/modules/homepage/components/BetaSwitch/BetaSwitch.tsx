@@ -10,7 +10,7 @@ export interface BetaSwitchProps {
   onSwitchClick?: () => void;
 }
 
-const BetaSwitch = ({
+export const BetaSwitch = ({
   isSwitching = false,
   onSwitchClick,
 }: BetaSwitchProps) => {
@@ -37,5 +37,3 @@ const BetaSwitch = ({
 };
 
 BetaSwitch.displayName = 'BetaSwitch';
-
-export default BetaSwitch;

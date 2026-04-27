@@ -1,3 +1,2 @@
-export * from './BetaSwitch';
-export { default as BetaSwitch } from './BetaSwitch';
-export * from './BetaSwitchContainer';
+export { BetaSwitch } from './BetaSwitch';
+export { BetaSwitchContainer } from './BetaSwitchContainer';

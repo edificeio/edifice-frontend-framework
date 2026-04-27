@@ -1,4 +1,4 @@
-import BetaSwitch from './BetaSwitch';
+import { BetaSwitch } from './BetaSwitch';
 import { useBetaSwitch } from './useBetaSwitch';
 
 export function BetaSwitchContainer() {
