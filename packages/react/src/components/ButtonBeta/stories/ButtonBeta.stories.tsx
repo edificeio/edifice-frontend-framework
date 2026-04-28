@@ -73,7 +73,8 @@ export const Destructive: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Used for destructive actions that warn the user of an important or irreversible action.',
+        story:
+          'Used for destructive actions that warn the user of an important or irreversible action.',
       },
     },
   },
@@ -116,7 +117,8 @@ export const IconOnly: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'When no children are provided, the btn-beta--icon-only class is applied for square padding.',
+        story:
+          'When no children are provided, the btn-beta--icon-only class is applied for square padding.',
       },
     },
   },
@@ -132,7 +134,8 @@ export const Loading: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Loading state disables pointer events and shows a loading indicator.',
+        story:
+          'Loading state disables pointer events and shows a loading indicator.',
       },
     },
   },
@@ -154,7 +157,8 @@ export const ButtonGroup: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Primary action always on the right, secondary action on its left.',
+        story:
+          'Primary action always on the right, secondary action on its left.',
       },
     },
   },
