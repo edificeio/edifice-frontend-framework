@@ -1,0 +1,116 @@
+@use '../abstracts/' as *;
+
+.btn-beta {
+  --btn-beta-bg: var(--edifice-color-buttons-primary-default);
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-dark);
+  --btn-beta-bg-disabled: var(--edifice-color-buttons-primary-light);
+  --btn-beta-color: var(--edifice-color-text-button-primary-filled-default);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-primary-filled-disable
+  );
+  --btn-beta-radius: var(--edifice-radius-button, #{$btn-border-radius});
+  --btn-beta-family: var(--edifice-font-button-family, #{$btn-font-family});
+  --btn-beta-size: var(--edifice-font-button-size, #{$btn-font-size});
+  --btn-beta-line-height: var(
+    --edifice-font-button-lineheight,
+    #{$btn-line-height}
+  );
+  --btn-beta-font-weight: 700;
+  --btn-beta-border-color: transparent;
+  --btn-beta-border-color-hover: transparent;
+  --btn-beta-hover-shadow: none;
+  --btn-beta-hover-transform: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: $spacer-8;
+  padding-inline: $spacer-24;
+  gap: $spacer-8;
+  border: 0.1rem solid var(--btn-beta-border-color);
+  border-radius: var(--btn-beta-radius);
+  background-color: var(--btn-beta-bg);
+  color: var(--btn-beta-color);
+  font-family: var(--btn-beta-family);
+  font-size: var(--btn-beta-size);
+  line-height: var(--btn-beta-line-height);
+  font-weight: var(--btn-beta-font-weight);
+  cursor: pointer;
+  transition:
+    transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  span,
+  .loading {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacer-8;
+  }
+
+  svg {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background-color: var(--btn-beta-bg);
+    color: var(--btn-beta-color);
+    border-color: var(--btn-beta-border-color-hover);
+    transform: var(--btn-beta-hover-transform);
+    box-shadow: var(--btn-beta-hover-shadow);
+  }
+
+  &:hover,
+  &:focus-visible {
+    > span {
+      transform: translateY(-0.2rem);
+    }
+  }
+
+  &:active {
+    > span {
+      transform: translateY(0);
+    }
+
+    background-color: var(--btn-beta-bg-pressed);
+    color: var(--btn-beta-color);
+    transform: none;
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: var(--btn-beta-bg-disabled);
+    color: var(--btn-beta-color-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.btn-beta--loading {
+    pointer-events: none;
+    padding-inline: $spacer-48;
+  }
+
+  // Texte + icône(s)
+  &.btn-beta--with-icon {
+    padding-inline: $spacer-12;
+  }
+
+  // Icône seule, sans texte
+  &.btn-beta--icon-only {
+    padding-inline: $spacer-8;
+  }
+}
+
+.btn-beta-destructive {
+  --btn-beta-bg: var(--edifice-color-support-danger-500);
+  --btn-beta-bg-pressed: var(--edifice-color-support-danger-700);
+  --btn-beta-bg-disabled: var(--edifice-color-support-danger-300);
+  --btn-beta-color: #{$white};
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-primary-filled-disable
+  );
+}

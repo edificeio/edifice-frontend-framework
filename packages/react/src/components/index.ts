@@ -9,6 +9,7 @@ export * from './AvatarGroup';
 export * from './Badge';
 export * from './Breadcrumb';
 export * from './Button';
+export * from './ButtonBeta';
 export * from './Card';
 export * from './Checkbox';
 export * from './ColorPicker';

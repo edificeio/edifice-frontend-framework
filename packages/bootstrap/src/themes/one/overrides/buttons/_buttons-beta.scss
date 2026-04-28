@@ -1,0 +1,60 @@
+@use '../../../../abstracts/' as *;
+@use '../../../../themes/configs/primitives-legacy' as legacy;
+@use '../../../../themes/configs/primitives' as prim;
+
+[data-product='one'] {
+  --edifice-radius-button: #{prim.$border-radius-lg};
+
+  .btn-beta {
+    --btn-beta-family: #{legacy.$legacy-font-family-kgjunebug};
+    --btn-beta-size: 2.2rem;
+    --btn-beta-font-weight: 400;
+    --btn-beta-line-height: 2.6rem;
+    --btn-beta-hover-transform: translateY(-0.2rem);
+    --btn-beta-hover-shadow: 0 0.2rem 0 0 var(--btn-beta-bg-pressed);
+
+    text-transform: uppercase;
+  }
+
+  .btn-beta-lg {
+    padding-block: $spacer-12;
+
+    &.btn-beta--icon-only {
+      padding-inline: $spacer-12;
+    }
+  }
+
+  .btn-beta-default {
+    --btn-beta-bg: #{legacy.$neo-blue-500};
+    --btn-beta-bg-pressed: #{legacy.$neo-blue-700};
+    --btn-beta-bg-disabled: #{legacy.$neo-blue-200};
+    --btn-beta-color: #{$white};
+    --btn-beta-color-disabled: #{$white};
+    --btn-beta-border-color: #{legacy.$neo-blue-500};
+    --btn-beta-border-color-hover: #{legacy.$neo-blue-700};
+  }
+
+  .btn-beta-destructive {
+    --btn-beta-color-disabled: #{$white};
+  }
+
+  .btn-beta-secondary {
+    --btn-beta-bg: #{legacy.$neo-orange-500};
+    --btn-beta-bg-pressed: #{legacy.$neo-orange-700};
+    --btn-beta-bg-disabled: #{legacy.$neo-orange-200};
+    --btn-beta-color: #{$white};
+    --btn-beta-color-disabled: #{$white};
+    --btn-beta-border-color: #{legacy.$neo-orange-500};
+    --btn-beta-border-color-hover: #{legacy.$neo-orange-700};
+  }
+
+  .btn-beta-tertiary {
+    --btn-beta-bg: #{prim.$grey-300};
+    --btn-beta-bg-pressed: #{prim.$grey-500};
+    --btn-beta-bg-disabled: #{prim.$grey-100};
+    --btn-beta-color: #{prim.$grey-900};
+    --btn-beta-color-disabled: #{$white};
+    --btn-beta-border-color: #{prim.$grey-300};
+    --btn-beta-border-color-hover: #{prim.$grey-500};
+  }
+}

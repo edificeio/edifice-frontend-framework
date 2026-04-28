@@ -1,0 +1,53 @@
+@use '../../../../abstracts/' as *;
+@use '../../../../themes/configs/primitives-legacy' as legacy;
+@use '../../../../themes/configs/primitives' as prim;
+
+[data-product='neo'] {
+  --edifice-radius-button: #{prim.$border-radius-md};
+
+  .btn-beta {
+    > span {
+      transition: transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+  }
+
+  .btn-beta-default {
+    --btn-beta-bg: #{legacy.$neo-orange-500};
+    --btn-beta-bg-pressed: #{legacy.$neo-orange-700};
+    --btn-beta-bg-disabled: #{legacy.$neo-orange-200};
+    --btn-beta-color: #{$white};
+    --btn-beta-color-disabled: #{$white};
+  }
+
+  .btn-beta-destructive {
+    --btn-beta-bg: var(--edifice-color-support-danger-500);
+    --btn-beta-bg-pressed: var(--edifice-color-support-danger-700);
+    --btn-beta-bg-disabled: var(--edifice-color-support-danger-300);
+    --btn-beta-color: #{$white};
+    --btn-beta-color-disabled: #{$white};
+  }
+
+  .btn-beta-lg {
+    padding-block: $spacer-12;
+
+    &.btn-beta--icon-only {
+      padding-inline: $spacer-12;
+    }
+  }
+
+  .btn-beta-secondary {
+    --btn-beta-bg: #{legacy.$neo-blue-500};
+    --btn-beta-bg-pressed: #{legacy.$neo-blue-700};
+    --btn-beta-bg-disabled: #{legacy.$neo-blue-200};
+    --btn-beta-color: #{$white};
+    --btn-beta-color-disabled: #{$white};
+  }
+
+  .btn-beta-tertiary {
+    --btn-beta-bg: #{prim.$grey-300};
+    --btn-beta-bg-pressed: #{prim.$grey-500};
+    --btn-beta-bg-disabled: #{prim.$grey-100};
+    --btn-beta-color: #{prim.$grey-900};
+    --btn-beta-color-disabled: #{$white};
+  }
+}
