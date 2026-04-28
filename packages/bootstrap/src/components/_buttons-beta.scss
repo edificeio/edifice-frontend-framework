@@ -1,7 +1,9 @@
 @use '../abstracts/' as *;
+@use '../themes/configs/primitives' as prim;
 
 .btn-beta {
   --btn-beta-bg: var(--edifice-color-buttons-primary-default);
+  --btn-beta-bg-hover: var(--btn-beta-bg);
   --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-dark);
   --btn-beta-bg-disabled: var(--edifice-color-buttons-primary-light);
   --btn-beta-color: var(--edifice-color-text-button-primary-filled-default);
@@ -18,6 +20,8 @@
   --btn-beta-font-weight: 700;
   --btn-beta-border-color: transparent;
   --btn-beta-border-color-hover: transparent;
+  --btn-beta-border-color-pressed: var(--btn-beta-border-color);
+  --btn-beta-border-color-disabled: var(--btn-beta-border-color);
   --btn-beta-hover-shadow: none;
   --btn-beta-hover-transform: none;
   --btn-beta-content-hover-transform: translateY(-0.2rem);
@@ -40,7 +44,8 @@
   transition:
     transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
     box-shadow 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   span,
   .loading {
@@ -57,7 +62,7 @@
   }
 
   &:hover {
-    background-color: var(--btn-beta-bg);
+    background-color: var(--btn-beta-bg-hover);
     color: var(--btn-beta-color);
     border-color: var(--btn-beta-border-color-hover);
     transform: var(--btn-beta-hover-transform);
@@ -77,6 +82,7 @@
     }
 
     background-color: var(--btn-beta-bg-pressed);
+    border-color: var(--btn-beta-border-color-pressed);
     color: var(--btn-beta-color);
     transform: none;
     box-shadow: none;
@@ -85,6 +91,7 @@
   &:disabled,
   &.disabled {
     background-color: var(--btn-beta-bg-disabled);
+    border-color: var(--btn-beta-border-color-disabled);
     color: var(--btn-beta-color-disabled);
     cursor: not-allowed;
     pointer-events: none;
@@ -95,17 +102,18 @@
     padding-inline: $spacer-48;
   }
 
-  // Texte + icône(s)
+  // Text + icon(s)
   &.btn-beta--with-icon {
     padding-inline: $spacer-12;
   }
 
-  // Icône seule, sans texte
+  // Icon only, no text
   &.btn-beta--icon-only {
     padding-inline: $spacer-8;
   }
 }
 
+// Filled — destructive
 .btn-beta-destructive {
   --btn-beta-bg: var(--edifice-color-support-danger-500);
   --btn-beta-bg-pressed: var(--edifice-color-support-danger-700);
@@ -113,5 +121,47 @@
   --btn-beta-color: #{$white};
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-filled-disable
+  );
+}
+
+// Outline — default color
+.btn-beta-default.btn-beta--outline {
+  --btn-beta-bg: #{$white};
+  --btn-beta-bg-hover: #{$white};
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-pale);
+  --btn-beta-bg-disabled: #{$white};
+  --btn-beta-border-color: var(--edifice-color-buttons-primary-default);
+  --btn-beta-border-color-hover: var(--edifice-color-buttons-primary-default);
+  --btn-beta-border-color-pressed: var(--edifice-color-buttons-primary-dark);
+  --btn-beta-border-color-disabled: var(--edifice-color-buttons-primary-light);
+  --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-primary-other-disable
+  );
+}
+
+// Ghost — default color
+.btn-beta-default.btn-beta--ghost {
+  --btn-beta-bg: transparent;
+  --btn-beta-bg-pressed: #{prim.$grey-200};
+  --btn-beta-bg-disabled: transparent;
+  --btn-beta-border-color: transparent;
+  --btn-beta-border-color-hover: transparent;
+  --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-primary-other-disable
+  );
+}
+
+// Ghost — destructive color
+.btn-beta-destructive.btn-beta--ghost {
+  --btn-beta-bg: transparent;
+  --btn-beta-bg-pressed: var(--edifice-color-support-danger-300);
+  --btn-beta-bg-disabled: transparent;
+  --btn-beta-border-color: transparent;
+  --btn-beta-border-color-hover: transparent;
+  --btn-beta-color: var(--edifice-color-support-danger-700);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-primary-other-disable
   );
 }

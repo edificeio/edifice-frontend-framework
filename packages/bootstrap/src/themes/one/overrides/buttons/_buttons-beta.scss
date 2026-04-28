@@ -58,4 +58,88 @@
     --btn-beta-border-color: #{prim.$grey-300};
     --btn-beta-border-color-hover: #{prim.$grey-500};
   }
+
+  // Outline — shared: use border color as hover shadow (matches filled lift effect)
+  .btn-beta--outline {
+    --btn-beta-hover-shadow: 0 0.2rem 0 0 var(--btn-beta-border-color);
+  }
+
+  // Ghost — shared: reset hover shadow, use Arimo font
+  .btn-beta--ghost {
+    --btn-beta-family: #{prim.$font-family-arimo};
+    --btn-beta-hover-shadow: none;
+    --btn-beta-size: 1.6rem;
+    --btn-beta-font-weight: 700;
+
+    text-transform: none;
+  }
+
+  // Outline
+  .btn-beta-default.btn-beta--outline {
+    --btn-beta-bg: #{$white};
+    --btn-beta-bg-pressed: #{legacy.$neo-blue-200};
+    --btn-beta-bg-disabled: #{$white};
+    --btn-beta-border-color: #{legacy.$neo-blue-500};
+    --btn-beta-border-color-hover: #{legacy.$neo-blue-500};
+    --btn-beta-border-color-disabled: #{legacy.$neo-blue-300};
+    --btn-beta-color: #{legacy.$neo-blue-500};
+    --btn-beta-color-disabled: #{legacy.$neo-blue-300};
+  }
+
+  .btn-beta-secondary.btn-beta--outline {
+    --btn-beta-bg: #{$white};
+    --btn-beta-bg-pressed: #{legacy.$neo-orange-200};
+    --btn-beta-bg-disabled: #{$white};
+    --btn-beta-border-color: #{legacy.$neo-orange-500};
+    --btn-beta-border-color-hover: #{legacy.$neo-orange-500};
+    --btn-beta-border-color-disabled: #{legacy.$neo-orange-300};
+    --btn-beta-color: #{legacy.$neo-orange-500};
+    --btn-beta-color-disabled: #{legacy.$neo-orange-300};
+  }
+
+  .btn-beta-tertiary.btn-beta--outline {
+    --btn-beta-bg: #{$white};
+    --btn-beta-bg-hover: #{prim.$grey-200};
+    --btn-beta-bg-pressed: #{prim.$grey-200};
+    --btn-beta-bg-disabled: #{$white};
+    --btn-beta-border-color: #{prim.$grey-500};
+    --btn-beta-border-color-hover: #{prim.$grey-500};
+    --btn-beta-border-color-disabled: #{prim.$grey-300};
+    --btn-beta-color: #{prim.$grey-900};
+    --btn-beta-color-disabled: #{prim.$grey-500};
+  }
+
+  // Ghost
+  .btn-beta-default.btn-beta--ghost {
+    --btn-beta-bg: transparent;
+    --btn-beta-bg-hover: #{prim.$grey-200};
+    --btn-beta-bg-pressed: #{legacy.$neo-blue-200};
+    --btn-beta-bg-disabled: transparent;
+    --btn-beta-border-color: transparent;
+    --btn-beta-border-color-hover: transparent;
+    --btn-beta-color: #{legacy.$neo-blue-500};
+    --btn-beta-color-disabled: #{legacy.$neo-blue-300};
+  }
+
+  .btn-beta-secondary.btn-beta--ghost {
+    --btn-beta-bg: transparent;
+    --btn-beta-bg-hover: #{prim.$grey-200};
+    --btn-beta-bg-pressed: #{legacy.$neo-orange-200};
+    --btn-beta-bg-disabled: transparent;
+    --btn-beta-border-color: transparent;
+    --btn-beta-border-color-hover: transparent;
+    --btn-beta-color: #{legacy.$neo-orange-500};
+    --btn-beta-color-disabled: #{legacy.$neo-orange-300};
+  }
+
+  .btn-beta-tertiary.btn-beta--ghost {
+    --btn-beta-bg: transparent;
+    --btn-beta-bg-hover: #{prim.$grey-200};
+    --btn-beta-bg-pressed: #{prim.$grey-200};
+    --btn-beta-bg-disabled: transparent;
+    --btn-beta-border-color: transparent;
+    --btn-beta-border-color-hover: transparent;
+    --btn-beta-color: #{prim.$grey-900};
+    --btn-beta-color-disabled: #{prim.$grey-500};
+  }
 }

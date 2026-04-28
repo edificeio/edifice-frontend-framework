@@ -14,27 +14,62 @@ export type ButtonBetaColor =
 
 export type ButtonBetaSize = 'sm' | 'md' | 'lg';
 
+export type ButtonBetaVariant = 'filled' | 'outline' | 'ghost';
+
 export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
+  /**
+   * `button`, `submit` or `reset`
+   */
   type?: 'button' | 'submit' | 'reset';
+  /**
+   * `default`, `destructive`, `secondary` or `tertiary`
+   */
   color?: ButtonBetaColor;
   /**
-   * Taille du bouton. N'a d'effet visuel que sur les thèmes neo et one.
+   * `sm`, `md` or `lg`
+   * Only has a visual effect on neo and one themes.
    */
   size?: ButtonBetaSize;
+  /**
+   * `filled`, `outline` or `ghost`
+   */
+  variant?: ButtonBetaVariant;
+  /**
+   * Does it has a text ?
+   */
   children?: ReactNode;
+  /**
+   * Display Icon Component to the left
+   */
   leftIcon?: ReactNode;
+  /**
+   * Display Icon Component to the right
+   */
   rightIcon?: ReactNode;
+  /**
+   * Is it loading ?
+   */
   isLoading?: boolean;
+  /**
+   * Disabled status
+   */
   disabled?: boolean;
+  /**
+   * Optional class for styling purpose
+   */
   className?: string;
 }
 
+/**
+ * Primary UI component for user interaction (edifice2d design system)
+ */
 const ButtonBeta = forwardRef(
   (
     {
       color = 'default',
       type = 'button',
       size = 'md',
+      variant = 'filled',
       children,
       isLoading,
       leftIcon,
@@ -51,6 +86,8 @@ const ButtonBeta = forwardRef(
       `btn-beta-${color}`,
       `btn-beta-${size}`,
       {
+        'btn-beta--outline': variant === 'outline',
+        'btn-beta--ghost': variant === 'ghost',
         'btn-beta--icon-only': !children,
         'btn-beta--with-icon': hasIcon && Boolean(children),
         'btn-beta--loading': isLoading,
