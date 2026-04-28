@@ -20,6 +20,7 @@
   --btn-beta-border-color-hover: transparent;
   --btn-beta-hover-shadow: none;
   --btn-beta-hover-transform: none;
+  --btn-beta-content-hover-transform: translateY(-0.2rem);
 
   display: inline-flex;
   align-items: center;
@@ -66,7 +67,7 @@
   &:hover,
   &:focus-visible {
     > span {
-      transform: translateY(-0.2rem);
+      transform: var(--btn-beta-content-hover-transform);
     }
   }
 
