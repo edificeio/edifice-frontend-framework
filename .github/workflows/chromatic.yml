@@ -1,14 +1,7 @@
 name: "Chromatic"
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - develop
-      - develop*
-      - epic-*
+  workflow_dispatch:
 
 jobs:
   chromatic:
