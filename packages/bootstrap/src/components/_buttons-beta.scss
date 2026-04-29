@@ -3,27 +3,12 @@
 
 .btn-beta {
   --btn-beta-bg: var(--edifice-color-buttons-primary-default);
-  --btn-beta-bg-hover: var(--btn-beta-bg);
   --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-dark);
   --btn-beta-bg-disabled: var(--edifice-color-buttons-primary-light);
   --btn-beta-color: var(--edifice-color-text-button-primary-filled-default);
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-filled-disable
   );
-  --btn-beta-radius: var(--edifice-radius-button, #{$btn-border-radius});
-  --btn-beta-family: var(--edifice-font-button-family, #{$btn-font-family});
-  --btn-beta-size: var(--edifice-font-button-size, #{$btn-font-size});
-  --btn-beta-line-height: var(
-    --edifice-font-button-lineheight,
-    #{$btn-line-height}
-  );
-  --btn-beta-font-weight: 700;
-  --btn-beta-border-color: transparent;
-  --btn-beta-border-color-hover: transparent;
-  --btn-beta-border-color-pressed: var(--btn-beta-border-color);
-  --btn-beta-border-color-disabled: var(--btn-beta-border-color);
-  --btn-beta-hover-shadow: none;
-  --btn-beta-hover-transform: none;
   --btn-beta-content-hover-transform: translateY(-0.2rem);
 
   display: inline-flex;
@@ -32,20 +17,18 @@
   padding-block: $spacer-8;
   padding-inline: $spacer-24;
   gap: $spacer-8;
-  border: 0.1rem solid var(--btn-beta-border-color);
-  border-radius: var(--btn-beta-radius);
+  border: none;
+  border-radius: var(--edifice-radius-button);
   background-color: var(--btn-beta-bg);
   color: var(--btn-beta-color);
-  font-family: var(--btn-beta-family);
-  font-size: var(--btn-beta-size);
-  line-height: var(--btn-beta-line-height);
-  font-weight: var(--btn-beta-font-weight);
+  font-family: var(--edifice-font-button-family);
+  font-size: var(--edifice-font-button-size);
+  line-height: var(--edifice-font-button-lineheight);
+  font-weight: #{prim.$font-weight-bold};
   cursor: pointer;
   transition:
     transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    box-shadow 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-    border-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    background-color 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   span,
   .loading {
@@ -62,15 +45,14 @@
   }
 
   &:hover {
-    background-color: var(--btn-beta-bg-hover);
     color: var(--btn-beta-color);
-    border-color: var(--btn-beta-border-color-hover);
-    transform: var(--btn-beta-hover-transform);
-    box-shadow: var(--btn-beta-hover-shadow);
+    transform: none;
   }
 
   &:hover,
   &:focus-visible {
+    outline: none;
+
     > span {
       transform: var(--btn-beta-content-hover-transform);
     }
@@ -88,10 +70,8 @@
     box-shadow: none;
   }
 
-  &:disabled,
-  &.disabled {
+  &:disabled {
     background-color: var(--btn-beta-bg-disabled);
-    border-color: var(--btn-beta-border-color-disabled);
     color: var(--btn-beta-color-disabled);
     cursor: not-allowed;
     pointer-events: none;
@@ -116,9 +96,9 @@
 // Filled — destructive
 .btn-beta-destructive {
   --btn-beta-bg: var(--edifice-color-support-danger-500);
+  --btn-beta-color: #{$white};
   --btn-beta-bg-pressed: var(--edifice-color-support-danger-700);
   --btn-beta-bg-disabled: var(--edifice-color-support-danger-300);
-  --btn-beta-color: #{$white};
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-filled-disable
   );
@@ -127,17 +107,19 @@
 // Outline — default color
 .btn-beta-default.btn-beta--outline {
   --btn-beta-bg: #{$white};
-  --btn-beta-bg-hover: #{$white};
   --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-pale);
   --btn-beta-bg-disabled: #{$white};
-  --btn-beta-border-color: var(--edifice-color-buttons-primary-default);
-  --btn-beta-border-color-hover: var(--edifice-color-buttons-primary-default);
-  --btn-beta-border-color-pressed: var(--edifice-color-buttons-primary-dark);
-  --btn-beta-border-color-disabled: var(--edifice-color-buttons-primary-light);
   --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-other-disable
   );
+  --btn-beta-border-color: var(--edifice-color-buttons-primary-default);
+
+  box-shadow: inset 0 0 0 0.2rem var(--edifice-color-buttons-primary-default);
+
+  &:disabled {
+    box-shadow: inset 0 0 0 0.2rem var(--edifice-color-buttons-primary-light);
+  }
 }
 
 // Ghost — default color
@@ -145,8 +127,6 @@
   --btn-beta-bg: transparent;
   --btn-beta-bg-pressed: #{prim.$grey-200};
   --btn-beta-bg-disabled: transparent;
-  --btn-beta-border-color: transparent;
-  --btn-beta-border-color-hover: transparent;
   --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-other-disable
@@ -158,8 +138,6 @@
   --btn-beta-bg: transparent;
   --btn-beta-bg-pressed: var(--edifice-color-support-danger-300);
   --btn-beta-bg-disabled: transparent;
-  --btn-beta-border-color: transparent;
-  --btn-beta-border-color-hover: transparent;
   --btn-beta-color: var(--edifice-color-support-danger-700);
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-other-disable

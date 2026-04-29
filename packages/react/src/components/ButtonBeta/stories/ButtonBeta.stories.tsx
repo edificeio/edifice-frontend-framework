@@ -80,6 +80,39 @@ export const Destructive: Story = {
   },
 };
 
+export const Outline: Story = {
+  args: {
+    color: 'default',
+    children: 'Label',
+    type: 'button',
+    variant: 'outline',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Add the outline variant to the button to make it an outline button.',
+      },
+    },
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    color: 'default',
+    children: 'Label',
+    type: 'button',
+    variant: 'ghost',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Add the ghost variant to the button to make it a ghost button.',
+      },
+    },
+  },
+};
+
 export const WithIconLeft: Story = {
   args: {
     color: 'default',
