@@ -57,6 +57,7 @@ export { default as IconLeSiteTv } from './IconLeSiteTv';
 export { default as IconLemonde } from './IconLemonde';
 export { default as IconLesechos } from './IconLesechos';
 export { default as IconLibrary } from './IconLibrary';
+export { default as IconLivretScolaire } from './IconLivretScolaire';
 export { default as IconLool } from './IconLool';
 export { default as IconLsu } from './IconLsu';
 export { default as IconMadmagz } from './IconMadmagz';
