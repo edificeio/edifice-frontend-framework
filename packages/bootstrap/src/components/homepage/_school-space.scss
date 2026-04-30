@@ -1,12 +1,11 @@
-@use '../../abstracts/' as *;
-@use '../../vendors/bootstrap';
+@use '../../themes/configs/primitives' as *;
 
 .school-space {
-  --border-color: #ffe5a3;
-  --background-color: #fefaec;
-  --border-radius: var(--#{$prefix}border-radius-2xl);
-  --px: var(--#{$prefix}spacer-8);
-  --py: var(--#{$prefix}spacer-8);
+  --border-color: #{$yellow-300};
+  --background-color: #{$yellow-100};
+  --border-radius: #{$border-radius-2xl};
+  --px: #{$spacer-8};
+  --py: #{$spacer-8};
 
   padding: var(--py) var(--px);
   border: 1px solid var(--border-color);
@@ -17,12 +16,12 @@
   background-position: top right;
 
   &-container {
-    --container-px: var(--#{$prefix}spacer-12);
-    --container-py: var(--#{$prefix}spacer-12);
-    --color: var(--#{$prefix}color-text-default);
+    --container-px: #{$spacer-12};
+    --container-py: #{$spacer-12};
+    --color: var(--color-text-default);
 
     padding: var(--container-py) var(--container-px);
-    line-height: var(--#{$prefix}font-lineHeight-xs);
+    line-height: var(--font-lineHeight-xs);
     color: var(--color);
   }
 }
