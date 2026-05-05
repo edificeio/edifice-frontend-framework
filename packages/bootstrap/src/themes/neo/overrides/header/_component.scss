@@ -1,6 +1,6 @@
 @use "sass:color";
-@use "../../../abstracts/" as *;
-@use "../../../vendors/bootstrap";
+@use "../../../../abstracts/" as *;
+@use "../../../../vendors/bootstrap";
 
 [data-product="neo"] {
   .header {
@@ -20,6 +20,7 @@
 
     .navbar {
       --#{$prefix}navbar-padding-y: #{$navbar-padding-y};
+
       width: 100%;
       background: linear-gradient(to bottom, $secondary, color.adjust($secondary, $lightness: -5%));
       box-shadow: $box-shadow;
@@ -67,7 +68,6 @@
 
       .nav-link {
         display: inline-flex;
-        align-items: center;
         align-self: self-end;
         padding: $spacer-8;
         align-items: center;
@@ -89,6 +89,7 @@
           --#{$prefix}badge-padding-x: #{$navbar-badge-padding-x};
           --#{$prefix}badge-padding-y: #{$navbar-badge-padding-y};
           --#{$prefix}badge-font-size: #{$navbar-badge-font-size};
+
           right: 0;
           top: $spacer-4;
 
@@ -99,6 +100,7 @@
 
         @include bootstrap.media-breakpoint-up(md) {
           padding: $spacer-16 $spacer-8;
+
           > svg {
             width: 3.2rem;
             height: 3.2rem;
@@ -129,6 +131,7 @@
 
             &.nav-link {
               background-color: transparent;
+
               &:hover {
                 background-color: transparent;
               }
@@ -138,6 +141,7 @@
           @include bootstrap.media-breakpoint-down(md) {
             &.nav-link {
               border-bottom: 0;
+
               &:hover {
                 border-bottom: 0;
               }
@@ -171,7 +175,6 @@
 
           .icon {
             color: var(--#{$prefix}white);
-
             width: 3.2rem;
             height: 3.2rem;
           }
