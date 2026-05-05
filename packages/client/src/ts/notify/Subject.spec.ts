@@ -10,14 +10,15 @@ describe('Subject', () => {
   };
 
   it('should revoke subscriptions correctly', () => {
-    const subscription = subject.subscribe(LAYER_NAME.TRANSPORT, () => {});
-    expect(subject.getSubscriberCountFor(LAYER_NAME.TRANSPORT)).toStrictEqual(
-      1,
-    );
+    let callCount = 0;
+    const subscription = subject.subscribe(LAYER_NAME.TRANSPORT, () => {
+      callCount++;
+    });
+    subject.publish(LAYER_NAME.TRANSPORT, mockedHttpError);
+    expect(callCount).toStrictEqual(1);
     subscription.revoke();
-    expect(subject.getSubscriberCountFor(LAYER_NAME.TRANSPORT)).toStrictEqual(
-      0,
-    );
+    subject.publish(LAYER_NAME.TRANSPORT, mockedHttpError);
+    expect(callCount).toStrictEqual(1);
   });
 
   it('should observe HTTP error events correctly', () => {
