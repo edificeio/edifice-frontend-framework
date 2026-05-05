@@ -4,7 +4,11 @@
 
 [data-product='one'] {
   .btn-beta {
-    text-transform: uppercase;
-    font-weight: #{prim.$font-weight-regular};
+    &.btn-beta-default,
+    &.btn-beta-secondary,
+    &.btn-beta-destructive {
+      text-transform: uppercase;
+      font-weight: #{prim.$font-weight-regular};
+    }
   }
 }
