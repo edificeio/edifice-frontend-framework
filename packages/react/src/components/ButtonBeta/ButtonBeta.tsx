@@ -12,8 +12,6 @@ export type ButtonBetaColor =
   | 'secondary'
   | 'tertiary';
 
-export type ButtonBetaSize = 'sm' | 'md' | 'lg';
-
 export type ButtonBetaVariant = 'filled' | 'outline' | 'ghost';
 
 export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
@@ -25,11 +23,6 @@ export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
    * `default`, `destructive`, `secondary` or `tertiary`
    */
   color?: ButtonBetaColor;
-  /**
-   * `sm`, `md` or `lg`
-   * Only has a visual effect on neo and one themes.
-   */
-  size?: ButtonBetaSize;
   /**
    * `filled`, `outline` or `ghost`
    */
@@ -68,7 +61,6 @@ const ButtonBeta = forwardRef(
     {
       color = 'default',
       type = 'button',
-      size = 'md',
       variant = 'filled',
       children,
       isLoading,
@@ -84,7 +76,6 @@ const ButtonBeta = forwardRef(
     const classes = clsx(
       'btn-beta',
       `btn-beta-${color}`,
-      `btn-beta-${size}`,
       {
         'btn-beta--outline': variant === 'outline',
         'btn-beta--ghost': variant === 'ghost',

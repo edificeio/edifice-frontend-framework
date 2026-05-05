@@ -3,6 +3,7 @@
 
 .btn-beta {
   --btn-beta-bg: var(--edifice-color-buttons-primary-default);
+  --btn-beta-bg-hover: var(--edifice-color-buttons-primary-default);
   --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-dark);
   --btn-beta-bg-disabled: var(--edifice-color-buttons-primary-light);
   --btn-beta-color: var(--edifice-color-text-button-primary-filled-default);
@@ -52,6 +53,7 @@
   &:hover,
   &:focus-visible {
     outline: none;
+    background-color: var(--btn-beta-bg-hover);
 
     > span {
       transform: var(--btn-beta-content-hover-transform);
@@ -93,7 +95,6 @@
   }
 }
 
-// Filled — destructive
 .btn-beta-destructive {
   --btn-beta-bg: var(--edifice-color-support-danger-500);
   --btn-beta-color: #{$white};
@@ -104,9 +105,31 @@
   );
 }
 
-// Outline — default color
-.btn-beta-default.btn-beta--outline {
+.btn-beta-secondary {
+  --btn-beta-bg: var(--edifice-color-buttons-secondary-default);
+  --btn-beta-color: #{$white};
+  --btn-beta-bg-hover: var(--edifice-color-buttons-secondary-dark);
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-dark);
+  --btn-beta-bg-disabled: var(--edifice-color-buttons-secondary-light);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-secondary-filled-disable
+  );
+}
+
+.btn-beta-tertiary {
+  --btn-beta-bg: var(--edifice-color-buttons-tertiary-default);
+  --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
+  --btn-beta-bg-hover: var(--edifice-color-buttons-tertiary-dark);
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-dark);
+  --btn-beta-bg-disabled: var(--edifice-color-buttons-tertiary-light);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-tertiary-other-disable
+  );
+}
+
+.btn-beta--outline {
   --btn-beta-bg: #{$white};
+  --btn-beta-bg-hover: var(--btn-beta-bg);
   --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-pale);
   --btn-beta-bg-disabled: #{$white};
   --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
@@ -122,9 +145,35 @@
   }
 }
 
-// Ghost — default color
-.btn-beta-default.btn-beta--ghost {
+.btn-beta--outline.btn-beta-secondary {
+  --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-pale);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-secondary-other-disable
+  );
+  --btn-beta-border-color: var(--edifice-color-buttons-secondary-default);
+
+  box-shadow: inset 0 0 0 0.2rem var(--edifice-color-buttons-secondary-default);
+
+  &:disabled {
+    box-shadow: inset 0 0 0 0.2rem var(--edifice-color-buttons-secondary-light);
+  }
+}
+
+.btn-beta--outline.btn-beta-tertiary {
+  --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
+  --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-pale);
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-tertiary-other-disable
+  );
+  --btn-beta-border-color: var(--edifice-color-buttons-tertiary-default);
+
+  box-shadow: inset 0 0 0 0.2rem var(--edifice-color-buttons-tertiary-default);
+}
+
+.btn-beta--ghost.btn-beta-default {
   --btn-beta-bg: transparent;
+  --btn-beta-bg-hover: var(--btn-beta-bg);
   --btn-beta-bg-pressed: #{prim.$grey-200};
   --btn-beta-bg-disabled: transparent;
   --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
@@ -133,13 +182,26 @@
   );
 }
 
-// Ghost — destructive color
-.btn-beta-destructive.btn-beta--ghost {
+.btn-beta--ghost.btn-beta-destructive {
   --btn-beta-bg: transparent;
+  --btn-beta-bg-hover: var(--btn-beta-bg);
   --btn-beta-bg-pressed: var(--edifice-color-support-danger-300);
   --btn-beta-bg-disabled: transparent;
   --btn-beta-color: var(--edifice-color-support-danger-700);
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-other-disable
+  );
+}
+
+.btn-beta--ghost.btn-beta-secondary {
+  font-family: var(--font-button-tertiary-family);
+  text-transform: initial !important;
+
+  --btn-beta-bg: transparent;
+  --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
+  --btn-beta-bg-hover: #{prim.$grey-100};
+  --btn-beta-bg-pressed: #{prim.$grey-100};
+  --btn-beta-color-disabled: var(
+    --edifice-color-text-button-secondary-other-disable
   );
 }
