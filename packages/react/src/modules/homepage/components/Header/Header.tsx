@@ -64,7 +64,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
 
   return (
     <header className={classes}>
-      <Navbar className="px-24 py-8">
+      <Navbar className="px-24">
         <LogoBeta src={`${src}/img/illustrations/logo.png`} />
         <ul className="navbar-nav">
           <NavItem>
