@@ -9,7 +9,6 @@ export type ButtonBetaRef = HTMLButtonElement;
 export type ButtonBetaColor =
   | 'default'
   | 'destructive'
-  | 'danger' // alias for destructive
   | 'secondary'
   | 'tertiary';
 
@@ -21,7 +20,7 @@ export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
    */
   type?: 'button' | 'submit' | 'reset';
   /**
-   * `default`, `destructive`, `danger`, `secondary` or `tertiary`
+   * `default`, `destructive`, `secondary` or `tertiary`
    */
   color?: ButtonBetaColor;
   /**
@@ -76,7 +75,7 @@ const ButtonBeta = forwardRef(
 
     const classes = clsx(
       'btn-beta',
-      color === 'danger' ? 'btn-beta-destructive' : `btn-beta-${color}`, // FIXME: remove 'danger' alias  when kill one and neo themes
+      `btn-beta-${color}`,
       {
         'btn-beta--outline': variant === 'outline',
         'btn-beta--ghost': variant === 'ghost',

@@ -145,7 +145,7 @@ export const IconOnly: Story = {
   args: {
     color: 'default',
     type: 'button',
-    leftIcon: <IconAddUser title="Add User" />,
+    leftIcon: <IconAddUser title="Add User" aria-label="Add User" />,
   },
   parameters: {
     docs: {
