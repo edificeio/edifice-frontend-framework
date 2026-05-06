@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 
-import { IResource } from '@edifice.io/client';
+import { ILinkedResource } from '@edifice.io/client';
 import clsx from 'clsx';
 
 import { AppIcon, Card, CardProps, Image } from '../../../components';
 import { useDate } from '../../../hooks';
 import { IconUsers } from '../../icons/components';
 
+/** Augments ILinkedResource with an optional pre-computed date string. */
+export interface ILinkedResourceWithDate extends ILinkedResource {
+  /** When provided, displayed as-is instead of computing fromNow(modifiedAt). */
+  fromDate?: string;
+}
+
 export interface LinkerCardProps extends CardProps {
-  /**
-   * Resource to render as a card
-   * */
-  doc: IResource;
+  /** Resource to render as a card */
+  doc: ILinkedResourceWithDate;
 }
 
 // INFO: This component is for internal use only. It is not exported for external use.
@@ -25,11 +29,9 @@ const LinkerCard = ({
 }: LinkerCardProps) => {
   const { fromNow } = useDate();
 
-  const { fromDate } = useMemo(
-    () => ({
-      fromDate: fromNow(doc.modifiedAt),
-    }),
-    [fromNow, doc],
+  const displayDate = useMemo(
+    () => doc.fromDate ?? fromNow(doc.modifiedAt),
+    [doc.fromDate, doc.modifiedAt, fromNow],
   );
 
   return (
@@ -68,7 +70,7 @@ const LinkerCard = ({
         </div>
 
         <div className="d-none d-md-block text-black-50 ps-4 pe-8">
-          <Card.Text>{fromDate}</Card.Text>
+          <Card.Text>{displayDate}</Card.Text>
         </div>
 
         {doc.shared && (

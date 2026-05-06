@@ -16,6 +16,7 @@ import {
 import { useDebounce } from '@uidotdev/usehooks';
 import {
   AppIcon,
+  Button,
   Dropdown,
   EmptyScreen,
   SearchBar,
@@ -63,6 +64,21 @@ export interface InternalLinkerProps {
   disableApplicationSelector?: boolean;
   /** Optional callback to filter resources after loading. Applied in addition to search filters. */
   resourceFilter?: (resource: ILinkedResource) => boolean;
+  /**
+   * When provided, replaces the built-in search/load logic entirely.
+   * Called with the current search terms and selected application whenever the search changes.
+   * The returned resources are displayed as-is (no additional filtering or sorting).
+   */
+  onSearch?: (
+    search: string,
+    application?: ApplicationOption,
+  ) => Promise<ILinkedResource[]>;
+  /** When true, a "load more" button is shown. The caller controls this flag. */
+  hasMoreResources?: boolean;
+  /** Called when the user clicks the "load more" button. */
+  onLoadMore?: () => void;
+  /** Label for the "load more" button. Defaults to the `bbm.linker.see.more` i18n key. */
+  loadMoreLabel?: string;
 }
 
 export const InternalLinker = ({
@@ -77,6 +93,10 @@ export const InternalLinker = ({
   showApplicationSelector = true,
   disableApplicationSelector = false,
   resourceFilter,
+  onSearch,
+  hasMoreResources,
+  onLoadMore,
+  loadMoreLabel,
 }: InternalLinkerProps) => {
   const { t } = useTranslation();
   const { theme } = useEdificeTheme();
@@ -118,6 +138,14 @@ export const InternalLinker = ({
   const loadAndDisplayResources = useCallback(
     (search?: string) => {
       async function load() {
+        if (onSearch) {
+          try {
+            setResources(await onSearch(search || '', selectedApplication));
+          } catch {
+            setResources([]);
+          }
+          return;
+        }
         // If resources are provided, use them directly.
         if (resourceList) {
           // Filter resources based on search terms and optional custom filter
@@ -162,6 +190,7 @@ export const InternalLinker = ({
       load();
     },
     [
+      onSearch,
       loadResources,
       selectedApplication,
       filterResources,
@@ -384,7 +413,7 @@ export const InternalLinker = ({
       <div className="internal-linker flex-grow-1 w-100 rounded-bottom border gap-0 overflow-auto">
         {selectedApplication && resources && resources.length > 0 && (
           <div>
-            {resources.map((resource) => {
+            {resources.map((resource: ILinkedResource) => {
               const isSelected =
                 selectedDocuments.findIndex(
                   (doc) => doc.assetId === resource.assetId,
@@ -398,6 +427,18 @@ export const InternalLinker = ({
                 />
               );
             })}
+            {hasMoreResources && (
+              <div className="d-grid gap-2 col-4 mx-auto my-24">
+                <Button
+                  type="button"
+                  color="secondary"
+                  variant="filled"
+                  onClick={onLoadMore}
+                >
+                  {loadMoreLabel ?? t('bbm.linker.see.more')}
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
