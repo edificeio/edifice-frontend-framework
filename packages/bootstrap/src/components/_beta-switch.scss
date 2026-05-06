@@ -1,0 +1,21 @@
+@use '../themes/configs/primitives' as prim;
+
+.beta-switch {
+  background: linear-gradient(
+    67.55deg,
+    prim.$yellow-200 0%,
+    prim.$pink-200 100%
+  );
+  padding: prim.$spacer-16 prim.$spacer-12;
+  border: 1px solid var(--edifice-color-primary-default);
+  border-radius: var(--edifice-border-radius-xl);
+
+  p {
+    flex-grow: 1;
+    align-content: center;
+  }
+
+  button {
+    flex-shrink: 0;
+  }
+}
