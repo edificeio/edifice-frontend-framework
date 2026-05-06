@@ -95,15 +95,12 @@ const ButtonBeta = forwardRef(
         type={type}
         {...restProps}
       >
-        {isLoading ? (
-          <Loading isLoading />
-        ) : (
-          <span>
-            {leftIcon}
-            {children}
-            {rightIcon}
-          </span>
-        )}
+        {isLoading && <Loading isLoading />}
+        <span>
+          {leftIcon}
+          {children}
+          {rightIcon}
+        </span>
       </button>
     );
   },

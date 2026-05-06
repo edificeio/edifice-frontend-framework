@@ -17,6 +17,7 @@
 
   display: inline-flex;
   align-items: center;
+  position: relative;
   justify-content: center;
   padding-block: $spacer-8;
   padding-inline: $spacer-24;
@@ -88,15 +89,21 @@
 
   &.btn-beta--loading {
     pointer-events: none;
-    padding-inline: $spacer-48;
+
+    .loading {
+      position: absolute;
+      margin: auto;
+    }
+
+    > span {
+      visibility: hidden;
+    }
   }
 
-  // Text + icon(s)
   &.btn-beta--with-icon {
     padding-inline: $spacer-12;
   }
 
-  // Icon only, no text
   &.btn-beta--icon-only {
     padding-inline: $spacer-8;
   }
