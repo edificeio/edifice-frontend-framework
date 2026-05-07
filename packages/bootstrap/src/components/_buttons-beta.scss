@@ -156,30 +156,34 @@
   --btn-beta-border-color: var(--edifice-color-buttons-primary-default);
   --btn-beta-border-color-pressed: var(--edifice-color-buttons-primary-dark);
   --btn-beta-border-color-disabled: var(--edifice-color-buttons-primary-light);
-}
 
-.btn-beta--outline.btn-beta-secondary {
-  --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-pale);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-secondary-other-disable
-  );
-  --btn-beta-border-color: var(--edifice-color-buttons-secondary-default);
-  --btn-beta-border-color-pressed: var(--edifice-color-buttons-secondary-dark);
-  --btn-beta-border-color-disabled: var(
-    --edifice-color-buttons-secondary-light
-  );
-}
+  &.btn-beta-secondary {
+    --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
+    --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-pale);
+    --btn-beta-color-disabled: var(
+      --edifice-color-text-button-secondary-other-disable
+    );
+    --btn-beta-border-color: var(--edifice-color-buttons-secondary-default);
+    --btn-beta-border-color-pressed: var(
+      --edifice-color-buttons-secondary-dark
+    );
+    --btn-beta-border-color-disabled: var(
+      --edifice-color-buttons-secondary-light
+    );
+  }
 
-.btn-beta--outline.btn-beta-tertiary {
-  --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-pale);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-tertiary-other-disable
-  );
-  --btn-beta-border-color: var(--edifice-color-buttons-tertiary-default);
-  --btn-beta-border-color-pressed: var(--edifice-color-buttons-tertiary-dark);
-  --btn-beta-border-color-disabled: var(--edifice-color-buttons-tertiary-light);
+  &.btn-beta-tertiary {
+    --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
+    --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-pale);
+    --btn-beta-color-disabled: var(
+      --edifice-color-text-button-tertiary-other-disable
+    );
+    --btn-beta-border-color: var(--edifice-color-buttons-tertiary-default);
+    --btn-beta-border-color-pressed: var(--edifice-color-buttons-tertiary-dark);
+    --btn-beta-border-color-disabled: var(
+      --edifice-color-buttons-tertiary-light
+    );
+  }
 }
 
 // Ghost
@@ -192,26 +196,26 @@
   --btn-beta-color-disabled: var(
     --edifice-color-text-button-primary-other-disable
   );
-}
 
-.btn-beta--ghost.btn-beta-destructive {
-  --btn-beta-color: var(--edifice-color-support-danger-700);
-}
+  &.btn-beta-destructive {
+    --btn-beta-color: var(--edifice-color-support-danger-700);
+  }
 
-.btn-beta--ghost.btn-beta-secondary {
-  --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-secondary-other-disable
-  );
-}
+  &.btn-beta-secondary {
+    --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
+    --btn-beta-color-disabled: var(
+      --edifice-color-text-button-secondary-other-disable
+    );
+  }
 
-.btn-beta--ghost.btn-beta-tertiary {
-  font-family: var(--font-button-tertiary-family);
-  text-transform: initial !important;
-  font-size: var(--font-button-tertiary-size);
+  &.btn-beta-tertiary {
+    font-family: var(--font-button-tertiary-family);
+    text-transform: initial !important;
+    font-size: var(--font-button-tertiary-size);
 
-  --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-tertiary-other-disable
-  );
+    --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
+    --btn-beta-color-disabled: var(
+      --edifice-color-text-button-tertiary-other-disable
+    );
+  }
 }
