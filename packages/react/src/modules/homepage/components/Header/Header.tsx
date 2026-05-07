@@ -98,7 +98,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
                 <IconMessagesBeta />
                 {hasMessages && (
                   <Badge
-                    variant={{ type: 'notification', level: 'warning' }}
+                    variant={{ type: 'notification', level: 'danger' }}
                     className="position-absolute"
                   >
                     {messages}
