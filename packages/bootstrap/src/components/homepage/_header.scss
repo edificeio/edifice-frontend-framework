@@ -4,6 +4,8 @@
   --navbar-padding-y: #{$spacer-8};
   --navbar-padding-x: #{$spacer-8};
   --navbar-background: #{$white};
+  --navbar-badge-top: 0.8rem;
+  --navbar-badge-right: -1.2rem;
 
   display: grid;
   grid-template-columns: 1fr;
@@ -93,5 +95,10 @@
         --edifice-avatar-size: 3.2rem;
       }
     }
+  }
+
+  .badge {
+    top: var(--navbar-badge-top);
+    right: var(--navbar-badge-right);
   }
 }
