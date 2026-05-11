@@ -7,7 +7,7 @@ import { RenderOptions, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { ReactElement } from 'react';
-import { MockedProvider } from './src/providers';
+import { MockedProvider } from './src/providers/MockedProvider/MockedProvider';
 
 import { afterAll, afterEach } from 'vitest';
 import '../../apps/docs/i18n';
