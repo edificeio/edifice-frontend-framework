@@ -2,7 +2,13 @@ import { IFlashMessageModel } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Flex, IconButton, useEdificeClient } from '../../../..';
+import {
+  ButtonBeta,
+  Card,
+  Flex,
+  IconButton,
+  useEdificeClient,
+} from '../../../..';
 import {
   IconAlertTriangle,
   IconClose,
@@ -136,22 +142,20 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
           <Flex justify="between" align="center">
             <div className="fst-italic">{message.signature || ''}</div>
             {hasOverflow && (
-              <Button
+              <ButtonBeta
                 data-testid={
                   isCollapsed
                     ? 'message-flash-view-more-button'
                     : 'message-flash-view-less-button'
                 }
-                color="tertiary"
+                color="default"
                 variant="ghost"
-                size="sm"
-                className="btn-icon"
                 onClick={handleCollapse}
                 aria-controls={`message-flash-${message.id}-content`}
                 aria-expanded={!isCollapsed}
               >
                 {t(isCollapsed ? 'read.more' : 'read.less')}
-              </Button>
+              </ButtonBeta>
             )}
           </Flex>
         </Flex>
