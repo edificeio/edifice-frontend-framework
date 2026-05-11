@@ -1,4 +1,5 @@
 @use '../themes/configs/primitives' as prim;
+@use '../vendors/bootstrap';
 
 .beta-switch {
   background: linear-gradient(
@@ -10,12 +11,18 @@
   border: 1px solid var(--edifice-color-primary-default);
   border-radius: var(--edifice-border-radius-xl);
 
+  @include bootstrap.media-breakpoint-down(md) {
+    > div {
+      flex-flow: row wrap;
+    }
+  }
+
   p {
-    flex-grow: 1;
+    flex: 1;
     align-content: center;
   }
 
   button {
-    flex-shrink: 0;
+    align-self: center;
   }
 }
