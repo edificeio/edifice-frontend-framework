@@ -345,7 +345,28 @@ export interface IGetSession {
   bookmarkedApps: IWebApp[];
 }
 
+export type IPerson = Pick<
+  IUserDescription,
+  | 'address'
+  | 'birthdate'
+  | 'displayName'
+  | 'email'
+  | 'id'
+  | 'login'
+  | 'mobile'
+  | 'photo'
+  | 'relatedId'
+  | 'relatedName'
+  | 'relatedType'
+  | 'schools'
+  | 'tel'
+  | 'userId'
+  | 'visibleInfos'
+> & {
+  type: UserProfile;
+};
+
 export type PersonApiResult = {
   status: 'ok' | string;
-  result: Array<IUserDescription>;
+  result: Array<IPerson>;
 };

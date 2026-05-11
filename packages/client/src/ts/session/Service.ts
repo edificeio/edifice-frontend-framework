@@ -2,10 +2,12 @@ import { App, ERROR_CODE } from '../globals';
 import {
   GetUserProfileOptions,
   IGetSession,
+  IPerson,
   IQuotaAndUsage,
   IUserDescription,
   IUserInfo,
   IWebApp,
+  PersonApiResult,
   UserProfile,
 } from './interfaces';
 
@@ -40,12 +42,15 @@ export class SessionService {
   }
 
   async getSession(): Promise<IGetSession> {
-    const user = await this.getUser();
+    const [user, person] = await Promise.all([
+      this.getUser(),
+      this.getPerson(),
+    ]);
 
     const [
       currentLanguage,
       quotaAndUsage,
-      userDescription,
+      description,
       userProfile,
       bookmarkedApps,
     ] = await Promise.all([
@@ -55,6 +60,13 @@ export class SessionService {
       this.getUserProfile(),
       this.getBookmarks(user),
     ]);
+
+    const userDescription = {
+      ...(person || {}),
+      type: undefined, // Remove undesired "type" field
+      profiles: person?.type || ['Guest'], // "type" field from /userbook/api/person becomes "profiles"
+      ...description, // Inject other fields (also the correct "type")
+    };
 
     return {
       user,
@@ -260,21 +272,30 @@ export class SessionService {
   async getUserProfile(
     options: Partial<GetUserProfileOptions> = {},
   ): Promise<UserProfile> {
-    const { options: httpOptions = {}, params = {} } = options;
+    const person = await this.getPerson(options);
+    return person?.type || ['Guest'];
+  }
 
+  private async getPerson(
+    options: Partial<GetUserProfileOptions> = {},
+  ): Promise<(IPerson & { type: UserProfile }) | null> {
+    const { options: httpOptions = {}, params = {} } = options;
     const queryParams = new URLSearchParams(params).toString();
     const url = `/userbook/api/person${queryParams ? `?${queryParams}` : ''}`;
 
-    const { response, value } = await this.cache.httpGet<any>(url, httpOptions);
+    const { response, value } = await this.cache.httpGet<PersonApiResult>(
+      url,
+      httpOptions,
+    );
     if (
       response.status < 200 ||
       response.status >= 300 ||
       typeof value === 'string'
     ) {
       // Backend tries to redirect the user => not logged in !
-      return ['Guest'];
+      return null;
     }
-    return value?.result?.[0]?.type || ['Guest'];
+    return value?.result?.[0] || null;
   }
 
   public async isAdml(): Promise<boolean> {
