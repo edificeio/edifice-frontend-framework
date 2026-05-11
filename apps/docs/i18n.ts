@@ -257,7 +257,7 @@ i18n.use(initReactI18next).init({
         'betaSwitch.title': "L'ancienne version vous manque ?",
         'betaSwitch.description':
           'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
-        'betaSwitch.error': "Erreur de paramétrage de la page d'accueil",
+        'betaSwitch.error': 'Erreur de paramétrage.',
       },
     },
   },
