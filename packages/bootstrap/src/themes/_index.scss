@@ -6,4 +6,5 @@
 @forward 'edifice1d';
 @forward 'overrides';
 @forward 'skins';
-@include theme.primitive-vars();
+@forward 'configs/breakpoints';
+@include theme.primitive-vars('primitive-');
