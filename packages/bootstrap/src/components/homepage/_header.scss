@@ -1,4 +1,5 @@
 @use '../../themes/configs/primitives' as *;
+@use '../../themes/configs/breakpoints' as medias;
 
 .header-beta .navbar {
   --navbar-padding-y: #{$spacer-8};
@@ -18,11 +19,6 @@
   border-image-source: linear-gradient(67.55deg, #ffc403, #fc94ff);
   box-shadow: #{$box-shadow};
 
-  @media (width > 768px) {
-    grid-template-columns: 1fr auto;
-    grid-template-areas: 'logo links';
-  }
-
   &-brand {
     --navbar-brand-padding-y: 0;
     --navbar-brand-padding-x: 0;
@@ -38,18 +34,6 @@
       object-position: left;
       max-width: 100%;
       width: auto;
-    }
-
-    @media (width > 768px) {
-      --navbar-brand-logo-height: 20px;
-
-      .logo {
-        display: inline-block;
-      }
-    }
-
-    @media (width > 1024px) {
-      --navbar-brand-logo-height: 24px;
     }
   }
 
@@ -78,27 +62,49 @@
     .popover svg {
       --navbar-nav-link-icon-size: 2.2rem;
     }
+  }
+}
 
-    @media (width > 768px) {
-      --navbar-nav-gap: 2.4rem;
-      justify-content: flex-end;
+@include medias.respond-from('tablet') {
+  .header-beta .navbar {
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 'logo links';
+  }
 
-      svg {
-        --navbar-nav-link-icon-size: 3.2rem;
-      }
+  .header-beta .navbar-brand {
+    --navbar-brand-logo-height: 20px;
 
-      .popover svg {
-        --navbar-nav-link-icon-size: 2.2rem;
-      }
+    .logo {
+      display: inline-block;
+    }
+  }
 
-      .avatar {
-        --edifice-avatar-size: 3.2rem;
-      }
+  .header-beta .navbar-nav {
+    --navbar-nav-gap: 2.4rem;
+
+    justify-content: flex-end;
+
+    svg {
+      --navbar-nav-link-icon-size: 3.2rem;
+    }
+
+    .popover svg {
+      --navbar-nav-link-icon-size: 2.2rem;
+    }
+
+    .avatar {
+      --edifice-avatar-size: 3.2rem;
     }
   }
 
   .badge {
     top: var(--navbar-badge-top);
     right: var(--navbar-badge-right);
+  }
+}
+
+@include medias.respond-from('desktop-small') {
+  .header-beta .navbar-brand {
+    --navbar-brand-logo-height: 24px;
   }
 }
