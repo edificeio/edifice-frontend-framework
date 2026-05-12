@@ -1,0 +1,49 @@
+// stylelint-disable at-rule-empty-line-before
+@use 'sass:map';
+
+$breakpoints: (
+  'mobile': 360px,
+  'mobile-large': 390px,
+  'tablet': 720px,
+  'desktop-small': 960px,
+  'desktop': 1264px,
+  'desktop-large': 1320px,
+);
+
+@mixin respond-from($breakpoint) {
+  $value: map.get($breakpoints, $breakpoint);
+
+  @if $value {
+    @media (min-width: $value) {
+      @content;
+    }
+  } @else {
+    @warn "Le breakpoint '#{$breakpoint}' n'existe pas.";
+  }
+}
+
+@mixin respond-below($breakpoint) {
+  $value: map.get($breakpoints, $breakpoint);
+
+  @if $value {
+    // On applique le style uniquement EN DESSOUS de ce seuil
+    @media (max-width: ($value - 0.02px)) {
+      @content;
+    }
+  } @else {
+    @warn "Le breakpoint '#{$breakpoint}' n'existe pas.";
+  }
+}
+
+@mixin respond-between($lower, $upper) {
+  $min-value: map.get($breakpoints, $lower);
+  $max-value: map.get($breakpoints, $upper);
+
+  @if $min-value and $max-value {
+    @media (min-width: $min-value) and (max-width: ($max-value - 0.02px)) {
+      @content;
+    }
+  } @else {
+    @warn "Le breakpoint '#{$lower}' ou '#{$upper}' n'existe pas.";
+  }
+}

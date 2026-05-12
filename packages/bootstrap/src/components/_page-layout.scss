@@ -1,9 +1,8 @@
 @use '../themes/configs/primitives' as *;
-
+@use '../themes/configs/breakpoints' as medias;
 // ==========================================================================
 // PageLayout — Page layout with optional sidebars, breadcrumb & overlay
 // ==========================================================================
-
 .pagelayout {
   --pagelayout-headerheight: 5.8rem;
 
@@ -295,7 +294,8 @@
 // Order: header · breadcrumb · sidebarLeft · content · sidebarRight
 // ==========================================================================
 
-@media (width <= 767.98px) {
+@include medias.respond-below('tablet') {
+  // @media (width <= 767.98px) {
   .pagelayout {
     --pagelayout-headerheight: 5rem;
   }
