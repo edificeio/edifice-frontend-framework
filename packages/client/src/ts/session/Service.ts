@@ -278,7 +278,7 @@ export class SessionService {
 
   private async getPerson(
     options: Partial<GetUserProfileOptions> = {},
-  ): Promise<(IPerson & { type: UserProfile }) | null> {
+  ): Promise<IPerson | null> {
     const { options: httpOptions = {}, params = {} } = options;
     const queryParams = new URLSearchParams(params).toString();
     const url = `/userbook/api/person${queryParams ? `?${queryParams}` : ''}`;
