@@ -2,14 +2,12 @@
 
 .btn-beta {
   --btn-beta-transition: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --btn-beta-bg: var(--edifice-color-buttons-primary-default);
-  --btn-beta-bg-hover: var(--edifice-color-buttons-primary-default);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-dark);
-  --btn-beta-bg-disabled: var(--edifice-color-buttons-primary-light);
-  --btn-beta-color: var(--edifice-color-text-button-primary-filled-default);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-primary-filled-disable
-  );
+  --btn-beta-bg: var(--color-buttons-primary-default);
+  --btn-beta-bg-hover: var(--color-buttons-primary-default);
+  --btn-beta-bg-pressed: var(--color-buttons-primary-dark);
+  --btn-beta-bg-disabled: var(--color-buttons-primary-light);
+  --btn-beta-color: var(--color-text-button-primary-filled-default);
+  --btn-beta-color-disabled: var(--color-text-button-primary-filled-disable);
   --btn-beta-content-hover-transform: translateY(-0.2rem);
   --btn-beta-border-color: transparent;
   --btn-beta-border-color-disabled: transparent;
@@ -23,12 +21,12 @@
   padding-inline: prim.$spacer-24;
   gap: prim.$spacer-8;
   border: none;
-  border-radius: var(--edifice-radius-button);
+  border-radius: var(--radius-button);
   background-color: var(--btn-beta-bg);
   color: var(--btn-beta-color);
-  font-family: var(--edifice-font-button-family);
-  font-size: var(--edifice-font-button-size);
-  line-height: var(--edifice-font-button-lineheight);
+  font-family: var(--font-button-family);
+  font-size: var(--font-button-size);
+  line-height: var(--font-button-lineheight);
   font-weight: prim.$font-weight-bold;
   cursor: pointer;
   transition: background-color var(--btn-beta-transition);
@@ -109,78 +107,60 @@
 }
 
 .btn-beta-destructive {
-  --btn-beta-bg: var(--edifice-color-support-danger-500);
+  --btn-beta-bg: var(--color-support-danger-500);
   --btn-beta-color: #{prim.$white};
-  --btn-beta-bg-hover: var(--edifice-color-support-danger-500);
-  --btn-beta-bg-pressed: var(--edifice-color-support-danger-700);
-  --btn-beta-bg-disabled: var(--edifice-color-support-danger-300);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-primary-filled-disable
-  );
+  --btn-beta-bg-hover: var(--color-support-danger-500);
+  --btn-beta-bg-pressed: var(--color-support-danger-700);
+  --btn-beta-bg-disabled: var(--color-support-danger-300);
+  --btn-beta-color-disabled: var(--color-text-button-primary-filled-disable);
 }
 
 .btn-beta-secondary {
-  --btn-beta-bg: var(--edifice-color-buttons-secondary-default);
+  --btn-beta-bg: var(--color-buttons-secondary-default);
   --btn-beta-color: #{prim.$white};
-  --btn-beta-bg-hover: var(--edifice-color-buttons-secondary-dark);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-dark);
-  --btn-beta-bg-disabled: var(--edifice-color-buttons-secondary-light);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-secondary-filled-disable
-  );
+  --btn-beta-bg-hover: var(--color-buttons-secondary-dark);
+  --btn-beta-bg-pressed: var(--color-buttons-secondary-dark);
+  --btn-beta-bg-disabled: var(--color-buttons-secondary-light);
+  --btn-beta-color-disabled: var(--color-text-button-secondary-filled-disable);
 }
 
 .btn-beta-tertiary {
-  --btn-beta-bg: var(--edifice-color-buttons-tertiary-default);
-  --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
-  --btn-beta-bg-hover: var(--edifice-color-buttons-tertiary-dark);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-dark);
-  --btn-beta-bg-disabled: var(--edifice-color-buttons-tertiary-light);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-tertiary-other-disable
-  );
+  --btn-beta-bg: var(--color-buttons-tertiary-default);
+  --btn-beta-color: var(--color-text-button-tertiary-other-default);
+  --btn-beta-bg-hover: var(--color-buttons-tertiary-dark);
+  --btn-beta-bg-pressed: var(--color-buttons-tertiary-dark);
+  --btn-beta-bg-disabled: var(--color-buttons-tertiary-light);
+  --btn-beta-color-disabled: var(--color-text-button-tertiary-other-disable);
 }
 
 // Outline
 .btn-beta--outline {
   --btn-beta-bg: #{prim.$white};
   --btn-beta-bg-hover: var(--btn-beta-bg);
-  --btn-beta-bg-pressed: var(--edifice-color-buttons-primary-pale);
+  --btn-beta-bg-pressed: var(--color-buttons-primary-pale);
   --btn-beta-bg-disabled: #{prim.$white};
-  --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-primary-other-disable
-  );
-  --btn-beta-border-color: var(--edifice-color-buttons-primary-default);
-  --btn-beta-border-color-pressed: var(--edifice-color-buttons-primary-dark);
-  --btn-beta-border-color-disabled: var(--edifice-color-buttons-primary-light);
+  --btn-beta-color: var(--color-text-button-primary-other-default);
+  --btn-beta-color-disabled: var(--color-text-button-primary-other-disable);
+  --btn-beta-border-color: var(--color-buttons-primary-default);
+  --btn-beta-border-color-pressed: var(--color-buttons-primary-dark);
+  --btn-beta-border-color-disabled: var(--color-buttons-primary-light);
 
   &.btn-beta-secondary {
-    --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
-    --btn-beta-bg-pressed: var(--edifice-color-buttons-secondary-pale);
-    --btn-beta-color-disabled: var(
-      --edifice-color-text-button-secondary-other-disable
-    );
-    --btn-beta-border-color: var(--edifice-color-buttons-secondary-default);
-    --btn-beta-border-color-pressed: var(
-      --edifice-color-buttons-secondary-dark
-    );
-    --btn-beta-border-color-disabled: var(
-      --edifice-color-buttons-secondary-light
-    );
+    --btn-beta-color: var(--color-text-button-secondary-other-default);
+    --btn-beta-bg-pressed: var(--color-buttons-secondary-pale);
+    --btn-beta-color-disabled: var(--color-text-button-secondary-other-disable);
+    --btn-beta-border-color: var(--color-buttons-secondary-default);
+    --btn-beta-border-color-pressed: var(--color-buttons-secondary-dark);
+    --btn-beta-border-color-disabled: var(--color-buttons-secondary-light);
   }
 
   &.btn-beta-tertiary {
-    --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
-    --btn-beta-bg-pressed: var(--edifice-color-buttons-tertiary-pale);
-    --btn-beta-color-disabled: var(
-      --edifice-color-text-button-tertiary-other-disable
-    );
-    --btn-beta-border-color: var(--edifice-color-buttons-tertiary-default);
-    --btn-beta-border-color-pressed: var(--edifice-color-buttons-tertiary-dark);
-    --btn-beta-border-color-disabled: var(
-      --edifice-color-buttons-tertiary-light
-    );
+    --btn-beta-color: var(--color-text-button-tertiary-other-default);
+    --btn-beta-bg-pressed: var(--color-buttons-tertiary-pale);
+    --btn-beta-color-disabled: var(--color-text-button-tertiary-other-disable);
+    --btn-beta-border-color: var(--color-buttons-tertiary-default);
+    --btn-beta-border-color-pressed: var(--color-buttons-tertiary-dark);
+    --btn-beta-border-color-disabled: var(--color-buttons-tertiary-light);
   }
 }
 
@@ -190,29 +170,23 @@
   --btn-beta-bg-hover: #{prim.$grey-100};
   --btn-beta-bg-pressed: #{prim.$grey-200};
   --btn-beta-bg-disabled: transparent;
-  --btn-beta-color: var(--edifice-color-text-button-primary-other-default);
-  --btn-beta-color-disabled: var(
-    --edifice-color-text-button-primary-other-disable
-  );
+  --btn-beta-color: var(--color-text-button-primary-other-default);
+  --btn-beta-color-disabled: var(--color-text-button-primary-other-disable);
 
   &.btn-beta-destructive {
-    --btn-beta-color: var(--edifice-color-support-danger-700);
+    --btn-beta-color: var(--color-support-danger-700);
   }
 
   &.btn-beta-secondary {
-    --btn-beta-color: var(--edifice-color-text-button-secondary-other-default);
-    --btn-beta-color-disabled: var(
-      --edifice-color-text-button-secondary-other-disable
-    );
+    --btn-beta-color: var(--color-text-button-secondary-other-default);
+    --btn-beta-color-disabled: var(--color-text-button-secondary-other-disable);
   }
 
   &.btn-beta-tertiary {
     font-family: var(--font-button-tertiary-family);
     font-size: var(--font-button-tertiary-size);
 
-    --btn-beta-color: var(--edifice-color-text-button-tertiary-other-default);
-    --btn-beta-color-disabled: var(
-      --edifice-color-text-button-tertiary-other-disable
-    );
+    --btn-beta-color: var(--color-text-button-tertiary-other-default);
+    --btn-beta-color-disabled: var(--color-text-button-tertiary-other-disable);
   }
 }

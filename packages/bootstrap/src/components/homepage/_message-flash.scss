@@ -6,7 +6,6 @@
   --message-flash-border-radius: #{$border-radius-2xl};
   --message-flash-px: #{$spacer-12};
   --message-flash-py: #{$spacer-12};
-
   --message-flash-icon-size: 50px;
   --message-flash-icon-color: #{$white};
   --message-flash-icon-bg-color: #{$grey-500};
@@ -17,18 +16,17 @@
   grid-template-columns: auto 1fr;
   gap: #{$spacer-12};
   position: relative;
-
   background-color: var(--message-flash-bg-color);
   background-image: url('./images/homepage/MessageFlashBackground-Grey.svg');
   background-repeat: no-repeat;
   background-position: top right;
-
   padding: var(--message-flash-py) var(--message-flash-px);
 
   &-orange {
     --message-flash-border-color: #{$warning-500};
     --message-flash-bg-color: #{$warning-200};
     --message-flash-icon-bg-color: #{$warning-500};
+
     background-image: url('./images/homepage/MessageFlashBackground-Orange.svg');
   }
 
@@ -36,6 +34,7 @@
     --message-flash-border-color: #{$success-500};
     --message-flash-bg-color: #{$success-200};
     --message-flash-icon-bg-color: #{$success-700};
+
     background-image: url('./images/homepage/MessageFlashBackground-Green.svg');
   }
 
@@ -43,6 +42,7 @@
     --message-flash-border-color: #{$info-500};
     --message-flash-bg-color: #{$info-200};
     --message-flash-icon-bg-color: #{$info-500};
+
     background-image: url('./images/homepage/MessageFlashBackground-Blue.svg');
   }
 
@@ -50,6 +50,7 @@
     --message-flash-border-color: #{$danger-500};
     --message-flash-bg-color: #{$danger-200};
     --message-flash-icon-bg-color: #{$danger-500};
+
     background-image: url('./images/homepage/MessageFlashBackground-Red.svg');
   }
 
