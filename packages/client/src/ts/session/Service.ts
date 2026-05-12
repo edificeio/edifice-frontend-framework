@@ -61,10 +61,10 @@ export class SessionService {
       this.getBookmarks(user),
     ]);
 
+    const { type: personType, ...personWithoutType } = person || {};
     const userDescription = {
-      ...(person || {}),
-      type: undefined, // Remove undesired "type" field
-      profiles: person?.type || ['Guest'], // "type" field from /userbook/api/person becomes "profiles"
+      ...personWithoutType,
+      profiles: personType || ['Guest'], // "type" field from /userbook/api/person becomes "profiles"
       ...description, // Inject other fields (also the correct "type")
     };
 
