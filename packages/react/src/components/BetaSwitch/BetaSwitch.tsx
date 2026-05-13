@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ButtonBeta, Flex, useBreakpoint } from '../..';
+import { IconArrowRight } from '../../modules/icons/components';
 
 /**
  * BetaSwitch component displays a banner allowing the user to opt-out
@@ -15,25 +16,24 @@ export const BetaSwitch = ({
   onSwitchClick,
 }: BetaSwitchProps) => {
   const { t } = useTranslation();
-  const { md, sm } = useBreakpoint();
+  const { md } = useBreakpoint();
 
   return (
-    <div className="beta-switch">
-      <Flex direction={sm ? 'row' : 'column'} gap="8">
-        <p>
-          <strong>{t('betaSwitch.title')}</strong>{' '}
-          {md && <span>{t('betaSwitch.description')}</span>}
-        </p>
-        <ButtonBeta
-          data-testid="beta-switch-button"
-          isLoading={isSwitching}
-          disabled={isSwitching}
-          onClick={onSwitchClick}
-        >
-          {t('betaSwitch.button')}
-        </ButtonBeta>
-      </Flex>
-    </div>
+    <Flex direction={md ? 'row' : 'column'} gap="8" className="beta-switch">
+      <p>
+        <strong>{t('betaSwitch.title')}</strong>{' '}
+        <span>{t('betaSwitch.description')}</span>
+      </p>
+      <ButtonBeta
+        data-testid="beta-switch-button"
+        isLoading={isSwitching}
+        disabled={isSwitching}
+        onClick={onSwitchClick}
+        rightIcon={<IconArrowRight />}
+      >
+        {t('betaSwitch.button')}
+      </ButtonBeta>
+    </Flex>
   );
 };
 
