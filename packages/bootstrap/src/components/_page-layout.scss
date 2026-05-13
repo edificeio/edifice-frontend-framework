@@ -304,6 +304,10 @@
     --pagelayout-content-padding-x: var(--primitive-spacer-16);
   }
 
+  .pagelayout-content {
+    --pagelayout-content-padding-x: var(--primitive-spacer-16);
+  }
+
   .pagelayout-overlay,
   .pagelayout-mainarea:not(.has-both-sidebars) ~ .pagelayout-overlay {
     width: 100%;
