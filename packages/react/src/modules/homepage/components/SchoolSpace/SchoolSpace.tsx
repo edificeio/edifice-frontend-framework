@@ -63,7 +63,6 @@ const SchoolSpace = ({
                     >
                       <Flex direction="column">
                         <p>{school.name}</p>
-                        {school.UAI && <p>UAI : {school.UAI}</p>}
                       </Flex>
                     </Dropdown.Item>
                   ))}
