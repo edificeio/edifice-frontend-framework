@@ -296,8 +296,16 @@
 
 @include medias.respond-below('tablet') {
   // @media (width <= 767.98px) {
+
   .pagelayout {
     --pagelayout-headerheight: 5rem;
+    --pagelayout-sidebarleft-padding-x: var(--primitive-spacer-16);
+    --pagelayout-sidebarright-padding-x: var(--primitive-spacer-16);
+    --pagelayout-content-padding-x: var(--primitive-spacer-16);
+  }
+
+  .pagelayout-content {
+    --pagelayout-content-padding-x: var(--primitive-spacer-16);
   }
 
   .pagelayout-overlay,
