@@ -1,20 +1,21 @@
 import { School, WIDGET_NAME, WidgetUserPref } from '@edifice.io/client';
 import { useEffect, useState } from 'react';
-import { useEdificeClient } from 'src/providers';
+import { useSession } from 'src/hooks/useSession';
 import useWidgetPreferences from '../../hooks/useWidgetPreferences';
 
 export function useUserSchools() {
-  const { userDescription } = useEdificeClient();
+  const { data: session } = useSession();
   const { lookup, saveUserPreferences } = useWidgetPreferences();
   const [userPreferences, setUserPreferences] = useState<WidgetUserPref>();
   const [selectedSchool, setSelectedSchool] = useState<School>();
-
-  const schools = userDescription?.schools;
+  const [schools, setSchools] = useState(session?.userDescription?.schools);
 
   // Select a default school
   useEffect(() => {
-    setSelectedSchool(schools?.[0]);
-  }, []);
+    const newSchools = session?.userDescription?.schools;
+    setSchools(newSchools);
+    setSelectedSchool(newSchools?.[0]);
+  }, [session?.userDescription?.schools]);
 
   // Memoize user's preferences for this widget, depending on the 'lookup' function availability.
   useEffect(() => {
@@ -24,15 +25,17 @@ export function useUserSchools() {
 
   // Select the user's prefered school
   useEffect(() => {
-    if (userPreferences?.schoolId && Array.isArray(schools)) {
-      const index = schools.findIndex(
-        (school) => school.id === userPreferences?.schoolId,
-      );
-      setSelectedSchool(
-        index < 0 || index >= schools.length ? schools[0] : schools[index],
-      );
-    } else {
-      setSelectedSchool(undefined);
+    if (Array.isArray(schools)) {
+      if (schools.length === 1) {
+        setSelectedSchool(schools[0]);
+      } else if (userPreferences?.schoolId) {
+        const index = schools.findIndex(
+          (school) => school.id === userPreferences?.schoolId,
+        );
+        setSelectedSchool(
+          index < 0 || index >= schools.length ? schools[0] : schools[index],
+        );
+      }
     }
   }, [userPreferences, schools]);
 
