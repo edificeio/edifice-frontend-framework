@@ -33,12 +33,33 @@ Configure your app's public conf (via springboard/ENT):
 
 `screeb-allowed-profiles` is optional — when absent or empty, all profiles are tracked.
 
+### Provider props
+
+- `onSurveyDisplayAllowed` (optional): callback called before a survey is displayed. Return `false` to prevent it from showing (e.g. when a modal is already open).
+
+```tsx
+<EdificeScreebProvider
+  onSurveyDisplayAllowed={({ survey }) => !isModalOpen}
+>
+  <App />
+</EdificeScreebProvider>
+```
+
+The identity is automatically reset when the user logs out, preventing cross-user contamination on shared devices.
+
 ## Usage
 
 ```typescript
 import { useScreeb } from '@edifice.io/react';
 
-const { trackEvent, triggerSurvey, setIdentityProperties } = useScreeb();
+const {
+  trackEvent,
+  triggerSurvey,
+  triggerMessage,
+  closeSurvey,
+  forceTargetingCheck,
+  setIdentityProperties,
+} = useScreeb();
 ```
 
 ## Return Value
@@ -76,6 +97,41 @@ triggerSurvey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', {
 });
 ```
 
+### `triggerMessage`
+
+Starts a Screeb message (banner/tooltip) programmatically. Messages are distinct from surveys and are used for announcements or in-app guidance.
+
+```typescript
+triggerMessage(messageId: string, hooks?: ScreebMessageHooks): Promise<unknown>
+```
+
+```typescript
+triggerMessage('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', {
+  onMessageCompleted: (payload) => console.log('Message completed', payload),
+});
+```
+
+### `closeSurvey`
+
+Closes the currently running survey.
+
+```typescript
+closeSurvey(): Promise<unknown>
+```
+
+### `forceTargetingCheck`
+
+Forces the Screeb targeting engine to re-evaluate its rules immediately. Useful after a `trackEvent` when you want a survey to appear as soon as a threshold is reached, without waiting for the next automatic cycle.
+
+```typescript
+forceTargetingCheck(): Promise<unknown>
+```
+
+```typescript
+trackEvent('resource-published');
+forceTargetingCheck(); // trigger immediate evaluation
+```
+
 ### `setIdentityProperties`
 
 Updates the current user's attributes in Screeb. Set a property to `null` to delete it.
@@ -98,6 +154,14 @@ type ScreebSurveyHooks = {
   onSurveyStarted?: (data: unknown) => void;
   onSurveyCompleted?: (data: unknown) => void;
   onSurveyHidden?: (data: unknown) => void;
+  onQuestionReplied?: (data: unknown) => void;
+};
+
+type ScreebMessageHooks = {
+  onMessageShowed?: (data: unknown) => void;
+  onMessageStarted?: (data: unknown) => void;
+  onMessageCompleted?: (data: unknown) => void;
+  onMessageHidden?: (data: unknown) => void;
   onQuestionReplied?: (data: unknown) => void;
 };
 ```
