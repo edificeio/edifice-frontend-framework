@@ -87,10 +87,6 @@
         text-overflow: ellipsis;
     }
 
-    &-date {
-        display: none;
-    }
-
     &-title {
         font-weight: var(--#{$prefix}font-weight-bold);
     }

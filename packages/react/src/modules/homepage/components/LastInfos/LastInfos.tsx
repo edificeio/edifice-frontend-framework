@@ -133,9 +133,6 @@ const LastInfos = ({
           />
           <span className="last-infos-card-thread-name">{threadName}</span>
         </Flex>
-        <time className="last-infos-card-date">
-          {formatDate(publicationDate, 'short')}
-        </time>
       </header>
 
       <Flex gap="4" direction="column" className="last-infos-card-content">
