@@ -16,12 +16,8 @@
   background-position: top right;
 
   &-container {
-    --container-px: #{$spacer-12};
-    --container-py: #{$spacer-12};
-    --color: var(--color-text-default);
-
-    padding: var(--container-py) var(--container-px);
-    line-height: var(--font-lineheight-xs);
-    color: var(--color);
+    padding: var(--primitive-spacer-12);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-default);
   }
 }
