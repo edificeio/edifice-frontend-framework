@@ -1,21 +1,16 @@
-@use '../../abstracts/' as *;
-@use '../../vendors/bootstrap';
+@use '../../themes/configs/primitives' as *;
 
 .last-infos-card {
-    --background-color: var(--#{$prefix}orange-200);
-    --background-color-headline: var(--#{$prefix}yellow-200);
-    --border-radius: var(--#{$prefix}border-radius-xl);
-    --px: var(--#{$prefix}spacer-4);
-    --py: var(--#{$prefix}spacer-4);
-    --gap: var(--#{$prefix}spacer-4);
+    --background-color: #{$orange-200};
+    --background-color-headline: #{$yellow-200};
 
     display: flex;
     position: relative;
     flex-direction: column;
-    gap: var(--gap);
+    gap: var(--primitive-spacer-4);
     background-color: var(--background-color);
-    border-radius: var(--border-radius);
-    padding: var(--py) var(--px);
+    border-radius: var(--primitive-border-radius-xl);
+    padding: var(--primitive-spacer-4);
 
     &-headline {
         background-color: var(--background-color-headline);
@@ -39,7 +34,7 @@
     }
 
     &-action:focus-visible {
-        outline: 2px solid var(--#{$prefix}primary);
+        outline: 2px solid var(--color-primary-default);
         outline-offset: 2px;
     }
 
@@ -47,48 +42,38 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: var(--#{$prefix}spacer-8);
+        gap: var(--primitive-spacer-8);
+
     }
 
     &-content {
-        --background-color: var(--#{$prefix}white);
-        --border-radius: 12px;
-        --py: var(--#{$prefix}spacer-12);
-        --px: var(--#{$prefix}spacer-16);
-
-        background-color: var(--background-color);
-        border-radius: var(--border-radius);
-        padding: var(--py) var(--px);
+        background-color: var(--primitive-white);
+        border-radius: var(--primitive-border-radius-lg);
+        padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
     }
 
     &-thread {
-        --px: var(--#{$prefix}spacer-8);
-        --py: var(--#{$prefix}spacer-4);
-
-        padding: var(--py) var(--px);
+        padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
     }
 
     &-thread-icon {
-        --border-radius: var(--#{$prefix}radius-8);
-
-        border-radius: var(--border-radius);
+        border-radius: var(--primitive-border-radius-md);
     }
 
     &-thread-name {
-        --font-size: 1.4rem;
-        --line-height: 20px;
-
+        font-family: var(--font-family-body);
+        font-weight: var(--font-weight-regular);
         margin: 0;
-        color: var(--color);
-        font-size: var(--font-size);
-        line-height: var(--line-height);
+        color: var(--primitive-text-color-default);
+        font-size: var(--primitive-font-size-small);
+        line-height: var(--primitive-font-lineheight-2xs);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
     &-title {
-        font-weight: var(--#{$prefix}font-weight-bold);
+        font-weight: var(--primitive-font-weight-bold);
     }
 
     &-excerpt {
@@ -101,7 +86,7 @@
     }
 
     &-medias {
-        --gap: var(--#{$prefix}spacer-8);
+        --gap: #{$spacer-8};
 
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -125,10 +110,10 @@
     }
 
     &-media-overlay {
-        --overlay-color: var(--#{$prefix}white);
+        --overlay-color: #{$white};
         --overlay-background: rgb(0 0 0 / 55%);
         --overlay-font-size: 0.875rem;
-        --overlay-font-weight: var(--#{$prefix}font-weight-bold);
+        --overlay-font-weight: #{$font-weight-bold};
 
         position: absolute;
         inset: 0;

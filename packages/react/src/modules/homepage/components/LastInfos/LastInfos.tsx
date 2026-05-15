@@ -3,7 +3,6 @@ import { useMemo } from 'react';
 import clsx from 'clsx';
 
 import { Flex } from '../../../../components';
-import { useDate } from '../../../../hooks/useDate';
 
 export interface LastInfosProps {
   /**
@@ -56,21 +55,13 @@ const LastInfos = ({
   threadId,
   threadName,
   content,
-  publicationDate,
   isHeadline,
   title,
   onClick,
 }: LastInfosProps) => {
-  const { formatDate } = useDate();
-
   const { excerpt, images } = useMemo(() => {
     if (!content) {
       return { excerpt: '', images: [] as string[] };
-    }
-
-    if (typeof DOMParser === 'undefined') {
-      const plainText = content.replace(/<[^>]*>/g, ' ').trim();
-      return { excerpt: plainText, images: [] as string[] };
     }
 
     const parser = new DOMParser();
@@ -136,7 +127,7 @@ const LastInfos = ({
       </header>
 
       <Flex gap="4" direction="column" className="last-infos-card-content">
-        <p className="last-infos-card-title">{title}</p>
+        <div className="last-infos-card-title">{title}</div>
 
         <p className="last-infos-card-excerpt">{excerpt}</p>
 

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button, EmptyScreen, Flex } from '../../../../components';
+import { ButtonBeta, EmptyScreen, Flex } from '../../../../components';
 import { IconArrowRight } from '../../../icons/components';
 import LastInfos, { LastInfosProps } from './LastInfos';
 
@@ -36,7 +36,7 @@ export function LastInfosList({
         <h2 className="last-infos-list-title">
           {t('homepage.widget.last-infos-list.title')}
         </h2>
-        <Button
+        <ButtonBeta
           color="tertiary"
           variant="ghost"
           className="last-infos-list-seemore"
@@ -44,7 +44,7 @@ export function LastInfosList({
           onClick={handleSeeMoreClick}
         >
           {t('homepage.widget.last-infos-list.see.more')}
-        </Button>
+        </ButtonBeta>
       </Flex>
 
       <Flex gap="16" direction="column" className="last-infos-list-body">
