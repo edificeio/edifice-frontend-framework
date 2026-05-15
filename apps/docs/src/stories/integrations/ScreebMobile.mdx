@@ -1,0 +1,175 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Integrations/Screeb/3. Mobile" />
+
+# Screeb — Mobile apps (React Native)
+
+Mobile apps use `@screeb/react-native` directly. Unlike the web SDK, the React Native SDK does not require loading a script — the native module is bundled with the app.
+
+See [Screeb](?path=/docs/integrations-screeb-1-overview--docs) for the common configuration.
+
+---
+
+## Requirements
+
+- Android SDK v19+
+- iOS 11.0+, Swift ≥ 5.5.2, Xcode ≥ 13.2.1
+
+---
+
+## Installation
+
+```bash
+npm install @screeb/react-native
+```
+
+**Android** — add internet permission to `AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+**iOS** — update pods after installation:
+
+```bash
+cd ios && pod update Screeb
+```
+
+---
+
+## Initialization
+
+Initialize Screeb once when the user session is available, typically in your root component or navigation entry point:
+
+```typescript
+import { useEffect } from 'react';
+import { initSdk, closeSdk } from '@screeb/react-native';
+
+async function hashUserId(userId: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(userId);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .slice(0, 16);
+}
+
+function App({ user, screebChannelId }) {
+  useEffect(() => {
+    if (!user || !screebChannelId) return;
+
+    hashUserId(user.id).then((hashedId) => {
+      initSdk(screebChannelId, hashedId, { profile: user.type });
+    });
+
+    return () => {
+      closeSdk();
+    };
+  }, [user, screebChannelId]);
+
+  // ...
+}
+```
+
+> `screebChannelId` should come from your app's remote configuration (equivalent to `screeb-app-id` in `publicConf` for web apps).
+
+---
+
+## API
+
+### `trackEvent`
+
+Sends a custom event with optional properties.
+
+```typescript
+import { trackEvent } from '@screeb/react-native';
+
+trackEvent('resource-published', { type: 'blog', word_count: 320 });
+```
+
+### `trackScreen`
+
+Tracks a screen visit. Specific to mobile — use this on each navigation change.
+
+```typescript
+import { trackScreen } from '@screeb/react-native';
+
+trackScreen('EditorScreen', { mode: 'creation' });
+```
+
+### `startSurvey`
+
+Starts a survey programmatically.
+
+> **Note:** hooks in the React Native SDK use a `HookMap` (string key → hook ID) rather than direct callbacks. Register your hook handlers with Screeb's dashboard and pass the hook IDs here.
+
+```typescript
+import { startSurvey } from '@screeb/react-native';
+
+startSurvey(
+  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  false,           // allowMultipleResponses
+  { context: 'editor' }, // hiddenFields
+);
+```
+
+### `startMessage`
+
+Starts a Screeb message (in-app banner).
+
+```typescript
+import { startMessage } from '@screeb/react-native';
+
+startMessage('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+```
+
+### `closeSurvey`
+
+Closes the currently running survey. Optionally pass a survey ID to close a specific one.
+
+```typescript
+import { closeSurvey } from '@screeb/react-native';
+
+closeSurvey();
+```
+
+### `setProperties`
+
+Updates the current user's attributes in Screeb. Set a property to `null` to delete it.
+
+```typescript
+import { setProperties } from '@screeb/react-native';
+
+setProperties({ nb_resources: 42, last_feature: 'editor' });
+setProperties({ old_property: null }); // delete
+```
+
+### `setIdentity`
+
+Changes the current user identity (e.g. after a re-authentication). Closes running surveys.
+
+```typescript
+import { setIdentity } from '@screeb/react-native';
+
+setIdentity('<hashed-user-id>', { profile: 'Teacher' });
+```
+
+### `resetIdentity`
+
+Resets the current identity. Call this on logout.
+
+```typescript
+import { resetIdentity } from '@screeb/react-native';
+
+resetIdentity();
+```
+
+---
+
+## Differences from the web SDK
+
+- **Script loading** — Web requires `load()` / Mobile: not needed (native module)
+- **Screen tracking** — Web: not available / Mobile: `trackScreen()`
+- **Survey hooks** — Web: typed callbacks / Mobile: hook IDs via `HookMap`
+- **Close SDK** — Web: `close()` / Mobile: `closeSdk()`

@@ -1,0 +1,158 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Integrations/Screeb/4. AngularJS" />
+
+# Screeb — AngularJS apps
+
+AngularJS apps use `@screeb/sdk-browser` directly via a dedicated service following the entcore `ng.service()` pattern.
+
+See [Screeb](?path=/docs/integrations-screeb-1-overview--docs) for the common configuration.
+
+---
+
+## Installation
+
+```bash
+npm install @screeb/sdk-browser
+```
+
+---
+
+## ScreebService
+
+Create `src/services/screeb.service.ts`:
+
+```typescript
+import {
+  eventTrack,
+  identityProperties,
+  identityReset,
+  init,
+  load,
+  messageStart,
+  surveyClose,
+  surveyStart,
+  targetingCheck,
+} from '@screeb/sdk-browser';
+import type { HooksMessageStart, HooksSurveyStart, PropertyRecord } from '@screeb/sdk-browser';
+import { ng, model } from 'entcore';
+
+async function hashUserId(userId: string): Promise<string> {
+  const hashBuffer = await crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(userId),
+  );
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .slice(0, 16);
+}
+
+export interface IScreebService {
+  init(appId: string): Promise<void>;
+  trackEvent(name: string, properties?: PropertyRecord): void;
+  triggerSurvey(surveyId: string, hooks?: HooksSurveyStart, hiddenFields?: PropertyRecord): void;
+  triggerMessage(messageId: string, hooks?: HooksMessageStart): void;
+  closeSurvey(): void;
+  forceTargetingCheck(): void;
+  setIdentityProperties(properties: PropertyRecord): void;
+  reset(): void;
+}
+
+export const screebService: IScreebService = {
+  async init(appId: string): Promise<void> {
+    await load();
+    const hashedId = await hashUserId(model.me.userId);
+    await init(appId, hashedId, { profile: model.me.type });
+  },
+
+  trackEvent(name: string, properties?: PropertyRecord): void {
+    eventTrack(name, properties);
+  },
+
+  triggerSurvey(surveyId: string, hooks?: HooksSurveyStart, hiddenFields?: PropertyRecord): void {
+    surveyStart(surveyId, undefined, undefined, hiddenFields, hooks);
+  },
+
+  triggerMessage(messageId: string, hooks?: HooksMessageStart): void {
+    messageStart(messageId, undefined, undefined, hooks);
+  },
+
+  closeSurvey(): void {
+    surveyClose();
+  },
+
+  forceTargetingCheck(): void {
+    targetingCheck();
+  },
+
+  setIdentityProperties(properties: PropertyRecord): void {
+    identityProperties(properties);
+  },
+
+  reset(): void {
+    identityReset();
+  },
+};
+
+export const ScreebService = ng.service('ScreebService', (): IScreebService => screebService);
+```
+
+---
+
+## Registration
+
+Add the export to `src/services/index.ts`:
+
+```typescript
+export * from './screeb.service';
+```
+
+The service is automatically registered with AngularJS when `app.ts` loads.
+
+---
+
+## Initialization
+
+Call `screebService.init()` once at app startup, after `model.me` is populated. The right place is typically the main controller's `$onInit` or a `.run()` block:
+
+```typescript
+import { screebService } from '../services';
+
+// In your main controller or .run() block:
+const SCREEB_APP_ID = window.SCREEB_APP_ID; // injected via server-side template
+
+if (SCREEB_APP_ID) {
+  screebService.init(SCREEB_APP_ID).catch((err) => {
+    console.error('Failed to initialize Screeb:', err);
+  });
+}
+```
+
+> The `screeb-app-id` can be injected into the page via a server-side template variable, similar to how `ENABLE_RBS` and other feature flags are handled in the HTML entry point.
+
+---
+
+## Usage in controllers
+
+```typescript
+import { screebService } from '../services';
+
+// Track an event
+screebService.trackEvent('calendar-event-created', { recurrence: true });
+
+// Trigger a survey with a callback
+screebService.triggerSurvey(
+  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  {
+    onSurveyCompleted: (payload) => console.log('Survey response:', payload),
+  },
+);
+
+// Force targeting re-evaluation after a key event
+screebService.trackEvent('tenth-event-this-month');
+screebService.forceTargetingCheck();
+
+// On logout
+screebService.reset();
+```
