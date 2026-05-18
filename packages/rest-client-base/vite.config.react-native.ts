@@ -18,7 +18,7 @@ export default defineConfig({
       formats: ['es']
     },
     outDir: 'dist/react-native',
-    rollupOptions: {
+    rolldownOptions: {
       // Bundle all dependencies for react native and browser usage
       output: {
         inlineDynamicImports: true
