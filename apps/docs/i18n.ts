@@ -250,8 +250,9 @@ i18n.use(initReactI18next).init({
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
         'homepage.widget.last-infos-list.see.more': 'Voir plus',
         'homepage.widget.last-infos-list.title': 'Dernières actualités',
-        //------------------------------------------------------
-
+        //----------------- My (favorite) Apps --------------------
+        'homepage.widget.my-apps-list.empty':
+          'Ajouter des applications à vos favoris pour les retrouver içi et y accéder rapidement !',
         //----------------- BetaSwitch -----------------
         'betaSwitch.button': 'Quittez la Bêta',
         'betaSwitch.title': "L'ancienne version vous manque ?",

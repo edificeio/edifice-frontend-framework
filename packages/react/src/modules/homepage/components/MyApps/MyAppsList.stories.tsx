@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
 
-import { mockLastInfos } from '@edifice.io/config/src/msw/mocks/actualites';
-import { LastInfosProps } from './LastInfos';
 import { MyAppsList } from './MyAppsList';
 
 const meta: Meta<typeof MyAppsList> = {

@@ -10,6 +10,11 @@ let onboardingModalCustomPreference = {
   value: '2025-02-09T09:00:00.000Z',
 };
 
+export const mockPreferenceApps = {
+  preference:
+    '{"bookmarks":["Actualites","Messagerie","Exercices et évaluations","Mindmap"],"applications":["Blog"]}',
+};
+
 export const handlers = [
   http.get(
     `/userbook/preference/${ONBOARDING_MODAL_PREFERENCE_IDENTIFIER}`,
@@ -137,8 +142,6 @@ export const handlers = [
     });
   }),
   http.get('/userbook/preference/apps', () => {
-    return HttpResponse.json({
-      preference: '{"bookmarks":[],"applications":["Blog"]}',
-    });
+    return HttpResponse.json(mockPreferenceApps);
   }),
 ];
