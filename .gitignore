@@ -26,6 +26,9 @@ dist-ssr
 # turbo
 .turbo
 
+# Sonda bundle analyzer (output of `vite build --mode analyze`)
+.sonda
+
 # Editor directories and files
 .vscode/*
 

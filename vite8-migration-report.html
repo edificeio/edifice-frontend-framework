@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Migration Vite 8 — Rapport préliminaire</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --panel: #161a22;
+        --panel-2: #1c2230;
+        --border: #262d3d;
+        --text: #e6e9ef;
+        --muted: #8b94a7;
+        --accent: #7c9eff;
+        --accent-2: #b8a4ff;
+        --ok: #5dd39e;
+        --warn: #ffb454;
+        --danger: #ff6b6b;
+        --code-bg: #0b0d12;
+        --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
+          0 12px 30px rgba(0, 0, 0, 0.25);
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          Inter,
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: radial-gradient(
+            1200px 600px at 10% -10%,
+            #1a2238 0%,
+            transparent 60%
+          ),
+          radial-gradient(900px 500px at 110% 10%, #2a1a3a 0%, transparent 60%),
+          var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.55;
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+      }
+
+      header.hero {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 40px;
+        padding: 28px 32px;
+        background: linear-gradient(
+          135deg,
+          rgba(124, 158, 255, 0.12),
+          rgba(184, 164, 255, 0.08)
+        );
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+      header.hero .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      header.hero h1 {
+        font-size: 32px;
+        margin: 0;
+        background: linear-gradient(90deg, #fff, #c9d4ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      header.hero p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 70ch;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+        background: rgba(124, 158, 255, 0.12);
+        border: 1px solid rgba(124, 158, 255, 0.25);
+        color: #d8e2ff;
+      }
+      .pill.warn {
+        background: rgba(255, 180, 84, 0.1);
+        border-color: rgba(255, 180, 84, 0.3);
+        color: #ffd6a3;
+      }
+      .pill.danger {
+        background: rgba(255, 107, 107, 0.1);
+        border-color: rgba(255, 107, 107, 0.3);
+        color: #ffb8b8;
+      }
+      .pill.ok {
+        background: rgba(93, 211, 158, 0.1);
+        border-color: rgba(93, 211, 158, 0.3);
+        color: #b6f0d6;
+      }
+      .pill.muted {
+        background: rgba(139, 148, 167, 0.1);
+        border-color: rgba(139, 148, 167, 0.25);
+        color: #c1c8d6;
+      }
+
+      section {
+        margin-top: 36px;
+        padding: 24px 28px;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+      }
+      section h2 {
+        margin: 0 0 6px 0;
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      section h2 .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        font-size: 13px;
+        background: rgba(124, 158, 255, 0.15);
+        border: 1px solid rgba(124, 158, 255, 0.3);
+        color: #cfd9ff;
+      }
+      section .sub {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+
+      h3 {
+        font-size: 16px;
+        margin: 22px 0 10px;
+        color: #dde3f0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        background: var(--panel-2);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: top;
+      }
+      th {
+        background: rgba(255, 255, 255, 0.03);
+        font-weight: 600;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td code {
+        font-size: 12.5px;
+      }
+
+      code,
+      pre {
+        font-family:
+          ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Monaco,
+          Consolas, monospace;
+      }
+      code.inline {
+        background: var(--code-bg);
+        padding: 1px 6px;
+        border-radius: 5px;
+        font-size: 12.5px;
+        border: 1px solid var(--border);
+        color: #cfd9ff;
+      }
+      pre {
+        background: var(--code-bg);
+        padding: 14px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        overflow-x: auto;
+        font-size: 12.5px;
+        line-height: 1.55;
+      }
+      pre code {
+        color: #d6dcec;
+      }
+
+      ul.steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: step;
+      }
+      ul.steps > li {
+        counter-increment: step;
+        position: relative;
+        padding: 16px 18px 16px 56px;
+        margin-bottom: 10px;
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      ul.steps > li::before {
+        content: counter(step);
+        position: absolute;
+        left: 16px;
+        top: 16px;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgba(124, 158, 255, 0.15);
+        color: #cfd9ff;
+        border: 1px solid rgba(124, 158, 255, 0.3);
+      }
+      ul.steps li .title {
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      ul.steps li .body {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      ul.steps li .body code.inline {
+        color: #e6e9ef;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 800px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--panel-2);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px 18px;
+      }
+      .card h4 {
+        margin: 0 0 6px 0;
+        font-size: 14px;
+        color: #e6e9ef;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13.5px;
+      }
+
+      .tag {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 2px 8px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .tag.ok {
+        color: #b6f0d6;
+        border-color: rgba(93, 211, 158, 0.3);
+        background: rgba(93, 211, 158, 0.08);
+      }
+      .tag.warn {
+        color: #ffd6a3;
+        border-color: rgba(255, 180, 84, 0.3);
+        background: rgba(255, 180, 84, 0.08);
+      }
+      .tag.danger {
+        color: #ffb8b8;
+        border-color: rgba(255, 107, 107, 0.3);
+        background: rgba(255, 107, 107, 0.08);
+      }
+      .tag.muted {
+        color: #c1c8d6;
+      }
+
+      .callout {
+        padding: 14px 16px;
+        border-radius: 10px;
+        background: rgba(255, 180, 84, 0.08);
+        border: 1px solid rgba(255, 180, 84, 0.25);
+        color: #ffe3bf;
+        font-size: 14px;
+      }
+      .callout strong {
+        color: #ffd6a3;
+      }
+      .callout.info {
+        background: rgba(124, 158, 255, 0.08);
+        border-color: rgba(124, 158, 255, 0.25);
+        color: #d8e2ff;
+      }
+      .callout.info strong {
+        color: #b8c8ff;
+      }
+      .callout.danger {
+        background: rgba(255, 107, 107, 0.08);
+        border-color: rgba(255, 107, 107, 0.25);
+        color: #ffd0d0;
+      }
+      .callout.danger strong {
+        color: #ffb8b8;
+      }
+      .callout.highlight {
+        background: linear-gradient(
+          135deg,
+          rgba(135, 206, 250, 0.14),
+          rgba(135, 206, 250, 0.06)
+        );
+        border-color: rgba(135, 206, 250, 0.45);
+        color: #d8efff;
+        box-shadow: 0 0 0 1px rgba(135, 206, 250, 0.08) inset,
+          0 6px 18px rgba(135, 206, 250, 0.08);
+      }
+      .callout.highlight strong {
+        color: #9ed8ff;
+      }
+      section.highlight {
+        background: linear-gradient(
+          180deg,
+          rgba(135, 206, 250, 0.08),
+          rgba(135, 206, 250, 0.02)
+        );
+        border-color: rgba(135, 206, 250, 0.35);
+        box-shadow: 0 0 0 1px rgba(135, 206, 250, 0.06) inset,
+          0 14px 32px rgba(135, 206, 250, 0.06);
+      }
+      section.highlight h2 .num {
+        background: rgba(135, 206, 250, 0.18);
+        border-color: rgba(135, 206, 250, 0.45);
+        color: #cde9ff;
+      }
+      section.highlight h3 {
+        color: #cde9ff;
+      }
+      .check-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .check-list > li {
+        position: relative;
+        padding: 12px 14px 12px 44px;
+        margin-bottom: 8px;
+        background: rgba(135, 206, 250, 0.05);
+        border: 1px solid rgba(135, 206, 250, 0.22);
+        border-radius: 10px;
+      }
+      .check-list > li::before {
+        content: "☐";
+        position: absolute;
+        left: 14px;
+        top: 11px;
+        font-size: 18px;
+        color: #87cefa;
+      }
+      .check-list .title {
+        font-weight: 600;
+        color: #e0f0ff;
+        margin-bottom: 3px;
+        font-size: 14px;
+      }
+      .check-list .body {
+        color: #b8d4ee;
+        font-size: 13px;
+      }
+      .check-list .body code.inline {
+        color: #e6f3ff;
+        background: rgba(0, 0, 0, 0.25);
+        border-color: rgba(135, 206, 250, 0.2);
+      }
+
+      footer {
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 40px;
+      }
+
+      .kbd {
+        display: inline-block;
+        padding: 1px 6px;
+        font-size: 11.5px;
+        border: 1px solid var(--border);
+        border-bottom-width: 2px;
+        border-radius: 5px;
+        background: var(--code-bg);
+        color: #cfd9ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="hero">
+        <span class="eyebrow">Rapport préliminaire</span>
+        <h1>Migration Vite 5 → Vite 8</h1>
+        <p>
+          Audit du monorepo <code class="inline">edifice-frontend-framework</code>
+          en vue de la montée de version vers Vite 8. Périmètre strict : ne
+          toucher que ce qui est nécessaire au passage de version, aucune autre
+          amélioration.
+        </p>
+        <div class="meta">
+          <span class="pill">8 fichiers <code style="font-size: 11px">vite.config</code></span>
+          <span class="pill">2 apps + 6 packages</span>
+          <span class="pill">Vitest 2.1.9</span>
+          <span class="pill warn">Vite 5.4.14 → 8.0 (12 mars 2026)</span>
+          <span class="pill danger">Rolldown + Oxc remplacent Rollup + esbuild</span>
+          <span class="pill ok">Prérequis : Storybook 10 mergé d'abord</span>
+          <span class="pill ok">Stratégie : paliers 5 → 6 → 7 → 8</span>
+        </div>
+      </header>
+
+      <!-- PRÉREQUIS + TL;DR -->
+      <section>
+        <h2><span class="num">0</span> Contexte de la migration</h2>
+
+        <h3>Prérequis : ordre de merge</h3>
+        <p>
+          Storybook 9 ne supporte pas Vite 8 (peer dep plafonnée à Vite 7). Le support arrive en <strong>Storybook 10.2.19</strong> (PR #33788). La branche dédiée Storybook 10 doit donc être <strong>mergée avant</strong> cette PR Vite 8, en visant ≥ 10.2.19 (idéalement la dernière 10.4.x).
+        </p>
+
+        <h3 style="margin-top:18px;">Changement d'architecture Vite 8</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Étage</th>
+              <th>Vite 5/6/7</th>
+              <th>Vite 8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Bundler (prod + dev)</td><td>Rollup + esbuild</td><td><strong>Rolldown</strong></td></tr>
+            <tr><td>Transformer JS/TS/JSX</td><td>esbuild</td><td><strong>Oxc</strong></td></tr>
+            <tr><td>Minification CSS</td><td>esbuild</td><td><strong>Lightning CSS</strong></td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout info" style="margin-top:14px;">
+          <strong>Couche de compat :</strong> Rolldown conserve l'API plugin Rollup ; les options dépréciées (<code class="inline">esbuild</code>, <code class="inline">esbuildOptions</code>, <code class="inline">rollupOptions</code>) sont auto-converties.
+        </div>
+        <div class="callout danger" style="margin-top:10px;">
+          <strong>Limite Oxc :</strong> le <em>property mangling</em> n'est pas supporté. Impact ciblé sur <code class="inline">minifyIdentifiers: false</code> utilisé chez nous → cf. <strong>2-α</strong>.
+        </div>
+        <div class="callout" style="margin-top:10px;">
+          <strong>Exception au périmètre strict :</strong> remplacement de <code class="inline">rollup-plugin-pure</code> et <code class="inline">rollup-plugin-visualizer</code> par leurs équivalents natifs Rolldown → cf. <strong>2bis</strong>.
+        </div>
+      </section>
+
+      <!-- ÉTAT ACTUEL -->
+      <section>
+        <h2><span class="num">1</span> État actuel du projet</h2>
+        <p class="sub">
+          Versions extraites de
+          <code class="inline">pnpm-workspace.yaml</code> (catalog) et des
+          <code class="inline">package.json</code> des workspaces.
+        </p>
+
+        <h3>Versions clés (catalog pnpm)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Paquet</th>
+              <th>Version actuelle</th>
+              <th>Compat. Vite 8</th>
+              <th>Action attendue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="inline">vite</code></td>
+              <td>5.4.14</td>
+              <td><span class="tag danger">à monter</span></td>
+              <td>Cible : <code class="inline">^8.0.x</code> (sortie initiale 12 mars 2026, prendre dernière mineure stable).</td>
+            </tr>
+            <tr>
+              <td><code class="inline">@vitejs/plugin-react</code></td>
+              <td>4.7.0</td>
+              <td><span class="tag warn">co-upgrade</span></td>
+              <td>Vérifier la version majeure compatible Vite 8. API plugin Rollup conservée → bonne chance de compatibilité, mais peerDep à valider.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">vite-plugin-dts</code></td>
+              <td>4.5.4</td>
+              <td><span class="tag warn">co-upgrade</span></td>
+              <td>Plugin Rollup standard → devrait tourner via la couche de compat Rolldown. Aligner sur la dernière majeure publiée pour Vite 8.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">vite-tsconfig-paths</code></td>
+              <td>5.1.4</td>
+              <td><span class="tag ok">probablement OK</span></td>
+              <td>Vite 8 intègre désormais un support tsconfig-paths natif. À tester : on pourrait à terme supprimer ce plugin (hors périmètre de cette PR).</td>
+            </tr>
+            <tr>
+              <td><code class="inline">vitest</code> + <code class="inline">@vitest/coverage-v8</code> + <code class="inline">@vitest/ui</code></td>
+              <td>2.1.9</td>
+              <td><span class="tag danger">à monter</span></td>
+              <td>Vitest 2 est verrouillé sur Vite 5. Monter à la majeure Vitest qui suit Vite 8 (Vitest 4+).</td>
+            </tr>
+            <tr>
+              <td><code class="inline">@storybook/react-vite</code> + addons</td>
+              <td>9.1.17 → <strong>10.2.19+</strong> (via PR séparée)</td>
+              <td><span class="tag ok">traité hors PR</span></td>
+              <td>Storybook 9.x ne supporte pas Vite 8 (peer dep plafonnée à Vite 7). Le support arrive avec Storybook 10.2.19. La montée 9 → 10 est portée par une branche dédiée, à merger <strong>avant</strong> cette PR Vite 8.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">msw-storybook-addon</code></td>
+              <td>2.0.7</td>
+              <td><span class="tag ok">traité hors PR</span></td>
+              <td>Dépend de Storybook. Aligné lors de la montée Storybook 10.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">rollup-plugin-visualizer</code></td>
+              <td>5.12.0</td>
+              <td><span class="tag danger">à retirer</span></td>
+              <td>Remplacé par le builtin Rolldown <code class="inline">bundle-analyzer-plugin</code> (cf. section 2bis).</td>
+            </tr>
+            <tr>
+              <td><code class="inline">rollup-plugin-pure</code></td>
+              <td>0.4.0</td>
+              <td><span class="tag danger">à retirer</span></td>
+              <td>Remplacé par l'option native <code class="inline">treeshake.manualPureFunctions: ['Object.assign']</code> dans <code class="inline">build.rolldownOptions</code>.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">msw</code></td>
+              <td>2.14.4 (root) / 2.12.8 (catalog)</td>
+              <td><span class="tag ok">indépendant</span></td>
+              <td>Pas lié à Vite ; néanmoins harmoniser les deux versions pour éviter une seconde régression.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">typescript</code></td>
+              <td>5.9.3</td>
+              <td><span class="tag ok">OK</span></td>
+              <td>Aucune action requise.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">react</code> / <code class="inline">react-dom</code></td>
+              <td>18.3.1</td>
+              <td><span class="tag ok">OK</span></td>
+              <td>Pas lié au passage Vite. Ne pas monter dans le cadre de cette migration.</td>
+            </tr>
+            <tr>
+              <td>Node engines</td>
+              <td>"20 || 22"</td>
+              <td><span class="tag warn">à resserrer</span></td>
+              <td>Vite 8 exige <strong>Node 20.19+ / 22.12+</strong> (confirmé dans l'annonce officielle).</td>
+            </tr>
+            <tr>
+              <td>pnpm</td>
+              <td>9.12.2</td>
+              <td><span class="tag ok">OK</span></td>
+              <td>Aucune action requise.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Workspaces concernés</h3>
+        <p style="font-size: 14px;">
+          <strong>📦 Packages (lib mode)</strong> : <code class="inline">react</code>, <code class="inline">client</code>, <code class="inline">extensions</code>, <code class="inline">utilities</code>, <code class="inline">rest-client-base</code> (3 configs node/browser/react-native).
+          <br>
+          <strong>🖥️ Apps</strong> : <code class="inline">docs</code> (Storybook + Vite), <code class="inline">tiptap-playground</code> (Vite SPA).
+        </p>
+
+        <h3>Particularités à surveiller</h3>
+        <ul>
+          <li>Plugin custom <code class="inline">plugins/remove-display-name.ts</code> dans <code class="inline">packages/react</code> → audit hooks Rolldown (cf. étape 6).</li>
+          <li>Lib mode + <code class="inline">preserveModules</code> dans 4 packages → diff binaire <code class="inline">dist/</code> obligatoire (checklist).</li>
+          <li>Externals via regex (<code class="inline">/^dayjs\/plugin\/.+\.js$/</code>, etc.) dans <code class="inline">packages/react</code> → tester explicitement.</li>
+          <li><code class="inline">esbuild.minifyIdentifiers: false</code> dans 2 configs → réécriture explicite, cf. <strong>2-α</strong>.</li>
+          <li><code class="inline">build.rollupOptions</code> dans 6 fichiers + <code class="inline">optimizeDeps.esbuildOptions</code> dans Storybook → renommages (étape palier 3).</li>
+          <li>Pas de Sass <em>via</em> Vite (SCSS compilé en CLI dans <code class="inline">packages/bootstrap</code>).</li>
+        </ul>
+      </section>
+
+      <!-- ÉTAPES -->
+      <section>
+        <h2><span class="num">2</span> Étapes de migration (par paliers)</h2>
+        <p class="sub">
+          Branche dédiée, commits atomiques. <strong>Un palier = un commit</strong> (5 → 6, 6 → 7, 7 → 8) pour faciliter la traçabilité et le bisect en cas de régression.
+        </p>
+
+        <ul class="steps">
+          <li>
+            <div class="title">Préparer la branche et figer la baseline</div>
+            <div class="body">
+              Confirmer Storybook ≥ 10.2.19 sur <code class="inline">develop</code>. Brancher, lancer <code class="inline">pnpm install && pnpm build && pnpm test && pnpm docs:build</code> + build <code class="inline">tiptap-playground</code> pour capturer la baseline (taille bundles, snapshots Chromatic).
+            </div>
+          </li>
+          <li>
+            <div class="title">Mettre à jour les engines Node + CI</div>
+            <div class="body">
+              <code class="inline">"node": "^20.19.0 || >=22.12.0"</code> dans <code class="inline">/package.json</code>, aligner GitHub Actions et image Docker éventuelle.
+            </div>
+          </li>
+          <li>
+            <div class="title">Palier 1 : Vite 5 → 6 (commit dédié)</div>
+            <div class="body">
+              Bumper <code class="inline">vite</code> + plugins compatibles + Vitest 3. Lire la migration guide v6 (Sass legacy API supprimée — non utilisée chez nous). Valider build + tests sur tout le monorepo.
+            </div>
+          </li>
+          <li>
+            <div class="title">Palier 2 : Vite 6 → 7 (commit dédié)</div>
+            <div class="body">
+              Bumper <code class="inline">vite</code> + plugins. Migration guide v7 : <code class="inline">build.target</code> par défaut bascule sur <code class="inline">baseline-widely-available</code>, split-vendor-chunk-plugin retiré. Valider.
+            </div>
+          </li>
+          <li>
+            <div class="title">Palier 3 : Vite 7 → 8 (le gros morceau)</div>
+            <div class="body">
+              Bumper <code class="inline">vite</code>, <code class="inline">@vitejs/plugin-react</code>, <code class="inline">vite-plugin-dts</code>, <code class="inline">vite-tsconfig-paths</code> dans le catalog. Bumper Vitest 4. Renommer <code class="inline">build.rollupOptions</code> → <code class="inline">build.rolldownOptions</code> (6 fichiers) et <code class="inline">optimizeDeps.esbuildOptions</code> → <code class="inline">optimizeDeps.rolldownOptions</code> (Storybook). Appliquer sections <strong>2-α</strong> (mangle) et <strong>2bis</strong> (remplacement plugins).
+            </div>
+          </li>
+          <li>
+            <div class="title">Auditer le plugin custom <code class="inline">remove-display-name</code></div>
+            <div class="body">
+              Confirmer qu'il n'utilise <strong>aucun</strong> des hooks Rolldown supprimés (<code class="inline">shouldTransformCachedModule</code>, <code class="inline">resolveImportMeta</code>, <code class="inline">renderDynamicImport</code>, <code class="inline">resolveFileUrl</code>) et déclare <code class="inline">moduleType: 'js'</code> si nécessaire.
+            </div>
+          </li>
+          <li>
+            <div class="title">Régénérer le worker MSW (si <code class="inline">msw</code> bumpé)</div>
+            <div class="body">
+              <code class="inline">pnpm exec msw init apps/docs/public --no-save</code>.
+            </div>
+          </li>
+          <li>
+            <div class="title">Passer la checklist post-migration (section ✓)</div>
+            <div class="body">
+              Tous les points doivent être verts avant d'ouvrir la PR.
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- MINIFYIDENTIFIERS → MANGLE -->
+      <section class="highlight">
+        <h2><span class="num">2-α</span> Réécriture <code class="inline">minifyIdentifiers</code> → <code class="inline">mangle</code></h2>
+        <p class="sub">
+          Réécriture explicite (Option A) — l'auto-conversion ne documente pas cette sous-option. <code class="inline">minifyIdentifiers</code> (variables/fonctions locales) a un équivalent Oxc <code class="inline">mangle</code> ; à ne pas confondre avec <code class="inline">mangleProps</code> (propriétés d'objet, non supporté par Oxc et non utilisé chez nous).
+        </p>
+
+        <pre><code>// packages/react/vite.config.ts ET packages/extensions/vite.config.ts
+
+// retirer :
+esbuild: { minifyIdentifiers: false },
+
+// ajouter :
+build: {
+  rolldownOptions: {
+    output: { minify: { mangle: false } },
+  },
+},</code></pre>
+
+        <div class="callout highlight" style="margin-top:14px;">
+          <strong>🔬 Investigation à reporter en follow-up (hors PR) :</strong>
+          <code class="inline">minifyIdentifiers: false</code> n'est pas justifié dans le code. Lancer <code class="inline">git log -p</code> sur l'apparition de cette option pour décider si on peut repasser à <code class="inline">mangle: true</code> et économiser de la taille de bundle. <strong>Cette PR de migration préserve le comportement à l'identique.</strong>
+        </div>
+      </section>
+
+      <!-- REMPLACEMENT PLUGINS -->
+      <section>
+        <h2><span class="num">2bis</span> Remplacement des plugins Rollup par les natifs Rolldown</h2>
+        <p class="sub">
+          Exception au périmètre strict actée.
+          <code class="inline">@babel/plugin-transform-react-pure-annotations</code> reste utile (indépendant) et n'est pas retiré.
+        </p>
+
+        <h3><code class="inline">rollup-plugin-pure</code> → <code class="inline">treeshake.manualPureFunctions</code></h3>
+        <pre><code>// packages/react/vite.config.ts
+// retirer : import { PluginPure } from 'rollup-plugin-pure';
+// retirer : PluginPure({ functions: ['Object.assign'] }) du tableau plugins
+
+build: {
+  rolldownOptions: {
+    treeshake: {
+      manualPureFunctions: ['Object.assign'],
+    },
+  },
+},</code></pre>
+
+        <h3 style="margin-top: 18px;"><code class="inline">rollup-plugin-visualizer</code> → builtin Rolldown</h3>
+        <pre><code>// packages/react/vite.config.ts (mode analyze) ET packages/client/vite.config.ts
+// retirer : import { visualizer } from 'rollup-plugin-visualizer';
+// remplacer par le builtin Rolldown (chemin d'import exact à confirmer
+// au moment de l'implémentation — cf. rolldown#8404).
+// Fallback acceptable si API instable : Sonda (cross-bundler).</code></pre>
+
+        <h3 style="margin-top: 18px;">Diff attendu</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Fichier</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="inline">pnpm-workspace.yaml</code></td>
+              <td>Retirer du catalog : <code class="inline">rollup-plugin-pure</code>, <code class="inline">rollup-plugin-visualizer</code>.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">/package.json</code>, <code class="inline">packages/react/package.json</code></td>
+              <td>Retirer les 2 plugins des <code class="inline">devDependencies</code>.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">packages/client/package.json</code></td>
+              <td>Retirer <code class="inline">rollup-plugin-visualizer</code>.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">packages/react/vite.config.ts</code></td>
+              <td>Retirer imports + plugins ; ajouter <code class="inline">treeshake.manualPureFunctions</code> ; ajouter analyzer en mode analyze.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">packages/client/vite.config.ts</code></td>
+              <td>Retirer import + plugin ; ajouter analyzer.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- POINTS D'ATTENTION RÉSIDUELS -->
+      <section>
+        <h2><span class="num">3</span> Points d'attention résiduels</h2>
+        <p class="sub">
+          Points non couverts ailleurs dans le rapport. Le reste (Rolldown, Oxc, Node, plugins, mangle…) est détaillé dans les sections 0a / 0b / 2-α / 2bis.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h4>🧹 CommonJS interop</h4>
+            <p>
+              Vite 8 normalise le <code class="inline">default</code> import depuis les modules CJS : résout vers <code class="inline">module.exports</code> sauf si <code class="inline">__esModule</code> est <code class="inline">true</code>. Peut affecter <code class="inline">tiptap-playground</code> (libs CJS) et <code class="inline">commonjsOptions.transformMixedEsModules</code>.
+            </p>
+          </div>
+          <div class="card">
+            <h4>🌐 Proxy regex + <code class="inline">loadEnv</code></h4>
+            <p>
+              <code class="inline">tiptap-playground/vite.config.ts</code> utilise des clés de proxy en regex et <code class="inline">loadEnv</code>. Tester explicitement après bump.
+            </p>
+          </div>
+          <div class="card">
+            <h4>🧷 Resolutions / overrides</h4>
+            <p>
+              Conserver <code class="inline">resolutions.katex</code> et <code class="inline">pnpm.overrides["@rushstack/terminal"]</code>. Vérifier qu'ils restent satisfaits par le nouvel arbre.
+            </p>
+          </div>
+          <div class="card">
+            <h4>📐 <code class="inline">tsconfig paths</code> natif (info)</h4>
+            <p>
+              Vite 8 a un support natif. <code class="inline">vite-tsconfig-paths</code> devient remplaçable — <strong>hors périmètre</strong> de cette PR.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- INCOMPATIBILITÉS -->
+      <section>
+        <h2><span class="num">4</span> Paquets à monter en parallèle (et risques)</h2>
+        <p class="sub">
+          Récapitulatif des co-upgrades, classés par criticité.
+        </p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Paquet</th>
+              <th>Criticité</th>
+              <th>Risque</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="inline">vitest</code> + <code class="inline">@vitest/coverage-v8</code> + <code class="inline">@vitest/ui</code></td>
+              <td><span class="tag danger">obligatoire</span></td>
+              <td>Vitest 2 incompatible avec Vite 8. Risque sur les options <code class="inline">test.*</code> embarquées dans les configs Vite (signatures, defaults, isolation).</td>
+            </tr>
+            <tr>
+              <td><code class="inline">@vitejs/plugin-react</code></td>
+              <td><span class="tag danger">obligatoire</span></td>
+              <td>peerDep Vite 5 → 8 quasi certaine. Vérifier React Refresh + l'option <code class="inline">babel.plugins</code> utilisée dans <code class="inline">packages/react</code>.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">vite-plugin-dts</code></td>
+              <td><span class="tag warn">forte</span></td>
+              <td>Génère les <code class="inline">.d.ts</code> de 6 packages publiés. Une régression silencieuse impacte directement les consommateurs externes.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">vite-tsconfig-paths</code></td>
+              <td><span class="tag warn">forte</span></td>
+              <td>Résolution d'imports basée sur <code class="inline">tsconfig</code> : si le plugin ne suit pas Vite 8, les builds tombent en cascade.</td>
+            </tr>
+            <tr>
+              <td>Suite Storybook (<code class="inline">storybook</code>, <code class="inline">@storybook/react-vite</code>, addons, <code class="inline">@chromatic-com/storybook</code>, <code class="inline">eslint-plugin-storybook</code>, <code class="inline">msw-storybook-addon</code>)</td>
+              <td><span class="tag ok">hors périmètre</span></td>
+              <td>Traité par une PR dédiée Storybook 9 → 10 (≥ 10.2.19) qui doit être mergée avant celle-ci. Cette PR Vite 8 ne touche pas Storybook.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">rollup-plugin-visualizer</code></td>
+              <td><span class="tag muted">moyenne</span></td>
+              <td>Outil de debug build. Bump seulement si incompatibilité avec le Rollup embarqué.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">rollup-plugin-pure</code></td>
+              <td><span class="tag muted">moyenne</span></td>
+              <td>Annotations <code class="inline">/*#__PURE__*/</code> autour de <code class="inline">Object.assign</code> ; à valider sur le bundle final côté tree-shaking.</td>
+            </tr>
+            <tr>
+              <td><code class="inline">msw</code> (alignement root vs catalog)</td>
+              <td><span class="tag muted">faible</span></td>
+              <td>Indépendant de Vite, mais harmoniser (catalog 2.12.8 vs root 2.14.4) évite un bug masqué.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Paquets à <strong>ne pas</strong> monter dans cette PR</h3>
+        <ul>
+          <li><code class="inline">react</code>, <code class="inline">react-dom</code>, <code class="inline">@types/react*</code> — hors périmètre.</li>
+          <li><code class="inline">typescript</code>, <code class="inline">eslint</code>, <code class="inline">typescript-eslint</code>, <code class="inline">prettier</code> — hors périmètre.</li>
+          <li><code class="inline">turbo</code>, <code class="inline">husky</code> — hors périmètre.</li>
+          <li>Toute la stack <code class="inline">@tiptap/*</code>, <code class="inline">@tanstack/*</code>, <code class="inline">antd</code>, <code class="inline">@dnd-kit/*</code>, etc. — hors périmètre.</li>
+          <li>Le package <code class="inline">@edifice.io/bootstrap</code> (Sass CLI) — n'utilise pas Vite, à ignorer.</li>
+        </ul>
+
+        <div class="callout">
+          <strong>Règle d'or :</strong> si un paquet n'est pas listé en
+          « obligatoire » ou « forte », on ne le touche que si un test échoue.
+          Tout autre upgrade fera l'objet d'une PR séparée après la migration.
+        </div>
+      </section>
+
+      <!-- ÉLÉMENTS À VÉRIFIER -->
+      <section>
+        <h2><span class="num">5</span> Décisions actées &amp; points encore ouverts</h2>
+
+        <h3>✅ Décisions actées</h3>
+        <ul>
+          <li>Storybook 10 (≥ 10.2.19) mergé <strong>avant</strong> cette PR (cf. 0a).</li>
+          <li>Stratégie <strong>par paliers</strong> : Vite 5 → 6 → 7 → 8 en commits successifs sur la même branche.</li>
+          <li>Remplacement de <code class="inline">rollup-plugin-pure</code> et <code class="inline">rollup-plugin-visualizer</code> par les natifs Rolldown (cf. 2bis).</li>
+          <li>Réécriture explicite <code class="inline">minifyIdentifiers</code> → <code class="inline">mangle: false</code> (cf. 2-α).</li>
+        </ul>
+
+        <h3>❓ Points encore ouverts</h3>
+        <div class="callout danger">
+          <strong>Version cible Vitest.</strong> Vitest 2 ne fonctionne pas avec Vite 8. Consulter la matrice de release Vitest pour figer la version avant de toucher au catalog.
+        </div>
+        <div class="callout info" style="margin-top:10px;">
+          <strong>Cibles navigateurs.</strong> Vite 8 bump les defaults (Chrome 111, Firefox 114, Safari 16.4, Edge 111). Si Edifice doit supporter des navigateurs plus anciens, fixer <code class="inline">build.target</code> explicitement.
+        </div>
+      </section>
+
+      <!-- POST-MIGRATION CHECKS -->
+      <section class="highlight">
+        <h2><span class="num">✓</span> Checklist post-migration (à valider avant merge)</h2>
+        <p class="sub" style="color: #b8d4ee;">
+          À cocher au fur et à mesure avant d'ouvrir la PR.
+        </p>
+
+        <h3>🏗️ Builds &amp; artefacts</h3>
+        <ul class="check-list">
+          <li>
+            <div class="title">Builds bottom-up OK</div>
+            <div class="body">
+              Ordre : <code class="inline">utilities</code> → <code class="inline">client</code> → <code class="inline">rest-client-base</code> (3 cibles) → <code class="inline">extensions</code> → <code class="inline">react</code>. Aucun warning bloquant.
+            </div>
+          </li>
+          <li>
+            <div class="title">Diff binaire des <code class="inline">dist/</code> des 4 packages publiés</div>
+            <div class="body">
+              Structure (<code class="inline">preserveModules</code>), <code class="inline">.d.ts</code> présents, <code class="inline">exports</code> du <code class="inline">package.json</code> intacts, taille ± stable (tolérance quelques %, &gt; 10 % à investiguer).
+            </div>
+          </li>
+        </ul>
+
+        <h3>🧬 Comportement minification &amp; transformations</h3>
+        <ul class="check-list">
+          <li>
+            <div class="title">Identifiants lisibles (<code class="inline">mangle: false</code>)</div>
+            <div class="body">
+              Dans <code class="inline">packages/react/dist</code> et <code class="inline">packages/extensions/dist</code> : <code class="inline">function MyComponent</code>, pas <code class="inline">function a</code>.
+            </div>
+          </li>
+          <li>
+            <div class="title">Tree-shaking <code class="inline">Object.assign</code> + pure annotations</div>
+            <div class="body">
+              <code class="inline">manualPureFunctions</code> donne un résultat équivalent à <code class="inline">rollup-plugin-pure</code>. Les <code class="inline">/*#__PURE__*/</code> de <code class="inline">@babel/plugin-transform-react-pure-annotations</code> sont préservées dans la sortie.
+            </div>
+          </li>
+          <li>
+            <div class="title">Plugin <code class="inline">remove-display-name</code> + externals</div>
+            <div class="body">
+              <code class="inline">grep .displayName</code> dans <code class="inline">packages/react/dist</code> : 0 occurrence (hors <code class="inline">.stories</code>). Aucun import de <code class="inline">react</code>, <code class="inline">@tanstack/*</code>, <code class="inline">dayjs</code>, <code class="inline">antd</code> inliné.
+            </div>
+          </li>
+          <li>
+            <div class="title">Bundle analyzer OK</div>
+            <div class="body">
+              <code class="inline">build:analyze</code> de <code class="inline">@edifice.io/react</code> et build de <code class="inline">@edifice.io/client</code> génèrent un rapport via le builtin Rolldown.
+            </div>
+          </li>
+        </ul>
+
+        <h3>🖥️ Apps fonctionnelles</h3>
+        <ul class="check-list">
+          <li>
+            <div class="title">Storybook dev + build</div>
+            <div class="body">
+              <code class="inline">pnpm docs</code> démarre, HMR OK sur un fichier source modifié. Échantillon navigué : icons, modals, multimedia, editor. <code class="inline">pnpm docs:build</code> + <code class="inline">docs:preview</code> servent correctement.
+            </div>
+          </li>
+          <li>
+            <div class="title">Tiptap playground dev + build + preview</div>
+            <div class="body">
+              Proxy back fonctionnel (avec <code class="inline">.env</code>), login OK, extensions éditeur chargées sans erreur console. Build prod servi par <code class="inline">vite preview</code> identique au dev.
+            </div>
+          </li>
+        </ul>
+
+        <h3>🧪 Tests &amp; CI</h3>
+        <ul class="check-list">
+          <li>
+            <div class="title">Vitest + coverage</div>
+            <div class="body">
+              <code class="inline">pnpm test</code> et <code class="inline">pnpm test:client</code> verts. Pas de warning de dépréciation Vitest. Coverage stable.
+            </div>
+          </li>
+          <li>
+            <div class="title">CI verte + Chromatic</div>
+            <div class="body">
+              Workflow GitHub Actions au vert (Node ≥ 20.19 / ≥ 22.12). Chromatic : diffs liés à Oxc / Lightning CSS identifiés et acceptés explicitement, aucune régression inattendue.
+            </div>
+          </li>
+        </ul>
+
+        <h3>🧷 Hygiène finale</h3>
+        <ul class="check-list">
+          <li>
+            <div class="title">Plus de références aux anciens packages / options</div>
+            <div class="body">
+              <code class="inline">grep -r "rollup-plugin-(pure|visualizer)\|rollupOptions\|esbuildOptions"</code> (hors <code class="inline">node_modules</code>) ne retourne rien. Aucun warning de dépréciation au démarrage.
+            </div>
+          </li>
+          <li>
+            <div class="title">Catalog + engines à jour</div>
+            <div class="body">
+              <code class="inline">pnpm-workspace.yaml</code> : entrées Vite/Vitest/plugins alignées, <code class="inline">rollup-plugin-*</code> retirées. <code class="inline">/package.json</code> engines : <code class="inline">"^20.19.0 || >=22.12.0"</code>.
+            </div>
+          </li>
+        </ul>
+
+        <div class="callout highlight" style="margin-top:18px;">
+          <strong>📝 Investigation à reporter en follow-up (hors PR) :</strong>
+          documenter <em>pourquoi</em> <code class="inline">mangle: false</code> est nécessaire dans <code class="inline">packages/react</code> et <code class="inline">packages/extensions</code>. <code class="inline">git log -p</code> sur l'origine du réglage. Décision possible à terme : repasser à <code class="inline">mangle: true</code> et économiser de la taille de bundle.
+        </div>
+      </section>
+
+      <section>
+        <h2><span class="num">6</span> Sources officielles consultées</h2>
+        <p class="sub">
+          Doc Vite 8 vérifiée le 2026-05-18. À reconsulter au moment de la
+          PR pour intégrer d'éventuelles précisions de mineure.
+        </p>
+        <ul>
+          <li>
+            <a href="https://vite.dev/blog/announcing-vite8" target="_blank" rel="noopener" style="color: var(--accent);">Vite 8.0 is out! (blog officiel, 12 mars 2026)</a>
+          </li>
+          <li>
+            <a href="https://vite.dev/guide/migration" target="_blank" rel="noopener" style="color: var(--accent);">Migration from v7 (doc officielle)</a>
+          </li>
+          <li>
+            <a href="https://vite.dev/blog/announcing-vite8-beta" target="_blank" rel="noopener" style="color: var(--accent);">Vite 8 Beta: The Rolldown-powered Vite</a>
+          </li>
+          <li>
+            À consulter en complément : matrice de compatibilité Vitest ↔ Vite 8 (<a href="https://vitest.dev" target="_blank" rel="noopener" style="color: var(--accent);">vitest.dev</a>) et matrice Storybook ↔ Vite (<a href="https://storybook.js.org" target="_blank" rel="noopener" style="color: var(--accent);">storybook.js.org</a>).
+          </li>
+        </ul>
+      </section>
+
+      <footer>
+        Rapport généré le 2026-05-18 — Edifice Frontend Framework — branche
+        <code class="inline">epic-homepage</code>.
+      </footer>
+    </div>
+  </body>
+</html>
