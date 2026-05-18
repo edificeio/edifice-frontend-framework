@@ -1,6 +1,6 @@
 import { Segmented as AntSegmented } from 'antd';
 import clsx from 'clsx';
-import { forwardRef } from 'react';
+import { forwardRef, ReactNode } from 'react';
 
 /**
  * Simple option for SegmentedControl
@@ -14,6 +14,11 @@ export interface SegmentedOption {
    * Option value
    */
   value: string;
+  /**
+   * Optional element displayed next to the label (e.g. a Badge, an icon, a count…).
+   * No extra element is rendered when omitted.
+   */
+  badge?: ReactNode;
 }
 
 /**
@@ -85,8 +90,12 @@ const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
       return {
         ...option,
         label: (
-          <span data-testid={`segmented-option-${option.value}`}>
+          <span
+            className="d-flex align-items-center gap-8"
+            data-testid={`segmented-option-${option.value}`}
+          >
             {option.label}
+            {option.badge}
           </span>
         ),
       };

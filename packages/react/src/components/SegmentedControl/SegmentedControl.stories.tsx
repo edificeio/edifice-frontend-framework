@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import Badge from '../Badge/Badge';
 import SegmentedControl from './SegmentedControl';
 
 const meta: Meta<typeof SegmentedControl> = {
@@ -11,7 +12,8 @@ const meta: Meta<typeof SegmentedControl> = {
     options: {
       description: `Array of options to display in the segmented control. Each option must be an object with:
 - \`label\` (string): The text displayed for this option
-- \`value\` (string): The value associated with this option`,
+- \`value\` (string): The value associated with this option
+- \`badge\` (ReactNode, optional): An element displayed next to the label (e.g. a Badge, an icon…)`,
       control: { type: 'object' },
       table: {
         type: { summary: 'SegmentedOption[]' },
@@ -88,6 +90,58 @@ export const Default: Story = {
       description: {
         story:
           'Use the controls below to modify the component properties and see how they affect the SegmentedControl. You can change the options array, the selected value, and see the onChange callback in the Actions panel.',
+      },
+    },
+  },
+};
+
+export const WithBadge: Story = {
+  render: (args) => {
+    const [value, setValue] = useState<string>('published');
+
+    return (
+      <SegmentedControl
+        {...args}
+        value={value}
+        onChange={(val) => {
+          setValue(val);
+          args.onChange?.(val);
+        }}
+        options={[
+          {
+            label: 'Publié',
+            value: 'published',
+            badge: (
+              <Badge variant={{ type: 'notification', level: 'success' }}>
+                3
+              </Badge>
+            ),
+          },
+          {
+            label: 'À valider',
+            value: 'to_validate',
+            badge: (
+              <Badge variant={{ type: 'notification', level: 'warning' }}>
+                1
+              </Badge>
+            ),
+          },
+          {
+            label: 'Brouillon',
+            value: 'draft',
+            badge: (
+              <Badge variant={{ type: 'notification', level: 'info' }}>2</Badge>
+            ),
+          },
+        ]}
+      />
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Each option can receive a `badge` prop (ReactNode) displayed next to its label. Here a `Badge` component is used to show a count per tab.',
       },
     },
   },
