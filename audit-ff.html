@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Audit Edifice Frontend Framework — Mai 2026</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --panel: #161922;
+        --panel-2: #1d2230;
+        --border: #262b3a;
+        --text: #e6e8ee;
+        --muted: #8a93a6;
+        --accent: #7c9cff;
+        --accent-soft: rgba(124, 156, 255, 0.12);
+        --ok: #4ade80;
+        --warn: #f5c451;
+        --bad: #f87171;
+        --info: #60a5fa;
+        --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; line-height: 1.55; font-size: 14.5px; }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      code { font-family: var(--mono); font-size: 0.9em; background: var(--panel-2); padding: 1px 5px; border-radius: 4px; color: #cdd5e8; }
+      pre { background: var(--panel-2); padding: 12px 14px; border-radius: 6px; overflow-x: auto; }
+      h1, h2, h3, h4 { color: #fff; margin: 0 0 .5em; font-weight: 600; letter-spacing: -0.01em; }
+      h1 { font-size: 28px; }
+      h2 { font-size: 22px; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-top: 32px; margin-bottom: 20px; }
+      h3 { font-size: 17px; margin-top: 28px; }
+      h4 { font-size: 14.5px; margin: 6px 0; }
+      .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+      nav.side { position: sticky; top: 0; align-self: start; height: 100vh; background: var(--panel); border-right: 1px solid var(--border); padding: 20px 14px; overflow-y: auto; }
+      nav.side .brand { font-weight: 700; font-size: 14px; color: #fff; letter-spacing: -0.01em; margin-bottom: 4px; }
+      nav.side .brand small { display: block; font-weight: 400; color: var(--muted); margin-top: 4px; font-size: 11px; letter-spacing: 0; }
+      nav.side ul { list-style: none; padding: 0; margin: 18px 0 0; }
+      nav.side li a { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 5px; color: var(--text); font-size: 13.5px; }
+      nav.side li a:hover { background: var(--panel-2); text-decoration: none; }
+      nav.side li a .count { font-size: 11px; color: var(--muted); background: var(--panel-2); padding: 1px 7px; border-radius: 10px; }
+      main { padding: 36px 48px 80px; max-width: 1080px; }
+      .hero { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 8px; }
+      .hero .badge { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent); padding: 3px 9px; border-radius: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+      .meta { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+      .meta strong { color: var(--text); }
+      .grid { display: grid; gap: 16px; }
+      .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+      .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+      .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+      .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+      .card.kpi { display: flex; flex-direction: column; gap: 4px; }
+      .card.kpi .label { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+      .card.kpi .value { font-size: 24px; font-weight: 600; color: #fff; }
+      .card.kpi .sub { font-size: 11.5px; color: var(--muted); }
+      .score-grid { display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; align-items: center; margin: 4px 0; font-size: 13.5px; }
+      .bar { background: var(--panel-2); height: 8px; border-radius: 4px; overflow: hidden; }
+      .bar > i { display: block; height: 100%; border-radius: 4px; }
+      .bar.s-ok > i { background: var(--ok); }
+      .bar.s-warn > i { background: var(--warn); }
+      .bar.s-bad > i { background: var(--bad); }
+      .bar.s-info > i { background: var(--info); }
+      .pill { display: inline-block; padding: 1px 8px; font-size: 11px; border-radius: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; vertical-align: middle; }
+      .pill.high { background: rgba(248, 113, 113, 0.13); color: var(--bad); border: 1px solid rgba(248, 113, 113, 0.35); }
+      .pill.mid { background: rgba(245, 196, 81, 0.14); color: var(--warn); border: 1px solid rgba(245, 196, 81, 0.35); }
+      .pill.low { background: rgba(96, 165, 250, 0.12); color: var(--info); border: 1px solid rgba(96, 165, 250, 0.32); }
+      .pill.tag { background: var(--panel-2); color: var(--muted); border: 1px solid var(--border); font-weight: 500; }
+      .finding { background: var(--panel); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 6px; padding: 14px 16px; margin: 10px 0; }
+      .finding.s-high { border-left-color: var(--bad); }
+      .finding.s-mid { border-left-color: var(--warn); }
+      .finding.s-low { border-left-color: var(--info); }
+      .finding header { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+      .finding header h4 { margin: 0; font-size: 14.5px; }
+      .finding .body p { margin: 4px 0; }
+      .finding .body p.why { color: var(--muted); }
+      .finding .body p.fix { color: #d9e0f0; }
+      .finding .body p.fix::before { content: "→ "; color: var(--accent); font-weight: 700; }
+      .finding .body ul.refs { list-style: none; padding: 0; margin: 8px 0 0; }
+      .finding .body ul.refs li { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 2px 0; }
+      .finding .body ul.refs li::before { content: "▸ "; color: var(--accent); }
+      table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13.5px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+      th, td { padding: 9px 12px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+      th { background: var(--panel-2); font-size: 12px; text-transform: uppercase; color: var(--muted); letter-spacing: 0.04em; font-weight: 600; }
+      tr:last-child td { border-bottom: 0; }
+      td.mono { font-family: var(--mono); font-size: 12px; }
+      .legend { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin: -4px 0 16px; }
+      .legend span { display: inline-flex; align-items: center; gap: 6px; }
+      .legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+      .callout { background: var(--accent-soft); border: 1px solid rgba(124, 156, 255, 0.35); border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 13.5px; color: #cfd9ff; }
+      .callout strong { color: #fff; }
+      .roadmap-col h3 { display: flex; align-items: center; gap: 8px; }
+      .roadmap-col h3::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+      .roadmap-col.qw h3 { color: var(--ok); }
+      .roadmap-col.mid h3 { color: var(--warn); }
+      .roadmap-col.long h3 { color: var(--info); }
+      .roadmap-item { background: var(--panel-2); padding: 10px 12px; border-radius: 5px; margin: 8px 0; font-size: 13.5px; }
+      .roadmap-item .title { font-weight: 600; color: #fff; }
+      .roadmap-item .effort { font-size: 11.5px; color: var(--muted); margin-left: 4px; }
+      details { background: var(--panel); border: 1px solid var(--border); border-radius: 6px; padding: 0; margin: 10px 0; }
+      details > summary { padding: 12px 16px; cursor: pointer; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+      details > summary::after { content: "▸"; color: var(--muted); transition: transform .15s; }
+      details[open] > summary::after { transform: rotate(90deg); }
+      details > .details-body { padding: 0 16px 14px; }
+      .small { font-size: 12.5px; color: var(--muted); }
+      .footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <nav class="side">
+        <div class="brand">Audit FF
+          <small>Edifice Frontend Framework<br/>18 mai 2026 — branche develop-enabling</small>
+        </div>
+        <ul>
+          <li><a href="#synthese">Synthèse <span class="count">↑</span></a></li>
+          <li><a href="#react">React patterns <span class="count">12</span></a></li>
+          <li><a href="#typescript">TypeScript <span class="count">5</span></a></li>
+          <li><a href="#perf">Performance <span class="count">5</span></a></li>
+          <li><a href="#deps">Dépendances <span class="count">7</span></a></li>
+          <li><a href="#tests">Tests & qualité <span class="count">5</span></a></li>
+          <li><a href="#composants">Composants à revoir <span class="count">10</span></a></li>
+          <li><a href="#usage">Usage réel (4 apps) <span class="count">★</span></a></li>
+          <li><a href="#bootstrap">Bootstrap / CSS <span class="count">9</span></a></li>
+          <li><a href="#roadmap">Roadmap <span class="count">↓</span></a></li>
+        </ul>
+      </nav>
+
+      <main>
+        <section id="synthese">
+          <div class="hero">
+            <div>
+              <span class="badge">Audit grandes lignes</span>
+              <h1 style="margin-top:10px;">Audit Edifice Frontend Framework</h1>
+              <div class="meta">Périmètre : tout le monorepo · <strong>8 packages</strong>, ~<strong>1 106 fichiers source TS/TSX</strong>, <strong>172 fichiers SCSS</strong>, ~<strong>61 composants</strong>, ~<strong>46 hooks custom</strong>, <strong>7 modules</strong>, <strong>5 thèmes CSS</strong> · Outillage : <code>eslint</code>, <code>stylelint</code>, <code>tsc --noEmit</code>, <code>npm-check-updates</code>, lecture de la sortie <code>vite build</code> et de <code>stats.html</code>. Échantillon apps : <code>actualites</code>, <code>communities</code>.</div>
+            </div>
+          </div>
+
+          <div class="grid cols-4" style="margin-bottom: 20px;">
+            <div class="card kpi"><span class="label">Fichiers source</span><span class="value">1 106</span><span class="sub">.ts / .tsx hors tests, stories, .d.ts</span></div>
+            <div class="card kpi"><span class="label">Tests</span><span class="value">7</span><span class="sub">0,6 % des fichiers — couverture testimoniale</span></div>
+            <div class="card kpi"><span class="label"><code>any</code> dans le code</span><span class="value">330</span><span class="sub">concentrés dans <code>packages/client</code></span></div>
+            <div class="card kpi"><span class="label">Bundle dist (react)</span><span class="value">3,4 Mo</span><span class="sub">781 chunks JS (preserveModules)</span></div>
+            <div class="card kpi"><span class="label">Stories</span><span class="value">106</span><span class="sub">mais 0 snapshot / visual test</span></div>
+            <div class="card kpi"><span class="label">Warnings eslint</span><span class="value">15</span><span class="sub">0 erreur, 100 % <code>react-hooks/exhaustive-deps</code></span></div>
+            <div class="card kpi"><span class="label">TODO / FIXME</span><span class="value">69</span><span class="sub">majoritairement <code>packages/client</code></span></div>
+            <div class="card kpi"><span class="label"><code>console.*</code> en prod</span><span class="value">137</span><span class="sub">pas de logger conditionnel</span></div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top:0;">Scores par axe</h3>
+            <div class="legend"><span><i style="background:var(--ok);"></i> bon</span><span><i style="background:var(--info);"></i> correct</span><span><i style="background:var(--warn);"></i> à améliorer</span><span><i style="background:var(--bad);"></i> critique</span></div>
+            <div class="score-grid">
+              <div>Patterns React <span class="small">— hooks, composition, memo, state</span></div><div class="small">6,5 / 10</div>
+              <div class="bar s-warn"><i style="width:65%"></i></div><div class="small">memo absent, state éparpillé</div>
+
+              <div>TypeScript <span class="small">— strict, typage public</span></div><div class="small">6,5 / 10</div>
+              <div class="bar s-warn"><i style="width:65%"></i></div><div class="small">strict OK côté react, 330 <code>any</code> côté client</div>
+
+              <div>Performance / bundle <span class="small">— tree-shaking, code-split</span></div><div class="small">5,5 / 10</div>
+              <div class="bar s-warn"><i style="width:55%"></i></div><div class="small">3 Mo d'icons, 781 chunks, editor non lazy</div>
+
+              <div>Dépendances <span class="small">— fraîcheur, majors</span></div><div class="small">6 / 10</div>
+              <div class="bar s-warn"><i style="width:60%"></i></div><div class="small">TipTap v3, Antd v6, dnd-kit v10, swiper v12 dispo</div>
+
+              <div>Tests & couverture <span class="small">— vitest, storybook tests</span></div><div class="small">2 / 10</div>
+              <div class="bar s-bad"><i style="width:20%"></i></div><div class="small">7 tests, pas de seuil de couverture</div>
+
+              <div>Qualité <span class="small">— logs, TODO, code mort</span></div><div class="small">6 / 10</div>
+              <div class="bar s-warn"><i style="width:60%"></i></div><div class="small">137 <code>console.*</code>, 69 TODO sans tracking</div>
+
+              <div>Lisibilité / DX <span class="small">— "boîte noire" perçue</span></div><div class="small">5 / 10</div>
+              <div class="bar s-warn"><i style="width:50%"></i></div><div class="small">peu de docs publiques, fichiers de 400-540 lignes</div>
+
+              <div>CSS / théming <span class="small">— bootstrap, thèmes, primitives</span></div><div class="small">7 / 10</div>
+              <div class="bar s-info"><i style="width:70%"></i></div><div class="small">code propre, mais 5 thèmes coexistants et breakpoints désynchronisés JS/CSS</div>
+            </div>
+          </div>
+
+          <div class="callout" style="border-color: rgba(245, 196, 81, 0.5); background: rgba(245, 196, 81, 0.08); color: #f5dca0;">
+            <strong>Mise à jour (après inspection de 4 apps consommatrices)</strong> — Voir section <a href="#usage" style="color:#f5dca0; text-decoration:underline;">"Usage réel"</a>. Pattern systémique confirmé à 100 % : <strong>actualites, communities, blog et conversation ont tous <code>inlineDynamicImports: true</code> ET <code>deps.inline: ['@edifice.io/react']</code></strong> (héritage du boilerplate <code>edifice-react-boilerplate</code>). Bundles uniques de 423 Ko à 5 Mo selon la taille de l'app. Modèle de branches FF clarifié : <code>develop</code> = tronc commun, <code>develop-pedago</code> / <code>develop-enabling</code> / etc. = branches par squad — pattern de travail intentionnel, sujet d'attention sur la fréquence de merge vers le tronc.
+          </div>
+
+          <div class="callout">
+            <strong>Top 5 findings prioritaires</strong> — ordre de ROI décroissant
+            <ol style="margin: 8px 0 0 16px; padding: 0;">
+              <li><strong>Tests quasi inexistants</strong> (7 / 1 106) — aucun garde-fou de régression sur 99,4 % du framework</li>
+              <li><strong>Module <code>icons</code> = 3 Mo dist sur 7,2 Mo</strong> — 356 icônes en chunks individuels, impose <code>preserveModules</code> à tout le reste</li>
+              <li><strong>0 <code>React.memo</code></strong> pour 134 <code>forwardRef</code> — listes (TreeView, Share*, UserRightsList) re-rendent inutilement</li>
+              <li><strong>330 <code>any</code></strong> concentrés sur les interfaces publiques de <code>@edifice.io/client</code> — propage du <code>any</code> aux apps consommatrices</li>
+              <li><strong>15 warnings <code>exhaustive-deps</code></strong> et fichiers entiers avec <code>eslint-disable</code> en tête — racines de bugs silencieux non corrigés</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- ===================== REACT ===================== -->
+        <section id="react">
+          <h2>1 · Patterns React</h2>
+          <p class="small">12 findings · 0 <code>React.memo</code>, 108 <code>useMemo</code>/<code>useCallback</code>, 134 <code>forwardRef</code>, 378 <code>useState</code>, 26 <code>createContext</code></p>
+
+          <div class="finding s-high"><header><h4>1.1 Chaînes de <code>useState</code> dans les hooks de modales/formulaires</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/modals/PublishModal/hooks/usePublishModal.tsx:36-60</li>
+              <li>packages/react/src/modules/modals/ShareModal/ShareResources.tsx:220-221</li>
+            </ul>
+            <p class="why">5–7 <code>useState</code> interdépendants par hook : transitions fragiles, ordre implicite, callbacks qui se chaînent sans orchestration.</p>
+            <p class="fix">Regrouper en <code>useReducer</code> avec actions nommées ; rend les transitions traçables et facilite l'ajout de tests.</p>
+          </div></div>
+
+          <div class="finding s-high"><header><h4>1.2 <code>exhaustive-deps</code> désactivé sans corriger la cause</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/TreeView/hooks/useTreeView.ts — 5 disable inline</li>
+              <li>packages/react/src/hooks/useThumbnail/useThumbnail.ts — disable de fichier</li>
+              <li>packages/react/src/hooks/useDropdown/useDropdown.ts — disable de fichier</li>
+              <li>+ 15 warnings actifs (cf. <code>pnpm -F @edifice.io/react lint</code>)</li>
+            </ul>
+            <p class="why">Les <code>eslint-disable</code> masquent des dépendances circulaires et un manque de mémoïsation de callbacks parents : bugs silencieux quand les props/values changent.</p>
+            <p class="fix">Reprendre fichier par fichier : extraire les références stables, <code>useCallback</code> côté parent, ou <code>useEvent</code>-like pour les handlers ; supprimer les disables.</p>
+          </div></div>
+
+          <div class="finding s-high"><header><h4>1.3 Aucun <code>React.memo</code> dans 1 106 fichiers</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/modals/ShareModal/ShareResources.tsx:365-403 — <code>ShareBookmarkLine</code></li>
+              <li>packages/react/src/components/TreeView/TreeNode.tsx — récursion non mémoïsée</li>
+              <li>packages/react/src/components/UserRightsList/UserRightsList.tsx</li>
+              <li>packages/react/src/components/Layout/components/Header.tsx — 14+ hooks de données</li>
+            </ul>
+            <p class="why">Les composants de liste et de cellule re-rendent à chaque changement d'un sibling ; coûteux sur les modales de partage (N droits × M lignes).</p>
+            <p class="fix">Ajouter <code>memo(forwardRef(...))</code> ciblé sur les items de liste et les sous-composants stables (<code>Header</code>, <code>TreeNode</code>) avec comparateur shallow.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.4 Retour de hooks incohérent (tuple vs objet, <code>any</code>)</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/hooks/useToggle/useToggle.ts:4 — retour <code>[boolean, any]</code></li>
+              <li>packages/react/src/hooks/useCheckable/useCheckable.ts:47-53 — objet à 5 propriétés</li>
+              <li>packages/react/src/hooks/useImage/useImage.ts:19 — objet <code>{imgSrc, onError}</code></li>
+            </ul>
+            <p class="why">Aucune convention publique : les consommateurs alternent destructuration positionnelle et nommée, le <code>any</code> annule TypeScript.</p>
+            <p class="fix">Convention : <strong>objet</strong> sauf pour les hooks "primitive + setter" type <code>useToggle</code> ; typer le setter avec <code>React.Dispatch&lt;SetStateAction&lt;T&gt;&gt;</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.5 <code>Header</code> charge 14+ hooks à chaque render</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/Layout/components/Header.tsx:48-90 — <code>useConversation</code>, <code>useUser</code>, <code>useHasWorkflow</code>×2, <code>useHelp</code>, <code>useHeader</code></li>
+            </ul>
+            <p class="why">Le composant le plus lourd du framework (477 lignes) déclenche en cascade des queries et des dérivations ; aucune mémoïsation.</p>
+            <p class="fix">Mémoïser <code>Header</code>, extraire des sous-composants <code>HeaderUserMenu</code>, <code>HeaderApps</code>, ne fetcher que sur interaction (déjà partiel sur la modale d'aide).</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.6 État dérivé non mémoïsé</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/modals/PublishModal/hooks/usePublishModal.tsx:171-186 — listes retournées telles quelles</li>
+              <li>packages/react/src/components/TreeView/hooks/useTreeView.ts:54 — <code>selectedNodeId</code> recalculé à chaque render</li>
+            </ul>
+            <p class="why">Identité de référence change à chaque render → propagé aux <code>useEffect</code> et <code>useCallback</code> qui s'exécutent en cascade.</p>
+            <p class="fix">Wrap dans <code>useMemo</code> ; en parallèle, audit des dépendances d'effets en aval.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.7 Prop drilling profond dans <code>TreeView</code></h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/TreeView/TreeNode.tsx:61-71 — 11 props (callbacks only)</li>
+              <li>packages/react/src/components/TreeView/TreeView.tsx:72-100 — destructure 7 props, passe à un hook qui passe à <code>TreeNode</code></li>
+            </ul>
+            <p class="why">Aucune composition (compound, slots, render-prop, contexte interne) : impossible d'ajouter virtualisation, custom render, drag handle sans casser l'API publique.</p>
+            <p class="fix">Introduire <code>TreeContext</code> pour les callbacks et un slot de rendu personnalisable (<code>renderNode</code>).</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.8 Cleanup d'event listeners hétérogène</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/hooks/useZendeskGuide/useZendeskGuide.tsx:193 — <code>window.addEventListener</code> sans cleanup explicite dans l'effet imbriqué</li>
+              <li>packages/react/src/hooks/useHover/useHover.ts:16-17 — pattern correct mais dupliqué ailleurs</li>
+            </ul>
+            <p class="why">Quelques effets oublient le cleanup quand les deps changent ; fuite mémoire sur apps long-lived (PWA).</p>
+            <p class="fix">Mutualiser dans un <code>useEventListener(target, type, handler, deps)</code> qui impose le cleanup ; remplacer progressivement les usages directs.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.9 Trois hooks d'état qui se chevauchent dans <code>ShareResources</code></h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/modals/ShareModal/ShareResources.tsx:223-269 — <code>useShare</code>, <code>useSearch</code>, <code>useShareBookmark</code> indépendants</li>
+            </ul>
+            <p class="why">Aucun contexte unificateur : risque de désynchronisation entre <code>shareRights</code> et <code>bookmark</code> ; logique d'ordonnancement dans le composant.</p>
+            <p class="fix">Soit <code>ShareContext</code> unique + <code>useReducer</code>, soit collapser les 3 hooks en un <code>useShareModalState</code> qui orchestre.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>1.10 Providers : couplage à <code>antd</code> et imbrication</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/providers/AntThemeProvider</li>
+              <li>packages/react/src/providers/EdificeThemeProvider</li>
+              <li>packages/react/src/providers/EdificeClientProvider</li>
+            </ul>
+            <p class="why">Le thème est partagé entre Antd et "Edifice" : 2 providers à maintenir en parallèle. Tout consommateur paie Antd côté runtime même s'il n'utilise pas les composants Antd-based.</p>
+            <p class="fix">Audit des usages d'Antd → si &lt; 10 composants, viser un remplacement progressif ; sinon, fusionner les providers de thème en un seul.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>1.11 Hook "god" : <code>usePublishModal</code></h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/modals/PublishModal/hooks/usePublishModal.tsx:32-187 — form + image + activities + API</li>
+            </ul>
+            <p class="why">160 lignes mélangeant <code>react-hook-form</code>, manipulation d'image, sélection métier et appels API : intestable en isolation.</p>
+            <p class="fix">Découper : <code>usePublishForm</code>, <code>usePublishImage</code>, <code>usePublish</code> ; composer dans le composant.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>1.12 Frontière <code>modules</code> vs <code>components</code> floue</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/editor/components/* — composants potentiellement réutilisables</li>
+              <li>packages/react/src/modules/comments/components/* — idem</li>
+            </ul>
+            <p class="why">Aucune règle claire : <code>modules</code> = feature à état métier ? <code>components</code> = UI pure ? Risque de duplication si on ajoute des features.</p>
+            <p class="fix">Documenter la règle dans <code>CONTRIBUTING.md</code> et un test d'architecture (eslint-plugin-boundaries ou dependency-cruiser).</p>
+          </div></div>
+
+          <h3>Points forts à conserver</h3>
+          <ul>
+            <li>Organisation hook-par-dossier (46 dossiers) : lisible, testable, refactor facile.</li>
+            <li>Patterns <code>useKeyPress</code>, <code>useTrapFocus</code>, <code>useClickOutside</code> : cleanup propre, à utiliser comme modèle.</li>
+            <li><code>forwardRef</code> utilisé largement (134 occurrences) avec <code>useImperativeHandle</code> pour les APIs critiques (<code>ShareResourcesRef</code>, <code>ComboboxRef</code>).</li>
+            <li>Antd cantonné à quelques composants (<code>MediaViewer/Carousel</code>, <code>Table</code>, <code>DatePicker</code>) — pas un wrap global.</li>
+            <li>Babel <code>@babel/plugin-transform-react-pure-annotations</code> activé : aide rollup pour le tree-shaking.</li>
+          </ul>
+        </section>
+
+        <!-- ===================== TYPESCRIPT ===================== -->
+        <section id="typescript">
+          <h2>2 · TypeScript</h2>
+          <p class="small">strict <code>true</code> sur <code>@edifice.io/react</code> · <code>tsc --noEmit</code> passe sans erreur · 330 <code>any</code> · 5 <code>@ts-ignore</code>/<code>@ts-expect-error</code></p>
+
+          <div class="finding s-high"><header><h4>2.1 Concentration de <code>any</code> dans <code>@edifice.io/client</code></h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/client/src/ts/transport/Http.ts — 28 occurrences</li>
+              <li>packages/client/src/ts/transport/Service.ts — 15</li>
+              <li>packages/client/src/ts/session/interfaces.ts — 15</li>
+              <li>packages/client/src/ts/configure/interfaces.ts — 15</li>
+            </ul>
+            <p class="why">Les interfaces publiques (<code>IConfigurationFramework</code>, transport HTTP) typent les payloads en <code>any</code> : tout consommateur hérite du <code>any</code>.</p>
+            <p class="fix">Génériquer : <code>HttpService.get&lt;T&gt;(...): Promise&lt;T&gt;</code>, <code>getPublicConf&lt;T&gt;()</code>. Faisable sans breaking change avec un défaut <code>= unknown</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>2.2 <code>tsconfig</code> de <code>packages/client</code> non aligné</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/client/tsconfig.json (et autres packages hors react)</li>
+            </ul>
+            <p class="why">Le package <code>react</code> a <code>strict</code> + <code>noUnusedLocals</code> + <code>noUnusedParameters</code> ; les autres packages héritent d'une config plus laxiste — d'où la concentration de <code>any</code>.</p>
+            <p class="fix">Créer <code>packages/config/tsconfig.strict.json</code> et l'imposer à tous ; mettre à niveau client/utilities/extensions en plusieurs PRs.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>2.3 Génériques manqués sur composants polymorphes</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/Dropdown/Dropdown.tsx:38 — <code>children: (...props: any) =&gt; ReactNode</code></li>
+              <li>packages/react/src/components/Combobox/Combobox.tsx:57 — <code>icon?: any</code></li>
+            </ul>
+            <p class="why">Les slots et render-props perdent leur type ; pas d'autocomplétion, casts manuels.</p>
+            <p class="fix">Typer les slots avec le <code>ContextValue</code> exposé, et <code>icon: ReactNode</code> ou union explicite.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>2.4 <code>@ts-ignore</code> dans des manipulations DOM</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/Menu/hooks/useMenu.ts — 3 occurrences</li>
+              <li>packages/react/src/components/Layout/hooks/useHelp.tsx — 1</li>
+            </ul>
+            <p class="why">Camouflent des appels <code>setAttribute</code> sur des nœuds typés trop largement ; tout refactor casse silencieusement.</p>
+            <p class="fix">Typer <code>currentNode</code>/<code>previousNode</code> en <code>HTMLElement | null</code> et garde-fou explicite.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>2.5 Types publics non centralisés pour <code>modules/icons</code></h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/icons/components/index.ts — 356 re-exports</li>
+            </ul>
+            <p class="why">Pas de type <code>IconComponent</code> exposé : un consommateur ne sait pas si <code>IconAdd</code> est <code>React.FC&lt;SVGProps&gt;</code> ou un composant avec <code>ref</code>.</p>
+            <p class="fix">Exposer <code>export type IconComponent = React.FC&lt;SVGProps&lt;SVGSVGElement&gt;&gt;</code> et générer les <code>.tsx</code> SVGR avec cette signature.</p>
+          </div></div>
+        </section>
+
+        <!-- ===================== PERFORMANCE ===================== -->
+        <section id="perf">
+          <h2>3 · Performance / bundle</h2>
+          <p class="small">dist <code>@edifice.io/react</code> = 7,2 Mo (3,4 Mo JS) · 781 chunks · <code>preserveModules: true</code> · <code>sideEffects: false</code> sur react seul</p>
+
+          <table>
+            <tr><th>Module dist</th><th>Poids</th><th>Source</th><th>Source size</th></tr>
+            <tr><td><code>icons</code></td><td>3,0 Mo</td><td><code>modules/icons</code></td><td>3,1 Mo</td></tr>
+            <tr><td><code>editor</code></td><td>512 Ko</td><td><code>modules/editor</code></td><td>336 Ko</td></tr>
+            <tr><td><code>multimedia</code></td><td>480 Ko</td><td><code>modules/multimedia</code></td><td>416 Ko</td></tr>
+            <tr><td><code>modals</code></td><td>332 Ko</td><td><code>modules/modals</code></td><td>240 Ko</td></tr>
+            <tr><td><code>components</code></td><td>1,6 Mo</td><td><code>components/</code></td><td>1,5 Mo</td></tr>
+          </table>
+
+          <div class="finding s-high"><header><h4>3.1 Module <code>icons</code> : 356 fichiers, 3 Mo</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/icons/components/ — 356 .tsx (apps, audience, nav, ...)</li>
+              <li>Déjà splitté en 4 entry points (<code>icons</code>, <code>icons-nav</code>, <code>icons-apps</code>, <code>icons-audience</code>)</li>
+            </ul>
+            <p class="why">Sans <code>preserveModules</code>, importer une seule icône paierait tout. Avec, on a 356 chunks à parser. C'est ce qui force l'architecture <code>preserveModules</code> sur tout le package.</p>
+            <p class="fix">Option A : générer un sprite SVG unique + composant <code>&lt;Icon name="..." /&gt;</code>. Option B : maintenir les exports mais <strong>sortir icons dans un sous-package</strong> <code>@edifice.io/icons</code> avec son propre bundler — le reste du package peut alors abandonner <code>preserveModules</code>.</p>
+          </div></div>
+
+          <div class="finding s-high"><header><h4>3.2 Module <code>editor</code> non lazy</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/modules/editor/* — 40+ extensions TipTap</li>
+              <li>packages/react/package.json — toutes en <code>dependencies</code></li>
+            </ul>
+            <p class="why">TipTap charge ProseMirror + 40 packages d'extensions ; toute app qui importe quoi que ce soit d'<code>@edifice.io/react/editor</code> paie 512 Ko (+ peerdeps).</p>
+            <p class="fix">Côté FF : déjà bien isolé en <code>./editor</code>. Côté apps : documenter et imposer <code>const Editor = lazy(() =&gt; import('@edifice.io/react/editor'))</code>. Vérifier que Vite/Rollup downstream split bien.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>3.3 <code>preserveModules: true</code> en prod = 781 chunks ESM</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/vite.config.ts:90-92</li>
+            </ul>
+            <p class="why">Tree-shaking maximal mais HTTP/2 ou pas, 781 requêtes/résolutions de modules en plus côté apps. Discutable si les apps re-bundlent (Vite).</p>
+            <p class="fix">Mesurer : <code>build:analyze</code> existe déjà (<code>stats.html</code>). Si re-bundlé en aval, conserver. Sinon, basculer sur sortie standard pour les modules autres que <code>icons</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>3.4 <code>sideEffects: false</code> manquant sur 3 packages</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/utilities/package.json</li>
+              <li>packages/client/package.json</li>
+              <li>packages/extensions/package.json</li>
+            </ul>
+            <p class="why">Sans ce flag, les bundlers consommateurs ne shakent pas le code non utilisé — gaspillage de bundle côté apps Edifice.</p>
+            <p class="fix">Ajouter <code>"sideEffects": false</code> (ou liste précise pour bootstrap qui contient des SCSS). 30 min de vérification, gain immédiat.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>3.5 <code>esbuild.minifyIdentifiers: false</code> en prod</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/vite.config.ts:14</li>
+            </ul>
+            <p class="why">Choix conscient pour la lisibilité des stacktraces consommateurs, mais coût en taille (~10-15 % sur le JS). À évaluer si les apps re-minifient elles-mêmes.</p>
+            <p class="fix">Vérifier le pipeline des apps consommatrices : si elles re-minifient en aval, ce flag est neutre côté prod. Sinon, l'inverser pour les builds non-analyze.</p>
+          </div></div>
+        </section>
+
+        <!-- ===================== DÉPENDANCES ===================== -->
+        <section id="deps">
+          <h2>4 · Dépendances</h2>
+          <p class="small">Exclusions : Storybook (branche en cours), Vite (branche en cours), React 19 hors scope. Majors breaking inclus avec niveau de risque.</p>
+
+          <h3>Mises à jour mineures sans risque (à grouper)</h3>
+          <table>
+            <tr><th>Package</th><th>Version</th><th>Type</th><th>Note</th></tr>
+            <tr><td><code>@tiptap/*</code> (toutes)</td><td>2.11.0 → 2.27.2</td><td><span class="pill tag">minor</span></td><td>Corrections de bugs, pas de breaking. Préalable à la v3.</td></tr>
+            <tr><td><code>@ant-design/icons</code></td><td>5.4.0 → 5.6.1</td><td><span class="pill tag">minor</span></td><td>—</td></tr>
+            <tr><td><code>@tanstack/query-core</code></td><td>5.90.20 → 5.100.10</td><td><span class="pill tag">minor</span></td><td>Aligner avec <code>@tanstack/react-query</code> catalog.</td></tr>
+            <tr><td><code>axios</code></td><td>1.13.4 → 1.16.1</td><td><span class="pill tag">minor</span></td><td>Correctifs sécurité depuis 1.14.</td></tr>
+            <tr><td><code>sass</code></td><td>1.97.3 → 1.99.0</td><td><span class="pill tag">minor</span></td><td>—</td></tr>
+            <tr><td><code>core-js</code>, <code>dayjs</code>, <code>typedoc</code>, <code>jasmine</code>, <code>semver</code>, <code>simple-git</code>, <code>jsonfile</code>, <code>rimraf</code></td><td colspan="3" class="small">Minors / patchs internes — bundler safe.</td></tr>
+          </table>
+
+          <h3>Majors hors React/Storybook/Vite</h3>
+          <table>
+            <tr><th>Package</th><th>Version</th><th>Risque</th><th>Détail</th></tr>
+            <tr><td><code>@tiptap/*</code></td><td>2.11 → 3.23</td><td><span class="pill high">Haut</span></td><td>Refonte API : commands chainables, types stricts, plus de <code>useEditor</code> patterns. Concerne 40+ packages dans <code>@edifice.io/react</code> et <code>@edifice.io/tiptap-extensions</code>. Préparer dans <code>packages/extensions</code> d'abord.</td></tr>
+            <tr><td><code>antd</code></td><td>5.29 → 6.4</td><td><span class="pill high">Haut</span></td><td>Gros refactor du theme + cssinjs → cssinjs v2. Impacte <code>AntThemeProvider</code>, <code>MediaViewer/Carousel</code>, <code>Table</code>, <code>DatePicker</code>. À combiner avec finding 1.10 (audit usage Antd).</td></tr>
+            <tr><td><code>@ant-design/icons</code></td><td>5 → 6</td><td><span class="pill mid">Moyen</span></td><td>Synchronisé avec antd 6.</td></tr>
+            <tr><td><code>@dnd-kit/sortable</code></td><td>8 → 10</td><td><span class="pill high">Haut</span></td><td>v9/v10 = nouvelle API "modern". Impact sur <code>SortableTree</code>, drag-drop dans Workspace. Test couvert : 0.</td></tr>
+            <tr><td><code>@react-spring/web</code></td><td>9 → 10</td><td><span class="pill mid">Moyen</span></td><td>API d'imperative animation revue. Usages limités (animations Carousel, Stepper).</td></tr>
+            <tr><td><code>swiper</code></td><td>10 → 12</td><td><span class="pill mid">Moyen</span></td><td>v11 a abandonné les modules globaux, v12 a déprécié la web-component variant. Impacts <code>MediaViewer</code>.</td></tr>
+            <tr><td><code>html-react-parser</code></td><td>4 → 6</td><td><span class="pill mid">Moyen</span></td><td>API <code>replace</code> revue ; usage probable dans le rendu commentaires/editor.</td></tr>
+            <tr><td><code>ua-parser-js</code></td><td>1 → 2</td><td><span class="pill low">Bas</span></td><td>ESM-only, API stable. Usage : <code>useBrowserInfo</code>.</td></tr>
+            <tr><td><code>react-slugify</code></td><td>3 → 5</td><td><span class="pill low">Bas</span></td><td>Maj utilitaire, faible surface.</td></tr>
+            <tr><td><code>react-intersection-observer</code></td><td>9 → 10</td><td><span class="pill low">Bas</span></td><td>Compat React 18 OK.</td></tr>
+            <tr><td><code>ohash</code></td><td>1 → 2</td><td><span class="pill low">Bas</span></td><td>Petit utilitaire de hash, usage isolé.</td></tr>
+            <tr><td><code>@floating-ui/react</code></td><td>0.26 → 0.27</td><td><span class="pill low">Bas</span></td><td>Pré-1.0, breaking minimal documenté.</td></tr>
+            <tr><td><code>glob</code> (rest-client-base)</td><td>11 → 13</td><td><span class="pill low">Bas</span></td><td>Outillage build.</td></tr>
+            <tr><td><code>typedoc-plugin-markdown</code> (client)</td><td>3 → 4</td><td><span class="pill low">Bas</span></td><td>Génération de docs uniquement.</td></tr>
+          </table>
+
+          <h3>Recommandation d'ordonnancement</h3>
+          <ol>
+            <li><strong>Minors groupés</strong> en une PR (TipTap 2.27, Tanstack, axios, sass, core-js, dayjs, antd-icons patch) — préchauffe avant majors.</li>
+            <li><strong>Low-risk majors</strong> en parallèle (<code>ua-parser-js</code>, <code>react-slugify</code>, <code>ohash</code>, <code>react-intersection-observer</code>, <code>html-react-parser</code>) — un commit, smoke tests.</li>
+            <li><strong>Antd 5→6</strong> : précédé d'un audit "où est Antd" et idéalement d'un retrait des usages superflus.</li>
+            <li><strong>TipTap 2→3</strong> : préparer dans <code>packages/extensions</code>, puis <code>modules/editor</code>. À ne pas mêler avec Storybook v10 / Vite v8.</li>
+            <li><strong>dnd-kit 8→10</strong>, <strong>swiper 10→12</strong>, <strong>react-spring 9→10</strong> : couplés à des features spécifiques (SortableTree, MediaViewer). PR dédiée par feature.</li>
+          </ol>
+
+          <div class="callout"><strong>Hors scope</strong> : Storybook 9.1 → 10 et Vite 5.4 → 8 sont déjà sur des branches dédiées. React 19 hors périmètre. <code>@tanstack/react-query</code> reste sur 5.62 du catalog (workspace).</div>
+        </section>
+
+        <!-- ===================== TESTS ===================== -->
+        <section id="tests">
+          <h2>5 · Tests & qualité</h2>
+
+          <table>
+            <tr><th>Métrique</th><th>Valeur</th><th>Cible saine</th></tr>
+            <tr><td>Fichiers source</td><td>1 106</td><td>—</td></tr>
+            <tr><td>Fichiers de tests</td><td>7</td><td>≥ 200 (~20 %)</td></tr>
+            <tr><td>Stories Storybook</td><td>106</td><td>1 par composant public</td></tr>
+            <tr><td>Couverture configurée</td><td>non</td><td>seuil minimum CI</td></tr>
+            <tr><td>Visual / a11y tests</td><td>non</td><td>Chromatic ou Storybook test-runner + axe</td></tr>
+            <tr><td>console.* en source</td><td>137</td><td>0 (logger conditionnel)</td></tr>
+            <tr><td>TODO/FIXME</td><td>69</td><td>linked à des issues</td></tr>
+          </table>
+
+          <div class="finding s-high"><header><h4>5.1 Couverture testimoniale (7 / 1 106 = 0,6 %)</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/components/Button/{Button,SearchButton,IconButton}.spec.tsx</li>
+              <li>packages/react/src/components/UserSearch/UserSearch.spec.tsx</li>
+              <li>packages/react/src/components/UserRightsList/UserRightsList.spec.tsx</li>
+              <li>packages/client/src/ts/transport/Service.spec.ts</li>
+              <li>packages/client/src/ts/notify/Subject.spec.ts</li>
+            </ul>
+            <p class="why">Aucun garde-fou de régression sur 99,4 % du framework. Toute refacto est un acte de foi → c'est ce qui crée la perception de "boîte noire".</p>
+            <p class="fix">Cible 20-30 tests prioritaires dans les 2 prochains sprints : <code>Select</code>/<code>Combobox</code> interactions, <code>Dropdown</code> keyboard, <code>useDropzone</code>, <code>useDate</code>, <code>useDropdown</code>, <code>ShareModal</code> orchestration, <code>TreeView</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>5.2 Aucun seuil de couverture en CI</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/vite.config.ts:96-104 — bloc <code>test</code> sans <code>coverage</code></li>
+              <li><code>@vitest/coverage-v8</code> installé mais non configuré</li>
+            </ul>
+            <p class="why">Rien n'empêche un nouveau composant d'arriver sans test ; la dette ne fait que croître.</p>
+            <p class="fix">Ajouter <code>coverage: {{ provider: 'v8', thresholds: {{ lines: 30 }} }}</code> et faire monter à 50 % en 6 mois. Reporter le résultat en CI (Codecov ou simple commentaire de PR).</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>5.3 106 stories mais 0 visual / a11y test</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/react/src/**/*.stories.tsx</li>
+              <li><code>@chromatic-com/storybook</code> installé en devDep mais pas branché CI ?</li>
+            </ul>
+            <p class="why">Le travail de Storybook ne sert qu'à la doc, pas à la non-régression. <code>@storybook/addon-a11y</code> est installé : non exploité automatiquement.</p>
+            <p class="fix">Brancher Chromatic sur les PRs (le package est déjà installé) <strong>ou</strong> ajouter <code>@storybook/test-runner</code> + <code>axe-playwright</code> pour gates a11y en CI.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>5.4 137 <code>console.*</code> en source</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>Top fichiers : <code>modules/multimedia/VideoRecorder/*</code>, <code>modules/modals/ShareModal/hooks/*</code>, <code>modules/modals/ResourceModal/*</code></li>
+              <li>Aussi côté <code>packages/client/src/ts/{transport,session,utilities}</code></li>
+            </ul>
+            <p class="why">Bruit dans la console des apps consommatrices, et coût (le <code>console.*</code> est synchrone dans le browser).</p>
+            <p class="fix">Lint rule <code>no-console</code> en error + utilitaire <code>logger</code> conditionnel <code>import.meta.env.DEV</code>.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>5.5 69 TODO/FIXME orphelins</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>Top dossiers : <code>packages/client/src/ts/{configure,session,widget,transport}</code> (16 sur 26), <code>packages/react/src/modules/multimedia/MediaLibrary</code></li>
+            </ul>
+            <p class="why">Aucun lien vers un ticket : impossible de prioriser, dette qui dort.</p>
+            <p class="fix">Convention <code>// TODO(JIRA-XXXX):</code> avec règle eslint qui refuse les TODO sans référence.</p>
+          </div></div>
+        </section>
+
+        <!-- ===================== COMPOSANTS ===================== -->
+        <section id="composants">
+          <h2>6 · Composants & hooks à revoir</h2>
+          <p class="small">Top par taille de fichier — proxy de complexité (à recouper avec les findings React).</p>
+
+          <details open>
+            <summary>Composants &gt; 250 lignes (à candidater pour découpage)</summary>
+            <div class="details-body">
+              <table>
+                <tr><th>Fichier</th><th>Lignes</th><th>Trigger</th></tr>
+                <tr><td class="mono">components/Layout/components/Header.tsx</td><td>477</td><td>Finding 1.5 — 14+ hooks, 0 memo</td></tr>
+                <tr><td class="mono">components/Toolbar/Toolbar.tsx</td><td>334</td><td>À auditer (composition ?)</td></tr>
+                <tr><td class="mono">components/Tree/components/SortableTree.tsx</td><td>316</td><td>dnd-kit 8→10 (Finding 4)</td></tr>
+                <tr><td class="mono">components/UserRightsList/UserRightsList.tsx</td><td>279</td><td>Finding 1.3 — pas de memo</td></tr>
+                <tr><td class="mono">components/Dropdown/Dropdown.tsx</td><td>254</td><td>Finding 2.3 — slot mal typé</td></tr>
+                <tr><td class="mono">modules/multimedia/AudioRecorder/useAudioRecorder.tsx</td><td>542</td><td>Hook géant à scinder</td></tr>
+                <tr><td class="mono">modules/multimedia/MediaLibrary/MediaLibrary.tsx</td><td>516</td><td>God-component</td></tr>
+                <tr><td class="mono">modules/multimedia/Linker/InternalLinker/InternalLinker.tsx</td><td>477</td><td>Récemment paginé (commit 1940af828) — pertinent à auditer</td></tr>
+                <tr><td class="mono">modules/editor/components/EditorToolbar/EditorToolbar.tsx</td><td>462</td><td>15 warnings exhaustive-deps, finding 1.2</td></tr>
+                <tr><td class="mono">modules/modals/ShareModal/ShareResources.tsx</td><td>445</td><td>Finding 1.9 — 3 hooks d'état</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details>
+            <summary>Hooks à scinder</summary>
+            <div class="details-body">
+              <table>
+                <tr><th>Hook</th><th>Lignes</th><th>Symptômes</th></tr>
+                <tr><td class="mono">hooks/useDropdown/useDropdown.ts</td><td>341</td><td><code>eslint-disable</code> de fichier (finding 1.2)</td></tr>
+                <tr><td class="mono">hooks/useDate/useDate.ts</td><td>237</td><td>5 warnings exhaustive-deps</td></tr>
+                <tr><td class="mono">hooks/useUploadFiles/useUploadFiles.ts</td><td>211</td><td>1 warning + duplication probable avec useUpload</td></tr>
+                <tr><td class="mono">hooks/useDropzone/useDropzone.ts</td><td>196</td><td>—</td></tr>
+                <tr><td class="mono">hooks/useUpload/useUpload.ts</td><td>176</td><td>Duplication useUploadFiles ?</td></tr>
+                <tr><td class="mono">hooks/useEdificeIcons/useEdificeIcons.ts</td><td>171</td><td>Lien avec module icons (finding 3.1)</td></tr>
+              </table>
+            </div>
+          </details>
+
+          <details>
+            <summary>Doublons potentiels à investiguer</summary>
+            <div class="details-body">
+              <ul>
+                <li><code>useUpload</code> vs <code>useUploadFiles</code> — 176 + 211 lignes, surface API très proche</li>
+                <li><code>useImage</code> vs <code>useThumbnail</code> — même domaine, conventions de retour différentes (finding 1.4)</li>
+                <li><code>useWorkspaceFile</code> / <code>useWorkspaceFolders</code> / <code>useWorkspaceFoldersTree</code> / <code>useWorkspaceSearch</code> — 4 hooks workspace, à vérifier si l'orchestration interne est cohérente</li>
+                <li><code>AntThemeProvider</code> + <code>EdificeThemeProvider</code> (finding 1.10)</li>
+              </ul>
+            </div>
+          </details>
+        </section>
+
+        <!-- ===================== USAGE RÉEL ===================== -->
+        <section id="usage">
+          <h2>7 · Usage réel par les apps consommatrices</h2>
+          <p class="small">Échantillon : 4 apps sur 3 branches FF différentes. <strong>actualites</strong> (branche <code>develop</code>), <strong>communities</strong> (branche <code>develop-pedago</code>), <strong>blog</strong> (branche <code>develop-pedago</code>), <strong>entcore/conversation</strong> (branche <code>develop-enabling</code>). Trois équipes différentes, signal très fiable.</p>
+
+          <div class="callout">
+            <strong>Verdict global</strong> — Le FF fait correctement son travail de splitting (10 entry points, <code>preserveModules</code>, <code>sideEffects: false</code>). <strong>Mais 4/4 apps héritent du boilerplate avec <code>inlineDynamicImports: true</code></strong> → bundles uniques. Le pattern est 100 % systémique. C'est <strong>la première chose à corriger</strong> : pas dans le FF, mais dans <code>edifice-react-boilerplate</code> et les apps.
+          </div>
+
+          <h3>Comparatif d'usage sur 4 apps</h3>
+          <table>
+            <tr><th>Métrique</th><th>actualites</th><th>communities</th><th>blog</th><th>conversation</th></tr>
+            <tr><td>Branche FF</td><td><code>develop</code></td><td><code>develop-pedago</code></td><td><code>develop-pedago</code></td><td><code>develop-enabling</code></td></tr>
+            <tr><td>LOC source TS/TSX</td><td>—</td><td>—</td><td>5 703</td><td>12 322</td></tr>
+            <tr><td>Vite</td><td><strong>8.0.9</strong></td><td>5.4.20</td><td>5.4.1</td><td>5.4.1</td></tr>
+            <tr><td>Vitest</td><td><strong>4.1.5</strong></td><td>2.1.9</td><td>2.1.9</td><td>2.1.9</td></tr>
+            <tr><td><code>inlineDynamicImports</code></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td><code>deps.inline: ['@edifice.io/react']</code></td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+            <tr><td>Bundle JS final</td><td><strong>5,0 Mo</strong></td><td><strong>4,3 Mo</strong></td><td>423 Ko</td><td>non buildé</td></tr>
+            <tr><td>Chunks JS</td><td>2</td><td>1</td><td>1</td><td>—</td></tr>
+            <tr><td>Imports depuis main FF</td><td>78</td><td><strong>132</strong></td><td>38</td><td>76</td></tr>
+            <tr><td>Symboles FF uniques</td><td>41</td><td><strong>50</strong></td><td>27</td><td>39</td></tr>
+            <tr><td>Icônes utilisées (/356)</td><td>15</td><td>34</td><td>8</td><td>14</td></tr>
+            <tr><td>Module <code>/editor</code></td><td>6 imports</td><td>0</td><td>5 imports</td><td>6 imports</td></tr>
+            <tr><td>Module <code>/modals</code></td><td>0</td><td>0</td><td>5 imports</td><td>0</td></tr>
+            <tr><td>Module <code>/multimedia</code></td><td>0</td><td>2 imports</td><td>0</td><td>1 import</td></tr>
+            <tr><td>Imports <code>antd</code> directs</td><td>0</td><td><strong>3</strong></td><td>0</td><td>0</td></tr>
+            <tr><td>Imports <code>@edifice.io/tiptap-extensions</code></td><td>0</td><td>0</td><td>0</td><td><strong>1</strong> (SignatureEditor)</td></tr>
+            <tr><td>Fichiers <code>zustand</code></td><td>5</td><td>7</td><td><strong>8</strong></td><td>5</td></tr>
+            <tr><td>Lazy imports</td><td>3 (17 routes)</td><td>6</td><td>4</td><td>1</td></tr>
+            <tr><td>Alternative à <code>/editor</code></td><td>—</td><td><code>@edifice.io/wiki</code></td><td><code>ode-explorer</code></td><td>—</td></tr>
+          </table>
+
+          <h3>Synthèse des patterns confirmés sur 4 apps</h3>
+          <table>
+            <tr><th>Pattern</th><th>Apps</th><th>Conclusion</th></tr>
+            <tr><td><code>inlineDynamicImports: true</code></td><td>4/4</td><td>100 % systémique — boilerplate à corriger</td></tr>
+            <tr><td><code>deps.inline: ['@edifice.io/react']</code></td><td>4/4</td><td>100 % systémique — défaut historique du packaging FF</td></tr>
+            <tr><td><code>zustand</code> pour le state métier</td><td>4/4</td><td>Choix établi — le FF doit rester fournisseur UI</td></tr>
+            <tr><td>Module <code>/editor</code> utilisé</td><td>3/4</td><td>Pertinence confirmée du module — communities a une alternative</td></tr>
+            <tr><td><code>antd</code> importé directement</td><td>1/4</td><td>Cas isolé (communities pour QRCode/OTP) — pas une norme</td></tr>
+            <tr><td>Branches FF différentes consommées</td><td>3 branches actives</td><td><code>develop</code> tronc + <code>develop-&lt;squad&gt;</code> par équipe — modèle intentionnel, surveiller divergence</td></tr>
+            <tr><td>Sous-utilisation icons</td><td>4/4</td><td>8 à 34 icônes utilisées sur 356 (≤ 10 %)</td></tr>
+            <tr><td>Versions Vite/Vitest désynchronisées</td><td>1 app sur 4 a migré (actualites)</td><td>Branche FF Vite v8 légitimée, autres apps en retard</td></tr>
+          </table>
+
+          <h3>Top symboles FF utilisés (somme sur 4 apps)</h3>
+          <table>
+            <tr><th>Symbole</th><th>actualites</th><th>communities</th><th>blog</th><th>conversation</th><th>Total</th></tr>
+            <tr><td><code>useEdificeClient</code></td><td>7</td><td><strong>40</strong></td><td>4</td><td>14</td><td>65</td></tr>
+            <tr><td><code>Flex</code></td><td>22</td><td>28</td><td>—</td><td>—</td><td>≥50</td></tr>
+            <tr><td><code>Button</code></td><td>17</td><td>18</td><td>11</td><td>11</td><td>57</td></tr>
+            <tr><td><code>useToast</code></td><td>9</td><td>10</td><td>4</td><td>8</td><td>31</td></tr>
+            <tr><td><code>IconButton</code></td><td>—</td><td>5</td><td>3</td><td>6</td><td>≥14</td></tr>
+            <tr><td><code>Modal</code></td><td>—</td><td>9</td><td>—</td><td>5</td><td>≥14</td></tr>
+            <tr><td><code>LoadingScreen</code></td><td>—</td><td>7</td><td>6</td><td>—</td><td>≥13</td></tr>
+            <tr><td><code>useDate</code></td><td>4</td><td>—</td><td>2</td><td>4</td><td>10</td></tr>
+          </table>
+
+          <div class="finding s-high"><header><h4>R.1 Le boilerplate Edifice impose <code>inlineDynamicImports: true</code> — confirmé 4/4 apps</h4><span class="pill high">Haut · pattern systémique</span></header><div class="body">
+            <ul class="refs">
+              <li><strong>Source du copy-paste</strong> : /Volumes/Work/edifice-react-boilerplate/frontend/vite.config.ts:107-111</li>
+              <li>actualites/frontend/vite.config.ts:115 — hérité</li>
+              <li>communities/frontend/vite.config.ts:120 — hérité</li>
+              <li>blog/frontend/vite.config.ts — hérité</li>
+              <li>entcore/conversation/frontend/vite.config.ts — hérité</li>
+              <li>Bundles : actualites 5 Mo (2 chunks), communities 4,3 Mo (1 chunk), blog 423 Ko (1 chunk), conversation non buildé</li>
+            </ul>
+            <p class="why">Pattern <strong>100 % systémique</strong> : 4 apps sur 4 inspectées (3 équipes, 3 branches FF différentes) ont la même option. Tous les <code>lazy()</code> sont aplatis ; le travail du FF (10 entry points, <code>preserveModules</code>) ne sert que pour les imports statiques. Blog reste petit (423 Ko) parce qu'il consomme peu, mais le pattern est le même.</p>
+            <p class="fix">
+              <strong>Une PR sur <code>edifice-react-boilerplate</code></strong> qui retire <code>rollupOptions.output.inlineDynamicImports: true</code> (4 lignes). Vérifier au préalable qu'aucune contrainte de déploiement n'impose un fichier unique (mode JEE / serveur Vert.x du backend).<br/>
+              <strong>+ 1 PR par app déjà clonée</strong> (actualites, communities, blog, conversation, plus les autres apps Edifice non auditées) pour propager le fix puisque le clone ne suit pas les évolutions du boilerplate.<br/>
+              Gain attendu sur actualites : bundle initial 1-2 Mo au lieu de 5 Mo. <strong>Plus gros levier perf de tout l'audit, et hors-FF.</strong>
+            </p>
+          </div></div>
+
+          <div class="finding s-high"><header><h4>R.2 Le FF ne couvre pas tout : antd importé directement par communities</h4><span class="pill high">Haut · FF</span></header><div class="body">
+            <ul class="refs">
+              <li>communities/src/features/join-community-modal/JoinCommunityModal.tsx:10 — <code>import OTP from "antd/es/input/OTP"</code></li>
+              <li>communities/src/features/access-codes-modal/AccessCodesModal.tsx:2 — <code>import {{ QRCode as AntQRCode }} from "antd"</code></li>
+              <li>communities/src/routes/print-access-codes/PrintAccessCodesRoute.tsx:5 — idem</li>
+            </ul>
+            <p class="why">Communities a besoin de QRCode et OTP : pas d'équivalent FF, donc l'app importe antd en plus de ce qu'apporte déjà le FF en transitif. Coût : double paiement antd, et signal qu'<strong>antd est devenu une dépendance publique de facto</strong> du FF, pas juste interne.</p>
+            <p class="fix">Soit (a) ajouter <code>QRCode</code> et <code>OTPInput</code> au FF (réutiliser l'implémentation antd ou en faire des wrappers), soit (b) documenter antd comme dépendance attendue côté apps. À combiner avec finding 1.10.</p>
+          </div></div>
+
+          <div class="finding s-high"><header><h4>R.3 <code>Editor</code> importé statiquement par actualites (pas de lazy)</h4><span class="pill high">Haut · côté app</span></header><div class="body">
+            <ul class="refs">
+              <li>actualites/src/features/info-form/components/InfoDetailsFormEditor.tsx:2</li>
+              <li>actualites/src/components/InfoCard/InfoCardContent.tsx:1</li>
+              <li>actualites/src/features/info-modal/InfoModalBody.tsx:1</li>
+              <li>+ 3 autres usages directs</li>
+              <li>Communities : 0 import editor (utilise <code>@edifice.io/wiki</code>)</li>
+            </ul>
+            <p class="why">TipTap + 40 extensions chargés au mount, donc dans le bundle initial étant donné R.1. Communities a son propre rendu via <code>@edifice.io/wiki</code> : suggère que le module <code>editor</code> du FF est spécifique à un sous-ensemble d'apps.</p>
+            <p class="fix">Côté actualites : <code>const Editor = lazy(() =&gt; import('@edifice.io/react/editor').then(m =&gt; ({{ default: m.Editor }})))</code>. Côté FF : envisager de sortir <code>modules/editor</code> en sous-package séparé (cf. <code>@edifice.io/wiki</code> qui semble suivre ce modèle).</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>R.4 Icônes utilisées : 15 + 34 sur 356 fournies</h4><span class="pill mid">Moyen · FF</span></header><div class="body">
+            <ul class="refs">
+              <li>actualites : 15 icônes (4,2 %)</li>
+              <li>communities : 34 icônes (9,6 %)</li>
+              <li>Union des 2 ≈ ~45 icônes — &lt; 13 % du catalogue</li>
+            </ul>
+            <p class="why">Validation empirique du finding 3.1 sur 2 apps indépendantes. Avec <code>inlineDynamicImports</code>, ces 45 icônes finissent dans le bundle unique — mais le rollup d'app pourrait shaker correctement les imports nommés. À mesurer.</p>
+            <p class="fix">Mesurer le coût réel : <code>rollup-plugin-visualizer</code> sur les 2 apps. Si &gt; 200 Ko gaspillés en icônes non utilisées, externaliser <code>modules/icons</code> dans <code>@edifice.io/icons</code> avec API par-nom (sprite SVG ou imports nommés purs).</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>R.5 Les 2 apps préfèrent <code>zustand</code> aux contextes du FF</h4><span class="pill mid">Moyen · signal</span></header><div class="body">
+            <ul class="refs">
+              <li>actualites : <code>zustand: 4.5.7</code>, 5 fichiers</li>
+              <li>communities : <code>zustand: 4.5.7</code>, 7 fichiers</li>
+              <li>communities utilise marginalement <code>useCheckable</code> (2) et <code>useToggle</code> (2) du FF</li>
+            </ul>
+            <p class="why">Confirmé sur 2 apps : la couche état métier est portée par zustand côté app, le FF fournit les briques UI. Bonne séparation des responsabilités — le finding 1.10 (providers FF) est donc moins critique qu'il n'y paraît.</p>
+            <p class="fix">Garder le scope du FF : UI + hooks bas-niveau. Ne pas surinvestir dans des stores ou des contextes partagés. Si standard, viser zustand comme reco interne.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>R.6 Branches par squad : modèle intentionnel, à surveiller</h4><span class="pill mid">Moyen · processus</span></header><div class="body">
+            <p><strong>Modèle de branches FF</strong> (documenté oralement, à formaliser) : <code>develop</code> est le tronc commun ; chaque squad a une branche <code>develop-&lt;squad&gt;</code> (<code>develop-pedago</code>, <code>develop-enabling</code>, <code>develop-b2school</code>, <code>develop-integration</code>, etc.) pour itérer. Les squads merge périodiquement vers le tronc.</p>
+            <table style="margin-top:8px;">
+              <tr><th>App</th><th>Squad</th><th>Branche FF</th><th>Vite</th><th>Vitest</th><th>@tanstack/query</th></tr>
+              <tr><td>actualites</td><td>tronc</td><td><code>develop</code></td><td><strong>8.0.9</strong></td><td><strong>4.1.5</strong></td><td>5.62.7</td></tr>
+              <tr><td>communities</td><td>pedago</td><td><code>develop-pedago</code></td><td>5.4.20</td><td>2.1.9</td><td><strong>5.81.5</strong></td></tr>
+              <tr><td>blog</td><td>pedago</td><td><code>develop-pedago</code></td><td>5.4.1</td><td>2.1.9</td><td>5.62.7</td></tr>
+              <tr><td>conversation</td><td>enabling</td><td><code>develop-enabling</code></td><td>5.4.1</td><td>2.1.9</td><td>5.90.19</td></tr>
+              <tr><td>FF catalog (develop)</td><td>—</td><td>—</td><td>5.4.14</td><td>2.1.9</td><td>5.62.7</td></tr>
+            </table>
+            <p class="why">Le modèle "branche par squad" est légitime — il permet aux squads d'avancer en parallèle sans se gêner. Les vrais risques sont en aval :
+              <strong>(1) divergence trop longue</strong> entre une branche squad et <code>develop</code> → merge douloureux ;
+              <strong>(2) versions tierces désynchronisées</strong> (actualites a déjà Vite 8 / Vitest 4 alors que les autres restent sur 5.4 / 2.1 — au merge, conflit potentiel) ;
+              <strong>(3) découvrabilité</strong> : un nouveau dev de la squad pedago ne sait pas forcément ce qui est dans <code>develop</code> mais pas (encore) dans sa branche, et vice-versa. C'est probablement ce qui nourrit la perception "boîte noire" : pas le multi-branches en soi, mais le manque de visibilité sur ce qui se passe ailleurs.
+            </p>
+            <p class="fix">
+              <strong>Documenter le modèle</strong> dans le README du FF (3-5 lignes) : tronc + branches squad + cadence de merge attendue.<br/>
+              <strong>Mesurer la divergence</strong> : <code>git log --oneline develop..develop-pedago | wc -l</code> et <code>git log --oneline develop-pedago..develop | wc -l</code>. Si &gt; 50 commits dans un sens, alerter.<br/>
+              <strong>Politique de versions</strong> : aligner les versions tierces (Vite, Vitest, Tanstack) entre branches squad. Une branche peut pinner pour son besoin, mais documenter pourquoi.<br/>
+              <strong>Changelog par branche squad</strong> : utile pour les apps qui consomment, et pour la fusion vers tronc.
+            </p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>R.7 Le boilerplate impose <code>deps.inline: ['@edifice.io/react']</code> dans vitest</h4><span class="pill mid">Moyen · FF</span></header><div class="body">
+            <ul class="refs">
+              <li><strong>Source</strong> : edifice-react-boilerplate/frontend/vite.config.ts — <code>test.server.deps.inline: ['@edifice.io/react']</code></li>
+              <li>actualites/vite.config.ts — hérité du boilerplate</li>
+              <li>actualites/src/mocks/setup.ts:42 — <code>vi.mock('@edifice.io/react/editor', ...)</code></li>
+            </ul>
+            <p class="why">Le boilerplate inline le FF dans vitest — signe historique d'un problème ESM/CJS dans la sortie du FF (<code>preserveModules</code> + imports dynamiques de <code>dayjs/plugin/*</code> probablement). Pattern systémique mais peut-être désormais inutile.</p>
+            <p class="fix">Test à faire : enlever <code>deps.inline</code> dans une app, lancer les tests, voir si ça casse. Si oui → bug FF à corriger. Si non → suppression sèche dans le boilerplate.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>R.8 Communities re-déclare <code>react-pdf</code> en devDep</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>communities/frontend/package.json — <code>react-pdf: 10.2.0</code>, <code>pdfjs-dist: 5.4.394</code> en devDep</li>
+              <li>communities/src/pdfConfig.ts utilise <code>react-pdf</code></li>
+              <li>FF a <code>react-pdf: 10.3.0</code> en dep transitive</li>
+            </ul>
+            <p class="why">Conflit de versions transitives : 10.2.0 vs 10.3.0. Si une seule fait foi via pnpm dédupé, l'autre est inactive ; sinon doublon en bundle.</p>
+            <p class="fix">Mettre <code>react-pdf</code> en peer dep du FF si l'usage côté app est attendu, ou documenter qu'il vient transitivement. <code>pnpm why react-pdf</code> côté apps clarifierait.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>R.9 Skeletons utiles dans actualites, peu présents dans communities</h4><span class="pill low">Bas · signal</span></header><div class="body">
+            <ul class="refs">
+              <li>actualites : 56 occurrences de <code>*Skeleton</code></li>
+              <li>communities : peu d'usage</li>
+            </ul>
+            <p class="why">Les skeletons sont une vraie valeur pour certaines apps (actualites) mais inégalement adoptés. Bon candidat pour documentation et stories Storybook dédiées.</p>
+            <p class="fix">Stabiliser cette API (tests, stories) puis évangéliser : "voici comment éviter les CLS au chargement avec les skeletons FF".</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>R.10 <code>@edifice.io/tiptap-extensions</code> utilisé en direct par conversation</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>entcore/conversation/frontend/src/components/SignatureEditor/components/SignatureEditor.tsx</li>
+              <li>(communities et blog n'importent jamais <code>tiptap-extensions</code>)</li>
+            </ul>
+            <p class="why">Conversation a un éditeur personnalisé (signatures email) qui consomme directement <code>@edifice.io/tiptap-extensions</code>. C'est un cas d'extensibilité : le FF expose ses briques de bas niveau, c'est bien. Mais il faut s'assurer que la migration TipTap 2 → 3 (finding 4 de la section deps) reste compatible avec cet usage.</p>
+            <p class="fix">Documenter ce point d'extension dans <code>packages/extensions/README.md</code>. Inclure conversation dans la liste des consommateurs à tester quand on bumpera TipTap.</p>
+          </div></div>
+
+          <h3>Implications pour le rapport principal</h3>
+          <ul>
+            <li><strong>R.1 confirmé à 100 %</strong> (4/4 apps) : <code>inlineDynamicImports</code> est dans le boilerplate, donc dans toutes les apps clonées. <strong>Plus gros levier perf, hors-FF</strong>.</li>
+            <li><strong>R.7 confirmé à 100 %</strong> (4/4 apps) : <code>deps.inline: ['@edifice.io/react']</code> partout — symptôme d'un défaut de packaging ESM du FF à investiguer.</li>
+            <li><strong>R.6 (Moyen)</strong> : modèle de branches FF par squad clarifié — pattern intentionnel et légitime. Le vrai risque est dans la cadence de merge et la visibilité cross-squads, pas dans le multi-branches en soi.</li>
+            <li><strong>Finding 1.10 (couplage Antd) nuancé</strong> : 1/4 apps importe antd directement. Cas isolé, pas une norme. Pas d'urgence à intégrer QRCode/OTP au FF.</li>
+            <li><strong>Module <code>editor</code> reste pertinent</strong> : utilisé par 3/4 apps. Communities a une alternative (<code>@edifice.io/wiki</code>) mais ce n'est pas la majorité.</li>
+            <li><strong>Module <code>modals</code> peu utilisé hors blog</strong> : 0 import dans actualites/communities/conversation. À vérifier si le contenu est sous-utilisé ou si les apps réimplémentent.</li>
+            <li><strong>Sous-utilisation icons confirmée</strong> : 8-34 icônes/356 par app — externaliser <code>modules/icons</code> est légitime.</li>
+            <li><strong>zustand est l'unanimité</strong> (4/4) : le FF doit rester fournisseur UI, pas tenter d'imposer un store.</li>
+          </ul>
+        </section>
+
+        <!-- ===================== BOOTSTRAP / CSS ===================== -->
+        <section id="bootstrap">
+          <h2>8 · <code>@edifice.io/bootstrap</code> & CSS</h2>
+          <p class="small">Branche <code>epic-homepage</code> · Sass + Bootstrap 5.3.8 · 172 fichiers <code>.scss</code>, ~10 000 lignes · livré en CSS unique de 495 Ko · stylelint passe sans warning.</p>
+
+          <div class="grid cols-4" style="margin-bottom: 20px;">
+            <div class="card kpi"><span class="label">Fichiers SCSS</span><span class="value">172</span><span class="sub">~10 000 lignes</span></div>
+            <div class="card kpi"><span class="label">CSS compilé</span><span class="value">495 Ko</span><span class="sub">1 fichier <code>dist/index.css</code></span></div>
+            <div class="card kpi"><span class="label">Thèmes coexistants</span><span class="value">5</span><span class="sub"><code>neo</code>, <code>one</code>, <code>edifice2d</code>, <code>edifice1d</code>, <code>crna</code></span></div>
+            <div class="card kpi"><span class="label"><code>!important</code></span><span class="value">54</span><span class="sub">contextes mêlés (override antd, focus, etc.)</span></div>
+            <div class="card kpi"><span class="label">Couleurs hex</span><span class="value">277</span><span class="sub">la plupart légitimes (primitives)</span></div>
+            <div class="card kpi"><span class="label">px hardcodés</span><span class="value">315</span><span class="sub">vs 350 en <code>rem</code> — mix accepté</span></div>
+            <div class="card kpi"><span class="label">TODO / FIXME</span><span class="value">0</span><span class="sub">code SCSS très propre</span></div>
+            <div class="card kpi"><span class="label">stylelint</span><span class="value">0 warning</span><span class="sub">CI saine</span></div>
+          </div>
+
+          <h3>Architecture</h3>
+          <p>Structure <strong>ITCSS-like</strong> : <code>abstracts/</code> (variables, mixins) → <code>base/</code> (reboot, root, utilities) → <code>components/</code> (1 fichier par composant) → <code>layout/</code> → <code>themes/</code> → <code>tokens/</code> → <code>vendors/</code> (bootstrap, popper, swiper, emoji). Entry <code>src/index.scss</code> compile en <code>dist/index.css</code> consommé par les apps via <code>import '@edifice.io/bootstrap/dist/index.css'</code> dans <code>main.tsx</code>.</p>
+
+          <h3>Nouvelle API de thèmes (<code>theme-api.scss</code>) — bon pattern</h3>
+          <p>Bien documenté : <code>edifice2d/THEMING.md</code>, <code>MIGRATION-STRATEGY.md</code>, <code>OVERRIDES-INVENTORY.md</code>. Le mixin <code>theme-vars($product, $config)</code> génère récursivement des CSS variables à partir d'une map Sass. Convention <code>[data-product='x'][data-theme='y']</code>. Pattern moderne, type-safe (au niveau Sass), extensible.</p>
+
+          <div class="finding s-high"><header><h4>B.1 Breakpoints désynchronisés entre SCSS et hook TypeScript</h4><span class="pill high">Haut</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/bootstrap/src/themes/configs/_breakpoints.scss — mobile 360, mobile-large 390, tablet 720, desktop-small 960, desktop 1264, desktop-large 1320</li>
+              <li>packages/react/src/hooks/useBreakpoint/useBreakpoint.ts:14-21 — xs 0, sm 375, md 768, lg 1024, xl 1280, xxl 1400 (breakpoints Bootstrap par défaut)</li>
+            </ul>
+            <p class="why">Deux systèmes différents : noms ET valeurs. Une app qui combine <code>useBreakpoint().md</code> (≥768px) avec un <code>@include respond-from('tablet')</code> SCSS (≥720px) aura un trou de 48px où JS et CSS divergent — bug perçu comme "magique" par les équipes.</p>
+            <p class="fix">Unifier en source unique. Option recommandée : exposer les breakpoints Sass via CSS variables (<code>--breakpoint-md: 768px</code>) et lire ces variables depuis le hook TS — ou inverser, depuis un JSON partagé. Documenter dans <code>THEMING.md</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>B.2 Migration <code>abstracts/</code> → <code>themes/configs/primitives</code> en début (~10 %)</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li><strong>État actuel</strong> : 84 fichiers SCSS importent encore <code>abstracts/</code> (legacy) ; <strong>10 fichiers</strong> importent <code>themes/configs/primitives</code> (cible canonique) — migration à ~10 %</li>
+              <li>packages/bootstrap/src/abstracts/_variables.scss — legacy Bootstrap-style avec <code>!default</code></li>
+              <li>packages/bootstrap/src/themes/configs/_primitives.scss — cible canonique (nouveau pattern <code>$numbers-X</code>)</li>
+              <li>packages/bootstrap/src/themes/configs/_primitives-legacy.scss — pont entre les deux mondes (101 lignes)</li>
+              <li>Tous les composants homepage et quelques autres sont sur la nouvelle approche ; <code>vendors/</code>, <code>layout/</code>, et la majorité des <code>components/</code> sont encore legacy</li>
+            </ul>
+            <p class="why">Le travail de modernisation est <strong>en cours</strong>, pas dans un état chaotique : <code>abstracts/</code> est officiellement legacy, <code>themes/configs/primitives</code> est la cible. Mais l'état de migration n'est pas explicite dans le code — un nouveau dev face à un composant peut hésiter sur quoi importer. Divergences existent (radius : <code>md</code> absent dans legacy, <code>3xl</code> ajouté dans la nouvelle), ce qui empêche d'utiliser les deux indifféremment.</p>
+            <p class="fix">Rendre l'état de migration explicite : (1) ajouter en tête de chaque fichier de <code>abstracts/</code> un commentaire <code>// LEGACY — usage déconseillé, migrer vers themes/configs/primitives</code>, (2) lister dans <code>MIGRATION-STRATEGY.md</code> les 84 fichiers restants à migrer (peut-être par paquets : <code>vendors/</code>, <code>layout/</code>, <code>components/</code>), (3) éventuellement règle stylelint custom qui interdit les nouveaux imports d'<code>abstracts/</code> sauf dans la liste autorisée. Le chantier est lourd (~3-4 sem) mais bien défini.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>B.3 Coexistence ancien / nouveau modèle de thèmes</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>Legacy : <code>themes/neo/</code>, <code>themes/one/</code> — overrides traditionnels, fichiers <code>buttons/_component.scss</code>, <code>header/_component.scss</code> (190+ lignes chacun)</li>
+              <li>Modern : <code>themes/edifice2d/</code>, <code>themes/edifice1d/</code> — config map + overrides minimalistes (4 fichiers)</li>
+              <li><code>themes/_overrides.scss</code> contient encore les variants hardcodés <code>[data-product='neo'][data-theme='cg77']</code>, <code>monlycee</code>, <code>na</code></li>
+              <li><code>themes/_skins.scss</code> mélange backgrounds (christmas, circus, desert, panda-food)</li>
+            </ul>
+            <p class="why">3 mécaniques en parallèle : (a) thème legacy avec overrides composant-par-composant, (b) thème moderne via config map, (c) variants/skins via attributs hardcodés. Bon courage à un nouveau dev pour savoir où ajouter une variante. C'est probablement une grosse part de la perception "boîte noire".</p>
+            <p class="fix">Stratégie de migration déjà partiellement écrite (<code>MIGRATION-STRATEGY.md</code> sous edifice2d). À étendre : (1) inventaire des variants <code>_overrides.scss</code>, (2) feuille de route pour migrer cg77/monlycee/na vers le pattern config map, (3) deadline de retrait de <code>neo</code> et <code>one</code> legacy.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>B.4 CSS livré en 1 seul fichier — tous les thèmes payés</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/bootstrap/dist/index.css : 495 Ko, 5 thèmes, scopés par <code>[data-product]</code></li>
+              <li>actualites/src/main.tsx:10 — <code>import '@edifice.io/bootstrap/dist/index.css'</code></li>
+              <li>communities/src/main.tsx:11 — idem</li>
+            </ul>
+            <p class="why">Une app n'utilise qu'un thème à la fois (<code>data-product</code> est fixé). Mais elle charge le CSS de tous les thèmes (neo, one, edifice1d, edifice2d, crna) + tous les variants/skins. Ordre de grandeur : 100-150 Ko de CSS jamais utilisé par app.</p>
+            <p class="fix">Soit (a) build par thème (5 entrées Sass → 5 CSS de ~150 Ko chacun, l'app choisit), soit (b) accepter le coût (gzippé 495 Ko → ~80 Ko, c'est tolérable). Mesurer avant d'agir : <code>gzip -c dist/index.css | wc -c</code>.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>B.5 54 <code>!important</code> — bataille d'ordre de cascade</h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/bootstrap/src/components/_media-viewer.scss — 6 <code>!important</code> (override carousel antd)</li>
+              <li>packages/bootstrap/src/components/_card.scss — 3</li>
+              <li>packages/bootstrap/src/components/_alert.scss — 2</li>
+              <li>packages/bootstrap/src/components/homepage/_message-flash.scss — 1 sur <code>border-color</code> hover</li>
+            </ul>
+            <p class="why">Symptôme classique : on lutte contre Bootstrap ou antd. Pas dramatique à ce volume, mais chaque <code>!important</code> est un futur point de friction pour personnaliser un thème.</p>
+            <p class="fix">Audit ciblé : pour chaque <code>!important</code>, vérifier s'il est nécessaire ou si une spécificité plus haute (ou un ordre d'import) résoudrait le problème. Cible : &lt; 20.</p>
+          </div></div>
+
+          <div class="finding s-mid"><header><h4>B.6 Pas de système centralisé pour les <code>z-index</code></h4><span class="pill mid">Moyen</span></header><div class="body">
+            <ul class="refs">
+              <li>Valeurs hardcodées trouvées : 9999, 22, 2, 1, 0 — sans échelle documentée</li>
+            </ul>
+            <p class="why">Empilement difficile à raisonner. Quand on ajoute un nouveau composant (popover, tooltip, modal), on devine.</p>
+            <p class="fix">Définir une échelle Sass (<code>$z-base: 1</code>, <code>$z-dropdown: 10</code>, <code>$z-sticky: 100</code>, <code>$z-modal: 1000</code>, <code>$z-toast: 10000</code>) dans <code>abstracts/_z-index.scss</code> et migrer les usages.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>B.7 Composants homepage : pattern propre mais quelques valeurs hardcodées</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/bootstrap/src/components/homepage/_message-flash.scss — <code>--message-flash-icon-size: 50px</code>, <code>top: 4px</code>, <code>right: 4px</code></li>
+              <li>packages/bootstrap/src/components/homepage/_last-infos.scss — <code>outline: 2px solid</code>, <code>outline-offset: 2px</code></li>
+            </ul>
+            <p class="why">Le reste du composant utilise très proprement les primitives (<code>var(--primitive-spacer-4)</code>, <code>var(--primitive-border-radius-xl)</code>). Quelques valeurs ad hoc passent à travers.</p>
+            <p class="fix">Remplacer les <code>50px</code>, <code>4px</code>, <code>2px</code> par des références aux primitives (<code>var(--primitive-spacer-2)</code>, etc.) — règle stylelint custom <code>declaration-property-value-no-unknown</code> ou check manuel.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>B.8 Pas de tests visuels sur le CSS</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>Aucun snapshot/visual test côté <code>packages/bootstrap</code></li>
+              <li>Storybook (côté <code>packages/react</code>) couvre les composants HTML mais valide le CSS indirectement</li>
+            </ul>
+            <p class="why">Une régression de couleur, de spacing, de border-radius ne sera détectée qu'à l'œil. Avec 5 thèmes et 30+ variants, la combinatoire est ingérable manuellement.</p>
+            <p class="fix">Brancher Chromatic (déjà installé en devDep côté FF, cf. finding 5.3) sur quelques stories <strong>par thème</strong> : 1 story Button × 5 thèmes = 5 baselines. Rentabilité forte sur la stabilité.</p>
+          </div></div>
+
+          <div class="finding s-low"><header><h4>B.9 Sourcemap CSS générée mais non publiée explicitement</h4><span class="pill low">Bas</span></header><div class="body">
+            <ul class="refs">
+              <li>packages/bootstrap/dist/index.css.map (présent)</li>
+              <li>packages/bootstrap/package.json — <code>"files": ["dist", "version.txt"]</code> — la sourcemap est embarquée via <code>dist/</code></li>
+            </ul>
+            <p class="why">Bon point pour le debug, mais embarque ~quelques Ko en npm publish. À vérifier que la sourcemap pointe sur les bons chemins relatifs côté consommateur.</p>
+            <p class="fix">Vérification rapide : ouvrir l'inspector sur une app, naviguer vers une règle CSS, voir si Source navigue correctement vers le SCSS. Si non, ajuster <code>--sourceRoot</code> à la compilation.</p>
+          </div></div>
+
+          <h3>Points forts du package <code>bootstrap</code></h3>
+          <ul>
+            <li><strong>Documentation à jour</strong> : <code>THEMING.md</code>, <code>MIGRATION-STRATEGY.md</code>, <code>OVERRIDES-INVENTORY.md</code> dans edifice2d — c'est exactement ce qui manque ailleurs dans le FF.</li>
+            <li><strong>API de thème propre</strong> (config map → CSS vars via mixin récursif) — pattern moderne, extensible.</li>
+            <li><strong>0 TODO/FIXME, stylelint 0 warning</strong> — le code SCSS est plus propre que le code TS/TSX.</li>
+            <li><strong>Convention <code>data-product</code> + <code>data-theme</code></strong> — claire, lisible dans le DOM, debug-friendly.</li>
+            <li><strong>Composants homepage</strong> : excellent pattern d'encapsulation (primitives globales + CSS vars locales <code>--message-flash-bg-color</code>).</li>
+            <li><strong>Structure ITCSS</strong> respectée — abstracts → base → components → layout → themes → tokens.</li>
+          </ul>
+        </section>
+
+        <!-- ===================== ROADMAP ===================== -->
+        <section id="roadmap">
+          <h2>9 · Roadmap proposée</h2>
+          <p class="small">Ordre par ROI / risque, hors Storybook v10 et Vite v8 (déjà sur branches).</p>
+
+          <div class="grid cols-3">
+            <div class="roadmap-col qw">
+              <h3>Quick wins (≤ 1 jour)</h3>
+              <div class="roadmap-item"><span class="title">Ajouter <code>sideEffects: false</code></span> <span class="effort">30 min</span><div class="small">utilities + client + extensions. Tree-shaking gratuit côté apps.</div></div>
+              <div class="roadmap-item"><span class="title">Système de <code>z-index</code> centralisé</span> <span class="effort">~2 h</span><div class="small">Fichier <code>abstracts/_z-index.scss</code> avec échelle (base/dropdown/sticky/modal/toast). Migrer les ~10 z-index hardcodés.</div></div>
+              <div class="roadmap-item"><span class="title">Grouper les minors</span> <span class="effort">2 h</span><div class="small">TipTap 2.27, axios, Tanstack, sass, dayjs, core-js, antd-icons patch.</div></div>
+              <div class="roadmap-item"><span class="title">Activer le seuil <code>coverage</code></span> <span class="effort">1 h</span><div class="small">vitest.config + thresholds 30 %. Empêche d'aggraver la dette.</div></div>
+              <div class="roadmap-item"><span class="title">Lint rule <code>no-console</code></span> <span class="effort">2 h</span><div class="small">+ helper <code>logger</code> conditionnel. 137 occurrences à nettoyer.</div></div>
+              <div class="roadmap-item"><span class="title">Brancher Chromatic en CI</span> <span class="effort">3 h</span><div class="small">Le package est déjà installé. Active visual regression sur 106 stories.</div></div>
+              <div class="roadmap-item"><span class="title">Typer <code>Dropdown</code> / <code>Combobox</code> slots</span> <span class="effort">3 h</span><div class="small">Supprime des <code>any</code> publics sans changement d'API.</div></div>
+              <div class="roadmap-item"><span class="title">Aligner tsconfigs en strict</span> <span class="effort">4 h</span><div class="small">Créer <code>config/tsconfig.strict.json</code>, l'imposer ; corriger les ~50 cassures probables.</div></div>
+            </div>
+
+            <div class="roadmap-col mid">
+              <h3>Moyen terme (1-3 semaines)</h3>
+              <div class="roadmap-item" style="border-left:3px solid var(--bad);"><span class="title">Unifier les breakpoints SCSS ↔ TS</span> <span class="effort">~2 j</span><div class="small">Source unique (Sass map exposée en CSS vars ou JSON partagé) consommée par <code>useBreakpoint</code> et les mixins <code>respond-from</code>. Corrige B.1 (haut risque pour la stabilité responsive).</div></div>
+              <div class="roadmap-item"><span class="title">Rendre la dépréciation d'<code>abstracts/</code> explicite</span> <span class="effort">~1 j</span><div class="small">Commentaires en tête des fichiers legacy, todo-list dans <code>MIGRATION-STRATEGY.md</code> avec les 84 fichiers à migrer, règle stylelint optionnelle. Pré-requis du chantier de migration. Corrige B.2.</div></div>
+              <div class="roadmap-item"><span class="title">Visual tests par thème (Chromatic)</span> <span class="effort">~3 j</span><div class="small">5 thèmes × ~20 composants critiques = 100 baselines. Détecte les régressions cross-thème invisibles à l'œil. Corrige B.8 et finding 5.3.</div></div>
+              <div class="roadmap-item"><span class="title">20 tests prioritaires</span> <span class="effort">~3 j</span><div class="small">Select, Combobox, Dropdown keyboard, useDropzone, useDate, ShareModal, TreeView. Sort la couverture de 0,6 % → ~3 %.</div></div>
+              <div class="roadmap-item"><span class="title">Régler les 15 warnings <code>exhaustive-deps</code></span> <span class="effort">~3 j</span><div class="small">Cible : 0 warning et 0 <code>eslint-disable</code>. Corrige finding 1.2 (cause de bugs silencieux).</div></div>
+              <div class="roadmap-item"><span class="title">Mémoïser les listes</span> <span class="effort">~2 j</span><div class="small">React.memo sur TreeNode, ShareBookmarkLine, UserRightsList items, Header. Mesurer avec React DevTools Profiler.</div></div>
+              <div class="roadmap-item"><span class="title">Génériquer <code>HttpService</code> / config client</span> <span class="effort">~3 j</span><div class="small">Réduit 330 → ~150 <code>any</code> ; gain de typage côté apps.</div></div>
+              <div class="roadmap-item"><span class="title">Migrer dnd-kit, swiper, react-spring</span> <span class="effort">~4 j</span><div class="small">Une PR par dépendance ; bloqué par tests sur SortableTree/MediaViewer.</div></div>
+              <div class="roadmap-item"><span class="title">Documenter la frontière <code>modules</code> vs <code>components</code></span> <span class="effort">1 j</span><div class="small">CONTRIBUTING.md + check eslint-plugin-boundaries.</div></div>
+            </div>
+
+            <div class="roadmap-col long">
+              <h3>Long terme (≥ 1 mois)</h3>
+              <div class="roadmap-item"><span class="title">Migrer les 84 fichiers <code>abstracts/</code> → <code>themes/configs/primitives</code></span> <span class="effort">~3-4 sem</span><div class="small">Par paquets : (1) <code>vendors/</code> et <code>layout/</code>, (2) <code>components/</code> par groupes (form, navigation, feedback...), (3) thèmes legacy. Corrige B.2 dans la durée. À coordonner avec la migration des variants <code>_overrides.scss</code>.</div></div>
+              <div class="roadmap-item"><span class="title">Migrer neo / one vers la nouvelle API de thème</span> <span class="effort">~3-4 sem</span><div class="small">Une fois les variants (cg77, monlycee, na) inventoriés, basculer en config map. Permettra à terme de supprimer <code>themes/_overrides.scss</code>. Corrige B.3 — gros gain de DX et stop à la "boîte noire".</div></div>
+              <div class="roadmap-item"><span class="title">Build CSS par thème</span> <span class="effort">~1 sem</span><div class="small">5 entry points Sass au lieu de 1 ; chaque app importe son thème. À faire après B.3 (sinon ingérable). Gain ~100-150 Ko par app après gzip. Mesurer d'abord (B.4).</div></div>
+              <div class="roadmap-item"><span class="title">Migration TipTap 2 → 3</span> <span class="effort">~2 sem</span><div class="small">Commencer par <code>packages/extensions</code>, puis <code>modules/editor</code>. À ne pas mêler avec Storybook/Vite.</div></div>
+              <div class="roadmap-item"><span class="title">Migration Antd 5 → 6 (ou retrait)</span> <span class="effort">~2 sem</span><div class="small">Audit "où est Antd" d'abord. Si &lt; 10 usages, viser le retrait. Sinon, suivre le guide Antd 6.</div></div>
+              <div class="roadmap-item"><span class="title">Externaliser <code>modules/icons</code></span> <span class="effort">~1 sem</span><div class="small">Sous-package <code>@edifice.io/icons</code> ou sprite SVG. Permet d'enlever <code>preserveModules</code> du package react.</div></div>
+              <div class="roadmap-item"><span class="title">Cible couverture 50 %</span> <span class="effort">~3 mois</span><div class="small">Sprint dédié 1× / 2 sprints. Hooks d'abord (logique), puis composants (interactions).</div></div>
+              <div class="roadmap-item"><span class="title">Découper les god-components</span> <span class="effort">~3 sem</span><div class="small">Header (477), MediaLibrary (516), AudioRecorder (542), EditorToolbar (462), ShareResources (445), InternalLinker (477).</div></div>
+              <div class="roadmap-item"><span class="title">Fusionner les hooks d'état des modales</span> <span class="effort">~1 sem</span><div class="small"><code>ShareModal</code> et <code>PublishModal</code> : <code>useReducer</code> centralisé.</div></div>
+              <div class="roadmap-item"><span class="title">Préparer React 19</span> <span class="effort">—</span><div class="small">Hors scope, mais le travail "memo + reducer" et "couverture 50 %" est le bon préalable.</div></div>
+            </div>
+          </div>
+
+          <h3 style="margin-top:32px;">Actions côté apps & écosystème (hors FF, à coordonner)</h3>
+          <p class="small">Patterns confirmés sur 2 apps (actualites, communities). À traiter au niveau template / governance.</p>
+          <div class="grid cols-2">
+            <div class="roadmap-item" style="border-left: 3px solid var(--bad);"><span class="title">⚡ PR sur <code>edifice-react-boilerplate</code> : retirer <code>inlineDynamicImports</code></span> <span class="effort">~2 h boilerplate + ~4 h par app</span><div class="small">Retrouvé dans <code>/Volumes/Work/edifice-react-boilerplate/frontend/vite.config.ts</code> (lignes 107-111). 4 lignes à supprimer. Puis 1 PR par app déjà clonée (actualites, communities, autres). <strong>Plus gros gain perf de tout l'audit</strong> : bundle initial ÷ 3-5. Vérifier d'abord qu'aucune contrainte de déploiement (backend Vert.x) n'impose un fichier unique.</div></div>
+            <div class="roadmap-item"><span class="title">Passer <code>Editor</code> en <code>lazy()</code> côté actualites</span> <span class="effort">~3 h</span><div class="small">Sur les 6 imports statiques. Combiné avec ↑, économise TipTap (~500 Ko + extensions) sur les routes non-éditeur.</div></div>
+            <div class="roadmap-item"><span class="title">Décider : QRCode + OTP dans le FF, ou antd public ?</span> <span class="effort">~2 h discussion</span><div class="small">Communities importe <code>antd</code> directement pour combler les manques. Soit on ajoute ces composants au FF, soit on documente antd comme peer dep officielle.</div></div>
+            <div class="roadmap-item"><span class="title">Externaliser <code>modules/editor</code> en sous-package ?</span> <span class="effort">~1 sem</span><div class="small">Le modèle <code>@edifice.io/wiki</code> existe déjà. Communities n'a pas du tout besoin d'editor : sortir editor du package react principal allègerait le coût transitif pour ces apps.</div></div>
+            <div class="roadmap-item"><span class="title">Mesurer le coût réel des icônes</span> <span class="effort">~2 h (2 apps)</span><div class="small"><code>rollup-plugin-visualizer</code> sur les builds des 2 apps. 15+34 icônes uniquement sur 356 — conditionne la priorité du finding 3.1.</div></div>
+            <div class="roadmap-item"><span class="title">Documenter le modèle de branches FF</span> <span class="effort">~2 h</span><div class="small">README du FF : <code>develop</code> = tronc, <code>develop-&lt;squad&gt;</code> = squads (pedago, enabling, b2school, integration). Cadence de merge attendue. Lève la confusion "qui consomme quoi".</div></div>
+            <div class="roadmap-item"><span class="title">Mesurer la divergence inter-branches FF</span> <span class="effort">~1 h</span><div class="small"><code>git log --oneline develop..develop-pedago</code> et inversement. Si une branche squad diverge de &gt; 50 commits, planifier un merge. Établir un seuil d'alerte.</div></div>
+            <div class="roadmap-item"><span class="title">Politique de versions tierces alignée</span> <span class="effort">~1 j</span><div class="small">Vite/Vitest/Tanstack devraient idéalement être identiques entre branches squad pour éviter les conflits au merge tronc. Documenter les exceptions.</div></div>
+            <div class="roadmap-item"><span class="title">Investiguer le packaging ESM du FF</span> <span class="effort">~1 j</span><div class="small">actualites doit inliner le FF dans vitest. Probable défaut <code>preserveModules</code> + <code>dayjs/plugin/*</code>. Cible : <code>deps.inline</code> ne soit plus nécessaire.</div></div>
+            <div class="roadmap-item"><span class="title">Sonder 2-3 autres apps Edifice</span> <span class="effort">~1 j</span><div class="small">Confirmer la généralité (<code>blog</code>, <code>mindmap</code>, <code>collaborativewall</code>, <code>pad</code> sont référencés dans la config proxy de communities — donc apps existantes).</div></div>
+          </div>
+        </section>
+
+        <div class="footer">
+          Rapport généré le 18 mai 2026 · branche <code>develop-enabling</code> · outillage : eslint, tsc, npm-check-updates, lectures statiques.<br/>
+          Méthode : audit "grandes lignes" comme cadré, sans inspection composant par composant. Les chemins sont relatifs à la racine du repo.
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
