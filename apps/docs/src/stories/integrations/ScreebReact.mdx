@@ -1,0 +1,126 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Integrations/Screeb/2. React" />
+
+# Screeb — React apps
+
+React apps use `EdificeScreebProvider` and the `useScreeb` hook from `@edifice.io/react`. No direct dependency on `@screeb/sdk-react` is needed in the application.
+
+See [Screeb](?path=/docs/integrations-screeb-1-overview--docs) for the common configuration.
+
+---
+
+## Setup
+
+`EdificeScreebProvider` must be placed inside `EdificeClientProvider`:
+
+```tsx
+import { EdificeClientProvider, EdificeScreebProvider } from '@edifice.io/react';
+
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <EdificeClientProvider params={{ app: 'myapp' }}>
+      <EdificeScreebProvider>
+        <App />
+      </EdificeScreebProvider>
+    </EdificeClientProvider>
+  </QueryClientProvider>
+);
+```
+
+The provider automatically:
+
+- reads `screeb-app-id` and `screeb-allowed-profiles` from `publicConf`
+- loads the Screeb script only when the app is configured and the user's profile is allowed
+- initializes Screeb with a hashed user identity in a single call (no anonymous entry created)
+- resets the identity on logout so sessions are never shared across users on the same device
+
+### Conditional survey display
+
+Pass `onSurveyDisplayAllowed` to prevent a survey from showing when your app is in a specific state (e.g. a modal is already open):
+
+```tsx
+const [isModalOpen, setIsModalOpen] = useState(false);
+
+<EdificeScreebProvider
+  onSurveyDisplayAllowed={() => !isModalOpen}
+>
+  <App />
+</EdificeScreebProvider>
+```
+
+---
+
+## useScreeb
+
+```typescript
+import { useScreeb } from '@edifice.io/react';
+
+const {
+  trackEvent,
+  triggerSurvey,
+  triggerMessage,
+  closeSurvey,
+  forceTargetingCheck,
+  setIdentityProperties,
+} = useScreeb();
+```
+
+### `trackEvent`
+
+Sends a custom event. Events are used as targeting conditions in Screeb (e.g. "show survey after 3 publications").
+
+```typescript
+trackEvent('resource-published', { type: 'blog', word_count: 320 });
+```
+
+### `triggerSurvey`
+
+Starts a survey programmatically. Use `hooks` to react to user responses.
+
+```typescript
+triggerSurvey(
+  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  {
+    onSurveyCompleted: (payload) => console.log('responses:', payload),
+    onSurveyHidden: (payload) => console.log('dismissed:', payload),
+  },
+  { context: 'editor' }, // optional hidden fields passed to Screeb
+);
+```
+
+### `triggerMessage`
+
+Starts a Screeb message (in-app banner or tooltip). Messages are distinct from surveys.
+
+```typescript
+triggerMessage('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', {
+  onMessageCompleted: (payload) => console.log('message completed', payload),
+});
+```
+
+### `closeSurvey`
+
+Closes the currently running survey programmatically.
+
+```typescript
+closeSurvey();
+```
+
+### `forceTargetingCheck`
+
+Forces the Screeb targeting engine to re-evaluate its rules immediately. Call this right after a `trackEvent` when you want the survey to appear without waiting for the next automatic cycle.
+
+```typescript
+trackEvent('fifth-login');
+forceTargetingCheck();
+```
+
+### `setIdentityProperties`
+
+Updates the current user's attributes in Screeb. Set a property to `null` to delete it.
+
+```typescript
+setIdentityProperties({ subscription_plan: 'pro', nb_resources: 42 });
+setIdentityProperties({ old_property: null }); // delete
+```

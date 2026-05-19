@@ -1,0 +1,50 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/usePublicConf" />
+
+# usePublicConf
+
+Generic hook to fetch the public configuration of an application from the server (`/<app>/conf/public`). The result is cached indefinitely since public conf does not change without a redeployment.
+
+## Usage
+
+```typescript
+import { usePublicConf } from '@edifice.io/react';
+
+type MyAppConf = {
+  'some-feature-flag'?: boolean;
+  'screeb-app-id'?: string;
+};
+
+const { data, isLoading, error } = usePublicConf<MyAppConf>('myapp');
+```
+
+## Parameters
+
+- `appCode` (`App`): The application code (e.g. `'actualites'`, `'blog'`).
+
+## Returns
+
+- `data` (`T | undefined`): The public configuration object for the app.
+- `isLoading` (`boolean`): `true` while the request is in progress.
+- `error` (`Error | null`): Set if the request failed.
+
+## Example
+
+```typescript
+import { useEdificeClient } from '@edifice.io/react';
+import { usePublicConf } from '@edifice.io/react';
+
+type AppConf = {
+  'screeb-app-id'?: string;
+};
+
+function MyComponent() {
+  const { appCode } = useEdificeClient();
+  const { data: conf, isLoading } = usePublicConf<AppConf>(appCode);
+
+  if (isLoading) return null;
+
+  return <div>{conf?.['screeb-app-id'] ?? 'Screeb not configured'}</div>;
+}
+```

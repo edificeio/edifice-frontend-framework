@@ -81,6 +81,7 @@ const preview: Preview = {
           'Client',
           'Layout',
           'Modules',
+          'Integrations',
         ],
       },
     },

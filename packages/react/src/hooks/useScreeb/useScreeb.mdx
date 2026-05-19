@@ -1,0 +1,167 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useScreeb" />
+
+# useScreeb
+
+Hook to interact with the Screeb survey platform. Must be used inside an `EdificeScreebProvider`.
+
+Screeb is only active when the app's public conf contains a `screeb-app-id`. If this key is absent, or the current user's profile is not in `screeb-allowed-profiles`, the provider does nothing and this hook is a no-op.
+
+## Setup
+
+Wrap your app with `EdificeScreebProvider` (must be inside `EdificeClientProvider`):
+
+```tsx
+import { EdificeClientProvider, EdificeScreebProvider } from '@edifice.io/react';
+
+<EdificeClientProvider params={{ app: 'myapp' }}>
+  <EdificeScreebProvider>
+    <App />
+  </EdificeScreebProvider>
+</EdificeClientProvider>
+```
+
+Configure your app's public conf (via springboard/ENT):
+
+```json
+{
+  "screeb-app-id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "screeb-allowed-profiles": ["Teacher", "Personnel"]
+}
+```
+
+`screeb-allowed-profiles` is optional — when absent or empty, all profiles are tracked.
+
+### Provider props
+
+- `onSurveyDisplayAllowed` (optional): callback called before a survey is displayed. Return `false` to prevent it from showing (e.g. when a modal is already open).
+
+```tsx
+<EdificeScreebProvider
+  onSurveyDisplayAllowed={({ survey }) => !isModalOpen}
+>
+  <App />
+</EdificeScreebProvider>
+```
+
+The identity is automatically reset when the user logs out, preventing cross-user contamination on shared devices.
+
+## Usage
+
+```typescript
+import { useScreeb } from '@edifice.io/react';
+
+const {
+  trackEvent,
+  triggerSurvey,
+  triggerMessage,
+  closeSurvey,
+  forceTargetingCheck,
+  setIdentityProperties,
+} = useScreeb();
+```
+
+## Return Value
+
+### `trackEvent`
+
+Sends a custom event to Screeb. Can be used as a targeting rule for survey display conditions.
+
+```typescript
+trackEvent(name: string, properties?: ScreebProperties): Promise<unknown>
+```
+
+```typescript
+trackEvent('falc-text-received', { source: 'editor', word_count: 42 });
+```
+
+### `triggerSurvey`
+
+Starts a survey programmatically. Use `hooks` to receive callbacks when the user interacts with the survey.
+
+```typescript
+triggerSurvey(
+  surveyId: string,
+  hooks?: ScreebSurveyHooks,
+  hiddenFields?: ScreebProperties,
+): Promise<unknown>
+```
+
+```typescript
+triggerSurvey('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', {
+  onSurveyShowed: (payload) => console.log('Survey shown', payload),
+  onSurveyCompleted: (payload) => console.log('Survey completed', payload),
+  onSurveyHidden: (payload) => console.log('Survey hidden', payload),
+  onQuestionReplied: (payload) => console.log('Question answered', payload),
+});
+```
+
+### `triggerMessage`
+
+Starts a Screeb message (banner/tooltip) programmatically. Messages are distinct from surveys and are used for announcements or in-app guidance.
+
+```typescript
+triggerMessage(messageId: string, hooks?: ScreebMessageHooks): Promise<unknown>
+```
+
+```typescript
+triggerMessage('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx', {
+  onMessageCompleted: (payload) => console.log('Message completed', payload),
+});
+```
+
+### `closeSurvey`
+
+Closes the currently running survey.
+
+```typescript
+closeSurvey(): Promise<unknown>
+```
+
+### `forceTargetingCheck`
+
+Forces the Screeb targeting engine to re-evaluate its rules immediately. Useful after a `trackEvent` when you want a survey to appear as soon as a threshold is reached, without waiting for the next automatic cycle.
+
+```typescript
+forceTargetingCheck(): Promise<unknown>
+```
+
+```typescript
+trackEvent('resource-published');
+forceTargetingCheck(); // trigger immediate evaluation
+```
+
+### `setIdentityProperties`
+
+Updates the current user's attributes in Screeb. Set a property to `null` to delete it.
+
+```typescript
+setIdentityProperties(properties: ScreebProperties): Promise<unknown>
+```
+
+```typescript
+setIdentityProperties({ last_feature_used: 'falc', nb_resources: 12 });
+```
+
+## Types
+
+```typescript
+type ScreebProperties = Record<string, string | number | boolean | Date | null>;
+
+type ScreebSurveyHooks = {
+  onSurveyShowed?: (data: unknown) => void;
+  onSurveyStarted?: (data: unknown) => void;
+  onSurveyCompleted?: (data: unknown) => void;
+  onSurveyHidden?: (data: unknown) => void;
+  onQuestionReplied?: (data: unknown) => void;
+};
+
+type ScreebMessageHooks = {
+  onMessageShowed?: (data: unknown) => void;
+  onMessageStarted?: (data: unknown) => void;
+  onMessageCompleted?: (data: unknown) => void;
+  onMessageHidden?: (data: unknown) => void;
+  onQuestionReplied?: (data: unknown) => void;
+};
+```
