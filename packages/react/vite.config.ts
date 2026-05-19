@@ -195,3 +195,43 @@ export const reactDomEsmConfig = defineConfig({
     }),
   ],
 });
+
+// Bundle des peer dependencies à état partagé (Provider singleton).
+// Chaque shim produit un bundle ESM self-contained (transitives inlinées)
+// que recette sert via l'import map sous /assets/js/edifice-react/react-esm/.
+// React/react-dom/jsx-runtime restent external pour préserver le singleton.
+export const peerDepsEsmConfig = defineConfig({
+  build: {
+    emptyOutDir: false,
+    lib: {
+      entry: {
+        'react-hook-form': resolve(__dirname, 'src/shims/react-hook-form.ts'),
+        'react-i18next': resolve(__dirname, 'src/shims/react-i18next.ts'),
+        'tanstack-react-query': resolve(
+          __dirname,
+          'src/shims/tanstack-react-query.ts',
+        ),
+        'react-spring-web': resolve(
+          __dirname,
+          'src/shims/react-spring-web.ts',
+        ),
+      },
+      formats: ['es'],
+      fileName: (_, entryName) => `${entryName}.js`,
+    },
+    outDir: 'dist/react-esm',
+    rollupOptions: {
+      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      output: {
+        preserveModules: false,
+      },
+    },
+  },
+  plugins: [
+    react({
+      babel: {
+        plugins: ['@babel/plugin-transform-react-pure-annotations'],
+      },
+    }),
+  ],
+});
