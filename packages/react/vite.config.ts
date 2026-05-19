@@ -114,7 +114,10 @@ export default defineConfig(({ mode }) => {
           /^@edifice\.io\/client\/.*/,
           '@edifice.io/bootstrap',
           /^@edifice\.io\/bootstrap\/(?!dist\/images\/).*/,
-          /^@edifice\.io\/tiptap-extensions\/.*/,
+
+          // @edifice.io/tiptap-extensions est tightly couplé à l'éditeur EFF
+          // et n'a pas vocation à être consommé indépendamment par les apps :
+          // on le BUNDLE dans le dist d'EFF (pas d'entrée dans l'import map).
 
           // Tout le reste (clsx, dayjs, antd, tiptap, swiper, pixi, etc.)
           // est volontairement BUNDLÉ dans le dist d'EFF.
