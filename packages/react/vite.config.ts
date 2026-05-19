@@ -1,5 +1,3 @@
-/// <reference types="vitest/config" />
-
 import url from '@rollup/plugin-url';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
@@ -8,6 +6,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import dts from 'vite-plugin-dts';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
+import type { PluginOption } from 'vite';
 import { removeDsn } from '../../plugins/remove-display-name';
 import { dependencies, peerDependencies } from './package.json';
 
@@ -103,12 +102,15 @@ export default defineConfig(({ mode }) => {
           'react/jsx-runtime',
           '@edifice.io/client',
           /^@edifice\.io\/tiptap-extensions\/.*/,
-          /^@edifice\.io\/bootstrap\/.*/,
+          /^@edifice\.io\/bootstrap\/(?!dist\/images\/).*/,
           /^dayjs\/plugin\/.+\.js$/,
           /^dayjs\/locale\/.+\.js$/,
           /^antd\/locale\/.+/,
           /^swiper\/.*/,
           /^@edifice-ui\/icons\/.*/,
+        ],
+        plugins: [
+          url({ limit: Infinity }) as PluginOption,
         ],
         output: {
           preserveModules: true,
