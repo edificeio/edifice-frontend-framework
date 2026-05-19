@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import type { ComponentRef } from 'react';
 import { useEffect, useRef } from 'react';
 import { UserRightsList } from './UserRightsList';

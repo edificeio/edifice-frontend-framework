@@ -10,12 +10,16 @@ const config: StorybookConfig = {
     '../src/stories/**/*.mdx',
   ],
   staticDirs: ['../public'],
-  addons: [
-    '@storybook/addon-a11y',
-    '@storybook/addon-links',
-    '@storybook/addon-docs',
-    '@chromatic-com/storybook',
-  ],
+  addons: ['@storybook/addon-a11y', {
+    name: '@storybook/addon-docs',
+    options: {
+      mdxPluginOptions: {
+        mdxCompileOptions: {
+          providerImportSource: '@mdx-js/react',
+        },
+      },
+    },
+  }, '@chromatic-com/storybook', '@storybook/addon-vitest'],
   typescript: {
     reactDocgen: 'react-docgen',
   },

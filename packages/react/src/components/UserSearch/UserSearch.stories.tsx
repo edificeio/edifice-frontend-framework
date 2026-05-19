@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
+import { fn } from 'storybook/test';
 import { useRef, useState } from 'react';
 import { UserSearch, type UserSearchRef } from './UserSearch';
 import type { Visible } from './types/visible';
