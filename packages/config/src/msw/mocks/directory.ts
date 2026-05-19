@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 
 export const handlers = [
-  http.get('/directory/userbook/91c22b66-ba1b-4fde-a3fe-95219cc18d4a', () => {
+  http.get('/directory/userbook/:userId', () => {
     return HttpResponse.json({
       mood: 'default',
       health: '',

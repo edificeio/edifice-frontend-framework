@@ -24,7 +24,7 @@ export const handlers = [
     }
     return HttpResponse.json([]);
   }),
-  http.get('/workspace/quota/user/91c22b66-ba1b-4fde-a3fe-95219cc18d4a', () => {
+  http.get('/workspace/quota/user/:userId', () => {
     return HttpResponse.json({ quota: 104857600, storage: 27683216 });
   }),
   http.get('/workspace/document/:id', () => {
