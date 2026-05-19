@@ -8,7 +8,6 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 import { defineConfig } from 'vitest/config';
 import type { PluginOption } from 'vite';
 import { removeDsn } from '../../plugins/remove-display-name';
-import { dependencies, peerDependencies } from './package.json';
 
 export default defineConfig(({ mode }) => {
   const isTest = mode === 'test';
@@ -97,24 +96,34 @@ export default defineConfig(({ mode }) => {
 
       rollupOptions: {
         external: [
-          ...Object.keys(dependencies ?? {}),
-          ...Object.keys(peerDependencies ?? {}),
+          // Singletons React partagés via l'import map
+          'react',
+          'react-dom',
+          'react-dom/client',
           'react/jsx-runtime',
+
+          // PeerDependencies à état partagé (Provider singleton)
+          // → entrées correspondantes dans recette/assets/importmap.json
+          '@react-spring/web',
+          '@tanstack/react-query',
+          'react-hook-form',
+          'react-i18next',
+
+          // Autres paquets EFF servis via l'import map
           '@edifice.io/client',
-          /^@edifice\.io\/tiptap-extensions\/.*/,
+          /^@edifice\.io\/client\/.*/,
+          '@edifice.io/bootstrap',
           /^@edifice\.io\/bootstrap\/(?!dist\/images\/).*/,
-          /^dayjs\/plugin\/.+\.js$/,
-          /^dayjs\/locale\/.+\.js$/,
-          /^antd\/locale\/.+/,
-          /^swiper\/.*/,
-          /^@edifice-ui\/icons\/.*/,
+          /^@edifice\.io\/tiptap-extensions\/.*/,
+
+          // Tout le reste (clsx, dayjs, antd, tiptap, swiper, pixi, etc.)
+          // est volontairement BUNDLÉ dans le dist d'EFF.
         ],
         plugins: [
           url({ limit: Infinity }) as PluginOption,
         ],
         output: {
-          preserveModules: true,
-          preserveModulesRoot: 'src',
+          preserveModules: false,
         },
       },
     },
