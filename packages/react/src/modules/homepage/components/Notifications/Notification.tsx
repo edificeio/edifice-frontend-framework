@@ -1,9 +1,25 @@
 import { NotificationModel } from '@edifice.io/client';
+import SystemNotification from './components/SystemNotification';
+import UserNotification from './components/UserNotification';
+import { notificationAdapter } from './components/notificationAdapter';
 
-export type NotificationProps = { notification: NotificationModel };
+export type {
+  SystemWebNotification,
+  UserWebNotification,
+  WebNotification,
+} from './components/notificationAdapter';
+
+export type NotificationProps = {
+  notification: NotificationModel;
+};
 
 const Notification = ({ notification }: NotificationProps) => {
-  return <div>{notification.message}</div>;
+  const notif = notificationAdapter(notification);
+
+  if (notif.type === 'user') {
+    return <UserNotification notification={notif} />;
+  }
+  return <SystemNotification notification={notif} />;
 };
 
 Notification.displayName = 'Notification';

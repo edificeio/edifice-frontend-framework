@@ -252,6 +252,13 @@ i18n.use(initReactI18next).init({
         'homepage.widget.last-infos-list.title': 'Dernières actualités',
         //------------------------------------------------------
 
+        //----------------- useDate (formatTimeAgo) -----------------
+        'date.format.yesterday': 'Yesterday',
+        'date.format.currentWeek': 'dddd',
+        'date.format.currentYear': 'D MMM',
+        'date.format.previousYear': 'D MMM YYYY',
+        //------------------------------------------------------
+
         //----------------- BetaSwitch -----------------
         'betaSwitch.button': 'Quittez la Bêta',
         'betaSwitch.title': "L'ancienne version vous manque ?",

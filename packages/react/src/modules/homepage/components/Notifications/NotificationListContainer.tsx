@@ -1,5 +1,5 @@
-import { useNotificationListContainer } from './hooks/useNotificationList';
 import NotificationList from './NotificationList';
+import { useNotificationListContainer } from './hooks/useNotificationList';
 
 export type NotificationListContainerProps = {
   /** Callback when the notifications list is closed */

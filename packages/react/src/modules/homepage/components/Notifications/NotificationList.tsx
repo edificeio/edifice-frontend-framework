@@ -1,9 +1,14 @@
+import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, EmptyScreen, Flex, useInfiniteScroll } from '../../../..';
+import {
+  ButtonBeta,
+  Divider,
+  EmptyScreen,
+  Flex,
+  useInfiniteScroll,
+} from '../../../..';
 import { IconClose } from '../../../icons/components';
-
-import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import Notification from './Notification';
 import NotificationSkeleton from './NotificationSkeleton';
 
@@ -78,12 +83,15 @@ const NotificationList = ({
             />
           </div>
         ) : (
-          <Flex direction="column" role="list">
-            {notifications.map((notification, index) => (
-              <div key={'notification-list-' + index} role="listitem">
-                <Notification notification={notification} />
-              </div>
-            ))}
+          <>
+            <ul>
+              {notifications.map((notification, index) => (
+                <li key={'notification-list-' + index}>
+                  <Notification notification={notification} />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+              ))}
+            </ul>
             {hasNextPage && !isLoading && (
               <NotificationSkeleton ref={loadNextRef} />
             )}
@@ -94,7 +102,7 @@ const NotificationList = ({
                 <NotificationSkeleton />
               </>
             )}
-          </Flex>
+          </>
         )}
       </Flex>
     </section>
