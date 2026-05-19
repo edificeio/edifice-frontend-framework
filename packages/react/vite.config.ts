@@ -133,12 +133,14 @@ export default defineConfig(({ mode }) => {
 
 export const reactEsmConfig = defineConfig({
   build: {
+    emptyOutDir: false,
     lib: {
       entry: {
         'react': resolve(__dirname, 'src/shims/react.ts'),
+        'jsx-runtime': resolve(__dirname, 'src/shims/jsx-runtime.ts'),
       },
       formats: ['es'],
-      fileName: () => 'react.js',
+      fileName: (_, entryName) => `${entryName}.js`,
     },
     outDir: 'dist/react-esm',
     rollupOptions: {
@@ -159,12 +161,14 @@ export const reactEsmConfig = defineConfig({
 
 export const reactDomEsmConfig = defineConfig({
   build: {
+    emptyOutDir: false,
     lib: {
       entry: {
         'react-dom': resolve(__dirname, 'src/shims/react-dom.ts'),
+        'react-dom/client': resolve(__dirname, 'src/shims/react-dom-client.ts'),
       },
       formats: ['es'],
-      fileName: () => 'react-dom.js',
+      fileName: (_, entryName) => `${entryName}.js`,
     },
     outDir: 'dist/react-esm',
     rollupOptions: {
