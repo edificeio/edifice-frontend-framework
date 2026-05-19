@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Integrations/Screeb/1. Overview" />
+
+# Screeb
+
+[Screeb](https://screeb.app) is a user feedback and survey platform. This guide explains how to integrate it in Edifice applications without coupling app code to the Screeb SDK directly.
+
+> **Rule**: never call Screeb SDK functions directly in your components, controllers, or screens. Always go through the bridge provided by the framework or the service pattern described here.
+
+---
+
+## Configuration
+
+Each application opts in to Screeb by adding two keys to its `publicConf` (configured via springboard/ENT):
+
+```json
+{
+  "screeb-app-id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "screeb-allowed-profiles": ["Teacher", "Personnel"]
+}
+```
+
+- `screeb-app-id` — your Screeb workspace/channel ID. **Required.** If absent, Screeb is completely disabled for that app (no script loaded, no network call).
+- `screeb-allowed-profiles` — list of profiles to track. **Optional.** When absent or empty, all profiles are tracked.
+
+---
+
+## Privacy
+
+User identifiers sent to Screeb are **hashed with SHA-256 and truncated to 16 hexadecimal characters**. The original `userId` is never transmitted. This applies to all integrations.
+
+---
+
+## Integration guides
+
+- **React (modern apps)** — `@edifice.io/react` — [React](?path=/docs/integrations-screeb-2-react--docs)
+- **AngularJS (legacy apps)** — `@screeb/sdk-browser` — [AngularJS](?path=/docs/integrations-screeb-4-angularjs--docs)
+- **React Native (mobile apps)** — `@screeb/react-native` — [Mobile](?path=/docs/integrations-screeb-3-mobile--docs)
