@@ -10,10 +10,10 @@
 
   border: 1px solid var(--#{$prefix}badge-border-color);
 
-  &:not(.badge-notification) {
-    height: 3rem;
-    line-height: 1.5;
-  }
+  &:not(.badge-notification, .badge-statut) {
+  height: 3rem;
+  line-height: 1.5;
+}
 
   &.badge-profile {
     &-student {
@@ -39,6 +39,33 @@
 
   &.badge-notification {
     --#{$prefix}badge-padding-x: 0.8rem;
+  }
+
+  &.badge-statut {
+    &-validate {
+      background-color: var(--#{$prefix}green);
+      color: var(--#{$prefix}white);
+    }
+
+    &-success {
+      background-color: var(--#{$prefix}green-200);
+      color: var(--#{$prefix}green-800);
+    }
+
+    &-warning {
+      background-color: var(--#{$prefix}orange-200);
+      color: var(--#{$prefix}orange-500);
+    }
+
+    &-danger {
+      background-color: var(--#{$prefix}red-200);
+      color: var(--#{$prefix}red);
+    }
+
+    &-info {
+      background-color: var(--#{$prefix}blue-200);
+      color: var(--#{$prefix}blue-800);
+    }
   }
 
   &.badge-link {

@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconHourglass } from '../../modules/icons/components';
-import Badge, { BadgeProps } from './Badge';
+import Badge from './Badge';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Badge> = {
@@ -33,6 +33,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative',
         'user / personnel',
         'user / guest',
+        'statut / validate',
+        'statut / success',
+        'statut / warning',
+        'statut / danger',
+        'statut / info',
       ],
       mapping: {
         'content / success / background': {
@@ -117,6 +122,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative': { type: 'user', profile: 'relative' },
         'user / personnel': { type: 'user', profile: 'personnel' },
         'user / guest': { type: 'user', profile: 'guest' },
+        'statut / validate': { type: 'statut', level: 'validate' },
+        'statut / success': { type: 'statut', level: 'success' },
+        'statut / warning': { type: 'statut', level: 'warning' },
+        'statut / danger': { type: 'statut', level: 'danger' },
+        'statut / info': { type: 'statut', level: 'info' },
       },
     },
   },
@@ -150,7 +160,7 @@ export const BadgeContent: Story = {
     variant: { type: 'content', level: 'success', background: true },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>Visible</Badge>;
   },
 
@@ -169,7 +179,7 @@ export const BadgeProfile: Story = {
     variant: { type: 'user', profile: 'Student', background: true },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>Profil</Badge>;
   },
 
@@ -183,12 +193,31 @@ export const BadgeProfile: Story = {
   },
 };
 
+export const BadgeStatut: Story = {
+  args: {
+    variant: { type: 'statut', level: 'success' },
+  },
+
+  render: (args) => {
+    return <Badge {...args}>Statut</Badge>;
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Badge of type `statut` expects different levels: `success | warning | danger | info`. You can add `background` key to the variant object to set a backgroundColor',
+      },
+    },
+  },
+};
+
 export const BadgeChip: Story = {
   args: {
     variant: { type: 'chip' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return (
       <Badge {...args}>
         <IconHourglass width="20" height="20" className="me-8" />
@@ -212,7 +241,7 @@ export const BadgeLink: Story = {
     variant: { type: 'link' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return (
       <Badge {...args}>
         <a href="/">An history of time</a>
@@ -235,7 +264,7 @@ export const BadgeNotification: Story = {
     variant: { type: 'notification', level: 'danger' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>9</Badge>;
   },
 
@@ -273,7 +302,7 @@ export const BadgeBetaCommunities: Story = {
       },
     },
   },
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args} />;
   },
 };
@@ -302,7 +331,7 @@ export const BadgeBetaBlog: Story = {
       },
     },
   },
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args} />;
   },
 };

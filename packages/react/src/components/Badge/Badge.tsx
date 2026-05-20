@@ -12,6 +12,12 @@ export type NotificationBadgeVariant = {
   level: 'success' | 'warning' | 'danger' | 'info';
 };
 
+/** Badge variant : statut */
+export type StatutBadgeVariant = {
+  type: 'statut';
+  level: 'validate'|'success' | 'warning' | 'danger' | 'info';
+};
+
 /** Badge variant : content */
 export type ContentBadgeVariant = {
   type: 'content';
@@ -55,6 +61,7 @@ export type BetaBadgeVariant = {
 
 export type BadgeVariants =
   | NotificationBadgeVariant
+  | StatutBadgeVariant
   | ContentBadgeVariant
   | ProfileBadgeVariant
   | ChipBadgeVariant
@@ -117,6 +124,8 @@ const Badge = forwardRef(
       variant.type === 'content' && `text-${variant.level}`,
       variant.type === 'notification' &&
         `badge-notification bg-${variant.level} text-light border border-0`,
+      variant.type === 'statut' &&
+        `badge-statut badge-statut-${variant.level} caption fw-normal`,
       variant.type === 'user' &&
         `badge-profile-${variant.profile.toLowerCase()}`,
       variant.type === 'link' && 'badge-link border border-0',
