@@ -1,7 +1,8 @@
+import { odeServices } from '@edifice.io/client';
+import { logger } from '@edifice.io/utilities';
 import { Editor } from '@tiptap/react';
 import { useCallback, useState } from 'react';
 import { useHasWorkflow } from '../../../hooks';
-import { odeServices } from '@edifice.io/client';
 
 export interface CantooEditor {
   cantooParam: string;
@@ -42,7 +43,7 @@ export const useCantooEditor = (
       try {
         await Cantoo.speech2text.stop();
       } catch (e) {
-        console.warn('Error while trying to stop Cantoo (speech2text)', e);
+        logger.warn('Error while trying to stop Cantoo (speech2text)', e);
       }
     } else {
       try {
@@ -64,7 +65,7 @@ export const useCantooEditor = (
           throw new Error('Cantoo speech2text not available on this device');
         }
       } catch (e) {
-        console.warn('Error while trying to use Cantoo (speech2text)', e);
+        logger.warn('Error while trying to use Cantoo (speech2text)', e);
         setSpeech2textActive(false);
       }
     }
@@ -82,7 +83,7 @@ export const useCantooEditor = (
           setText2speechActive(false);
         };
       } catch (e) {
-        console.warn('Error while trying to use Cantoo (text2speech)', e);
+        logger.warn('Error while trying to use Cantoo (text2speech)', e);
         setText2speechActive(false);
       }
     }
@@ -118,7 +119,7 @@ export const useCantooEditor = (
 
   const toogleSettings = () => {
     if (!Cantoo) {
-      console.warn('Cantoo not available');
+      logger.warn('Cantoo not available');
       return;
     }
     Cantoo.openCantooWebConfig();
@@ -130,7 +131,7 @@ export const useCantooEditor = (
       try {
         await odeServices.http().post('/infra/event/web/store', data);
       } catch (e) {
-        console.warn('Error while storing event', e);
+        logger.warn('Error while storing event', e);
       }
     }
   }, []);

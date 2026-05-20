@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { IframeTransformer } from './interface';
 
 /**
@@ -33,7 +34,7 @@ export class PadIframeTransformer implements IframeTransformer {
         HTMLAttributes.src = newUrl.toString();
       }
     } catch (e) {
-      console.error('Error transforming pad URL:', e);
+      logger.error('Error transforming pad URL:', e);
     }
   }
 }

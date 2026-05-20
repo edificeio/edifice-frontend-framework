@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 
+import { logger } from '@edifice.io/utilities';
 import { useTranslation } from 'react-i18next';
 import { useBrowserInfo } from '../../../hooks';
 
@@ -43,7 +44,7 @@ export function useCameras() {
       // Use it
       setStream(mediaStream);
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
   };
 
@@ -77,7 +78,7 @@ export function useCameras() {
       }
       setMediaStreamConstraints(constraints);
     } else {
-      console.error('Selected input device id is null');
+      logger.error('Selected input device id is null');
     }
   };
 

@@ -1,6 +1,6 @@
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 
-import { customSize } from '@edifice.io/utilities';
+import { customSize, logger } from '@edifice.io/utilities';
 import { Suspense, lazy, useEffect, useRef } from 'react';
 import { LoadingScreen } from '../../../components';
 import { useUploadFiles } from '../../../hooks';
@@ -118,7 +118,7 @@ const UploadFiles = ({
             isOpen={!!editingImage}
             onCancel={() => setEditingImage(undefined)}
             onSave={updateImage}
-            onError={console.error}
+            onError={logger.error}
           />
         </Suspense>
       )}

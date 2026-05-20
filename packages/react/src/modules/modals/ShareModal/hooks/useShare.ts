@@ -11,6 +11,7 @@ import {
 } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
+import { logger } from '@edifice.io/utilities';
 import { useToast, useUser } from '../../../../hooks';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { ShareOptions, ShareResourceMutation } from '../ShareResources';
@@ -127,7 +128,7 @@ export default function useShare({
           },
         });
       } catch (error) {
-        console.error(error);
+        logger.error(error);
       }
       {
         setIsLoading?.(false);
@@ -228,7 +229,7 @@ export default function useShare({
   const notifySuccess = (value: PutShareResponse) => {
     if (Object.keys(value)[0] === 'error') {
       toast.error(t('explorer.shared.status.error'));
-      console.error('Failed to save share', value);
+      logger.error('Failed to save share', value);
     } else {
       toast.success(t('explorer.shared.status.saved'));
     }
@@ -298,7 +299,7 @@ export default function useShare({
               'explorer.shared.status.error',
           ),
         );
-      console.error('Failed to save share', error);
+      logger.error('Failed to save share', error);
     } finally {
       dispatch({
         type: 'isSharing',

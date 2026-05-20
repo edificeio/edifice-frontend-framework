@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { IOdeServices } from '../services/OdeServices';
 import { ResourceRight, RightRole, RightStringified } from './interface';
 
@@ -117,7 +118,7 @@ export class RightService {
         )
       );
     } catch (e) {
-      console.error(`Unexpected error ${e} in sessionHasResourceRight()`);
+      logger.error(`Unexpected error ${e} in sessionHasResourceRight()`);
       return false;
     }
   }
@@ -215,7 +216,7 @@ export class RightService {
         )
       );
     } catch (e) {
-      console.error(`Unexpected error ${e} in sessionHasWorkflowRight()`);
+      logger.error(`Unexpected error ${e} in sessionHasWorkflowRight()`);
       return false;
     }
   }
@@ -241,7 +242,7 @@ export class RightService {
           );
       }
     } catch (e) {
-      console.error(`Unexpected error ${e} in sessionHasWorkflowRights()`);
+      logger.error(`Unexpected error ${e} in sessionHasWorkflowRights()`);
       for (const expect of expects) {
         result[expect] = false;
       }

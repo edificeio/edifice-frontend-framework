@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
-import { ImageResizer, addTimestampToImageUrl } from '@edifice.io/utilities';
+import {
+  ImageResizer,
+  addTimestampToImageUrl,
+  logger,
+} from '@edifice.io/utilities';
 
 import { useDropzoneContext } from '../../components';
 import { useUpload } from '../useUpload';
@@ -49,7 +53,7 @@ const useUploadFiles = ({
             resource = await uploadAlternateFile(file, replacement);
             replaceFileAt(index, replacement);
           } catch (err) {
-            console.error(err);
+            logger.error(err);
           }
         }
 

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import { IResource, odeServices } from '@edifice.io/client';
+import { logger } from '@edifice.io/utilities';
 
 const useResource = (application: string, id: string) => {
   const [resource, setResource] = useState<IResource>(null!);
 
   useEffect(() => {
     if (id === '') {
-      console.warn('resourceId must be an assetId and not an empty string');
+      logger.warn('resourceId must be an assetId and not an empty string');
       return;
     }
 
@@ -22,7 +23,7 @@ const useResource = (application: string, id: string) => {
 
         setResource(response);
       } catch (error) {
-        console.error(error);
+        logger.error(error);
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps

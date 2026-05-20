@@ -11,6 +11,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
 
+import { logger } from '@edifice.io/utilities';
 import 'dayjs/locale/de.js';
 import 'dayjs/locale/es.js';
 import 'dayjs/locale/fr.js';
@@ -101,7 +102,7 @@ export default function useDate() {
         }
         return computedDate;
       } catch (error) {
-        console.error(error);
+        logger.error(error);
       }
       return computedDate;
     },

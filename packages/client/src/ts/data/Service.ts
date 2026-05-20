@@ -1,9 +1,10 @@
-import { DataServiceProps, IDataService, IEventBroker } from './interface';
-import { WebBroker } from './WebBroker';
+import { logger } from '@edifice.io/utilities';
 import { App } from '../globals';
 import { EVENT_NAME, IDataTrackEvent, LAYER_NAME } from '../notify/interfaces';
 import { IOdeServices } from '../services/OdeServices';
 import { IUserInfo, UserProfile } from '../session/interfaces';
+import { DataServiceProps, IDataService, IEventBroker } from './interface';
+import { WebBroker } from './WebBroker';
 
 /** A data event. */
 type IDataEvent = IDataTrackEvent['data'];
@@ -42,7 +43,7 @@ export class DataService implements IDataService {
         await this.conf.getPublicConf<PublicConfForDataService>(app);
       this._webBroker = new WebBroker(this.odeServices).initialize(params?.web);
     } catch {
-      console.log('DataService not initialized, usage data unavailable.');
+      logger.info('DataService not initialized, usage data unavailable.');
     }
   }
 

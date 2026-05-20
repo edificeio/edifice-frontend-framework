@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { App, ERROR_CODE, ResourceType } from '../globals';
 import { IOdeServices } from '../services/OdeServices';
 import { ServiceRegistry } from './ServiceRegistry';
@@ -55,7 +56,7 @@ export class SnipletsService {
           );
         }
       } catch (error) {
-        console.warn('Failed to load resource-producing apps:', error);
+        logger.warn('Failed to load resource-producing apps:', error);
         // Keep default apps array
       }
     }

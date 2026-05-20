@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { ChangeEvent, useRef, useState } from 'react';
 import { HEIC_MIME_TYPES } from '../../utilities/mime-types/mime-types-utils';
 
@@ -120,7 +121,7 @@ const useDropzone = (props?: {
             );
             return newFile;
           } catch (error) {
-            console.error(`Failed to convert HEIC image: ${file.name}`, error);
+            logger.error(`Failed to convert HEIC image: ${file.name}`, error);
             return file; // Return original file if conversion fails
           }
         }

@@ -3,6 +3,7 @@ import { Dispatch, useId, useRef, useState } from 'react';
 import { ShareRightWithVisibles, odeServices } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
+import { logger } from '@edifice.io/utilities';
 import { useToggle } from '@uidotdev/usehooks';
 import { useToast } from '../../../../hooks';
 import { ShareAction } from './useShare';
@@ -81,7 +82,7 @@ export const useShareBookmark = ({
       }));
       toggleBookmarkInput(false);
     } catch (e) {
-      console.error('Failed to save bookmark', e);
+      logger.error('Failed to save bookmark', e);
       toast.error(t('explorer.bookmarked.status.error'));
     }
   };

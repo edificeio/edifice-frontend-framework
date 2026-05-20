@@ -3,6 +3,7 @@ import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
+import { logger } from '@edifice.io/utilities';
 import { ToolbarItem } from '../../../components';
 import { useWorkspaceFile } from '../../../hooks';
 import {
@@ -170,7 +171,7 @@ export default function useAudioRecorder(
         '/infra/public/js/audio-recorder-processor.js',
       );
     } catch (err) {
-      console.error(err);
+      logger.error(err);
     }
 
     const audioWorkletNode = new AudioWorkletNode(
@@ -306,7 +307,7 @@ export default function useAudioRecorder(
     useCallback(async () => {
       const audioName = audioNameRef.current?.value;
       if (!audioName) {
-        console.error('Audio name is required');
+        logger.error('Audio name is required');
         return;
       }
       if (audioRef.current) {
@@ -360,7 +361,7 @@ export default function useAudioRecorder(
             type: 'update',
             updatedState: { playState: 'IDLE', recordState: 'IDLE' },
           });
-          console.error('Error while saving', error);
+          logger.error('Error while saving', error);
           reject();
         }
       });

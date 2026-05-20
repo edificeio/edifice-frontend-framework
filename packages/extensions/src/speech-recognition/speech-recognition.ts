@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { Node } from '@tiptap/core';
 
 export interface SpeechRecognitionOptions {
@@ -40,7 +41,7 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
     if (
       !('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
     ) {
-      console.warn(
+      logger.warn(
         '"@edifice.io/tiptap-extensions/speechrecognition" requires a browser supporting the SpeechRecognition API".',
       );
     }
@@ -93,7 +94,7 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
 
           this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
             // TODO create a "feedback" tiptap extension, to display user friendly error messages ?
-            console.log(
+            logger.info(
               `[@edifice.io/tiptap-extensions/speech-recognition][error][${event.error}]: ${event.message}`,
             );
           };

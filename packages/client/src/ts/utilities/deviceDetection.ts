@@ -14,6 +14,7 @@
  * - ua-parser-js v2.x switched to AGPL-3.0 (compatible with this project)
  */
 
+import { logger } from '@edifice.io/utilities';
 import { UAParser } from 'ua-parser-js';
 
 /**
@@ -158,7 +159,7 @@ export function setDeviceCookies(): DeviceInfo {
     setCookie('deviceName', info.deviceName);
     return info;
   } catch (e) {
-    console.warn('Device detection failed, using Unknown values:', e);
+    logger.warn('Device detection failed, using Unknown values:', e);
     return {
       osName: 'Unknown',
       osVersion: 'Unknown',

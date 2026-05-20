@@ -2,6 +2,7 @@ import { useRef } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
+import { logger } from '@edifice.io/utilities';
 import { VideoRecorder } from '../../VideoRecorder';
 import { VideoRecorderRef } from '../../VideoRecorder/VideoRecorder';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
@@ -21,7 +22,7 @@ export const Video = () => {
   };
 
   const handleError = (err: string) => {
-    console.error(err);
+    logger.error(err);
   };
 
   return (

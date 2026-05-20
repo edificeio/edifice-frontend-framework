@@ -7,7 +7,7 @@ import {
 } from '@edifice.io/client';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
-import { libraryMaps } from '@edifice.io/utilities';
+import { libraryMaps, logger } from '@edifice.io/utilities';
 import { useToast } from '../../../../hooks';
 import { useEdificeClient } from '../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { ToastError } from '../components/ToastError';
@@ -163,7 +163,7 @@ export default function usePublishModal({ onSuccess, resource }: ModalProps) {
       }
       onSuccess?.();
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       toast.error(<ToastError formData={formData} />);
     }
   };

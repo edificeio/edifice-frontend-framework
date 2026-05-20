@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { IOdeServices } from '../services/OdeServices';
 import { IHttpParams, IHttpResponse } from '../transport/interfaces';
 
@@ -31,7 +32,7 @@ export class CacheService {
       }
       return res;
     } catch (e) {
-      console.error(`Failed to retrieve value for: ${key}`, e);
+      logger.error(`Failed to retrieve value for: ${key}`, e);
       throw e;
     }
   }
@@ -75,6 +76,7 @@ export class CacheService {
     const { response, value } = await this.httpGet(url, params);
     if (response.status < 200 || response.status >= 300) {
       // error code => dont cache
+      logger.error(`Bad http status (${response.status}) for url: ${url}`);
       throw `Bad http status (${response.status}) for url: ${url}`;
     } else {
       return value;

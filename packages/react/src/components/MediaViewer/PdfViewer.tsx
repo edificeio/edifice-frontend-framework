@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { ComponentType, useEffect, useRef, useState } from 'react';
 import type { DocumentProps, PageProps } from 'react-pdf';
 import { LoadingScreen } from '../LoadingScreen';
@@ -27,7 +28,7 @@ export default function PdfViewer({
         setPage(() => reactPdf.Page);
         setIsLoading(false);
       } catch (error) {
-        console.error('Failed to load react-pdf:', error);
+        logger.error('Failed to load react-pdf:', error);
       }
     };
 

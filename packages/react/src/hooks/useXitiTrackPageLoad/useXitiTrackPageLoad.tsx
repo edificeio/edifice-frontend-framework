@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 
+import { logger } from '@edifice.io/utilities';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 /** Apply XiTi tracking (navigation). */
@@ -23,10 +24,10 @@ export default function useXitiTrackPageLoad() {
       await odeServices
         .analytics()
         .trackPageLoad(window.location.pathname, currentApp);
-      console.info(`[Xiti] Success tracking page ${window.location.pathname}`);
+      logger.info(`[Xiti] Success tracking page ${window.location.pathname}`);
       setXitiStatus(`[Xiti] Success tracking page ${window.location.pathname}`);
     } catch (e) {
-      console.error('[Xiti] Error Tracking Page Load', e);
+      logger.error('[Xiti] Error Tracking Page Load', e);
       setXitiStatus(`[Xiti] Error Tracking Page Load: ${e}`);
     }
   };

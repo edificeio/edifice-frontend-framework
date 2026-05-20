@@ -17,6 +17,7 @@ import {
 } from '@tiptap/react';
 import clsx from 'clsx';
 
+import { logger } from '@edifice.io/utilities';
 import {
   BubbleMenuEditImage,
   EditorContext,
@@ -244,7 +245,7 @@ const Editor = forwardRef(
               isOpen={imageModal.isOpen}
               onCancel={imageModal.handleCancel}
               onSave={imageModal.handleSave}
-              onError={console.error}
+              onError={logger.error}
             />
           )}
 

@@ -9,6 +9,7 @@ import {
   UserProfile,
 } from './interfaces';
 
+import { logger } from '@edifice.io/utilities';
 import { IOdeServices } from '../services/OdeServices';
 
 export class SessionService {
@@ -119,7 +120,7 @@ export class SessionService {
       );
       return infos;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return defaultQuota;
     }
   }
@@ -139,7 +140,7 @@ export class SessionService {
       }
       return response;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
     }
   }
 
@@ -213,7 +214,7 @@ export class SessionService {
 
       return { ...userbook, profiles: data };
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return {};
     }
   }

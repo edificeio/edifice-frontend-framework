@@ -1,4 +1,4 @@
-import { MimeTypeUtils } from '@edifice.io/utilities';
+import { logger, MimeTypeUtils } from '@edifice.io/utilities';
 import { WorkspaceElement } from '../services';
 
 export type RoleMapperParams = {
@@ -98,7 +98,7 @@ export abstract class DocumentHelper {
     extension && (extension = extension.trim());
     if (!contentType) return 'unknown';
     if (!this.roleMappers) {
-      console.warn('[DocumentHelper.role] should not have empty roles', this);
+      logger.warn('[DocumentHelper.role] should not have empty roles', this);
     }
     const params = { type: contentType, previewRole, extension };
     for (const roleMapper of this.roleMappers) {

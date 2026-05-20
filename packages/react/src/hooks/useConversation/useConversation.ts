@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 
+import { logger } from '@edifice.io/utilities';
 import { useQuery } from '@tanstack/react-query';
 import { useHasWorkflow } from '../useHasWorkflow';
 
@@ -56,7 +57,7 @@ const useConversation = () => {
           : window.location.origin + defaultLink,
       );
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       setMsgLink(window.location.origin + defaultLink);
     }
   };

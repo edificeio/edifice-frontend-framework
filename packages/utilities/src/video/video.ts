@@ -1,3 +1,5 @@
+import { logger } from '../logger';
+
 export const getBestSupportedMimeType = (): string => {
   if (MediaRecorder.isTypeSupported) {
     // SAFARI TEST
@@ -9,7 +11,7 @@ export const getBestSupportedMimeType = (): string => {
         'video/webm',
       ].find((type) => {
         if (!MediaRecorder.isTypeSupported(type)) {
-          console.error(`${type} is not Supported`);
+          logger.error(`${type} is not Supported`);
           return false;
         }
         return true;

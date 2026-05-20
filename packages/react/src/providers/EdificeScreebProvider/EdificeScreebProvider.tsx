@@ -3,8 +3,9 @@ import { type ReactNode, useEffect } from 'react';
 import { HooksInit } from '@screeb/sdk-browser';
 import { ScreebProvider, useScreeb as useScreebSDK } from '@screeb/sdk-react';
 
-import { useEdificeClient } from '../EdificeClientProvider/EdificeClientProvider.hook';
+import { logger } from '@edifice.io/utilities';
 import { usePublicConf } from '../../hooks/usePublicConf';
+import { useEdificeClient } from '../EdificeClientProvider/EdificeClientProvider.hook';
 
 type ScreebPublicConf = {
   'screeb-app-id'?: string;
@@ -47,7 +48,7 @@ const ScreebInitializer = ({
     hashUserId(user.userId)
       .then((hashedId) => init(appId, hashedId, { profile: user.type }, hooks))
       .catch((error) => {
-        console.error('Failed to initialize Screeb:', error);
+        logger.error('Failed to initialize Screeb:', error);
       });
   }, [user, appId, init, onSurveyDisplayAllowed]);
 

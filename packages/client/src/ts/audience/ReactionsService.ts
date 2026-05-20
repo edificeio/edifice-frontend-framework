@@ -1,3 +1,4 @@
+import { logger } from '@edifice.io/utilities';
 import { IOdeServices } from '../services/OdeServices';
 import {
   IReactionsService,
@@ -34,7 +35,7 @@ export class ReactionsService implements IReactionsService {
         .getPublicConf<ReactionAvailableData>('audience');
       return Array.isArray(reactions) ? reactions : undefined;
     } catch (e) {
-      console.error('Audience configuration not found');
+      logger.error('Audience configuration not found');
       return undefined;
     }
   }

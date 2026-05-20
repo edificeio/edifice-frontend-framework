@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { logger } from '@edifice.io/utilities';
 import parse, { attributesToProps, domToReact } from 'html-react-parser';
 import { IconBurgerMenu } from '../../../modules/icons/components';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
@@ -58,7 +59,7 @@ export function useHelp(
         setError(false);
       } catch (error) {
         setError(true);
-        console.error(error);
+        logger.error(error);
       }
     })();
   }, [appCode, helpPath]);

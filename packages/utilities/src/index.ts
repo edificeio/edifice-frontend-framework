@@ -4,6 +4,7 @@ export * from './get-or-generate-blobId';
 export * from './get-thumbnail';
 export * from './image-resizer';
 export * from './library-maps';
+export * from './logger';
 export * from './mime-type-utils';
 export * from './noop';
 export * from './string-utils';

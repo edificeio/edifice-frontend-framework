@@ -1,3 +1,5 @@
+import { logger } from '@edifice.io/utilities';
+
 /**
  * Simple in-memory channel implementation.
  * This is intentionally synchronous (listeners are invoked in insertion order).
@@ -44,7 +46,7 @@ export class SimpleChannel<T = any> {
       try {
         h(message);
       } catch (e) {
-        console.error('[SimpleChannel] publish failed', e);
+        logger.error('[SimpleChannel] publish failed', e);
       }
     }
   }

@@ -14,6 +14,7 @@ import { createPortal } from 'react-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { logger } from '@edifice.io/utilities';
 import {
   Button,
   FormControl,
@@ -272,7 +273,7 @@ export const ResourceModal = ({
       // Pass the operation result to the onSuccess callback
       onSuccess(result, param);
     } catch (e) {
-      console.error(e);
+      logger.error(e);
     }
   };
 

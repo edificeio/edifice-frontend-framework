@@ -9,7 +9,11 @@ import {
 } from 'react';
 
 import { WorkspaceElement, odeServices } from '@edifice.io/client';
-import { convertMsToMS, getBestSupportedMimeType } from '@edifice.io/utilities';
+import {
+  convertMsToMS,
+  getBestSupportedMimeType,
+  logger,
+} from '@edifice.io/utilities';
 import { useTranslation } from 'react-i18next';
 import {
   FormControl,
@@ -117,7 +121,7 @@ const VideoRecorder = forwardRef(
           }
         }
       } catch (err) {
-        console.error(err);
+        logger.error(err);
       }
     }, [stream]);
 
@@ -194,7 +198,7 @@ const VideoRecorder = forwardRef(
             setRecordedChunks((prev) => [...prev, data]);
           }
         };
-        recorderRef.current.onerror = (event) => console.error(event);
+        recorderRef.current.onerror = (event) => logger.error(event);
         recorderRef.current.start(1000); // collect 1000ms of data
       }
     }, [stream]);
@@ -243,7 +247,7 @@ const VideoRecorder = forwardRef(
       videoRef?.current?.pause();
       setSaving(true);
       if (!recordedVideo) {
-        console.error('Error while saving video: recorded video is undefined.');
+        logger.error('Error while saving video: recorded video is undefined.');
         return;
       }
 
@@ -257,6 +261,7 @@ const VideoRecorder = forwardRef(
         setSaved(true);
         return [resVideo];
       } else {
+        logger.error('Error while uploading video');
         onError('Error while uploading video');
         setSaving(false);
         setSaved(true);

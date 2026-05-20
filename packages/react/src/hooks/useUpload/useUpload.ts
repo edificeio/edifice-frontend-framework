@@ -8,7 +8,7 @@ import {
   odeServices,
 } from '@edifice.io/client';
 
-import { getOrGenerateBlobId } from '@edifice.io/utilities';
+import { getOrGenerateBlobId, logger } from '@edifice.io/utilities';
 import { useTranslation } from 'react-i18next';
 import { useBrowserInfo } from '../../hooks';
 import { Status } from '../../types';
@@ -83,7 +83,7 @@ const useUpload = (
       setUploadStatus(file, 'success');
       return resource;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       setUploadStatus(file, 'error');
       return null;
     }
@@ -107,7 +107,7 @@ const useUpload = (
       setUploadStatus(blob, 'success');
       return resource;
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       setUploadStatus(blob, 'error');
       return null;
     }
@@ -147,8 +147,10 @@ const useUpload = (
       };
       return resVideo;
     } else if (uploadResponse.state === 'error') {
+      logger.error(uploadResponse.code || 'Error while uploading video');
       throw new Error(uploadResponse.code || 'Error while uploading video');
     } else {
+      logger.error('Video encoding is still running');
       throw new Error('Video encoding is still running');
     }
   };
