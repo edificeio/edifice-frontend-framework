@@ -218,13 +218,29 @@ export const peerDepsEsmConfig = defineConfig({
           __dirname,
           'src/shims/react-spring-web.ts',
         ),
+        // ode-explorer est servi via le shim EFF pour inliner ses transitives
+        // (notamment @dnd-kit/*) sans les ajouter à l'import map.
+        'ode-explorer': resolve(__dirname, 'src/shims/ode-explorer.ts'),
       },
       formats: ['es'],
       fileName: (_, entryName) => `${entryName}.js`,
     },
     outDir: 'dist/react-esm',
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      // Externals étendus pour éviter la circularité quand on bundle ode-explorer :
+      // ses propres imports de @edifice.io/* doivent rester external pour utiliser
+      // les bundles principaux servis sur /assets/js/edifice-*.
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@edifice.io/react',
+        /^@edifice\.io\/react\/.*/,
+        '@edifice.io/client',
+        /^@edifice\.io\/client\/.*/,
+        '@edifice.io/bootstrap',
+        /^@edifice\.io\/bootstrap\/.*/,
+      ],
       output: {
         preserveModules: false,
       },
