@@ -1,4 +1,4 @@
-import { IFlashMessageModel } from '../../../../client';
+import { IFlashMessageModel } from '../../../../client/dist';
 
 export const mockMessageInfo: IFlashMessageModel = {
   id: '1',

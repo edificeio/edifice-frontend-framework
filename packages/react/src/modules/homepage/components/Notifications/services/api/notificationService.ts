@@ -19,10 +19,28 @@ export const createNotificationService = (baseURL: string) => ({
 
     return odeServices
       .http()
-      .get<
-        NotificationModel[]
-      >(`${baseURL}/timeline/lastNotifications?type=${types.join('&type=')}`, {
+      .get<{
+        status: string;
+        number: number;
+        results: Array<NotificationModel>;
+      }>(`${baseURL}/timeline/lastNotifications?type=${types.join('&type=')}`, {
         queryParams: params,
+      })
+      .then((response): Array<NotificationModel> => {
+        if (response.status !== 'ok') {
+          //TODO notify error
+          return [];
+        }
+
+        if (response.number && response.results) {
+          return response.results;
+        }
+
+        return [];
       });
+  },
+
+  getNotificationTypes() {
+    return odeServices.http().get<string[]>(`${baseURL}/timeline/types`);
   },
 });
