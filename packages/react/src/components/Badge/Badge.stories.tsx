@@ -206,7 +206,7 @@ export const BadgeStatut: Story = {
     docs: {
       description: {
         story:
-          'Badge of type `statut` expects different levels: `success | warning | danger | info`. You can add `background` key to the variant object to set a backgroundColor',
+          'Badge of type `statut` expects different levels: `success | validate | warning | danger | info`.',
       },
     },
   },

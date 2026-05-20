@@ -11,9 +11,9 @@
   border: 1px solid var(--#{$prefix}badge-border-color);
 
   &:not(.badge-notification, .badge-statut) {
-  height: 3rem;
-  line-height: 1.5;
-}
+    height: 3rem;
+    line-height: 1.5;
+  }
 
   &.badge-profile {
     &-student {

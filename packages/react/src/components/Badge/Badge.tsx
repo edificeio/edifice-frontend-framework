@@ -15,7 +15,7 @@ export type NotificationBadgeVariant = {
 /** Badge variant : statut */
 export type StatutBadgeVariant = {
   type: 'statut';
-  level: 'validate'|'success' | 'warning' | 'danger' | 'info';
+  level: 'validate' | 'success' | 'warning' | 'danger' | 'info';
 };
 
 /** Badge variant : content */
