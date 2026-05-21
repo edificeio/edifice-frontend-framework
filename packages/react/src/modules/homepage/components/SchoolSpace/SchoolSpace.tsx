@@ -10,7 +10,7 @@ import { IconRafterUp } from '../../../icons/components';
  */
 export interface SchoolSpaceProps {
   selectedSchool: School | undefined;
-  onSelectedSchoolChange?: (schoolIndex: number) => void;
+  onSelectedSchoolChange?: (school: School) => void;
   schools?: School[];
 }
 
@@ -56,10 +56,10 @@ const SchoolSpace = ({
                   }
                 />
                 <Dropdown.Menu>
-                  {schools.map((school, index) => (
+                  {schools.map((school) => (
                     <Dropdown.Item
                       key={school.id}
-                      onClick={() => onSelectedSchoolChange?.(index)}
+                      onClick={() => onSelectedSchoolChange?.(school)}
                     >
                       <Flex direction="column">
                         <p>{school.name}</p>
