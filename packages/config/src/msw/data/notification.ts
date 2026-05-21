@@ -1,4 +1,4 @@
-import { NotificationModel } from '../../../../client/dist';
+import { NotificationModel } from '../../../../client';
 
 export const mockNotifications: NotificationModel[] = [
   {
