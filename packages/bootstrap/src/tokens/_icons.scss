@@ -3,6 +3,7 @@
 @use '../abstracts/' as *;
 @use '../themes/neo/icons' as *;
 @use '../themes/one/icons' as *;
+@use '../themes/configs/icons' as *;
 
 $all-icons: map.merge($icons-applications, $icons-connectors);
 
@@ -36,4 +37,40 @@ $all-icons: map.merge($icons-applications, $icons-connectors);
 
 [class*='border-app-'] {
   border-color: var(--app-color);
+}
+
+/**
+  Nouveau système (utilisé par tous les nouveaux thèmes : edifice2d, crna, edifice1d).
+  Découplage contexte / valeur via une CSS variable --icon-color.
+
+  Pastille typique : <div class="app-icon color-app app-account">…</div>
+  - .color-app / .bg-app / .bg-app-light / .border-app : 4 règles "contexte" globales.
+  - .app-{code} : 1 règle "valeur" par app, définit --icon-color.
+  - La version light est calculée en CSS natif via hsl(from …) — préserve la saturation,
+    équivalent visuel proche de color.scale($lightness: 90%, $saturation: 5%).
+  - Note : .bg-app-light (et non .bg-light) pour éviter la collision avec l'utilitaire
+    Bootstrap .bg-light qui utilise !important.
+
+  Sur les thèmes legacy (neo, one), les règles scopées [data-product='neo|one'] .color-app-{code}
+  gagnent en spécificité sur ces règles globales — aucun conflit, aucun scope nécessaire.
+**/
+.color-app {
+  color: var(--icon-color);
+}
+.bg-app {
+  background-color: var(--icon-color);
+}
+.bg-app-light {
+  background-color: hsl(from var(--icon-color) h s 95%);
+}
+.border-app {
+  border-color: var(--icon-color);
+}
+
+@each $group in ('applications', 'connectors') {
+  @each $code, $color in map.get($icons-defaults, $group) {
+    .app-#{$code} {
+      --icon-color: #{$color};
+    }
+  }
 }

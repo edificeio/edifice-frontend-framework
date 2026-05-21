@@ -117,6 +117,9 @@ const AppIcon = forwardRef(
         ...iconFits,
         [`bg-light-${appCode}`]: appCode && !isContain,
         [`color-app-${appCode}`]: appCode,
+        'bg-app-light': appCode && !isContain,
+        'color-app': appCode,
+        [`app-${appCode}`]: appCode,
       },
       className,
     );
