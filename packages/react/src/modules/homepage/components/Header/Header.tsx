@@ -79,7 +79,7 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
           {communityWorkflow && (
             <NavItem>
               <NavLink
-                link="/community"
+                link="/communities"
                 translate={t('navbar.community')}
                 data-testid="header-community-button"
               >
