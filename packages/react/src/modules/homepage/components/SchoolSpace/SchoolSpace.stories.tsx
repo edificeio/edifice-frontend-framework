@@ -1,3 +1,4 @@
+import { School } from '@edifice.io/client';
 import type { Meta, StoryObj } from '@storybook/react';
 import SchoolSpace, { SchoolSpaceProps } from './SchoolSpace';
 
@@ -46,7 +47,7 @@ const schools = [
     classes: [],
     exports: [],
   },
-];
+] satisfies Array<School>;
 
 export const MultipleSchools: Story = {
   render: renderWithProps({
@@ -58,10 +59,8 @@ export const MultipleSchools: Story = {
       classes: [],
       exports: [],
     },
-    onSelectedSchoolChange: (idx) =>
-      alert(
-        `School id=${schools[idx].id} UAI=${schools[idx].UAI} is selected.`,
-      ),
+    onSelectedSchoolChange: (school: School) =>
+      alert(`School id=${school.id} UAI=${school.UAI} is selected.`),
   }),
   parameters: {
     docs: {
