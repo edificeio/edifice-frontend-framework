@@ -1,7 +1,13 @@
 import { useNotificationListContainer } from './hooks/useNotificationList';
 import NotificationList from './NotificationList';
 
-export const NotificationListContainer = () => {
+export type NotificationListContainerProps = {
+  /** Callback when the notifications list is closed */
+  onCloseNotifications?: () => void;
+};
+export const NotificationListContainer = ({
+  onCloseNotifications,
+}: NotificationListContainerProps) => {
   const { notifications, error } = useNotificationListContainer();
 
   // No notifications or loading state
@@ -9,7 +15,12 @@ export const NotificationListContainer = () => {
     return null;
   }
 
-  return <NotificationList notifications={notifications} />;
+  return (
+    <NotificationList
+      notifications={notifications}
+      onCloseNotifications={onCloseNotifications}
+    />
+  );
 };
 
 NotificationListContainer.displayName = 'NotificationListContainer';
