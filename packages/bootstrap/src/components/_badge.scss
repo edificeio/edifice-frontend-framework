@@ -10,7 +10,7 @@
 
   border: 1px solid var(--#{$prefix}badge-border-color);
 
-  &:not(.badge-notification, .badge-statut) {
+  &:not(.badge-notification, .badge-status) {
     height: 3rem;
     line-height: 1.5;
   }
@@ -41,7 +41,7 @@
     --#{$prefix}badge-padding-x: 0.8rem;
   }
 
-  &.badge-statut {
+  &.badge-status {
     &-validate {
       background-color: var(--#{$prefix}green);
       color: var(--#{$prefix}white);

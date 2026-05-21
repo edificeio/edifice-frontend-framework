@@ -33,11 +33,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative',
         'user / personnel',
         'user / guest',
-        'statut / validate',
-        'statut / success',
-        'statut / warning',
-        'statut / danger',
-        'statut / info',
+        'status / validate',
+        'status / success',
+        'status / warning',
+        'status / danger',
+        'status / info',
       ],
       mapping: {
         'content / success / background': {
@@ -122,11 +122,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative': { type: 'user', profile: 'relative' },
         'user / personnel': { type: 'user', profile: 'personnel' },
         'user / guest': { type: 'user', profile: 'guest' },
-        'statut / validate': { type: 'statut', level: 'validate' },
-        'statut / success': { type: 'statut', level: 'success' },
-        'statut / warning': { type: 'statut', level: 'warning' },
-        'statut / danger': { type: 'statut', level: 'danger' },
-        'statut / info': { type: 'statut', level: 'info' },
+        'status / validate': { type: 'status', level: 'validate' },
+        'status / success': { type: 'status', level: 'success' },
+        'status / warning': { type: 'status', level: 'warning' },
+        'status / danger': { type: 'status', level: 'danger' },
+        'status / info': { type: 'status', level: 'info' },
       },
     },
   },
@@ -193,20 +193,20 @@ export const BadgeProfile: Story = {
   },
 };
 
-export const BadgeStatut: Story = {
+export const BadgeStatus: Story = {
   args: {
-    variant: { type: 'statut', level: 'success' },
+    variant: { type: 'status', level: 'success' },
   },
 
   render: (args) => {
-    return <Badge {...args}>Statut</Badge>;
+    return <Badge {...args}>Status</Badge>;
   },
 
   parameters: {
     docs: {
       description: {
         story:
-          'Badge of type `statut` expects different levels: `success | validate | warning | danger | info`.',
+          'Badge of type `status` expects different levels: `success | validate | warning | danger | info`.',
       },
     },
   },
