@@ -18,17 +18,11 @@ export const notificationQueryOptions = {
     return infiniteQueryOptions({
       queryKey: notificationQueryKeys.notifications(),
       queryFn: ({ pageParam = 0 }) => {
-        return notificationService
-          .getNotifications(types, pageParam)
-          .then((response) => {
-            console.log('Fetched notifications:', response);
-            return response;
-          });
+        return notificationService.getNotifications(types, pageParam);
       },
       staleTime: 5 * 60 * 1000, // 5 minutes
       initialPageParam: 0,
       select(data) {
-        console.log('Raw notification data:', data);
         // Filter dupplicate notifications that may appear when user switch between types
         const seenIds = new Set<string>();
         const uniqueNotifications = data.pages.flat().filter((notification) => {

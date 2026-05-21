@@ -38,14 +38,6 @@ export const useNotificationListContainer =
       error: errorNotifications,
     } = useNotifications(notificationTypes, !!isFetchedTypes);
 
-    console.log(
-      'Notification hook:',
-      notifications,
-      isLoadingNotifications,
-      notificationTypes,
-      isLoadingTypes,
-    );
-
     return {
       notifications,
       notificationTypes,
