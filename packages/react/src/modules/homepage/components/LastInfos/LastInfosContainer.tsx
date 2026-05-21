@@ -25,7 +25,7 @@ export function LastInfosContainer() {
             username,
             thread,
             modifiedDate,
-            isHeadline,
+            headline: isHeadline,
           }) =>
             ({
               id,

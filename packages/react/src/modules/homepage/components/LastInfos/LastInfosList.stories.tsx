@@ -50,7 +50,18 @@ const renderWithProps = (props: LastInfosListProps) => () => {
 export const Default: Story = {
   render: renderWithProps({
     infos: mockLastInfos.map(
-      ({ content, title, username, thread, id, modifiedDate }, index) =>
+      (
+        {
+          content,
+          title,
+          username,
+          thread,
+          id,
+          modifiedDate,
+          headline: isHeadline,
+        },
+        index,
+      ) =>
         ({
           id,
           content:
@@ -65,11 +76,11 @@ export const Default: Story = {
                     : content,
           title,
           username,
-          icon: thread.icon,
+          icon: thread.icon || '',
           threadId: thread.id,
           threadName: thread.title,
           publicationDate: modifiedDate,
-          isHeadline: index === 0,
+          isHeadline,
         }) satisfies LastInfosProps,
     ),
   }),
