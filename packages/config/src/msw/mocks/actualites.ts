@@ -210,6 +210,7 @@ const icon =
 export const mockLastInfos = [
   {
     modifiedDate: '2021-03-24T16:36:05.398+02',
+    headline: false,
     thread: {
       id: 1,
       icon,
@@ -223,18 +224,20 @@ export const mockLastInfos = [
   },
   {
     modifiedDate: '2021-03-23T01:01:00.000+02',
+    headline: true,
     thread: {
       id: 2,
       icon: null,
       title: 'News Ecole B',
     },
     title: 'another info',
-    content: 'blah blah plus ancien',
+    content: 'blah blah plus ancien, mais mis en avant',
     username: 'Jean Aymar',
     id: 15,
   },
   {
     modifiedDate: '2021-03-22T01:01:00.000+02',
+    headline: false,
     thread: {
       id: 1,
       icon,
@@ -247,6 +250,7 @@ export const mockLastInfos = [
   },
   {
     modifiedDate: '2021-03-21T01:01:00.000+02',
+    headline: false,
     thread: {
       id: 1,
       icon,
@@ -259,6 +263,7 @@ export const mockLastInfos = [
   },
   {
     modifiedDate: '2021-03-20T16:36:05.398+02',
+    headline: false,
     thread: {
       id: 3,
       icon,
@@ -271,6 +276,7 @@ export const mockLastInfos = [
   },
   {
     modifiedDate: '2021-03-19T16:36:05.398+02',
+    headline: false,
     thread: {
       id: 3,
       icon,
