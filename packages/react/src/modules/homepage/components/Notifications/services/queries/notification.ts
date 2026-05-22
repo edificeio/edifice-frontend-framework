@@ -9,14 +9,15 @@ import { notificationService } from '../api';
 
 export const notificationQueryKeys = {
   all: () => ['notifications'] as const,
-  notifications: () => [...notificationQueryKeys.all(), 'list'] as const,
+  notifications: (types: string[] = []) =>
+    [...notificationQueryKeys.all(), 'list', types] as const,
   types: () => [...notificationQueryKeys.all(), 'types'] as const,
 };
 
 export const notificationQueryOptions = {
   getNotifications(types: string[], enabled: boolean) {
     return infiniteQueryOptions({
-      queryKey: notificationQueryKeys.notifications(),
+      queryKey: notificationQueryKeys.notifications(types),
       queryFn: ({ pageParam = 0 }) => {
         return notificationService.getNotifications(types, pageParam);
       },
