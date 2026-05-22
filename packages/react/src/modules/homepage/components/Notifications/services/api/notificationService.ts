@@ -12,10 +12,14 @@ export const createNotificationService = (baseURL: string) => ({
    * @returns list of notification objects
    */
   getNotifications(types: string[], page: number) {
-    const params: { page: number; mine?: number } = {
-      page: page,
-      mine: 1,
-    };
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      mine: '1',
+    });
+
+    types.forEach((type) => {
+      searchParams.append('type', type);
+    });
 
     return odeServices
       .http()
@@ -23,9 +27,7 @@ export const createNotificationService = (baseURL: string) => ({
         status: string;
         number: number;
         results: Array<NotificationModel>;
-      }>(`${baseURL}/timeline/lastNotifications?type=${types.join('&type=')}`, {
-        queryParams: params,
-      })
+      }>(`${baseURL}/timeline/lastNotifications?${searchParams.toString()}`)
       .then((response): Array<NotificationModel> => {
         if (response.status !== 'ok') {
           //TODO notify error
