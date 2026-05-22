@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import type { ComponentRef } from 'react';
 import { useEffect, useRef } from 'react';

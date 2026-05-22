@@ -1,0 +1,59 @@
+.home-card {
+  --home-card-padding: var(--primitive-spacer-16);
+  --home-card-gap: var(--primitive-spacer-16);
+  --home-card-background: var(--primitive-white);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--home-card-gap);
+  padding: var(--home-card-padding);
+  background: var(--home-card-background);
+  border-radius: var(--primitive-border-radius-2xl);
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
+  // ---- Variants ----
+  &--user {
+    --home-card-padding: var(--primitive-spacer-16);
+    --home-card-gap: var(--primitive-spacer-16);
+  }
+
+  &--primary {
+    --home-card-padding: var(--primitive-spacer-8) var(--primitive-spacer-16)
+      var(--primitive-spacer-16) var(--primitive-spacer-16);
+    --home-card-gap: var(--primitive-spacer-8);
+  }
+
+  &--secondary {
+    --home-card-padding: var(--primitive-spacer-8) var(--primitive-spacer-16)
+      var(--primitive-spacer-16) var(--primitive-spacer-16);
+    --home-card-gap: var(--primitive-spacer-4);
+    --home-card-background: var(--primitive-grey-100);
+
+    box-shadow: none;
+  }
+
+  // ---- Header ----
+  &-header-title {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  // Title style override for the "secondary" variant
+  &--secondary & {
+    &-header-title {
+      font-family: var(--font-family-body);
+      font-size: var(--primitive-font-size-small);
+      line-height: var(--primitive-font-lineheight-2xs);
+    }
+  }
+
+  // ---- Content ----
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
+}
