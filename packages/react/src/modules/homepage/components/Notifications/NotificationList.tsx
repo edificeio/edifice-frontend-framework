@@ -45,6 +45,8 @@ const NotificationList = ({
               className="notification-list-close"
               rightIcon={<IconClose />}
               onClick={handleCloseClick}
+              aria-label={t('homepage.widget.notifications-list.close')}
+              title={t('homepage.widget.notifications-list.close')}
               data-testid="notification-list-close-button"
             ></ButtonBeta>
           )}
