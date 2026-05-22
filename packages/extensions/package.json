@@ -157,10 +157,7 @@
     "@tiptap/html": "2.11.0",
     "@tiptap/pm": "2.11.0",
     "@tiptap/starter-kit": "2.11.0",
-    "prosemirror-model": "1.25.4",
-    "prosemirror-state": "1.4.4",
-    "prosemirror-transform": "1.11.0",
-    "prosemirror-view": "1.41.5",
+    "prosemirror-state": "^1.4.3",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:"
   },
