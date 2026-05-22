@@ -36,7 +36,10 @@ export const useNotificationListContainer =
 
       isLoading: isLoadingNotifications,
       error: errorNotifications,
-    } = useNotifications(notificationTypes, !!isFetchedTypes);
+    } = useNotifications(
+      notificationTypes ?? [],
+      isFetchedTypes && !!notificationTypes,
+    );
 
     return {
       notifications,
