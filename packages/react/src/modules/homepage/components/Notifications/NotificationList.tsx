@@ -28,7 +28,7 @@ const NotificationList = ({
 
   return (
     <section role="region" className="notification-list">
-      <Flex direction="column" role="list">
+      <Flex direction="column">
         <Flex
           justify="between"
           align="center"
@@ -51,12 +51,7 @@ const NotificationList = ({
             ></ButtonBeta>
           )}
         </Flex>
-        {notifications.map((notification, index) => (
-          <div key={index} role="listitem">
-            <Notification notification={notification} />
-          </div>
-        ))}
-        {notifications.length === 0 && (
+        {notifications.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
               size={120}
@@ -67,6 +62,14 @@ const NotificationList = ({
               text={t('homepage.widget.notifications-list.empty.description')}
             />
           </div>
+        ) : (
+          <Flex direction="column" role="list">
+            {notifications.map((notification, index) => (
+              <div key={index} role="listitem">
+                <Notification notification={notification} />
+              </div>
+            ))}
+          </Flex>
         )}
       </Flex>
     </section>
