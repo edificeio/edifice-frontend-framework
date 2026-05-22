@@ -24,7 +24,7 @@ export const notificationQueryOptions = {
       staleTime: 5 * 60 * 1000, // 5 minutes
       initialPageParam: 0,
       select(data) {
-        // Filter dupplicate notifications that may appear when user switch between types
+        // Filter duplicate notifications that may appear when user switch between types
         const seenIds = new Set<string>();
         const uniqueNotifications = data.pages.flat().filter((notification) => {
           if (seenIds.has(notification._id)) {
