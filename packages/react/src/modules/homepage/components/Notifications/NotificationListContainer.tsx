@@ -10,8 +10,9 @@ export const NotificationListContainer = ({
 }: NotificationListContainerProps) => {
   const { notifications, error } = useNotificationListContainer();
 
-  // No notifications or loading state
-  if (!notifications || notifications.length === 0 || error) {
+  // Hide the widget while loading or when the request failed.
+  // Render NotificationList for an empty array so it can show its empty state.
+  if (!notifications || error) {
     return null;
   }
 
