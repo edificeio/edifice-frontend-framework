@@ -1,22 +1,47 @@
-import { IWidgetFramework, WidgetFrameworkFactory } from '@edifice.io/client';
-import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { IWidgetPreferences, odeServices } from '@edifice.io/client';
+import {
+  queryOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
-export default function useWidgetPreferences() {
-  const [svc, setSvc] = useState<IWidgetFramework>();
+const WIDGETS_QUERY_KEY = ['widgets', 'system'];
+const PREFERENCES_QUERY_KEY = ['widgets', 'preferences'];
 
-  const saveMutation = useMutation({
-    mutationFn: svc?.saveUserPrefs,
+export function useWidgetPreferences() {
+  const queryClient = useQueryClient();
+
+  const { data: widgets } = useQuery(
+    queryOptions({
+      queryKey: WIDGETS_QUERY_KEY,
+      queryFn: () => odeServices.widget().getSystemWidgets(),
+    }),
+  );
+
+  const { data: preferences } = useQuery(
+    queryOptions({
+      queryKey: PREFERENCES_QUERY_KEY,
+      queryFn: () => odeServices.widget().getPreferences(),
+    }),
+  );
+
+  const preferencesMutation = useMutation({
+    mutationFn: (prefs: IWidgetPreferences) =>
+      odeServices.widget().setPreferences(prefs),
+    onMutate: async (prefs) => {
+      // Optimistic update
+      queryClient.setQueryData(PREFERENCES_QUERY_KEY, () => prefs);
+    },
+    onError() {
+      queryClient.invalidateQueries({ queryKey: PREFERENCES_QUERY_KEY });
+    },
   });
 
-  useEffect(() => {
-    const widgetService = WidgetFrameworkFactory.instance();
-    widgetService.initialize(null, null).then(() => setSvc(widgetService));
-  }, []);
-
   return {
-    list: svc?.list,
-    lookup: svc?.lookup,
-    saveUserPreferences: saveMutation.mutateAsync,
+    widgets,
+    preferences,
+    savePreferences: (prefs: IWidgetPreferences) =>
+      preferencesMutation.mutateAsync(prefs),
   };
 }

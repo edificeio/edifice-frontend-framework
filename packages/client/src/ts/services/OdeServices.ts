@@ -1,28 +1,29 @@
+import { AnalyticsService } from '../analytics/Service';
+import { AudienceService } from '../audience/Service';
+import { IAudienceService } from '../audience/interface';
 import { CacheService } from '../cache/Service';
 import { ConfService } from '../configure/Service';
+import { DataService } from '../data/Service';
+import { IDataService } from '../data/interface';
 import { DirectoryService } from '../directory/Service';
-import { HttpService } from '../transport/Service';
-import { ResourceService } from '../resources/ResourceService';
-import { RightService } from '../rights/Service';
-import { SessionService } from '../session/Service';
-import { ShareService } from '../share/Service';
-import { WorkspaceService } from '../workspace/Service';
-import { IdiomService } from '../idiom/Service';
-import { AnalyticsService } from '../analytics/Service';
-import { IAudienceService } from '../audience/interface';
-import { VideoService } from '../video/Service';
+import { EmbedderService } from '../embedder/Service';
 import { App, ResourceType } from '../globals';
+import { IdiomService } from '../idiom/Service';
+import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
+import { ResourceService } from '../resources/ResourceService';
+import { SnipletsService } from '../resources/SnipletsService';
 import {
   IBehaviourService,
   IResourceService,
   IWebResourceService,
 } from '../resources/interface';
-import { EmbedderService } from '../embedder/Service';
-import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
-import { SnipletsService } from '../resources/SnipletsService';
-import { DataService } from '../data/Service';
-import { IDataService } from '../data/interface';
-import { AudienceService } from '../audience/Service';
+import { RightService } from '../rights/Service';
+import { SessionService } from '../session/Service';
+import { ShareService } from '../share/Service';
+import { HttpService } from '../transport/Service';
+import { VideoService } from '../video/Service';
+import { WidgetService } from '../widget/Service';
+import { WorkspaceService } from '../workspace/Service';
 
 export interface IOdeServices {
   analytics(): AnalyticsService;
@@ -43,6 +44,7 @@ export interface IOdeServices {
   session(): SessionService;
   share(): ShareService;
   video(): VideoService;
+  widget(): WidgetService;
   workspace(): WorkspaceService;
   embedder(): EmbedderService;
 }
@@ -60,6 +62,7 @@ export class OdeServices implements IOdeServices {
   private _session: SessionService;
   private _share: ShareService;
   private _video: VideoService;
+  private _widget: WidgetService;
   private _workspace: WorkspaceService;
   private _embedder: EmbedderService;
 
@@ -76,6 +79,7 @@ export class OdeServices implements IOdeServices {
     this._session = new SessionService(this);
     this._share = new ShareService(this);
     this._video = new VideoService(this);
+    this._widget = new WidgetService(this);
     this._workspace = new WorkspaceService(this);
     this._embedder = new EmbedderService(this);
   }
@@ -149,6 +153,10 @@ export class OdeServices implements IOdeServices {
 
   video() {
     return this._video;
+  }
+
+  widget() {
+    return this._widget;
   }
 
   workspace() {
