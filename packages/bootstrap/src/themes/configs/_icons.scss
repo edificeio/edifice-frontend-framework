@@ -1,6 +1,11 @@
-@use '../configs/primitives-legacy' as *;
+@use 'primitives-legacy' as *;
 
-$neo-icons: (
+/**
+  Shared map of app/connector icon colors for the new themes
+  (edifice2d, crna, edifice1d). Mirrors the neo map, substituting each
+  variable with its equivalent legacy primitive ($neo-*-500).
+**/
+$icons-defaults: (
   'applications': (
     'account': $neo-orange-500,
     'actualites': $neo-orange-500,
