@@ -1,5 +1,7 @@
 import { IWebApp, type IWidget, WidgetName } from '@edifice.io/client';
 
+const PLACEHOLDER_ICON = 'placeholder';
+
 export default function useEdificeIcons() {
   /**
    * Map between widget name and its icon name
@@ -37,7 +39,7 @@ export default function useEdificeIcons() {
       appCode =
         app?.icon !== undefined
           ? app?.icon.trim().toLowerCase()
-          : 'placeholder';
+          : PLACEHOLDER_ICON;
     }
 
     if (appCode && appCode.length > 0) {
@@ -110,44 +112,40 @@ export default function useEdificeIcons() {
   /**
    *
    * @param app an IWebApp, or an app prefix
-   * @return the CSS class used to style icons
+   * @return the CSS classes used to style icons (legacy composite + new context/value split)
    */
   function getIconClass(app: IWebApp | string): string {
-    const appCode = getIconCode(app);
-    if (appCode) return `color-app-${appCode}`;
-    return `color-app-placeholder`;
+    const appCode = getIconCode(app) || PLACEHOLDER_ICON;
+    return `color-app-${appCode} color-app app-${appCode}`;
   }
   /**
    *
    * @param app an IWebApp, or an app prefix
-   * @return the CSS class used to style icons
+   * @return the CSS classes used to style icons (legacy composite + new context/value split)
    */
   function getBackgroundIconClass(app: IWebApp | string): string {
-    const appCode = getIconCode(app);
-    if (appCode) return `bg-app-${appCode}`;
-    return `bg-app-placeholder`;
+    const appCode = getIconCode(app) || PLACEHOLDER_ICON;
+    return `bg-app-${appCode} bg-app app-${appCode}`;
   }
 
   /**
    *
    * @param app an IWebApp, or an app prefix
-   * @return the CSS class used to style icons
+   * @return the CSS classes used to style icons (legacy composite + new context/value split)
    */
   function getBackgroundLightIconClass(app: IWebApp | string): string {
-    const appCode = getIconCode(app);
-    if (appCode) return `bg-light-${appCode}`;
-    return `bg-light-placeholder`;
+    const appCode = getIconCode(app) || PLACEHOLDER_ICON;
+    return `bg-light-${appCode} bg-app-light app-${appCode}`;
   }
 
   /**
    *
    * @param app an IWebApp, or an app prefix
-   * @return the CSS class used to style icons
+   * @return the CSS classes used to style icons (legacy composite + new context/value split)
    */
   function getBorderIconClass(app: IWebApp | string): string {
-    const appCode = getIconCode(app);
-    if (appCode) return `border-app-${appCode}`;
-    return `border-app-placeholder`;
+    const appCode = getIconCode(app) || PLACEHOLDER_ICON;
+    return `border-app-${appCode} border-app app-${appCode}`;
   }
 
   /**
