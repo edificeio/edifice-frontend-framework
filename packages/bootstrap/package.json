@@ -28,9 +28,8 @@
     "clean": "rm -rf dist",
     "compile": "sass --load-path=node_modules/ --style=compressed --quiet-deps --silence-deprecation=import src/index.scss dist/index.css",
     "fix": "stylelint src/**/*.scss --fix",
-    "format": "pnpm format:write && pnpm format:check",
-    "format:check": "npx prettier --check src/**/*.scss",
-    "format:write": "npx prettier --write src/**/*.scss",
+    "format": "prettier --check src/**/*.scss",
+    "format:write": "prettier --write src/**/*.scss",
     "generate-commit-version": "node scripts/version.cjs",
     "lint": "stylelint src/**/*.scss",
     "watch": "sass --watch --load-path=node_modules/ --style=compressed --quiet-deps --silence-deprecation=import src/index.scss dist/index.css"

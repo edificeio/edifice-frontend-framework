@@ -54,7 +54,7 @@ export const Base: Story = {
 };
 
 export const Hover: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown isTriggerHovered={true}>
         <Dropdown.Trigger label="Dropdown" />
@@ -74,7 +74,7 @@ export const Hover: Story = {
 };
 
 export const MenuGroup: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Dropdown" />
@@ -109,7 +109,7 @@ export const MenuGroup: Story = {
 };
 
 export const ActionMenu: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Action menu" />
@@ -145,7 +145,7 @@ export const ActionMenu: Story = {
 };
 
 export const CheckboxGroup: Story = {
-  render: (args) => {
+  render: () => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<
       (string | number)[]
     >([]);
@@ -200,7 +200,7 @@ export const CheckboxGroup: Story = {
 };
 
 export const RadioGroup: Story = {
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('');
 
     const handleOnChangeRadio = (value: string) => {
@@ -243,7 +243,7 @@ export const RadioGroup: Story = {
 };
 
 export const Stack: Story = {
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('');
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<
       (string | number)[]
@@ -335,7 +335,7 @@ export const Stack: Story = {
 };
 
 export const CustomTrigger: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         {(
@@ -398,7 +398,7 @@ export const CustomTrigger: Story = {
 };
 
 export const CustomMenu: Story = {
-  render: (args) => {
+  render: () => {
     const [currentColor, setCurrentColor] = useState<string>('#4A4A4A');
     const handleOnChange = (color: string) => setCurrentColor(color);
     return (

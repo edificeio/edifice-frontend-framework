@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj<typeof useTitle>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const title = useTitle();
 
     return (

@@ -1,7 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from 'storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
-import { UserSearch, type UserSearchRef } from './UserSearch';
+import { fn } from 'storybook/test';
+import { UserSearch } from './UserSearch';
+import type { UserSearchRef } from './types/types';
 import type { Visible } from './types/visible';
 import { VisibleType } from './types/visible';
 

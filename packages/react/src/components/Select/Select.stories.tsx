@@ -62,7 +62,7 @@ const subjectAreaOptions: OptionsType[] = [
 ];
 
 export const Base: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };
@@ -78,7 +78,7 @@ export const Base: Story = {
 };
 
 export const WithIcon: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };
@@ -95,7 +95,7 @@ export const WithIcon: Story = {
 };
 
 export const DefaultValue: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };
@@ -112,7 +112,7 @@ export const DefaultValue: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };
@@ -129,7 +129,7 @@ export const Disabled: Story = {
 };
 
 export const Variant: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };
@@ -146,7 +146,7 @@ export const Variant: Story = {
 };
 
 export const SelectSizes: Story = {
-  render: (args) => {
+  render: () => {
     const onChange = (option: OptionsType | string) => {
       console.log(option);
     };

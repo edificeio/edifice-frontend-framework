@@ -34,7 +34,7 @@ export const Base: Story = {
 };
 
 export const OptionalField: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <FormControl id="email-0" isOptional>
         <Label>Email</Label>
@@ -53,7 +53,7 @@ export const OptionalField: Story = {
 };
 
 export const OptionalFieldCustomText: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <FormControl id="email-1" isOptional>
         <Label leftIcon={<IconMail />} optionalText="Not mandatory">
@@ -74,7 +74,7 @@ export const OptionalFieldCustomText: Story = {
 };
 
 export const RequiredField: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <FormControl id="email-2" isRequired>
         <Label leftIcon={<IconMail />}>Email</Label>
@@ -84,7 +84,7 @@ export const RequiredField: Story = {
 };
 
 export const RequiredFieldCustomText: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <FormControl id="email-3" isRequired>
         <Label leftIcon={<IconMail />} requiredText="- Mandatory">

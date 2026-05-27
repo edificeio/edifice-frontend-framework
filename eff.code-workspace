@@ -36,7 +36,6 @@
     "workbench.startupEditor": "none",
     "scss.format.spaceAroundSelectorSeparator": true,
     "scss.format.enable": false,
-    "eslint.format.enable": true,
     "window.commandCenter": false,
   },
   "extensions": {

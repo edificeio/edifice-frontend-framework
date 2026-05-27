@@ -35,16 +35,14 @@ export interface ToolbarTooltipProps {
 }
 
 export interface ToolbarButtonItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+  extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'button';
   name: string;
   props: ButtonProps;
 }
 
 export interface ToolbarIconButtonItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+  extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'icon';
   name: string;
   props: IconButtonProps;
@@ -57,8 +55,7 @@ export interface ToolbarDropdownItem extends ToolbarCommonItem {
 }
 
 export interface ToolbarPrimaryItem
-  extends ToolbarCommonItem,
-    ToolbarTooltipProps {
+  extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'primary';
   props: ButtonProps;
 }

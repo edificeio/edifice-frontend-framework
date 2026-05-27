@@ -18,7 +18,8 @@
   "scripts": {
     "build": "pnpm run typecheck && vite build",
     "dev": "vite",
-    "format": "prettier --write .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "lint": "eslint",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit"

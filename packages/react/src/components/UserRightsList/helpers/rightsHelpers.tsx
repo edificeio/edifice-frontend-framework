@@ -48,7 +48,7 @@ export const createRightsHelpers = (resourceRights: ResourceRights) => {
     rightName: ResourceRightName,
     add: boolean,
   ): SharingItem => {
-    const { requires, excludes } = resourceRights[rightName];
+    const { requires, excludes } = resourceRights[rightName]!;
 
     let newPermission: string[];
 

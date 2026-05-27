@@ -26,7 +26,7 @@ const data: Data[] = [
 ];
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const {
       selectedItems,
       allItemsSelected,

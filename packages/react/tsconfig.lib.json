@@ -27,9 +27,9 @@
       "vitest/importMeta",
       "vitest"
     ],
-    "baseUrl": ".",
     "paths": {
-      "~/setup": ["vitest.setup.ts"]
+      "~/setup": ["./vitest.setup.ts"],
+      "src/*": ["./src/*"]
     }
   },
   "include": ["src"]

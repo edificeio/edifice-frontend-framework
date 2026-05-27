@@ -47,7 +47,7 @@ export const Base: Story = {
 };
 
 export const AvatarSizes: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <div className="d-flex align-items-center gap-8">
         <Avatar size="xs" alt="alternative text" />
@@ -69,7 +69,7 @@ export const AvatarSizes: Story = {
 };
 
 export const AvatarShapes: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <div className="d-flex align-items-center gap-8">
         <Avatar
@@ -105,7 +105,7 @@ export const AvatarShapes: Story = {
 };
 
 export const AvatarFallback: Story = {
-  render: (args) => (
+  render: () => (
     <Avatar src={noAvatar} size="md" variant="square" alt="alternative text" />
   ),
 
@@ -120,7 +120,7 @@ export const AvatarFallback: Story = {
 };
 
 export const AvatarCustomFallback: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Avatar
         size="md"

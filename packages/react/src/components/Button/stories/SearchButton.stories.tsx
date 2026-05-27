@@ -1,10 +1,12 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconSearch, IconUserSearch } from '../../../modules/icons/components';
-import SearchButton from '../SearchButton';
+import SearchButton, { SearchButtonProps } from '../SearchButton';
+
+type SearchButtonStoryArgs = SearchButtonProps & { 'aria-label': string };
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
-const meta: Meta<typeof SearchButton> = {
+const meta: Meta<SearchButtonStoryArgs> = {
   title: 'Components/Buttons/SearchButton',
   component: SearchButton,
   args: {
@@ -25,7 +27,7 @@ const meta: Meta<typeof SearchButton> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SearchButton>;
+type Story = StoryObj<SearchButtonStoryArgs>;
 
 export const Base: Story = {};
 

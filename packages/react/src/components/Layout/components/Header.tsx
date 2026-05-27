@@ -155,9 +155,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       link="/communities"
                       translate={t('navbar.community')}
                     >
-                      <IconCommunities
-                        className="icon communities text-purple-500"
-                      />
+                      <IconCommunities className="icon communities text-purple-500" />
                     </NavLink>
                   </NavItem>
                 )}

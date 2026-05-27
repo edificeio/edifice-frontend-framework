@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof useToast>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const toast = useToast();
 
     const infoNotify = () => toast.info('This is an info message!');

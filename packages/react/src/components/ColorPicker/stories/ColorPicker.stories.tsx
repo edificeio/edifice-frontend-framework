@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { useState } from 'react';
 import { ColorPaletteItem, DefaultPalette } from '../ColorPalette';
-import ColorPicker, { ColorPickerProps } from '../ColorPicker';
+import ColorPicker from '../ColorPicker';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ColorPicker> = {
@@ -21,7 +21,7 @@ const meta: Meta<typeof ColorPicker> = {
 export default meta;
 type Story = StoryObj<typeof ColorPicker>;
 
-const Template = (args: ColorPickerProps) => {
+const Template: StoryFn<typeof ColorPicker> = (args) => {
   const [currentColor, setCurrentColor] = useState<string>('#4A4A4A');
   const handleOnChange = (color: ColorPaletteItem) =>
     setCurrentColor(color.value);
@@ -35,16 +35,22 @@ export const Base: Story = {
 };
 
 export const Reset: Story = {
-  render: (args: ColorPickerProps) => {
-    const newArgs = {
-      ...args,
-      palettes: [
-        {
-          ...DefaultPalette,
-          reset: { value: 'transparent', description: 'None', isReset: true },
-        },
-      ],
-    };
-    return Template(newArgs);
+  render: (args) => {
+    const [currentColor, setCurrentColor] = useState<string>('#4A4A4A');
+    const handleOnChange = (color: ColorPaletteItem) =>
+      setCurrentColor(color.value);
+    return (
+      <ColorPicker
+        {...args}
+        model={currentColor}
+        onSuccess={handleOnChange}
+        palettes={[
+          {
+            ...DefaultPalette,
+            reset: { value: 'transparent', description: 'None', isReset: true },
+          },
+        ]}
+      />
+    );
   },
 };

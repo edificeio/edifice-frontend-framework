@@ -24,7 +24,7 @@ type Story = StoryObj<typeof LoadingScreen>;
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 
 export const Base: Story = {
-  render: (args) => <LoadingScreen />,
+  render: () => <LoadingScreen />,
 };
 
 export const Position: Story = {

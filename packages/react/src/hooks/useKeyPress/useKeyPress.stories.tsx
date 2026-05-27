@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof useKeyPress>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const [isVisible, setIsVisible] = useState<boolean>(true);
     useKeyPress(() => {
       setIsVisible(false);

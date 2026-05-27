@@ -24,6 +24,7 @@ const mockAttachments: Attachment[] = [
     filename: 'document.pdf',
     name: 'Document PDF',
     size: 102400,
+    file: new File([], 'document.pdf'),
   },
   {
     id: 'attachment-2',
@@ -33,6 +34,7 @@ const mockAttachments: Attachment[] = [
     filename: 'image.png',
     name: 'Image PNG',
     size: 51200,
+    file: new File([], 'image.png'),
   },
   {
     id: 'attachment-3',
@@ -43,6 +45,7 @@ const mockAttachments: Attachment[] = [
     filename: 'spreadsheet.xlsx',
     name: 'Feuille de calcul',
     size: 204800,
+    file: new File([], 'spreadsheet.xlsx'),
   },
 ];
 

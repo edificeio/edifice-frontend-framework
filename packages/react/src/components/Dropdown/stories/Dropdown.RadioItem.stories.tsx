@@ -8,10 +8,6 @@ const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown/Dropdown Radio Item',
   component: Dropdown,
   decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
-  args: {
-    label: 'Dropdown',
-    icon: <IconFilter />,
-  },
   parameters: {
     docs: {
       description: {
@@ -34,7 +30,7 @@ export const WithSearch: Story = {
       },
     },
   },
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('');
 
     const radioOptions = [
@@ -47,7 +43,7 @@ export const WithSearch: Story = {
 
     return (
       <Dropdown>
-        <Dropdown.Trigger label={args.label} icon={args.icon} />
+        <Dropdown.Trigger label="Dropdown" icon={<IconFilter />} />
         <Dropdown.Menu>
           <Dropdown.SearchInput placeholder="Rechercher..." />
           {radioOptions.map((option) => (
@@ -68,7 +64,7 @@ export const WithSearch: Story = {
 };
 
 export const RadioGroup: Story = {
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('');
 
     const handleOnChangeRadio = (value: string) => {
@@ -92,7 +88,7 @@ export const RadioGroup: Story = {
 
     return (
       <Dropdown>
-        <Dropdown.Trigger label={args.label} icon={args.icon} />
+        <Dropdown.Trigger label="Dropdown" icon={<IconFilter />} />
         <Dropdown.Menu>
           {radioOptions.map((option, index) => (
             <Dropdown.RadioItem

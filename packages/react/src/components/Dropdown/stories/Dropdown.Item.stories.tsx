@@ -27,7 +27,7 @@ export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
 export const Base: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Action menu" />
@@ -56,7 +56,7 @@ export const Base: Story = {
 };
 
 export const WithTypeAction: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Action menu" />
@@ -90,7 +90,7 @@ export const WithTypeAction: Story = {
 };
 
 export const WithTypeSelect: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Select menu" />
@@ -124,7 +124,7 @@ export const WithTypeSelect: Story = {
 };
 
 export const WithAdditionalClassName: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Dropdown>
         <Dropdown.Trigger label="Styled menu" />

@@ -27,7 +27,7 @@ export default meta;
 type Story = StoryObj<typeof ViewsCounter>;
 
 export const Base: Story = {
-  render: (props: ViewsCounterProps) => {
+  render: (props) => {
     return <ViewsCounter {...props} />;
   },
 };

@@ -14,9 +14,10 @@ const baseResource = {
   createdAt: null as unknown as string,
   modifierId: null as unknown as string,
   modifierName: null as unknown as string,
-  rights: [],
+  rights: [] as string[],
   trashed: false,
   updatedAt: null as unknown as string,
+  path: '',
 };
 
 const meta: Meta<typeof LinkerCard> = {

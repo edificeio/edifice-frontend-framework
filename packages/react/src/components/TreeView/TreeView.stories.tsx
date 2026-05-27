@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import { Button } from '../Button';
 import TreeView, { TreeViewHandlers } from './TreeView';
@@ -93,7 +93,7 @@ export default meta;
 type Story = StoryObj<typeof TreeView>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template = (args) => {
+const Template: StoryFn<typeof TreeView> = (args) => {
   return <TreeView {...args} />;
 };
 

@@ -28,12 +28,12 @@ const meta: Meta<typeof Alert> = {
     },
     onClose: {
       control: {
-        type: null,
+        type: undefined,
       },
     },
     onVisibilityChange: {
       control: {
-        type: null,
+        type: undefined,
       },
     },
   },

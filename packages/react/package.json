@@ -77,9 +77,8 @@
     "build:icons": "svgr src/modules/icons/assets --config-file ./svgr.config.cjs",
     "build:analyze": "vite build --mode analyze",
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
-    "format": "pnpm run format:write && pnpm run format:check",
-    "format:check": "npx prettier --check \"src/**/*.{ts,tsx}\"",
-    "format:write": "npx prettier --write \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --check \"src/**/*.{ts,tsx}\"",
+    "format:write": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "eslint",
     "test": "vitest",
     "test:watch": "vitest --watch"

@@ -38,6 +38,7 @@ export class DirectoryService {
       return {
         id,
         displayName: name,
+        notVisibleCount: 0,
         members: [], // this api does not return members
       };
     });
@@ -96,13 +97,14 @@ export class DirectoryService {
     });
     const bookmarkDetailPromises = bookmarks.map(async (bookmark) => {
       if (typeof bookmark === 'string') {
-        const { displayName, groups, id, users } =
+        const { displayName, groups, id, notVisibleCount, users } =
           await this.getBookMarkById(bookmark);
         const usersId = users.map((user) => user.id);
         const groupId = groups.map((user) => user.id);
         const tmp: BookmarkWithMembers = {
           displayName,
           id,
+          notVisibleCount,
           members: [...groupId, ...usersId],
         };
         return tmp;
@@ -132,6 +134,7 @@ export class DirectoryService {
     return {
       id,
       displayName: name,
+      notVisibleCount: 0,
       members: data.members,
     };
   }

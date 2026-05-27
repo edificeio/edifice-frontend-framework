@@ -7,7 +7,8 @@ export interface AttachmentOptions {
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     attachment: {
-      setAttachment: (attachment) => ReturnType;
+      setAttachment: (attachment: any) => ReturnType;
+      unsetAttachment: (documentId: string) => ReturnType;
     };
   }
 }

@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from '@storybook/react';
-import { fn } from 'storybook/test';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import type { ComponentRef } from 'react';
 import { useEffect, useRef } from 'react';
+import { fn } from 'storybook/test';
 import { UserRightsList } from './UserRightsList';
 import type { BookmarkInput, ResourceRights, SharingItem } from './types/types';
 
