@@ -4,7 +4,7 @@ import {
   WidgetPosition,
   WidgetUserPref,
 } from '@edifice.io/client';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWidgetPreferences } from './useWidgetPreferences';
 
 // Default index and position values for widgets.
@@ -34,7 +34,10 @@ const DEFAULT_VALUES = new Map<
 export default function useWidget(widgetName: WidgetName) {
   const { widgets, preferences, savePreferences } = useWidgetPreferences();
 
-  const [widget] = useState(() => widgets?.find((w) => w.name === widgetName));
+  const widget = useMemo(
+    () => widgets?.find((w) => w.name === widgetName),
+    [widgets, widgetName],
+  );
   const [preference, setPreference] = useState<WidgetUserPref>();
 
   const savePreference = useCallback(
@@ -44,14 +47,8 @@ export default function useWidget(widgetName: WidgetName) {
         return savePreferences(preferences);
       }
     },
-    [preferences, savePreferences],
+    [preferences, savePreferences, widgetName],
   );
-
-  // useEffect( () => {
-  //   if( !widget ) {
-  //     setWidget( widgets?.find((w) => w.name === widgetName) );
-  //   }
-  // }, [widgets])
 
   useEffect(() => {
     const defaultValue = DEFAULT_VALUES.get(widgetName);
@@ -65,7 +62,7 @@ export default function useWidget(widgetName: WidgetName) {
       pref.index = defaultValue?.index ?? 0;
     }
     setPreference(pref);
-  }, [preferences]);
+  }, [preferences, widget, widgetName]);
 
   return {
     widget,

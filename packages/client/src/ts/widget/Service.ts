@@ -17,7 +17,8 @@ export class WidgetService {
       const user = await this.session.getUser();
       return user?.widgets;
     } catch (e) {
-      return undefined;
+      console.error('[WidgetService] getSystemWidgets failed', e);
+      throw e;
     }
   }
 

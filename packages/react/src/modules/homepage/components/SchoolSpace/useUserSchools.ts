@@ -39,8 +39,7 @@ export function useUserSchools() {
       setSelectedSchool(school);
       if (preference) {
         // Update user's preferences and save them
-        preference.schoolId = school.id;
-        savePreference(preference);
+        savePreference({ ...preference, schoolId: school.id });
       }
     },
   };
