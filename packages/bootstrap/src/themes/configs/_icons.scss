@@ -1,9 +1,9 @@
 @use 'primitives-legacy' as *;
 
 /**
-  Map partagée des couleurs d'icônes apps/connecteurs pour les nouveaux thèmes
-  (edifice2d, crna, edifice1d). Reprend la map neo en substituant chaque
-  variable par sa primitive legacy équivalente ($neo-*-500).
+  Shared map of app/connector icon colors for the new themes
+  (edifice2d, crna, edifice1d). Mirrors the neo map, substituting each
+  variable with its equivalent legacy primitive ($neo-*-500).
 **/
 $icons-defaults: (
   'applications': (
