@@ -1,6 +1,6 @@
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, EmptyScreen, Flex } from '../../../..';
+import { ButtonBeta, EmptyScreen, Flex, useInfiniteScroll } from '../../../..';
 import { IconClose } from '../../../icons/components';
 
 import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
@@ -12,13 +12,21 @@ export type NotificationListProps = {
 
   /** Callback when the notifications list is closed */
   onCloseNotifications?: () => void;
+
+  /** Callback to load the next page of notifications, used for infinite scrolling */
+  onLoadNextPage?: () => void;
 };
 
 const NotificationList = ({
   notifications,
   onCloseNotifications,
+  onLoadNextPage,
 }: NotificationListProps) => {
   const { t } = useTranslation();
+
+  const loadNextRef = useInfiniteScroll({
+    callback: onLoadNextPage || (() => {}),
+  });
 
   const handleCloseClick = () => {
     if (onCloseNotifications) {
@@ -65,7 +73,11 @@ const NotificationList = ({
         ) : (
           <Flex direction="column" role="list">
             {notifications.map((notification, index) => (
-              <div key={index} role="listitem">
+              <div
+                key={index}
+                role="listitem"
+                ref={notifications.length === index + 1 ? loadNextRef : null}
+              >
                 <Notification notification={notification} />
               </div>
             ))}

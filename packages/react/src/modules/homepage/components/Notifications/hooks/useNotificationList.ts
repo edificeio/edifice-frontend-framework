@@ -11,6 +11,8 @@ export interface UseNotificationListContainerReturn {
   notificationTypes: string[] | undefined;
   /** Indicates if there are more notifications to load */
   hasNextPage: boolean | undefined;
+  /** Callback to load the next page of notifications */
+  loadNextPage: () => void;
   /** Loading state for fetching notifications */
   isLoading: boolean;
   /** Error state from fetching notifications */
@@ -33,9 +35,9 @@ export const useNotificationListContainer =
     const {
       data: notifications,
       hasNextPage,
-
       isLoading: isLoadingNotifications,
       error: errorNotifications,
+      fetchNextPage,
     } = useNotifications(
       notificationTypes ?? [],
       isFetchedTypes && !!notificationTypes,
@@ -45,6 +47,7 @@ export const useNotificationListContainer =
       notifications,
       notificationTypes,
       hasNextPage,
+      loadNextPage: () => fetchNextPage(),
       isLoading: isLoadingTypes || isLoadingNotifications,
       error: errorTypes || errorNotifications,
     };
