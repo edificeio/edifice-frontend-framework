@@ -132,6 +132,13 @@
     &-open {
       transform: translateX(0);
     }
+
+    &-close-button {
+      position: absolute;
+      top: $spacer-8;
+      right: $spacer-8;
+      z-index: 1;
+    }
   }
 
   // Overlay width = 33% when 0 or 1 sidebar

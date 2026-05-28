@@ -6,6 +6,7 @@ import AppHeader from '../AppHeader/AppHeader';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { Button } from '../Button';
 import PageLayout from './PageLayout';
+import { useOverlayStore } from './store/overlayStore';
 
 const blogApp = {
   address: '/blog',
@@ -315,8 +316,7 @@ export const FullpageDynamicRightSidebar: Story = {
 
 export const OverlayWithoutBackdrop: Story = {
   render: (args) => {
-    const [open, setOpen] = useState(false);
-
+    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
     return (
       <PageLayout {...args}>
         <PageLayout.Header />
@@ -326,17 +326,19 @@ export const OverlayWithoutBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => setOpen(true)}>Ouvrir le panneau</Button>
+            <Button onClick={() => updateOverlayOpen(true)}>
+              Ouvrir le panneau
+            </Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay open={open} onClose={() => setOpen(false)}>
+        <PageLayout.Overlay onClose={() => console.log('Overlay closed')}>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Contenu dynamique de l&apos;overlay.</p>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
               Fermer
             </Button>
           </div>
@@ -348,7 +350,7 @@ export const OverlayWithoutBackdrop: Story = {
 
 export const OverlayWithBackdrop: Story = {
   render: (args) => {
-    const [open, setOpen] = useState(false);
+    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
 
     return (
       <PageLayout {...args}>
@@ -359,7 +361,7 @@ export const OverlayWithBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => setOpen(true)}>
+            <Button onClick={() => updateOverlayOpen(true)}>
               Ouvrir le panneau (avec backdrop)
             </Button>
           </div>
@@ -367,11 +369,53 @@ export const OverlayWithBackdrop: Story = {
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay open={open} onClose={() => setOpen(false)} backdrop>
+        <PageLayout.Overlay
+          onClose={() => console.log('Overlay closed')}
+          backdrop
+        >
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Avec backdrop — cliquez en dehors pour fermer.</p>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
+              Fermer
+            </Button>
+          </div>
+        </PageLayout.Overlay>
+      </PageLayout>
+    );
+  },
+};
+
+export const OverlayWithCloseButton: Story = {
+  render: (args) => {
+    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
+
+    return (
+      <PageLayout {...args}>
+        <PageLayout.Header />
+        <PageLayout.Breadcrumb>{appHeaderExample}</PageLayout.Breadcrumb>
+        <PageLayout.SidebarLeft style={colStyle('sidebarLeft')}>
+          <div style={innerStyle('sidebarLeft')}>Sidebar Left</div>
+        </PageLayout.SidebarLeft>
+        <PageLayout.Content style={colStyle('content')}>
+          <div style={innerStyle('content')}>
+            <Button onClick={() => updateOverlayOpen(true)}>
+              Ouvrir le panneau
+            </Button>
+          </div>
+        </PageLayout.Content>
+        <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
+          <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
+        </PageLayout.SidebarRight>
+        <PageLayout.Overlay
+          closeButton={true}
+          onClose={() => console.log('Overlay close')}
+          backdrop
+        >
+          <div style={{ padding: '24px' }}>
+            <h2>Panneau latéral</h2>
+            <p>Contenu dynamique de l&apos;overlay.</p>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
               Fermer
             </Button>
           </div>
