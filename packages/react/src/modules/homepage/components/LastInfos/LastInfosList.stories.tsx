@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { mockLastInfos } from '@edifice.io/config/src/msw/mocks/actualites';
 import { LastInfosProps } from './LastInfos';
