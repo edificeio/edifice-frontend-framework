@@ -1,5 +1,5 @@
 import { School } from '@edifice.io/client';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import SchoolSpace, { SchoolSpaceProps } from './SchoolSpace';
 
 const meta: Meta<typeof SchoolSpace> = {
