@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { mockMessages } from '@edifice.io/config';
 import MessageFlashList from './MessageFlashList';

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 
 import MessageFlashList from './MessageFlashList';
 import MessageFlashListContainer from './MessageFlashListContainer';

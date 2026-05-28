@@ -5,7 +5,7 @@ import {
   mockMessageSuccess,
   mockMessageWarning,
 } from '@edifice.io/config';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import MessageFlash from './MessageFlash';
 
 const meta = {
