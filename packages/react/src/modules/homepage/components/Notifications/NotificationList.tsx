@@ -18,6 +18,8 @@ export type NotificationListProps = {
   onLoadNextPage?: () => void;
   /** Indicates if there are more notifications to load, used for infinite scrolling */
   hasNextPage?: boolean;
+  /** Loading state for fetching notifications, used to prevent multiple simultaneous fetches */
+  isLoading?: boolean;
 };
 
 const NotificationList = ({
@@ -25,6 +27,7 @@ const NotificationList = ({
   onCloseNotifications,
   onLoadNextPage,
   hasNextPage,
+  isLoading,
 }: NotificationListProps) => {
   const { t } = useTranslation();
 
@@ -81,7 +84,16 @@ const NotificationList = ({
                 <Notification notification={notification} />
               </div>
             ))}
-            {hasNextPage && <NotificationSkeleton ref={loadNextRef} />}
+            {hasNextPage && !isLoading && (
+              <NotificationSkeleton ref={loadNextRef} />
+            )}
+            {isLoading && (
+              <>
+                <NotificationSkeleton />
+                <NotificationSkeleton />
+                <NotificationSkeleton />
+              </>
+            )}
           </Flex>
         )}
       </Flex>
