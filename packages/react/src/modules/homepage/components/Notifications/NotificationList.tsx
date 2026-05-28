@@ -1,7 +1,7 @@
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { IconClose } from 'src/modules/icons/components';
 import { ButtonBeta, EmptyScreen, Flex } from '../../../..';
+import { IconClose } from '../../../icons/components';
 
 import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import Notification from './Notification';
