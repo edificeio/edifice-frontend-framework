@@ -67,7 +67,7 @@ const PageLayoutOverlay = ({
         inert={!isOverlayOpened ? '' : undefined}
         {...props}
       >
-        {closeButton && (
+        {closeButton && isOverlayOpened && (
           <ButtonBeta
             aria-label={t('close')}
             color="tertiary"
