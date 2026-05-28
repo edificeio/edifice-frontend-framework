@@ -5,6 +5,7 @@ import { IconClose } from '../../../icons/components';
 
 import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import Notification from './Notification';
+import NotificationSkeleton from './NotificationSkeleton';
 
 export type NotificationListProps = {
   /** List of notifications to display */
@@ -15,12 +16,15 @@ export type NotificationListProps = {
 
   /** Callback to load the next page of notifications, used for infinite scrolling */
   onLoadNextPage?: () => void;
+  /** Indicates if there are more notifications to load, used for infinite scrolling */
+  hasNextPage?: boolean;
 };
 
 const NotificationList = ({
   notifications,
   onCloseNotifications,
   onLoadNextPage,
+  hasNextPage,
 }: NotificationListProps) => {
   const { t } = useTranslation();
 
@@ -73,14 +77,11 @@ const NotificationList = ({
         ) : (
           <Flex direction="column" role="list">
             {notifications.map((notification, index) => (
-              <div
-                key={index}
-                role="listitem"
-                ref={notifications.length === index + 1 ? loadNextRef : null}
-              >
+              <div key={index} role="listitem">
                 <Notification notification={notification} />
               </div>
             ))}
+            {hasNextPage && <NotificationSkeleton ref={loadNextRef} />}
           </Flex>
         )}
       </Flex>

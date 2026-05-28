@@ -28,6 +28,7 @@ export const NotificationListContainer = ({
       notifications={notifications}
       onCloseNotifications={onCloseNotifications}
       onLoadNextPage={handleLoadNextPage}
+      hasNextPage={hasNextPage}
     />
   );
 };
