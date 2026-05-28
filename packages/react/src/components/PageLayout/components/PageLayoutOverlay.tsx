@@ -44,7 +44,7 @@ const PageLayoutOverlay = ({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOverlayOpened, onClose]);
+  }, [isOverlayOpened, onClose, updateOverlayOpen, handleClose]);
 
   return (
     <>
