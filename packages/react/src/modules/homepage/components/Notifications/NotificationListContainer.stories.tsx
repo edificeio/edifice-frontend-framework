@@ -26,4 +26,14 @@ export default meta;
 
 type Story = StoryObj<typeof NotificationListContainer>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {},
+};
+
+export const WithCloseAction: Story = {
+  args: {
+    onCloseNotifications: () => {
+      alert('Close Notification List Container ');
+    },
+  },
+};
