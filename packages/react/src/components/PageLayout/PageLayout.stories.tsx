@@ -5,8 +5,8 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import AppHeader from '../AppHeader/AppHeader';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { Button } from '../Button';
+import { useOverlay } from './hook/useOverlay';
 import PageLayout from './PageLayout';
-import { useOverlayStore } from './store/overlayStore';
 
 const blogApp = {
   address: '/blog',
@@ -316,7 +316,7 @@ export const FullpageDynamicRightSidebar: Story = {
 
 export const OverlayWithoutBackdrop: Story = {
   render: (args) => {
-    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
+    const { toggleOverlay } = useOverlay();
     return (
       <PageLayout {...args}>
         <PageLayout.Header />
@@ -326,9 +326,7 @@ export const OverlayWithoutBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => updateOverlayOpen(true)}>
-              Ouvrir le panneau
-            </Button>
+            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
@@ -350,7 +348,7 @@ export const OverlayWithoutBackdrop: Story = {
 
 export const OverlayWithBackdrop: Story = {
   render: (args) => {
-    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
+    const { updateOverlayOpen } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -388,7 +386,7 @@ export const OverlayWithBackdrop: Story = {
 
 export const OverlayWithCloseButton: Story = {
   render: (args) => {
-    const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
+    const { toggleOverlay } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -399,9 +397,7 @@ export const OverlayWithCloseButton: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => updateOverlayOpen(true)}>
-              Ouvrir le panneau
-            </Button>
+            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
@@ -415,7 +411,7 @@ export const OverlayWithCloseButton: Story = {
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Contenu dynamique de l&apos;overlay.</p>
-            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
+            <Button variant="outline" onClick={toggleOverlay}>
               Fermer
             </Button>
           </div>

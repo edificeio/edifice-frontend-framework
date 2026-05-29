@@ -6,9 +6,8 @@ import {
 
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta } from '../../../components';
+import { ButtonBeta, useOverlay } from '../../../components';
 import { IconClose } from '../../../modules/icons/components';
-import { useOverlayStore } from '../store/overlayStore';
 
 export interface PageLayoutOverlayProps extends ComponentPropsWithoutRef<'aside'> {
   children: ReactNode;
@@ -29,11 +28,10 @@ const PageLayoutOverlay = ({
   ...props
 }: PageLayoutOverlayProps) => {
   const { t } = useTranslation();
-  const isOverlayOpened = useOverlayStore.use.overlayOpen();
-  const updateOverlayOpen = useOverlayStore.use.updateOverlayOpen();
+  const { overlayOpen: isOverlayOpened, closeOverlay } = useOverlay();
 
   const handleClose = () => {
-    updateOverlayOpen(false);
+    closeOverlay();
     onClose?.();
   };
 
@@ -44,7 +42,7 @@ const PageLayoutOverlay = ({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOverlayOpened, onClose, updateOverlayOpen, handleClose]);
+  }, [isOverlayOpened, onClose, closeOverlay, handleClose]);
 
   return (
     <>
