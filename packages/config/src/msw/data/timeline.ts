@@ -47,8 +47,8 @@ export const mockMessageWarning: IFlashMessageModel = {
   id: '4',
   title: 'Welcome to the new platform!',
   contents: {
-    en: 'We are excited to announce the launch of our new features. Explore the enhanced user interface and improved performance.',
-    fr: "Nous sommes ravis d'annoncer le lancement de nos nouvelles fonctionnalités. Explorez l'interface utilisateur améliorée et les performances améliorées.",
+    en: '<strong>We are excited</strong> to announce the launch of our new features. Explore the enhanced user interface and improved performance.',
+    fr: "<strong>Nous sommes ravis</strong> d'annoncer le lancement de nos nouvelles fonctionnalités. Explorez l'interface utilisateur améliorée et les performances améliorées.",
   },
   author: 'Platform Team',
   color: 'orange',
