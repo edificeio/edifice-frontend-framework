@@ -6,6 +6,12 @@ export type UserNotificationProps = {
   notification: UserWebNotification;
 };
 
+/**
+ * Renders a user-triggered notification using the sender's avatar as the picture.
+ *
+ * The avatar and its link are resolved via `useDirectory`. Wraps `NotificationItem`
+ * — prefer using `Notification` at the top level rather than this component directly.
+ */
 const UserNotification = ({ notification }: UserNotificationProps) => {
   const { getAvatarURL, getUserbookURL } = useDirectory();
   const { params, message, date, uri } = notification;

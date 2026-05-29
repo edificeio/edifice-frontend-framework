@@ -9,6 +9,7 @@ type WebNotificationBase = {
   date: Date;
 };
 
+/** Notification triggered by another user (e.g. shared a resource). */
 export type UserWebNotification = WebNotificationBase & {
   type: 'user';
   params: {
@@ -18,6 +19,7 @@ export type UserWebNotification = WebNotificationBase & {
   };
 };
 
+/** Notification triggered by an application event (no sender). */
 export type SystemWebNotification = WebNotificationBase & {
   type: 'system';
   params: {
@@ -25,6 +27,7 @@ export type SystemWebNotification = WebNotificationBase & {
   };
 };
 
+/** Discriminated union — narrow on `type` to get the specific variant. */
 export type WebNotification = UserWebNotification | SystemWebNotification;
 
 const resolveNotificationResourceUri = (
@@ -55,6 +58,17 @@ const parseNotificationMessage = (message: string): string => {
     .replace(/<a\b[^>]*>/gi, '<strong>');
 };
 
+/**
+ * Transforms a raw `NotificationModel` (API shape) into a `WebNotification`
+ * ready for rendering.
+ *
+ * Responsibilities:
+ * - Determines the variant: **user** when a `sender` is present, **system** otherwise.
+ * - Resolves the target URI from the model's `params` (handles both user and system naming conventions).
+ * - Converts the MongoDB `$date` timestamp to a JS `Date`.
+ * - Normalises the `type` field into a kebab-case `appCode` (e.g. `"BLOG_POST"` → `"blog-post"`).
+ * - Strips anchor tags from the message, keeping only the inner text as `<strong>`.
+ */
 export const notificationAdapter = (
   notification: NotificationModel,
 ): WebNotification => {

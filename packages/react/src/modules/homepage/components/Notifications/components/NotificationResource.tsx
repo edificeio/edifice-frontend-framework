@@ -5,6 +5,13 @@ export type NotificationResourceProps = {
   appCode: string;
 };
 
+/**
+ * Displays the originating application of a notification as a small icon + label.
+ *
+ * Resolves the human-readable app name via i18n key `timeline.apptype.<appCode>`,
+ * falling back to the raw `appCode` if no translation exists.
+ *
+ */
 const NotificationResource = ({ appCode }: NotificationResourceProps) => {
   const { t } = useTranslation();
 

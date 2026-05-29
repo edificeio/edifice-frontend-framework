@@ -9,6 +9,17 @@ export type NotificationItemProps = {
   children?: ReactNode;
 };
 
+/**
+ * Base layout for a single notification row.
+ *
+ * Renders a picture slot (avatar or app icon), a clickable message linking to
+ * `uri`, a relative timestamp (e.g. "2 hours ago"), and an optional `children`
+ * area for extra content below the message.
+ *
+ * This is a presentational component — it does not know whether the
+ * notification comes from a user or a system event. Use `UserNotification` or
+ * `SystemNotification` instead of consuming this directly.
+ */
 const NotificationItem = ({
   picture,
   message,
