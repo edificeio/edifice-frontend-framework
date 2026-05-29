@@ -136,9 +136,11 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
       <Card.Body space="0">
         <Flex direction="column">
           <Card.Title>{message.title}</Card.Title>
-          <div ref={contentRef} className={classesContent}>
-            {content}
-          </div>
+          <div
+            ref={contentRef}
+            className={classesContent}
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
           <Flex justify="between" align="center">
             <div className="fst-italic">{message.signature || ''}</div>
             {hasOverflow && (
