@@ -80,7 +80,7 @@ const NotificationList = ({
         ) : (
           <Flex direction="column" role="list">
             {notifications.map((notification, index) => (
-              <div key={index} role="listitem">
+              <div key={'notification-list-' + index} role="listitem">
                 <Notification notification={notification} />
               </div>
             ))}
