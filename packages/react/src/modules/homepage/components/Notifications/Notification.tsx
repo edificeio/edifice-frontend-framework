@@ -15,11 +15,12 @@ export type NotificationProps = {
 
 const Notification = ({ notification }: NotificationProps) => {
   const notif = notificationAdapter(notification);
-
-  if (notif.type === 'user') {
-    return <UserNotification notification={notif} />;
-  }
-  return <SystemNotification notification={notif} />;
+  return (
+    <>
+      {notif.type === 'user' && <UserNotification notification={notif} />}
+      {notif.type === 'system' && <SystemNotification notification={notif} />}
+    </>
+  );
 };
 
 Notification.displayName = 'Notification';

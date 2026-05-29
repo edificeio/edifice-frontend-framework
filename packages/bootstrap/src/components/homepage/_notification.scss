@@ -1,20 +1,18 @@
-@use '../../themes/configs/primitives' as prim;
-
 .notification {
-  padding: prim.$spacer-16 prim.$spacer-12;
-  color: prim.$grey-800;
+  padding: var(--primitive-spacer-16) var(--primitive-spacer-12);
+  color: var(--primitive-grey-800);
 
   &-avatar,
   &-app-icon {
-    width: prim.$numbers-32;
-    height: prim.$numbers-32;
-    min-width: prim.$numbers-32;
+    width: var(--primitive-numbers-32);
+    height: var(--primitive-numbers-32);
+    min-width: var(--primitive-numbers-32);
   }
 
   &-message {
-    color: prim.$grey-800;
-    font-size: prim.$font-size-small;
-    line-height: prim.$font-lineheight-xs;
+    color: var(--primitive-grey-800);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
     overflow-wrap: anywhere;
   }
 
@@ -57,9 +55,9 @@
   // }
 
   &-date {
-    font-size: prim.$font-size-caption;
-    line-height: prim.$font-lineheight-3xs;
-    color: prim.$text-color-subtext;
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+    color: var(--primitive-text-color-subtext);
     font-style: italic;
     white-space: nowrap;
   }
