@@ -1,3 +1,4 @@
+export * from './FavoritesWidget';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';
