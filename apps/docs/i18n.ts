@@ -258,6 +258,12 @@ i18n.use(initReactI18next).init({
         'betaSwitch.description':
           'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
         'betaSwitch.error': 'Erreur de paramétrage.',
+        //------------------------------------------------------
+        //------------------ Notifications -------------------------
+        'homepage.widget.notifications-list.title': 'Notifications',
+        'homepage.widget.notifications-list.empty.description':
+          'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
+        //------------------------------------------------------
       },
     },
   },
