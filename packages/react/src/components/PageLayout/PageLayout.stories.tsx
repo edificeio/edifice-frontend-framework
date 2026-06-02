@@ -5,6 +5,7 @@ import { Meta, StoryObj } from '@storybook/react-vite';
 import AppHeader from '../AppHeader/AppHeader';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { Button } from '../Button';
+import { useOverlay } from './hook/useOverlay';
 import PageLayout from './PageLayout';
 
 const blogApp = {
@@ -315,8 +316,7 @@ export const FullpageDynamicRightSidebar: Story = {
 
 export const OverlayWithoutBackdrop: Story = {
   render: (args) => {
-    const [open, setOpen] = useState(false);
-
+    const { toggleOverlay, closeOverlay } = useOverlay();
     return (
       <PageLayout {...args}>
         <PageLayout.Header />
@@ -326,17 +326,17 @@ export const OverlayWithoutBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => setOpen(true)}>Ouvrir le panneau</Button>
+            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay open={open} onClose={() => setOpen(false)}>
+        <PageLayout.Overlay onClose={() => console.log('Overlay closed')}>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Contenu dynamique de l&apos;overlay.</p>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={closeOverlay}>
               Fermer
             </Button>
           </div>
@@ -348,7 +348,7 @@ export const OverlayWithoutBackdrop: Story = {
 
 export const OverlayWithBackdrop: Story = {
   render: (args) => {
-    const [open, setOpen] = useState(false);
+    const { openOverlay, closeOverlay } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -359,7 +359,7 @@ export const OverlayWithBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => setOpen(true)}>
+            <Button onClick={openOverlay}>
               Ouvrir le panneau (avec backdrop)
             </Button>
           </div>
@@ -367,11 +367,48 @@ export const OverlayWithBackdrop: Story = {
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay open={open} onClose={() => setOpen(false)} backdrop>
+        <PageLayout.Overlay onClose={closeOverlay} backdrop>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Avec backdrop — cliquez en dehors pour fermer.</p>
-            <Button variant="outline" onClick={() => setOpen(false)}>
+            <Button variant="outline" onClick={closeOverlay}>
+              Fermer
+            </Button>
+          </div>
+        </PageLayout.Overlay>
+      </PageLayout>
+    );
+  },
+};
+
+export const OverlayWithCloseButton: Story = {
+  render: (args) => {
+    const { toggleOverlay } = useOverlay();
+
+    return (
+      <PageLayout {...args}>
+        <PageLayout.Header />
+        <PageLayout.Breadcrumb>{appHeaderExample}</PageLayout.Breadcrumb>
+        <PageLayout.SidebarLeft style={colStyle('sidebarLeft')}>
+          <div style={innerStyle('sidebarLeft')}>Sidebar Left</div>
+        </PageLayout.SidebarLeft>
+        <PageLayout.Content style={colStyle('content')}>
+          <div style={innerStyle('content')}>
+            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
+          </div>
+        </PageLayout.Content>
+        <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
+          <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
+        </PageLayout.SidebarRight>
+        <PageLayout.Overlay
+          closeButton={true}
+          onClose={() => console.log('Overlay close')}
+          backdrop
+        >
+          <div style={{ padding: '24px' }}>
+            <h2>Panneau latéral</h2>
+            <p>Contenu dynamique de l&apos;overlay.</p>
+            <Button variant="outline" onClick={toggleOverlay}>
               Fermer
             </Button>
           </div>

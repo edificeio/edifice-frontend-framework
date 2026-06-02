@@ -7,18 +7,25 @@ import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/Edifice
 
 export interface PageLayoutHeaderProps extends ComponentPropsWithoutRef<'header'> {
   children?: ReactNode;
+  onNotificationsClick?: () => void;
 }
 
 const PageLayoutHeader = ({
   children,
   className,
+  onNotificationsClick,
   ...props
 }: PageLayoutHeaderProps) => {
   const { theme } = useEdificeTheme();
 
   return (
     <header className={clsx('pagelayout-header', className)} {...props}>
-      {children ?? <Header src={theme?.basePath} />}
+      {children ?? (
+        <Header
+          src={theme?.basePath}
+          onNotificationsClick={onNotificationsClick}
+        />
+      )}
     </header>
   );
 };
