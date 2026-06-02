@@ -8,9 +8,8 @@ export type NotificationListContainerProps = {
 export const NotificationListContainer = ({
   onCloseNotifications,
 }: NotificationListContainerProps) => {
-  const { notifications, error, hasNextPage, loadNextPage, isLoading } =
+  const { notifications, hasNextPage, loadNextPage, isLoading } =
     useNotificationListContainer();
-  console.log('isLoading:', isLoading);
 
   const handleLoadNextPage = () => {
     if (hasNextPage && !isLoading) {
