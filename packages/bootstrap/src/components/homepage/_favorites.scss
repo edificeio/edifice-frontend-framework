@@ -1,0 +1,19 @@
+@use '../../themes/configs/primitives' as *;
+
+.favorites {
+  &-content {
+    background-color: var(--primitive-white);
+    border-radius: var(--primitive-border-radius-xl);
+    border: 1px solid var(--primitive-grey-200);
+    padding: var(--primitive-spacer-12);
+  }
+
+  &-empty {
+    &-text {
+      font-family: var(--font-family-body);
+      font-size: var(--primitive-font-size-small);
+      font-weight: var(--font-weight-regular);
+      line-height: var(--primitive-font-lineheight-2xs);
+    }
+  }
+}

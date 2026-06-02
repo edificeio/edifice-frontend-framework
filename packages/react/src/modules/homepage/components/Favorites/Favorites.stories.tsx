@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import hillsBackground from '@edifice.io/bootstrap/dist/images/backgrounds/hills.svg';
-import { FavoritesWidget, FavoritesWidgetProps } from './FavoritesWidget';
+import { Favorites, FavoritesProps } from './Favorites';
 
-const meta: Meta<typeof FavoritesWidget> = {
-  title: 'Modules/Homepage/FavoritesWidget',
-  component: FavoritesWidget,
+const meta: Meta<typeof Favorites> = {
+  title: 'Modules/Homepage/Favorites',
+  component: Favorites,
   decorators: [
     (Story) => (
       <div
@@ -38,9 +38,9 @@ const meta: Meta<typeof FavoritesWidget> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof FavoritesWidget>;
+type Story = StoryObj<typeof Favorites>;
 
-const mockApps: FavoritesWidgetProps['apps'] = [
+const mockApps: FavoritesProps['apps'] = [
   {
     address: '/blog',
     icon: 'blog',
