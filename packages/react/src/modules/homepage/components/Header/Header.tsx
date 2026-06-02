@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Badge,
+  ButtonBeta,
   LogoBeta,
   Popover,
   PopoverBody,
@@ -28,13 +29,18 @@ import {
   IconHomeBeta,
   IconMessagesBeta,
   IconMyAppsBeta,
+  IconNotificationBeta,
 } from '../../../icons/components/nav';
 
 export interface HeaderProps {
   src: string | undefined;
+  onNotificationsClick?: () => void;
 }
 
-const Header = ({ src = '' }: HeaderProps): JSX.Element => {
+const Header = ({
+  src = '',
+  onNotificationsClick,
+}: HeaderProps): JSX.Element => {
   const { t } = useTranslation();
   const { messages } = useConversation();
   const { user, avatar } = useUser();
@@ -61,6 +67,10 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
    * IDs for Popover Component
    */
   const popoverUserId = useId();
+
+  const handleNotificationsClick = () => {
+    onNotificationsClick?.();
+  };
 
   return (
     <header className={classes}>
@@ -128,6 +138,13 @@ const Header = ({ src = '' }: HeaderProps): JSX.Element => {
             >
               <IconMyAppsBeta />
             </NavLink>
+          </NavItem>
+          <NavItem>
+            <ButtonBeta
+              leftIcon={<IconNotificationBeta />}
+              variant="ghost"
+              onClick={handleNotificationsClick}
+            />
           </NavItem>
           <NavItem
             className="position-relative"
