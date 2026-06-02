@@ -1,4 +1,4 @@
-export * from './FavoritesWidget';
+export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';
