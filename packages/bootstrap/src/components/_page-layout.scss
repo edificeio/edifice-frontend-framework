@@ -135,8 +135,8 @@
 
     &-close-button {
       position: absolute;
-      top: $spacer-8;
-      right: $spacer-8;
+      top: var(--primitive-spacer-8);
+      right: var(--primitive-spacer-8);
       z-index: 1;
     }
   }

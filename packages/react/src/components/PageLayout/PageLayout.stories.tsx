@@ -348,7 +348,7 @@ export const OverlayWithoutBackdrop: Story = {
 
 export const OverlayWithBackdrop: Story = {
   render: (args) => {
-    const { updateOverlayOpen } = useOverlay();
+    const { openOverlay, closeOverlay } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -359,7 +359,7 @@ export const OverlayWithBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={() => updateOverlayOpen(true)}>
+            <Button onClick={openOverlay}>
               Ouvrir le panneau (avec backdrop)
             </Button>
           </div>
@@ -367,14 +367,11 @@ export const OverlayWithBackdrop: Story = {
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay
-          onClose={() => console.log('Overlay closed')}
-          backdrop
-        >
+        <PageLayout.Overlay onClose={closeOverlay} backdrop>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Avec backdrop — cliquez en dehors pour fermer.</p>
-            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
+            <Button variant="outline" onClick={closeOverlay}>
               Fermer
             </Button>
           </div>

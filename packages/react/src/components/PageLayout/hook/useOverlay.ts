@@ -20,7 +20,6 @@ export const useOverlay = () => {
 
   return {
     overlayOpen,
-    updateOverlayOpen,
     openOverlay,
     closeOverlay,
     toggleOverlay,
