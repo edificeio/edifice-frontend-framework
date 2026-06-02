@@ -1,4 +1,4 @@
-import { useBookmark } from '../../../../hooks/useBookmark';
+import { useBookmark } from '../../../../hooks';
 import { Favorites, type FavoritesProps } from './Favorites';
 
 type FavoritesContainerProps = Omit<FavoritesProps, 'apps'>;
