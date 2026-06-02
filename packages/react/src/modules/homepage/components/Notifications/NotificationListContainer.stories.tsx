@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import NotificationList from './NotificationList';
 import NotificationListContainer from './NotificationListContainer';
 
 const meta: Meta<typeof NotificationListContainer> = {
@@ -36,4 +37,12 @@ export const WithCloseAction: Story = {
       alert('Close Notification List Container ');
     },
   },
+};
+
+export const IsLoading: Story = {
+  render: () => <NotificationList isLoading={true} />,
+};
+
+export const IsEmpty: Story = {
+  render: () => <NotificationList notifications={[]} />,
 };

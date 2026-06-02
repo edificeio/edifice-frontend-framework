@@ -14,7 +14,7 @@ import NotificationSkeleton from './NotificationSkeleton';
 
 export type NotificationListProps = {
   /** List of notifications to display */
-  notifications: NotificationModel[];
+  notifications?: NotificationModel[];
 
   /** Callback when the notifications list is closed */
   onCloseNotifications?: () => void;
@@ -71,7 +71,7 @@ const NotificationList = ({
             ></ButtonBeta>
           )}
         </Flex>
-        {notifications.length === 0 ? (
+        {notifications?.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
               size={120}
@@ -85,7 +85,7 @@ const NotificationList = ({
         ) : (
           <>
             <ul>
-              {notifications.map((notification, index) => (
+              {notifications?.map((notification, index) => (
                 <li key={'notification-list-' + index}>
                   <Notification notification={notification} />
                   <Divider className="border-grey-300 my-0" />
@@ -96,11 +96,13 @@ const NotificationList = ({
               <NotificationSkeleton ref={loadNextRef} />
             )}
             {isLoading && (
-              <>
+              <ul>
                 <NotificationSkeleton />
+                <Divider className="border-grey-300 my-0" />
                 <NotificationSkeleton />
+                <Divider className="border-grey-300 my-0" />
                 <NotificationSkeleton />
-              </>
+              </ul>
             )}
           </>
         )}
