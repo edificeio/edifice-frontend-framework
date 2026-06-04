@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { useUser } from '../../../..';
 import { HomeCard } from '../HomeCard';
-import { default as UserSpace } from './UserSpace';
+import UserSpace from './UserSpace';
 
-export function UserSpaceContainer({ children }: { children?: JSX.Element }) {
+export function UserSpaceContainer({ children }: { children?: ReactNode }) {
   const { user, avatar, userDescription } = useUser();
 
   if (!user || !userDescription) return null;

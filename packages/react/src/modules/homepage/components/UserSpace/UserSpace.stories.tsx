@@ -16,7 +16,7 @@ const meta: Meta<typeof UserSpace> = {
     docs: {
       description: {
         component:
-          "Ce storybook documente le composant UserSpace, un widget de personnalisable pour l'utilisateur connecté.",
+          "Ce storybook documente le composant UserSpace, un widget personnalisable pour l'utilisateur connecté.",
       },
     },
   },
