@@ -1,129 +1,129 @@
 @use '../../themes/configs/primitives' as *;
 
 .last-infos-card {
-    --background-color: #{$orange-200};
-    --background-color-headline: #{$yellow-200};
+  --background-color: #{$orange-200};
+  --background-color-headline: #{$yellow-200};
 
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: var(--primitive-spacer-4);
+  background-color: var(--background-color);
+  border-radius: var(--primitive-border-radius-xl);
+  padding: var(--primitive-spacer-4);
+
+  &-headline {
+    background-color: var(--background-color-headline);
+  }
+
+  &-clickable {
+    cursor: pointer;
+  }
+
+  &-action {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--border-radius);
+    background: transparent;
+  }
+
+  &-action:focus-visible {
+    outline: 2px solid var(--color-primary-default);
+    outline-offset: 2px;
+  }
+
+  &-header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &-content {
+    background-color: var(--primitive-white);
+    border-radius: var(--primitive-border-radius-lg);
+    padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
+  }
+
+  &-thread {
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
+  }
+
+  &-thread-icon {
+    border-radius: var(--primitive-border-radius-md);
+  }
+
+  &-thread-name {
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    margin: 0;
+    color: var(--primitive-text-color-default);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-title {
+    font-weight: var(--primitive-font-weight-bold);
+  }
+
+  &-excerpt {
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    word-break: break-word;
+  }
+
+  &-medias {
+    --gap: #{$spacer-8};
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  &-media {
     position: relative;
-    flex-direction: column;
-    gap: var(--primitive-spacer-4);
-    background-color: var(--background-color);
-    border-radius: var(--primitive-border-radius-xl);
-    padding: var(--primitive-spacer-4);
+    min-width: 0;
+  }
 
-    &-headline {
-        background-color: var(--background-color-headline);
-    }
+  &-media-image {
+    --height: 85px;
+    --border-radius: 0.8rem;
 
-    &-clickable {
-        cursor: pointer;
-    }
+    width: 100%;
+    height: var(--height);
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    display: block;
+  }
 
-    &-action {
-        position: absolute;
-        inset: 0;
-        z-index: 2;
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        border-radius: var(--border-radius);
-        background: transparent;
-    }
+  &-media-overlay {
+    --overlay-color: #{$white};
+    --overlay-background: rgb(0 0 0 / 55%);
+    --overlay-font-size: 0.875rem;
+    --overlay-font-weight: #{$font-weight-bold};
 
-    &-action:focus-visible {
-        outline: 2px solid var(--color-primary-default);
-        outline-offset: 2px;
-    }
-
-    &-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--primitive-spacer-8);
-
-    }
-
-    &-content {
-        background-color: var(--primitive-white);
-        border-radius: var(--primitive-border-radius-lg);
-        padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
-    }
-
-    &-thread {
-        padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
-    }
-
-    &-thread-icon {
-        border-radius: var(--primitive-border-radius-md);
-    }
-
-    &-thread-name {
-        font-family: var(--font-family-body);
-        font-weight: var(--font-weight-regular);
-        margin: 0;
-        color: var(--primitive-text-color-default);
-        font-size: var(--primitive-font-size-small);
-        line-height: var(--primitive-font-lineheight-2xs);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    &-title {
-        font-weight: var(--primitive-font-weight-bold);
-    }
-
-    &-excerpt {
-        margin: 0;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-    }
-
-    &-medias {
-        --gap: #{$spacer-8};
-
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--gap);
-    }
-
-    &-media {
-        position: relative;
-        min-width: 0;
-    }
-
-    &-media-image {
-        --height: 85px;
-        --border-radius: .8rem;
-
-        width: 100%;
-        height: var(--height);
-        object-fit: cover;
-        border-radius: var(--border-radius);
-        display: block;
-    }
-
-    &-media-overlay {
-        --overlay-color: #{$white};
-        --overlay-background: rgb(0 0 0 / 55%);
-        --overlay-font-size: 0.875rem;
-        --overlay-font-weight: #{$font-weight-bold};
-
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: var(--border-radius);
-        color: var(--overlay-color);
-        background-color: var(--overlay-background);
-        font-size: var(--overlay-font-size);
-        font-weight: var(--overlay-font-weight);
-    }
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    color: var(--overlay-color);
+    background-color: var(--overlay-background);
+    font-size: var(--overlay-font-size);
+    font-weight: var(--overlay-font-weight);
+  }
 }
