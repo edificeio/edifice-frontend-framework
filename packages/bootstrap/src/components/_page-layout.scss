@@ -258,7 +258,6 @@
   // Right sidebar: grid cell clips, inner wrapper keeps fixed width
   // → content reveals from right to left as the column grows, no reflow
   .pagelayout-sidebarright {
-    overflow: hidden;
     display: flex;
     justify-content: flex-end;
   }
