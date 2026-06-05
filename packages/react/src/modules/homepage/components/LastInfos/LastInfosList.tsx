@@ -34,7 +34,7 @@ export function LastInfosList({
     <Flex gap="8" direction="column" className="last-infos-list">
       <Flex justify="between" align="center" className="last-infos-list-header">
         <h2 className="last-infos-list-title">
-          {t('homepage.widget.last-infos-list.title')}
+          {t('homepage.last-infos-list.title')}
         </h2>
         <ButtonBeta
           color="tertiary"
@@ -43,7 +43,7 @@ export function LastInfosList({
           rightIcon={<IconArrowRight />}
           onClick={handleSeeMoreClick}
         >
-          {t('homepage.widget.last-infos-list.see.more')}
+          {t('homepage.last-infos-list.see.more')}
         </ButtonBeta>
       </Flex>
 
@@ -52,7 +52,7 @@ export function LastInfosList({
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
             size={64}
-            text={t('homepage.widget.last-infos-list.empty')}
+            text={t('homepage.last-infos-list.empty')}
           />
         ) : (
           infos.map((infosProps) => (
