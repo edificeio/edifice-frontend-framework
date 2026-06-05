@@ -69,13 +69,34 @@ const parseNotificationMessage = (message: string): string => {
  * - Normalises the `type` field into a kebab-case `appCode` (e.g. `"BLOG_POST"` → `"blog-post"`).
  * - Strips anchor tags from the message, keeping only the inner text as `<strong>`.
  */
+const getAppCode = (appCode: string): string => {
+  appCode = appCode.toLowerCase();
+  // Some notification return the wrong appcode for historical reasons, we need to match the real application type to apply the correct color in the timeline.
+  switch (appCode) {
+    case 'collaborativewall':
+      return 'collaborative-wall';
+    case 'formulaire':
+      return 'forms';
+    case 'messagerie':
+      return 'conversation';
+    case 'homeworks':
+      return 'cahier-de-texte';
+    case 'userbook_motto':
+    case 'userbook_mood':
+    case 'userbook_discovervisiblegroups':
+      return 'userbook';
+    default:
+      return appCode.replace(/_/g, '-');
+  }
+};
+
 export const notificationAdapter = (
   notification: NotificationModel,
 ): WebNotification => {
   const type = notification.sender ? 'user' : 'system';
   const uri = resolveNotificationResourceUri(notification.params, type);
   const date = new Date(notification.date.$date);
-  const appCode = notification.type.toLowerCase().replace(/_/g, '-');
+  const appCode = getAppCode(notification.type);
   const message = parseNotificationMessage(notification.message);
   const base = {
     id: notification._id,

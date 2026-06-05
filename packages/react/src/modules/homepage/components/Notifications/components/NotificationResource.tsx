@@ -15,16 +15,17 @@ export type NotificationResourceProps = {
 const NotificationResource = ({ appCode }: NotificationResourceProps) => {
   const { t } = useTranslation();
 
-  const appLabel = t(`timeline.apptype.${appCode}`, {
+  const appLabel = t(`${appCode}`, {
     defaultValue: appCode,
   });
 
+  const appCssClass = `app-${appCode}`;
   return (
-    <div className="notification-resource">
+    <div className={`notification-resource ${appCssClass} bg-app-light`}>
       <span className="notification-resource-icon">
         <AppIcon app={appCode} size="24" iconFit="contain" />
       </span>
-      <span className="notification-resource-name">{appLabel}</span>
+      <span className="notification-resource-name color-app">{appLabel}</span>
     </div>
   );
 };
