@@ -20,9 +20,10 @@ export const useOnboardingModal = <T>(
     (async () => {
       const response = await getPreference();
 
-      if (response) {
-        const { key } = response;
-        const { display, nextState } = applyDisplayRule(key);
+      if (response || applyDisplayRule) {
+        const { display, nextState } = applyDisplayRule(
+          response ? response.key : undefined,
+        );
         setIsOpen(display);
         setIsOnboarding(display);
         state.current = nextState;
