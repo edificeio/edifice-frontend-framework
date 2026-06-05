@@ -76,7 +76,6 @@ $component: 'message-flash';
 
   .card-body {
     grid-area: content;
-    padding: var(--#{$component}-container-py) var(--#{$component}-container-px);
   }
 
   &-content {

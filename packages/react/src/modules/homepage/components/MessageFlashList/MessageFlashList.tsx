@@ -14,8 +14,8 @@ const MessageFlashList = ({
   onCloseMessage,
 }: MessageFlashListProps) => {
   return (
-    <section 
-      role="region" 
+    <section
+      role="region"
       aria-label="Flash messages"
       aria-live="polite"
       className="message-flash-list"
