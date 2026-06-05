@@ -25,8 +25,8 @@ export function Favorites({
   return (
     <HomeCard variant="secondary">
       <HomeCard.Header
-        title={t('homepage.widget.favorites.title', 'Favoris')}
-        actionLabel={t('homepage.widget.favorites.all', 'Mes applis')}
+        title={t('homepage.favorites.title', 'Favoris')}
+        actionLabel={t('homepage.favorites.all', 'Mes applis')}
         onActionClick={onSeeAllClick}
         actionRightIcon={<IconArrowRight />}
       />
@@ -37,7 +37,7 @@ export function Favorites({
               <img src={illuEmptyFavorite} alt="" width={80} height={80} />
               <span className="favorites-empty-text">
                 {t(
-                  'homepage.widget.favorites.empty',
+                  'homepage.favorites.empty',
                   'Ajouter des applications à vos favoris pour les retrouver ici et y accéder rapidement !',
                 )}
               </span>

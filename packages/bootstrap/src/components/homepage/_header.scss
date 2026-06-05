@@ -6,7 +6,7 @@
   --navbar-padding-x: #{$spacer-8};
   --navbar-background: #{$white};
   --navbar-badge-top: 0.8rem;
-  --navbar-badge-right: -1.2rem;
+  --navbar-badge-right: -1.6rem;
 
   display: grid;
   grid-template-columns: 1fr;
@@ -63,10 +63,18 @@
       --navbar-nav-link-icon-size: 2.2rem;
     }
   }
+
+  .badge {
+    top: var(--navbar-badge-top);
+    right: var(--navbar-badge-right);
+  }
 }
 
 @include medias.respond-from('tablet') {
   .header-beta .navbar {
+    --navbar-badge-top: 0.8rem;
+    --navbar-badge-right: -1.2rem;
+
     grid-template-columns: 1fr auto;
     grid-template-areas: 'logo links';
   }
@@ -95,11 +103,6 @@
     .avatar {
       --edifice-avatar-size: 3.2rem;
     }
-  }
-
-  .badge {
-    top: var(--navbar-badge-top);
-    right: var(--navbar-badge-right);
   }
 }
 

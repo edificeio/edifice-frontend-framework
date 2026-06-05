@@ -1,0 +1,65 @@
+.notification {
+  padding: var(--primitive-spacer-16) var(--primitive-spacer-12);
+  color: var(--primitive-grey-800);
+
+  &-avatar,
+  &-app-icon {
+    width: var(--primitive-numbers-32);
+    height: var(--primitive-numbers-32);
+    min-width: var(--primitive-numbers-32);
+  }
+
+  &-message {
+    color: var(--primitive-grey-800);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
+    overflow-wrap: anywhere;
+    flex: 1;
+  }
+
+  /* TODO: Uncomment this when the notification resource is implemented IMPULS-5666 */
+  // &-resource {
+  //   display: inline-flex;
+  //   align-items: center;
+  //   gap: prim.$spacer-4;
+  //   padding: prim.$spacer-2 prim.$spacer-12 prim.$spacer-2 prim.$spacer-4;
+  //   border-radius: prim.$border-radius-pill;
+  //   width: fit-content;
+  //   max-width: 100%;
+  // }
+
+  // &-resource-icon {
+  //   display: flex;
+  //   align-items: center;
+  //   padding: prim.$spacer-4;
+  //   border-radius: prim.$border-radius-pill;
+  //   flex-shrink: 0;
+
+  //   .app-icon {
+  //     width: 1.6rem !important;
+  //     height: 1.6rem !important;
+
+  //     svg {
+  //       width: 1.6rem;
+  //       height: 1.6rem;
+  //     }
+  //   }
+  // }
+
+  // &-resource-name {
+  //   font-size: prim.$font-size-caption;
+  //   font-weight: prim.$font-weight-bold;
+  //   line-height: prim.$font-lineheight-3xs;
+  //   overflow: hidden;
+  //   text-overflow: ellipsis;
+  //   white-space: nowrap;
+  // }
+
+  &-date {
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+    color: var(--primitive-text-color-subtext);
+    font-style: italic;
+    white-space: nowrap;
+  }
+}

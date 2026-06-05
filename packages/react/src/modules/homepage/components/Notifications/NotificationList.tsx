@@ -1,15 +1,20 @@
+import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, EmptyScreen, Flex, useInfiniteScroll } from '../../../..';
+import {
+  ButtonBeta,
+  Divider,
+  EmptyScreen,
+  Flex,
+  useInfiniteScroll,
+} from '../../../..';
 import { IconClose } from '../../../icons/components';
-
-import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
 import Notification from './Notification';
 import NotificationSkeleton from './NotificationSkeleton';
 
 export type NotificationListProps = {
   /** List of notifications to display */
-  notifications: NotificationModel[];
+  notifications?: NotificationModel[];
 
   /** Callback when the notifications list is closed */
   onCloseNotifications?: () => void;
@@ -51,7 +56,7 @@ const NotificationList = ({
           className="notification-list-header py-16 ps-24 pe-8"
         >
           <h4 className="notification-list-title text-truncate">
-            {t('homepage.widget.notifications-list.title')}
+            {t('homepage.notifications-list.title')}
           </h4>
           {onCloseNotifications && (
             <ButtonBeta
@@ -60,41 +65,50 @@ const NotificationList = ({
               className="notification-list-close"
               rightIcon={<IconClose />}
               onClick={handleCloseClick}
-              aria-label={t('homepage.widget.notifications-list.close')}
-              title={t('homepage.widget.notifications-list.close')}
+              aria-label={t('homepage.notifications-list.close')}
+              title={t('homepage.notifications-list.close')}
               data-testid="notification-list-close-button"
             ></ButtonBeta>
           )}
         </Flex>
-        {notifications.length === 0 ? (
+        {notifications?.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
               size={120}
               imageSrc={illuEmptyNotification}
-              imageAlt={t(
-                'homepage.widget.notifications-list.empty.description',
-              )}
-              text={t('homepage.widget.notifications-list.empty.description')}
+              imageAlt={t('homepage.notifications-list.empty.description')}
+              text={t('homepage.notifications-list.empty.description')}
             />
           </div>
         ) : (
-          <Flex direction="column" role="list">
-            {notifications.map((notification, index) => (
-              <div key={'notification-list-' + index} role="listitem">
-                <Notification notification={notification} />
-              </div>
-            ))}
+          <>
+            <ul>
+              {notifications?.map((notification, index) => (
+                <li key={'notification-list-' + index}>
+                  <Notification notification={notification} />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+              ))}
+            </ul>
             {hasNextPage && !isLoading && (
               <NotificationSkeleton ref={loadNextRef} />
             )}
             {isLoading && (
-              <>
-                <NotificationSkeleton />
-                <NotificationSkeleton />
-                <NotificationSkeleton />
-              </>
+              <ul>
+                <li>
+                  <NotificationSkeleton />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+                <li>
+                  <NotificationSkeleton />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+                <li>
+                  <NotificationSkeleton />
+                </li>
+              </ul>
             )}
-          </Flex>
+          </>
         )}
       </Flex>
     </section>

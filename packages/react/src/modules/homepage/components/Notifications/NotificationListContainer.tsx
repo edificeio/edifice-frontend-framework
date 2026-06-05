@@ -1,5 +1,5 @@
-import { useNotificationListContainer } from './hooks/useNotificationList';
 import NotificationList from './NotificationList';
+import { useNotificationListContainer } from './hooks/useNotificationList';
 
 export type NotificationListContainerProps = {
   /** Callback when the notifications list is closed */
@@ -8,7 +8,7 @@ export type NotificationListContainerProps = {
 export const NotificationListContainer = ({
   onCloseNotifications,
 }: NotificationListContainerProps) => {
-  const { notifications, error, hasNextPage, loadNextPage, isLoading } =
+  const { notifications, hasNextPage, loadNextPage, isLoading } =
     useNotificationListContainer();
 
   const handleLoadNextPage = () => {
@@ -17,18 +17,13 @@ export const NotificationListContainer = ({
     }
   };
 
-  // Hide the widget while loading or when the request failed.
-  // Render NotificationList for an empty array so it can show its empty state.
-  if (!notifications || error) {
-    return null;
-  }
-
   return (
     <NotificationList
       notifications={notifications}
       onCloseNotifications={onCloseNotifications}
       onLoadNextPage={handleLoadNextPage}
       hasNextPage={hasNextPage}
+      isLoading={isLoading}
     />
   );
 };
