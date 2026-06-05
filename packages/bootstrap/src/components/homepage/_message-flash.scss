@@ -1,0 +1,96 @@
+@use '../../abstracts/' as *;
+@use '../../vendors/bootstrap';
+
+$component: 'message-flash';
+
+.#{$component} {
+  --#{$component}-border-color: #828282;
+  --#{$component}-bg-color: #f2f2f2;
+  --#{$component}-border-radius: var(--#{$prefix}border-radius-2xl);
+  --#{$component}-px: var(--#{$prefix}spacer-12);
+  --#{$component}-py: var(--#{$prefix}spacer-12);
+
+  --#{$component}-icon-size: 50px;
+  --#{$component}-icon-color: var(--#{$prefix}white);
+  --#{$component}-icon-bg-color: #c7c7c7;
+  --#{$component}-box-shadow: var(--#{$prefix}box-shadow);
+}
+
+.#{$component} {
+  display: grid;
+  grid-template-areas: 'icon content';
+  grid-template-columns: auto 1fr;
+  gap: var(--#{$prefix}spacer-12);
+  position: relative;
+
+  background-color: var(--#{$component}-bg-color);
+  background-image: url('./images/homepage/MessageFlashBackground-Grey.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+
+  padding: var(--#{$component}-py) var(--#{$component}-px);
+
+  &--orange {
+    --#{$component}-border-color: #e5a800;
+    --#{$component}-bg-color: #fcf3cf;
+    --#{$component}-icon-bg-color: #ffc403;
+    background-image: url('./images/homepage/MessageFlashBackground-Orange.svg');
+  }
+
+  &--green {
+    --#{$component}-border-color: #2caa69;
+    --#{$component}-bg-color: #e2f9ed;
+    --#{$component}-icon-bg-color: #2caa69;
+    background-image: url('./images/homepage/MessageFlashBackground-Green.svg');
+  }
+
+  &--blue {
+    --#{$component}-border-color: #3030d1;
+    --#{$component}-bg-color: #e6ebfe;
+    --#{$component}-icon-bg-color: #5555f7;
+    background-image: url('./images/homepage/MessageFlashBackground-Blue.svg');
+  }
+
+  &--red {
+    --#{$component}-border-color: #dc0404;
+    --#{$component}-bg-color: #ffebeb;
+    --#{$component}-icon-bg-color: #f63131;
+    background-image: url('./images/homepage/MessageFlashBackground-Red.svg');
+  }
+
+  border: 1px solid var(--#{$component}-border-color);
+  border-radius: var(--#{$component}-border-radius);
+  box-shadow: var(--#{$component}-box-shadow);
+
+  &-icon {
+    grid-area: icon;
+    width: var(--#{$component}-icon-size);
+    height: var(--#{$component}-icon-size);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--#{$component}-icon-bg-color);
+    color: var(--#{$component}-icon-color);
+  }
+
+  .card-body {
+    grid-area: content;
+    padding: var(--#{$component}-container-py) var(--#{$component}-container-px);
+  }
+
+  &-content {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &:focus-within,
+  &:hover {
+    border-color: var(--#{$component}-border-color) !important;
+  }
+
+  &-close-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+}

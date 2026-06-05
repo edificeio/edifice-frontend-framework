@@ -7,6 +7,7 @@ import {
   publicConfigHandlers,
   shareHandlers,
   themeHandlers,
+  timelineHandlers,
   userbookHandlers,
   wikiHandlers,
   workspaceHandlers,
@@ -24,4 +25,5 @@ export const handlers = [
   ...publicConfigHandlers,
   ...shareHandlers,
   ...actualitesHandlers,
+  ...timelineHandlers,
 ];

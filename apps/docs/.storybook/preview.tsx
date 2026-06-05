@@ -20,6 +20,7 @@ import {
   publicConfigHandlers,
   shareHandlers,
   themeHandlers,
+  timelineHandlers,
   userbookHandlers,
   wikiHandlers,
   workspaceHandlers,
@@ -97,6 +98,7 @@ const preview: Preview = {
         blog: blogHandlers,
         share: shareHandlers,
         actualites: actualitesHandlers,
+        timeline: timelineHandlers,
       },
     },
   },
@@ -104,6 +106,7 @@ const preview: Preview = {
   loaders: [mswLoader],
   decorators: [
     (Story, context) => {
+      console.log('oo');
       /**
        * App value default to "one"
        */
