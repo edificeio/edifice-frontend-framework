@@ -268,6 +268,7 @@ i18n.use(initReactI18next).init({
         //------------------------------------------------------
         //------------------ Notifications -------------------------
         'homepage.notifications-list.title': 'Notifications',
+        'homepage.notifications-list.close': 'Close notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",

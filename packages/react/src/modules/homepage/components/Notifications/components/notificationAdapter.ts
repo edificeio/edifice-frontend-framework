@@ -49,7 +49,7 @@ const resolveNotificationResourceUri = (
       return value;
     }
   }
-  return '/';
+  return undefined;
 };
 
 const parseNotificationMessage = (message: string): string => {
