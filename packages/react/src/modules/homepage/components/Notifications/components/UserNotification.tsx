@@ -2,6 +2,7 @@ import { Avatar, useDirectory } from '../../../../..';
 import { useTranslation } from 'react-i18next';
 import type { UserWebNotification } from './notificationAdapter';
 import NotificationItem from './NotificationItem';
+import NotificationResource from './NotificationResource';
 
 export type UserNotificationProps = {
   notification: UserWebNotification;
@@ -41,7 +42,7 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
       }
     >
       {/* TODO: Uncomment this when the notification resource is implemented IMPULS-5666 */}
-      {/* {params.appCode && <NotificationResource appCode={params.appCode} />} */}
+      {params.appCode && <NotificationResource appCode={params.appCode} />}
     </NotificationItem>
   );
 };
