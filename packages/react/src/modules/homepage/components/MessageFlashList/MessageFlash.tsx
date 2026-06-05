@@ -7,6 +7,7 @@ import {
   Card,
   Flex,
   IconButton,
+  useBreakpoint,
   useEdificeClient,
 } from '../../../..';
 import {
@@ -29,6 +30,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const checkContentTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { t } = useTranslation();
+  const { md } = useBreakpoint();
 
   let content = '';
   if (message.contents) {
@@ -134,14 +136,14 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
         )}
       </div>
       <Card.Body space="0">
-        <Flex direction="column">
+        <Flex direction="column" className="w-100">
           <Card.Title>{message.title}</Card.Title>
           <div
             ref={contentRef}
             className={classesContent}
             dangerouslySetInnerHTML={{ __html: content }}
           />
-          <Flex justify="between" align="center">
+          <Flex direction={md ? 'row' : 'column'} justify="between">
             <div className="fst-italic">{message.signature || ''}</div>
             {hasOverflow && (
               <ButtonBeta
@@ -155,6 +157,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
                 onClick={handleCollapse}
                 aria-controls={`message-flash-${message.id}-content`}
                 aria-expanded={!isCollapsed}
+                className="message-flash-collapse-button"
               >
                 {t(isCollapsed ? 'read.more' : 'read.less')}
               </ButtonBeta>
