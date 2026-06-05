@@ -95,11 +95,17 @@ const NotificationList = ({
             )}
             {isLoading && (
               <ul>
-                <NotificationSkeleton />
-                <Divider className="border-grey-300 my-0" />
-                <NotificationSkeleton />
-                <Divider className="border-grey-300 my-0" />
-                <NotificationSkeleton />
+                <li>
+                  <NotificationSkeleton />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+                <li>
+                  <NotificationSkeleton />
+                  <Divider className="border-grey-300 my-0" />
+                </li>
+                <li>
+                  <NotificationSkeleton />
+                </li>
               </ul>
             )}
           </>
