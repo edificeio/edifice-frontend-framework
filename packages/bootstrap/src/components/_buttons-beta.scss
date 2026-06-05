@@ -31,6 +31,7 @@
   cursor: pointer;
   transition: background-color var(--btn-beta-transition);
   box-shadow: inset 0 0 0 0.2rem var(--btn-beta-border-color);
+  flex: none;
 
   span,
   .loading {

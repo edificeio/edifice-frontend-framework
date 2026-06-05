@@ -21,6 +21,14 @@
   background-repeat: no-repeat;
   background-position: top right;
   padding: var(--message-flash-py) var(--message-flash-px);
+  border: 1px solid var(--message-flash-border-color);
+  border-radius: var(--message-flash-border-radius);
+  box-shadow: var(--message-flash-box-shadow);
+  border-color: var(--message-flash-border-color) !important;
+  a {
+    color: var(--primitive-info-700);
+    text-decoration: underline;
+  }
 
   &-orange {
     --message-flash-border-color: #{$warning-500};
@@ -42,7 +50,6 @@
     --message-flash-border-color: #{$info-500};
     --message-flash-bg-color: #{$info-200};
     --message-flash-icon-bg-color: #{$info-500};
-
     background-image: url('./images/homepage/MessageFlashBackground-Blue.svg');
   }
 
@@ -53,10 +60,6 @@
 
     background-image: url('./images/homepage/MessageFlashBackground-Red.svg');
   }
-
-  border: 1px solid var(--message-flash-border-color);
-  border-radius: var(--message-flash-border-radius);
-  box-shadow: var(--message-flash-box-shadow);
 
   &-icon {
     grid-area: icon;
@@ -78,14 +81,13 @@
     transition: all 0.3s ease-in-out;
   }
 
-  &:focus-within,
-  &:hover {
-    border-color: var(--message-flash-border-color) !important;
-  }
-
   &-close-button {
     position: absolute;
     top: 4px;
     right: 4px;
+  }
+
+  &-collapse-button {
+    margin-left: auto;
   }
 }
