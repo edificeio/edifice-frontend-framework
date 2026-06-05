@@ -5,15 +5,12 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { messageFlashService } from '..';
+import { messageFlashService } from '../api';
 
 export const messagesFlashQueryKeys = {
   all: () => ['messagesFlash'] as const,
 };
 
-/**
- * Provides query options for config-related operations.
- */
 export const messagesFlashQueryOptions = {
   getMessagesFlash() {
     return queryOptions({
@@ -38,9 +35,8 @@ export const useMarkAsRead = () => {
       // Optimistic update
       queryClient.setQueryData(
         messagesFlashQueryKeys.all(),
-        (oldMessages: IFlashMessageModel[]) => {
-          oldMessages.filter((msg) => msg.id !== message.id);
-        },
+        (oldMessages: IFlashMessageModel[]) =>
+          oldMessages.filter((msg) => msg.id !== message.id),
       );
     },
     onError(error, variables, onMutateResult, context) {

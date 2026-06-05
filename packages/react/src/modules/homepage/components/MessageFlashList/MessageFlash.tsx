@@ -21,6 +21,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [hasOverflow, setHasOverflow] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const checkContentTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { t } = useTranslation();
 
   let content = '';
@@ -66,10 +67,21 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
 
     // Check after component mounts and when content changes
     if (content) {
+      if (checkContentTimeoutRef.current) {
+        clearTimeout(checkContentTimeoutRef.current);
+      }
       // Use timeout to ensure DOM is fully rendered
-      setTimeout(checkOverflow, 0);
+      checkContentTimeoutRef.current = setTimeout(checkOverflow, 0);
     }
   }, [content]);
+
+  useEffect(() => {
+    return () => {
+      if (checkContentTimeoutRef.current) {
+        clearTimeout(checkContentTimeoutRef.current);
+      }
+    };
+  });
 
   const classes = clsx(
     'message-flash',

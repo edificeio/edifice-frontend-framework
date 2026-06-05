@@ -21,7 +21,7 @@ export const useMessageFlashList = (): UseMessageFlashListReturn => {
   const markAsReadMessage = useMarkAsRead();
 
   const handleMarkAsRead = (message: IFlashMessageModel) => {
-    markAsReadMessage.mutateAsync(message);
+    markAsReadMessage.mutate(message);
   };
 
   return {

@@ -25,6 +25,6 @@ export const createMessagesFlashService = (baseURL: string) => ({
   markAsRead(message: IFlashMessageModel): Promise<void> {
     return odeServices
       .http()
-      .put('/timeline/flashmsg/' + message.id + '/markasread');
+      .put('${baseURL}/timeline/flashmsg/' + message.id + '/markasread');
   },
 });
