@@ -18,42 +18,44 @@
   }
 
   /* TODO: Uncomment this when the notification resource is implemented IMPULS-5666 */
-  // &-resource {
-  //   display: inline-flex;
-  //   align-items: center;
-  //   gap: prim.$spacer-4;
-  //   padding: prim.$spacer-2 prim.$spacer-12 prim.$spacer-2 prim.$spacer-4;
-  //   border-radius: prim.$border-radius-pill;
-  //   width: fit-content;
-  //   max-width: 100%;
-  // }
+  &-resource {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--primitive-spacer-4);
+    padding: var(--primitive-spacer-2) var(--primitive-spacer-12)
+      var(--primitive-spacer-2) var(--primitive-spacer-4);
+    border-radius: var(--primitive-border-radius-pill);
+    width: fit-content;
+    max-width: 100%;
+    color: var(--primitive-grey-800);
+  }
 
-  // &-resource-icon {
-  //   display: flex;
-  //   align-items: center;
-  //   padding: prim.$spacer-4;
-  //   border-radius: prim.$border-radius-pill;
-  //   flex-shrink: 0;
+  &-resource-icon {
+    display: flex;
+    align-items: center;
+    padding: var(--primitive-spacer-4);
+    border-radius: var(--primitive-border-radius-pill);
+    flex-shrink: 0;
 
-  //   .app-icon {
-  //     width: 1.6rem !important;
-  //     height: 1.6rem !important;
+    .app-icon {
+      width: 1.6rem !important;
+      height: 1.6rem !important;
 
-  //     svg {
-  //       width: 1.6rem;
-  //       height: 1.6rem;
-  //     }
-  //   }
-  // }
+      svg {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
+    }
+  }
 
-  // &-resource-name {
-  //   font-size: prim.$font-size-caption;
-  //   font-weight: prim.$font-weight-bold;
-  //   line-height: prim.$font-lineheight-3xs;
-  //   overflow: hidden;
-  //   text-overflow: ellipsis;
-  //   white-space: nowrap;
-  // }
+  &-resource-name {
+    font-size: var(--primitive-font-size-caption);
+    font-weight: var(--primitive-font-weight-bold);
+    line-height: var(--primitive-font-lineheight-3xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &-date {
     font-size: var(--primitive-font-size-caption);
