@@ -13,9 +13,9 @@ type WebNotificationBase = {
 export type UserWebNotification = WebNotificationBase & {
   type: 'user';
   params: {
-    username?: string;
-    userId?: string;
-    appCode?: string;
+    appCode: string;
+    username: string;
+    userId: string;
   };
 };
 
@@ -23,7 +23,7 @@ export type UserWebNotification = WebNotificationBase & {
 export type SystemWebNotification = WebNotificationBase & {
   type: 'system';
   params: {
-    appCode?: string;
+    appCode: string;
   };
 };
 
@@ -110,8 +110,8 @@ export const notificationAdapter = (
       ...base,
       type: 'user',
       params: {
-        username: notification.params.username,
-        userId: notification.sender,
+        username: notification.params.username!, // cannot be undefined if sender is present (user type)
+        userId: notification.sender!, // cannot be undefined if sender is present (user type)
         appCode,
       },
     };

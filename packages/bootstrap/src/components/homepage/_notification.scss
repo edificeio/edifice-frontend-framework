@@ -17,7 +17,6 @@
     flex: 1;
   }
 
-  /* TODO: Uncomment this when the notification resource is implemented IMPULS-5666 */
   &-resource {
     display: inline-flex;
     align-items: center;
@@ -37,6 +36,7 @@
     border-radius: var(--primitive-border-radius-pill);
     flex-shrink: 0;
 
+    // TODO: remove this override when the app icon component supports size 16x16
     .app-icon {
       width: 1.6rem !important;
       height: 1.6rem !important;

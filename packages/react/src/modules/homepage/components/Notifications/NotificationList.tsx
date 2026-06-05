@@ -84,7 +84,7 @@ const NotificationList = ({
           <>
             <ul>
               {notifications?.map((notification, index) => (
-                <li key={'notification-list-' + index}>
+                <li key={'notification-list-' + notification._id + '-' + index}>
                   <Notification notification={notification} />
                   <Divider className="border-grey-300 my-0" />
                 </li>
