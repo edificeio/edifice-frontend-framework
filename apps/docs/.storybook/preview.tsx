@@ -106,7 +106,6 @@ const preview: Preview = {
   loaders: [mswLoader],
   decorators: [
     (Story, context) => {
-      console.log('oo');
       /**
        * App value default to "one"
        */
