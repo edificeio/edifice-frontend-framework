@@ -21,7 +21,11 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
       message={message}
       date={date}
       picture={
-        <a href={uri} title={params.appCode}>
+        <a
+          href={uri}
+          title={params.appCode}
+          data-testid="notification-picture-app-icon"
+        >
           <AppIcon
             app={params.appCode}
             size="32"

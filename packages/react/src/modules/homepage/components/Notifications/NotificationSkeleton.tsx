@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Flex, TextSkeleton } from '../../../..';
+import { Avatar, ButtonSkeleton, Flex, TextSkeleton } from '../../../..';
 
 const NotificationSkeleton = React.forwardRef<
   HTMLDivElement,
@@ -18,7 +18,7 @@ const NotificationSkeleton = React.forwardRef<
         <Flex direction="column" gap="8" className="notification-message">
           <TextSkeleton />
           <TextSkeleton />
-          <TextSkeleton size="lg" className="col-6" />
+          <div className="placeholder col-4" style={{ height: '2rem' }}></div>
           <TextSkeleton className="col-2" />
         </Flex>
       </Flex>

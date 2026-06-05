@@ -33,7 +33,7 @@ const NotificationItem = ({
     <Flex direction="column" className="notification" gap="8">
       <Flex direction="row" gap="8">
         <div className="notification-picture">{picture}</div>
-        <a href={uri} data-testid="notification-item">
+        <a href={uri} data-testid="notification-content">
           <Flex direction="column" gap="8">
             <div
               className="notification-message"

@@ -22,7 +22,10 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
       message={message}
       date={date}
       picture={
-        <a href={getUserbookURL(params.userId ?? '', 'user')}>
+        <a
+          href={getUserbookURL(params.userId ?? '', 'user')}
+          data-testid="notification-picture-avatar"
+        >
           <Avatar
             src={getAvatarURL(params.userId ?? '', 'user')}
             alt={params.username ?? ''}
