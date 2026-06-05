@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { useUser } from '../../../..';
-import { HomeCard } from '../HomeCard';
 import UserSpace from './UserSpace';
 
 export function UserSpaceContainer({ children }: { children?: ReactNode }) {
@@ -12,12 +11,9 @@ export function UserSpaceContainer({ children }: { children?: ReactNode }) {
   const profile = userDescription.profiles?.[0] || 'Guest';
 
   return (
-    <HomeCard variant="user">
-      <HomeCard.Content>
-        <UserSpace name={name} profile={profile} avatar={avatar} />
-        {children}
-      </HomeCard.Content>
-    </HomeCard>
+    <UserSpace name={name} profile={profile} avatar={avatar}>
+      {children}
+    </UserSpace>
   );
 }
 
