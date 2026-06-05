@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { AppIcon } from '../../../../..';
 import type { SystemWebNotification } from './notificationAdapter';
 import NotificationItem from './NotificationItem';
@@ -14,6 +15,11 @@ export type SystemNotificationProps = {
  */
 const SystemNotification = ({ notification }: SystemNotificationProps) => {
   const { params, message, date, uri } = notification;
+  const { t } = useTranslation();
+  const appName = t(
+    notification.params.appCode ??
+      'homepage.notifications.app-icon.placeholder',
+  );
 
   return (
     <NotificationItem
@@ -21,11 +27,7 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
       message={message}
       date={date}
       picture={
-        <a
-          href={uri}
-          title={params.appCode}
-          data-testid="notification-picture-app-icon"
-        >
+        <a href={uri} title={appName} data-testid="notification-app-icon">
           <AppIcon
             app={params.appCode}
             size="32"

@@ -246,10 +246,10 @@ i18n.use(initReactI18next).init({
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
         //----------------- LastInfosList -----------------
-        'homepage.widget.last-infos-list.empty':
+        'homepage.last-infos-list.empty':
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
-        'homepage.widget.last-infos-list.see.more': 'Voir plus',
-        'homepage.widget.last-infos-list.title': 'Dernières actualités',
+        'homepage.last-infos-list.see.more': 'Voir plus',
+        'homepage.last-infos-list.title': 'Dernières actualités',
         //------------------------------------------------------
 
         //----------------- useDate (formatTimeAgo) -----------------
@@ -267,9 +267,16 @@ i18n.use(initReactI18next).init({
         'betaSwitch.error': 'Erreur de paramétrage.',
         //------------------------------------------------------
         //------------------ Notifications -------------------------
-        'homepage.widget.notifications-list.title': 'Notifications',
-        'homepage.widget.notifications-list.empty.description':
+        'homepage.notifications-list.title': 'Notifications',
+        'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
+        'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
+        'homepage.notifications.app-icon.placeholder': "Icône de l'application",
+        //------------------------------------------------------
+        //------------------ App names -------------------------
+        'collaborativewall': 'Mur collaboratif',
+        'forms': 'Formulaires',
+        'support': 'Support',
         //------------------------------------------------------
       },
     },

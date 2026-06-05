@@ -1,4 +1,5 @@
 import { Avatar, useDirectory } from '../../../../..';
+import { useTranslation } from 'react-i18next';
 import type { UserWebNotification } from './notificationAdapter';
 import NotificationItem from './NotificationItem';
 
@@ -15,7 +16,10 @@ export type UserNotificationProps = {
 const UserNotification = ({ notification }: UserNotificationProps) => {
   const { getAvatarURL, getUserbookURL } = useDirectory();
   const { params, message, date, uri } = notification;
-
+  const { t } = useTranslation();
+  const userName = t(
+    notification.params.username ?? 'homepage.notifications.avatar.placeholder',
+  );
   return (
     <NotificationItem
       uri={uri}
@@ -24,11 +28,12 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
       picture={
         <a
           href={getUserbookURL(params.userId ?? '', 'user')}
-          data-testid="notification-picture-avatar"
+          title={userName}
+          data-testid="notification-avatar"
         >
           <Avatar
             src={getAvatarURL(params.userId ?? '', 'user')}
-            alt={params.username ?? ''}
+            alt={userName}
             variant="circle"
             className="notification-avatar"
           />

@@ -56,7 +56,7 @@ const NotificationList = ({
           className="notification-list-header py-16 ps-24 pe-8"
         >
           <h4 className="notification-list-title text-truncate">
-            {t('homepage.widget.notifications-list.title')}
+            {t('homepage.notifications-list.title')}
           </h4>
           {onCloseNotifications && (
             <ButtonBeta
@@ -65,8 +65,8 @@ const NotificationList = ({
               className="notification-list-close"
               rightIcon={<IconClose />}
               onClick={handleCloseClick}
-              aria-label={t('homepage.widget.notifications-list.close')}
-              title={t('homepage.widget.notifications-list.close')}
+              aria-label={t('homepage.notifications-list.close')}
+              title={t('homepage.notifications-list.close')}
               data-testid="notification-list-close-button"
             ></ButtonBeta>
           )}
@@ -76,10 +76,8 @@ const NotificationList = ({
             <EmptyScreen
               size={120}
               imageSrc={illuEmptyNotification}
-              imageAlt={t(
-                'homepage.widget.notifications-list.empty.description',
-              )}
-              text={t('homepage.widget.notifications-list.empty.description')}
+              imageAlt={t('homepage.notifications-list.empty.description')}
+              text={t('homepage.notifications-list.empty.description')}
             />
           </div>
         ) : (
