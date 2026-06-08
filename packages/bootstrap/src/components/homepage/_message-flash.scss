@@ -21,10 +21,12 @@
   background-repeat: no-repeat;
   background-position: top right;
   padding: var(--message-flash-py) var(--message-flash-px);
-  border: 1px solid var(--message-flash-border-color);
+  border: 2px solid var(--message-flash-border-color);
   border-radius: var(--message-flash-border-radius);
   box-shadow: var(--message-flash-box-shadow);
   border-color: var(--message-flash-border-color) !important;
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
   a {
     color: var(--primitive-info-700);
     text-decoration: underline;

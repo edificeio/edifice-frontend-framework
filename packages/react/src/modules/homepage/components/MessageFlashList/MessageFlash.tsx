@@ -111,7 +111,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
   };
 
   return (
-    <Card className={classes} isClickable={false} isSelectable={false}>
+    <div className={classes}>
       {((hasOverflow && !isCollapsed) || !hasOverflow) && (
         <IconButton
           variant="ghost"
@@ -135,7 +135,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
           <IconInfoCircle />
         )}
       </div>
-      <Card.Body space="0">
+      <div>
         <Flex direction="column" className="w-100">
           <Card.Title>{message.title}</Card.Title>
           <div
@@ -164,8 +164,8 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
             )}
           </Flex>
         </Flex>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 
