@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, ButtonSkeleton, Flex, TextSkeleton } from '../../../..';
+import { Avatar, Flex, TextSkeleton } from '../../../..';
 
 const NotificationSkeleton = React.forwardRef<
   HTMLDivElement,
