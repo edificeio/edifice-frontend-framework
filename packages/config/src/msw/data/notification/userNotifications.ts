@@ -1,4 +1,4 @@
-import { NotificationModel } from '../../../../client';
+import { NotificationModel } from '../../../../../client/dist';
 
 // RBS — réservations
 export const bookingNotificationArgus: NotificationModel = {
@@ -22,6 +22,25 @@ export const bookingNotificationArgus: NotificationModel = {
   },
   'message':
     '<a href="https://recette-ode1.opendigitaleducation.com/userbook/annuaire#f8744866-2992-4b17-9d18-ff3fdb6e8c96#Personnel">argus rusard</a>\n<br />\n<span>\n\t<span>a créé une </span>\n\t<a href="https://recette-ode1.opendigitaleducation.com/rbs#/booking/9171/2026-04-16"><span>demande de réservation</span></a>\n\t<span> sur la ressource </span> Une ressource,&nbsp;\n\t<span>du</span> 16/04/26 11:00\n\t<span>au</span> 16/04/26 12:00\n</span>\n',
+};
+
+export const infosNotification: NotificationModel = {
+  '_id': 'e9cc03c0-4b90-456c-b9a2-c84874fab52d',
+  'type': 'NEWS',
+  'event-type': 'NEWS-PUBLISHED',
+  'resource': '1374',
+  'sender': '6c74c8a8-4587-49f8-a9e5-4599da930bf2',
+  'params': {
+    profilUri: '/userbook/annuaire#6c74c8a8-4587-49f8-a9e5-4599da930bf2#',
+    username: 'Dumbledore Albus',
+    info: 'publié le dimanche 7 juin 2026',
+    resourceUri: '/actualites#/view/thread/409/info/1374',
+  },
+  'date': {
+    $date: '2026-06-07T03:00:00.049Z',
+  },
+  'message':
+    '<a href="https://recette-ode1.opendigitaleducation.com/userbook/annuaire#6c74c8a8-4587-49f8-a9e5-4599da930bf2#">Dumbledore Albus</a>\n<br />\n<span>\n    <span>a publié l\'actualité </span>\n\t<a href="https://recette-ode1.opendigitaleducation.com/actualites#/view/thread/409/info/1374">publié le dimanche 7 juin 2026</a>\n</span>\n',
 };
 
 export const bookingNotificationJaune: NotificationModel = {

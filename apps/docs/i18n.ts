@@ -259,13 +259,6 @@ i18n.use(initReactI18next).init({
         'date.format.previousYear': 'D MMM YYYY',
         //------------------------------------------------------
 
-        //----------------- useDate (formatTimeAgo) -----------------
-        'date.format.yesterday': 'Yesterday',
-        'date.format.currentWeek': 'dddd',
-        'date.format.currentYear': 'D MMM',
-        'date.format.previousYear': 'D MMM YYYY',
-        //------------------------------------------------------
-
         //----------------- BetaSwitch -----------------
         'betaSwitch.button': 'Quittez la Bêta',
         'betaSwitch.title': "L'ancienne version vous manque ?",
@@ -282,9 +275,11 @@ i18n.use(initReactI18next).init({
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
         //------------------------------------------------------
         //------------------ App names -------------------------
-        'collaborativewall': 'Mur collaboratif',
+        'collaborative-wall': 'Mur collaboratif',
         'forms': 'Formulaires',
         'support': 'Support',
+        'actualites': 'Actualités',
+        'rbs': 'RBS',
         //------------------------------------------------------
       },
     },

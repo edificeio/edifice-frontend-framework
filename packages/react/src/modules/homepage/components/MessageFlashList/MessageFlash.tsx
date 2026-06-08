@@ -111,7 +111,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
   };
 
   return (
-    <Card className={classes} isClickable={false} isSelectable={false}>
+    <div className={classes}>
       {((hasOverflow && !isCollapsed) || !hasOverflow) && (
         <IconButton
           variant="ghost"
@@ -135,37 +135,39 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
           <IconInfoCircle />
         )}
       </div>
-      <Card.Body space="0">
-        <Flex direction="column" className="w-100">
-          <Card.Title>{message.title}</Card.Title>
-          <div
-            ref={contentRef}
-            className={classesContent}
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-          <Flex direction={md ? 'row' : 'column'} justify="between">
-            <div className="fst-italic">{message.signature || ''}</div>
-            {hasOverflow && (
-              <ButtonBeta
-                data-testid={
-                  isCollapsed
-                    ? 'message-flash-view-more-button'
-                    : 'message-flash-view-less-button'
-                }
-                color="default"
-                variant="ghost"
-                onClick={handleCollapse}
-                aria-controls={`message-flash-${message.id}-content`}
-                aria-expanded={!isCollapsed}
-                className="message-flash-collapse-button"
-              >
-                {t(isCollapsed ? 'read.more' : 'read.less')}
-              </ButtonBeta>
-            )}
-          </Flex>
+      <Flex direction="column" className="w-100 message-flash-body">
+        <Card.Title>{message.title}</Card.Title>
+        <div
+          ref={contentRef}
+          className={classesContent}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+        <Flex
+          direction={md ? 'row' : 'column'}
+          justify="between"
+          className="message-flash-footer"
+        >
+          <div className="fst-italic">{message.signature || ''}</div>
+          {hasOverflow && (
+            <ButtonBeta
+              data-testid={
+                isCollapsed
+                  ? 'message-flash-view-more-button'
+                  : 'message-flash-view-less-button'
+              }
+              color="default"
+              variant="ghost"
+              onClick={handleCollapse}
+              aria-controls={`message-flash-${message.id}-content`}
+              aria-expanded={!isCollapsed}
+              className="message-flash-collapse-button"
+            >
+              {t(isCollapsed ? 'read.more' : 'read.less')}
+            </ButtonBeta>
+          )}
         </Flex>
-      </Card.Body>
-    </Card>
+      </Flex>
+    </div>
   );
 };
 
