@@ -32,12 +32,13 @@ export const mockMessageSuccess: IFlashMessageModel = {
   id: '3',
   title: 'New resources available in the library',
   contents: {
-    en: 'Check out the latest educational resources and materials that have been added to our digital library.',
-    fr: 'Découvrez les dernières ressources pédagogiques et matériels qui ont été ajoutés à notre bibliothèque numérique.',
+    en: 'Check out the latest educational resources and materials that have been added to our digital library.Check out the latest educational resources and materials that have been added to our digital library.',
+    fr: 'Découvrez les dernières ressources pédagogiques et matériels qui ont été ajoutés à notre bibliothèque numérique. Découvrez les dernières ressources pédagogiques et matériels qui ont été ajoutés à notre bibliothèque numérique.',
   },
   author: 'Library Staff',
   color: 'green',
-  signature: 'Library Updates',
+  signature:
+    '0 MOBILE POUDLARD avec une signature super super super super longue !: ELLIPPSSSSSIIIIIISSSSSSSS',
   signatureColor: '#4ECDC4',
   startDate: '2026-01-20T00:00:00Z',
   endDate: '2050-03-27T23:59:59Z',

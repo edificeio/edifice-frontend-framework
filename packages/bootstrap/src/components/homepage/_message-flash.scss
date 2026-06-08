@@ -75,12 +75,16 @@
     color: var(--message-flash-icon-color);
   }
 
-  .card-body {
+  &-body {
     grid-area: content;
   }
 
   &-content {
     transition: all 0.3s ease-in-out;
+  }
+
+  &-footer {
+    align-items: center;
   }
 
   &-close-button {
