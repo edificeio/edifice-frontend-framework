@@ -10,6 +10,7 @@ import {
 } from '../../../..';
 import { IconClose } from '../../../icons/components';
 import Notification from './Notification';
+import NotificationListSkeleton from './NotificationListSkeleton';
 import NotificationSkeleton from './NotificationSkeleton';
 
 export type NotificationListProps = {
@@ -37,7 +38,7 @@ const NotificationList = ({
   const { t } = useTranslation();
 
   const loadNextRef = useInfiniteScroll({
-    callback: onLoadNextPage || (() => {}),
+    callback: () => onLoadNextPage?.(),
   });
 
   const handleCloseClick = () => {
@@ -84,30 +85,14 @@ const NotificationList = ({
           <>
             <ul>
               {notifications?.map((notification, index) => (
-                <li key={'notification-list-' + index}>
+                <li key={'notification-list-' + notification._id + '-' + index}>
                   <Notification notification={notification} />
                   <Divider className="border-grey-300 my-0" />
                 </li>
               ))}
             </ul>
-            {hasNextPage && !isLoading && (
-              <NotificationSkeleton ref={loadNextRef} />
-            )}
-            {isLoading && (
-              <ul>
-                <li>
-                  <NotificationSkeleton />
-                  <Divider className="border-grey-300 my-0" />
-                </li>
-                <li>
-                  <NotificationSkeleton />
-                  <Divider className="border-grey-300 my-0" />
-                </li>
-                <li>
-                  <NotificationSkeleton />
-                </li>
-              </ul>
-            )}
+            {hasNextPage && <NotificationSkeleton ref={loadNextRef} />}
+            {isLoading && <NotificationListSkeleton />}
           </>
         )}
       </Flex>
