@@ -275,9 +275,11 @@ i18n.use(initReactI18next).init({
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
         //------------------------------------------------------
         //------------------ App names -------------------------
-        'collaborativewall': 'Mur collaboratif',
+        'collaborative-wall': 'Mur collaboratif',
         'forms': 'Formulaires',
         'support': 'Support',
+        'actualites': 'Actualités',
+        'rbs': 'RBS',
         //------------------------------------------------------
       },
     },

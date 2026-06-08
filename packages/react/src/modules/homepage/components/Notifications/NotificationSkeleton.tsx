@@ -4,9 +4,9 @@ import { Avatar, Flex, TextSkeleton } from '../../../..';
 const NotificationSkeleton = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->((_props) => {
+>((_props, ref) => {
   return (
-    <Flex direction="column" className="notification" gap="8">
+    <Flex direction="column" className="notification" gap="8" ref={ref}>
       <Flex direction="row" gap="8">
         <div className="notification-picture">
           <Avatar

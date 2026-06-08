@@ -79,6 +79,8 @@ const getAppCode = (appCode: string): string => {
       return 'forms';
     case 'messagerie':
       return 'conversation';
+    case 'news':
+      return 'actualites';
     case 'homeworks':
       return 'cahier-de-texte';
     case 'userbook_motto':
