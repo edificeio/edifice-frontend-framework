@@ -18,9 +18,7 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
   const { getAvatarURL, getUserbookURL } = useDirectory();
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
-  const userName = t(
-    notification.params.username ?? 'homepage.notifications.avatar.placeholder',
-  );
+  const userName = t(params.username);
   return (
     <NotificationItem
       uri={uri}
@@ -28,12 +26,13 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
       date={date}
       picture={
         <a
-          href={getUserbookURL(params.userId ?? '', 'user')}
+          href={getUserbookURL(params.userId, 'user')}
           title={userName}
           data-testid="notification-avatar"
         >
           <Avatar
-            src={getAvatarURL(params.userId ?? '', 'user')}
+            aria-label={t('homepage.notifications.avatar.placeholder')}
+            src={getAvatarURL(params.userId, 'user')}
             alt={userName}
             variant="circle"
             className="notification-avatar"
@@ -41,8 +40,7 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
         </a>
       }
     >
-      {/* TODO: Uncomment this when the notification resource is implemented IMPULS-5666 */}
-      {params.appCode && <NotificationResource appCode={params.appCode} />}
+      <NotificationResource appCode={params.appCode} />
     </NotificationItem>
   );
 };

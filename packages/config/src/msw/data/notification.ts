@@ -1,24 +1,26 @@
-export * from './systemNotifications';
-export * from './userNotifications';
+export * from './notification/systemNotifications';
+export * from './notification/userNotifications';
 
 import { NotificationModel } from '../../../../client';
 import {
   supportNotification,
   systemNotificationCollaborativeEditor,
-} from './systemNotifications';
+} from './notification/systemNotifications';
 import {
   bookingNotificationArgus,
   bookingNotificationJaune,
   calendarCreateNotification1,
   calendarShareNotification1,
+  infosNotification,
   messageNotification,
   userMoodNotificationLoison,
   userNotificationCollaborativeWall,
   userNotificationForm,
-} from './userNotifications';
+} from './notification/userNotifications';
 
 export const mockNotifications: NotificationModel[] = [
   bookingNotificationArgus,
+  infosNotification,
   systemNotificationCollaborativeEditor,
   bookingNotificationJaune,
   userNotificationCollaborativeWall,

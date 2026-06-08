@@ -16,10 +16,7 @@ export type SystemNotificationProps = {
 const SystemNotification = ({ notification }: SystemNotificationProps) => {
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
-  const appName = t(
-    notification.params.appCode ??
-      'homepage.notifications.app-icon.placeholder',
-  );
+  const appName = t(params.appCode);
 
   return (
     <NotificationItem
@@ -27,7 +24,12 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
       message={message}
       date={date}
       picture={
-        <a href={uri} title={appName} data-testid="notification-app-icon">
+        <a
+          href={uri}
+          title={appName}
+          data-testid="notification-app-icon"
+          aria-label={t('homepage.notifications.app-icon.placeholder')}
+        >
           <AppIcon
             app={params.appCode}
             size="32"

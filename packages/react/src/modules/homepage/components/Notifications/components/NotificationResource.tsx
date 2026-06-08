@@ -8,7 +8,7 @@ export type NotificationResourceProps = {
 /**
  * Displays the originating application of a notification as a small icon + label.
  *
- * Resolves the human-readable app name via i18n key `timeline.apptype.<appCode>`,
+ * Resolves the human-readable app name via i18n key `<appCode>` present in entcore/portal/backend/src/main/resources/i18n/fr.json,
  * falling back to the raw `appCode` if no translation exists.
  *
  */
