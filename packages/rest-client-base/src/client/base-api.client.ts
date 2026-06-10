@@ -236,18 +236,24 @@ export abstract class BaseApiClient {
    * @param queryParams Optional query parameters
    * @returns Complete URL
    * @protected
+   * @throws {URIError} if the baseUrl attribute is not parsable
    */
   protected buildUrl(endpoint: string, queryParams?: URLSearchParams): string {
-    let url = `${this.baseUrl}${endpoint}`;
-    // Ensure URL starts with a slash
-    if (url.startsWith('//')) {
-      url = url.replace(/^\/\//, '/');
+    // Fail explicitely if base url is not correct
+    if(!URL.canParse(this.baseUrl)) {
+      throw new URIError(`{baseUrl: ${this.baseUrl}} is not a parsable URL.`);
     }
-    if (queryParams && queryParams.toString()) {
-      url += `?${queryParams.toString()}`;
+    // Parse base url with MDN-defined rules
+    const url = new URL(this.baseUrl);
+    // Add endpoint path
+    url.pathname = endpoint;
+    // Add query params if they are defined
+    if (queryParams) {
+      queryParams.forEach((value, key, _) => {
+          url.searchParams.set(key, value);
+      });
     }
-
-    return url;
+    return url.toString();
   }
 
   /**
