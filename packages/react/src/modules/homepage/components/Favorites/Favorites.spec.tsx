@@ -32,11 +32,4 @@ describe('Favorites', () => {
     expect(links[0]).toHaveAttribute('href', '/mindmap');
     expect(links[0]).toHaveAttribute('aria-label', 'Mindmap App');
   });
-
-  it('renders at most 6 apps even when more are provided', () => {
-    const apps = Array.from({ length: 8 }, (_, i) => makeApp(`App${i + 1}`));
-    render(<Favorites apps={apps} />);
-
-    expect(screen.getAllByRole('link')).toHaveLength(6);
-  });
 });

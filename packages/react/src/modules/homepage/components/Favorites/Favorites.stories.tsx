@@ -31,7 +31,7 @@ const meta: Meta<typeof Favorites> = {
     docs: {
       description: {
         component:
-          "Widget Favoris — affiche jusqu'à 6 applications favorites de l'utilisateur. Variante `secondary` de `HomeCard`. Affiche un état vide avec illustration si aucune application n'est marquée en favori.",
+          "Widget Favoris — affiche jusqu'à 2 lignes d'applications favorites de l'utilisateur. Variante `secondary` de `HomeCard`. Affiche un état vide avec illustration si aucune application n'est marquée en favori.",
       },
     },
   },
@@ -68,6 +68,34 @@ const mockApps: FavoritesProps['apps'] = [
     displayName: 'Messagerie',
     isExternal: false,
   },
+  {
+    address: '/workspace',
+    icon: 'workspace',
+    name: 'workspace',
+    scope: [],
+    display: true,
+    displayName: 'Espace documentaire',
+    isExternal: false,
+  },
+  {
+    address: '/rack',
+    icon: 'rack',
+    name: 'rack',
+    scope: [],
+    display: true,
+    displayName: 'Casier',
+    isExternal: false,
+  },
+  {
+    address: '/scrapbook',
+    icon: 'scrapbook',
+    name: 'scrapbook',
+    scope: [],
+    display: true,
+    displayName: 'Cahier multimédia',
+    isExternal: false,
+  },
+
   {
     address: '/workspace',
     icon: 'workspace',

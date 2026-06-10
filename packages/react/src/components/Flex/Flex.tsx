@@ -34,7 +34,11 @@ const Flex = forwardRef<HTMLElement, FlexProps>(
       fill && 'flex-fill',
       align && `align-items-${align}`,
       justify && `justify-content-${justify}`,
-      gap && `gap-${gap}`,
+      gap &&
+        (([rowGap, colGap]) =>
+          colGap !== undefined
+            ? [`row-gap-${rowGap}`, `column-gap-${colGap}`]
+            : `gap-${rowGap}`)(gap.split(' ')),
       wrap && `flex-${wrap === 'reverse' ? 'wrap-reverse' : wrap}`,
       className,
     );
