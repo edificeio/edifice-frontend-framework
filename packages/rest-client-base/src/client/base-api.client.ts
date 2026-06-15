@@ -240,7 +240,7 @@ export abstract class BaseApiClient {
    */
   protected buildUrl(endpoint: string, queryParams?: URLSearchParams): string {
     // Fail explicitely if base url is not correct
-    if(!URL.canParse(this.baseUrl)) {
+    if (!URL.canParse(this.baseUrl)) {
       throw new URIError(`{baseUrl: ${this.baseUrl}} is not a parsable URL.`);
     }
     // Parse base url with MDN-defined rules
@@ -250,7 +250,7 @@ export abstract class BaseApiClient {
     // Add query params if they are defined
     if (queryParams) {
       queryParams.forEach((value, key, _) => {
-          url.searchParams.set(key, value);
+        url.searchParams.set(key, value);
       });
     }
     return url.toString();
