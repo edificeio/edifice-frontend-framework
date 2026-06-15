@@ -96,7 +96,7 @@ const data: Data[] = [
 ];
 
 export const Base: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <List
         data={data}
@@ -118,7 +118,7 @@ export const Base: Story = {
 };
 
 export const ListWithToolbar: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <List
         data={data}
@@ -141,7 +141,7 @@ export const ListWithToolbar: Story = {
 };
 
 export const ListWithCheckboxes: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <>
         <List
@@ -167,7 +167,7 @@ export const ListWithCheckboxes: Story = {
 };
 
 export const ListWithCheckboxesAndToolbar: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <>
         <List
@@ -193,7 +193,7 @@ export const ListWithCheckboxesAndToolbar: Story = {
 };
 
 export const ListWithOnSelectedItems: Story = {
-  render: (args) => {
+  render: () => {
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
     return (
       <>

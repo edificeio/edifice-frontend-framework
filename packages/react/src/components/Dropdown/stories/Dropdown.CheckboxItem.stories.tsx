@@ -8,9 +8,6 @@ const meta: Meta<typeof Dropdown> = {
   title: 'Components/Dropdown/Dropdown Checkbox Item',
   component: Dropdown,
   decorators: [(Story) => <div style={{ height: '25em' }}>{Story()}</div>],
-  args: {
-    badgeContent: 0,
-  },
   parameters: {
     docs: {
       description: {
@@ -25,7 +22,7 @@ export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
 export const CheckboxGroup: Story = {
-  render: (args) => {
+  render: () => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<
       (string | number)[]
     >([]);
@@ -60,7 +57,7 @@ export const CheckboxGroup: Story = {
         <Dropdown.Trigger
           label="Dropdown"
           icon={<IconFilter />}
-          badgeContent={count || args.badgeContent}
+          badgeContent={count}
         />
         <Dropdown.Menu>
           {checkboxOptions.map((option, index) => (
@@ -80,7 +77,7 @@ export const CheckboxGroup: Story = {
 };
 
 export const BadgeContent: Story = {
-  render: (args) => {
+  render: () => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState<
       (string | number)[]
     >([1, 2]);

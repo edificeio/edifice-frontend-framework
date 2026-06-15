@@ -1,10 +1,10 @@
-import { StoryObj } from '@storybook/react-vite';
+import { StoryFn, StoryObj } from '@storybook/react-vite';
 
 import { Ref, useEffect, useRef } from 'react';
 import { Button } from '../Button';
 import FormControl from '../Form/FormControl';
 import FormText from '../Form/FormText';
-import TextArea, { TextAreaProps } from './TextArea';
+import TextArea from './TextArea';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta = {
@@ -34,7 +34,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof TextArea>;
 
-const Template = (args: TextAreaProps) => {
+const Template: StoryFn<typeof TextArea> = (args) => {
   return (
     <FormControl id="example">
       <TextArea {...args} />

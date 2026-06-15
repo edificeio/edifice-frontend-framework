@@ -3,15 +3,15 @@ import Heading from '../../components/Heading/Heading';
 import useToggle from './useToggle';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-const meta: Meta<typeof useToggle> = {
+const meta: Meta = {
   title: 'Hooks/useToggle',
 };
 
 export default meta;
-type Story = StoryObj<typeof useToggle>;
+type Story = StoryObj;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const [state, toggle] = useToggle(false);
 
     return (

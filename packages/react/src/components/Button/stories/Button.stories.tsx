@@ -183,7 +183,7 @@ export const LoadingButtonWithCustomIcon: Story = {
 };
 
 export const ButtonGroupWithSecondaryAction: Story = {
-  render: (args: ButtonProps) => {
+  render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
         <Button {...args} color="secondary" variant="outline">
@@ -207,7 +207,7 @@ export const ButtonGroupWithSecondaryAction: Story = {
 };
 
 export const ButtonGroupWithIconButton: Story = {
-  render: (args: ButtonProps) => {
+  render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
         <Button {...args} color="primary" variant="filled">
@@ -235,7 +235,7 @@ export const ButtonGroupWithIconButton: Story = {
 };
 
 export const ButtonGroupWithThirdAction: Story = {
-  render: (args: ButtonProps) => {
+  render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
         <Button

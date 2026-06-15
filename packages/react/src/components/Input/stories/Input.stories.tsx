@@ -1,10 +1,10 @@
-import { Meta, StoryObj } from '@storybook/react-vite';
+import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { Ref, useEffect, useRef } from 'react';
 import { Button } from '../../Button';
 
 import { FormControl, FormText } from '../../Form/index';
 import { Label } from '../../Label';
-import Input, { InputProps } from '../Input';
+import Input from '../Input';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Input> = {
@@ -62,7 +62,7 @@ const meta: Meta<typeof Input> = {
 export default meta;
 type Story = StoryObj<typeof Input>;
 
-const Template = (args: InputProps) => {
+const Template: StoryFn<typeof Input> = (args) => {
   return (
     <FormControl id="example">
       <Input {...args} />

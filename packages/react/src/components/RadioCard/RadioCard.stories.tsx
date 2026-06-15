@@ -31,7 +31,7 @@ export default meta;
 type Story = StoryObj<typeof RadioCard>;
 
 export const Base: Story = {
-  render: (args: RadioCardProps) => {
+  render: () => {
     const [selectedValue, setSelectedValue] = useState<string>('CP');
 
     const handleChange = ({

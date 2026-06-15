@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof useClickOutside>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const [isOpen, setOpen] = useState<boolean>(true);
 
     const ref = useClickOutside(() => setOpen(false));

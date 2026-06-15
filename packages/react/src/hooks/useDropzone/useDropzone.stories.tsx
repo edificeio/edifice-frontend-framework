@@ -11,7 +11,7 @@ export default meta;
 type Story = StoryObj<typeof useDropzone>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const {
       inputRef,
       files,

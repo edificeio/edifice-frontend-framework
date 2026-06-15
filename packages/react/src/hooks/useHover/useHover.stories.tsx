@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj<typeof useHover>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const [ref, isHovered] = useHover<HTMLButtonElement>();
     return (
       <>

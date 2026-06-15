@@ -9,8 +9,7 @@ import {
 
 import clsx from 'clsx';
 
-export interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   /**
    * Add a label
    */

@@ -26,7 +26,7 @@ type Story = StoryObj<typeof Image>;
 export const Base: Story = {};
 
 export const Ratio: Story = {
-  render: (args: ImageProps) => {
+  render: (args) => {
     return (
       <div className="d-flex align-items-center">
         <div style={{ width: '60%' }}>

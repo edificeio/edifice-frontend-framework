@@ -33,7 +33,7 @@
     "preinstall": "npx only-allow pnpm",
     "lint": "turbo run lint --filter=./packages/**",
     "pre-commit": "pnpm run lint && pnpm run format && pnpm run test",
-    "prepare": "husky install",
+    "prepare": "husky",
     "test": "turbo run test --filter=./packages/react",
     "test:client": "turbo run test --filter=./packages/client"
   },

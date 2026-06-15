@@ -74,7 +74,7 @@ export const BorderlessDisabledInputGroup: Story = {
 };
 
 export const MultiInputGroup: Story = {
-  render: (args) => {
+  render: () => {
     const [username, setUsername] = useState<string>('');
     const [server, setServer] = useState<string>('');
     const serverUrl = useMemo(
@@ -114,7 +114,7 @@ export const MultiInputGroup: Story = {
 };
 
 export const CheckboxRadio: Story = {
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('CM1');
     const [isChecked, setIsChecked] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(true);

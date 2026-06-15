@@ -30,7 +30,7 @@ export default meta;
 type Story = StoryObj<typeof Radio>;
 
 export const Base: Story = {
-  render: (args: RadioProps) => {
+  render: () => {
     const [value, setValue] = useState<string>('CP');
 
     const handleChange = ({
@@ -75,7 +75,7 @@ export const Base: Story = {
 };
 
 export const RadioWithIcons: Story = {
-  render: (args) => {
+  render: () => {
     const [value, setValue] = useState<string>('list');
 
     const options = [

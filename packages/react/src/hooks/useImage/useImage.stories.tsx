@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj<typeof useImage>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const src = '';
     const alt = 'alternative text';
     const placeholder = imagePlaceholder;

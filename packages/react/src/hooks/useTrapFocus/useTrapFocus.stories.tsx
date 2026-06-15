@@ -14,7 +14,7 @@ export default meta;
 type Story = StoryObj<typeof useTrapFocus>;
 
 export const Base: Story = {
-  render: (args) => {
+  render: () => {
     const ref = useTrapFocus();
 
     return (

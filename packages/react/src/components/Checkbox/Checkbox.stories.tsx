@@ -48,7 +48,7 @@ export const Base: Story = {
 };
 
 export const Disabled: Story = {
-  render: (args) => {
+  render: () => {
     const [isChecked, setIsChecked] = useState(true);
 
     return (
@@ -65,7 +65,7 @@ export const Disabled: Story = {
 };
 
 export const Indeterminate: Story = {
-  render: (args) => {
+  render: () => {
     const [isChecked, setIsChecked] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(true);
 

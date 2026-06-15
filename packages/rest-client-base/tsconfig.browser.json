@@ -2,11 +2,10 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "ESNext",
-    "moduleResolution": "node",
-    "baseUrl": "./src",
+    "moduleResolution": "bundler",
     "paths": {
       "@decorators/custom-type.decorator": [
-        "decorators/custom-type.decorator.browser"
+        "./src/decorators/custom-type.decorator.browser"
       ]
     }
   }

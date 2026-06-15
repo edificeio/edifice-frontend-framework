@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj<typeof Grid.Col>;
 
 export const Base: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Grid>
         <Grid.Col
@@ -139,7 +139,7 @@ export const Base: Story = {
 };
 
 export const Responsive: Story = {
-  render: (args) => {
+  render: () => {
     return (
       <Grid>
         <Grid.Col

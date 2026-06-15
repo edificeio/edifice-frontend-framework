@@ -150,7 +150,7 @@ export const BadgeContent: Story = {
     variant: { type: 'content', level: 'success', background: true },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>Visible</Badge>;
   },
 
@@ -169,7 +169,7 @@ export const BadgeProfile: Story = {
     variant: { type: 'user', profile: 'Student', background: true },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>Profil</Badge>;
   },
 
@@ -188,7 +188,7 @@ export const BadgeChip: Story = {
     variant: { type: 'chip' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return (
       <Badge {...args}>
         <IconHourglass width="20" height="20" className="me-8" />
@@ -212,7 +212,7 @@ export const BadgeLink: Story = {
     variant: { type: 'link' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return (
       <Badge {...args}>
         <a href="/">An history of time</a>
@@ -235,7 +235,7 @@ export const BadgeNotification: Story = {
     variant: { type: 'notification', level: 'danger' },
   },
 
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args}>9</Badge>;
   },
 
@@ -273,7 +273,7 @@ export const BadgeBetaCommunities: Story = {
       },
     },
   },
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args} />;
   },
 };
@@ -302,7 +302,7 @@ export const BadgeBetaBlog: Story = {
       },
     },
   },
-  render: (args: BadgeProps) => {
+  render: (args) => {
     return <Badge {...args} />;
   },
 };

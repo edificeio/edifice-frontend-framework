@@ -77,7 +77,7 @@ const bookmarkedApps = [
 ];
 
 export const Base: Story = {
-  render: (args) => (
+  render: () => (
     <Widget>
       <Widget.Body>
         <BookmarkedApps data={bookmarkedApps} />
@@ -87,7 +87,7 @@ export const Base: Story = {
 };
 
 export const Empty: Story = {
-  render: (args) => (
+  render: () => (
     <Widget>
       <Widget.Header>Mes applis</Widget.Header>
       <Widget.Body>
@@ -99,7 +99,7 @@ export const Empty: Story = {
 };
 
 export const Complete: Story = {
-  render: (args) => (
+  render: () => (
     <Widget>
       <Widget.Header>Mes applis</Widget.Header>
       <Widget.Body>

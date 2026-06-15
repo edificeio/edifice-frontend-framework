@@ -10,7 +10,7 @@ export default meta;
 type Story = StoryObj<typeof useScrollToTop>;
 
 export const Example: Story = {
-  render: (args) => {
+  render: () => {
     const scrollTotop = useScrollToTop();
     return (
       <>
