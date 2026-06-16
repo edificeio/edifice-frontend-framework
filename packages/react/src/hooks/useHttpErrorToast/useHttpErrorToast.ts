@@ -16,6 +16,11 @@ export const useHttpErrorToast = ({
   const toast = useToast();
   const { t } = useTranslation();
 
+  // Keep the latest options in a ref so the subscription always uses fresh
+  // values without re-subscribing on every render (options is a new object each time).
+  const optionsRef = useRef(options);
+  optionsRef.current = options;
+
   useEffect(() => {
     if (active) {
       // Subscribe to HTTP error events
@@ -39,7 +44,7 @@ export const useHttpErrorToast = ({
           message.current = t(i18nKey);
           toast.error(
             React.createElement('div', { children: [message.current] }),
-            options,
+            optionsRef.current,
           );
         });
 
