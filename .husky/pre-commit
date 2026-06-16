@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Icons guard: when an icon SVG is added, modified or deleted, ensure the
 # generated components are in sync. Same check as CI (see
 # .github/workflows/icons-check.yml).
