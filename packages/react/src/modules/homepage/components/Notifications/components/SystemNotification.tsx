@@ -32,7 +32,7 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
         >
           <AppIcon
             app={params.appCode}
-            size="32"
+            size="24"
             variant="square"
             className="notification-app-icon"
           />

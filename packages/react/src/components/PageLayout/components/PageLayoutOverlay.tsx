@@ -28,10 +28,10 @@ const PageLayoutOverlay = ({
   ...props
 }: PageLayoutOverlayProps) => {
   const { t } = useTranslation();
-  const { isOverlayOpen, closeOverlay } = useOverlay();
+  const { isOverlayOpen, updateOverlayOpen } = useOverlay();
 
   const handleClose = () => {
-    closeOverlay();
+    updateOverlayOpen(false);
     onClose?.();
   };
 
@@ -42,7 +42,7 @@ const PageLayoutOverlay = ({
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOverlayOpen, onClose, closeOverlay, handleClose]);
+  }, [isOverlayOpen, onClose, updateOverlayOpen, handleClose]);
 
   return (
     <>

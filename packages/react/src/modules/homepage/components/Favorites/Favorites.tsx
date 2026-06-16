@@ -43,8 +43,8 @@ export function Favorites({
               </span>
             </Flex>
           ) : (
-            <Flex wrap="wrap" gap="16">
-              {apps.slice(0, 6).map((app) => {
+            <Flex wrap="wrap" gap="8 16">
+              {apps.map((app) => {
                 const appName = getAppName(app);
                 const opensInNewTab = app.isExternal || app.target === '_blank';
                 return (
