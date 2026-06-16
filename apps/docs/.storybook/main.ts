@@ -19,7 +19,7 @@ const config: StorybookConfig = {
         },
       },
     },
-  }, '@chromatic-com/storybook', '@storybook/addon-vitest'],
+  }, '@chromatic-com/storybook', '@storybook/addon-vitest', '@github-ui/storybook-addon-performance-panel'],
   typescript: {
     reactDocgen: 'react-docgen',
   },
