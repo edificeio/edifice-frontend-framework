@@ -19,6 +19,6 @@ jobs:
           node-version: 20
       - uses: pnpm/action-setup@v4
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
       - name: Check generated icons are in sync
         run: pnpm --filter @edifice.io/react icons:check
