@@ -1,0 +1,1945 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partage de librairies entre apps React — étude comparative · Edifice</title>
+<meta name="description" content="Étude comparative de six approches pour partager une librairie React entre applications déployées indépendamment, dans le contexte d'Edifice (Vite, Nginx, multi-SPA).">
+<style>
+  :root {
+    --paper:        #f4efe6;
+    --paper-2:      #ece5d3;
+    --paper-3:      #e2d9c2;
+    --ink:          #1a1612;
+    --ink-soft:     #3d362d;
+    --ink-mid:      #5a5044;
+    --muted:        #7e7363;
+    --rule:         #cdc2ab;
+    --rule-soft:    #ddd3bb;
+    --accent:       #a8331f;
+    --accent-soft:  #c9614a;
+    --accent-pale:  #efd9d0;
+    --good:         #4f6a2c;
+    --good-pale:    #d9e2c4;
+    --mid:          #a8771a;
+    --mid-pale:     #ebd9a8;
+    --bad:          #872a1a;
+    --bad-pale:     #e8c8be;
+
+    --serif-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua",
+                     Palatino, "URW Palladio L", "Liberation Serif", serif;
+    --serif-body:    Charter, "Bitstream Charter", "Sitka Text", Cambria,
+                     Georgia, "Liberation Serif", serif;
+    --mono:          "JetBrains Mono", "IBM Plex Mono", "Berkeley Mono",
+                     "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    font-size: 17px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(168, 51, 31, 0.025), transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(79, 106, 44, 0.02), transparent 40%);
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 80px 64px 120px;
+    position: relative;
+  }
+
+  /* ─────────────── Masthead ─────────────── */
+
+  .masthead {
+    border-top: 4px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    padding: 28px 0 36px;
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .kicker {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .kicker .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .kicker .sep {
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  h1.title {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: 54px;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+    max-width: 18ch;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .subtitle {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink-mid);
+    line-height: 1.4;
+    margin: 0 0 32px;
+    max-width: 38ch;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+  }
+  .meta-row dt {
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    margin-bottom: 4px;
+  }
+  .meta-row dd {
+    margin: 0;
+    color: var(--ink);
+  }
+
+  /* ─────────────── Executive summary ─────────────── */
+
+  .exec {
+    background: var(--paper-2);
+    border-left: 3px solid var(--accent);
+    padding: 32px 36px;
+    margin: 56px 0 64px;
+    position: relative;
+  }
+
+  .exec-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .exec h2 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 1.25;
+    margin: 0 0 16px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .exec p {
+    margin: 0 0 10px;
+    font-size: 16.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .exec p:last-child { margin-bottom: 0; }
+
+  .exec .recommend {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--ink);
+  }
+  .exec .recommend strong {
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─────────────── Section structure ─────────────── */
+
+  section {
+    margin: 72px 0;
+    counter-increment: section;
+  }
+
+  section > h2 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    padding-top: 8px;
+    position: relative;
+  }
+  section > h2::before {
+    content: "§ " counter(section, decimal-leading-zero);
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+
+  .lede {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 19px;
+    line-height: 1.5;
+    color: var(--ink-mid);
+    max-width: 56ch;
+    margin: 0 0 32px;
+    padding-left: 18px;
+    border-left: 2px solid var(--rule);
+  }
+
+  body { counter-reset: section; }
+
+  /* ─────────────── Body content ─────────────── */
+
+  p {
+    margin: 0 0 16px;
+    max-width: 68ch;
+  }
+  p strong { color: var(--ink); }
+  em { font-style: italic; }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+
+  code, kbd, .mono {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--paper-2);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--ink);
+  }
+
+  h3 {
+    font-family: var(--serif-display);
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.3;
+    margin: 36px 0 10px;
+    letter-spacing: -0.005em;
+  }
+
+  h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 22px 0 8px;
+    font-weight: 600;
+  }
+
+  ul, ol {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    max-width: 66ch;
+  }
+  li {
+    margin-bottom: 6px;
+    padding-left: 4px;
+  }
+  ul li::marker { color: var(--accent); }
+  ol li::marker { color: var(--accent); font-family: var(--mono); font-size: 0.9em; }
+
+  /* ─────────────── Criteria grid ─────────────── */
+
+  .criteria {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+    margin: 32px 0;
+  }
+  .criterion {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 22px;
+  }
+  .criterion-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .criterion-name {
+    font-family: var(--serif-display);
+    font-size: 17px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .criterion-desc {
+    font-size: 14px;
+    color: var(--ink-mid);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* ─────────────── Approach cards ─────────────── */
+
+  .approach {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 32px;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    counter-increment: approach;
+  }
+
+  .approach:first-of-type { border-top: 2px solid var(--ink); }
+
+  .approach-aside {
+    position: relative;
+  }
+
+  .approach-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+
+  .approach-name {
+    font-family: var(--serif-display);
+    font-size: 26px;
+    line-height: 1.15;
+    margin: 0 0 16px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .verdict {
+    display: inline-block;
+    padding: 4px 10px;
+    border: 1px solid currentColor;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .verdict.recommended    { color: var(--accent); background: var(--accent-pale); border-color: var(--accent); }
+  .verdict.overkill        { color: var(--bad); background: var(--bad-pale); border-color: var(--bad); }
+  .verdict.legacy          { color: var(--mid); background: var(--mid-pale); border-color: var(--mid); }
+  .verdict.misaligned      { color: var(--ink-mid); background: var(--paper-2); border-color: var(--ink-mid); }
+
+  .approach-tagline {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-mid);
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  .approach-body { min-width: 0; }
+
+  .approach-body p:first-of-type {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 18px;
+  }
+  .pros-cons h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .pros h4 { color: var(--good); }
+  .cons h4 { color: var(--bad); }
+
+  .pros ul li::marker, .cons ul li::marker { content: none; }
+  .pros ul, .cons ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pros li, .cons li {
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .pros li::before, .cons li::before {
+    position: absolute;
+    left: 0; top: 0;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .pros li::before { content: "+"; color: var(--good); }
+  .cons li::before { content: "−"; color: var(--bad); }
+
+  /* ─────────────── Comparison table ─────────────── */
+
+  .table-wrap {
+    margin: 32px -16px 0;
+    overflow-x: auto;
+    padding: 0 16px;
+  }
+
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-feature-settings: "tnum", "kern";
+    line-height: 1.4;
+  }
+
+  table.compare thead th {
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    padding: 14px 10px 12px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    text-align: left;
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+  table.compare thead th.criterion-col {
+    width: 26%;
+    min-width: 200px;
+  }
+  table.compare thead th.recommended-col {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: var(--accent-pale);
+  }
+
+  table.compare tbody td {
+    padding: 11px 10px;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  table.compare tbody td.criterion-cell {
+    font-family: var(--serif-display);
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+  table.compare tbody td.criterion-cell .num {
+    display: inline-block;
+    width: 22px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    vertical-align: 2px;
+  }
+
+  table.compare tbody td.recommended-cell {
+    background: rgba(168, 51, 31, 0.04);
+    border-left: 1px solid var(--accent-pale);
+    border-right: 1px solid var(--accent-pale);
+  }
+  table.compare tbody tr:last-child td.recommended-cell {
+    border-bottom: 1px solid var(--accent);
+  }
+
+  .rate {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.3;
+  }
+  .rate .pip {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  .rate.good .pip  { background: var(--good); }
+  .rate.mid  .pip  { background: var(--mid); }
+  .rate.bad  .pip  { background: var(--bad); }
+  .rate.na   .pip  { background: var(--muted); opacity: 0.4; }
+
+  .rate.good { color: var(--ink); }
+  .rate.mid  { color: var(--ink-soft); }
+  .rate.bad  { color: var(--ink-soft); }
+  .rate.na   { color: var(--muted); font-style: italic; }
+
+  /* ─────────────── Final verdict ─────────────── */
+
+  .verdict-block {
+    margin-top: 56px;
+    border: 1px solid var(--ink);
+    padding: 0;
+    background: var(--paper);
+  }
+  .verdict-block header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px 32px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .verdict-block header .winner {
+    color: var(--paper);
+    font-family: var(--serif-display);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 17px;
+  }
+  .verdict-block .verdict-body {
+    padding: 32px 36px 36px;
+  }
+  .verdict-block h3 {
+    margin-top: 0;
+    font-size: 25px;
+  }
+  .verdict-block ol {
+    counter-reset: rationale;
+    list-style: none;
+    padding-left: 0;
+    margin: 24px 0 0;
+  }
+  .verdict-block ol li {
+    counter-increment: rationale;
+    padding: 14px 0 14px 56px;
+    position: relative;
+    border-top: 1px solid var(--rule);
+    font-size: 15.5px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .verdict-block ol li:last-child { border-bottom: 1px solid var(--rule); }
+  .verdict-block ol li::before {
+    content: counter(rationale, decimal-leading-zero);
+    position: absolute;
+    left: 0; top: 16px;
+    font-family: var(--mono);
+    font-size: 22px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .verdict-block ol li strong {
+    display: block;
+    color: var(--ink);
+    font-family: var(--serif-display);
+    font-size: 17px;
+    margin-bottom: 4px;
+  }
+
+  /* ─────────────── Notes / aside ─────────────── */
+
+  .aside-note {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 18px;
+    margin: 24px 0;
+    font-size: 15px;
+    color: var(--ink-mid);
+    font-style: italic;
+    max-width: 64ch;
+  }
+  .aside-note strong {
+    font-style: normal;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+    font-style: normal;
+  }
+
+  /* ─────────────── Footer / colophon ─────────────── */
+
+  footer.colophon {
+    margin-top: 96px;
+    padding-top: 28px;
+    border-top: 1px solid var(--ink);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  footer.colophon .mark {
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ─────────────── Code blocks ─────────────── */
+
+  .code-block {
+    margin: 18px 0 22px;
+    border: 1px solid var(--rule);
+    background: #fcfaf3;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    page-break-inside: avoid;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    padding: 7px 14px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .code-header .path {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .code-header .lang {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 9.5px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  pre.code {
+    margin: 0;
+    padding: 14px 16px;
+    overflow-x: auto;
+    white-space: pre;
+    color: var(--ink);
+    font-feature-settings: "kern" off, "liga" off;
+    tab-size: 2;
+  }
+
+  pre.code .c-key { color: #8a4a18; font-weight: 600; }
+  pre.code .c-str { color: #4f6a2c; }
+  pre.code .c-com { color: var(--muted); font-style: italic; }
+  pre.code .c-typ { color: #5a3a8c; }
+  pre.code .c-num { color: var(--accent); }
+  pre.code .c-pun { color: var(--ink-soft); }
+  pre.code .c-mark { background: rgba(168, 51, 31, 0.15); padding: 0 2px; }
+
+  pre.code .line-del {
+    background: rgba(135, 42, 26, 0.08);
+    display: block;
+    margin: 0 -16px;
+    padding: 0 16px 0 8px;
+    border-left: 3px solid var(--bad);
+  }
+  pre.code .line-add {
+    background: rgba(79, 106, 44, 0.09);
+    display: block;
+    margin: 0 -16px;
+    padding: 0 16px 0 8px;
+    border-left: 3px solid var(--good);
+  }
+  pre.code .line-mark {
+    background: rgba(168, 51, 31, 0.07);
+    display: block;
+    margin: 0 -16px;
+    padding: 0 16px 0 8px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .console {
+    background: #1e1812;
+    color: #ddd1ad;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.55;
+    padding: 14px 18px;
+    margin: 16px 0 22px;
+    overflow-x: auto;
+    white-space: pre;
+    border-left: 3px solid var(--accent);
+  }
+  .console .prompt { color: var(--accent-soft); font-weight: 600; }
+  .console .err    { color: #e8a092; }
+  .console .ok     { color: #b8d49a; }
+  .console .com    { color: #8a7e68; font-style: italic; }
+  .console .num    { color: #d8b878; }
+
+  /* ─────────────── Stage layout ─────────────── */
+
+  .stage {
+    margin-top: 64px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
+    page-break-inside: auto;
+  }
+  .stage:first-of-type {
+    border-top: 2px solid var(--ink);
+    margin-top: 40px;
+  }
+
+  .stage-header {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 32px;
+    margin-bottom: 28px;
+    align-items: start;
+    page-break-after: avoid;
+  }
+
+  .stage-num {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding-top: 6px;
+  }
+  .stage-num strong {
+    display: block;
+    font-family: var(--serif-display);
+    font-size: 56px;
+    color: var(--ink);
+    line-height: 0.95;
+    margin-top: 4px;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  .stage-title {
+    font-family: var(--serif-display);
+    font-size: 28px;
+    line-height: 1.18;
+    margin: 0 0 10px;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+  }
+
+  .stage-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .stage-meta .tag {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .stage-meta .sep { color: var(--rule); }
+
+  .stage-tagline {
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.45;
+    color: var(--ink-mid);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .stage-body { max-width: 100%; }
+  .stage-body p { max-width: 64ch; }
+
+  .step-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 32px 0 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    font-weight: 600;
+    page-break-after: avoid;
+  }
+  .step-label::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .step-label.outcome::before { background: var(--good); }
+
+  /* ─────────────── Responsive ─────────────── */
+
+  @media (max-width: 800px) {
+    .page { padding: 48px 24px 80px; }
+    h1.title { font-size: 38px; }
+    .meta-row { grid-template-columns: repeat(2, 1fr); }
+    .approach { grid-template-columns: 1fr; gap: 20px; }
+    .pros-cons { grid-template-columns: 1fr; gap: 20px; }
+    .criteria { grid-template-columns: 1fr; }
+    .stage-header { grid-template-columns: 1fr; gap: 14px; }
+    .stage-num strong { font-size: 40px; }
+    pre.code { font-size: 11.5px; }
+  }
+
+  /* ─────────────── Print ─────────────── */
+
+  @media print {
+    @page {
+      size: A4;
+      margin: 18mm 16mm 22mm;
+    }
+    html, body {
+      background: white;
+      color: #000;
+      font-size: 10.5pt;
+      line-height: 1.45;
+    }
+    body { background-image: none; }
+    .page { padding: 0; max-width: none; }
+    a { color: inherit; text-decoration: none; }
+    a[href]::after { content: ""; }
+
+    .masthead { padding: 0 0 18pt; margin-bottom: 24pt; }
+    h1.title { font-size: 28pt; max-width: none; }
+    .subtitle { font-size: 14pt; }
+
+    section { margin: 28pt 0; page-break-inside: avoid; }
+    section > h2 { font-size: 20pt; page-break-after: avoid; }
+    h3 { page-break-after: avoid; }
+
+    .approach {
+      page-break-inside: avoid;
+      padding: 18pt 0;
+      gap: 24pt;
+      grid-template-columns: 150px 1fr;
+    }
+    .approach-name { font-size: 17pt; }
+
+    .exec {
+      background: white;
+      border: 1px solid #000;
+      page-break-inside: avoid;
+    }
+
+    .verdict-block { page-break-inside: avoid; }
+    .verdict-block header { background: white; color: #000; border-bottom: 1px solid #000; }
+    .verdict-block header .winner { color: #000; }
+
+    table.compare thead th { background: white; }
+    table.compare tbody td.recommended-cell {
+      background: white;
+      outline: 1.5pt solid #000;
+      outline-offset: -2pt;
+    }
+    .table-wrap { overflow: visible; }
+
+    .rate .pip { border: 1px solid #000; }
+    .rate.good .pip { background: #000; }
+    .rate.mid  .pip { background: #999; }
+    .rate.bad  .pip { background: white; }
+    .rate.na   .pip { background: white; border-style: dashed; }
+
+    footer.colophon { border-color: #000; }
+
+    .code-block { background: white; page-break-inside: avoid; }
+    .code-header { background: white; border-bottom: 1px solid #000; }
+    pre.code { white-space: pre-wrap; word-break: break-word; }
+    pre.code .line-del,
+    pre.code .line-add,
+    pre.code .line-mark { background: white; }
+
+    .console { background: white; color: #000; border-left: 2pt solid #000; }
+    .console .err, .console .ok, .console .num, .console .com, .console .prompt { color: #000; }
+
+    .stage { page-break-before: auto; }
+    .stage-num strong { font-size: 36pt; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <header class="masthead">
+    <div class="kicker">
+      <span class="dot"></span>
+      <span>Rapport technique</span>
+      <span class="sep">·</span>
+      <span>ENABLING-722</span>
+      <span class="sep">·</span>
+      <span>Équipe Frontend</span>
+    </div>
+    <h1 class="title">Partage de librairies entre apps React déployées <em>indépendamment</em></h1>
+    <p class="subtitle">Étude comparative de six approches pour découpler le cycle de vie de l'<em>Edifice Frontend Framework</em> de celui des applications consommatrices.</p>
+    <dl class="meta-row">
+      <div><dt>Version</dt><dd>1.0</dd></div>
+      <div><dt>Date</dt><dd>Mai 2026</dd></div>
+      <div><dt>Audience</dt><dd>Ingénieurs frontend</dd></div>
+      <div><dt>Décision</dt><dd>À valider</dd></div>
+    </dl>
+  </header>
+
+  <aside class="exec">
+    <div class="exec-label">Synthèse</div>
+    <h2>Le statu quo impose de recompiler N applications à chaque évolution d'EFF. Six familles techniques peuvent rompre ce couplage&nbsp;; une seule s'aligne pleinement sur la stack Edifice.</h2>
+    <p>Les apps Edifice sont construites avec Vite, agrégées par une couche Java/Vert.x, servies par Nginx depuis un dossier d'assets versionné par Jenkins. Toute solution retenue doit composer avec cet existant sans le réécrire.</p>
+    <p>Les blockers actuellement constatés sur la branche <code>feat-ENABLING-722</code> — SVG en erreur runtime, duplications de React suspectées — sont des bugs identifiés, pas des limites architecturales.</p>
+    <div class="recommend">→ Recommandation : <strong>Import Maps natives</strong>, standard W3C, déjà en place à 90&nbsp;%.</div>
+  </aside>
+
+  <!-- ────────────── §1 Contexte ────────────── -->
+  <section id="contexte">
+    <h2>Le contexte Edifice</h2>
+    <p class="lede">Comprendre la douleur opérationnelle qu'on cherche à résoudre, et la stack technique avec laquelle il faut composer.</p>
+
+    <h3>Le cycle de déploiement actuel</h3>
+    <p>EFF est une librairie transverse publiée sur NPM, consommée par toutes les applications React de l'écosystème. À chaque évolution&nbsp;:</p>
+    <ol>
+      <li>Une nouvelle version de package est publiée.</li>
+      <li><strong>Toutes</strong> les applications consommatrices sont rebuildées via Jenkins pour intégrer la nouvelle version.</li>
+      <li>Une remise en recette puis en production de l'ensemble est planifiée.</li>
+    </ol>
+    <p>Ce couplage rend le moindre patch coûteux à propager. Une correction de 5 minutes dans EFF entraîne plusieurs heures de pipeline et de coordination de déploiement.</p>
+
+    <h3>L'objectif</h3>
+    <p>Permettre&nbsp;:</p>
+    <ul>
+      <li>Le déploiement indépendant d'EFF (et d'<code>explorer-front</code>) sans rebuild des apps.</li>
+      <li>Le déploiement indépendant des applications (ex.&nbsp;: blog) sans dépendre du planning de la librairie.</li>
+      <li>La cohabitation ponctuelle de plusieurs versions d'EFF pendant des migrations.</li>
+    </ul>
+
+    <h3>Contraintes structurelles</h3>
+    <ul>
+      <li><strong>Bundler&nbsp;:</strong> Vite 5 / Rollup, monorepo pnpm + Turbo côté EFF.</li>
+      <li><strong>Runtime&nbsp;:</strong> React 18, navigateurs modernes uniquement (pas d'IE11).</li>
+      <li><strong>Hébergement&nbsp;:</strong> Nginx servant <code>/assets/js/*</code> et <code>/assets/importmap.json</code> depuis un dossier versionné par Jenkins.</li>
+      <li><strong>Agrégation&nbsp;:</strong> couche Vert.x assemble plusieurs SPA sur des chemins distincts (<code>/blog</code>, <code>/explorer</code>, etc.).</li>
+      <li><strong>Assets&nbsp;:</strong> 483 SVG dans <code>@edifice.io/bootstrap/dist/images</code>, importés tantôt via <code>svgr</code>, tantôt comme URL.</li>
+    </ul>
+  </section>
+
+  <!-- ────────────── §2 Critères ────────────── -->
+  <section id="criteres">
+    <h2>Critères d'évaluation</h2>
+    <p class="lede">Quinze axes objectifs pour confronter les approches sur le même terrain, indépendamment des préférences techniques.</p>
+
+    <div class="criteria">
+      <div class="criterion"><div class="criterion-num">01</div><div class="criterion-name">Déploiement indépendant</div><p class="criterion-desc">Peut-on publier EFF sans rebuild des apps, et inversement&nbsp;?</p></div>
+      <div class="criterion"><div class="criterion-num">02</div><div class="criterion-name">Singleton React</div><p class="criterion-desc">L'approche garantit-elle une seule instance de React partagée entre toutes les apps&nbsp;?</p></div>
+      <div class="criterion"><div class="criterion-num">03</div><div class="criterion-name">Compatibilité Vite</div><p class="criterion-desc">Fonctionne en dev (HMR) et en build (Rollup) sans plugin instable&nbsp;?</p></div>
+      <div class="criterion"><div class="criterion-num">04</div><div class="criterion-name">Coût runtime ajouté</div><p class="criterion-desc">Taille du runtime supplémentaire chargé par chaque application.</p></div>
+      <div class="criterion"><div class="criterion-num">05</div><div class="criterion-name">Tree-shaking préservé</div><p class="criterion-desc">Les apps importent uniquement ce qu'elles consomment.</p></div>
+      <div class="criterion"><div class="criterion-num">06</div><div class="criterion-name">TypeScript &amp; DX</div><p class="criterion-desc">Auto-complétion, types stricts, navigation IDE depuis l'app consommatrice.</p></div>
+      <div class="criterion"><div class="criterion-num">07</div><div class="criterion-name">Multi-versions simultanées</div><p class="criterion-desc">Une app peut épingler une version différente le temps d'une migration.</p></div>
+      <div class="criterion"><div class="criterion-num">08</div><div class="criterion-name">Gestion des assets non-JS</div><p class="criterion-desc">SVG, CSS, fonts importés depuis la librairie résolus correctement au runtime.</p></div>
+      <div class="criterion"><div class="criterion-num">09</div><div class="criterion-name">Sub-path imports</div><p class="criterion-desc">Support des entrées <code>@edifice.io/react/editor</code>, <code>/icons</code>, etc.</p></div>
+      <div class="criterion"><div class="criterion-num">10</div><div class="criterion-name">Vendor lock-in</div><p class="criterion-desc">L'approche dépend-elle d'un bundler ou d'une bibliothèque spécifique&nbsp;?</p></div>
+      <div class="criterion"><div class="criterion-num">11</div><div class="criterion-name">Complexité conceptuelle</div><p class="criterion-desc">Effort d'onboarding nécessaire pour un nouveau membre de l'équipe.</p></div>
+      <div class="criterion"><div class="criterion-num">12</div><div class="criterion-name">Maturité écosystème</div><p class="criterion-desc">Stabilité historique, taille de la base d'utilisateurs en production.</p></div>
+      <div class="criterion"><div class="criterion-num">13</div><div class="criterion-name">Maturité côté Vite</div><p class="criterion-desc">Stabilité spécifique des outils Vite/Rollup pour cette approche.</p></div>
+      <div class="criterion"><div class="criterion-num">14</div><div class="criterion-name">Coût de bascule</div><p class="criterion-desc">Effort pour passer de l'état actuel à l'approche cible.</p></div>
+      <div class="criterion"><div class="criterion-num">15</div><div class="criterion-name">Facilité de debug</div><p class="criterion-desc">Lisibilité des erreurs, qualité des stack traces, observabilité.</p></div>
+    </div>
+  </section>
+
+  <!-- ────────────── §3 Approches ────────────── -->
+  <section id="approches">
+    <h2>Six approches passées en revue</h2>
+    <p class="lede">Chaque famille est présentée par son principe technique, ses forces, et ses faiblesses spécifiques. Une seule reçoit la mention <em>Recommandée</em>.</p>
+
+    <!-- 3.1 Import Maps -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 01 / 06</div>
+        <h3 class="approach-name">Import Maps natives</h3>
+        <span class="verdict recommended">★ Recommandée</span>
+        <p class="approach-tagline">Le standard W3C qui laisse le navigateur résoudre les <code>import 'react'</code> via un simple fichier JSON.</p>
+      </aside>
+      <div class="approach-body">
+        <p>EFF est compilée en ESM puis servie depuis Nginx. Un fichier <code>importmap.json</code> central déclare la résolution&nbsp;: <code>"react" → "/assets/js/edifice-react/react-esm/react.js"</code>. Au build, les apps marquent EFF et React comme <em>externals</em>&nbsp;; à l'exécution, le navigateur charge directement les modules depuis l'URL indiquée par l'import map.</p>
+        <p>C'est l'approche déjà engagée sur la branche <code>feat-ENABLING-722</code>. La régression SVG observée est due à un changement de regex dans <code>vite.config.ts</code>&nbsp;; elle se corrige en une ligne.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Standard W3C natif, supporté par tous les navigateurs modernes depuis 2023.</li>
+              <li>Zéro runtime ajouté&nbsp;: le navigateur fait le travail.</li>
+              <li>Indépendant du bundler&nbsp;: Vite aujourd'hui, n'importe quoi demain.</li>
+              <li>Une seule source de vérité pour les versions, partagée par toutes les apps.</li>
+              <li><em>Scopes</em> natifs pour les versions multiples (<code>/blog/</code> → version A, autres → version B).</li>
+              <li>Cache HTTP trivial, CDN-friendly.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li>Tout doit être ESM&nbsp;: SVG, CSS, fonts à inliner ou pré-transformer au build d'EFF.</li>
+              <li>Mapping des sub-paths fastidieux à maintenir pour les nombreuses entrées d'<code>exports</code>.</li>
+              <li>Pas de code-splitting partagé entre apps.</li>
+              <li>Vitest ne consulte pas l'import map&nbsp;: alias dédié à prévoir pour les tests.</li>
+              <li>Aucune isolation&nbsp;: une régression dans EFF impacte instantanément toutes les apps.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3.2 Module Federation -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 02 / 06</div>
+        <h3 class="approach-name">Module Federation</h3>
+        <span class="verdict overkill">Surdimensionnée</span>
+        <p class="approach-tagline">Le système de chunks fédérés de Webpack&nbsp;5. Négociation au runtime entre hosts et remotes.</p>
+      </aside>
+      <div class="approach-body">
+        <p>EFF expose explicitement ses modules&nbsp;; chaque app les déclare comme <em>remotes</em>. Un <em>share scope</em> négocie au chargement quelle version de React utiliser si plusieurs versions cohabitent. Approche mature côté Webpack, beaucoup moins côté Vite&nbsp;: <code>@originjs/vite-plugin-federation</code> souffre d'un dev-mode instable et de types incomplets.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Share scopes intelligents pour le partage de dépendances singletons.</li>
+              <li>Granularité fine&nbsp;: on peut exposer un composant individuel.</li>
+              <li>Mature dans l'écosystème Webpack (Bytedance, Shopify, etc.).</li>
+              <li>Code-splitting dynamique hérité du bundler.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li>Plugin Vite communautaire, non officiel&nbsp;; passer à Rspack/Webpack serait un chantier majeur.</li>
+              <li>Runtime de fédération chargé sur chaque app (30 à 50&nbsp;Ko bootstrap).</li>
+              <li>Modèle mental dense&nbsp;: exposes, remotes, sharedScope, eager, singleton, strictVersion…</li>
+              <li>Debug réputé opaque&nbsp;: erreurs de scope difficiles à isoler.</li>
+              <li>Couplage build-runtime fort, vendor lock-in sur le bundler.</li>
+              <li>Pour <em>partager une lib</em> (et pas orchestrer des micro-frontends), c'est utiliser un bazooka.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3.3 SystemJS -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 03 / 06</div>
+        <h3 class="approach-name">SystemJS</h3>
+        <span class="verdict legacy">Obsolète</span>
+        <p class="approach-tagline">Le prédécesseur des import maps. Les modules sont encapsulés dans un wrapper <code>System.register()</code>.</p>
+      </aside>
+      <div class="approach-body">
+        <p>SystemJS a longtemps été la seule solution pour faire l'équivalent d'un import map dans des navigateurs sans support natif. Sa pertinence s'est effondrée avec l'arrivée des import maps natives en 2023. Il subsiste principalement comme dépendance de Single-SPA.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Compatibilité avec d'anciens navigateurs (IE11 si requis).</li>
+              <li>Mature, utilisé en production depuis presque dix ans.</li>
+              <li>Résolveur très flexible&nbsp;: hooks personnalisables.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li>Remplacé par les import maps natives&nbsp;: aucun bénéfice technique sur navigateurs modernes.</li>
+              <li>Runtime de 5 à 10&nbsp;Ko chargé sur chaque page.</li>
+              <li>Format de bundle non standard&nbsp;: transformation au build via rollup-plugin-systemjs.</li>
+              <li>Ne résoudrait pas vos blockers actuels (SVG, duplication React).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3.4 UMD -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 04 / 06</div>
+        <h3 class="approach-name">UMD &amp; globals</h3>
+        <span class="verdict legacy">Régression</span>
+        <p class="approach-tagline">Un <code>&lt;script&gt;</code> charge EFF, qui s'expose sur <code>window.EFF</code>. Le retour à l'approche jQuery.</p>
+      </aside>
+      <div class="approach-body">
+        <p>Approche historique du partage de librairies&nbsp;: la lib se charge via une balise script, expose ses composants sur l'objet global, les apps les consomment via <code>window.EFF.Button</code>. Très simple en surface, mais c'est un retour en arrière par rapport au modèle ESM.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Simplicité maximale&nbsp;: pas d'import map, pas de plugin, pas de runtime.</li>
+              <li>Compatibilité universelle.</li>
+              <li>Cache HTTP trivial.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li>Pollution du global, risque de collision, sécurité réduite.</li>
+              <li>Aucun tree-shaking&nbsp;: chargement intégral d'EFF même pour trois composants.</li>
+              <li>React doit aussi être global, double risque de duplication.</li>
+              <li>Support TypeScript pénible&nbsp;: déclarations à maintenir manuellement.</li>
+              <li>ESM est devenu le standard&nbsp;; revenir à UMD est culturellement régressif.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3.5 Single-SPA -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 05 / 06</div>
+        <h3 class="approach-name">Single-SPA</h3>
+        <span class="verdict misaligned">Hors périmètre</span>
+        <p class="approach-tagline">Framework de micro-frontends&nbsp;: un shell orchestre le mount/unmount d'applications complètes.</p>
+      </aside>
+      <div class="approach-body">
+        <p>Single-SPA résout l'orchestration de plusieurs applications dans un même shell HTML&nbsp;: routing partagé, lifecycle de mount/unmount, partage de contexte. C'est complémentaire des import maps (souvent utilisé conjointement), pas une alternative.</p>
+        <p>Pour Edifice, ce n'est pas le besoin&nbsp;: l'agrégation est déjà assurée par Vert.x, on ne cherche pas à partager du routing ou du state inter-apps. On cherche à <em>partager une lib</em>.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Solution complète aux problématiques de micro-frontends.</li>
+              <li>Mature, utilisé en production chez American Express, etc.</li>
+              <li>Bonne intégration avec les import maps en sous-jacent.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li>Réécrit l'architecture d'agrégation&nbsp;; Vert.x devient un shell Single-SPA.</li>
+              <li>Lifecycle d'apps complexe à maîtriser.</li>
+              <li>Surdimensionné&nbsp;: réponse à un problème que vous n'avez pas.</li>
+              <li>Réserver pour une éventuelle réorganisation future inter-apps.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3.6 CDN pinné -->
+    <article class="approach">
+      <aside class="approach-aside">
+        <div class="approach-num">Approche 06 / 06</div>
+        <h3 class="approach-name">CDN avec versions pinées</h3>
+        <span class="verdict misaligned">Hors objectif</span>
+        <p class="approach-tagline">Chaque app code en dur l'URL de la version d'EFF qu'elle consomme.</p>
+      </aside>
+      <div class="approach-body">
+        <p>Variante "naïve" de l'externalisation&nbsp;: au lieu d'un import map central, chaque app embarque dans son bundle des URLs pinées vers une version précise d'EFF (par exemple <code>https://cdn.edifice.io/eff/2.5.19/index.js</code>). Le bundler les laisse passer, le navigateur les charge.</p>
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>Forces</h4>
+            <ul>
+              <li>Encore plus simple qu'un import map&nbsp;: pas de JSON central.</li>
+              <li>Chaque app maîtrise totalement sa version.</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Faiblesses</h4>
+            <ul>
+              <li><strong>N'atteint pas l'objectif principal</strong>&nbsp;: changer de version d'EFF impose de rebuilder chaque app, donc reproduit le problème actuel.</li>
+              <li>Versions multiples inévitables entre apps → duplication garantie de React.</li>
+              <li>Pas de mécanisme de mise à jour centralisé.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ────────────── §4 Tableau ────────────── -->
+  <section id="comparatif">
+    <h2>Tableau comparatif</h2>
+    <p class="lede">Quinze critères × six approches. La colonne recommandée est mise en évidence.</p>
+
+    <div class="aside-note">
+      <strong>Lecture</strong>
+      Vert plein = bonne réponse au critère. Orange = compromis ou partiel. Rouge = limitation significative.
+      Gris pointillé = sans objet pour cette approche.
+    </div>
+
+    <div class="table-wrap">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th class="criterion-col">Critère</th>
+            <th class="recommended-col">Import Maps</th>
+            <th>Module Federation</th>
+            <th>SystemJS</th>
+            <th>UMD globals</th>
+            <th>Single-SPA</th>
+            <th>CDN pinné</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criterion-cell"><span class="num">01</span>Déploiement indépendant</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Non</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">02</span>Singleton React</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Natif</span></td>
+            <td><span class="rate good"><span class="pip"></span>Share scope</span></td>
+            <td><span class="rate good"><span class="pip"></span>Natif</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Manuel</span></td>
+            <td><span class="rate good"><span class="pip"></span>Via importmap</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Difficile</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">03</span>Compat Vite</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Excellente</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Plugin instable</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyenne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">04</span>Coût runtime ajouté</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>0 Ko</span></td>
+            <td><span class="rate bad"><span class="pip"></span>30 – 50 Ko</span></td>
+            <td><span class="rate mid"><span class="pip"></span>5 – 10 Ko</span></td>
+            <td><span class="rate good"><span class="pip"></span>0 Ko</span></td>
+            <td><span class="rate mid"><span class="pip"></span>≈ 20 Ko</span></td>
+            <td><span class="rate good"><span class="pip"></span>0 Ko</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">05</span>Tree-shaking préservé</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Oui (ESM)</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Partiel</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Non</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+            <td><span class="rate good"><span class="pip"></span>Oui</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">06</span>TypeScript &amp; DX</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Plugin requis</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyenne</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Mauvaise</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">07</span>Multi-versions</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Via scopes</span></td>
+            <td><span class="rate good"><span class="pip"></span>Share scope</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Possible</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Difficile</span></td>
+            <td><span class="rate good"><span class="pip"></span>Via importmap</span></td>
+            <td><span class="rate good"><span class="pip"></span>Naturel</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">08</span>Assets (SVG, CSS, fonts)</td>
+            <td class="recommended-cell"><span class="rate mid"><span class="pip"></span>Inliner au build</span></td>
+            <td><span class="rate good"><span class="pip"></span>Géré par bundler</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Manuel</span></td>
+            <td><span class="rate good"><span class="pip"></span>Inliné</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Idem importmap</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Idem importmap</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">09</span>Sub-path imports</td>
+            <td class="recommended-cell"><span class="rate mid"><span class="pip"></span>Mapping à tenir</span></td>
+            <td><span class="rate good"><span class="pip"></span>Natif</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Manuel</span></td>
+            <td><span class="rate na"><span class="pip"></span>n/a</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Idem importmap</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Idem importmap</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">10</span>Vendor lock-in</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Aucun (W3C)</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Webpack/Rspack</span></td>
+            <td><span class="rate mid"><span class="pip"></span>SystemJS</span></td>
+            <td><span class="rate good"><span class="pip"></span>Aucun</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Single-SPA</span></td>
+            <td><span class="rate good"><span class="pip"></span>Aucun</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">11</span>Complexité conceptuelle</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Faible</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Élevée</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyenne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Très faible</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Élevée</span></td>
+            <td><span class="rate good"><span class="pip"></span>Très faible</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">12</span>Maturité écosystème</td>
+            <td class="recommended-cell"><span class="rate mid"><span class="pip"></span>Standard 2023+</span></td>
+            <td><span class="rate good"><span class="pip"></span>Mature (Webpack)</span></td>
+            <td><span class="rate good"><span class="pip"></span>Mature</span></td>
+            <td><span class="rate good"><span class="pip"></span>Très mature</span></td>
+            <td><span class="rate good"><span class="pip"></span>Mature</span></td>
+            <td><span class="rate good"><span class="pip"></span>Mature</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">13</span>Maturité côté Vite</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Faible</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyenne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+            <td><span class="rate good"><span class="pip"></span>Bonne</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">14</span>Coût de bascule</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Faible (90 %)</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Énorme</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyen</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Réécrire exports</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Énorme</span></td>
+            <td><span class="rate good"><span class="pip"></span>Faible</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-cell"><span class="num">15</span>Facilité de debug</td>
+            <td class="recommended-cell"><span class="rate good"><span class="pip"></span>Console + Network</span></td>
+            <td><span class="rate bad"><span class="pip"></span>Très opaque</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyen</span></td>
+            <td><span class="rate good"><span class="pip"></span>Facile</span></td>
+            <td><span class="rate mid"><span class="pip"></span>Moyen</span></td>
+            <td><span class="rate good"><span class="pip"></span>Facile</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ────────────── §5 Verdict ────────────── -->
+  <section id="recommandation">
+    <h2>Recommandation pour Edifice</h2>
+    <p class="lede">L'approche retenue doit s'aligner sur la stack en place, sur le besoin réel, et sur la durabilité de la décision.</p>
+
+    <div class="verdict-block">
+      <header>
+        <span>Décision technique recommandée</span>
+        <span class="winner">Import Maps natives</span>
+      </header>
+      <div class="verdict-body">
+        <h3>Cinq raisons spécifiques à votre contexte</h3>
+        <p>Le choix n'est pas générique&nbsp;: il découle directement de la stack, des contraintes et de l'état d'avancement actuel du chantier ENABLING-722.</p>
+        <ol>
+          <li><strong>Vous êtes 100 % Vite.</strong> Module Federation imposerait une migration vers Webpack ou un plugin Vite communautaire instable. C'est un chantier hors de proportion par rapport au bénéfice.</li>
+          <li><strong>L'infrastructure existe déjà.</strong> Nginx, Jenkins et le dossier <code>recette/assets/js</code> versionné sont parfaits pour servir des modules ESM. Aucun composant nouveau à déployer.</li>
+          <li><strong>Le besoin est le partage d'une lib, pas l'orchestration de micro-frontends.</strong> Single-SPA résoudrait un problème que vous n'avez pas. L'agrégation par Vert.x est suffisante.</li>
+          <li><strong>Standard W3C, donc pérenne.</strong> Pas de plugin tiers à maintenir, pas de risque qu'une bibliothèque devienne non maintenue dans cinq ans.</li>
+          <li><strong>Les blockers actuels sont réparables.</strong> La régression SVG est une regex à corriger&nbsp;; la duplication React suspectée est un audit de trois packages. Aucune limite architecturale en jeu.</li>
+        </ol>
+      </div>
+    </div>
+
+    <p style="margin-top: 40px;">Le plan de remédiation technique pour engager cette approche — quatre étapes, ordonnées par criticité et par coût croissant — est développé dans la section suivante avec les extraits de code des correctifs.</p>
+
+    <div class="aside-note">
+      <strong>Note</strong>
+      Cette décision est révisable si un besoin de micro-frontends à part entière émerge plus tard (mount/unmount d'apps complètes, routing partagé, state inter-apps). Single-SPA reste compatible avec une base import-maps déjà en place, et constituerait la suite logique sans renoncer aux acquis.
+    </div>
+  </section>
+
+  <!-- ────────────── §6 Plan de remédiation technique ────────────── -->
+  <section id="remediation">
+    <h2>Plan de remédiation technique</h2>
+    <p class="lede">Quatre étapes concrètes, avec les fichiers concernés, les extraits de code des problèmes identifiés sur la branche <code>feat-ENABLING-722</code>, et les correctifs proposés.</p>
+
+    <!-- ───── ÉTAPE 01 ───── -->
+    <article class="stage">
+      <header class="stage-header">
+        <div class="stage-num">Étape <strong>01</strong></div>
+        <div>
+          <h3 class="stage-title">Restaurer l'inlining des SVG dans le bundle d'EFF</h3>
+          <div class="stage-meta">
+            <span class="tag">Régression à corriger</span>
+            <span class="sep">·</span>
+            <span>1 ligne modifiée</span>
+            <span class="sep">·</span>
+            <span>Effort : 10 min</span>
+            <span class="sep">·</span>
+            <span>Risque : nul</span>
+          </div>
+          <p class="stage-tagline">Une regex de plus que permissive transforme 483 SVG en requêtes HTTP qui échouent au parsing module.</p>
+        </div>
+      </header>
+      <div class="stage-body">
+
+        <h4 class="step-label">Symptôme</h4>
+        <p>Au chargement d'une page utilisant un composant d'<em>empty state</em>, le navigateur émet une cascade d'erreurs MIME pour chaque SVG&nbsp;:</p>
+        <pre class="console"><span class="prompt">⎯</span> Browser console
+<span class="err">Failed to load module script: Expected a JavaScript module script
+but the server responded with a MIME type of "image/svg+xml".
+Strict MIME type checking is enforced for module scripts per HTML spec.</span>
+
+<span class="com">// URL en cause :</span>
+GET /assets/js/edifice-bootstrap/images/one/illu-empty-search-blog.svg
+    <span class="err">net::ERR_FAILED</span>  <span class="num">200</span>
+GET /assets/js/edifice-bootstrap/images/one/illu-empty-search-collaborativewall.svg
+    <span class="err">net::ERR_FAILED</span>  <span class="num">200</span>
+<span class="com">// ...répété pour chaque SVG importé par EFF</span></pre>
+
+        <h4 class="step-label">Source du problème</h4>
+        <p>Le module <code>emptyscreen-mapping</code> d'EFF importe 23 SVG par leur chemin&nbsp;:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/react/src/utilities/emptyscreen-mapping/emptyscreen-mapping.ts</span>
+            <span class="lang">TypeScript</span>
+          </div>
+<pre class="code"><span class="c-key">import</span> illuOneBlog            <span class="c-key">from</span> <span class="c-str">'@edifice.io/bootstrap/dist/images/one/illu-empty-search-blog.svg'</span>;
+<span class="c-key">import</span> illuOneCollaborativeWall <span class="c-key">from</span> <span class="c-str">'@edifice.io/bootstrap/dist/images/one/illu-empty-search-collaborativewall.svg'</span>;
+<span class="c-key">import</span> illuOneCommunity        <span class="c-key">from</span> <span class="c-str">'@edifice.io/bootstrap/dist/images/one/illu-empty-search-community.svg'</span>;
+<span class="c-com">// ... 20 imports supplémentaires</span></pre>
+        </div>
+
+        <p>Historiquement, ces imports étaient traités par <code>@rollup/plugin-url({ limit: Infinity })</code> qui les inlinait comme data URIs dans le bundle d'EFF. Le commit <code>b0e991ed8</code> a élargi la regex d'externalisation à <em>tout</em> le sous-arbre <code>@edifice.io/bootstrap/*</code>, y compris <code>dist/images/*</code>&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/react/vite.config.ts</span>
+            <span class="lang">État actuel</span>
+          </div>
+<pre class="code">  build: {
+    rollupOptions: {
+      external: [
+        ...<span class="c-fn">Object</span>.<span class="c-fn">keys</span>(dependencies ?? {}),
+        ...<span class="c-fn">Object</span>.<span class="c-fn">keys</span>(peerDependencies ?? {}),
+        <span class="c-str">'react/jsx-runtime'</span>,
+        <span class="c-str">'@edifice.io/client'</span>,
+        <span class="c-typ">/^@edifice\.io\/tiptap-extensions\/.*/</span>,
+<span class="line-mark">        <span class="c-typ">/^@edifice\.io\/bootstrap\/.*/</span>,  <span class="c-com">// ← rend les SVG external</span></span>
+        <span class="c-typ">/^dayjs\/plugin\/.+\.js$/</span>,
+        <span class="c-typ">/^dayjs\/locale\/.+\.js$/</span>,
+        <span class="c-typ">/^antd\/locale\/.+/</span>,
+        <span class="c-typ">/^swiper\/.*/</span>,
+      ],
+    },
+  },</pre>
+        </div>
+
+        <p>Conséquence&nbsp;: les imports <code>*.svg</code> deviennent des spécifieurs <em>bare</em>, conservés tels quels dans le bundle final. À l'exécution, le navigateur consulte l'import map, résout vers une URL <code>.svg</code>, tente de la charger comme module ESM, et refuse à cause du MIME type non-JS.</p>
+
+        <h4 class="step-label">Correctif</h4>
+        <p>Restaurer le lookahead négatif qui exclut <code>dist/images/</code> du périmètre d'externalisation&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/react/vite.config.ts</span>
+            <span class="lang">Diff</span>
+          </div>
+<pre class="code">  external: [
+    ...<span class="c-fn">Object</span>.<span class="c-fn">keys</span>(dependencies ?? {}),
+    ...<span class="c-fn">Object</span>.<span class="c-fn">keys</span>(peerDependencies ?? {}),
+    <span class="c-str">'react/jsx-runtime'</span>,
+    <span class="c-str">'@edifice.io/client'</span>,
+    <span class="c-typ">/^@edifice\.io\/tiptap-extensions\/.*/</span>,
+<span class="line-del">    <span class="c-typ">/^@edifice\.io\/bootstrap\/.*/</span>,</span>
+<span class="line-add">    <span class="c-typ">/^@edifice\.io\/bootstrap\/(?!dist\/images\/).*/</span>,</span>
+    <span class="c-typ">/^dayjs\/plugin\/.+\.js$/</span>,
+    <span class="c-com">// ...</span>
+  ],</pre>
+        </div>
+
+        <p>Les chemins <code>@edifice.io/bootstrap/dist/images/*.svg</code> redeviennent <em>internes</em> au bundle d'EFF, donc traités par le plugin <code>url()</code> du tableau <code>plugins</code> qui les transforme en data URIs.</p>
+
+        <h4 class="step-label outcome">Validation</h4>
+        <pre class="console"><span class="prompt">$</span> pnpm --filter @edifice.io/react build
+<span class="ok">✓ built in 18.2s</span>
+
+<span class="prompt">$</span> grep -c <span class="c-str">"data:image/svg"</span> \
+    packages/react/dist/utilities/emptyscreen-mapping/emptyscreen-mapping.js
+<span class="num">22</span>   <span class="com"># ← chaque SVG est désormais inliné</span>
+
+<span class="prompt">$</span> grep <span class="c-str">"bootstrap/dist/images"</span> packages/react/dist/**/*.js
+<span class="ok">(no output)</span>   <span class="com"># ← plus aucun import SVG résiduel dans le bundle</span></pre>
+      </div>
+    </article>
+
+    <!-- ───── ÉTAPE 02 ───── -->
+    <article class="stage">
+      <header class="stage-header">
+        <div class="stage-num">Étape <strong>02</strong></div>
+        <div>
+          <h3 class="stage-title">Auditer et corriger les sources de duplication de React</h3>
+          <div class="stage-meta">
+            <span class="tag">Investigation puis fix conditionnel</span>
+            <span class="sep">·</span>
+            <span>3 packages à vérifier</span>
+            <span class="sep">·</span>
+            <span>Effort : 1 à 4 h</span>
+            <span class="sep">·</span>
+            <span>Risque : moyen</span>
+          </div>
+          <p class="stage-tagline">Tant que toutes les apps et leurs deps transitives résolvent <code>react</code> vers la même URL d'import map, il y a une seule instance. Trois suspects à éliminer.</p>
+        </div>
+      </header>
+      <div class="stage-body">
+
+        <h4 class="step-label">Symptôme</h4>
+        <p>Erreurs intermittentes côté apps consommatrices, hooks qui ne déclenchent pas de rerender, alertes dans la console&nbsp;:</p>
+        <pre class="console"><span class="prompt">⎯</span> Browser console
+<span class="err">Warning: Invalid hook call. Hooks can only be called inside of the body
+of a function component. This could happen for one of the following reasons:
+  1. You might have mismatched versions of React and the renderer
+  2. You might be breaking the Rules of Hooks
+  3. You might have more than one copy of React in the same app</span></pre>
+
+        <h4 class="step-label">Architecture cible</h4>
+        <p>Pour garantir l'instance unique, <em>toutes</em> les chaînes d'import doivent converger vers le même fichier physique. L'import map garantit déjà cela pour les apps&nbsp;; reste à valider les libs intermédiaires.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">recette/assets/importmap.json</span>
+            <span class="lang">État actuel</span>
+          </div>
+<pre class="code">{
+  <span class="c-str">"imports"</span>: {
+    <span class="c-str">"@edifice.io/react"</span>:    <span class="c-str">"/assets/js/edifice-react/index.js"</span>,
+    <span class="c-str">"react"</span>:               <span class="c-str">"/assets/js/edifice-react/react-esm/react.js"</span>,
+    <span class="c-str">"react-dom"</span>:           <span class="c-str">"/assets/js/edifice-react/react-esm/react-dom.js"</span>,
+    <span class="c-str">"react/jsx-runtime"</span>:   <span class="c-str">"/assets/js/edifice-react/react-esm/jsx-runtime.js"</span>,
+    <span class="c-str">"ode-explorer"</span>:        <span class="c-str">"/assets/js/ode-explorer/dist/lib/index.js"</span>,
+    <span class="c-str">"@edifice.io/client"</span>:   <span class="c-str">"/assets/js/edifice-client/index.js"</span>
+  }
+}</pre>
+        </div>
+
+        <h4 class="step-label">Suspect n°1 — <code>@edifice.io/client</code> avec <code>external</code> désactivé</h4>
+        <p>Sa configuration Vite a la ligne d'externalisation commentée, ce qui inline <em>toutes</em> les dépendances dans le bundle final. Si l'une d'elles transitivement importe React, il y a un second exemplaire.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/client/vite.config.ts</span>
+            <span class="lang">État actuel · lignes 10-20</span>
+          </div>
+<pre class="code">  build: {
+    lib: {
+      entry: <span class="c-fn">resolve</span>(__dirname, <span class="c-str">'./src/ts/index.ts'</span>),
+      name: <span class="c-str">'@edifice.io/client'</span>,
+      fileName: <span class="c-str">'index'</span>,
+      formats: [<span class="c-str">'cjs'</span>, <span class="c-str">'es'</span>],
+    },
+    rollupOptions: {
+<span class="line-mark">      <span class="c-com">//external: [...Object.keys(dependencies)],  ← désactivé</span></span>
+    },
+  },</pre>
+        </div>
+
+        <p>Audit&nbsp;:</p>
+        <pre class="console"><span class="prompt">$</span> grep -E <span class="c-str">"(React\.createElement|jsx-runtime|useState)"</span> \
+       packages/client/dist/index.es.js | head -3
+<span class="com"># Si la sortie est non-vide → client embarque du code React → fix requis</span>
+
+<span class="prompt">$</span> pnpm --filter @edifice.io/client list --depth 5 | grep <span class="c-str">"react"</span>
+<span class="com"># Identifie les chemins de dépendance vers react / react-dom</span></pre>
+
+        <p>Correctif&nbsp;: forcer l'externalisation de React quoi qu'il advienne des autres deps.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/client/vite.config.ts</span>
+            <span class="lang">Diff</span>
+          </div>
+<pre class="code">    rollupOptions: {
+<span class="line-del">      <span class="c-com">//external: [...Object.keys(dependencies)],</span></span>
+<span class="line-add">      external: [</span>
+<span class="line-add">        ...<span class="c-fn">Object</span>.<span class="c-fn">keys</span>(dependencies ?? {}),</span>
+<span class="line-add">        <span class="c-typ">/^react($|\/)/</span>,</span>
+<span class="line-add">        <span class="c-typ">/^react-dom($|\/)/</span>,</span>
+<span class="line-add">      ],</span>
+    },</pre>
+        </div>
+
+        <h4 class="step-label">Suspect n°2 — <code>ode-explorer</code></h4>
+        <p>Lib externe sur laquelle on a moins de contrôle. Vérifier qu'elle ne bundle pas React au lieu de le déclarer en <code>peerDependencies</code>&nbsp;:</p>
+
+        <pre class="console"><span class="prompt">$</span> cd /Volumes/Work/recette/assets/js/ode-explorer
+<span class="prompt">$</span> grep -c <span class="c-str">"jsxRuntime\|React.createElement"</span> dist/lib/index.js
+<span class="num">3247</span>   <span class="err"># Si très élevé → React bundlé en dur</span>
+
+<span class="prompt">$</span> cat package.json | jq <span class="c-str">'.peerDependencies, .dependencies'</span>
+<span class="com"># React doit être en peerDependencies, pas dependencies</span></pre>
+
+        <p>Si l'audit confirme le bundling&nbsp;: faire corriger en amont (peer dependency + rebuild), ou en patch local via <code>pnpm patch</code>. <strong>Pas de workaround côté apps possible</strong>&nbsp;: une fois React inliné dans <code>ode-explorer</code>, plus moyen de le partager.</p>
+
+        <h4 class="step-label">Suspect n°3 — <code>@edifice.io/react</code> lui-même</h4>
+        <p>La configuration en place compile React via deux configs Vite secondaires (<code>reactEsmConfig</code>, <code>reactDomEsmConfig</code>) qui inlinent React entièrement dans un fichier servi par l'import map. C'est le mécanisme correct, à condition que le shim ne soit pas accidentellement bypassé&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/react/src/shims/react.ts</span>
+            <span class="lang">À vérifier</span>
+          </div>
+<pre class="code"><span class="c-key">export</span> * <span class="c-key">from</span> <span class="c-str">'react'</span>;
+<span class="c-key">export</span> { <span class="c-key">default</span> } <span class="c-key">from</span> <span class="c-str">'react'</span>;</pre>
+        </div>
+
+        <p>Et la config qui le compile (depuis <code>vite.config.ts</code>, à la fin du fichier)&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">packages/react/vite.config.ts</span>
+            <span class="lang">extrait — reactEsmConfig</span>
+          </div>
+<pre class="code"><span class="c-key">export const</span> reactEsmConfig = <span class="c-fn">defineConfig</span>({
+  build: {
+    lib: {
+      entry: { react: <span class="c-fn">resolve</span>(__dirname, <span class="c-str">'src/shims/react.ts'</span>) },
+      formats: [<span class="c-str">'es'</span>],
+      fileName: () => <span class="c-str">'react.js'</span>,
+    },
+    outDir: <span class="c-str">'dist/react-esm'</span>,
+    rollupOptions: {
+<span class="line-mark">      external: [],  <span class="c-com">// ← critique : doit rester vide pour inliner React</span></span>
+    },
+  },
+  plugins: [<span class="c-fn">react</span>({ babel: { plugins: [<span class="c-str">'@babel/plugin-transform-react-pure-annotations'</span>] } })],
+});</pre>
+        </div>
+
+        <h4 class="step-label outcome">Validation</h4>
+        <p>Après correctifs, tester depuis la DevTools Console d'une page blog en recette&nbsp;:</p>
+        <pre class="console"><span class="prompt">&gt;</span> <span class="c-key">const</span> r1 = <span class="c-key">await</span> <span class="c-fn">import</span>(<span class="c-str">'react'</span>);
+<span class="prompt">&gt;</span> <span class="c-key">const</span> r2 = <span class="c-key">await</span> <span class="c-fn">import</span>(<span class="c-str">'@edifice.io/react'</span>);
+<span class="prompt">&gt;</span> <span class="c-fn">console</span>.<span class="c-fn">log</span>(r1.version, <span class="c-fn">Object</span>.<span class="c-fn">is</span>(r1.useState, <span class="c-fn">window</span>.React?.useState));
+<span class="ok">18.3.1 true</span>
+
+<span class="com"># Onglet Network, filtrer "react" :</span>
+<span class="com"># → doit montrer UNE SEULE requête vers .../react-esm/react.js</span>
+<span class="com"># → doit montrer UNE SEULE requête vers .../react-esm/react-dom.js</span></pre>
+      </div>
+    </article>
+
+    <!-- ───── ÉTAPE 03 ───── -->
+    <article class="stage">
+      <header class="stage-header">
+        <div class="stage-num">Étape <strong>03</strong></div>
+        <div>
+          <h3 class="stage-title">Stratégie de versioning multi-app via <code>scopes</code></h3>
+          <div class="stage-meta">
+            <span class="tag">Évolution structurelle</span>
+            <span class="sep">·</span>
+            <span>Import map + pipeline Jenkins</span>
+            <span class="sep">·</span>
+            <span>Effort : 1 jour</span>
+            <span class="sep">·</span>
+            <span>Risque : faible</span>
+          </div>
+          <p class="stage-tagline">Préparer dès maintenant la cohabitation contrôlée de plusieurs versions d'EFF, sans dupliquer React.</p>
+        </div>
+      </header>
+      <div class="stage-body">
+
+        <h4 class="step-label">Problème adressé</h4>
+        <p>Lors d'une migration d'EFF (rupture d'API, montée majeure), blog peut avoir besoin de la version <code>2.6</code> pendant que les autres apps restent en <code>2.5</code>. L'import map actuel n'a qu'un seul niveau de résolution global.</p>
+
+        <h4 class="step-label">État actuel</h4>
+        <p>Chemins courts non versionnés&nbsp;:</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">recette/assets/importmap.json</span>
+            <span class="lang">JSON · v1</span>
+          </div>
+<pre class="code">{
+  <span class="c-str">"imports"</span>: {
+    <span class="c-str">"@edifice.io/react"</span>:    <span class="c-str">"/assets/js/edifice-react/index.js"</span>,
+    <span class="c-str">"@edifice.io/react/"</span>:   <span class="c-str">"/assets/js/edifice-react/"</span>,
+    <span class="c-str">"@edifice.io/client"</span>:   <span class="c-str">"/assets/js/edifice-client/index.js"</span>,
+    <span class="c-str">"react"</span>:               <span class="c-str">"/assets/js/edifice-react/react-esm/react.js"</span>,
+    <span class="c-str">"react-dom"</span>:           <span class="c-str">"/assets/js/edifice-react/react-esm/react-dom.js"</span>,
+    <span class="c-str">"ode-explorer"</span>:        <span class="c-str">"/assets/js/ode-explorer/dist/lib/index.js"</span>
+  }
+}</pre>
+        </div>
+
+        <h4 class="step-label">État cible</h4>
+        <p>Chemins versionnés explicitement, <em>scope</em> de surcharge pour blog en migration. La clé : on scope EFF mais on garde <strong>React partagé en singleton</strong>.</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">recette/assets/importmap.json</span>
+            <span class="lang">JSON · v2 (avec scopes)</span>
+          </div>
+<pre class="code">{
+  <span class="c-str">"imports"</span>: {
+    <span class="c-com">// EFF : version par défaut pour toutes les apps</span>
+    <span class="c-str">"@edifice.io/react"</span>:    <span class="c-str">"/assets/js/eff/2.5.19/react/index.js"</span>,
+    <span class="c-str">"@edifice.io/react/"</span>:   <span class="c-str">"/assets/js/eff/2.5.19/react/"</span>,
+    <span class="c-str">"@edifice.io/client"</span>:   <span class="c-str">"/assets/js/eff/2.5.19/client/index.js"</span>,
+
+    <span class="c-com">// React : partagé, jamais scopé</span>
+    <span class="c-str">"react"</span>:               <span class="c-str">"/assets/js/shared/react/18.3.1/react.js"</span>,
+    <span class="c-str">"react-dom"</span>:           <span class="c-str">"/assets/js/shared/react/18.3.1/react-dom.js"</span>,
+    <span class="c-str">"react/jsx-runtime"</span>:   <span class="c-str">"/assets/js/shared/react/18.3.1/jsx-runtime.js"</span>,
+
+    <span class="c-str">"ode-explorer"</span>:        <span class="c-str">"/assets/js/ode-explorer/develop-pedago/index.js"</span>
+  },
+<span class="line-mark">  <span class="c-str">"scopes"</span>: {</span>
+<span class="line-mark">    <span class="c-com">// Blog épingle EFF 2.6.0 pendant sa migration ; React reste hérité du global.</span></span>
+<span class="line-mark">    <span class="c-str">"/blog/"</span>: {</span>
+<span class="line-mark">      <span class="c-str">"@edifice.io/react"</span>:  <span class="c-str">"/assets/js/eff/2.6.0/react/index.js"</span>,</span>
+<span class="line-mark">      <span class="c-str">"@edifice.io/react/"</span>: <span class="c-str">"/assets/js/eff/2.6.0/react/"</span>,</span>
+<span class="line-mark">      <span class="c-str">"@edifice.io/client"</span>: <span class="c-str">"/assets/js/eff/2.6.0/client/index.js"</span></span>
+<span class="line-mark">    }</span>
+<span class="line-mark">  }</span>
+}</pre>
+        </div>
+
+        <p>Le <em>scope</em> <code>"/blog/"</code> ne surcharge <strong>que</strong> les entrées EFF. Quand un module chargé sous <code>/blog/...</code> importe <code>react</code>, le navigateur remonte au niveau global et trouve l'unique <code>react.js</code>. Le singleton est préservé.</p>
+
+        <div class="aside-note">
+          <strong>Contrainte</strong>
+          Les versions cohabitantes d'EFF doivent rester compatibles avec la même version de React. Une rupture React (18 → 19) ne peut pas se faire en cohabitation&nbsp;: c'est une bascule synchronisée de tout l'écosystème, traitée à part.
+        </div>
+
+        <h4 class="step-label">Impact sur le pipeline Jenkins</h4>
+        <p>Le script de build de recette doit produire des dossiers versionnés au lieu d'écraser un emplacement unique. Modification du <code>build.sh</code>&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">recette/build.sh</span>
+            <span class="lang">extrait · ligne 176 environ</span>
+          </div>
+<pre class="code"><span class="c-com"># Avant : flatten naïf, un seul niveau, écrasement à chaque build</span>
+<span class="line-del">find -L ./assets/js/node_modules/ -mindepth 1 -maxdepth 2 -type d -name <span class="c-str">"dist"</span> \</span>
+<span class="line-del">  | sed -e <span class="c-str">"s/assets\/js\/node_modules\///"</span> \</span>
+<span class="line-del">  | sed -e <span class="c-str">"s/dist//"</span> \</span>
+<span class="line-del">  | xargs -i mv ./assets/js/node_modules/{}dist/ ./assets/js/{}</span>
+
+<span class="c-com"># Après : extraction de la version depuis package.json, dossier versionné</span>
+<span class="line-add">for pkg in edifice-react edifice-client edifice-bootstrap; do</span>
+<span class="line-add">  src=./assets/js/node_modules/$pkg</span>
+<span class="line-add">  version=$(jq -r .version <span class="c-str">"$src/package.json"</span>)</span>
+<span class="line-add">  dest=./assets/js/eff/$version/${pkg#edifice-}</span>
+<span class="line-add">  mkdir -p <span class="c-str">"$dest"</span></span>
+<span class="line-add">  mv <span class="c-str">"$src/dist/"</span>* <span class="c-str">"$dest/"</span></span>
+<span class="line-add">done</span></pre>
+        </div>
+
+        <h4 class="step-label outcome">Validation</h4>
+        <pre class="console"><span class="prompt">$</span> curl -sS https://recette.edifice.io/blog/index.html \
+    | grep -A 30 <span class="c-str">'type="importmap"'</span>
+<span class="ok">&lt;script type="importmap"&gt;{</span>
+<span class="ok">  "imports": { ... },</span>
+<span class="ok">  "scopes": { "/blog/": { ... } }</span>
+<span class="ok">}&lt;/script&gt;</span>
+
+<span class="com"># Network panel d'une page blog :</span>
+<span class="com"># → /assets/js/eff/2.6.0/react/index.js   (1 fois)</span>
+<span class="com"># → /assets/js/shared/react/18.3.1/react.js (1 fois, partagé)</span></pre>
+      </div>
+    </article>
+
+    <!-- ───── ÉTAPE 04 ───── -->
+    <article class="stage">
+      <header class="stage-header">
+        <div class="stage-num">Étape <strong>04</strong></div>
+        <div>
+          <h3 class="stage-title">Sanctuariser la configuration Vitest des apps consommatrices</h3>
+          <div class="stage-meta">
+            <span class="tag">Stabilisation des tests</span>
+            <span class="sep">·</span>
+            <span>2 fichiers</span>
+            <span class="sep">·</span>
+            <span>Effort : 30 min</span>
+            <span class="sep">·</span>
+            <span>Risque : nul</span>
+          </div>
+          <p class="stage-tagline">Le plugin <code>external-libs</code> est désactivé en test (<code>apply: 'build'</code>), mais il faut un filet de sécurité pour les assets non-JS.</p>
+        </div>
+      </header>
+      <div class="stage-body">
+
+        <h4 class="step-label">Le mécanisme actuel</h4>
+        <p>Le plugin d'externalisation de blog est correctement borné&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">blog/frontend/plugins/vite-plugin-external-libs.ts</span>
+            <span class="lang">extrait</span>
+          </div>
+<pre class="code"><span class="c-key">export function</span> <span class="c-fn">externalLibs</span>(...): <span class="c-typ">Plugin</span> {
+  <span class="c-key">return</span> {
+    name: <span class="c-str">'vite-plugin-external-libs'</span>,
+<span class="line-mark">    apply: <span class="c-str">'build'</span>,  <span class="c-com">// ← n'agit pas en mode test/dev, OK</span></span>
+    ...
+  };
+}</pre>
+        </div>
+
+        <p>Donc en test, Vitest tente de résoudre <code>@edifice.io/react</code> normalement depuis <code>node_modules</code> (où il est présent grâce à la dep <code>feat-ENABLING-722</code>). La config actuelle inline ce paquet pour que Vite transforme les modules ESM&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">blog/frontend/vite.config.ts</span>
+            <span class="lang">État actuel · bloc test</span>
+          </div>
+<pre class="code">  test: {
+    watch: <span class="c-num">false</span>,
+    globals: <span class="c-num">true</span>,
+    environment: <span class="c-str">'jsdom'</span>,
+    setupFiles: [<span class="c-str">'./src/mocks/setup.ts'</span>],
+    server: {
+      deps: {
+        inline: [<span class="c-str">'@edifice.io/react'</span>],
+      },
+    },
+  },</pre>
+        </div>
+
+        <h4 class="step-label">Le risque résiduel</h4>
+        <p>Si un test charge directement la <em>source</em> d'EFF (ou si <code>inline</code> force Vitest à retraverser des modules incluant des imports <code>*.svg</code>), Vitest n'a pas de handler pour les SVG et émet une erreur. La sécurité consiste à fournir un stub global pour tous les assets non-JS.</p>
+
+        <h4 class="step-label">Correctif</h4>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">blog/frontend/vite.config.ts</span>
+            <span class="lang">Diff · bloc test</span>
+          </div>
+<pre class="code">  test: {
+    watch: <span class="c-num">false</span>,
+    globals: <span class="c-num">true</span>,
+    environment: <span class="c-str">'jsdom'</span>,
+    setupFiles: [<span class="c-str">'./src/mocks/setup.ts'</span>],
+    server: {
+      deps: {
+<span class="line-del">        inline: [<span class="c-str">'@edifice.io/react'</span>],</span>
+<span class="line-add">        inline: [<span class="c-typ">/@edifice\.io\//</span>, <span class="c-str">'ode-explorer'</span>],</span>
+      },
+    },
+<span class="line-add">    alias: [</span>
+<span class="line-add">      {</span>
+<span class="line-add">        find: <span class="c-typ">/\.svg(\?.*)?$/</span>,</span>
+<span class="line-add">        replacement: <span class="c-fn">resolve</span>(__dirname, <span class="c-str">'./src/mocks/svg-stub.ts'</span>),</span>
+<span class="line-add">      },</span>
+<span class="line-add">      {</span>
+<span class="line-add">        find: <span class="c-typ">/\.(png|jpe?g|gif|webp)$/</span>,</span>
+<span class="line-add">        replacement: <span class="c-fn">resolve</span>(__dirname, <span class="c-str">'./src/mocks/asset-stub.ts'</span>),</span>
+<span class="line-add">      },</span>
+<span class="line-add">    ],</span>
+  },</pre>
+        </div>
+
+        <p>Création des deux stubs&nbsp;:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">blog/frontend/src/mocks/svg-stub.ts</span>
+            <span class="lang">Nouveau fichier</span>
+          </div>
+<pre class="code"><span class="c-key">const</span> stub = <span class="c-str">''</span>;
+<span class="c-key">export default</span> stub;
+<span class="c-key">export const</span> <span class="c-fn">ReactComponent</span> = () =&gt; <span class="c-num">null</span>;</pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="path">blog/frontend/src/mocks/asset-stub.ts</span>
+            <span class="lang">Nouveau fichier</span>
+          </div>
+<pre class="code"><span class="c-key">export default</span> <span class="c-str">''</span>;</pre>
+        </div>
+
+        <h4 class="step-label outcome">Validation</h4>
+        <pre class="console"><span class="prompt">$</span> cd /Volumes/Work/blog/frontend
+<span class="prompt">$</span> pnpm test
+<span class="ok"> ✓ src/features/blog/__tests__/Blog.test.tsx     (12 tests) 184ms
+ ✓ src/features/post/__tests__/PostCard.test.tsx (8 tests)   91ms
+ ...
+ Test Files  18 passed (18)
+      Tests  124 passed (124)
+   Duration  4.2s</span>
+
+<span class="com"># Aucune erreur du type :</span>
+<span class="com">#   "Failed to parse source for import analysis... *.svg"</span>
+<span class="com">#   "Cannot find module '@edifice.io/bootstrap/dist/images/...'"</span></pre>
+      </div>
+    </article>
+
+    <h3 style="margin-top: 56px;">Récapitulatif et ordre d'exécution</h3>
+    <p>Engager les étapes dans l'ordre 01 → 04. Chacune débloque la suivante en réduisant le bruit de signal&nbsp;:</p>
+    <ol>
+      <li><strong>Étape 01</strong> répare la régression la plus visible et restaure un état build correct.</li>
+      <li><strong>Étape 02</strong> ne peut être conduite proprement qu'une fois 01 stabilisée (sinon les erreurs SVG masquent les vraies erreurs React).</li>
+      <li><strong>Étape 03</strong> est une évolution architecturale&nbsp;: à engager une fois 01-02 verts, pour préparer la première vraie migration multi-version.</li>
+      <li><strong>Étape 04</strong> peut se faire en parallèle de 01 et 02&nbsp;; c'est un travail de stabilisation indépendant côté apps.</li>
+    </ol>
+  </section>
+
+  <footer class="colophon">
+    <div><span class="mark">Edifice · ENABLING-722</span> · Étude comparative · Mai 2026</div>
+    <div>Composé en Iowan Old Style &amp; Charter</div>
+  </footer>
+
+</main>
+</body>
+</html>
