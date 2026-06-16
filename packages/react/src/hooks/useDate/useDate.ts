@@ -138,7 +138,7 @@ export default function useDate() {
       // format D MMM YYYY
       return computedDate.format(t('date.format.previousYear'));
     },
-    [currentLanguage, parseDate],
+    [t, toComputedDate],
   );
 
   /** Compute a user-friendly elapsed duration, between now and a date. */
@@ -147,7 +147,7 @@ export default function useDate() {
       const computedDate = toComputedDate(date);
       return computedDate?.isValid() ? computedDate.fromNow() : '';
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   /**
@@ -181,7 +181,7 @@ export default function useDate() {
         ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
         : '';
     },
-    [currentLanguage, parseDate],
+    [currentLanguage, toComputedDate],
   );
 
   /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/query/is-same for more details.
@@ -196,7 +196,7 @@ export default function useDate() {
       const computedDate2 = toComputedDate(date2);
       return computedDate?.isSame(computedDate2, unit) ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   /** Check if a date is same or after another date. See https://day.js.org/docs/en/query/is-same-or-after for more details.
@@ -211,7 +211,7 @@ export default function useDate() {
       const computedDate2 = toComputedDate(date2);
       return computedDate?.isSameOrAfter(computedDate2, unit) ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   /** Check if a date is today. See https://day.js.org/docs/en/plugin/is-today for more details.
@@ -223,7 +223,7 @@ export default function useDate() {
       const computedDate = toComputedDate(date);
       return computedDate?.isToday() ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   return {

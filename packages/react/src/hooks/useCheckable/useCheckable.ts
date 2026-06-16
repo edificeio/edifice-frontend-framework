@@ -11,12 +11,14 @@ export const useCheckable = <T extends { _id: string }>(
   useEffect(() => {
     // If data changes, check if selected items are still valid
     if (data) {
-      const validSelectedItems = selectedItems.filter((id) =>
-        data.some((item) => item._id === id),
-      );
-      if (validSelectedItems.length !== selectedItems.length) {
-        setSelectedItems(validSelectedItems);
-      }
+      setSelectedItems((currentSelection) => {
+        const validSelectedItems = currentSelection.filter((id) =>
+          data.some((item) => item._id === id),
+        );
+        return validSelectedItems.length !== currentSelection.length
+          ? validSelectedItems
+          : currentSelection;
+      });
     }
   }, [data]);
 
