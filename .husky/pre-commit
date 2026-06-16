@@ -1,4 +1,16 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# Icons guard: when an icon SVG is staged, ensure the generated components are
+# in sync. Same check as CI (see .github/workflows/icons-check.yml).
+if git diff --cached --name-only --diff-filter=ACMR \
+  | grep -q '^packages/react/src/modules/icons/assets/.*\.svg$'; then
+  if ! pnpm --filter @edifice.io/react icons:check; then
+    echo ""
+    echo "✖ Icônes désynchronisées : un .svg a changé sans régénération des composants."
+    echo "  Lance : pnpm --filter @edifice.io/react generate:icons puis 'git add'."
+    exit 1
+  fi
+fi
+
 pnpm pre-commit

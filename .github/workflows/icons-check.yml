@@ -1,0 +1,24 @@
+name: "Icons check"
+
+on:
+  pull_request:
+    paths:
+      - "packages/react/src/modules/icons/**"
+      - "packages/react/svgr.config.cjs"
+      - ".github/workflows/icons-check.yml"
+
+jobs:
+  icons-check:
+    name: Icons in sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check generated icons are in sync
+        run: pnpm --filter @edifice.io/react icons:check
