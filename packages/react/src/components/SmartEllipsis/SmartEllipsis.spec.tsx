@@ -32,12 +32,17 @@ function stubWidths(scrollWidth: number, clientWidth: number) {
   });
 
   return () => {
+    // Restore the original descriptor when there was one, otherwise delete the
+    // stub so it does not leak into later tests (the property may be inherited,
+    // in which case getOwnPropertyDescriptor returns undefined).
     if (original.scrollWidth) {
       Object.defineProperty(
         HTMLElement.prototype,
         'scrollWidth',
         original.scrollWidth,
       );
+    } else {
+      delete (HTMLElement.prototype as { scrollWidth?: number }).scrollWidth;
     }
     if (original.clientWidth) {
       Object.defineProperty(
@@ -45,6 +50,8 @@ function stubWidths(scrollWidth: number, clientWidth: number) {
         'clientWidth',
         original.clientWidth,
       );
+    } else {
+      delete (HTMLElement.prototype as { clientWidth?: number }).clientWidth;
     }
   };
 }

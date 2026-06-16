@@ -16,6 +16,10 @@ vi.mock('@edifice.io/client', () => ({
 }));
 
 describe('useHasWorkflow', () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('is undefined until the right has been resolved', async () => {
     hasWorkflowRight.mockResolvedValue(true);
 
