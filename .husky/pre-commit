@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# Icons guard: when an icon SVG is staged, ensure the generated components are
-# in sync. Same check as CI (see .github/workflows/icons-check.yml).
-if git diff --cached --name-only --diff-filter=ACMR \
+# Icons guard: when an icon SVG is added, modified or deleted, ensure the
+# generated components are in sync. Same check as CI (see
+# .github/workflows/icons-check.yml).
+if git diff --cached --name-only --diff-filter=ACMRD \
   | grep -q '^packages/react/src/modules/icons/assets/.*\.svg$'; then
   if ! pnpm --filter @edifice.io/react icons:check; then
     echo ""
