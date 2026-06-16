@@ -1,13 +1,14 @@
 // stylelint-disable at-rule-empty-line-before
 @use 'sass:map';
 
+// have to be consistent with the breakpoints defined in useBreakpoint.ts, otherwise media queries won't work as expected
 $breakpoints: (
-  'mobile': 360px,
-  'mobile-large': 390px,
-  'tablet': 720px,
-  'desktop-small': 960px,
-  'desktop': 1264px,
-  'desktop-large': 1320px,
+  'mobile': 375px,
+  'mobile-large': 430px,
+  'tablet': 768px,
+  'desktop-small': 1024px,
+  'desktop': 1280px,
+  'desktop-large': 1400px,
 );
 
 @mixin respond-from($breakpoint) {

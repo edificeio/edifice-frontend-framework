@@ -54,16 +54,15 @@ const NotificationList = ({
           justify="between"
           align="center"
           wrap="nowrap"
-          className="notification-list-header py-16 ps-24 pe-8"
+          className="py-16 ps-24 pe-8"
         >
-          <h4 className="notification-list-title text-truncate">
+          <h4 className="text-truncate">
             {t('homepage.notifications-list.title')}
           </h4>
           {onCloseNotifications && (
             <ButtonBeta
               color="tertiary"
               variant="ghost"
-              className="notification-list-close"
               rightIcon={<IconClose />}
               onClick={handleCloseClick}
               aria-label={t('homepage.notifications-list.close')}

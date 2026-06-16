@@ -316,7 +316,7 @@ export const FullpageDynamicRightSidebar: Story = {
 
 export const OverlayWithoutBackdrop: Story = {
   render: (args) => {
-    const { toggleOverlay, closeOverlay } = useOverlay();
+    const { updateOverlayOpen } = useOverlay();
     return (
       <PageLayout {...args}>
         <PageLayout.Header />
@@ -326,17 +326,19 @@ export const OverlayWithoutBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
+            <Button onClick={() => updateOverlayOpen(true)}>
+              Ouvrir le panneau
+            </Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay onClose={() => console.log('Overlay closed')}>
+        <PageLayout.Overlay onClose={() => updateOverlayOpen(false)}>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Contenu dynamique de l&apos;overlay.</p>
-            <Button variant="outline" onClick={closeOverlay}>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
               Fermer
             </Button>
           </div>
@@ -348,7 +350,7 @@ export const OverlayWithoutBackdrop: Story = {
 
 export const OverlayWithBackdrop: Story = {
   render: (args) => {
-    const { openOverlay, closeOverlay } = useOverlay();
+    const { updateOverlayOpen } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -359,7 +361,7 @@ export const OverlayWithBackdrop: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={openOverlay}>
+            <Button onClick={() => updateOverlayOpen(true)}>
               Ouvrir le panneau (avec backdrop)
             </Button>
           </div>
@@ -367,11 +369,11 @@ export const OverlayWithBackdrop: Story = {
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
           <div style={innerStyle('sidebarRight')}>Sidebar Right</div>
         </PageLayout.SidebarRight>
-        <PageLayout.Overlay onClose={closeOverlay} backdrop>
+        <PageLayout.Overlay onClose={() => updateOverlayOpen(false)} backdrop>
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Avec backdrop — cliquez en dehors pour fermer.</p>
-            <Button variant="outline" onClick={closeOverlay}>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
               Fermer
             </Button>
           </div>
@@ -383,7 +385,7 @@ export const OverlayWithBackdrop: Story = {
 
 export const OverlayWithCloseButton: Story = {
   render: (args) => {
-    const { toggleOverlay } = useOverlay();
+    const { updateOverlayOpen } = useOverlay();
 
     return (
       <PageLayout {...args}>
@@ -394,7 +396,9 @@ export const OverlayWithCloseButton: Story = {
         </PageLayout.SidebarLeft>
         <PageLayout.Content style={colStyle('content')}>
           <div style={innerStyle('content')}>
-            <Button onClick={toggleOverlay}>Ouvrir le panneau</Button>
+            <Button onClick={() => updateOverlayOpen(true)}>
+              Ouvrir le panneau
+            </Button>
           </div>
         </PageLayout.Content>
         <PageLayout.SidebarRight style={colStyle('sidebarRight')}>
@@ -402,13 +406,13 @@ export const OverlayWithCloseButton: Story = {
         </PageLayout.SidebarRight>
         <PageLayout.Overlay
           closeButton={true}
-          onClose={() => console.log('Overlay close')}
+          onClose={() => updateOverlayOpen(false)}
           backdrop
         >
           <div style={{ padding: '24px' }}>
             <h2>Panneau latéral</h2>
             <p>Contenu dynamique de l&apos;overlay.</p>
-            <Button variant="outline" onClick={toggleOverlay}>
+            <Button variant="outline" onClick={() => updateOverlayOpen(false)}>
               Fermer
             </Button>
           </div>

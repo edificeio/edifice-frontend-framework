@@ -10,7 +10,7 @@
   }
 
   &-message {
-    color: var(--primitive-grey-800);
+    color: var(--primitive-text-color-default);
     font-size: var(--primitive-font-size-small);
     line-height: var(--primitive-font-lineheight-xs);
     overflow-wrap: anywhere;
@@ -32,18 +32,18 @@
   &-resource-icon {
     display: flex;
     align-items: center;
-    padding: var(--primitive-spacer-4);
+    padding: var(--primitive-spacer-2);
     border-radius: var(--primitive-border-radius-pill);
     flex-shrink: 0;
 
     // TODO: remove this override when the app icon component supports size 16x16
     .app-icon {
-      width: 1.6rem !important;
-      height: 1.6rem !important;
+      width: 2rem !important;
+      height: 2rem !important;
 
       svg {
-        width: 1.6rem;
-        height: 1.6rem;
+        width: 2rem;
+        height: 2rem;
       }
     }
   }
