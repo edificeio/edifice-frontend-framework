@@ -16,12 +16,15 @@ vi.mock('@edifice.io/client', () => ({
 }));
 
 describe('useHasWorkflow', () => {
-  it('is undefined until the right has been resolved', () => {
+  it('is undefined until the right has been resolved', async () => {
     hasWorkflowRight.mockResolvedValue(true);
 
     const { result } = renderHook(() => useHasWorkflow('workflow.create'));
 
     expect(result.current).toBeUndefined();
+
+    // Let the pending promise settle so the state update happens inside act().
+    await waitFor(() => expect(result.current).toBe(true));
   });
 
   it('resolves a single workflow right as a boolean', async () => {

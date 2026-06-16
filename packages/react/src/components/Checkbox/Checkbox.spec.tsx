@@ -5,7 +5,7 @@ import Checkbox from './Checkbox';
 
 describe('Checkbox component', () => {
   it('renders an unchecked, enabled checkbox by default', () => {
-    render(<Checkbox />);
+    render(<Checkbox readOnly />);
     const input = screen.getByRole('checkbox') as HTMLInputElement;
 
     expect(input).toBeInTheDocument();
@@ -15,7 +15,7 @@ describe('Checkbox component', () => {
   });
 
   it('renders a label linked to the input when provided', () => {
-    render(<Checkbox label="Accept terms" />);
+    render(<Checkbox label="Accept terms" readOnly />);
     const input = screen.getByRole('checkbox');
     const label = screen.getByText('Accept terms');
 
@@ -24,7 +24,7 @@ describe('Checkbox component', () => {
   });
 
   it('does not render a label when none is provided', () => {
-    const { container } = render(<Checkbox />);
+    const { container } = render(<Checkbox readOnly />);
 
     expect(container.querySelector('label')).toBeNull();
   });
@@ -38,21 +38,21 @@ describe('Checkbox component', () => {
   });
 
   it('sets the indeterminate DOM property from the prop', () => {
-    render(<Checkbox indeterminate />);
+    render(<Checkbox indeterminate readOnly />);
     const input = screen.getByRole('checkbox') as HTMLInputElement;
 
     expect(input.indeterminate).toBe(true);
   });
 
   it('keeps the indeterminate DOM property false when not set', () => {
-    render(<Checkbox />);
+    render(<Checkbox readOnly />);
     const input = screen.getByRole('checkbox') as HTMLInputElement;
 
     expect(input.indeterminate).toBe(false);
   });
 
   it('forwards extra className alongside the default classes', () => {
-    render(<Checkbox className="custom-class" />);
+    render(<Checkbox className="custom-class" readOnly />);
     const input = screen.getByRole('checkbox');
 
     expect(input).toHaveClass('custom-class', 'form-check-input', 'c-pointer');
@@ -60,7 +60,7 @@ describe('Checkbox component', () => {
 
   it('populates the forwarded ref once mounted', () => {
     const ref = createRef<HTMLInputElement>();
-    render(<Checkbox ref={ref} />);
+    render(<Checkbox ref={ref} readOnly />);
 
     expect(ref.current).not.toBeNull();
   });
