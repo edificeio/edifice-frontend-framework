@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Mermaid } from '@docs/Mermaid';
 
 <Meta title="Components/UserSearch/Guide" />
 
@@ -97,13 +98,15 @@ offered twice:
 - `sharedItemsCache` — a `recipientId → Visible` map so a removed recipient can
   be **re-injected** into the results.
 
-```text
-pick result            → add id to sharingsIds, cache it, hide from dropdown
-                       → onSearchResultsChange(result)   (host adds it to the list)
-
-removeSharing(id)      → drop id from sharingsIds
-(called by the host)   → if cached, push the Visible back into the results
-```
+<Mermaid
+  chart={`
+flowchart LR
+  P["pick result"] --> A["add id to sharingsIds<br/>cache it · hide from dropdown"]
+  A --> B["onSearchResultsChange(result)<br/>host adds it to the list"]
+  R["removeSharing(id)<br/>(called by the host)"] --> C["drop id from sharingsIds"]
+  C --> D["if cached, push the Visible<br/>back into the results"]
+`}
+/>
 
 ---
 

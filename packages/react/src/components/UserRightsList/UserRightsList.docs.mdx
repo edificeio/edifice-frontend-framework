@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { Mermaid } from '@docs/Mermaid';
 
 <Meta title="Components/UserRightsList/Guide" />
 
@@ -25,28 +26,15 @@ Two components work together to build a sharing experience:
   users, groups, bookmarks) and lets the user toggle each permission before
   saving.
 
-```text
-            ┌─────────────────────────────────────────────────────────┐
-            │                     Sharing screen                        │
-            │                                                           │
-   search   │   ┌──────────────┐        adds recipient                 │
- ──────────►│   │  UserSearch  │ ───────────────────────────┐          │
-            │   └──────────────┘   onSearchResultsChange     │          │
-            │          ▲                                      ▼          │
-            │          │ removeSharing(id)         ref.addItem(item)     │
-            │          │ (when a row is removed)              │          │
-            │          │                                      ▼          │
-            │   ┌───────────────────────────────────────────────────┐  │
-            │   │                 UserRightsList                     │  │
-            │   │  owner · users · groups · bookmarks (collapsible)  │  │
-            │   │  one checkbox per right (read/contrib/…)           │  │
-            │   └───────────────────────────────────────────────────┘  │
-            │                          │ onChange / onAddItems /          │
-            │                          │ onDeleteItems / onSaveBookmark   │
-            └──────────────────────────┼──────────────────────────────────┘
-                                       ▼
-                       PUT /homeworks/share/resource/{id}
-```
+<Mermaid
+  chart={`
+flowchart TD
+  Q["User types a query"] --> US["UserSearch (combobox)<br/>users · groups · bookmarks"]
+  US -->|"onSearchResultsChange<br/>host calls ref.addItem(item)"| URL["UserRightsList<br/>owner · users · groups · bookmarks (collapsible)<br/>one checkbox per right"]
+  URL -.->|"removeSharing(id)<br/>when a row is removed"| US
+  URL -->|"onChange · onAddItems · onDeleteItems · onSaveBookmark"| SAVE["PUT /homeworks/share/resource/:id"]
+`}
+/>
 
 The host application owns the data fetching (REST calls) and wires the two
 components together. The components themselves are **presentational + local
@@ -299,22 +287,26 @@ inject a recipient picked in `UserSearch`.
 
 ## 8. End-to-end flow
 
-```text
-1. User types in UserSearch
-   └─► getSearchResults(query)  → users / groups / bookmarks
-
-2. User picks a bookmark
-   └─► host: GET /directory/sharebookmark/{id}
-   └─► host: ref.addItem(BookmarkInput)
-       └─► UserRightsList: collapsible row + one SharingItem per visible user
-                            (default rights applied)
-
-3. User adjusts rights
-   ├─ bookmark row checkbox  → applies to every user of the bookmark
-   └─ individual user row     → overrides that single user
-
-4. onChange(items) keeps the host's state in sync
-
-5. User confirms
-   └─► host: PUT /homeworks/share/resource/{id}  { bookmarks, users, groups }
-```
+<Mermaid
+  chart={`
+sequenceDiagram
+  actor U as User
+  participant S as UserSearch
+  participant H as Host app
+  participant L as UserRightsList
+  participant API as Backend
+  U->>S: type a query
+  S->>H: getSearchResults(query)
+  H-->>S: users / groups / bookmarks
+  U->>S: pick a bookmark
+  S->>H: onSearchResultsChange(bookmark)
+  H->>API: GET /directory/sharebookmark/:id
+  API-->>H: BookmarkInput (visible users)
+  H->>L: ref.addItem(BookmarkInput)
+  L->>L: collapsible row + 1 SharingItem per user (default rights)
+  U->>L: adjust rights (bookmark row or individual user)
+  L->>H: onChange(items)
+  U->>L: confirm
+  H->>API: PUT /homeworks/share/resource/:id {bookmarks, users, groups}
+`}
+/>

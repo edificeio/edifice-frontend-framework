@@ -11,18 +11,24 @@ const config: StorybookConfig = {
     '../src/stories/**/*.mdx',
   ],
   staticDirs: ['../public'],
-  addons: ['@storybook/addon-a11y', {
-    name: '@storybook/addon-docs',
-    options: {
-      mdxPluginOptions: {
-        mdxCompileOptions: {
-          providerImportSource: '@mdx-js/react',
-          // Enable GitHub Flavored Markdown (tables, strikethrough, etc.) in MDX docs.
-          remarkPlugins: [remarkGfm],
+  addons: [
+    '@storybook/addon-a11y',
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            providerImportSource: '@mdx-js/react',
+            // Enable GitHub Flavored Markdown (tables, strikethrough, etc.) in MDX docs.
+            remarkPlugins: [remarkGfm],
+          },
         },
       },
     },
-  }, '@chromatic-com/storybook', '@storybook/addon-vitest', '@github-ui/storybook-addon-performance-panel'],
+    '@chromatic-com/storybook',
+    '@storybook/addon-vitest',
+    '@github-ui/storybook-addon-performance-panel',
+  ],
   typescript: {
     reactDocgen: 'react-docgen',
   },
@@ -45,6 +51,11 @@ const config: StorybookConfig = {
           '@images': resolve(
             dirname(fileURLToPath(import.meta.url)),
             '../node_modules/@edifice.io/bootstrap/dist/images',
+          ),
+          // Mermaid renderer used by MDX docs pages (e.g. UserRightsList guide).
+          '@docs/Mermaid': resolve(
+            dirname(fileURLToPath(import.meta.url)),
+            'Mermaid.tsx',
           ),
         },
       },
