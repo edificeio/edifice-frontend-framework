@@ -1,5 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, resolve } from 'path';
+import remarkGfm from 'remark-gfm';
 import { fileURLToPath } from 'url';
 
 const config: StorybookConfig = {
@@ -16,6 +17,8 @@ const config: StorybookConfig = {
       mdxPluginOptions: {
         mdxCompileOptions: {
           providerImportSource: '@mdx-js/react',
+          // Enable GitHub Flavored Markdown (tables, strikethrough, etc.) in MDX docs.
+          remarkPlugins: [remarkGfm],
         },
       },
     },

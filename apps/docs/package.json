@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@edifice.io/config": "workspace:*",
+    "remark-gfm": "^4.0.1",
     "vite": "catalog:"
   }
 }
