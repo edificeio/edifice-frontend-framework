@@ -1,0 +1,172 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/UserSearch/Guide" />
+
+# UserSearch — Developer Guide
+
+`UserSearch` is the entry point of the sharing flow: a debounced combobox used
+to find **users**, **groups** and **share bookmarks** (favorites) and to add
+them to the current selection. It is designed to be wired to
+[`UserRightsList`](?path=/docs/components-userrightslist-guide--docs), which
+displays the selected recipients and lets the author edit their rights.
+
+See the interactive examples in the
+[UserSearch stories](?path=/docs/components-usersearch--docs).
+
+---
+
+## 1. Responsibilities
+
+`UserSearch` owns **search-time** concerns only:
+
+- debounce the input (500 ms) and enforce a minimum length;
+- call the host-provided `getSearchResults` and manage its own loading state;
+- merge bookmarks + API results and **hide recipients already selected**;
+- notify the host when an item is picked (`onSearchResultsChange`);
+- expose `removeSharing(id)` so a recipient can re-appear in the dropdown when
+  it is removed elsewhere.
+
+It does **not** fetch data itself and does **not** know about permissions — that
+is the host's and `UserRightsList`'s job.
+
+---
+
+## 2. Props & ref
+
+```ts
+interface UserSearchProps {
+  placeholder?: string;
+  isAdmlcOrAdmc?: boolean; // admin context → min length 3 instead of 1
+  bookmarks?: Visible[]; // favorites shown before/with results
+  initialSharings?: SharingItem[]; // already-shared recipients to hide
+  getSearchResults: (query: string) => Promise<{ results: Visible[] }>;
+  onSearchResultsChange?: (result: Visible) => void;
+}
+
+interface UserSearchRef {
+  removeSharing: (recipientId: string) => void;
+}
+```
+
+### `Visible` — a search result
+
+```ts
+enum VisibleType {
+  User = 'User',
+  Group = 'Group',
+  ShareBookmark = 'ShareBookmark',
+  BroadcastGroup = 'BroadcastGroup',
+}
+
+type Visible = {
+  id: string;
+  displayName: string;
+  type: VisibleType;
+  profile?: string;
+  nbUsers?: number;
+  // …structureName, relatives, children, usedIn — see types/visible.ts
+};
+```
+
+Each type renders a distinct icon (user / group / bookmark).
+
+---
+
+## 3. Search behavior
+
+- **Minimum length** — `1` character by default, `3` when `isAdmlcOrAdmc` is
+  `true` (admin searches can be very broad).
+- **Debounce** — input changes are debounced 500 ms (`useDebounce`) before
+  `getSearchResults` runs.
+- **Loading** — managed internally; the combobox shows a spinner while the
+  promise is pending. Errors fall back to showing the (filtered) bookmarks.
+- **Below minimum length** — only bookmarks are shown, so stale API results do
+  not linger.
+- **Cancellation** — a `cancelled` flag prevents a late response from a previous
+  query from overwriting newer results.
+
+---
+
+## 4. Selection & de-duplication
+
+`UserSearch` tracks which recipients are already selected so they are not
+offered twice:
+
+- `sharingsIds` — the set of selected `recipientId`s, seeded from
+  `initialSharings`. Anything in this set is filtered out of the dropdown.
+- `sharedItemsCache` — a `recipientId → Visible` map so a removed recipient can
+  be **re-injected** into the results.
+
+```text
+pick result            → add id to sharingsIds, cache it, hide from dropdown
+                       → onSearchResultsChange(result)   (host adds it to the list)
+
+removeSharing(id)      → drop id from sharingsIds
+(called by the host)   → if cached, push the Visible back into the results
+```
+
+---
+
+## 5. Wiring with UserRightsList
+
+`UserSearch` and `UserRightsList` are complementary. The host connects them:
+
+```tsx
+const rightsRef = useRef<UserRightsListRef>(null);
+const searchRef = useRef<UserSearchRef>(null);
+
+<UserSearch
+  ref={searchRef}
+  bookmarks={bookmarks}
+  initialSharings={sharings}
+  getSearchResults={getSearchResults}
+  onSearchResultsChange={async (result) => {
+    if (result.type === VisibleType.ShareBookmark) {
+      // Resolve the bookmark's users before adding it
+      const bookmark = await getShareBookmark(result.id); // GET /directory/sharebookmark/{id}
+      rightsRef.current?.addItem(bookmark);               // BookmarkInput → collapsible group
+    } else {
+      rightsRef.current?.addItem({
+        recipientId: result.id,
+        recipientType: result.type === VisibleType.User ? 'user' : 'group',
+        displayName: result.displayName,
+        permission: [],
+      });
+    }
+  }}
+/>
+
+<UserRightsList
+  ref={rightsRef}
+  /* … */
+  onDeleteItems={(items) =>
+    // keep search in sync: removed recipients become searchable again
+    items.forEach((i) => searchRef.current?.removeSharing(i.recipientId))
+  }
+/>
+```
+
+Key interaction points:
+
+1. **Picking a bookmark** in `UserSearch` triggers
+   `GET /directory/sharebookmark/{id}`; the resolved `BookmarkInput` is handed to
+   `UserRightsList.addItem`, which renders it as a collapsible group with default
+   rights. (Full flow in the
+   [UserRightsList guide](?path=/docs/components-userrightslist-guide--docs#8-end-to-end-flow).)
+2. **Removing a recipient** in `UserRightsList` should call
+   `searchRef.current?.removeSharing(id)` so the recipient reappears in search
+   results.
+3. **Already-shared recipients** are passed as `initialSharings` to both
+   components so they start hidden in search and visible in the list.
+
+---
+
+## 6. Edge cases
+
+- **Bookmark vs. its users** — `UserSearch` only knows the bookmark as a single
+  `Visible`; the expansion into individual users happens after the
+  `GET /directory/sharebookmark/{id}` call, inside `UserRightsList`. A bookmark
+  whose users are not visible (`notVisibleCount > 0`) still selects fine here.
+- **Admin contexts** — with `isAdmlcOrAdmc`, the 3-char minimum avoids
+  fetching enormous result sets.
+- **Empty query** — never hits the API; shows bookmarks only.
