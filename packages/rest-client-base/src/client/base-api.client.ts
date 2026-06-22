@@ -239,21 +239,24 @@ export abstract class BaseApiClient {
    * @throws {URIError} if the baseUrl attribute is not parsable
    */
   protected buildUrl(endpoint: string, queryParams?: URLSearchParams): string {
+    const isRelative = !URL.canParse(this.baseUrl);
+    const origin = globalThis.location?.origin ?? '';
+    const rawUrl = isRelative ? `${origin}${this.baseUrl}` : this.baseUrl;
     // Fail explicitely if base url is not correct
-    if (!URL.canParse(this.baseUrl)) {
+    if (!URL.canParse(rawUrl)) {
       throw new URIError(`{baseUrl: ${this.baseUrl}} is not a parsable URL.`);
     }
     // Parse base url with MDN-defined rules
-    const url = new URL(this.baseUrl);
+    const url = new URL(rawUrl);
     // Add endpoint path
-    url.pathname = endpoint;
+    url.pathname = isRelative ? joinPaths(this.baseUrl, endpoint) : endpoint;
     // Add query params if they are defined
     if (queryParams) {
-      queryParams.forEach((value, key, _) => {
+      queryParams.forEach((value, key) => {
         url.searchParams.set(key, value);
       });
     }
-    return url.toString();
+    return isRelative ? url.pathname + url.search : url.toString();
   }
 
   /**
@@ -271,3 +274,6 @@ export abstract class BaseApiClient {
     };
   }
 }
+
+const joinPaths = (base: string, path: string) =>
+  `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
