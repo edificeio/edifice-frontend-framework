@@ -1,0 +1,99 @@
+@use '../../themes/configs/primitives' as *;
+
+.message-flash {
+  --message-flash-border-color: #{$grey-500};
+  --message-flash-bg-color: #{$grey-200};
+  --message-flash-border-radius: #{$border-radius-2xl};
+  --message-flash-px: #{$spacer-12};
+  --message-flash-py: #{$spacer-12};
+  --message-flash-icon-size: 50px;
+  --message-flash-icon-color: #{$white};
+  --message-flash-icon-bg-color: #{$grey-500};
+  --message-flash-box-shadow: #{$box-shadow};
+
+  display: grid;
+  grid-template-areas: 'icon content';
+  grid-template-columns: auto 1fr;
+  gap: #{$spacer-12};
+  position: relative;
+  background-color: var(--message-flash-bg-color);
+  background-image: url('./images/homepage/MessageFlashBackground-Grey.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+  padding: var(--message-flash-py) var(--message-flash-px);
+  border: 2px solid var(--message-flash-border-color);
+  border-radius: var(--message-flash-border-radius);
+  box-shadow: var(--message-flash-box-shadow);
+  border-color: var(--message-flash-border-color) !important;
+  box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
+  a {
+    color: var(--primitive-info-700);
+    text-decoration: underline;
+  }
+
+  &-orange {
+    --message-flash-border-color: #{$warning-500};
+    --message-flash-bg-color: #{$warning-200};
+    --message-flash-icon-bg-color: #{$warning-500};
+
+    background-image: url('./images/homepage/MessageFlashBackground-Orange.svg');
+  }
+
+  &-green {
+    --message-flash-border-color: #{$success-500};
+    --message-flash-bg-color: #{$success-200};
+    --message-flash-icon-bg-color: #{$success-700};
+
+    background-image: url('./images/homepage/MessageFlashBackground-Green.svg');
+  }
+
+  &-blue {
+    --message-flash-border-color: #{$info-500};
+    --message-flash-bg-color: #{$info-200};
+    --message-flash-icon-bg-color: #{$info-500};
+    background-image: url('./images/homepage/MessageFlashBackground-Blue.svg');
+  }
+
+  &-red {
+    --message-flash-border-color: #{$danger-500};
+    --message-flash-bg-color: #{$danger-200};
+    --message-flash-icon-bg-color: #{$danger-500};
+
+    background-image: url('./images/homepage/MessageFlashBackground-Red.svg');
+  }
+
+  &-icon {
+    grid-area: icon;
+    width: var(--message-flash-icon-size);
+    height: var(--message-flash-icon-size);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--message-flash-icon-bg-color);
+    color: var(--message-flash-icon-color);
+  }
+
+  &-body {
+    grid-area: content;
+  }
+
+  &-content {
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-footer {
+    align-items: center;
+  }
+
+  &-close-button {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+  }
+
+  &-collapse-button {
+    margin-left: auto;
+  }
+}

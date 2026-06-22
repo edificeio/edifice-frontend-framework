@@ -80,6 +80,11 @@
   "resolutions": {
     "katex": "0.16.33"
   },
+  "pnpm": {
+    "overrides": {
+      "@rushstack/terminal": "0.22.3"
+    }
+  },
   "packageManager": "pnpm@9.12.2",
   "engines": {
     "node": ">=20.19.0 <21 || >=22.12.0 <23"
@@ -88,10 +93,5 @@
     "workerDirectory": [
       "apps/docs/public"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@rushstack/terminal": "0.22.3"
-    }
   }
 }

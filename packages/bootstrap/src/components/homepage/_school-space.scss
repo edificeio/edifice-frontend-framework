@@ -1,0 +1,23 @@
+@use '../../themes/configs/primitives' as *;
+
+.school-space {
+  --border-color: #{$yellow-300};
+  --background-color: #{$yellow-100};
+  --border-radius: #{$border-radius-2xl};
+  --px: #{$spacer-8};
+  --py: #{$spacer-8};
+
+  padding: var(--py) var(--px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  background-image: url('./images/homepage/SchoolSpaceBackground.svg');
+  background-repeat: no-repeat;
+  background-position: top right;
+
+  &-container {
+    padding: var(--primitive-spacer-12);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-default);
+  }
+}

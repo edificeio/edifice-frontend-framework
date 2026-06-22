@@ -1,0 +1,67 @@
+.notification {
+  padding: var(--primitive-spacer-16) var(--primitive-spacer-12);
+  color: var(--primitive-grey-800);
+
+  &-avatar,
+  &-app-icon {
+    width: var(--primitive-numbers-32);
+    height: var(--primitive-numbers-32);
+    min-width: var(--primitive-numbers-32);
+  }
+
+  &-message {
+    color: var(--primitive-text-color-default);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
+    overflow-wrap: anywhere;
+    flex: 1;
+  }
+
+  &-resource {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--primitive-spacer-4);
+    padding: var(--primitive-spacer-2) var(--primitive-spacer-12)
+      var(--primitive-spacer-2) var(--primitive-spacer-4);
+    border-radius: var(--primitive-border-radius-pill);
+    width: fit-content;
+    max-width: 100%;
+    color: var(--primitive-grey-800);
+  }
+
+  &-resource-icon {
+    display: flex;
+    align-items: center;
+    padding: var(--primitive-spacer-2);
+    border-radius: var(--primitive-border-radius-pill);
+    flex-shrink: 0;
+
+    // TODO: remove this override when the app icon component supports size 16x16
+    .app-icon {
+      width: 2rem !important;
+      height: 2rem !important;
+
+      svg {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+  }
+
+  &-resource-name {
+    font-size: var(--primitive-font-size-caption);
+    font-weight: var(--primitive-font-weight-bold);
+    line-height: var(--primitive-font-lineheight-3xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-date {
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+    color: var(--primitive-text-color-subtext);
+    font-style: italic;
+    white-space: nowrap;
+  }
+}

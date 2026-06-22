@@ -1,0 +1,9 @@
+[data-product='edifice2d'] .pagelayout {
+  --pagelayout-headerheight: 5.6rem;
+}
+
+@media (width <= 767.98px) {
+  [data-product='edifice2d'] .pagelayout {
+    --pagelayout-headerheight: 5rem;
+  }
+}

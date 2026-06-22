@@ -6,8 +6,10 @@
 @forward 'attachment';
 @forward 'avatar';
 @forward 'badge';
+@forward 'beta-switch';
 @forward 'breadcrumb';
 @forward 'buttons';
+@forward 'buttons-beta';
 @forward 'card';
 @forward 'comments';
 @forward 'combobox';
@@ -19,7 +21,9 @@
 @forward 'form-control';
 @forward 'form-label';
 @forward 'form-text';
+@forward 'homepage/';
 @forward 'header';
+@forward 'page-layout';
 @forward 'textarea';
 @forward 'help';
 @forward 'image-picker';
@@ -52,4 +56,5 @@
 @forward 'widget/';
 @forward 'multimedia/';
 @forward 'views/';
+@forward 'homepage/';
 @forward 'modals/';

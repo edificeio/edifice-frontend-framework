@@ -1,0 +1,26 @@
+@use '../../themes/configs/primitives' as *;
+
+.last-infos-list {
+  background-color: var(--primitive-white);
+  border-radius: var(--primitive-border-radius-2xl);
+
+  &-header {
+    padding: var(--primitive-spacer-0) var(--primitive-spacer-4);
+  }
+
+  &-title {
+    font-family: var(--font-family-title);
+    font-weight: var(--primitive-font-weight-bold);
+    font-size: var(--primitive-font-size-s);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--primitive-grey-900);
+  }
+
+  &-seemore {
+    font-family: var(--primitive-font-family-title);
+    font-weight: var(--primitive-font-weight-bold);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--primitive-color-text-button-primary-other-default);
+  }
+}

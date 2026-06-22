@@ -52,6 +52,7 @@ export default defineConfig(({ mode }) => {
           'audience': resolve(__dirname, 'src/modules/audience/index.ts'),
           'comments': resolve(__dirname, 'src/modules/comments/index.ts'),
           'editor': resolve(__dirname, 'src/modules/editor/index.ts'),
+          'homepage': resolve(__dirname, 'src/modules/homepage/index.ts'),
           'icons': resolve(__dirname, 'src/modules/icons/components/index.ts'),
           'icons-nav': resolve(
             __dirname,

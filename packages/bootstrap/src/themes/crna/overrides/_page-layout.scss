@@ -1,0 +1,9 @@
+[data-product='crna'] .pagelayout {
+  --pagelayout-headerheight: 5.6rem;
+}
+
+@media (width <= 767.98px) {
+  [data-product='crna'] .pagelayout {
+    --pagelayout-headerheight: 4.8rem;
+  }
+}

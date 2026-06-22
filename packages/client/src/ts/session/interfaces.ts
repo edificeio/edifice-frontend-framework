@@ -117,7 +117,7 @@ export type School = {
   id: string; // "09772a06-1362-4802-a475-66a87d9cb679"
   name: string; // "MY DEV SCHOOL"
   UAI: string; // "1111888G"
-  exports: string[]; // ["GAR-P0"]
+  exports: string[] | null; // ["GAR-P0"]
 };
 export type UserProfile = Array<
   'Student' | 'Teacher' | 'Relative' | 'Personnel' | 'Guest'
@@ -345,7 +345,28 @@ export interface IGetSession {
   bookmarkedApps: IWebApp[];
 }
 
+export type IPerson = Pick<
+  IUserDescription,
+  | 'address'
+  | 'birthdate'
+  | 'displayName'
+  | 'email'
+  | 'id'
+  | 'login'
+  | 'mobile'
+  | 'photo'
+  | 'relatedId'
+  | 'relatedName'
+  | 'relatedType'
+  | 'schools'
+  | 'tel'
+  | 'userId'
+  | 'visibleInfos'
+> & {
+  type: UserProfile;
+};
+
 export type PersonApiResult = {
   status: 'ok' | string;
-  result: Array<IUserDescription>;
+  result: Array<IPerson>;
 };

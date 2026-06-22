@@ -2,13 +2,13 @@
 @use '../vendors/bootstrap';
 
 .badge {
-  --#{$prefix}badge-border-color: #{$gray-400};
-  --#{$prefix}badge-font-size: 1.4rem;
-  --#{$prefix}badge-padding-x: 1.2rem;
-  --#{$prefix}badge-padding-y: 0.4rem;
-  --#{$prefix}badge-color: inherit;
+  --badge-border-color: #{$gray-400};
+  --badge-font-size: 1.4rem;
+  --badge-padding-x: 1.2rem;
+  --badge-padding-y: 0.4rem;
+  --badge-color: inherit;
 
-  border: 1px solid var(--#{$prefix}badge-border-color);
+  border: 1px solid var(--badge-border-color);
 
   &:not(.badge-notification) {
     height: 3rem;
@@ -17,33 +17,33 @@
 
   &.badge-profile {
     &-student {
-      color: var(--#{$prefix}orange);
+      color: var(--badge-orange);
     }
 
     &-teacher {
-      color: var(--#{$prefix}green);
+      color: var(--badge-green);
     }
 
     &-relative {
-      color: var(--#{$prefix}blue);
+      color: var(--badge-blue);
     }
 
     &-personnel {
-      color: var(--#{$prefix}purple);
+      color: var(--badge-purple);
     }
 
     &-guest {
-      color: var(--#{$prefix}pink);
+      color: var(--badge-pink);
     }
   }
 
   &.badge-notification {
-    --#{$prefix}badge-padding-x: 0.8rem;
+    --badge-padding-x: 0.8rem;
   }
 
   &.badge-link {
     a {
-      color: var(--#{$prefix}info);
+      color: var(--badge-info);
       font-size: 1.6rem;
       font-weight: 400;
       text-decoration: underline;
