@@ -253,7 +253,7 @@ export abstract class BaseApiClient {
     // Add query params if they are defined
     if (queryParams) {
       queryParams.forEach((value, key) => {
-        url.searchParams.set(key, value);
+        url.searchParams.append(key, value);
       });
     }
     return isRelative ? url.pathname + url.search : url.toString();
