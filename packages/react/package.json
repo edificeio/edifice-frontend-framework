@@ -77,9 +77,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "pnpm build:icons && vite build",
-    "build:icons": "svgr src/modules/icons/assets --config-file ./svgr.config.cjs",
+    "build": "vite build",
     "build:analyze": "vite build --mode analyze",
+    "generate:icons": "rm -rf src/modules/icons/components && svgr src/modules/icons/assets --config-file ./svgr.config.cjs --silent",
+    "icons:check": "pnpm generate:icons && git add --intent-to-add -- src/modules/icons/components && git diff --exit-code -- src/modules/icons/components",
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --check \"src/**/*.{ts,tsx}\"",
     "format:write": "prettier --write \"src/**/*.{ts,tsx}\"",
