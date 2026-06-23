@@ -249,7 +249,7 @@ export abstract class BaseApiClient {
     // Parse base url with MDN-defined rules
     const url = new URL(rawUrl);
     // Add endpoint path
-    url.pathname = isRelative ? joinPaths(this.baseUrl, endpoint) : endpoint;
+    url.pathname = joinPaths(url.pathname, endpoint);
     // Add query params if they are defined
     if (queryParams) {
       queryParams.forEach((value, key) => {
