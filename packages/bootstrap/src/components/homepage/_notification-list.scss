@@ -1,0 +1,11 @@
+.notification-list {
+  h4 {
+    font-family: var(--font-family-title);
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  background-color: var(--primitive-white);
+}

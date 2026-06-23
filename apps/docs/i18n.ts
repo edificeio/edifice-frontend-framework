@@ -245,6 +245,42 @@ i18n.use(initReactI18next).init({
         'editor.preview.moreMedia': '+[[mediaCount]] images',
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
+        //----------------- LastInfosList -----------------
+        'homepage.last-infos-list.empty':
+          'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
+        'homepage.last-infos-list.see.more': 'Voir plus',
+        'homepage.last-infos-list.title': 'Dernières actualités',
+        //------------------------------------------------------
+
+        //----------------- useDate (formatTimeAgo) -----------------
+        'date.format.yesterday': 'Yesterday',
+        'date.format.currentWeek': 'dddd',
+        'date.format.currentYear': 'D MMM',
+        'date.format.previousYear': 'D MMM YYYY',
+        //------------------------------------------------------
+
+        //----------------- BetaSwitch -----------------
+        'betaSwitch.button': 'Quittez la Bêta',
+        'betaSwitch.title': "L'ancienne version vous manque ?",
+        'betaSwitch.description':
+          'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
+        'betaSwitch.error': 'Erreur de paramétrage.',
+        //------------------------------------------------------
+        //------------------ Notifications -------------------------
+        'homepage.notifications-list.title': 'Notifications',
+        'homepage.notifications-list.close': 'Close notifications',
+        'homepage.notifications-list.empty.description':
+          'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
+        'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
+        'homepage.notifications.app-icon.placeholder': "Icône de l'application",
+        //------------------------------------------------------
+        //------------------ App names -------------------------
+        'collaborative-wall': 'Mur collaboratif',
+        'forms': 'Formulaires',
+        'support': 'Support',
+        'actualites': 'Actualités',
+        'rbs': 'RBS',
+        //------------------------------------------------------
       },
     },
   },

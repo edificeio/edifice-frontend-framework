@@ -1,0 +1,12 @@
+@use '../../../../themes/configs/primitives' as prim;
+
+[data-product='one'] {
+  .btn-beta {
+    &.btn-beta-default,
+    &.btn-beta-secondary,
+    &.btn-beta-destructive {
+      text-transform: uppercase;
+      font-weight: #{prim.$font-weight-regular};
+    }
+  }
+}

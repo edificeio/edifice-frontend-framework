@@ -1,37 +1,100 @@
 @use 'sass:color';
+@use 'sass:list';
 @use 'sass:map';
-@use '../abstracts/' as *;
+@use 'sass:string';
+@use '../themes/neo/icons' as *;
+@use '../themes/one/icons' as *;
+@use '../themes/configs/icons' as *;
 
-$all-icons: map.merge($icons-applications, $icons-connectors);
+$legacy-icons: (
+  'neo': $neo-icons,
+  'one': $one-icons,
+);
 
-@each $product in ('neo', 'one') {
-  @each $app, $data in $all-icons {
-    $c: map.get($data, $product);
-    [data-product='#{$product}']
-      :is(
-        .color-app-#{$app},
-        .bg-app-#{$app},
-        .bg-light-#{$app},
-        .border-app-#{$app}
-      ) {
+// Inverts a { key: value } map into { value: list-of-keys }, preserving
+// insertion order. Used to group apps sharing the same color so we can emit
+// one CSS rule per unique color instead of one per app.
+@function group-by-value($flat-map) {
+  $result: ();
+
+  @each $key, $value in $flat-map {
+    $existing: map.get($result, $value) or ();
+    $result: map.set($result, $value, list.append($existing, $key));
+  }
+
+  @return $result;
+}
+
+// For each legacy product, group apps by color (one rule per unique color
+// instead of one per app) — reduces the rule count ~14x and deduplicates the
+// --app-color-light values.
+@each $product, $product-icons in $legacy-icons {
+  $flat: map.merge(
+    map.get($product-icons, 'applications'),
+    map.get($product-icons, 'connectors')
+  );
+
+  @each $c, $apps in group-by-value($flat) {
+    $selectors: ();
+
+    @each $app in $apps {
+      @each $prefix in ('.color-app-', '.bg-app-', '.bg-light-', '.border-app-')
+      {
+        $selectors: list.append(
+          $selectors,
+          string.unquote('#{$prefix}#{$app}'),
+          comma
+        );
+      }
+    }
+    [data-product='#{$product}'] :is(#{$selectors}) {
       --app-color: #{$c};
       --app-color-light: #{color.scale($c, $lightness: 90%, $saturation: 5%)};
     }
   }
 }
 
-[class*='color-app-'] {
-  color: var(--app-color);
+/**
+  Unified global "context" rules: cover both the legacy API
+  (.color-app-{code}, .bg-app-{code}, .bg-light-{code}, .border-app-{code})
+  and the new API (.color-app, .bg-app, .bg-app-light, .border-app).
+
+  Context/value decoupling via two CSS variables:
+  - --app-color / --app-color-light: set per legacy product (neo, one) by the
+    [data-product='neo|one'] scoped rules above.
+  - --icon-color: set by .app-{code} for the new themes (edifice2d, crna,
+    edifice1d), sourced from the $icons-defaults map.
+
+  The var(--app-color, var(--icon-color)) fallback chain resolves priority
+  without relying on specificity: if --app-color is defined (legacy theme)
+  it wins; otherwise we fall back to --icon-color (new themes).
+
+  Typical icon: <div class="app-icon color-app app-account">…</div>
+  - .bg-app-light (not .bg-light) avoids the collision with the Bootstrap
+    .bg-light utility which uses !important.
+  - The light variant is computed natively via hsl(from …) which preserves
+    saturation, visually close to color.scale($lightness: 90%, $saturation: 5%).
+**/
+:is([class*='color-app-'], .color-app) {
+  color: var(--app-color, var(--icon-color));
 }
 
-[class*='bg-app-'] {
-  background-color: var(--app-color);
+:is([class*='bg-app-'], .bg-app) {
+  background-color: var(--app-color, var(--icon-color));
 }
 
-[class*='bg-light-'] {
-  background-color: var(--app-color-light);
+:is([class*='bg-light-'], .bg-app-light) {
+  background-color: var(--app-color-light, hsl(from var(--icon-color) h s 95%));
 }
 
-[class*='border-app-'] {
-  border-color: var(--app-color);
+:is([class*='border-app-'], .border-app) {
+  border-color: var(--app-color, var(--icon-color));
+}
+
+@each $group in ('applications', 'connectors') {
+  @each $code, $color in map.get($icons-defaults, $group) {
+    .app-#{$code} {
+      --icon-color: #{$color};
+    }
+  }
 }

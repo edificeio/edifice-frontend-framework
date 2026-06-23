@@ -7,7 +7,7 @@ import { Color } from 'src/types/color';
 import { Image } from '../Image';
 
 export type AvatarVariants = 'square' | 'rounded' | 'circle';
-export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export type AvatarSizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'auto';
 
 export interface AvatarProps extends React.ComponentPropsWithRef<'img'> {
   /**
@@ -95,6 +95,7 @@ const Avatar = forwardRef(
       'avatar-md': size === 'md',
       'avatar-lg': size === 'lg',
       'avatar-xl': size === 'xl',
+      'avatar-auto': size === 'auto',
     };
 
     const avatarVariants = {

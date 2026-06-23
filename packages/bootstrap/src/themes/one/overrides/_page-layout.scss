@@ -1,0 +1,9 @@
+[data-product='one'] .pagelayout {
+  --pagelayout-headerheight: 6.6rem;
+}
+
+@media (width <= 767.98px) {
+  [data-product='one'] .pagelayout {
+    --pagelayout-headerheight: 5.8rem;
+  }
+}

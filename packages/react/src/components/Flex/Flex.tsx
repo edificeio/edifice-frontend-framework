@@ -28,13 +28,21 @@ const Flex = forwardRef<HTMLElement, FlexProps>(
     },
     ref,
   ) => {
+    const gapClasses = (() => {
+      if (!gap) return undefined;
+      const [rowGap, colGap] = gap.trim().split(/\s+/);
+      return colGap !== undefined
+        ? [`row-gap-${rowGap}`, `column-gap-${colGap}`]
+        : `gap-${rowGap}`;
+    })();
+
     const classes = clsx(
       'd-flex',
       direction && `flex-${direction}`,
       fill && 'flex-fill',
       align && `align-items-${align}`,
       justify && `justify-content-${justify}`,
-      gap && `gap-${gap}`,
+      gapClasses,
       wrap && `flex-${wrap === 'reverse' ? 'wrap-reverse' : wrap}`,
       className,
     );

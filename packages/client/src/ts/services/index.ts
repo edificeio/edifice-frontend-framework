@@ -1,8 +1,8 @@
 // TODO should be loaded from React app in future
-import '../resources/services/ScrapbookResourceService';
-import '../resources/services/HomeworksResourceService';
-import '../resources/services/TimelineGeneratorResourceService';
 import '../resources/services/CollaborativeEditorResourceService';
+import '../resources/services/HomeworksResourceService';
+import '../resources/services/ScrapbookResourceService';
+import '../resources/services/TimelineGeneratorResourceService';
 
 import { IOdeServices, OdeServices } from './OdeServices';
 
@@ -15,4 +15,5 @@ export * from '../resources/ResourceService';
 export * from '../resources/SnipletsService'; // FIXME to be removed when dropping behaviours
 export * from '../rights/interface';
 export * from '../share/interface';
+export type { IWidgetPreferences } from '../widget/Service';
 export * from '../workspace/interface';
