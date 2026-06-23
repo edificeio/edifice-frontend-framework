@@ -34,6 +34,8 @@ Monorepo publiant les **packages `@edifice.io/*`** consommés par les apps Edifi
 | Lint | `pnpm lint` |
 | Format | `pnpm format` |
 | Fix lint | `pnpm fix` |
+| Régénérer les icônes | `pnpm --filter @edifice.io/react generate:icons` <!-- svgr … --silent --> |
+| Vérifier la synchro des icônes | `pnpm --filter @edifice.io/react icons:check` |
 | Storybook (dev) | `pnpm docs` <!-- storybook dev -p 6006 --> |
 | Storybook (build) | `pnpm docs:build` |
 
@@ -46,7 +48,7 @@ Monorepo publiant les **packages `@edifice.io/*`** consommés par les apps Edifi
 - Publication sur le **registre npm public**. Pas de changesets : **semver manuel**.
 - ESLint **flat config**, Prettier (`singleQuote: true`, `printWidth: 80`, `tabWidth: 2`, `trailingComma: all`).
 - Tests : **Vitest** (unit + navigateur via **Playwright**).
-- Icônes : génération via SVGR.
+- Icônes : composants générés par **SVGR** depuis `packages/react/src/modules/icons/assets/` **et commités** dans `…/components/`. La génération **ne tourne plus pendant `pnpm build`** : régénérer manuellement via `generate:icons` après avoir ajouté/modifié un `.svg`. Un garde-fou `icons:check` vérifie la synchro en pre-commit (Husky, si un SVG est staged) **et** en CI (`.github/workflows/icons-check.yml`, sur PR).
 
 ## À faire / à éviter
 
