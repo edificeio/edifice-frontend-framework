@@ -1,0 +1,312 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { Mermaid } from '@docs/Mermaid';
+
+<Meta title="Components/UserRightsList/Guide" />
+
+# User Rights & Sharing — Developer Guide
+
+This guide documents how user rights (UserRights) are managed when sharing a
+resource: how share bookmarks (favorites) are loaded, how rights can be edited
+individually before sharing, the complete share flow, the data structures
+involved, and the known edge cases.
+
+It complements the interactive
+[UserRightsList stories](?path=/docs/components-userrightslist--docs) and the
+[UserSearch guide](?path=/docs/components-usersearch-guide--docs).
+
+---
+
+## 1. Overview
+
+Two components work together to build a sharing experience:
+
+- **`UserSearch`** — a combobox to find users, groups and share bookmarks
+  (favorites), and to add them to the current selection.
+- **`UserRightsList`** — a table that lists the selected recipients (owner,
+  users, groups, bookmarks) and lets the user toggle each permission before
+  saving.
+
+<Mermaid
+  chart={`
+flowchart TD
+  Q["User types a query"] --> US["UserSearch (combobox)<br/>users · groups · bookmarks"]
+  US -->|"onSearchResultsChange<br/>host calls ref.addItem(item)"| URL["UserRightsList<br/>owner · users · groups · bookmarks (collapsible)<br/>one checkbox per right"]
+  URL -.->|"removeSharing(id)<br/>when a row is removed"| US
+  URL -->|"onChange · onAddItems · onDeleteItems · onSaveBookmark"| SAVE["PUT /homeworks/share/resource/:id"]
+`}
+/>
+
+The host application owns the data fetching (REST calls) and wires the two
+components together. The components themselves are **presentational + local
+state**: they never call the API directly.
+
+---
+
+## 2. Share bookmarks (favorites)
+
+A **share bookmark** (favorite) is a saved set of recipients (users and groups)
+that an author can reuse across resources. In the sharing UI a bookmark appears
+as a single **collapsible row** grouping all of its users.
+
+### 2.1 Loading the users of a bookmark
+
+When the user selects a bookmark in `UserSearch`, the host application fetches
+the underlying recipients:
+
+```http
+GET /directory/sharebookmark/{id}
+```
+
+**Response** — the list of users attached to the bookmark:
+
+```jsonc
+{
+  "id": "_9a1d29c3d2864ed8a3d72198fadf4a96",
+  "name": "Parents délégués CE2",
+  "notVisibleCount": 0,
+  "groups": [],
+  "users": [
+    {
+      "id": "c0824335-ab0e-41fb-9ed3-d5c28a93087d",
+      "displayName": "CARPENTIER Béatrice",
+      "profile": "Relative",
+      "activationCode": false,
+    },
+    {
+      "id": "6a7495f8-bec7-4f68-b891-0b05c6e8e0ce",
+      "displayName": "ROUSTIN Christophe",
+      "profile": "Relative",
+      "activationCode": false,
+    },
+  ],
+}
+```
+
+This response maps directly to the `BookmarkInput` type (see
+[§4 Data structures](#4-data-structures)).
+
+### 2.2 Adding a bookmark to the list
+
+The host passes the fetched `BookmarkInput` to `UserRightsList` through the
+imperative ref:
+
+```tsx
+const ref = useRef<UserRightsListRef>(null);
+
+// after GET /directory/sharebookmark/{id}
+ref.current?.addItem(bookmarkInput); // BookmarkInput → collapsible group
+```
+
+`UserRightsList.addItem` accepts **either** a `SharingItem` (a single user or
+group) **or** a `BookmarkInput` (a group of users). It discriminates them with
+the `isBookmarkInput` type guard (presence of a `users` array).
+
+When a bookmark is added (`useBookmarkEntries.addBookmark`):
+
+1. The bookmark is ignored if its `id` is already present.
+2. Only users **not already** in the list are inserted (de-duplication by
+   `recipientId`). See the [`notVisibleCount` and overlap](#5-edge-cases) note.
+3. Each new user becomes a `SharingItem` with the **default permissions**
+   (every right whose `default` is `true`, usually `read`).
+4. A `BookmarkState` is stored (collapsed by default).
+
+### 2.3 Editing rights individually before sharing
+
+Rights can be edited at two levels:
+
+- **Per bookmark row** — toggling a checkbox on the bookmark header applies the
+  change to **all** users of the bookmark
+  (`useBookmarkEntries.toggleBookmarkRight` → `applyRightToIds`).
+- **Per user row** — expand the bookmark and toggle the checkbox on an
+  individual user (`useSharingItems.changeRight`). This overrides the value set
+  at the bookmark level for that single user.
+
+Both paths go through the same permission logic (requires/excludes, transitive
+removal) described in [§3](#3-permission-logic).
+
+### 2.4 Removing a bookmark
+
+`deleteBookmark` removes the `BookmarkState` **and** every `SharingItem` that
+belonged to it (`deleteItemsByIds`). Users that had been added individually
+(outside the bookmark) are not affected.
+
+---
+
+## 3. Permission logic
+
+Rights are described by `ResourceRights` — a record keyed by right name
+(`read`, `contrib`, `publish`, `manager`, `comment`). Each definition declares
+dependencies:
+
+```ts
+type ResourceRightDefinition = {
+  priority: number;
+  default: boolean; // granted automatically to new recipients
+  requires: ResourceRightName[]; // rights implicitly added when this one is set
+  excludes: ResourceRightName[]; // rights removed when this one is set
+  displayName?: string;
+  isReadOnlyCheckbox?: boolean; // checkbox shown but not editable
+};
+```
+
+`createRightsHelpers` implements two pure operations:
+
+- **`applyRight(item, right, add)`**
+  - **add** → adds `right`, adds all its `requires`, removes any `excludes`.
+  - **remove** → removes `right` **and every right that transitively depends on
+    it** (fixed-point over `requires`). E.g. removing `read` removes `contrib`,
+    `publish` and `manager` too.
+- **`toggleRight(item, right)`** → `applyRight` with the opposite of the current
+  state.
+
+The owner row is always built with **all** rights and is always read-only
+(`getOwnerItem`).
+
+---
+
+## 4. Data structures
+
+### `SharingItem` — a single recipient in the list
+
+```ts
+type SearchResultType = 'user' | 'group' | 'bookmark';
+
+interface SharingItem {
+  recipientId: string;
+  recipientType: SearchResultType;
+  permission: string[]; // e.g. ['read', 'contrib']
+  displayName: string;
+}
+```
+
+### `BookmarkInput` — payload returned by `GET /directory/sharebookmark/{id}`
+
+```ts
+interface BookmarkUser {
+  id: string;
+  displayName: string;
+  profile?: string; // e.g. 'Relative', 'Teacher'
+  activationCode?: boolean; // account not yet activated when true
+}
+
+interface BookmarkInput {
+  id: string;
+  name: string;
+  notVisibleCount?: number; // recipients the current user cannot see
+  groups?: { id: string; displayName: string }[];
+  users: BookmarkUser[];
+}
+```
+
+### `BookmarkState` — internal collapsible-row state
+
+```ts
+interface BookmarkState {
+  id: string;
+  name: string;
+  permission: string[]; // rights applied to the whole bookmark
+  userIds: string[]; // recipientIds of the users it owns in the list
+  isExpanded: boolean;
+}
+```
+
+### Save payload — `PUT /homeworks/share/resource/{id}`
+
+When the user confirms, the host serializes the current state into the share
+request. It carries both the **bookmark** reference(s) and the **users** with
+their resolved permissions:
+
+```jsonc
+{
+  "bookmarks": {
+    "_9a1d29c3d2864ed8a3d72198fadf4a96": ["read", "comment"],
+  },
+  "users": {
+    "c0824335-ab0e-41fb-9ed3-d5c28a93087d": ["read", "comment"],
+    "6a7495f8-bec7-4f68-b891-0b05c6e8e0ce": ["read"],
+  },
+  "groups": {},
+}
+```
+
+> The exact wire format is owned by the backend / REST client; the table above
+> reflects the `bookmark + users` contract referenced by the feature. Keep this
+> section in sync with `@edifice.io/client` if the shape changes.
+
+---
+
+## 5. Edge cases
+
+- **`notVisibleCount` > 0** — a bookmark can reference recipients the current
+  user is not allowed to see. They are **not** returned in `users`, so they are
+  never displayed or editable in the list. Surface the count to the user so the
+  share is not perceived as incomplete.
+- **Empty groups / empty bookmark** — a bookmark may resolve to zero visible
+  users. `addBookmark` still creates the collapsible row; expanding it shows no
+  user sub-rows.
+- **Overlap with existing recipients** — users already present in the list are
+  skipped when a bookmark is added (`existingRecipientIds`). The bookmark row
+  therefore only "owns" the users it actually inserted; deleting it will not
+  remove a user that was already shared individually.
+- **Owner row** — always read-only and always granted all rights; it cannot be
+  removed.
+- **`isReadOnlyCheckbox`** — a right can be displayed but locked; its checkbox
+  is disabled regardless of `isReadOnly`.
+
+---
+
+## 6. Callbacks reference
+
+| Prop                          | When it fires                                                                                                   |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `onChange(items)`             | Any change to the full list (add/remove/toggle). Source of truth for the save payload.                          |
+| `onAddItems(items)`           | Batch add (single user, or all users of a bookmark).                                                            |
+| `onDeleteItems(items)`        | Batch delete (single user, or all users of a removed bookmark).                                                 |
+| `onSaveBookmark(name, items)` | User saves the current selection as a new favorite. Optional; hides the "Save as bookmark" button when omitted. |
+
+The `ref` exposes `addItem(item: SharingItem | BookmarkInput)` so the host can
+inject a recipient picked in `UserSearch`.
+
+---
+
+## 7. Known bug
+
+> ⚠️ **On edit, the bookmark disappears.**
+> When re-opening the share dialog on a resource that was shared via a bookmark,
+> the bookmark row is not rebuilt from the persisted sharing: the previously
+> shared users come back as **individual rows** instead of being re-grouped
+> under their favorite. This is because the persisted share only stores the
+> resolved recipients/permissions, while the collapsible grouping lives in
+> `BookmarkState`, which is rebuilt only when `addItem(BookmarkInput)` is called
+> at runtime.
+>
+> Tracking: see the related JIRA item. Documenting it here so maintainers know
+> the grouping is **runtime-only** and is not restored from `initialSharings`.
+
+---
+
+## 8. End-to-end flow
+
+<Mermaid
+  chart={`
+sequenceDiagram
+  actor U as User
+  participant S as UserSearch
+  participant H as Host app
+  participant L as UserRightsList
+  participant API as Backend
+  U->>S: type a query
+  S->>H: getSearchResults(query)
+  H-->>S: users / groups / bookmarks
+  U->>S: pick a bookmark
+  S->>H: onSearchResultsChange(bookmark)
+  H->>API: GET /directory/sharebookmark/:id
+  API-->>H: BookmarkInput (visible users)
+  H->>L: ref.addItem(BookmarkInput)
+  L->>L: collapsible row + 1 SharingItem per user (default rights)
+  U->>L: adjust rights (bookmark row or individual user)
+  L->>H: onChange(items)
+  U->>L: confirm
+  H->>API: PUT /homeworks/share/resource/:id {bookmarks, users, groups}
+`}
+/>

@@ -31,12 +31,14 @@
     "i18next": "catalog:",
     "i18next-browser-languagedetector": "8.2.0",
     "i18next-http-backend": "catalog:",
+    "mermaid": "11.15.0",
     "react": "catalog:",
     "react-dom": "catalog:",
     "react-i18next": "catalog:"
   },
   "devDependencies": {
     "@edifice.io/config": "workspace:*",
+    "remark-gfm": "4.0.1",
     "vite": "catalog:"
   }
 }
