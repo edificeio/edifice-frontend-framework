@@ -178,6 +178,62 @@ export const Base: Story = {
   },
 };
 
+export const VirtualizedLargeList: Story = {
+  render: () => {
+    // ~6 800 rows, similar to the production JSON that froze the UI.
+    const largeData: IRow[] = Array.from({ length: 6800 }, (_, index) => ({
+      ...data[index % data.length],
+      id: `row-${index}`,
+      name: `${data[index % data.length].name} #${index + 1}`,
+    }));
+
+    return (
+      <Table<IRow>
+        maxHeight="500px"
+        items={largeData}
+        getRowKey={(item) => item.id}
+        header={
+          <Table.Thead>
+            <Table.Tr>
+              {['#', 'Nom de la ressource', 'Création', 'Rôle'].map(
+                (theadItem) => (
+                  <Table.Th key={theadItem}>{theadItem}</Table.Th>
+                ),
+              )}
+            </Table.Tr>
+          </Table.Thead>
+        }
+        renderRow={(item, index) => (
+          <>
+            <Table.Td>{index + 1}</Table.Td>
+            <Table.Td>
+              <div className="d-flex gap-8 align-items-center">
+                <IconChecklist width={20} height={20} />
+                <div>{item.name}</div>
+              </div>
+            </Table.Td>
+            <Table.Td>
+              {new Date(item.createdAt * 1000).toLocaleDateString()}
+            </Table.Td>
+            <Table.Td className="fst-italic text-gray-700">
+              {item.currentRole}
+            </Table.Td>
+          </>
+        )}
+      />
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Data-driven, opt-in virtualization (Approach A): pass `items` + `renderRow`. Above `virtualizeThreshold` (and with `maxHeight` set), only the visible rows (+ overscan) are mounted, keeping the DOM node count constant whatever the volume. Scroll stays smooth on ~6 800 rows.',
+      },
+    },
+  },
+};
+
 export const TableWithRowSelection: Story = {
   render: (args) => {
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
