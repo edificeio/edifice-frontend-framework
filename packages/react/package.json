@@ -100,6 +100,7 @@
     "@popperjs/core": "2.11.8",
     "@screeb/sdk-browser": "0.5.0",
     "@screeb/sdk-react": "0.6.0",
+    "@tanstack/react-virtual": "catalog:",
     "@tiptap/core": "2.11.0",
     "@tiptap/extension-blockquote": "2.11.0",
     "@tiptap/extension-bullet-list": "2.11.0",
