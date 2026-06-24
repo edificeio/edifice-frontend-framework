@@ -248,7 +248,7 @@ i18n.use(initReactI18next).init({
         //----------------- CommunityCard -----------------
         'homepage.widget.community-card.title': 'Communautés',
         'homepage.widget.community-card.actionLabel': 'Créer une communauté',
-        'homepage.communityCard.descrition':
+        'homepage.communityCard.description':
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
         'homepage.communityCard.subtitle':
           'Créez votre première communauté pour animez votre classe!',

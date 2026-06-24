@@ -1,4 +1,5 @@
 import illuCommunities from '@edifice.io/bootstrap/dist/images/homepage/illu-communities.svg';
+import { MouseEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
@@ -8,9 +9,13 @@ import CommunityCardItem, { CommunityCardItemProps } from './CommunityCardItem';
 
 export interface CommunityCardProps {
   communitiesList?: CommunityCardItemProps[];
+  onActionClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const CommunityCard = ({ communitiesList = [] }: CommunityCardProps) => {
+const CommunityCard = ({
+  communitiesList = [],
+  onActionClick,
+}: CommunityCardProps) => {
   const { t } = useTranslation();
 
   return (
@@ -18,7 +23,7 @@ const CommunityCard = ({ communitiesList = [] }: CommunityCardProps) => {
       <HomeCard.Header
         actionLabel={t('homepage.widget.community-card.actionLabel')}
         actionRightIcon={<IconArrowRight />}
-        onActionClick={() => {}}
+        onActionClick={onActionClick}
         title={t('homepage.widget.community-card.title')}
       />
       <HomeCard.Content>
@@ -37,19 +42,20 @@ const CommunityCard = ({ communitiesList = [] }: CommunityCardProps) => {
             <div className="community-card-empty">
               <Image
                 src={illuCommunities}
-                alt="No communities available"
+                alt=""
+                aria-hidden="true"
                 style={{ width: 80, height: 80 }}
               />
               <div className="community-card-empty-content">
                 <p className="community-card-empty-title">
                   {t(
                     'homepage.communityCard.subtitle',
-                    'Créez votre première communauté pour animez votre classe!',
+                    'Créez votre première communauté pour animer votre classe !',
                   )}
                 </p>
                 <p className="community-card-empty-description">
                   {t(
-                    'homepage.communityCard.descrition',
+                    'homepage.communityCard.description',
                     'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
                   )}
                 </p>
