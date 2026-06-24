@@ -12,6 +12,16 @@
         height: 100%;
       }
 
+      // Dynamic padding scaled on the actual icon size (in px), exposed by the
+      // component through the `--app-icon-size` CSS variable. This is the
+      // default applied to any size, including custom ones and the `32` size
+      // that previously had no padding class. The clamp keeps it within the
+      // historical min/max paddings (0.4rem -> 3.2rem).
+
+      padding: clamp(0.4rem, calc(var(--app-icon-size, 24px) * 0.2), 3.2rem);
+
+      // Predefined sizes keep their exact historical padding for strict visual
+      // backward compatibility (these classes win by specificity).
       &.icon-xs {
         padding: $spacer-4;
       }
