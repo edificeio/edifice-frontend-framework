@@ -24,11 +24,11 @@
 
   &.badge-profile {
     &-student {
-      color: var(--primitive-orange-400);
+      color: var(--primitive-orange-700);
     }
 
     &-teacher {
-      color: var(--primitive-green-500);
+      color: var(--primitive-green-700);
     }
 
     &-relative {
@@ -36,11 +36,11 @@
     }
 
     &-personnel {
-      color: var(--primitive-pink-900);
+      color: var(--primitive-pink-700);
     }
 
     &-guest {
-      color: var(--primitive-pink-700);
+      color: var(--primitive-yellow-700);
     }
   }
 
@@ -50,7 +50,7 @@
 
   &.badge-link {
     a {
-      color: var(--primitive-info-500);
+      color: var(--primitive-info-700);
       font-size: 1.6rem;
       font-weight: 400;
       text-decoration: underline;
