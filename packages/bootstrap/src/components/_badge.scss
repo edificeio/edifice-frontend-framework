@@ -1,14 +1,21 @@
-@use '../abstracts/' as *;
-@use '../vendors/bootstrap';
-
 .badge {
-  --badge-border-color: #{$gray-400};
-  --badge-font-size: 1.4rem;
   --badge-padding-x: 1.2rem;
-  --badge-padding-y: 0.4rem;
-  --badge-color: inherit;
 
-  border: 1px solid var(--badge-border-color);
+  display: inline-block;
+  padding: 0.4rem var(--badge-padding-x);
+  font-size: var(--primitive-font-size-small);
+  font-weight: var(--primitive-font-weight-bold);
+  line-height: 1;
+  color: inherit;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border: 1px solid var(--primitive-grey-300);
+  border-radius: var(--primitive-border-radius-md);
+
+  &:empty {
+    display: none;
+  }
 
   &:not(.badge-notification) {
     height: 3rem;
@@ -17,23 +24,23 @@
 
   &.badge-profile {
     &-student {
-      color: var(--badge-orange);
+      color: var(--primitive-orange-400);
     }
 
     &-teacher {
-      color: var(--badge-green);
+      color: var(--primitive-green-500);
     }
 
     &-relative {
-      color: var(--badge-blue);
+      color: var(--primitive-blue-500);
     }
 
     &-personnel {
-      color: var(--badge-purple);
+      color: var(--primitive-pink-900);
     }
 
     &-guest {
-      color: var(--badge-pink);
+      color: var(--primitive-pink-700);
     }
   }
 
@@ -43,7 +50,7 @@
 
   &.badge-link {
     a {
-      color: var(--badge-info);
+      color: var(--primitive-info-500);
       font-size: 1.6rem;
       font-weight: 400;
       text-decoration: underline;
