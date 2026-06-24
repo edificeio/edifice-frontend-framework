@@ -6,25 +6,25 @@ import {
   userNotificationCollaborativeWall,
 } from '@edifice.io/config';
 import { render } from '~/setup';
-import Notification from '../Notification';
+import NotificationItem from './NotificationItem';
 
-describe('Notification', () => {
+describe('Notification Item', () => {
   it.each([
     ['collaborative wall', userNotificationCollaborativeWall],
     ['message (MESSAGERIE)', messageNotification],
   ] as [string, NotificationModel][])(
-    'renders a notification of type user with an avatar for %s',
+    'renders a notification item of type user with an avatar for %s',
     (_label, notification) => {
       const { container } = render(
-        <Notification notification={notification} />,
+        <NotificationItem notification={notification} />,
       );
 
       // User notifications (with a `sender`) show the sender's avatar.
       expect(
-        container.querySelector('.notification-avatar'),
+        container.querySelector('.notification-item-avatar'),
       ).toBeInTheDocument();
       expect(
-        container.querySelector('.notification-app-icon'),
+        container.querySelector('.notification-item-app-icon'),
       ).not.toBeInTheDocument();
     },
   );
@@ -33,18 +33,18 @@ describe('Notification', () => {
     ['support', supportNotification],
     ['collaborative editor', systemNotificationCollaborativeEditor],
   ] as [string, NotificationModel][])(
-    'renders a notification of type system with an app icon for %s',
+    'renders a notification item of type system with an app icon for %s',
     (_label, notification) => {
       const { container } = render(
-        <Notification notification={notification} />,
+        <NotificationItem notification={notification} />,
       );
 
       // System notifications (no `sender`) show the originating app icon.
       expect(
-        container.querySelector('.notification-app-icon'),
+        container.querySelector('.notification-item-app-icon'),
       ).toBeInTheDocument();
       expect(
-        container.querySelector('.notification-avatar'),
+        container.querySelector('.notification-item-avatar'),
       ).not.toBeInTheDocument();
     },
   );

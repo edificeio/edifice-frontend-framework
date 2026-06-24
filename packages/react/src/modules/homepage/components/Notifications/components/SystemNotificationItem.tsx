@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { AppIcon } from '../../../../..';
+import CommonNotificationItem from './CommonNotificationItem';
 import type { SystemWebNotification } from './notificationAdapter';
-import NotificationItem from './NotificationItem';
 
-export type SystemNotificationProps = {
+export type SystemNotificationItemProps = {
   notification: SystemWebNotification;
 };
 
@@ -13,13 +13,15 @@ export type SystemNotificationProps = {
  * Wraps `NotificationItem` — prefer using `Notification` at the top level
  * rather than this component directly.
  */
-const SystemNotification = ({ notification }: SystemNotificationProps) => {
+const SystemNotificationItem = ({
+  notification,
+}: SystemNotificationItemProps) => {
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
   const appName = t(params.appCode);
 
   return (
-    <NotificationItem
+    <CommonNotificationItem
       uri={uri}
       message={message}
       date={date}
@@ -27,14 +29,14 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
         <a
           href={uri}
           title={appName}
-          data-testid="notification-app-icon"
+          data-testid="notification-item-app-icon"
           aria-label={t('homepage.notifications.app-icon.placeholder')}
         >
           <AppIcon
             app={params.appCode}
             size="24"
             variant="square"
-            className="notification-app-icon"
+            className="notification-item-app-icon"
           />
         </a>
       }
@@ -42,6 +44,6 @@ const SystemNotification = ({ notification }: SystemNotificationProps) => {
   );
 };
 
-SystemNotification.displayName = 'SystemNotification';
+SystemNotificationItem.displayName = 'SystemNotificationItem';
 
-export default SystemNotification;
+export default SystemNotificationItem;

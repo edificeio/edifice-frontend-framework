@@ -1,10 +1,10 @@
-import { Avatar, useDirectory } from '../../../../..';
 import { useTranslation } from 'react-i18next';
+import { Avatar, useDirectory } from '../../../../..';
+import CommonNotificationItem from './CommonNotificationItem';
 import type { UserWebNotification } from './notificationAdapter';
-import NotificationItem from './NotificationItem';
-import NotificationResource from './NotificationResource';
+import NotificationItemResource from './NotificationItemResource';
 
-export type UserNotificationProps = {
+export type UserNotificationItemProps = {
   notification: UserWebNotification;
 };
 
@@ -14,13 +14,13 @@ export type UserNotificationProps = {
  * The avatar and its link are resolved via `useDirectory`. Wraps `NotificationItem`
  * — prefer using `Notification` at the top level rather than this component directly.
  */
-const UserNotification = ({ notification }: UserNotificationProps) => {
+const UserNotificationItem = ({ notification }: UserNotificationItemProps) => {
   const { getAvatarURL, getUserbookURL } = useDirectory();
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
   const userName = t(params.username);
   return (
-    <NotificationItem
+    <CommonNotificationItem
       uri={uri}
       message={message}
       date={date}
@@ -28,23 +28,23 @@ const UserNotification = ({ notification }: UserNotificationProps) => {
         <a
           href={getUserbookURL(params.userId, 'user')}
           title={userName}
-          data-testid="notification-avatar"
+          data-testid="notification-item-avatar"
         >
           <Avatar
             aria-label={t('homepage.notifications.avatar.placeholder')}
             src={getAvatarURL(params.userId, 'user')}
             alt={userName}
             variant="circle"
-            className="notification-avatar"
+            className="notification-item-avatar"
           />
         </a>
       }
     >
-      <NotificationResource appCode={params.appCode} />
-    </NotificationItem>
+      <NotificationItemResource appCode={params.appCode} />
+    </CommonNotificationItem>
   );
 };
 
-UserNotification.displayName = 'UserNotification';
+UserNotificationItem.displayName = 'UserNotificationItem';
 
-export default UserNotification;
+export default UserNotificationItem;

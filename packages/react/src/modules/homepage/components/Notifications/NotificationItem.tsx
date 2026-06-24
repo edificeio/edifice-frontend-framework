@@ -1,6 +1,6 @@
 import { NotificationModel } from '@edifice.io/client';
-import SystemNotification from './components/SystemNotification';
-import UserNotification from './components/UserNotification';
+import SystemNotificationItem from './components/SystemNotificationItem';
+import UserNotificationItem from './components/UserNotificationItem';
 import { notificationAdapter } from './components/notificationAdapter';
 
 export type {
@@ -21,18 +21,20 @@ export type NotificationProps = {
  * - **system** — triggered by an application event; shows the app icon.
  *
  * @example
- * <Notification notification={notificationModel} />
+ * <NotificationItem notification={notificationModel} />
  */
-const Notification = ({ notification }: NotificationProps) => {
+const NotificationItem = ({ notification }: NotificationProps) => {
   const notif = notificationAdapter(notification);
   return (
     <>
-      {notif.type === 'user' && <UserNotification notification={notif} />}
-      {notif.type === 'system' && <SystemNotification notification={notif} />}
+      {notif.type === 'user' && <UserNotificationItem notification={notif} />}
+      {notif.type === 'system' && (
+        <SystemNotificationItem notification={notif} />
+      )}
     </>
   );
 };
 
-Notification.displayName = 'Notification';
+NotificationItem.displayName = 'NotificationItem';
 
-export default Notification;
+export default NotificationItem;

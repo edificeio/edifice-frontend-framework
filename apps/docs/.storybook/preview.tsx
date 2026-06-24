@@ -10,6 +10,7 @@ import {
 
 import React from 'react';
 import i18n from '../i18n';
+import { customViewports } from './viewports';
 
 import {
   actualitesHandlers,
@@ -63,6 +64,11 @@ const preview: Preview = {
   },
   parameters: {
     viewMode: 'docs',
+    // Register the Edifice custom viewports so stories can select them via
+    // `globals.viewport.value` (Storybook 9+ API).
+    viewport: {
+      options: customViewports,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
