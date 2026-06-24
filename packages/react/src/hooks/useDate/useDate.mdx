@@ -4,28 +4,64 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # useDate
 
-The `useDate` hook is used to compute user-friendly dates from various formats.
+The `useDate` hook computes user-friendly, localized dates from various input
+formats. It exposes one method per format of the Edifice date format spec, plus
+conversion helpers.
+
+All formatting methods accept a `CoreDate` (`IsoDate | MongoDate | NumberDate | Date`)
+and are localized through the current language of the Edifice client. Wordings
+and patterns come from i18n keys (`date.*`), so no label is hardcoded.
 
 ## Usage
 
 ```typescript
 import useDate from './useDate';
 
-const { fromNow, formatDate } = useDate();
+const { formatRelativeDateTime, formatRawDate, toMongoDate } = useDate();
 
 const date = '2021-03-24T16:36:05.398';
 
 return (
   <div>
-    <p>From Now: {fromNow(date)}</p>
-    <p>Formatted Date: {formatDate(date, 'long')}</p>
+    <p>Friendly: {formatRelativeDateTime(date)}</p>
+    <p>Raw: {formatRawDate(date)}</p>
   </div>
 );
 ```
 
-## Return Value
+## Formatting methods
 
-The hook returns an object with the following properties:
+| Method                              | Spec format                              | Example (fr)                                   |
+| ----------------------------------- | ---------------------------------------- | ---------------------------------------------- |
+| `formatRelativeDateTime(date)`      | Friendly — with time                     | `hier à 16h22`, `le 21 septembre à 16h22`      |
+| `formatRelativeDate(date)`          | Friendly — without time                  | `il y a 38 minutes`, `hier`, `21 sept.`        |
+| `formatLongDateTime(date)`          | Simple & textual — with time             | `23 juillet 2021 à 17:46`                      |
+| `formatLongDate(date)`              | Simple & textual — without time          | `23 juillet 2021`                              |
+| `formatRawDate(date)`               | Raw — without time                       | `28/02/2025`                                   |
+| `formatRawDateTime(date)`           | Raw — with time                          | `18/11/2019 15:36`                             |
+| `formatCalendarDate(date, variant)` | Calendar (`'full' \| 'short' \| 'abbr'`) | `vendredi 16 avril`, `12 janv.`, `16/04`       |
+| `formatWeek(date)`                  | Week                                     | `Cette semaine`, `Semaine du 17 au 23 janvier` |
 
-- `fromNow`: A function that computes a user-friendly elapsed duration between now and a given date.
-- `formatDate`: A function that formats a given date into a specified format.
+The friendly formats use a relative wording for recent dates (a few hours, past
+or future) and a day-based wording beyond that. The calendar format always shows
+yesterday/today/tomorrow as words.
+
+## Conversion helpers
+
+| Method              | Returns                                     |
+| ------------------- | ------------------------------------------- |
+| `toJsDate(date)`    | a native `Date` (or `undefined`)            |
+| `toTimestamp(date)` | milliseconds since epoch (or `undefined`)   |
+| `toIsoDate(date)`   | an ISO 8601 string (or `undefined`)         |
+| `toMongoDate(date)` | a `{ $date: <ms> }` object (or `undefined`) |
+
+## Comparison helpers
+
+`dateIsSame(a, b, unit?)`, `dateIsSameOrAfter(a, b, unit?)`, `dateIsToday(date)`.
+
+## Deprecated
+
+`fromNow` → use `formatRelativeDateTime`. `formatTimeAgo` → use
+`formatRelativeDate`. `formatDate('long' | 'short' | 'abbr')` → use
+`formatLongDate` / `formatRawDate` / `formatCalendarDate`. These remain available
+but will be removed in a future release.
