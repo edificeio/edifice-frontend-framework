@@ -1,7 +1,7 @@
 import { act, renderHook } from '~/setup';
 import { create } from 'zustand';
 
-import { createSelectors } from './createSelectors';
+import { createSelectors } from './create-selectors';
 
 interface BearState {
   bears: number;

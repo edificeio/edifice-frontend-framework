@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { createSelectors } from '../../../utilities/create-selectors/createSelectors';
+import { createSelectors } from '../../../utilities/create-selectors';
 
 interface OverlayState {
   overlayOpen: boolean;

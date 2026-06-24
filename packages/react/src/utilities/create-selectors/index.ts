@@ -1,1 +1,1 @@
-export * from './createSelectors';
+export * from './create-selectors';
