@@ -25,7 +25,7 @@ const NotificationItemResource = ({
   return (
     <div className={`notification-item-resource ${appCssClass} bg-app-light`}>
       <span className="notification-item-resource-icon">
-        <AppIcon app={appCode} size="24" iconFit="contain" />
+        <AppIcon app={appCode} size="20" iconFit="contain" />
       </span>
       <span className="notification-item-resource-name color-app">
         {appLabel}

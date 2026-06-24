@@ -35,17 +35,6 @@
     padding: var(--primitive-spacer-2);
     border-radius: var(--primitive-border-radius-pill);
     flex-shrink: 0;
-
-    // TODO: remove this override when the app icon component supports size 16x16
-    .app-icon {
-      width: 2rem !important;
-      height: 2rem !important;
-
-      svg {
-        width: 2rem;
-        height: 2rem;
-      }
-    }
   }
 
   &-resource-name {
