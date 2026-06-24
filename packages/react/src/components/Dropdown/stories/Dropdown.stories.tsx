@@ -33,6 +33,61 @@ const meta: Meta<typeof Dropdown> = {
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
+export const VirtualizedLargeList: Story = {
+  render: () => {
+    const allItems = Array.from({ length: 5000 }, (_, index) => ({
+      id: String(index),
+      label: `Option ${index + 1}`,
+    }));
+
+    const [query, setQuery] = useState('');
+    const [selected, setSelected] = useState<string | null>(null);
+
+    const filtered = query
+      ? allItems.filter((item) =>
+          item.label.toLowerCase().includes(query.toLowerCase()),
+        )
+      : allItems;
+
+    return (
+      <div className="d-flex flex-column gap-8" style={{ width: 320 }}>
+        <input
+          className="form-control"
+          placeholder="Filter the 5 000 options…"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        <Dropdown block>
+          <Dropdown.Trigger
+            label={selected ? `Selected: ${selected}` : 'Open 5 000 options'}
+          />
+          <Dropdown.VirtualizedMenu
+            block
+            items={filtered}
+            aria-label="Options"
+            getItemKey={(item) => item.id}
+            onSelect={(item) => setSelected(item.label)}
+            renderItem={(item, { active }) => (
+              <div className={`dropdown-item ${active ? 'focus' : ''}`}>
+                {item.label}
+              </div>
+            )}
+          />
+        </Dropdown>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Data-driven, opt-in virtualization for very long lists: pass `items` + `renderItem` to `Dropdown.VirtualizedMenu`. Only the visible options (+ overscan) are mounted, keeping the DOM constant on 5 000+ options. Keyboard navigation (arrows, Home/End, Enter) stays functional and scrolls to the active option; the filtered list stays virtualized.',
+      },
+    },
+  },
+};
+
 export const Base: Story = {
   render: (args) => {
     return (
