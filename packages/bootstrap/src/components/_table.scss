@@ -35,3 +35,22 @@
     background-color: $white;
   }
 }
+
+// Virtualized tables insert top/bottom spacer rows, which would shift the
+// :nth-of-type zebra striping. Drive striping from the real item index
+// (data-parity) instead, and neutralize the spacer rows.
+.table--virtualized {
+  tbody > tr[data-parity='even'] > * {
+    background-color: var(--#{$prefix}gray-200);
+  }
+
+  tbody > tr[data-parity='odd'] > * {
+    background-color: $white;
+  }
+
+  tbody > tr[data-virtual-spacer] > * {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+}
