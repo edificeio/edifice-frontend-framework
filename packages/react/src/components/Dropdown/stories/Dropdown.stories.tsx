@@ -10,6 +10,7 @@ import {
   IconPrint,
 } from '../../../modules/icons/components';
 import IconButton, { IconButtonProps } from '../../Button/IconButton';
+import { Checkbox } from '../../Checkbox';
 import { ColorPicker, DefaultPalette } from '../../ColorPicker';
 import Dropdown from '../Dropdown';
 
@@ -561,6 +562,66 @@ Arrow Up/Down move the active option, Home/End jump to the ends, Enter selects, 
 - \`block\`: makes the panel take the full trigger width; \`unstyled\` drops the default panel styling.
 
 The example below is a single-select over ~6 800 options with integrated search.`,
+      },
+    },
+  },
+};
+
+export const VirtualizedMultiSelect: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<Set<string>>(
+      () => new Set(cities.map((city) => city.id)),
+    );
+
+    const toggle = (id: string) =>
+      setSelected((current) => {
+        const next = new Set(current);
+        next.has(id) ? next.delete(id) : next.add(id);
+        return next;
+      });
+
+    return (
+      <div style={{ width: 360 }}>
+        <Dropdown block>
+          <Dropdown.Trigger label={`Établissements (${selected.size})`} />
+          <Dropdown.VirtualizedMenu<CityOption>
+            block
+            searchable
+            closeOnSelect={false}
+            items={cities}
+            aria-label="Établissements"
+            getItemKey={(item) => item.id}
+            getItemText={(item) => item.name}
+            searchPlaceholder="Rechercher un établissement…"
+            onSelect={(item) => toggle(item.id)}
+            renderItem={(item, { active }) => (
+              <div
+                className={`dropdown-item d-flex align-items-center justify-content-between gap-8 ${
+                  active ? 'focus' : ''
+                }`}
+              >
+                <span className="text-truncate">{item.name}</span>
+                <Checkbox checked={selected.has(item.id)} onChange={() => {}} />
+              </div>
+            )}
+          />
+        </Dropdown>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story: `Multi-select with checkboxes (e.g. an establishments filter).
+
+### How selection works here
+
+\`VirtualizedMenu\` does **not** own the selection — you do. Keep a \`Set\` (or array) of selected ids in your component; \`onSelect(item)\` toggles it, \`renderItem\` reads it to show each \`Checkbox\` checked or not, and \`closeOnSelect={false}\` keeps the panel open so several options can be ticked in a row. You then exploit that set directly: count it for the trigger label (\`Établissements (\${selected.size})\`), use it to filter your data, or send it on submit.
+
+### Why not \`Dropdown.CheckboxItem\`?
+
+\`Dropdown.CheckboxItem\` belongs to the regular \`Dropdown.Menu\`: it registers each item in the dropdown's ref map for roving DOM focus and reads the menu's own search/selection context. That model is incompatible with windowing, where options mount and unmount as you scroll — the focus map would churn and fight the virtualized navigation. So in a virtualized menu the option is plain \`renderItem\` content and the checkbox is **presentational** (controlled \`checked\`, the row click drives the toggle), which is why selection lives in your state rather than in a compound item.`,
       },
     },
   },
