@@ -116,4 +116,77 @@ describe('Dropdown.VirtualizedMenu', () => {
     });
     expect(container.querySelector('[role="listbox"]')).toBeNull();
   });
+
+  describe('searchable (integrated search)', () => {
+    const renderSearchable = () =>
+      render(
+        <Dropdown>
+          <Dropdown.Trigger label="Open" />
+          <Dropdown.VirtualizedMenu
+            searchable
+            items={makeItems(100)}
+            aria-label="Options"
+            getItemKey={(item) => item.id}
+            getItemText={(item) => item.label}
+            noResultsLabel="No result"
+            renderItem={(item, { active }) => (
+              <div className={active ? 'focus' : ''}>{item.label}</div>
+            )}
+          />
+        </Dropdown>,
+      );
+
+    it('renders a combobox driving the listbox', () => {
+      const { container, getByText } = renderSearchable();
+      open(getByText);
+
+      const combobox = container.querySelector('[role="combobox"]');
+      const listbox = container.querySelector('[role="listbox"]');
+      expect(combobox).not.toBeNull();
+      expect(listbox).not.toBeNull();
+      expect(combobox?.getAttribute('aria-controls')).toBe(
+        listbox?.getAttribute('id'),
+      );
+      // Active descendant is carried by the combobox (focus stays there).
+      expect(combobox?.getAttribute('aria-activedescendant')).toMatch(
+        /-option-0$/,
+      );
+      expect(listbox?.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    it('filters the options and shows the no-result message', () => {
+      const { container, getByText, queryByText } = renderSearchable();
+      open(getByText);
+
+      const combobox = container.querySelector('[role="combobox"]')!;
+      fireEvent.change(combobox, { target: { value: 'nope-xyz' } });
+
+      expect(queryByText('No result')).not.toBeNull();
+      expect(combobox.getAttribute('aria-activedescendant')).toBeNull();
+    });
+
+    it('keeps a matching query without the no-result message', () => {
+      const { container, getByText, queryByText } = renderSearchable();
+      open(getByText);
+
+      const combobox = container.querySelector('[role="combobox"]')!;
+      fireEvent.change(combobox, { target: { value: 'Option 1' } });
+
+      expect(queryByText('No result')).toBeNull();
+      expect(combobox.getAttribute('aria-activedescendant')).toMatch(
+        /-option-0$/,
+      );
+    });
+
+    it('moves the active option from the search field', () => {
+      const { container, getByText } = renderSearchable();
+      open(getByText);
+
+      const combobox = container.querySelector('[role="combobox"]')!;
+      fireEvent.keyDown(combobox, { key: 'ArrowDown' });
+      expect(combobox.getAttribute('aria-activedescendant')).toMatch(
+        /-option-1$/,
+      );
+    });
+  });
 });
