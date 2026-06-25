@@ -33,61 +33,6 @@ const meta: Meta<typeof Dropdown> = {
 export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
-export const VirtualizedLargeList: Story = {
-  render: () => {
-    const allItems = Array.from({ length: 5000 }, (_, index) => ({
-      id: String(index),
-      label: `Option ${index + 1}`,
-    }));
-
-    const [query, setQuery] = useState('');
-    const [selected, setSelected] = useState<string | null>(null);
-
-    const filtered = query
-      ? allItems.filter((item) =>
-          item.label.toLowerCase().includes(query.toLowerCase()),
-        )
-      : allItems;
-
-    return (
-      <div className="d-flex flex-column gap-8" style={{ width: 320 }}>
-        <input
-          className="form-control"
-          placeholder="Filter the 5 000 options…"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-        />
-        <Dropdown block>
-          <Dropdown.Trigger
-            label={selected ? `Selected: ${selected}` : 'Open 5 000 options'}
-          />
-          <Dropdown.VirtualizedMenu
-            block
-            items={filtered}
-            aria-label="Options"
-            getItemKey={(item) => item.id}
-            onSelect={(item) => setSelected(item.label)}
-            renderItem={(item, { active }) => (
-              <div className={`dropdown-item ${active ? 'focus' : ''}`}>
-                {item.label}
-              </div>
-            )}
-          />
-        </Dropdown>
-      </div>
-    );
-  },
-
-  parameters: {
-    docs: {
-      description: {
-        story:
-          'Data-driven, opt-in virtualization for very long lists: pass `items` + `renderItem` to `Dropdown.VirtualizedMenu`. Only the visible options (+ overscan) are mounted, keeping the DOM constant on 5 000+ options. Keyboard navigation (arrows, Home/End, Enter) stays functional and scrolls to the active option; the filtered list stays virtualized.',
-      },
-    },
-  },
-};
-
 export const Base: Story = {
   render: (args) => {
     return (
@@ -532,6 +477,90 @@ export const CustomMenu: Story = {
           </>
         )}
       </Dropdown>`,
+      },
+    },
+  },
+};
+
+interface CityOption {
+  id: string;
+  name: string;
+}
+
+const cities: CityOption[] = Array.from({ length: 6800 }, (_, index) => ({
+  id: String(index),
+  name: `Établissement ${String(index + 1).padStart(4, '0')}`,
+}));
+
+export const VirtualizedSearchableSelect: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<CityOption | null>(null);
+
+    return (
+      <div style={{ width: 320 }}>
+        <Dropdown block>
+          <Dropdown.Trigger
+            label={selected ? selected.name : 'Sélectionner…'}
+          />
+          <Dropdown.VirtualizedMenu<CityOption>
+            block
+            searchable
+            items={cities}
+            aria-label="Établissements"
+            getItemKey={(item) => item.id}
+            getItemText={(item) => item.name}
+            searchPlaceholder="Rechercher un établissement…"
+            onSelect={(item) => setSelected(item)}
+            renderItem={(item, { active }) => (
+              <div className={`dropdown-item ${active ? 'focus' : ''}`}>
+                {item.name}
+              </div>
+            )}
+          />
+        </Dropdown>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story: `**\`Dropdown.VirtualizedMenu\`** renders a long option list with windowing: only the visible rows (plus a small overscan) are mounted, so the DOM node count — and therefore performance — stays constant whether the list has 50 or 50 000 options.
+
+### When to use it
+
+Use it instead of \`Dropdown.Menu\` when the number of options is large enough to make a plain menu sluggish (roughly a few hundred and up: long pickers of users, schools, classes, tags…). For small, static menus keep the regular compound API (\`Dropdown.Menu\` + \`Dropdown.Item\`): it is simpler and supports rich item types (checkboxes, groups, separators).
+
+### Normal vs virtualized
+
+The switch is **not automatic** for the Dropdown: you opt in by choosing the component. \`Dropdown.Menu\` renders the children you pass; \`Dropdown.VirtualizedMenu\` is data-driven — you give it the \`items\` array and a \`renderItem\` function, and it owns the rendering so it can mount only what is visible. (The \`Table\` component, by contrast, switches to virtualization automatically past a threshold.)
+
+### Data & rendering
+
+- \`items\`: the full array of options (any shape).
+- \`renderItem(item, { index, active })\`: returns the content of one option. \`active\` is \`true\` for the option currently highlighted by keyboard or hover — use it to style the highlight (here, the \`focus\` class).
+- \`getItemKey(item, index)\`: stable React key (defaults to the index).
+- \`onSelect(item, index)\`: called when an option is chosen by click or Enter. By default the menu closes afterwards (\`closeOnSelect\`, default \`true\`).
+
+### Integrated search (combobox)
+
+- \`searchable\`: adds a search field at the top of the panel. Focus stays in the field (combobox pattern) while the arrow keys drive the list below.
+- \`getItemText(item)\`: the text each option is matched against — required for the built-in filtering.
+- \`searchPlaceholder\` / \`noResultsLabel\`: field placeholder and empty-state message.
+- \`onSearch(query)\`: notified on every query change (e.g. to fetch remotely). Without \`searchable\`, no field is shown and the whole list is browsable.
+
+### Keyboard & accessibility
+
+Arrow Up/Down move the active option, Home/End jump to the ends, Enter selects, Escape/Tab close. The active option is always scrolled into view. Roles \`listbox\`/\`option\`, \`aria-selected\` and \`aria-activedescendant\` are wired up; with \`searchable\`, the field is a \`combobox\` controlling the listbox.
+
+### Sizing & tuning
+
+- \`maxHeight\` (px): height of the scroll area (default \`320\`).
+- \`estimateItemHeight\` (px): first guess before each row is measured; rows are then measured dynamically, so variable heights are supported. A good estimate just reduces the initial scrollbar jump.
+- \`overscan\`: number of off-screen rows kept mounted on each side to smooth fast scrolling.
+- \`block\`: makes the panel take the full trigger width; \`unstyled\` drops the default panel styling.
+
+The example below is a single-select over ~6 800 options with integrated search.`,
       },
     },
   },
