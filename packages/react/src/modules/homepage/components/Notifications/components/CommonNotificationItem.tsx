@@ -20,7 +20,7 @@ export type NotificationItemProps = {
  * notification comes from a user or a system event. Use `UserNotification` or
  * `SystemNotification` instead of consuming this directly.
  */
-const NotificationItem = ({
+const CommonNotificationItem = ({
   picture,
   message,
   date,
@@ -30,17 +30,20 @@ const NotificationItem = ({
   const { formatTimeAgo, formatDate } = useDate();
 
   return (
-    <Flex direction="column" className="notification" gap="8">
+    <Flex direction="column" className="notification-item" gap="8">
       <Flex direction="row" gap="8">
-        <div className="notification-picture">{picture}</div>
-        <a href={uri} data-testid="notification-content">
+        <div className="notification-item-picture">{picture}</div>
+        <a href={uri} data-testid="notification-item-content">
           <Flex direction="column" gap="8">
             <div
-              className="notification-message"
+              className="notification-item-message"
               dangerouslySetInnerHTML={{ __html: message }}
             />
             {children}
-            <p className="notification-date" title={formatDate(date, 'LLL')}>
+            <p
+              className="notification-item-date"
+              title={formatDate(date, 'LLL')}
+            >
               {formatTimeAgo(date)}
             </p>
           </Flex>
@@ -50,6 +53,6 @@ const NotificationItem = ({
   );
 };
 
-NotificationItem.displayName = 'NotificationItem';
+CommonNotificationItem.displayName = 'CommonNotificationItem';
 
-export default NotificationItem;
+export default CommonNotificationItem;

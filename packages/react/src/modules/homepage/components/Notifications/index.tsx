@@ -1,5 +1,5 @@
-export * from './Notification';
-export { default as Notification } from './Notification';
+export * from './NotificationItem';
+export { default as NotificationItem } from './NotificationItem';
 
 export * from './NotificationList';
 export { default as NotificationList } from './NotificationList';

@@ -9,7 +9,7 @@ import {
   useInfiniteScroll,
 } from '../../../..';
 import { IconClose } from '../../../icons/components';
-import Notification from './Notification';
+import NotificationItem from './NotificationItem';
 import NotificationListSkeleton from './NotificationListSkeleton';
 import NotificationSkeleton from './NotificationSkeleton';
 
@@ -85,7 +85,7 @@ const NotificationList = ({
             <ul>
               {notifications?.map((notification, index) => (
                 <li key={'notification-list-' + notification._id + '-' + index}>
-                  <Notification notification={notification} />
+                  <NotificationItem notification={notification} />
                   <Divider className="border-grey-300 my-0" />
                 </li>
               ))}

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { http, HttpResponse } from 'msw';
 
 import Header from './Header';
 
@@ -47,10 +48,10 @@ export const Default: Story = {};
  * Shows how the header adapts to mobile viewport sizes.
  */
 export const Mobile: Story = {
+  globals: {
+    viewport: { value: 'mobile' },
+  },
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile',
-    },
     docs: {
       description: {
         story:
@@ -65,14 +66,36 @@ export const Mobile: Story = {
  * Shows the header behavior on tablet-sized screens.
  */
 export const Tablet: Story = {
+  globals: {
+    viewport: { value: 'tablet' },
+  },
   parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
-    },
     docs: {
       description: {
         story:
           'Header adapted for tablet viewports showing the intermediate responsive state.',
+      },
+    },
+  },
+};
+
+/**
+ * Header with 3 unread messages badge on the conversation icon.
+ */
+export const WithMessages: Story = {
+  parameters: {
+    msw: {
+      // Use the keyed object form so Storybook deep-merges with the global
+      // handlers instead of replacing them. An array here would drop the
+      // global `auth` handler (/auth/oauth2/userinfo), which provides the
+      // conversation workflow right that gates the messaging icon — without
+      // it the icon (and thus the badge) never renders.
+      handlers: {
+        conversation: [
+          http.get('/conversation/api/count/inbox', () =>
+            HttpResponse.json({ count: 3 }),
+          ),
+        ],
       },
     },
   },
