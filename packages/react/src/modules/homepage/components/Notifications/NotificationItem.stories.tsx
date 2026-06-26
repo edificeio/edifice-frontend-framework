@@ -1,10 +1,10 @@
 import { supportNotification, userNotificationForm } from '@edifice.io/config';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import Notification from './Notification';
+import NotificationItem from './NotificationItem';
 
 const meta = {
   title: 'Modules/Homepage/Notification',
-  component: Notification,
+  component: NotificationItem,
   parameters: {
     layout: 'centered',
   },
@@ -16,7 +16,7 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof Notification>;
+} satisfies Meta<typeof NotificationItem>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

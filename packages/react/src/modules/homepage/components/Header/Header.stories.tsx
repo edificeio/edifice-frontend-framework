@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { http, HttpResponse } from 'msw';
 
 import Header from './Header';
 
@@ -74,6 +76,34 @@ export const Tablet: Story = {
         story:
           'Header adapted for tablet viewports showing the intermediate responsive state.',
       },
+    },
+  },
+};
+
+/**
+ * Header with 3 unread messages badge on the conversation icon.
+ */
+export const WithMessages: Story = {
+  decorators: [
+    (Story) => (
+      <QueryClientProvider
+        client={
+          new QueryClient({
+            defaultOptions: { queries: { retry: false } },
+          })
+        }
+      >
+        <Story />
+      </QueryClientProvider>
+    ),
+  ],
+  parameters: {
+    msw: {
+      handlers: [
+        http.get('/conversation/api/count/inbox', () =>
+          HttpResponse.json({ count: 3 }),
+        ),
+      ],
     },
   },
 };

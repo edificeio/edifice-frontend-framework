@@ -8,11 +8,11 @@ const NotificationSkeleton = React.forwardRef<
   return (
     <Flex direction="column" className="notification" gap="8" ref={ref}>
       <Flex direction="row" gap="8">
-        <div className="notification-picture">
+        <div className="notification-item-picture">
           <Avatar
             alt="Notification Picture"
             variant="circle"
-            className="notification-avatar"
+            className="notification-item-avatar"
           />
         </div>
         <Flex direction="column" gap="8" className="notification-message">

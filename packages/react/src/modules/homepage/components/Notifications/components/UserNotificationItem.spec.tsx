@@ -4,7 +4,7 @@ import {
   notificationAdapter,
   UserWebNotification,
 } from './notificationAdapter';
-import UserNotification from './UserNotification';
+import UserNotificationItem from './UserNotificationItem';
 
 const { getUserbookURL, getAvatarURL } = vi.hoisted(() => ({
   getUserbookURL: vi.fn((userId: string) => `/userbook/${userId}`),
@@ -25,7 +25,7 @@ const notification = notificationAdapter(
 
 describe('UserNotification', () => {
   it("wraps the avatar in a link to the sender's userbook URL", () => {
-    render(<UserNotification notification={notification} />);
+    render(<UserNotificationItem notification={notification} />);
     // The link target is resolved from the directory hook with the sender's id.
     expect(getUserbookURL).toHaveBeenCalledWith(
       notification.params.userId,
@@ -33,7 +33,7 @@ describe('UserNotification', () => {
     );
 
     // Clicking the avatar navigates to that resolved userbook URL.
-    const link = screen.getByTestId('notification-avatar');
+    const link = screen.getByTestId('notification-item-avatar');
 
     expect(link).toHaveAttribute(
       'href',

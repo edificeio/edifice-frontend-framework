@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { AppIcon } from '../../../../..';
 
-export type NotificationResourceProps = {
+export type NotificationItemResourceProps = {
   appCode: string;
 };
 
@@ -12,7 +12,9 @@ export type NotificationResourceProps = {
  * falling back to the raw `appCode` if no translation exists.
  *
  */
-const NotificationResource = ({ appCode }: NotificationResourceProps) => {
+const NotificationItemResource = ({
+  appCode,
+}: NotificationItemResourceProps) => {
   const { t } = useTranslation();
 
   const appLabel = t(`${appCode}`, {
@@ -21,15 +23,17 @@ const NotificationResource = ({ appCode }: NotificationResourceProps) => {
 
   const appCssClass = `app-${appCode}`;
   return (
-    <div className={`notification-resource ${appCssClass} bg-app-light`}>
-      <span className="notification-resource-icon">
+    <div className={`notification-item-resource ${appCssClass} bg-app-light`}>
+      <span className="notification-item-resource-icon">
         <AppIcon app={appCode} size="24" iconFit="contain" />
       </span>
-      <span className="notification-resource-name color-app">{appLabel}</span>
+      <span className="notification-item-resource-name color-app">
+        {appLabel}
+      </span>
     </div>
   );
 };
 
-NotificationResource.displayName = 'NotificationResource';
+NotificationItemResource.displayName = 'NotificationItemResource';
 
-export default NotificationResource;
+export default NotificationItemResource;
