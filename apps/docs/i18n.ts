@@ -274,6 +274,11 @@ i18n.use(initReactI18next).init({
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
         //------------------------------------------------------
+        //------------------ Header navigation -----------------
+        'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
+        'portal.header.navigation.classMembers': 'La classe',
+        'portal.header.navigation.myapps': 'Mes applis',
+        //------------------------------------------------------
         //------------------ App names -------------------------
         'collaborative-wall': 'Mur collaboratif',
         'forms': 'Formulaires',
