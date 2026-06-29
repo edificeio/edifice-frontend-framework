@@ -1,8 +1,8 @@
 import { fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import { render, screen } from '~/setup';
-import CommunityCard from './CommunityCard';
-import CommunityCardItem from './CommunityCardItem';
+import CommunityCard from './Communities';
+import CommunityCardItem from './CommunityItem';
 
 describe('CommunityCard', () => {
   it('renders the header action button only when an action handler is provided', () => {

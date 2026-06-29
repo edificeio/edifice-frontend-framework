@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import CommunityCard from './CommunityCard';
+import CommunityCard from './Communities';
 
 const meta: Meta<typeof CommunityCard> = {
   title: 'Modules/Homepage/CommunityCard',

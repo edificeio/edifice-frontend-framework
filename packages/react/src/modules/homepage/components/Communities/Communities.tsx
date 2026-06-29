@@ -5,7 +5,7 @@ import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
 import { IconArrowRight } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
-import CommunityCardItem, { CommunityCardItemProps } from './CommunityCardItem';
+import CommunityCardItem, { CommunityCardItemProps } from './CommunityItem';
 
 export interface CommunityCardProps {
   communitiesList?: CommunityCardItemProps[];
