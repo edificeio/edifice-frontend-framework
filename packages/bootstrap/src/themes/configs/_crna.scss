@@ -63,7 +63,14 @@ $crna: (
       pale: $clients-crna-200,
       light: $clients-crna-300,
       default: $clients-crna-500,
-      dark: $clients-crna-700
+      dark: $clients-crna-700,
+    ),
+    profil: (
+      guest: $yellow-700,
+      personnel: $pink-700,
+      relative: $blue-700,
+      student: $orange-700,
+      teacher: $green-700,
     ),
     support: (
       danger: (

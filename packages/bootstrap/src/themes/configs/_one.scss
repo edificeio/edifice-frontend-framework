@@ -66,6 +66,13 @@ $one: (
       default: $neo-blue-500,
       dark: $neo-blue-700,
     ),
+    profil: (
+      guest: $one-red-500,
+      personnel: $one-purple-500,
+      relative: $one-blue-500,
+      student: $one-orange-500,
+      teacher: $one-green-500,
+    ),
     support: (
       danger: (
         700: $danger-700,

@@ -24,23 +24,23 @@
 
   &.badge-profile {
     &-student {
-      color: var(--primitive-orange-700);
+      color: var(--color-profil-student);
     }
 
     &-teacher {
-      color: var(--primitive-green-700);
+      color: var(--color-profil-teacher);
     }
 
     &-relative {
-      color: var(--primitive-blue-500);
+      color: var(--color-profil-relative);
     }
 
     &-personnel {
-      color: var(--primitive-pink-700);
+      color: var(--color-profil-personnel);
     }
 
     &-guest {
-      color: var(--primitive-yellow-700);
+      color: var(--color-profil-guest);
     }
   }
 
