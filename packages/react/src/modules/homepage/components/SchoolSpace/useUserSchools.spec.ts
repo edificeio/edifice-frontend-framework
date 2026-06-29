@@ -1,25 +1,23 @@
-// packages/react/src/modules/homepage/components/SchoolWidget/useUserSchools.test.tsx
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useUserSchools } from './useUserSchools';
 
 const mocks = vi.hoisted(() => ({
-  useEdificeClient: vi.fn(),
-  useWidgetPreferences: vi.fn(),
-  lookup: vi.fn(),
-  saveUserPreferences: vi.fn(),
-}));
-
-vi.mock('src/providers', () => ({
-  useEdificeClient: mocks.useEdificeClient,
-}));
-
-vi.mock('../../hooks/useWidgetPreferences', () => ({
-  default: mocks.useWidgetPreferences,
+  useSession: vi.fn(),
+  useWidget: vi.fn(),
+  savePreference: vi.fn(),
 }));
 
 vi.mock('@edifice.io/client', () => ({
-  WIDGET_NAME: { SCHOOL: 'SCHOOL' },
+  WIDGET_NAME: { SCHOOL: 'school-widget' },
+}));
+
+vi.mock('src/hooks/useSession', () => ({
+  useSession: mocks.useSession,
+}));
+
+vi.mock('../../hooks/useWidget', () => ({
+  default: mocks.useWidget,
 }));
 
 describe('useUserSchools', () => {
@@ -31,21 +29,19 @@ describe('useUserSchools', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mocks.useEdificeClient.mockReturnValue({
-      userDescription: { schools },
+    mocks.useSession.mockReturnValue({
+      data: { userDescription: { schools } },
     });
 
-    mocks.lookup.mockReturnValue(undefined);
-
-    mocks.useWidgetPreferences.mockReturnValue({
-      lookup: mocks.lookup,
-      saveUserPreferences: mocks.saveUserPreferences,
+    mocks.useWidget.mockReturnValue({
+      preference: undefined,
+      savePreference: mocks.savePreference,
     });
   });
 
   it('returns empty schools when user has no schools', () => {
-    mocks.useEdificeClient.mockReturnValue({
-      userDescription: { schools: null },
+    mocks.useSession.mockReturnValue({
+      data: { userDescription: { schools: null } },
     });
 
     const { result } = renderHook(() => useUserSchools());
@@ -55,21 +51,23 @@ describe('useUserSchools', () => {
   });
 
   it('selects preferred school when preference exists', async () => {
-    const userPref = { schoolId: 's2' };
-    mocks.lookup.mockReturnValue({ userPref });
+    mocks.useWidget.mockReturnValue({
+      preference: { schoolId: 's2' },
+      savePreference: mocks.savePreference,
+    });
 
     const { result } = renderHook(() => useUserSchools());
 
     await waitFor(() => {
       expect(result.current.selectedSchool?.id).toBe('s2');
     });
-
-    expect(mocks.lookup).toHaveBeenCalledWith('SCHOOL');
   });
 
   it('falls back to first school when preferred school is missing', async () => {
-    const userPref = { schoolId: 'missing-school' };
-    mocks.lookup.mockReturnValue({ userPref });
+    mocks.useWidget.mockReturnValue({
+      preference: { schoolId: 'missing-school' },
+      savePreference: mocks.savePreference,
+    });
 
     const { result } = renderHook(() => useUserSchools());
 
@@ -78,19 +76,19 @@ describe('useUserSchools', () => {
     });
   });
 
-  it('keeps selectedSchool undefined when no user preference exists', async () => {
-    mocks.lookup.mockReturnValue(undefined);
-
+  it('selects the first school by default when no preference exists', async () => {
     const { result } = renderHook(() => useUserSchools());
 
     await waitFor(() => {
-      expect(result.current.selectedSchool).toBeUndefined();
+      expect(result.current.selectedSchool?.id).toBe('s1');
     });
   });
 
-  it('updates selected school and saves preference on change when userPref exists', async () => {
-    const userPref = { schoolId: 's1' };
-    mocks.lookup.mockReturnValue({ userPref });
+  it('updates selected school and saves preference on change when preference exists', async () => {
+    mocks.useWidget.mockReturnValue({
+      preference: { schoolId: 's1' },
+      savePreference: mocks.savePreference,
+    });
 
     const { result } = renderHook(() => useUserSchools());
 
@@ -99,24 +97,21 @@ describe('useUserSchools', () => {
     });
 
     act(() => {
-      result.current.handleSelectedSchoolChange(schools[1] as any);
+      result.current.handleSelectedSchoolChange(schools[1]);
     });
 
     expect(result.current.selectedSchool?.id).toBe('s2');
-    expect(userPref.schoolId).toBe('s2');
-    expect(mocks.saveUserPreferences).toHaveBeenCalledTimes(1);
+    expect(mocks.savePreference).toHaveBeenCalledWith({ schoolId: 's2' });
   });
 
-  it('updates selected school but does not save when no userPref exists', () => {
-    mocks.lookup.mockReturnValue(undefined);
-
+  it('updates selected school but does not save when no preference exists', () => {
     const { result } = renderHook(() => useUserSchools());
 
     act(() => {
-      result.current.handleSelectedSchoolChange(schools[0] as any);
+      result.current.handleSelectedSchoolChange(schools[0]);
     });
 
     expect(result.current.selectedSchool?.id).toBe('s1');
-    expect(mocks.saveUserPreferences).not.toHaveBeenCalled();
+    expect(mocks.savePreference).not.toHaveBeenCalled();
   });
 });
