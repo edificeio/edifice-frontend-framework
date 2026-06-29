@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import CommunityCard from './Communities';
 
 const meta: Meta<typeof CommunityCard> = {
@@ -58,6 +58,9 @@ type Story = StoryObj<typeof CommunityCard>;
 
 export const Default: Story = {
   render: (args) => <CommunityCard {...args} />,
+  args: {
+    onActionClick: () => {},
+  },
   parameters: {
     docs: {
       description: {
@@ -69,6 +72,9 @@ export const Default: Story = {
 
 export const WithoutCommunities: Story = {
   render: () => <CommunityCard />,
+  args: {
+    onActionClick: undefined,
+  },
   parameters: {
     docs: {
       description: {
@@ -82,6 +88,7 @@ export const WithoutCommunities: Story = {
 export const WithNotifications: Story = {
   render: (args) => <CommunityCard {...args} />,
   args: {
+    onActionClick: () => {},
     communitiesList: [
       {
         title: 'TS1 Physique-Chimie',
