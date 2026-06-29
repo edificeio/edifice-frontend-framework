@@ -1,8 +1,8 @@
-@use "sass:color";
-@use "../../../../abstracts/" as *;
-@use "../../../../vendors/bootstrap";
+@use 'sass:color';
+@use '../../../../abstracts/' as *;
+@use '../../../../vendors/bootstrap';
 
-[data-product="neo"] {
+[data-product='neo'] {
   .header {
     &.no-1d {
       .collapse:not(.show) {
@@ -22,7 +22,11 @@
       --#{$prefix}navbar-padding-y: #{$navbar-padding-y};
 
       width: 100%;
-      background: linear-gradient(to bottom, $secondary, color.adjust($secondary, $lightness: -5%));
+      background: linear-gradient(
+        to bottom,
+        $secondary,
+        color.adjust($secondary, $lightness: -5%)
+      );
       box-shadow: $box-shadow;
 
       .container {
@@ -90,6 +94,9 @@
           --#{$prefix}badge-padding-y: #{$navbar-badge-padding-y};
           --#{$prefix}badge-font-size: #{$navbar-badge-font-size};
 
+          font-size: var(--#{$prefix}badge-font-size);
+          padding: var(--#{$prefix}badge-padding-y)
+            var(--#{$prefix}badge-padding-x);
           right: 0;
           top: $spacer-4;
 
@@ -188,11 +195,10 @@
       .dropdown-menu-end {
         right: 0;
       }
-
     }
 
     i.ic-help::before {
-      content: "";
+      content: '';
       display: block;
       width: 2.4rem;
       height: 2.4rem;
