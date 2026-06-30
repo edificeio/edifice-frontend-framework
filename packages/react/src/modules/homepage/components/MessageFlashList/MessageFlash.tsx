@@ -30,7 +30,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const checkContentTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   const { t } = useTranslation();
-  const { md } = useBreakpoint();
+  const { lg } = useBreakpoint();
 
   let content = '';
   if (message.contents) {
@@ -143,7 +143,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
           dangerouslySetInnerHTML={{ __html: content }}
         />
         <Flex
-          direction={md ? 'row' : 'column'}
+          direction={lg ? 'row' : 'column'}
           justify="between"
           className="message-flash-footer"
         >
