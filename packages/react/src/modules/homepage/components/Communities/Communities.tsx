@@ -24,12 +24,12 @@ const Communities = ({
       <HomeCard.Header
         actionLabel={
           communitiesList.length > 0
-            ? t('homepage.widget.community-card.actionLabel.seeMore')
-            : t('homepage.widget.community-card.actionLabel.create')
+            ? t('homepage.widget.communities.actionLabel.seeMore')
+            : t('homepage.widget.communities.actionLabel.create')
         }
         actionRightIcon={<IconArrowRight />}
         onActionClick={handleActionClick}
-        title={t('homepage.widget.community-card.title')}
+        title={t('homepage.widget.communities.title')}
       />
       <HomeCard.Content>
         <Flex gap="16">
@@ -44,23 +44,23 @@ const Communities = ({
               />
             ))
           ) : (
-            <div className="community-card-empty">
+            <div className="communities-empty">
               <Image
                 src={illuCommunities}
                 alt=""
                 aria-hidden="true"
                 style={{ width: 80, height: 80 }}
               />
-              <div className="community-card-empty-content">
-                <p className="community-card-empty-title">
+              <div className="communities-empty-content">
+                <p className="communities-empty-title">
                   {t(
-                    'homepage.communityCard.subtitle',
+                    'homepage.communities.subtitle',
                     'Créez votre première communauté pour animer votre classe !',
                   )}
                 </p>
-                <p className="community-card-empty-description">
+                <p className="communities-empty-description">
                   {t(
-                    'homepage.communityCard.description',
+                    'homepage.communities.description',
                     'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
                   )}
                 </p>

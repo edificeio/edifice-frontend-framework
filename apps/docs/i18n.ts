@@ -245,14 +245,14 @@ i18n.use(initReactI18next).init({
         'editor.preview.moreMedia': '+[[mediaCount]] images',
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
-        //----------------- CommunityCard -----------------
-        'homepage.widget.community-card.title': 'Communautés',
-        'homepage.widget.community-card.actionLabel.seeMore': 'Voir plus',
-        'homepage.widget.community-card.actionLabel.create':
+        //----------------- Communities -----------------
+        'homepage.widget.communities.title': 'Communautés',
+        'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
+        'homepage.widget.communities.actionLabel.create':
           'Créer une communauté',
-        'homepage.communityCard.description':
+        'homepage.communities.description':
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
-        'homepage.communityCard.subtitle':
+        'homepage.communities.subtitle':
           'Créez votre première communauté pour animez votre classe!',
         //------------------------------------------------------
         //----------------- LastInfosList -----------------

@@ -33,14 +33,14 @@ const CommunityItem = ({
       tabIndex={0}
       onClick={onActionClick}
       onKeyDown={handleKeyDown}
-      className={clsx('community-card-item', {
-        'community-card-item-has-notifications': hasNotifications,
+      className={clsx('communities-item', {
+        'communities-item-has-notifications': hasNotifications,
       })}
       style={{ width: '25%' }}
     >
       {hasNotifications && (
         <Badge
-          className="community-card-item-badge"
+          className="communities-item-badge"
           variant={{
             level: 'danger',
             type: 'notification',
@@ -50,12 +50,12 @@ const CommunityItem = ({
         </Badge>
       )}
       <Image
-        className="community-card-item-image"
+        className="communities-item-image"
         src={communityImage}
         alt={title}
       />
 
-      <p className="community-card-item-title text-truncate text-truncate-2">
+      <p className="communities-item-title text-truncate text-truncate-2">
         {title}
       </p>
     </div>

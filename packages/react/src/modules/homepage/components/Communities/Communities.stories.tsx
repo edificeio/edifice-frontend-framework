@@ -47,7 +47,7 @@ const meta: Meta<typeof Communities> = {
     docs: {
       description: {
         component:
-          'Ce Storybook documente le composant <code>CommunityCard</code>, utilisé pour afficher une communauté avec son image, son titre et, si besoin, un compteur de notifications.',
+          'Ce Storybook documente le composant <code>Communities</code>, utilisé pour afficher une communauté avec son image, son titre et, si besoin, un compteur de notifications.',
       },
     },
   },
