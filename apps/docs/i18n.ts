@@ -247,7 +247,9 @@ i18n.use(initReactI18next).init({
         'mediaWrapper.attachment.download': 'Download',
         //----------------- CommunityCard -----------------
         'homepage.widget.community-card.title': 'Communautés',
-        'homepage.widget.community-card.actionLabel': 'Créer une communauté',
+        'homepage.widget.community-card.actionLabel.seeMore': 'Voir plus',
+        'homepage.widget.community-card.actionLabel.create':
+          'Créer une communauté',
         'homepage.communityCard.description':
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
         'homepage.communityCard.subtitle':

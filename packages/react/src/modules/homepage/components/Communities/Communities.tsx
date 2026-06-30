@@ -5,32 +5,37 @@ import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
 import { IconArrowRight } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
-import CommunityCardItem, { CommunityCardItemProps } from './CommunityItem';
+import CommunityItem, { CommunityItemProps } from './CommunityItem';
 
-export interface CommunityCardProps {
-  communitiesList?: CommunityCardItemProps[];
+export interface CommunitiesProps {
+  communitiesList?: CommunityItemProps[];
   onActionClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
-const CommunityCard = ({
+const Communities = ({
   communitiesList = [],
   onActionClick,
-}: CommunityCardProps) => {
+}: CommunitiesProps) => {
   const { t } = useTranslation();
+  const handleActionClick = onActionClick ?? (() => undefined);
 
   return (
     <HomeCard variant="primary">
       <HomeCard.Header
-        actionLabel={t('homepage.widget.community-card.actionLabel')}
+        actionLabel={
+          communitiesList.length > 0
+            ? t('homepage.widget.community-card.actionLabel.seeMore')
+            : t('homepage.widget.community-card.actionLabel.create')
+        }
         actionRightIcon={<IconArrowRight />}
-        onActionClick={onActionClick}
+        onActionClick={handleActionClick}
         title={t('homepage.widget.community-card.title')}
       />
       <HomeCard.Content>
         <Flex gap="16">
           {communitiesList.length > 0 ? (
             communitiesList.map((community, index) => (
-              <CommunityCardItem
+              <CommunityItem
                 key={index}
                 title={community.title}
                 communityImage={community.communityImage}
@@ -68,6 +73,6 @@ const CommunityCard = ({
   );
 };
 
-CommunityCard.displayName = 'CommunityCard';
+Communities.displayName = 'Communities';
 
-export default CommunityCard;
+export default Communities;

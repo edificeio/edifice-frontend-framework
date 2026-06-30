@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '~/setup';
-import { CommunityCardContainer } from './CommunitiesContainer';
+import { CommunitiesContainer } from './CommunitiesContainer';
 import { useCommunities } from './useCommunities';
 
 vi.mock('./useCommunities', () => ({
   useCommunities: vi.fn(),
 }));
 
-describe('CommunityCardContainer', () => {
+describe('CommunitiesContainer', () => {
   beforeEach(() => {
     vi.mocked(useCommunities).mockReset();
   });
@@ -26,7 +26,7 @@ describe('CommunityCardContainer', () => {
       error: null,
     });
 
-    render(<CommunityCardContainer />);
+    render(<CommunitiesContainer />);
 
     expect(screen.getByText('My community')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();

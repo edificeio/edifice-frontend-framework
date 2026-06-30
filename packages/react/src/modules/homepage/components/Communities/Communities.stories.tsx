@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import CommunityCard from './Communities';
+import Communities from './Communities';
 
-const meta: Meta<typeof CommunityCard> = {
-  title: 'Modules/Homepage/CommunityCard',
-  component: CommunityCard,
+const meta: Meta<typeof Communities> = {
+  title: 'Modules/Homepage/Communities',
+  component: Communities,
   args: {
     communitiesList: [
       {
@@ -54,10 +54,10 @@ const meta: Meta<typeof CommunityCard> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof CommunityCard>;
+type Story = StoryObj<typeof Communities>;
 
 export const Default: Story = {
-  render: (args) => <CommunityCard {...args} />,
+  render: (args) => <Communities {...args} />,
   args: {
     onActionClick: () => {},
   },
@@ -71,7 +71,7 @@ export const Default: Story = {
 };
 
 export const WithoutCommunities: Story = {
-  render: () => <CommunityCard />,
+  render: () => <Communities />,
   args: {
     onActionClick: undefined,
   },
@@ -86,7 +86,7 @@ export const WithoutCommunities: Story = {
 };
 
 export const WithNotifications: Story = {
-  render: (args) => <CommunityCard {...args} />,
+  render: (args) => <Communities {...args} />,
   args: {
     onActionClick: () => {},
     communitiesList: [

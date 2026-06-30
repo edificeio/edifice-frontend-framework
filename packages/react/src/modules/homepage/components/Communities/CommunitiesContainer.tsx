@@ -1,8 +1,8 @@
 import { TextSkeleton } from '../../../../components';
-import CommunityCard, { CommunityCardProps } from './Communities';
+import Communities, { CommunitiesProps } from './Communities';
 import { useCommunities } from './useCommunities';
 
-export function CommunityCardContainer() {
+export function CommunitiesContainer() {
   const { communities, isLoading, error } = useCommunities();
 
   if (isLoading) {
@@ -19,7 +19,7 @@ export function CommunityCardContainer() {
     return error.message;
   }
 
-  const mappedCommunities: NonNullable<CommunityCardProps['communitiesList']> =
+  const mappedCommunities: NonNullable<CommunitiesProps['communitiesList']> =
     communities.map((community) => ({
       title: community.title,
       communityImage: community.communityImage ?? community.icon ?? '',
@@ -27,7 +27,7 @@ export function CommunityCardContainer() {
       onActionClick: () => undefined,
     }));
 
-  return <CommunityCard communitiesList={mappedCommunities} />;
+  return <Communities communitiesList={mappedCommunities} />;
 }
 
-CommunityCardContainer.displayName = 'CommunityCardContainer';
+CommunitiesContainer.displayName = 'CommunitiesContainer';

@@ -3,19 +3,19 @@ import { KeyboardEvent, MouseEventHandler } from 'react';
 import { Badge } from '../../../../components/Badge/index';
 import { Image } from '../../../../components/Image/index';
 
-export interface CommunityCardItemProps {
+export interface CommunityItemProps {
   title: string;
   communityImage: string;
   onActionClick: MouseEventHandler<HTMLDivElement>;
   nbNotifications?: number;
 }
 
-const CommunityCardItem = ({
+const CommunityItem = ({
   title,
   communityImage,
   nbNotifications,
   onActionClick,
-}: CommunityCardItemProps) => {
+}: CommunityItemProps) => {
   const hasNotifications = (nbNotifications ?? 0) > 0;
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -62,6 +62,6 @@ const CommunityCardItem = ({
   );
 };
 
-CommunityCardItem.displayName = 'CommunityCardItem';
+CommunityItem.displayName = 'CommunityItem';
 
-export default CommunityCardItem;
+export default CommunityItem;
