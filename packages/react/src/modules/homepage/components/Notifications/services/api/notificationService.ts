@@ -14,7 +14,6 @@ export const createNotificationService = (baseURL: string) => ({
   getNotifications(types: string[], page: number) {
     const searchParams = new URLSearchParams({
       page: page.toString(),
-      mine: '1',
     });
 
     types.forEach((type) => {
