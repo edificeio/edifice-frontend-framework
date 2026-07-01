@@ -52,15 +52,16 @@ s'il atteint effectivement cet objectif.)*
 | **Collecte** | **Registre manuel (manifeste)** des apps consommatrices — liste finie (~30-50 apps), pas de scan automatique des orgs (§4). Ajouter une app = une ligne dans le manifeste. |
 | **Portée branches (V1)** | **`develop` et `develop-enabling` uniquement** pour démarrer, côté FF et côté apps. Autres branches (`develop-pedago`, `develop-b2school`, `develop-integration`, `main`/`master`) différées (§4, §10, §12). |
 | **Robustesse du cœur** | **AST dès le départ** (`ts-morph`) pour la résolution JS ; parseur Sass pour le CSS. Le cœur doit être exact ; les sorties se livrent par étapes. |
-| **Emplacement** | **Nouveau package dans le monorepo FF** (`tools/impact-analyzer` ou `packages/impact-analyzer`). Réutilise Turbo/Vite/CI en place. |
+| **Emplacement** | **Nouveau package dans le monorepo FF** (`tools/impact-analyzer`, nom à confirmer — cf. §13). Réutilise Turbo/Vite/CI en place. |
 | **Nature du diff** | **Classifiée** en 3 niveaux (§6). |
-| **Graphe** | **Site statique dédié** généré depuis l'index. Hébergement **non tranché** (confidentialité — cf. §9, §13) : ne pas supposer GitHub Pages public par défaut. |
+| **Graphe** | **Site statique dédié** généré depuis l'index, **consultable en local dès le Jalon 3** pour les démos. Hébergement **partagé non tranché** (confidentialité — cf. §9, §13) : ne pas supposer GitHub Pages public par défaut. |
+| **Exécution locale** | Le cœur tourne en **commande locale** dès le Jalon 1 (pas seulement en CI) — indépendant de la CRON et de la décision d'hébergement. Sert les démos et l'adoption (§9). |
 | **Séquencement** | **Cœur + graphe explorable d'abord** ; commentaire PR / rapport QA / CLI ensuite (réutilisent l'index sans retoucher le cœur). |
 | **Fraîcheur** | **CRON nocturne hors week-end** + relance manuelle. Temps quasi-réel (commentaire PR) en phase 2. |
 | **Bruit du diff** | Diffs cosmétiques (formatage, commentaires, renommages locaux) filtrés avant classification 🟡 (§6). |
 | **Canal de restitution** | Commentaire sur PR GitHub confirmé comme premier canal (§8) ; canal du rapport QA encore ouvert (§13). |
 | **Critères de succès** | Mini-section dédiée (§11), hors déclenchement des jalons techniques. |
-| **Confidentialité publication** | Différée, bloquante pour le Jalon 3 (§9, §13). |
+| **Confidentialité publication** | Différée ; bloque uniquement la **publication partagée**, pas l'usage local/démo dès le Jalon 3 (§9, §13). |
 
 ---
 
@@ -89,7 +90,7 @@ s'il atteint effectivement cet objectif.)*
         ┌───────────────┬───────────────────┼───────────────┬──────────────┐
         ▼               ▼                   ▼               ▼              ▼
    Graphe site     Commentaire         Rapport QA        CLI locale    (futurs
-   statique ①      sur PR FF ②         priorisé ②        `impact` ②    adaptateurs)
+   statique        sur PR FF           priorisé          `impact`     adaptateurs)
 ```
 
 Principe cardinal : **le cœur produit un index JSON ; tout le reste le
@@ -120,8 +121,11 @@ fichier versionné dans `tools/impact-analyzer`, par exemple `apps.json` :
 
 1. Pour chaque entrée du registre, sur chaque **branche V1** (`develop`,
    `develop-enabling` — voir ci-dessous), lire le(s) `package.json` (racine
-   **et** `frontend/package.json`) via l'**API Contents** de GitHub (pas de
-   clone à ce stade).
+   **et** `frontend/package.json`). Deux résolutions, choisies automatiquement
+   (cf. §9) : **en local**, lire directement le repo frère sur le disque
+   (`../<repo>`) s'il y est déjà — la technique utilisée pour cadrer ce plan ;
+   **en CI**, lire à distance via l'**API Contents** de GitHub (pas de clone à
+   ce stade).
 2. Retenir les dépendances `@edifice.io/*` trouvées ; extraire pour chacune la
    **valeur de pin** (branche, semver, ou `workspace:*`).
 3. En déduire, par package FF, le mapping **branche FF → apps qui la trackent**.
@@ -296,14 +300,20 @@ pas le casser sans faire évoluer ce champ.
 
 ## 8. Les sorties (adaptateurs)
 
-Toutes lisent l'index. Ordre de livraison = §9.
+Toutes lisent l'index. Ordre de livraison = §10.
 
 1. **Graphe explorable — site statique dédié** *(livré en premier)*.
-   Page HTML générée depuis l'index. **Hébergement à trancher** (§9, §13) — pas
-   forcément le même canal GitHub Pages public que la Storybook, cf. la
-   contrainte de confidentialité. Fonctions : recherche par symbole / par app /
-   par branche, vue « qui utilise `X` », vue « que consomme l'app `Y` », comptes
-   d'usage, badges de sévérité. Vue graphe (ex. Cytoscape/D3) + tableaux filtrables.
+   Page HTML générée depuis l'index. **Consultable en local dès le Jalon 3**,
+   indépendamment de toute décision d'hébergement : un site statique + JSON se
+   sert avec un simple serveur local (ex. `pnpm --filter impact-analyzer run
+   serve`) — un `fetch()` du JSON échoue en ouverture directe `file://`, d'où
+   ce petit serveur. C'est le canal prévu pour les démos et l'adoption (§9).
+   Seule la **publication partagée** (accessible à d'autres sans rien exécuter
+   soi-même) reste **hébergement à trancher** (§9, §13) — pas forcément le même
+   canal GitHub Pages public que la Storybook, cf. la contrainte de
+   confidentialité. Fonctions : recherche par symbole / par app / par branche,
+   vue « qui utilise `X` », vue « que consomme l'app `Y` », comptes d'usage,
+   badges de sévérité. Vue graphe (ex. Cytoscape/D3) + tableaux filtrables.
 2. **Commentaire sur PR FF** *(phase 2)*. En CI sur une PR, calculer le diff →
    symboles touchés → apps/sites impactés → poster un commentaire :
    « Ce diff touche `Dropdown` (🟠) et `useOdeClient` (🟡) → communities (12),
@@ -325,6 +335,15 @@ Toutes lisent l'index. Ordre de livraison = §9.
   Ne pas le publier sur npm.
 - **Stack** : TypeScript, `ts-morph` (AST JS/TS), `postcss-scss`/`sass` (Sass),
   API GitHub (`@octokit/rest`) pour la discovery + le clonage.
+- **Exécution locale (démo/adoption, dès le Jalon 1)** : le cœur est livré comme
+  une **commande locale** (ex. `pnpm --filter impact-analyzer run generate`),
+  pas seulement comme un job CI — la CRON ci-dessous ne fait qu'appeler cette
+  même commande sur un planning ; même moteur, deux déclencheurs. Résolution
+  des sources automatique (§4) : **en local**, repos frères déjà clonés sur le
+  disque (`../<repo>`) — zéro token, zéro clone, résultat en quelques secondes ;
+  **en CI**, registre → API Contents → clone ciblé. Cette voie locale ne publie
+  rien : elle ne dépend ni de la CRON ni de la décision de confidentialité
+  ci-dessous — exactement ce qu'il faut pour une démo.
 - **Exécution / fraîcheur** :
   - **CRON nocturne hors week-end** (GitHub Actions `schedule`, du lundi au
     vendredi) : discovery → clone/pull des branches actives → deux analyseurs →
@@ -346,7 +365,7 @@ Toutes lisent l'index. Ordre de livraison = §9.
   l'implémentation accepte **deux credentials distincts** si nécessaire. Migrer
   vers une **GitHub App** si l'outil se pérennise.
 
-### Confidentialité de la publication (décision différée — bloque le Jalon 3)
+### Confidentialité de la publication (décision différée — bloque la publication partagée, pas l'usage local)
 
 Constat vérifié pendant le cadrage : ce repo (`edifice-frontend-framework`) est
 **public**, et la Storybook y est déjà publiée sans risque car elle ne
@@ -358,8 +377,9 @@ des chemins de fichiers et des volumes d'usage : publié tel quel sur le même
 canal GitHub Pages public que la Storybook (comme envisagé au Jalon 3), il
 **exposerait publiquement** des informations sur des apps privées.
 
-**Décision explicitement différée** — à trancher avant d'attaquer le Jalon 3
-(qui est donc *gated* par ce point, cf. §13). Options identifiées :
+**Décision explicitement différée** — à trancher avant la **publication
+partagée** du Jalon 3 (l'usage local, lui, n'est pas *gated* — cf. ci-dessus).
+Options identifiées :
 
 a. **Hébergement interne à accès restreint** (SSO/VPN interne), hors GitHub
    Pages public.
@@ -368,9 +388,10 @@ b. **GitHub Pages en visibilité privée** — nécessite de confirmer que l'org
 c. **Rester public mais anonymiser/agréger** les données concernant les apps
    privées — dernier recours, réduit la valeur pour la QA.
 
-Tant que ce point n'est pas tranché, le Jalon 3 doit produire le site en
-**artefact non publié** (artefact de build téléchargeable, ou environnement
-fermé) plutôt que de pousser directement en Pages public.
+Tant que ce point n'est pas tranché, le Jalon 3 reste utilisable en **local et
+à la demande** (génération + consultation sur la machine du dev, cf. ci-dessus)
+ou via un artefact de build téléchargeable manuellement ; pas de publication
+automatique en Pages public tant que l'hébergement partagé n'est pas tranché.
 
 ---
 
@@ -382,13 +403,15 @@ fermé) plutôt que de pousser directement en Pages public.
   GitHub validé (lecture sur les repos listés dans le registre).
 - **Jalon 1 — Cœur JS + Discovery.** ①②③ pour les packages à imports JS
   (`react`, `client`, `utilities`, `tiptap-extensions`, `rest-client-base`) →
-  premier index JSON pour une branche.
+  premier index JSON pour une branche, **exécutable en local dès ce stade**
+  (§9).
 - **Jalon 2 — Cœur CSS.** Analyseur Sass §5.2 (composants localisés + thèmes/tokens
   globaux) fusionné dans l'index.
-- **Jalon 3 — Graphe statique.** Site explorable généré depuis l'index.
-  **Hébergement public bloqué en attente de la décision de confidentialité**
-  (§9, §13) : en attendant, déploiement en artefact non public. **➜ Première
-  valeur livrée dès que l'hébergement est tranché.**
+- **Jalon 3 — Graphe statique.** Site explorable généré depuis l'index,
+  **consultable en local dès ce jalon** (§9) — c'est le canal de démo. Seule la
+  **publication partagée** reste bloquée en attente de la décision de
+  confidentialité (§9, §13). **➜ Première valeur livrée dès ce jalon, en
+  local ; valeur élargie dès l'hébergement tranché.**
 - **Jalon 4 — CRON + cache.** Scan nocturne hors WE des deux branches V1
   (`develop`, `develop-enabling`) pour toutes les apps du registre, incrémental
   par SHA.
@@ -455,16 +478,21 @@ ils servent à évaluer l'outil une fois en service, pas à le construire.
 - **Registre manuel (V1)** : contrairement à un auto-discovery, rien ne
   garantit qu'une nouvelle app migrée soit ajoutée au registre au bon moment —
   dépend de la discipline d'équipe, pas d'un garde-fou automatique.
+- **Index local potentiellement désynchronisé** : en mode local (§9), le
+  résultat dépend des branches réellement checked-out sur les repos frères du
+  dev — peut différer du dernier index CI. Très bien pour une démo ponctuelle,
+  pas une source de vérité à partager telle quelle.
 
 ---
 
 ## 13. Points à valider avant / pendant l'implémentation
 
-- [ ] **Confidentialité de la publication** (§9) — *bloquant pour le Jalon 3.*
+- [ ] **Confidentialité de la publication** (§9) — *bloquant pour la
+      publication partagée uniquement, pas pour l'usage local (Jalon 3).*
       Ce repo est public ; les apps consommatrices ont une visibilité
       hétérogène (privées/publiques, 2 orgs). Trancher entre hébergement
       interne restreint, GitHub Pages privé (si Enterprise Cloud), ou
-      publication anonymisée avant de déployer le graphe.
+      publication anonymisée avant de déployer le graphe partagé.
 - [ ] **Accès GitHub** : faire valider par le gestionnaire GitHub un token (ou
       GitHub App) en **lecture sur les repos listés dans le registre** (§4),
       répartis sur les deux orgs `edificeio` (privée) et `OPEN-ENT-NG` (open
