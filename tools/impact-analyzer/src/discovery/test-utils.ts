@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 /**
  * Creates a throwaway git repo for tests. This is NEVER one of the user's
@@ -24,6 +24,29 @@ export function createTempGitRepo(): string {
 
 export function cleanupTempDir(dir: string): void {
   rmSync(dir, { recursive: true, force: true });
+}
+
+/**
+ * Writes a file, stages it and commits it in a temp git repo created by
+ * createTempGitRepo() — a building block for tests that need a base/head
+ * history (e.g. the diff module). Never used against a real sibling repo.
+ */
+export function commitFile(
+  repoPath: string,
+  relPath: string,
+  content: string,
+  message: string,
+): string {
+  const fullPath = join(repoPath, relPath);
+  mkdirSync(dirname(fullPath), { recursive: true });
+  writeFileSync(fullPath, content);
+
+  const git = (...args: string[]) =>
+    execFileSync('git', ['-C', repoPath, ...args], { encoding: 'utf-8' });
+
+  git('add', relPath);
+  git('commit', '-m', message);
+  return git('rev-parse', 'HEAD').trim();
 }
 
 export function writePackageJson(

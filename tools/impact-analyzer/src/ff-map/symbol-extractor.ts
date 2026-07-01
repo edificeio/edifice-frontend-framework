@@ -95,16 +95,21 @@ export interface ExtractedSymbol {
   sourceFiles: string[]; // absolute paths
 }
 
+export interface ExtractedSymbolWithDeclarations extends ExtractedSymbol {
+  /** Live ts-morph declaration nodes — not part of the serialized index, used by the diff module. */
+  declarations: ExportedDeclarations[];
+}
+
 /**
  * Extracts the fully resolved public symbol table for one entry file, using
  * ts-morph's own `getExportedDeclarations()` rather than hand-rolling a
  * traversal of `export * from` / `export { X as Y } from` — the TS
  * compiler already resolves barrels, cycles and name collisions correctly.
  */
-export function extractSymbolsFromEntry(
+export function extractSymbolsWithDeclarations(
   project: Project,
   entrySourceFile: string,
-): ExtractedSymbol[] {
+): ExtractedSymbolWithDeclarations[] {
   const sourceFile =
     project.getSourceFile(entrySourceFile) ??
     project.addSourceFileAtPath(entrySourceFile);
@@ -112,7 +117,7 @@ export function extractSymbolsFromEntry(
   const exported: Map<string, ExportedDeclarations[]> =
     sourceFile.getExportedDeclarations();
 
-  const symbols: ExtractedSymbol[] = [];
+  const symbols: ExtractedSymbolWithDeclarations[] = [];
   for (const [name, declarations] of exported) {
     const sourceFiles = [
       ...new Set(
@@ -123,7 +128,17 @@ export function extractSymbolsFromEntry(
       name,
       kind: inferSymbolKind(name, declarations),
       sourceFiles,
+      declarations,
     });
   }
   return symbols;
+}
+
+export function extractSymbolsFromEntry(
+  project: Project,
+  entrySourceFile: string,
+): ExtractedSymbol[] {
+  return extractSymbolsWithDeclarations(project, entrySourceFile).map(
+    ({ name, kind, sourceFiles }) => ({ name, kind, sourceFiles }),
+  );
 }
