@@ -5,6 +5,7 @@ const meta: Meta<typeof Communities> = {
   title: 'Modules/Homepage/Communities',
   component: Communities,
   args: {
+    handleActionClick: () => {},
     communitiesList: [
       {
         title: 'TS1 Physique-Chimie',
@@ -58,9 +59,6 @@ type Story = StoryObj<typeof Communities>;
 
 export const Default: Story = {
   render: (args) => <Communities {...args} />,
-  args: {
-    onActionClick: () => {},
-  },
   parameters: {
     docs: {
       description: {
@@ -71,10 +69,7 @@ export const Default: Story = {
 };
 
 export const WithoutCommunities: Story = {
-  render: () => <Communities />,
-  args: {
-    onActionClick: undefined,
-  },
+  render: () => <Communities handleActionClick={() => {}} />,
   parameters: {
     docs: {
       description: {
@@ -88,7 +83,6 @@ export const WithoutCommunities: Story = {
 export const WithNotifications: Story = {
   render: (args) => <Communities {...args} />,
   args: {
-    onActionClick: () => {},
     communitiesList: [
       {
         title: 'TS1 Physique-Chimie',

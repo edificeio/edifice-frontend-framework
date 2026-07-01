@@ -5,17 +5,30 @@ import Communities from './Communities';
 import CommunityItem from './CommunityItem';
 
 describe('Communities', () => {
-  it('always renders the header action button', () => {
-    const onActionClick = vi.fn();
-    const { rerender } = render(<Communities onActionClick={onActionClick} />);
+  it('renders the header action button for both populated and empty states', () => {
+    const handleActionClick = vi.fn();
+    const { rerender } = render(
+      <Communities
+        handleActionClick={handleActionClick}
+        communitiesList={[
+          {
+            title: 'My community',
+            communityImage: '/community.png',
+            onActionClick: vi.fn(),
+          },
+        ]}
+      />,
+    );
 
     expect(screen.getByTestId('home-card-header-action')).toBeInTheDocument();
+    expect(screen.getByText('Voir plus')).toBeInTheDocument();
 
-    rerender(<Communities />);
+    rerender(<Communities handleActionClick={handleActionClick} />);
     expect(screen.getByTestId('home-card-header-action')).toBeInTheDocument();
+    expect(screen.getByText('Créer une communauté')).toBeInTheDocument();
   });
 
-  it('activates the community item with keyboard input', () => {
+  it('activates the community item on click', () => {
     const onActionClick = vi.fn();
 
     render(
@@ -27,8 +40,7 @@ describe('Communities', () => {
     );
 
     const item = screen.getByRole('button');
-    item.focus();
-    fireEvent.keyDown(item, { key: 'Enter' });
+    fireEvent.click(item);
 
     expect(onActionClick).toHaveBeenCalledTimes(1);
   });

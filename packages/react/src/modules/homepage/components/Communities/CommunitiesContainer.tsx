@@ -1,9 +1,22 @@
+import { useMemo } from 'react';
 import { TextSkeleton } from '../../../../components';
 import Communities, { CommunitiesProps } from './Communities';
 import { useCommunities } from './useCommunities';
 
 export function CommunitiesContainer() {
   const { communities, isLoading, error } = useCommunities();
+
+  const mappedCommunities: NonNullable<CommunitiesProps['communitiesList']> =
+    useMemo(
+      () =>
+        communities.map((community) => ({
+          title: community.title,
+          communityImage: community.communityImage ?? community.icon ?? '',
+          nbNotifications: community.nbNotifications ?? community.notifications,
+          onActionClick: () => undefined,
+        })),
+      [communities],
+    );
 
   if (isLoading) {
     return (
@@ -16,18 +29,15 @@ export function CommunitiesContainer() {
   }
 
   if (error) {
-    return error.message;
+    return (error.message, 'An error occurred while loading communities.');
   }
 
-  const mappedCommunities: NonNullable<CommunitiesProps['communitiesList']> =
-    communities.map((community) => ({
-      title: community.title,
-      communityImage: community.communityImage ?? community.icon ?? '',
-      nbNotifications: community.nbNotifications ?? community.notifications,
-      onActionClick: () => undefined,
-    }));
-
-  return <Communities communitiesList={mappedCommunities} />;
+  return (
+    <Communities
+      communitiesList={mappedCommunities}
+      handleActionClick={() => {}}
+    />
+  );
 }
 
 CommunitiesContainer.displayName = 'CommunitiesContainer';

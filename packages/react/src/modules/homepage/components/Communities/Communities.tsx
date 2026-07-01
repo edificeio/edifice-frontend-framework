@@ -1,5 +1,4 @@
 import illuCommunities from '@edifice.io/bootstrap/dist/images/homepage/illu-communities.svg';
-import { MouseEventHandler } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
@@ -9,15 +8,14 @@ import CommunityItem, { CommunityItemProps } from './CommunityItem';
 
 export interface CommunitiesProps {
   communitiesList?: CommunityItemProps[];
-  onActionClick?: MouseEventHandler<HTMLButtonElement>;
+  handleActionClick: () => void;
 }
 
 const Communities = ({
   communitiesList = [],
-  onActionClick,
+  handleActionClick,
 }: CommunitiesProps) => {
   const { t } = useTranslation();
-  const handleActionClick = onActionClick ?? (() => undefined);
 
   return (
     <HomeCard variant="primary">
