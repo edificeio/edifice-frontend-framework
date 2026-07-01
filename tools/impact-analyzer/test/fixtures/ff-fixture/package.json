@@ -1,0 +1,7 @@
+{
+  "name": "@edifice.io/fixture",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts" },
+    "./icons": { "types": "./dist/icons.d.ts" }
+  }
+}

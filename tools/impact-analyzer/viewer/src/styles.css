@@ -1,0 +1,169 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  color: #1b1b1f;
+  background: #f7f7f9;
+}
+
+.app-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px 48px;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.app-header h1 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.tabs {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+
+.tabs button {
+  padding: 6px 12px;
+  border: 1px solid #d0d0d8;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.tabs button.tab-active {
+  background: #1b1b1f;
+  color: white;
+  border-color: #1b1b1f;
+}
+
+.index-meta {
+  color: #6b6b76;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 2fr;
+  gap: 16px;
+  align-items: start;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #e2e2e8;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d0d0d8;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.result-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.result-item:hover {
+  background: #f0f0f4;
+}
+
+.result-item-selected {
+  background: #e6e6fb;
+}
+
+.result-name {
+  font-weight: 600;
+}
+
+.result-meta {
+  color: #6b6b76;
+  font-size: 0.8rem;
+}
+
+.result-count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #6b6b76;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #ececf1;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: #ececf1;
+  color: #44444d;
+  margin-right: 4px;
+}
+
+.badge-warn {
+  background: #fde7e7;
+  color: #a02020;
+}
+
+.badge-info {
+  background: #e6f0ff;
+  color: #1d4ed8;
+}
+
+.hint {
+  color: #6b6b76;
+}
+
+.error {
+  color: #a02020;
+}

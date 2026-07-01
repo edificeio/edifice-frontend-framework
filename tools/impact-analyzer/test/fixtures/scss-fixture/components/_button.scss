@@ -1,0 +1,11 @@
+.button {
+  padding: 4px;
+
+  &-primary {
+    color: blue;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
