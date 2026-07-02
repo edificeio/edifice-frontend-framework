@@ -16,10 +16,11 @@
 
 - Le FF publie des packages `@edifice.io/*` (`react`, `bootstrap`, `client`,
   `utilities`, `tiptap-extensions`, `rest-client-base`, …).
-- ~10 apps React actives le consomment (`communities`, `actualites`, `blog`,
-  `wiki`, `support`, `explorer`, `collaborative-wall`, `homeworks`, `mindmap`,
-  `rack`, …), avec 13 à ~200 fichiers importateurs chacune. Le périmètre
-  **grandit** (nouvelles migrations React à venir).
+- 10 apps React actives le consomment (`blog`, `collaborative-wall`,
+  `collect`, `communities`, `explorer`, `mindmap`, `wiki`, `actualites`,
+  `rack`, `support` — liste exacte dans `tools/impact-analyzer/apps.json`),
+  avec 13 à ~200 fichiers importateurs chacune. Le périmètre **grandit**
+  (nouvelles migrations React à venir).
 - **Mécanique de risque n°1 — le pinning par branche.** Les apps épinglent
   littéralement une **branche** du FF dans leur `package.json`
   (`"@edifice.io/react": "develop"`, `"develop-pedago"`, …), pas un semver figé.
@@ -54,14 +55,14 @@ s'il atteint effectivement cet objectif.)*
 | **Robustesse du cœur** | **AST dès le départ** (`ts-morph`) pour la résolution JS ; parseur Sass pour le CSS. Le cœur doit être exact ; les sorties se livrent par étapes. |
 | **Emplacement** | **Nouveau package dans le monorepo FF** (`tools/impact-analyzer`, nom à confirmer — cf. §13). Réutilise Turbo/Vite/CI en place. |
 | **Nature du diff** | **Classifiée** en 3 niveaux (§6). |
-| **Graphe** | **Site statique dédié** généré depuis l'index, **consultable en local dès le Jalon 3** pour les démos. Hébergement **partagé non tranché** (confidentialité — cf. §9, §13) : ne pas supposer GitHub Pages public par défaut. |
-| **Exécution locale** | Le cœur tourne en **commande locale** dès le Jalon 1 (pas seulement en CI) — indépendant de la CRON et de la décision d'hébergement. Sert les démos et l'adoption (§9). |
-| **Séquencement** | **Cœur + graphe explorable d'abord** ; commentaire PR / rapport QA / CLI ensuite (réutilisent l'index sans retoucher le cœur). |
-| **Fraîcheur** | **CRON nocturne hors week-end** + relance manuelle. Temps quasi-réel (commentaire PR) en phase 2. |
-| **Bruit du diff** | Diffs cosmétiques (formatage, commentaires, renommages locaux) filtrés avant classification 🟡 (§6). |
-| **Canal de restitution** | Commentaire sur PR GitHub confirmé comme premier canal (§8) ; canal du rapport QA encore ouvert (§13). |
+| **Graphe** | **Site statique dédié** généré depuis l'index (Vite + React, `viewer/`), **livré et fonctionnel en local dès le Jalon 3** — inclut désormais aussi un onglet **Diff**. Hébergement **partagé** : décidé — repo public exclu (confidentialité), GitHub Pages privé exclu (org sur plan Free), hébergement **interne** demandé à l'infra, en attente de réponse (Jalon 6, §9, §13). |
+| **Exécution locale** | Le cœur tourne en **commande locale** dès le Jalon 1 (pas seulement en CI) — indépendant de la CRON et de la décision d'hébergement. Sert les démos et l'adoption (§9). **Livré.** |
+| **Séquencement** | **Cœur + graphe explorable d'abord** ; commentaire PR / rapport QA / CLI ensuite (réutilisent l'index sans retoucher le cœur). Réalisé dans cet ordre, à l'exception du commentaire PR/rapport QA — **volontairement recadrés hors du périmètre initial du Jalon 6** (§8, §13). |
+| **Fraîcheur** | **CRON nocturne hors week-end** + relance manuelle. **Livré** (`.github/workflows/impact-analyzer-generate.yml`). Temps quasi-réel par PR : la brique technique (`diff --mode=ci`) est livrée, son automatisation (workflow `pull_request`) est en attente de l'hébergement (§9, §13). |
+| **Bruit du diff** | Diffs cosmétiques (formatage, commentaires, renommages locaux) filtrés avant classification 🟡 (§6). **Livré.** |
+| **Canal de restitution** | **Recadré** : périmètre du Jalon 6 réduit au viewer hébergé en interne uniquement. Le commentaire PR GitHub et le rapport QA formel restent des extensions possibles mais ne sont **plus** dans le périmètre engagé de cette itération (§8, §13). |
 | **Critères de succès** | Mini-section dédiée (§11), hors déclenchement des jalons techniques. |
-| **Confidentialité publication** | Différée ; bloque uniquement la **publication partagée**, pas l'usage local/démo dès le Jalon 3 (§9, §13). |
+| **Confidentialité publication** | **Tranchée** : ni ce repo public, ni GitHub Pages (org Free) ; index + diffs stockés dans un repo privé dédié (`edificeio/impact-analyzer-data`) ; hébergement du viewer partagé demandé à l'infra, réponse en attente (§9, §13). |
 
 ---
 
@@ -113,11 +114,15 @@ fichier versionné dans `tools/impact-analyzer`, par exemple `apps.json` :
 
 ```json
 [
-  { "name": "communities", "org": "edificeio", "repo": "communities" },
-  { "name": "blog", "org": "edificeio", "repo": "blog" },
-  { "name": "actualites", "org": "OPEN-ENT-NG", "repo": "actualites" }
+  { "name": "communities", "org": "edificeio", "repo": "communities", "branches": ["develop", "develop-enabling"] },
+  { "name": "blog", "org": "edificeio", "repo": "blog", "branches": ["develop", "develop-enabling"] },
+  { "name": "actualites", "org": "OPEN-ENT-NG", "repo": "actualites", "branches": ["dev", "develop-enabling"] }
 ]
 ```
+
+> `branches` liste le **nom réel** des branches V1 pour cette app — la
+> convention varie par repo (`dev` vs `develop`, cf. correction plus bas),
+> jamais recoupée avec un nom générique.
 
 1. Pour chaque entrée du registre, sur chaque **branche V1** (`develop`,
    `develop-enabling` — voir ci-dessous), lire le(s) `package.json` (racine
@@ -136,9 +141,19 @@ fichier versionné dans `tools/impact-analyzer`, par exemple `apps.json` :
 **Portée des branches en V1 : `develop` et `develop-enabling` seulement.** Ça
 limite fortement le nombre de clones (~10-50 apps × 2 branches, pas × 6+) et
 couvre le contexte de travail actuel. Les autres branches (`develop-pedago`,
-`develop-b2school`, `develop-integration`, `main`/`master`, `dev` sur certains
-repos) sont **différées** — l'extension est triviale : ajouter le nom de
-branche à la config, sans changer le mécanisme. Limite assumée en §12.
+`develop-b2school`, `develop-integration`, `main`/`master`) sont **différées**
+— l'extension est triviale : ajouter le nom de branche à `apps.json` pour
+l'app concernée, sans changer le mécanisme. Limite assumée en §12.
+
+> **Correction post-implémentation** : l'idée initiale d'une config générique
+> `["develop", "develop-enabling"]` recoupée avec `apps.json.branches` s'est
+> révélée fausse en pratique — la convention de nommage **varie par repo**
+> (`rack`, `actualites`, `support` utilisent `dev`, pas `develop`). Un
+> recoupement avec une liste générique excluait silencieusement ces branches
+> (0 `scanError`, app absente du rapport sans explication — bug réel constaté
+> en conditions réelles). `apps.json.branches` est donc la **seule** source de
+> vérité, utilisée telle quelle : chaque app déclare le nom réel de ses
+> branches V1, jamais recoupé avec un nom générique.
 
 > **Cas particuliers à gérer**
 > - App pinnant un **semver figé** (ex. un ancien `rack` sur `master`) → app
@@ -148,7 +163,12 @@ branche à la config, sans changer le mécanisme. Limite assumée en §12.
 > - Un repo peut pinner des **packages FF différents sur des branches
 >   différentes** → le mapping est par `(app, branche app, package FF)`.
 > - Une app du registre peut ne pas avoir de branche `develop-enabling` → la
->   sauter silencieusement pour cette branche, pas une erreur.
+>   sauter silencieusement pour cette branche, pas une erreur. **Raffiné en
+>   implémentation** : silencieux seulement si *au moins une* des branches de
+>   l'app a été trouvée ce run ; si **toutes** ses branches sont introuvables,
+>   un `scanError` informatif signale l'app entière (une branche manquante est
+>   normal, une app totalement invisible ne doit jamais l'être silencieusement
+>   — cf. §12).
 
 **Maintenance du registre.** Ajouter une app = une PR d'une ligne sur
 `apps.json`, revue comme du code. Aucun garde-fou automatique si un ajout est
@@ -296,136 +316,179 @@ Un index par **branche FF** (ou un index global indexé par branche). Ce schéma
 est **stable** et versionné (`schemaVersion`) : les 4 sorties en dépendent, ne
 pas le casser sans faire évoluer ce champ.
 
+> **État réel post-implémentation** (JSON ci-dessus indicatif, source de
+> vérité = `src/types/index-schema.ts`) :
+> - `mode: 'local' | 'ci'` distingue une génération locale (repos frères sur
+>   disque) d'une génération distante (clone via l'API GitHub).
+> - `appStates: { app, branch, commit }[]` a été ajouté pour le **cache
+>   incrémental** (Jalon 4) : permet de savoir, par app-branche, quel commit a
+>   été effectivement scanné, sans avoir à le déduire des `consumers`.
+> - Le **diff** (§6) n'est **pas** imbriqué dans `ImpactIndex` : c'est un
+>   schéma séparé et indépendant, `DiffReport`
+>   (`src/types/diff-schema.ts`) — il compare deux états (base/head), alors
+>   qu'`ImpactIndex` est un instantané unique. Écrit dans
+>   `data/diff.<base>..<head>.json`.
+
 ---
 
 ## 8. Les sorties (adaptateurs)
 
 Toutes lisent l'index. Ordre de livraison = §10.
 
-1. **Graphe explorable — site statique dédié** *(livré en premier)*.
-   Page HTML générée depuis l'index. **Consultable en local dès le Jalon 3**,
-   indépendamment de toute décision d'hébergement : un site statique + JSON se
-   sert avec un simple serveur local (ex. `pnpm --filter impact-analyzer run
-   serve`) — un `fetch()` du JSON échoue en ouverture directe `file://`, d'où
-   ce petit serveur. C'est le canal prévu pour les démos et l'adoption (§9).
-   Seule la **publication partagée** (accessible à d'autres sans rien exécuter
-   soi-même) reste **hébergement à trancher** (§9, §13) — pas forcément le même
-   canal GitHub Pages public que la Storybook, cf. la contrainte de
-   confidentialité. Fonctions : recherche par symbole / par app / par branche,
-   vue « qui utilise `X` », vue « que consomme l'app `Y` », comptes d'usage,
-   badges de sévérité. Vue graphe (ex. Cytoscape/D3) + tableaux filtrables.
-2. **Commentaire sur PR FF** *(phase 2)*. En CI sur une PR, calculer le diff →
-   symboles touchés → apps/sites impactés → poster un commentaire :
-   « Ce diff touche `Dropdown` (🟠) et `useOdeClient` (🟡) → communities (12),
-   actualites (4), blog (0). QA : priorité communities. »
-3. **Rapport QA priorisé** *(phase 2)*. Même donnée que le commentaire, formatée
-   en check-list triée par score de risque et par app (exportable). **Canal de
-   diffusion non tranché** (Slack dédié ? ticket Jira ENABLING ? export seul ?) —
-   à décider au Jalon 6 (cf. §13). Le commentaire sur PR GitHub (point 2), lui,
-   est confirmé comme premier canal à construire.
-4. **CLI locale** *(phase 3)*. `impact <symbole>` et `impact --diff` (scanne les
-   repos frères présents sur le disque, ou lit le dernier index publié).
+1. **Graphe explorable — site statique dédié** *(livré)*.
+   Package Vite + React (`viewer/`), consomme l'index **et** le diff (voir
+   ci-dessous). **Consultable en local dès le Jalon 3**, indépendamment de
+   toute décision d'hébergement (`pnpm --filter @edifice.io/impact-analyzer-viewer
+   dev`). Fonctions livrées : recherche par symbole (avec filtre par package),
+   vue « qui utilise `X` », vue « que consomme l'app `Y` », sélecteur de
+   branche FF, et un **onglet Diff** (badges de sévérité 🔴/🟠/🟡, tri par
+   risque, sélecteur si plusieurs diffs) — onglet par défaut au chargement.
+   Pas de vue graphe (Cytoscape/D3) : tableaux filtrables uniquement, jugé
+   suffisant en pratique. La **publication partagée** est en cours (Jalon 6,
+   §9, §13) : ni ce repo public ni GitHub Pages (org sur plan Free),
+   hébergement interne demandé à l'infra.
+2. **Commentaire sur PR FF** — **recadré hors du périmètre initial du Jalon
+   6** (décision explicite, §13) : le viewer hébergé couvre le besoin de
+   consultation pour l'instant ; ce canal reste une extension possible mais
+   n'est plus engagé dans cette itération. La brique technique qui le
+   rendrait possible (`impact diff --mode=ci`) est livrée (voir §9) —
+   il ne manque que le workflow `pull_request` et la décision de contenu
+   (filtrage pour la confidentialité, un commentaire sur une PR de ce repo
+   public serait aussi peu confidentiel qu'une publication Pages).
+3. **Rapport QA priorisé** — **recadré hors du périmètre initial du Jalon 6**
+   pour la même raison que le point 2. Le viewer (onglet Diff, trié par
+   risque) sert cet usage en attendant.
+4. **CLI locale** *(livré, Jalon 7)*. `cli.ts symbol <nom>` (+ `--cached`) et
+   `cli.ts diff --base=<ref>` (+ `--mode=local|ci`) — scanne les repos frères
+   présents sur le disque en mode local, ou clone à la volée via l'API GitHub
+   en mode CI.
 
 ---
 
 ## 9. Emplacement, stack & exécution
 
 - **Emplacement** : nouveau package **privé** dans le monorepo FF
-  (`tools/impact-analyzer`). Intégré à Turbo (`turbo.json`), build Vite si besoin.
-  Ne pas le publier sur npm.
-- **Stack** : TypeScript, `ts-morph` (AST JS/TS), `postcss-scss`/`sass` (Sass),
-  API GitHub (`@octokit/rest`) pour la discovery + le clonage.
+  (`tools/impact-analyzer`, + sous-package `viewer/`). Intégré à Turbo
+  (`turbo.json`), build Vite. Non publié sur npm. **Livré.**
+- **Stack** : TypeScript, `ts-morph` (AST JS/TS), `postcss-scss` (Sass). API
+  GitHub via **`fetch` natif** (Node ≥20.19, déjà le plancher du monorepo) —
+  **pas** de dépendance `@octokit/rest`, jugée inutile pour le nombre
+  d'appels en jeu (client HTTP minimal, `github-client.ts`).
 - **Exécution locale (démo/adoption, dès le Jalon 1)** : le cœur est livré comme
-  une **commande locale** (ex. `pnpm --filter impact-analyzer run generate`),
-  pas seulement comme un job CI — la CRON ci-dessous ne fait qu'appeler cette
-  même commande sur un planning ; même moteur, deux déclencheurs. Résolution
-  des sources automatique (§4) : **en local**, repos frères déjà clonés sur le
-  disque (`../<repo>`) — zéro token, zéro clone, résultat en quelques secondes ;
-  **en CI**, registre → API Contents → clone ciblé. Cette voie locale ne publie
-  rien : elle ne dépend ni de la CRON ni de la décision de confidentialité
-  ci-dessous — exactement ce qu'il faut pour une démo.
-- **Exécution / fraîcheur** :
-  - **CRON nocturne hors week-end** (GitHub Actions `schedule`, du lundi au
-    vendredi) : discovery → clone/pull des branches actives → deux analyseurs →
-    index → régénération et déploiement du site graphe.
-  - **Relance manuelle** (`workflow_dispatch`).
-  - **Cache incrémental** par SHA : ne re-analyser une app-branche que si son SHA
-    a bougé (crucial vu ~10 apps × plusieurs branches × jusqu'à ~200 fichiers).
-  - **Résilience aux échecs partiels** : sur ~10 apps × plusieurs branches, un
-    échec isolé (branche supprimée, clone en échec, `package.json` malformé) est
-    à attendre presque chaque nuit. Il ne doit **jamais** faire échouer tout le
-    run : l'app-branche en échec garde sa dernière donnée valide, marquée
-    explicitement périmée (`scanErrors`, cf. §7) plutôt que d'afficher une
-    fraîcheur mensongère ou de faire disparaître l'app du graphe.
-- **Accès GitHub** : token en secret CI, en lecture sur les **repos listés
-  dans le registre** (§4), répartis sur `edificeio` **et** `OPEN-ENT-NG` — un
-  accès nommé, pas un accès large à l'org entière (plus simple à faire
-  approuver). Les deux orgs pouvant avoir des administrateurs différents, ne
-  pas supposer qu'un seul jeton couvrira forcément les deux — prévoir que
-  l'implémentation accepte **deux credentials distincts** si nécessaire. Migrer
-  vers une **GitHub App** si l'outil se pérennise.
+  une **commande locale** (`generate --mode=local|ci`, `diff --base=<ref>
+  --mode=local|ci`), pas seulement comme un job CI — la CRON ne fait
+  qu'appeler cette même commande sur un planning ; même moteur, deux
+  déclencheurs. Résolution des sources automatique (§4) : **en local**, repos
+  frères déjà clonés sur le disque (`../<repo>`) — zéro token, zéro clone,
+  résultat en quelques secondes ; **en CI**, registre → API Contents → clone
+  sparse ciblé. Cette voie locale ne publie rien : elle ne dépend ni de la
+  CRON ni de la décision de confidentialité ci-dessous. **Livré.**
+- **Exécution / fraîcheur** — **tout livré** :
+  - **CRON nocturne hors week-end** (`.github/workflows/impact-analyzer-generate.yml`,
+    `schedule: '0 2 * * 1-5'` + `workflow_dispatch`) : discovery → clone
+    sparse ciblé → deux analyseurs → index → push vers le repo de données
+    privé (voir Confidentialité ci-dessous).
+  - **Cache incrémental** par SHA (`ImpactIndex.appStates`, `carry-forward.ts`) :
+    une app-branche dont le commit n'a pas bougé depuis le run précédent
+    (passé en `--cache=<index.json>`) n'est ni clonée ni ré-analysée — ses
+    données sont recopiées telles quelles.
+  - **Résilience aux échecs partiels** : un échec isolé devient un
+    `scanError` ; si une donnée précédente existe pour cette app-branche,
+    elle est recopiée en secours et le `scanError` porte
+    `staleSince` — l'app ne disparaît jamais silencieusement du rapport.
+  - **`diff --mode=ci`** (même logique de clone à la volée, réutilise
+    `buildCiIndex`) permet de calculer un diff par PR sans dépendre de repos
+    frères déjà clonés — brique prête, pas encore automatisée par un workflow
+    `pull_request` (en attente de l'hébergement, §13).
+- **Accès GitHub** : deux fine-grained PAT en secrets CI
+  (`IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` / `_OPEN_ENT_NG`), lecture seule,
+  scopés aux repos du registre — **livré et validé en conditions réelles**.
+  Fallback générique `IMPACT_ANALYZER_GITHUB_TOKEN` (classic PAT) documenté
+  mais **inutilisable sur `edificeio`** : l'org interdit explicitement les
+  classic PAT (`403 forbids access via a personal access token (classic)`),
+  seuls les fine-grained PAT (ou une GitHub App) sont acceptés — utile
+  uniquement pour `OPEN-ENT-NG`, qui n'a pas cette restriction. Migration
+  vers une **GitHub App** reste une option si l'outil se pérennise, pas
+  nécessaire à ce stade.
 
-### Confidentialité de la publication (décision différée — bloque la publication partagée, pas l'usage local)
+### Confidentialité de la publication (tranchée — bloquait la publication partagée, pas l'usage local)
 
 Constat vérifié pendant le cadrage : ce repo (`edifice-frontend-framework`) est
 **public**, et la Storybook y est déjà publiée sans risque car elle ne
 documente que le FF lui-même. Mais l'org `edificeio` compte 201 repos privés
 pour 95 publics, avec une visibilité **hétérogène côté apps consommatrices**
-(ex. `communities` privé ; `blog`/`rack` publics ; `actualites`/`support`
-publics mais dans `OPEN-ENT-NG`). Le graphe d'impact référence des noms d'app,
-des chemins de fichiers et des volumes d'usage : publié tel quel sur le même
-canal GitHub Pages public que la Storybook (comme envisagé au Jalon 3), il
-**exposerait publiquement** des informations sur des apps privées.
+(ex. `communities`/`collect` privés ; `blog`/`rack` publics ; `actualites`/
+`support` publics mais dans `OPEN-ENT-NG`). Le graphe d'impact référence des
+noms d'app, des chemins de fichiers et des volumes d'usage : publié tel quel
+sur le même canal GitHub Pages public que la Storybook, il **exposerait
+publiquement** des informations sur des apps privées.
 
-**Décision explicitement différée** — à trancher avant la **publication
-partagée** du Jalon 3 (l'usage local, lui, n'est pas *gated* — cf. ci-dessus).
-Options identifiées :
+**Décision prise** (option **a**, ci-dessous) :
 
-a. **Hébergement interne à accès restreint** (SSO/VPN interne), hors GitHub
-   Pages public.
-b. **GitHub Pages en visibilité privée** — nécessite de confirmer que l'org
-   bénéficie de GitHub Enterprise Cloud (sinon indisponible).
-c. **Rester public mais anonymiser/agréger** les données concernant les apps
-   privées — dernier recours, réduit la valeur pour la QA.
+a. ✅ **Retenue.** L'index et les diffs générés par le CRON sont poussés vers
+   un **repo privé dédié**, `edificeio/impact-analyzer-data` (jamais ce repo
+   public). L'**hébergement d'un viewer partagé** (Jalon 6) est demandé à
+   l'**infra interne** (stockage + authentification + page statique) — GitHub
+   Actions calcule tout, l'infra n'a besoin d'aucun accès GitHub ni de faire
+   tourner de calcul. Demande consolidée avec projections de volumétrie (voir
+   §13) ; **réponse en attente**. En attendant, le viewer reste un usage
+   local (clone du repo de données + `pnpm --filter
+   @edifice.io/impact-analyzer-viewer dev`).
+b. ❌ **Écartée.** GitHub Pages en visibilité privée nécessite GitHub Team ou
+   Enterprise Cloud — **vérifié : l'org `edificeio` est sur le plan Free**,
+   qui ne propose pas Pages du tout pour un repo privé.
+c. ❌ **Écartée.** Anonymiser/agréger n'a pas été nécessaire, l'option (a)
+   couvrant le besoin sans compromis sur la valeur pour la QA.
 
-Tant que ce point n'est pas tranché, le Jalon 3 reste utilisable en **local et
-à la demande** (génération + consultation sur la machine du dev, cf. ci-dessus)
-ou via un artefact de build téléchargeable manuellement ; pas de publication
-automatique en Pages public tant que l'hébergement partagé n'est pas tranché.
+En attendant la réponse de l'infra sur l'hébergement partagé, le viewer reste
+utilisable en **local et à la demande** (génération + consultation sur la
+machine du dev, cf. ci-dessus) — jamais de publication en Pages public.
 
 ---
 
 ## 10. Phasage (jalons)
 
-- **Jalon 0 — Squelette.** Package `tools/impact-analyzer`, **registre initial
-  des apps consommatrices** (`apps.json`, les ~10 apps actives aujourd'hui),
-  config des branches V1 (`develop`, `develop-enabling`), wiring Turbo/CI, accès
-  GitHub validé (lecture sur les repos listés dans le registre).
-- **Jalon 1 — Cœur JS + Discovery.** ①②③ pour les packages à imports JS
-  (`react`, `client`, `utilities`, `tiptap-extensions`, `rest-client-base`) →
-  premier index JSON pour une branche, **exécutable en local dès ce stade**
-  (§9).
-- **Jalon 2 — Cœur CSS.** Analyseur Sass §5.2 (composants localisés + thèmes/tokens
-  globaux) fusionné dans l'index.
-- **Jalon 3 — Graphe statique.** Site explorable généré depuis l'index,
-  **consultable en local dès ce jalon** (§9) — c'est le canal de démo. Seule la
-  **publication partagée** reste bloquée en attente de la décision de
-  confidentialité (§9, §13). **➜ Première valeur livrée dès ce jalon, en
-  local ; valeur élargie dès l'hébergement tranché.**
-- **Jalon 4 — CRON + cache.** Scan nocturne hors WE des deux branches V1
-  (`develop`, `develop-enabling`) pour toutes les apps du registre, incrémental
-  par SHA.
-- **Jalon 5 — Classification du diff.** ④ (3 niveaux) + score de risque.
-- **Jalon 6 — Commentaire PR + rapport QA.** Adaptateurs CI branchés sur l'index.
-- **Jalon 7 — CLI locale.** `impact <symbole>` / `impact --diff`.
+- ✅ **Jalon 0 — Squelette.** Package `tools/impact-analyzer`, registre des
+  apps consommatrices (`apps.json`, 10 apps), wiring Turbo/CI, accès GitHub
+  validé (deux fine-grained PAT, `edificeio` + `OPEN-ENT-NG`).
+- ✅ **Jalon 1 — Cœur JS + Discovery.** ①②③ pour `react`, `client`,
+  `utilities`, `tiptap-extensions`, `rest-client-base` → index JSON,
+  exécutable en local.
+- ✅ **Jalon 2 — Cœur CSS.** Analyseur Sass §5.2 fusionné dans l'index.
+- ✅ **Jalon 3 — Graphe statique.** Viewer Vite + React (`viewer/`),
+  consultable en local. Publication partagée toujours en cours (Jalon 6).
+- ✅ **Jalon 4 — CRON + cache.** Workflow GitHub Actions nocturne hors
+  week-end, cache incrémental par SHA, résilience aux échecs partiels
+  (`staleSince`) — pour `generate` **et** `diff` (`--mode=ci`). Index et
+  diffs poussés vers le repo privé `edificeio/impact-analyzer-data`
+  (décision de confidentialité, §9).
+- ✅ **Jalon 5 — Classification du diff.** ④ (3 niveaux) + score de risque.
+  Diff persisté en JSON (`data/diff.<base>..<head>.json`), lu par le viewer.
+- 🔶 **Jalon 6 — Viewer hébergé (recadré).** Périmètre initialement prévu
+  (commentaire PR + rapport QA) **réduit** au viewer hébergé en interne
+  uniquement — décision explicite, les deux autres canaux restent des
+  extensions possibles mais ne sont plus engagés dans cette itération.
+  Fait : `diff --mode=ci` (clone à la volée des apps via l'API GitHub, sans
+  dépendre de repos frères déjà clonés). **En attente** : réponse de
+  l'infra sur le stockage/l'hébergement (demande consolidée envoyée, avec
+  projections de volumétrie — rétention illimitée actée, ~12 Mo après 5 ans
+  au rythme actuel du repo) ; une fois reçue, reste à construire le workflow
+  GitHub Actions déclenché sur `pull_request` et le déploiement du viewer.
+- ✅ **Jalon 7 — CLI locale.** `cli.ts symbol <nom>` (+ `--cached`),
+  `cli.ts diff --base=<ref>` (+ `--mode=local|ci`).
 
 **Hors V1 (repoussé sciemment, pas oublié) :**
 - **Auto-discovery** des apps consommatrices (scan des 2 orgs) — à reconsidérer
   si le registre manuel devient un vrai point de friction (au-delà de ~50 apps,
   oublis fréquents constatés).
 - **Branches supplémentaires** (`develop-pedago`, `develop-b2school`,
-  `develop-integration`, `main`/`master`, `dev`) — extension de config une fois
-  le registre et les 2 branches V1 éprouvés en usage réel.
+  `develop-integration`, `main`/`master`) — extension de config une fois le
+  registre et les branches V1 éprouvés en usage réel (chaque app déclare déjà
+  ses propres noms de branches dans `apps.json`, cf. §4 — ajouter une branche
+  à une app existante ne demande aucun changement de mécanisme).
+- **Commentaire PR FF et rapport QA formel** (§8) — recadrés hors du
+  périmètre initial du Jalon 6, restent des extensions futures possibles une
+  fois le viewer hébergé et éprouvé en usage réel.
 
 ---
 
@@ -467,14 +530,19 @@ ils servent à évaluer l'outil une fois en service, pas à le construire.
   confiance.
 - **Usages indirects JS** : imports dynamiques, accès par chaîne, ré-exports
   applicatifs profonds → possibles faux négatifs. À documenter.
-- **Décalage temporel** : l'index reflète le dernier scan (SHA horodatés) ; entre
-  deux CRON, un merge très récent peut ne pas encore y figurer (le commentaire PR
-  de la phase 2 comble ce trou pour le FF).
-- **Couverture de branches partielle (V1)** : seules `develop` et
-  `develop-enabling` sont couvertes. Un risque introduit uniquement sur une
-  autre branche active (`develop-pedago`, etc.) ne sera pas détecté avant
-  l'extension de la config — à communiquer clairement aux équipes qui
-  travaillent principalement sur ces branches.
+- **Décalage temporel** : l'index CRON reflète le dernier scan nocturne (SHA
+  horodatés) ; entre deux runs, un merge très récent peut ne pas encore y
+  figurer. `diff --mode=ci` permet de calculer un diff à jour pour une PR
+  précise à la demande — mais tant qu'il n'est pas branché sur un workflow
+  `pull_request` automatique (Jalon 6, en attente d'hébergement), ce trou
+  n'est comblé qu'en lançant la commande manuellement.
+- **Couverture de branches partielle (V1)** : seules les branches déclarées
+  dans `apps.json` par app (typiquement l'équivalent de `develop` et
+  `develop-enabling`, sous des noms qui varient — `dev` sur certains repos)
+  sont couvertes. Un risque introduit uniquement sur une autre branche active
+  (`develop-pedago`, etc.) ne sera pas détecté avant d'ajouter cette branche
+  à l'app concernée dans `apps.json` — à communiquer clairement aux équipes
+  qui travaillent principalement sur ces branches.
 - **Registre manuel (V1)** : contrairement à un auto-discovery, rien ne
   garantit qu'une nouvelle app migrée soit ajoutée au registre au bon moment —
   dépend de la discipline d'équipe, pas d'un garde-fou automatique.
@@ -487,27 +555,35 @@ ils servent à évaluer l'outil une fois en service, pas à le construire.
 
 ## 13. Points à valider avant / pendant l'implémentation
 
-- [ ] **Confidentialité de la publication** (§9) — *bloquant pour la
-      publication partagée uniquement, pas pour l'usage local (Jalon 3).*
-      Ce repo est public ; les apps consommatrices ont une visibilité
-      hétérogène (privées/publiques, 2 orgs). Trancher entre hébergement
-      interne restreint, GitHub Pages privé (si Enterprise Cloud), ou
-      publication anonymisée avant de déployer le graphe partagé.
-- [ ] **Accès GitHub** : faire valider par le gestionnaire GitHub un token (ou
-      GitHub App) en **lecture sur les repos listés dans le registre** (§4),
-      répartis sur les deux orgs `edificeio` (privée) et `OPEN-ENT-NG` (open
-      source) — accès nommé, pas un accès large à l'org entière. Prévoir la
-      possibilité de **deux credentials distincts** si un seul ne suffit pas
-      administrativement. *Bloquant pour la discovery.*
-- [ ] **Canal de diffusion du rapport QA** (§8) : Slack dédié, ticket Jira
-      ENABLING, export seul, ou combinaison — à trancher au Jalon 6. Le
-      commentaire sur PR GitHub, lui, est déjà confirmé comme premier canal.
-- [ ] **Registre initial des apps** (§4) : lister précisément le repo exact et
-      l'org de chaque app active aujourd'hui pour amorcer `apps.json`, et
-      désigner qui a la responsabilité de le tenir à jour.
-- [ ] **Confirmer `develop`/`develop-enabling`** sur chaque app du registre
-      (sinon la sauter proprement pour la branche manquante, cf. §4).
-- [ ] **Emplacement exact** dans le monorepo (`tools/impact-analyzer` proposé) et
-      nom du package privé.
+- [x] **Confidentialité de la publication** (§9) — **tranchée** : repo de
+      données privé dédié (`edificeio/impact-analyzer-data`) pour le CRON ;
+      GitHub Pages privé écarté (org `edificeio` sur plan Free, vérifié) ;
+      hébergement du viewer partagé demandé à l'infra interne.
+- [x] **Accès GitHub** — **validé en conditions réelles**. Deux fine-grained
+      PAT (`edificeio`, `OPEN-ENT-NG`), lecture seule, scopés aux repos du
+      registre. Piège réel rencontré et documenté : `edificeio` **interdit
+      les classic PAT** (message d'erreur explicite de l'API) — seuls les
+      fine-grained PAT ou une GitHub App fonctionnent sur cette org ; le
+      fallback générique `IMPACT_ANALYZER_GITHUB_TOKEN` (classic) ne marche
+      donc que pour `OPEN-ENT-NG`.
+- [x] **Canal de diffusion du rapport QA** (§8) — **recadré, pas juste
+      tranché** : ni commentaire PR ni rapport QA formel dans le périmètre
+      initial du Jalon 6. Le canal retenu est le **viewer hébergé en
+      interne** (§8, §9). Commentaire PR et rapport QA restent des
+      extensions futures possibles, pas abandonnées définitivement.
+- [x] **Registre initial des apps** (§4) — **fait**, `apps.json` liste les 10
+      apps actives (`edificeio` + `OPEN-ENT-NG`), maintenu à la main.
+- [x] **Confirmer les branches par app** (§4) — **fait**, avec une correction
+      réelle : la convention de nommage varie par repo (`dev` sur `rack`,
+      `actualites`, `support` — pas `develop`), documentée en §4.
+- [x] **Emplacement exact** — `tools/impact-analyzer` (+ `viewer/`).
 - [ ] **Seuils du score de risque** (pondérations sévérité × sites × apps) à
-      calibrer avec la QA après le premier index réel.
+      calibrer avec la QA après usage réel — **toujours ouvert**, pas encore
+      fait (pas assez de recul à ce stade).
+- [ ] **Hébergement du viewer partagé (Jalon 6)** — demande envoyée à
+      l'infra (stockage + authentification + page statique, GitHub Actions
+      calcule et pousse ; rétention illimitée actée, projections de
+      volumétrie négligeables — voir demande consolidée). **Réponse en
+      attente.** Une fois reçue : construire le workflow GitHub Actions
+      déclenché sur `pull_request` (appelant `diff --mode=ci`) et le
+      déploiement du viewer.
