@@ -7,3 +7,7 @@ data/*
 
 # Root .gitignore excludes .env.* (real secrets) — re-include this doc-only template.
 !.env.example
+
+# Ad-hoc token files used for one-off local debugging — never commit these.
+.gitlab-token
+*.token

@@ -1,0 +1,52 @@
+name: "Impact Analyzer Viewer: build, scan & push"
+
+on:
+  push:
+    tags:
+      - "impact-analyzer-viewer-v*.*.*"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Tag to use for the Docker image"
+        required: true
+        default: "test-manual"
+
+env:
+  CI_REGISTRY: maven.opendigitaleducation.com
+  CI_REGISTRY_IMAGE: maven.opendigitaleducation.com/docker/repository/sre-docker-hosted/impact-analyzer-viewer
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.event.inputs.image_tag || github.ref_name }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker registry
+        run: echo "${{ secrets.CI_REGISTRY_PASSWORD }}" | docker login ${{ env.CI_REGISTRY }} -u "${{ secrets.CI_REGISTRY_USER }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}" \
+            -t "${{ env.CI_REGISTRY_IMAGE }}:latest" \
+            -f tools/impact-analyzer/viewer/Dockerfile \
+            .
+
+      # Blocking on CRITICAL/HIGH, per the K8s integration guide's
+      # checklist — no continue-on-error (some sibling repos skip
+      # enforcement here, but ours doesn't).
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}"
+          format: "table"
+          exit-code: "1"
+          severity: "CRITICAL,HIGH"
+
+      - name: Push Docker image
+        run: |
+          docker push "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}"
+          docker push "${{ env.CI_REGISTRY_IMAGE }}:latest"

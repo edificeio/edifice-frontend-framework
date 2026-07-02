@@ -1,0 +1,106 @@
+# Référence pour le futur dépôt Helm dédié (gitlab-infra.ode.tools) — à
+# copier et compléter là-bas, PAS un fichier consommé par ce repo. Les
+# TODO ci-dessous sont les points encore ouverts avec l'équipe SRE
+# (cf. PLAN ENABLING-1023, section "points explicitement laissés ouverts").
+
+boilerplate-deployment:
+  replicaCount: 1
+
+  image:
+    repository: maven.opendigitaleducation.com/docker/repository/sre-docker-hosted/impact-analyzer-viewer
+    # Garder synchronisé avec le tag Git poussé (ex. tag impact-analyzer-viewer-v0.1.0 -> tag image "0.1.0").
+    tag: "0.1.0"
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 80
+    # Le process tourne en utilisateur non-root (image distroless) : il ne
+    # peut pas biner le port 80 lui-même, d'où ce mapping.
+    targetPort: 8080
+
+  # Ingress est déprécié chez Edifice — utiliser httpRoutes (Gateway API /
+  # Envoy Gateway) à la place, jamais ce bloc.
+  ingress:
+    enabled: false
+
+  # TODO (SRE) : nom exact du Gateway à référencer dans parentRefs, et
+  # hostname public/interne à utiliser. namespace/sectionName ont déjà des
+  # défauts corrects dans le chart modèle (envoy / https).
+  httpRoutes:
+    - name: impact-analyzer-viewer
+      parentRefs:
+        - name: "TODO-nom-du-gateway"
+      hostnames:
+        - "TODO-hostname.ode.tools"
+      rules:
+        - matches:
+            - path:
+                value: /
+          backendRefs:
+            - name: impact-analyzer-viewer
+              port: 80
+
+  livenessProbe:
+    httpGet:
+      path: /health/live
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 20
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /health/ready
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  # Le chemin par défaut du chart modèle est déjà /health/metrics — exactement
+  # ce que le serveur expose, rien à surcharger ici.
+  serviceMonitor:
+    enabled: true
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "128Mi"
+
+  commonEnvs:
+    - name: DATA_REPO_OWNER
+      value: "edificeio"
+    - name: DATA_REPO_NAME
+      value: "impact-analyzer-data"
+    - name: DATA_REPO_REF
+      value: "main"
+    - name: REFRESH_INTERVAL_SECONDS
+      value: "300"
+
+  # TODO (SRE) : DATA_REPO_GITHUB_TOKEN (fine-grained PAT lecture seule,
+  # scopé UNIQUEMENT à edificeio/impact-analyzer-data — distinct du token
+  # lecture/écriture utilisé par le CRON GitHub Actions) doit être injecté
+  # en tant que Secret, jamais en dur ici. Le chart modèle propose deux
+  # mécanismes selon le cluster cible (à confirmer avec SRE) :
+  #
+  # - Vault (clusters OVH) :
+  #   vaultSecrets:
+  #     - name: "impact-analyzer-data-token"
+  #       path: "cluster/xxxxxx/impact-analyzer-viewer/data-token"
+  #       mount: "k8s_infra"
+  #
+  # - Scaleway Secrets Manager :
+  #   scwExternalSecrets:
+  #     - name: "impact-analyzer-data-token"
+  #       dataFrom:
+  #         key: "path:/impact-analyzer-viewer/data-token"
+  #
+  # Dans les deux cas, vérifier avec SRE le nom du Secret Kubernetes
+  # résultant et la clé exacte à référencer pour l'exposer en env var via
+  # secretKeyRef (cf. templates/deployment.yaml du chart modèle) — pas
+  # confirmé dans cette passe, à valider avant le premier déploiement réel.
