@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
+import { PackageFilter } from '../components/PackageFilter.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 
 export interface SymbolSearchProps {
@@ -18,29 +19,46 @@ export function SymbolSearch({
   onSelect,
 }: SymbolSearchProps) {
   const [query, setQuery] = useState('');
+  const [packageFilter, setPackageFilter] = useState('all');
+
+  const packages = useMemo(
+    () => [...new Set(symbols.map((s) => s.package))].sort(),
+    [symbols],
+  );
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const byPackage =
+      packageFilter === 'all'
+        ? symbols
+        : symbols.filter((s) => s.package === packageFilter);
     const matches = q
-      ? symbols.filter(
+      ? byPackage.filter(
           (s) =>
             s.name.toLowerCase().includes(q) ||
             s.package.toLowerCase().includes(q),
         )
-      : symbols;
+      : byPackage;
 
     return [...matches].sort((a, b) => totalUsage(b) - totalUsage(a));
-  }, [symbols, query]);
+  }, [symbols, query, packageFilter]);
 
   return (
     <div className="panel">
       <h2>Symboles ({symbols.length})</h2>
-      <input
-        className="search-input"
-        placeholder="Rechercher un symbole ou un package..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
+      <div className="filter-row">
+        <input
+          className="search-input"
+          placeholder="Rechercher un symbole ou un package..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <PackageFilter
+          packages={packages}
+          value={packageFilter}
+          onChange={setPackageFilter}
+        />
+      </div>
       <ul className="result-list">
         {filtered.slice(0, 200).map((s) => {
           const key = `${s.package}|${s.entry}|${s.name}`;

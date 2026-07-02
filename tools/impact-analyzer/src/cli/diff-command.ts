@@ -1,4 +1,5 @@
 import { buildDiffReport } from '../diff/build-diff-report.js';
+import { writeDiffReport } from '../diff/write-diff-report.js';
 import type { DiffReport, DiffSeverity } from '../types/diff-schema.js';
 import { renderTable } from './format-table.js';
 
@@ -98,6 +99,12 @@ export function runDiff(
       return;
     }
   }
+
+  // Always persisted, even when nothing changed — the viewer (Jalon 3+)
+  // reads this to show a diff, and a "nothing changed" report is still a
+  // valid, useful result to display there.
+  const filePath = writeDiffReport(report);
+  console.log(`Wrote ${filePath}`);
 
   if (report.symbolDiffs.length === 0 && report.cssDiffs.length === 0) {
     console.log(

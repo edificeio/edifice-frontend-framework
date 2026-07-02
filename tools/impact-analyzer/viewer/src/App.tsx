@@ -1,20 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { ImpactIndex, SymbolEntry } from '@edifice.io/impact-analyzer';
-import { loadIndexForBranch, loadManifest } from './data/loadIndex.js';
+import {
+  type DiffManifestEntry,
+  loadIndexForBranch,
+  loadManifest,
+} from './data/loadIndex.js';
 import { SymbolSearch } from './views/SymbolSearch.js';
 import { WhoUses } from './views/WhoUses.js';
 import { AppSearch } from './views/AppSearch.js';
 import { AppConsumes } from './views/AppConsumes.js';
+import { DiffView } from './views/DiffView.js';
 import './styles.css';
 
-type Tab = 'symbols' | 'apps';
+type Tab = 'symbols' | 'apps' | 'diff';
 
 export function App() {
   const [branches, setBranches] = useState<string[]>([]);
+  const [diffs, setDiffs] = useState<DiffManifestEntry[]>([]);
   const [branch, setBranch] = useState<string | null>(null);
   const [index, setIndex] = useState<ImpactIndex | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<Tab>('symbols');
+  const [tab, setTab] = useState<Tab>('diff');
   const [selectedSymbol, setSelectedSymbol] = useState<SymbolEntry | null>(
     null,
   );
@@ -24,11 +30,8 @@ export function App() {
     loadManifest()
       .then((manifest) => {
         setBranches(manifest.branches);
+        setDiffs(manifest.diffs);
         if (manifest.branches.length > 0) setBranch(manifest.branches[0]);
-        else
-          setError(
-            'Aucun index trouvé — lancez "pnpm --filter @edifice.io/impact-analyzer generate:local".',
-          );
       })
       .catch((e) => setError(String(e)));
   }, []);
@@ -90,10 +93,23 @@ export function App() {
           >
             Apps
           </button>
+          <button
+            className={tab === 'diff' ? 'tab-active' : ''}
+            onClick={() => setTab('diff')}
+          >
+            Diff
+          </button>
         </nav>
       </header>
 
-      {!index ? (
+      {tab === 'diff' ? (
+        <DiffView diffs={diffs} />
+      ) : branches.length === 0 ? (
+        <p className="hint">
+          Aucun index trouvé — lancez "pnpm --filter @edifice.io/impact-analyzer
+          generate:local".
+        </p>
+      ) : !index ? (
         <p className="hint">Chargement de l'index...</p>
       ) : (
         <>

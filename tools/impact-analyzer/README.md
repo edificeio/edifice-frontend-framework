@@ -38,7 +38,7 @@ pnpm --filter @edifice.io/impact-analyzer generate:local
 # Tests
 pnpm --filter @edifice.io/impact-analyzer test
 
-# Graphe explorable (recherche par symbole / par app)
+# Graphe explorable (recherche par symbole / par app / par diff)
 pnpm --filter @edifice.io/impact-analyzer-viewer dev
 # ou, sur le build de prod :
 pnpm --filter @edifice.io/impact-analyzer-viewer build
@@ -48,6 +48,7 @@ pnpm --filter @edifice.io/impact-analyzer-viewer preview
 tsx src/cli.ts symbol Dropdown              # recherche un symbole, régénère l'index à la volée
 tsx src/cli.ts symbol Dropdown --cached     # relit data/index.<branche>.json au lieu de régénérer
 tsx src/cli.ts diff --base=develop          # classification 🔴/🟠/🟡 + score de risque (défaut: develop)
+                                             # écrit aussi data/diff.<base>..<head>.json pour le viewer
 
 # Mode distant (Jalon 4) — voir section dédiée ci-dessous
 pnpm --filter @edifice.io/impact-analyzer generate:ci
@@ -59,9 +60,15 @@ pnpm --filter @edifice.io/impact-analyzer generate:ci
 pnpm --filter @edifice.io/impact-analyzer generate:ci -- --cache=data/index.develop.json
 ```
 
-L'index est écrit dans `data/index.<branche-ff-courante>.json` (gitignored,
-régénéré à la demande). Le viewer synchronise ce dossier vers
-`viewer/public/data/` avant `dev`/`build` (`viewer/scripts/sync-data.mjs`).
+L'index est écrit dans `data/index.<branche-ff-courante>.json`, et un diff
+dans `data/diff.<base>..<head>.json` (tous deux gitignorés, régénérés à la
+demande — `impact diff` écrit systématiquement son rapport, même quand rien
+n'a changé, pour que le viewer ait toujours quelque chose à afficher). Le
+viewer synchronise ce dossier vers `viewer/public/data/` avant `dev`/`build`
+(`viewer/scripts/sync-data.mjs`) et expose un onglet **Diff** dédié : il faut
+relancer `impact diff` puis recharger la page pour voir un nouveau diff (pas
+de régénération à la volée depuis le viewer, contrairement à l'onglet
+Symboles).
 
 ## Registre des apps (`apps.json`)
 
@@ -242,8 +249,12 @@ il ne doit jamais bloquer la publication du reste.
 - `src/cli/` — sous-commandes CLI (Jalon 7) : `generate-command.ts`,
   `symbol-command.ts`, `diff-command.ts`, `format-table.ts` (alignement de
   colonnes fait main). `src/cli.ts` est un simple routeur.
-- `viewer/` — sous-package Vite + React, consomme l'index, aucune vue graphe
-  (Cytoscape/D3) pour l'instant : tableaux filtrables uniquement.
+- `src/diff/write-diff-report.ts` — persiste le `DiffReport` produit par
+  `impact diff` (`data/diff.<base>..<head>.json`), même quand rien n'a
+  changé — même logique que `write-index.ts` côté `ImpactIndex`.
+- `viewer/` — sous-package Vite + React, consomme l'index (et maintenant le
+  diff, onglet dédié), aucune vue graphe (Cytoscape/D3) pour l'instant :
+  tableaux filtrables uniquement.
 
 ## Config statique notable
 

@@ -1,9 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { buildDiffReport } from '../diff/build-diff-report.js';
+import { writeDiffReport } from '../diff/write-diff-report.js';
 import type { DiffReport } from '../types/diff-schema.js';
 import { runDiff } from './diff-command.js';
 
 vi.mock('../diff/build-diff-report.js', () => ({ buildDiffReport: vi.fn() }));
+vi.mock('../diff/write-diff-report.js', () => ({
+  writeDiffReport: vi.fn(() => '/tmp/diff.develop..feat-x.json'),
+}));
 
 function makeReport(overrides: Partial<DiffReport> = {}): DiffReport {
   return {
@@ -33,6 +37,7 @@ describe('runDiff', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.mocked(buildDiffReport).mockReset();
+    vi.mocked(writeDiffReport).mockClear();
     process.exitCode = undefined;
   });
 
@@ -42,6 +47,25 @@ describe('runDiff', () => {
       true,
     );
     expect(process.exitCode).toBeUndefined();
+  });
+
+  it('always persists the report, even when nothing changed', () => {
+    const report = makeReport();
+    runDiff({ base: 'develop' }, report);
+
+    expect(writeDiffReport).toHaveBeenCalledWith(report);
+    expect(logs.some((l) => l.includes('Wrote'))).toBe(true);
+  });
+
+  it('does not persist anything when the report could not be built', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(buildDiffReport).mockImplementation(() => {
+      throw new Error('some other unexpected failure');
+    });
+
+    runDiff({ base: 'develop' });
+
+    expect(writeDiffReport).not.toHaveBeenCalled();
   });
 
   it('renders symbol diffs sorted as provided (already sorted by the report), with severity emoji', () => {

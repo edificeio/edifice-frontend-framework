@@ -83,6 +83,92 @@ body {
   margin-bottom: 12px;
 }
 
+.filter-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-row .search-input {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.package-filter-wrapper {
+  position: relative;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #d0d0d8;
+  border-radius: 6px;
+  background: white;
+  color: #44444d;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: #f0f0f4;
+}
+
+.icon-button-active {
+  background: #e6e6fb;
+  border-color: #8a8af0;
+  color: #33339e;
+}
+
+.package-filter-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #d0d0d8;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.package-filter-menu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #1b1b1f;
+}
+
+.package-filter-menu button:hover {
+  background: #f0f0f4;
+}
+
+.package-filter-option-active {
+  color: #33339e;
+  font-weight: 600;
+}
+
+.package-filter-option-active svg {
+  flex-shrink: 0;
+  color: #33339e;
+}
+
 .result-list {
   list-style: none;
   margin: 0;
@@ -158,6 +244,29 @@ body {
 .badge-info {
   background: #e6f0ff;
   color: #1d4ed8;
+}
+
+.badge-severity-breaking {
+  background: #fde7e7;
+  color: #a02020;
+}
+
+.badge-severity-likely-breaking {
+  background: #fdf0e0;
+  color: #a05a10;
+}
+
+.badge-severity-needs-review {
+  background: #fdf7d8;
+  color: #8a7207;
+}
+
+.diff-select {
+  padding: 8px 10px;
+  border: 1px solid #d0d0d8;
+  border-radius: 6px;
+  background: white;
+  margin-bottom: 12px;
 }
 
 .hint {
