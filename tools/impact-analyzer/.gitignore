@@ -1,2 +1,5 @@
 data/*
 !data/.gitkeep
+
+# Root .gitignore excludes .env.* (real secrets) — re-include this doc-only template.
+!.env.example

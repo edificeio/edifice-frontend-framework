@@ -1,21 +1,22 @@
+import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import { buildLocalIndex } from '../index-builder/build-index.js';
 import { writeIndex } from '../index-builder/write-index.js';
+import type { ImpactIndex } from '../types/index-schema.js';
 
-export function runGenerate(mode: string): void {
-  if (mode !== 'local') {
-    console.error(
-      'Only --mode=local is supported in this release (CI mode is a later milestone).',
-    );
+export async function runGenerate(mode: string): Promise<void> {
+  if (mode !== 'local' && mode !== 'ci') {
+    console.error(`Unknown mode "${mode}". Supported: local, ci.`);
     process.exitCode = 1;
     return;
   }
 
-  const index = buildLocalIndex();
+  const index: ImpactIndex =
+    mode === 'ci' ? await buildCiIndex() : buildLocalIndex();
   const filePath = writeIndex(index);
 
   console.log(`Wrote ${filePath}`);
   console.log(
-    `  ffBranch=${index.ffBranch} ffCommit=${index.ffCommit.slice(0, 7)} ffDirty=${index.ffDirty}`,
+    `  mode=${index.mode} ffBranch=${index.ffBranch} ffCommit=${index.ffCommit.slice(0, 7)} ffDirty=${index.ffDirty}`,
   );
   console.log(
     `  symbols=${index.symbols.length} scanErrors=${index.scanErrors.length} outOfContractImports=${index.outOfContractImports.length}`,

@@ -53,9 +53,14 @@ function classifyPin(raw: string): PinType {
   return 'branch';
 }
 
-/** Reads @edifice.io/* dependency pins from a package.json (dependencies + devDependencies). */
-export function readEdificePins(packageJsonPath: string): PinEntry[] {
-  const pkg = JSON.parse(readFileSync(packageJsonPath, 'utf-8'));
+/**
+ * Pure — receives already-read content (disk or the GitHub Contents API),
+ * never touches the filesystem itself. Reused by both local (readEdificePins)
+ * and remote (discover-apps-remote.ts) discovery, so pin classification
+ * never diverges between the two modes.
+ */
+export function extractEdificePinsFromPackageJson(content: string): PinEntry[] {
+  const pkg = JSON.parse(content);
   const deps: Record<string, string> = {
     ...(pkg.dependencies ?? {}),
     ...(pkg.devDependencies ?? {}),
@@ -68,4 +73,11 @@ export function readEdificePins(packageJsonPath: string): PinEntry[] {
       raw,
       type: classifyPin(raw),
     }));
+}
+
+/** Reads @edifice.io/* dependency pins from a package.json on disk (dependencies + devDependencies). */
+export function readEdificePins(packageJsonPath: string): PinEntry[] {
+  return extractEdificePinsFromPackageJson(
+    readFileSync(packageJsonPath, 'utf-8'),
+  );
 }

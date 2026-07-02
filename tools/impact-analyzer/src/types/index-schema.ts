@@ -2,7 +2,7 @@
 export interface ImpactIndex {
   schemaVersion: 1;
   generatedAt: string;
-  mode: 'local';
+  mode: 'local' | 'ci';
   ffBranch: string;
   ffCommit: string;
   ffDirty: boolean;

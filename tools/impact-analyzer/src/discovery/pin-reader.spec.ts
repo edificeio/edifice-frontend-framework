@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanupTempDir, writePackageJson } from './test-utils.js';
 import {
   AppLayoutNotFoundError,
+  extractEdificePinsFromPackageJson,
   readEdificePins,
   resolveAppLayout,
 } from './pin-reader.js';
@@ -81,5 +82,31 @@ describe('readEdificePins', () => {
       'workspace',
     );
     expect(byPackage['@edifice.io/client'].type).toBe('semver');
+  });
+});
+
+describe('extractEdificePinsFromPackageJson', () => {
+  it('extracts pins from a raw JSON string, without touching the filesystem', () => {
+    const content = JSON.stringify({
+      name: 'app',
+      dependencies: {
+        '@edifice.io/react': 'develop-enabling',
+        'react': '18.3.1',
+      },
+    });
+
+    const pins = extractEdificePinsFromPackageJson(content);
+    expect(pins).toEqual([
+      { package: '@edifice.io/react', raw: 'develop-enabling', type: 'branch' },
+    ]);
+  });
+
+  it('is the function readEdificePins delegates to (same classification)', () => {
+    const content = JSON.stringify({
+      dependencies: { '@edifice.io/utilities': 'workspace:*' },
+    });
+    expect(extractEdificePinsFromPackageJson(content)[0].type).toBe(
+      'workspace',
+    );
   });
 });

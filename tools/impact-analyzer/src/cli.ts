@@ -3,7 +3,7 @@ import { runDiff } from './cli/diff-command.js';
 import { runGenerate } from './cli/generate-command.js';
 import { runSymbol } from './cli/symbol-command.js';
 
-function main(): void {
+async function main(): Promise<void> {
   const { positionals, values } = parseArgs({
     args: process.argv.slice(2),
     allowPositionals: true,
@@ -17,7 +17,7 @@ function main(): void {
   const [command, ...rest] = positionals;
   switch (command) {
     case 'generate':
-      runGenerate(values.mode ?? 'local');
+      await runGenerate(values.mode ?? 'local');
       return;
     case 'symbol':
       runSymbol(rest.join(' '), { cached: values.cached ?? false });
@@ -29,7 +29,7 @@ function main(): void {
       console.error(
         `Unknown command: ${command ?? '(none)'}.\n` +
           'Usage:\n' +
-          '  cli.ts generate --mode=local\n' +
+          '  cli.ts generate --mode=local|ci\n' +
           '  cli.ts symbol <name> [--cached]\n' +
           '  cli.ts diff [--base=<ref>]',
       );
@@ -37,4 +37,7 @@ function main(): void {
   }
 }
 
-main();
+main().catch((error: unknown) => {
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
+});
