@@ -1,5 +1,9 @@
 data/*
 !data/.gitkeep
 
+# Root .gitignore's .env.* pattern does NOT match the exact filename ".env"
+# (no suffix) — exclude it explicitly here, it holds real GitHub tokens.
+.env
+
 # Root .gitignore excludes .env.* (real secrets) — re-include this doc-only template.
 !.env.example

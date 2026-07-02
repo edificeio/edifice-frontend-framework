@@ -87,22 +87,47 @@ describe('discoverAppsRemote', () => {
     });
   });
 
-  it('silently skips a branch listed in app.branches but absent on GitHub', async () => {
+  it('silently skips one absent branch when at least one other branch of the app is found', async () => {
+    process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/branches/develop-enabling'))
+        return new Response(null, { status: 404 });
+      if (url.includes('/branches/develop'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha-develop' } }));
+      if (url.includes('/contents/frontend/package.json')) {
+        return new Response(
+          JSON.stringify({ content: b64({ dependencies: {} }) }),
+        );
+      }
+      return new Response(null, { status: 404 });
+    });
+
+    const { discovered, scanErrors } = await discoverAppsRemote([makeApp()], {
+      githubClientOptions: { fetchImpl },
+    });
+
+    expect(discovered).toHaveLength(1);
+    expect(scanErrors).toEqual([]);
+  });
+
+  it('reports an informational scanError when every configured branch is absent for an app (no partial signal lost)', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
     const fetchImpl = vi.fn(async () => new Response(null, { status: 404 }));
 
     const { discovered, scanErrors } = await discoverAppsRemote(
-      [makeApp({ branches: ['develop'] })],
+      [makeApp({ branches: ['develop', 'develop-enabling'] })],
       {
         githubClientOptions: { fetchImpl },
       },
     );
 
     expect(discovered).toEqual([]);
-    expect(scanErrors).toEqual([]);
+    expect(scanErrors).toHaveLength(1);
+    expect(scanErrors[0].app).toBe('demo');
+    expect(scanErrors[0].error).toContain('No branch found on GitHub');
   });
 
-  it('never queries a branch that is not listed in app.branches, even if it is a V1 branch', async () => {
+  it('never queries a branch that is not listed in app.branches', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
     const fetchImpl = vi.fn(async (url: string) => {
       if (url.includes('/branches/develop-enabling')) {
@@ -114,7 +139,6 @@ describe('discoverAppsRemote', () => {
     });
 
     await discoverAppsRemote([makeApp({ branches: ['develop'] })], {
-      v1Branches: ['develop', 'develop-enabling'],
       githubClientOptions: { fetchImpl },
     });
 
@@ -123,6 +147,33 @@ describe('discoverAppsRemote', () => {
         (url as string).includes('develop-enabling'),
       ),
     ).toBe(false);
+  });
+
+  it('checks the literal branch name declared per app, even when it does not match the "develop" convention', async () => {
+    // Real bug this guards against: apps.json correctly declares "dev" for
+    // some repos (branch naming isn't uniform), but a previous version of
+    // this function cross-filtered app.branches against a generic
+    // "develop"/"develop-enabling" list, silently dropping "dev" and making
+    // the whole app vanish from discovery with 0 scanErrors.
+    process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/branches/dev'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha-dev' } }));
+      if (url.includes('/contents/frontend/package.json'))
+        return new Response(
+          JSON.stringify({ content: b64({ dependencies: {} }) }),
+        );
+      return new Response(null, { status: 404 });
+    });
+
+    const { discovered, scanErrors } = await discoverAppsRemote(
+      [makeApp({ branches: ['dev'] })],
+      { githubClientOptions: { fetchImpl } },
+    );
+
+    expect(scanErrors).toEqual([]);
+    expect(discovered).toHaveLength(1);
+    expect(discovered[0].branch).toBe('dev');
   });
 
   it('reports a scanError, without crashing, when no token is configured for the org', async () => {

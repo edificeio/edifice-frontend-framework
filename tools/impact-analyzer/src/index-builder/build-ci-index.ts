@@ -39,7 +39,6 @@ export interface BuildCiIndexOptions {
   ffPackages?: FfPackageSpec[];
   ffEntryMap?: FfEntryMap;
   bootstrapSrcDir?: string;
-  v1Branches?: string[];
   githubClientOptions?: GithubClientOptions;
 }
 
@@ -90,7 +89,6 @@ export async function buildCiIndex(
   const { discovered, scanErrors: discoveryErrors } = await discoverAppsRemote(
     apps,
     {
-      v1Branches: options.v1Branches,
       githubClientOptions: options.githubClientOptions,
     },
   );

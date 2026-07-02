@@ -59,10 +59,13 @@ régénéré à la demande). Le viewer synchronise ce dossier vers
 ## Registre des apps (`apps.json`)
 
 Liste manuelle, maintenue à la main (une PR d'une ligne par app ajoutée/
-retirée), pas d'auto-discovery. Le champ `branches` est **documentaire**
-(quelles branches V1 existent réellement pour cette app) — en mode local, il
-ne sert jamais à choisir quoi checkout : l'outil lit toujours la branche
-réellement présente sur disque, quelle qu'elle soit.
+retirée), pas d'auto-discovery. Le champ `branches` liste les **noms réels**
+des branches V1 pour cette app (la convention de nommage varie selon les
+repos, ex. `dev` vs `develop` — ne jamais supposer un nom générique) — en
+mode local, il ne sert jamais à choisir quoi checkout : l'outil lit toujours
+la branche réellement présente sur disque, quelle qu'elle soit. En mode
+`--mode=ci`, c'est en revanche la seule source de vérité pour savoir quelles
+branches interroger à distance (cf. ci-dessous).
 
 ## Mode distant (`--mode=ci`)
 
@@ -72,10 +75,13 @@ cache incrémental par SHA (chaque run re-scanne/re-clone tout). Différences
 avec le mode local :
 - Les apps sont découvertes via l'**API GitHub Contents** (pas de repo
   frère nécessaire sur disque) : pour chaque app × chaque branche listée
-  dans son `apps.json.branches` **et** dans `config/branches.json`, lecture
-  de `frontend/package.json` (repli `package.json`) à distance. Une branche
-  absente côté GitHub est sautée silencieusement (comme en local) ; un
-  `package.json` introuvable alors que la branche existe est un `scanError`.
+  dans son `apps.json.branches` (nom réel par app, jamais recoupé avec une
+  liste générique), lecture de `frontend/package.json` (repli
+  `package.json`) à distance. Une branche absente côté GitHub est sautée
+  silencieusement (comme en local) ; un `package.json` introuvable alors que
+  la branche existe est un `scanError`. Si **toutes** les branches d'une app
+  sont absentes, un `scanError` informatif signale l'app entière (permet de
+  distinguer un trou de config d'un souci d'accès repo/branche).
 - Les couples `(app, branche)` confirmés consommateurs sont ensuite clonés
   **à la volée** dans un répertoire jetable (`git sparse-checkout`,
   profondeur 1, uniquement le sous-répertoire `src` pertinent), analysés
@@ -86,9 +92,25 @@ avec le mode local :
 - `appDirty` vaut toujours `false` en mode CI (un clone frais n'est jamais
   dirty).
 
-**Configuration des credentials** (voir `.env.example`) : un fine-grained
-PAT n'a qu'un seul owner, donc un token par org GitHub du registre.
+**Configuration des credentials** : un fine-grained PAT n'a qu'un seul
+owner, donc un token par org GitHub du registre. Copier `.env.example` en
+`.env` (gitignoré explicitement — voir `.gitignore` local, la règle
+générique `.env.*` de la racine ne couvre pas le nom exact `.env`) et le
+remplir :
 
+```bash
+cp .env.example .env
+```
+
+`.env` est chargé automatiquement par `generate:local`/`generate:ci`
+(`tsx --env-file-if-exists=.env`, natif Node ≥20.6, pas de dépendance
+`dotenv`). Pour une invocation directe (`tsx src/cli.ts ...` sans passer par
+un script `pnpm`), ajouter le flag à la main :
+```bash
+tsx --env-file-if-exists=.env src/cli.ts generate --mode=ci
+```
+
+Contenu de `.env` :
 ```bash
 # Générique — fallback si un seul classic PAT couvre tout
 IMPACT_ANALYZER_GITHUB_TOKEN=
@@ -98,10 +120,27 @@ IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO=
 IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG=
 ```
 
-Scope PAT recommandé : **Contents + Metadata, lecture seule**, restreint
-aux repos listés dans `apps.json` (pas un accès large à l'org). Le token
-n'est jamais embarqué dans une URL de clone (auth via `-c
-http.extraheader` sur la commande `fetch` uniquement) ni loggé en cas
+**Comment générer le générique `IMPACT_ANALYZER_GITHUB_TOKEN`** (classic
+PAT, un seul token couvrant les deux orgs — alternative aux deux
+fine-grained PAT par org si tu ne veux gérer qu'un seul secret) :
+1. https://github.com/settings/tokens/new (classic, pas fine-grained).
+2. Note explicite (ex. "impact-analyzer read-only"), expiration 90 jours.
+3. Scope à cocher : **`repo`** uniquement (les classic PAT n'ont pas de
+   granularité read-only par repo — `repo` donne accès en lecture/écriture
+   à tout ce que le compte peut atteindre ; c'est le compromis "simple mais
+   large" par rapport aux deux fine-grained PAT scopés en lecture seule aux
+   seuls repos du registre — préférer ces derniers si déjà approuvés).
+4. Générer, copier la valeur dans `IMPACT_ANALYZER_GITHUB_TOKEN=` de `.env`.
+
+Ce générique n'est utile que si aucun token spécifique par org n'est défini
+pour l'org en question (`resolveGithubToken` : spécifique > générique) —
+avec les deux fine-grained déjà créés, le générique reste inutilisé une
+fois eux approuvés.
+
+Scope PAT recommandé (fine-grained) : **Contents + Metadata, lecture
+seule**, restreint aux repos listés dans `apps.json` (pas un accès large à
+l'org). Le token n'est jamais embarqué dans une URL de clone (auth via
+`-c http.extraheader` sur la commande `fetch` uniquement) ni loggé en cas
 d'échec (message d'erreur générique).
 
 **Limites explicites de ce périmètre** : séquentiel (pas de gestion de
