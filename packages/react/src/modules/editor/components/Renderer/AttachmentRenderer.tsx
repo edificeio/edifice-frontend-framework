@@ -13,14 +13,15 @@ interface AttachmentProps {
 }
 
 interface AttachmentAttrsProps {
-  name: string;
-  href: string;
-  dataDocumentId: string;
-  dataContentType: string;
+  'name': string;
+  'href': string;
+  'dataDocumentId': string;
+  'dataContentType': string;
+  'data-document-id'?: string;
 }
 
 const AttachmentRenderer = (props: AttachmentProps) => {
-  const { node, editor } = props;
+  const { node, editor, updateAttributes, deleteNode } = props;
   const [attachmentArrayAttrs, setAttachmentArrayAttrs] = useState<
     AttachmentAttrsProps[]
   >(node.attrs.links);
@@ -34,11 +35,34 @@ const AttachmentRenderer = (props: AttachmentProps) => {
     }
   }, [node.attrs.links, attachmentArrayAttrs]);
 
-  const handleDelete = (index: any, documentId: any) => {
-    editor.commands.unsetAttachment(documentId);
-    setAttachmentArrayAttrs((oldAttachments) =>
-      oldAttachments.filter((_, i) => i !== index),
+  const handleDelete = (index: number, documentId: string) => {
+    const nextAttachments = (node.attrs.links ?? []).filter(
+      (link: AttachmentAttrsProps & Record<string, any>, i: number) => {
+        const linkDocumentId =
+          link.dataDocumentId ??
+          link.documentId ??
+          link['data-document-id'] ??
+          link.href;
+
+        return !(
+          i === index ||
+          String(linkDocumentId ?? '') === String(documentId ?? '')
+        );
+      },
     );
+
+    if (nextAttachments.length > 0) {
+      updateAttributes?.({ ...node.attrs, links: nextAttachments });
+    } else {
+      deleteNode?.();
+    }
+
+    // Fallback for environments where node-view helpers are not wired.
+    if (!updateAttributes && !deleteNode) {
+      editor.commands.unsetAttachment(documentId);
+    }
+
+    setAttachmentArrayAttrs(nextAttachments);
   };
 
   return (
@@ -82,7 +106,12 @@ const AttachmentRenderer = (props: AttachmentProps) => {
                           icon={<IconDelete />}
                           variant="ghost"
                           onClick={() =>
-                            handleDelete(index, attachment.dataDocumentId)
+                            handleDelete(
+                              index,
+                              attachment.dataDocumentId ??
+                                attachment['data-document-id'] ??
+                                attachment.href,
+                            )
                           }
                         />
                       )}

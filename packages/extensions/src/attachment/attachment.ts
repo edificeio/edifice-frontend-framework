@@ -118,22 +118,47 @@ export const Attachment = Node.create<AttachmentOptions>({
       unsetAttachment:
         (documentId: string) =>
         ({ state, dispatch }) => {
-          const { selection } = state;
-          const { from, to } = selection;
-          state.doc.nodesBetween(from, to, (node, pos) => {
-            if (node.type.name === this.name && node.attrs.links.length > 1) {
-              const newLinks = node.attrs.links.filter(
-                (link) => link.documentId !== documentId,
-              );
-              if (newLinks.length !== node.attrs.links.length) {
-                const newAttrs = { ...node.attrs, links: newLinks };
-                dispatch(state.tr.setNodeMarkup(pos, undefined, newAttrs));
-              }
-            } else {
-              dispatch(state.tr.delete(from, to));
+          let transaction = state.tr;
+          let hasChanged = false;
+
+          state.doc.descendants((node, pos) => {
+            if (node.type.name !== this.name) {
+              return true;
             }
+
+            const links = node.attrs.links ?? [];
+            const newLinks = links.filter((link) => {
+              const linkDocumentId =
+                link.dataDocumentId ??
+                link.documentId ??
+                link['data-document-id'] ??
+                link.href;
+              return String(linkDocumentId ?? '') !== String(documentId ?? '');
+            });
+
+            if (newLinks.length === links.length) {
+              return true;
+            }
+
+            hasChanged = true;
+
+            if (newLinks.length > 0) {
+              transaction = transaction.setNodeMarkup(pos, undefined, {
+                ...node.attrs,
+                links: newLinks,
+              });
+            } else {
+              transaction = transaction.delete(pos, pos + node.nodeSize);
+            }
+
+            return false;
           });
-          return true;
+
+          if (hasChanged && dispatch) {
+            dispatch(transaction);
+          }
+
+          return hasChanged;
         },
     };
   },
