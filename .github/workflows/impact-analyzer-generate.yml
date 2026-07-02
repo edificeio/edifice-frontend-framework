@@ -1,0 +1,62 @@
+name: "Impact Analyzer: generate (CRON)"
+
+on:
+  schedule:
+    # Nightly, Monday-Friday, 02:00 UTC (plan §9 — "CRON nocturne hors week-end").
+    - cron: "0 2 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout edifice-frontend-framework
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Confidentiality (plan §9): this repo is public, so the index (app
+      # names, file paths, usage volumes for private apps like communities)
+      # is never committed here. It's stored in a separate private repo.
+      - name: Checkout impact-analyzer-data (previous run's cache)
+        uses: actions/checkout@v4
+        with:
+          repository: edificeio/impact-analyzer-data
+          token: ${{ secrets.IMPACT_ANALYZER_DATA_PUSH_TOKEN }}
+          path: impact-analyzer-data
+
+      - name: Generate the CI-mode index
+        working-directory: tools/impact-analyzer
+        env:
+          IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO }}
+          IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG }}
+        # --cache points at the previous run's output (if any) — enables the
+        # incremental cache: an app-branch whose commit hasn't moved is
+        # reused instead of re-cloned/re-analyzed. Missing on the very first
+        # run, which is a plain cache miss for every app (not an error).
+        run: pnpm generate:ci -- --cache=../../impact-analyzer-data/index.develop.json
+
+      - name: Publish the new index to the data repo
+        working-directory: impact-analyzer-data
+        run: |
+          cp ../tools/impact-analyzer/data/index.develop.json index.develop.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+          else
+            git commit -m "chore: refresh impact-analyzer index"
+            git push
+          fi

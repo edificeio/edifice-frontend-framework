@@ -19,6 +19,7 @@ function makeIndex(ffBranch: string): ImpactIndex {
     outOfContractImports: [],
     cssComponents: [],
     cssGlobalRisks: [],
+    appStates: [],
   };
 }
 

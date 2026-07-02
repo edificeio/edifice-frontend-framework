@@ -38,6 +38,7 @@ function makeHeadIndex(symbols: Partial<SymbolEntry>[] = []): ImpactIndex {
     outOfContractImports: [],
     cssComponents: [],
     cssGlobalRisks: [],
+    appStates: [],
   };
 }
 

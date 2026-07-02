@@ -4,12 +4,13 @@ Cartographie, pour chaque export public des packages `@edifice.io/*`, quelles
 apps React consommatrices l'utilisent, où, et avec quel niveau de risque.
 Voir `PLAN-impact-analyzer.md` à la racine du repo pour le cadrage complet.
 
-Ce package couvre les **Jalons 0 à 3, 5 et 7** du plan (mode local complet),
-et un **périmètre partiel du Jalon 4** : la discovery distante via l'API
-GitHub Contents (`--mode=ci`), testable manuellement avec un token personnel.
-Restent hors scope : le workflow GitHub Actions CRON, le cache incrémental
-par SHA, et le Jalon 6 (commentaire PR, canal de diffusion QA — décision
-encore ouverte).
+Ce package couvre les **Jalons 0 à 5 et 7** du plan : mode local complet,
+discovery distante via l'API GitHub Contents (`--mode=ci`), cache incrémental
+par SHA, résilience aux échecs partiels, et automatisation via un workflow
+GitHub Actions CRON. Reste hors scope : le **Jalon 6** (commentaire PR,
+rapport QA, canal de diffusion — décision encore ouverte) et l'hébergement
+d'un viewer **partagé** (bloqué par la confidentialité de certaines apps
+consommatrices — voir "CRON" ci-dessous).
 
 ## Prérequis
 
@@ -48,8 +49,14 @@ tsx src/cli.ts symbol Dropdown              # recherche un symbole, régénère 
 tsx src/cli.ts symbol Dropdown --cached     # relit data/index.<branche>.json au lieu de régénérer
 tsx src/cli.ts diff --base=develop          # classification 🔴/🟠/🟡 + score de risque (défaut: develop)
 
-# Mode distant (Jalon 4 partiel) — voir section dédiée ci-dessous
+# Mode distant (Jalon 4) — voir section dédiée ci-dessous
 pnpm --filter @edifice.io/impact-analyzer generate:ci
+
+# Idem, avec cache incrémental par SHA (--mode=ci uniquement) : une app-branche
+# dont le commit n'a pas bougé depuis l'index passé en --cache est réutilisée
+# telle quelle plutôt que re-clonée/ré-analysée. Fichier absent ou introuvable
+# → simplement ignoré (premier run, cache miss pour tout le monde).
+pnpm --filter @edifice.io/impact-analyzer generate:ci -- --cache=data/index.develop.json
 ```
 
 L'index est écrit dans `data/index.<branche-ff-courante>.json` (gitignored,
@@ -69,10 +76,7 @@ branches interroger à distance (cf. ci-dessous).
 
 ## Mode distant (`--mode=ci`)
 
-Périmètre volontairement restreint : rendre la discovery distante
-fonctionnelle et testable manuellement, **sans** CRON GitHub Actions ni
-cache incrémental par SHA (chaque run re-scanne/re-clone tout). Différences
-avec le mode local :
+Différences avec le mode local :
 - Les apps sont découvertes via l'**API GitHub Contents** (pas de repo
   frère nécessaire sur disque) : pour chaque app × chaque branche listée
   dans son `apps.json.branches` (nom réel par app, jamais recoupé avec une
@@ -91,6 +95,22 @@ avec le mode local :
   tourne dans ce repo, jamais besoin d'API pour le FF.
 - `appDirty` vaut toujours `false` en mode CI (un clone frais n'est jamais
   dirty).
+- **Cache incrémental par SHA** (`--cache=<index.json>`) : chaque app-branche
+  scannée avec succès est enregistrée dans `ImpactIndex.appStates` (commit
+  effectivement scanné). Au run suivant, si le commit courant d'une
+  app-branche matche son `appStates` précédent, elle n'est **ni clonée ni
+  ré-analysée** — ses `ConsumerEntry`/`CssConsumerEntry`/`OutOfContractImport`
+  sont recopiés tels quels depuis l'index précédent (`carry-forward.ts`,
+  matché par `package|entry|name` pour les symboles et par `file` pour les
+  composants CSS — un symbole/fichier disparu de la FF perd juste son
+  consumer recopié, sans erreur).
+- **Résilience aux échecs partiels** : un échec (clone KO, tsconfig
+  introuvable, analyse qui lève) devient un `scanError` comme avant, mais si
+  une donnée précédente existe pour cette app-branche, elle est recopiée en
+  secours et le `scanError` porte `staleSince` (horodatage de l'index dont
+  la donnée provient) — l'app ne disparaît jamais silencieusement du rapport.
+  `appStates` garde alors l'**ancien** commit, pour qu'un vrai scan soit
+  retenté au run suivant plutôt que de considérer la donnée comme à jour.
 
 **Configuration des credentials** : un fine-grained PAT n'a qu'un seul
 owner, donc un token par org GitHub du registre. Copier `.env.example` en
@@ -145,9 +165,40 @@ d'échec (message d'erreur générique).
 
 **Limites explicites de ce périmètre** : séquentiel (pas de gestion de
 rate-limit/concurrence — ~9 apps × 2 branches × 2 fichiers reste très en
-dessous des 5000 req/h authentifiées), pas de cache (chaque `generate
---mode=ci` reclone tout, plus lent que le mode local), pas encore de CRON
-ni de résilience CI complète.
+dessous des 5000 req/h authentifiées).
+
+## CRON (GitHub Actions)
+
+`.github/workflows/impact-analyzer-generate.yml` — nocturne, du lundi au
+vendredi (`0 2 * * 1-5`, plan §9), + déclenchement manuel
+(`workflow_dispatch`). Checkout de ce repo sur `develop`, `pnpm generate:ci`
+avec le cache incrémental branché sur le run précédent.
+
+**Confidentialité (décision actée)** : ce repo est **public**, et l'index
+référence des infos sur des apps privées (`communities`, `collect`...). Le
+publier tel quel ici (branche, artifact, ou GitHub Pages) les exposerait
+publiquement. L'index est donc poussé dans un **repo privé dédié**,
+`edificeio/impact-analyzer-data` — jamais dans ce repo. Conséquence directe :
+**pas de viewer hébergé partagé** pour l'instant (GitHub Pages n'est pas
+disponible pour un repo privé sur le plan **Free** de l'org `edificeio` —
+vérifié). Le viewer (`viewer/`, Jalon 3) continue de tourner en local,
+pointé sur un clone de ce repo de données. Réévaluer si l'outil se
+pérennise (upgrade de plan, ou infra d'hébergement privé dédiée).
+
+**Secrets requis** sur `edifice-frontend-framework`
+(Settings → Secrets and variables → Actions) :
+- `IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` / `IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG`
+  — les mêmes fine-grained PAT lecture seule que pour un usage local (voir
+  ci-dessus).
+- `IMPACT_ANALYZER_DATA_PUSH_TOKEN` — **nouveau** fine-grained PAT dédié,
+  scope repos = **uniquement** `edificeio/impact-analyzer-data`, permission
+  Contents = **Read and write** (c'est le seul des trois qui a besoin
+  d'écrire).
+
+Le job ne peut pas échouer à cause de `scanErrors` (l'app en échec est
+signalée, jamais un exit code non-zéro) — cohérent avec le principe de
+résilience : un échec isolé sur ~10 apps est à attendre presque chaque nuit,
+il ne doit jamais bloquer la publication du reste.
 
 ## Architecture
 
@@ -176,7 +227,10 @@ ni de résilience CI complète.
   (mode local) et `build-ci-index.ts` (mode distant) partagent
   `aggregate-icon-consumers.ts` et réutilisent `analyzeAppUsage`/`buildCssMap`
   à l'identique — seule la provenance des sources (repo frère vs clone
-  jetable) diffère.
+  jetable) diffère. `carry-forward.ts` implémente le cache incrémental de
+  `--mode=ci` : recopie les `ConsumerEntry`/`CssConsumerEntry`/
+  `OutOfContractImport` d'une app-branche depuis l'index précédent quand son
+  commit n'a pas bougé, ou en secours (`staleSince`) si le scan échoue.
 - `src/diff/` — classification de diff base vs head (Jalon 5) :
   `snapshot.ts` matérialise `base` dans un `git worktree` jetable (jamais de
   mutation du worktree principal), `signature-shape.ts`/
@@ -211,9 +265,10 @@ car cette convention diffère par package FF (voir commentaires dans
   par composant, jamais présenté comme exhaustif.
 - **Une seule passe de profondeur** pour les ré-exports internes à une app
   (pas de récursion sur tout son graphe applicatif).
-- **Mode local uniquement** : reflète l'état du disque au moment du run, pas
-  forcément synchronisé avec un dernier index CI (qui n'existe pas encore —
-  Jalon 4).
+- **Fraîcheur local vs CI** : le mode local reflète l'état du disque à
+  l'instant du run (jamais périmé par définition) ; l'index CI généré par le
+  CRON peut avoir jusqu'à ~24h de décalage (nocturne, hors week-end) — les
+  deux ne sont pas synchronisés automatiquement entre eux.
 - **Registre manuel** : rien ne garantit qu'une nouvelle app migrée soit
   ajoutée à `apps.json` au bon moment.
 - **Classification de diff par symbole directement touché, pas de
@@ -230,10 +285,9 @@ car cette convention diffère par package FF (voir commentaires dans
 - **Fichier CSS composant supprimé entre base et head** : reste dans le
   rapport de diff, mais avec une confiance indéterminée (repli `needs-review`)
   plutôt que d'être silencieusement omis.
-- **Mode distant sans cache ni CRON** : chaque `generate --mode=ci` refait
-  toute la discovery et re-clone tout, aucune optimisation incrémentale par
-  SHA — attendu pour ce périmètre restreint, à traiter dans une itération
-  future une fois le mode distant validé en conditions réelles.
-- **Pas encore** de workflow GitHub Actions, de commentaire automatique sur
-  PR, de rapport QA formel, ni de canal de diffusion — reste du Jalon 4 et
-  Jalon 6, hors scope de cette passe (canal QA encore à trancher).
+- **Jalon 6 hors scope** : pas de commentaire automatique sur PR, de rapport
+  QA formel, ni de canal de diffusion — décision encore ouverte.
+- **Pas de viewer hébergé partagé** : la confidentialité de certaines apps
+  consommatrices (`communities`, `collect`...) bloque toute publication sur
+  ce repo public ; l'index CRON vit dans un repo privé dédié, le viewer
+  reste un usage local (voir section "CRON" ci-dessus).

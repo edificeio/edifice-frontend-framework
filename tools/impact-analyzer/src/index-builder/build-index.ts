@@ -153,5 +153,6 @@ export function buildLocalIndex(
     outOfContractImports,
     cssComponents,
     cssGlobalRisks,
+    appStates: [], // local mode has no incremental cache — always a full scan of disk state.
   };
 }

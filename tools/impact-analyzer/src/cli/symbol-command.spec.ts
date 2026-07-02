@@ -54,6 +54,7 @@ function makeIndex(): ImpactIndex {
     outOfContractImports: [],
     cssComponents: [],
     cssGlobalRisks: [],
+    appStates: [],
   };
 }
 

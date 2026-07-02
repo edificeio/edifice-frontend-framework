@@ -12,6 +12,7 @@ export interface ImpactIndex {
   outOfContractImports: OutOfContractImport[];
   cssComponents: CssComponentEntry[];
   cssGlobalRisks: CssGlobalRisk[];
+  appStates: AppBranchState[];
 }
 
 export interface ScanError {
@@ -19,6 +20,18 @@ export interface ScanError {
   branch: string | null;
   error: string;
   staleSince?: string;
+}
+
+/**
+ * Records the commit actually scanned for an (app, branch) pair — the
+ * incremental cache key. `--mode=ci` skips re-cloning/re-analyzing when the
+ * current branch head matches this commit, and reuses the previous run's
+ * consumer/CSS data instead (carry-forward, see carry-forward.ts).
+ */
+export interface AppBranchState {
+  app: string;
+  branch: string;
+  commit: string;
 }
 
 export type SymbolKind = 'component' | 'hook' | 'type' | 'util' | 'const';
