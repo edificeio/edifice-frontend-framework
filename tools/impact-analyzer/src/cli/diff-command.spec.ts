@@ -41,34 +41,63 @@ describe('runDiff', () => {
     process.exitCode = undefined;
   });
 
-  it('prints a neutral message and exits 0 when nothing changed', () => {
-    runDiff({ base: 'develop' }, makeReport());
+  it('prints a neutral message and exits 0 when nothing changed', async () => {
+    await runDiff({ base: 'develop' }, makeReport());
     expect(logs.some((l) => l.includes('No breaking or risky changes'))).toBe(
       true,
     );
     expect(process.exitCode).toBeUndefined();
   });
 
-  it('always persists the report, even when nothing changed', () => {
+  it('always persists the report, even when nothing changed', async () => {
     const report = makeReport();
-    runDiff({ base: 'develop' }, report);
+    await runDiff({ base: 'develop' }, report);
 
     expect(writeDiffReport).toHaveBeenCalledWith(report);
     expect(logs.some((l) => l.includes('Wrote'))).toBe(true);
   });
 
-  it('does not persist anything when the report could not be built', () => {
+  it('does not persist anything when the report could not be built', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.mocked(buildDiffReport).mockImplementation(() => {
       throw new Error('some other unexpected failure');
     });
 
-    runDiff({ base: 'develop' });
+    await runDiff({ base: 'develop' });
 
     expect(writeDiffReport).not.toHaveBeenCalled();
   });
 
-  it('renders symbol diffs sorted as provided (already sorted by the report), with severity emoji', () => {
+  it('defaults to local mode and passes it through to buildDiffReport', async () => {
+    vi.mocked(buildDiffReport).mockResolvedValue(makeReport());
+
+    await runDiff({ base: 'develop' });
+
+    expect(buildDiffReport).toHaveBeenCalledWith('develop', undefined, {
+      mode: 'local',
+    });
+  });
+
+  it('passes mode: ci through to buildDiffReport when requested', async () => {
+    vi.mocked(buildDiffReport).mockResolvedValue(makeReport());
+
+    await runDiff({ base: 'develop', mode: 'ci' });
+
+    expect(buildDiffReport).toHaveBeenCalledWith('develop', undefined, {
+      mode: 'ci',
+    });
+  });
+
+  it('rejects an unknown mode without calling buildDiffReport', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await runDiff({ base: 'develop', mode: 'bogus' });
+
+    expect(process.exitCode).toBe(1);
+    expect(buildDiffReport).not.toHaveBeenCalled();
+  });
+
+  it('renders symbol diffs sorted as provided (already sorted by the report), with severity emoji', async () => {
     const report = makeReport({
       symbolDiffs: [
         {
@@ -89,7 +118,7 @@ describe('runDiff', () => {
       ],
     });
 
-    runDiff({ base: 'develop' }, report);
+    await runDiff({ base: 'develop' }, report);
     const table = logs.find((l) => l.includes('Dropdown'));
     expect(table).toContain('🔴');
     expect(table).toContain('removed');
@@ -101,7 +130,7 @@ describe('runDiff', () => {
     ).toBe(true);
   });
 
-  it('truncates a long app list beyond 5 entries', () => {
+  it('truncates a long app list beyond 5 entries', async () => {
     const report = makeReport({
       cssDiffs: [
         {
@@ -115,12 +144,12 @@ describe('runDiff', () => {
       ],
     });
 
-    runDiff({ base: 'develop' }, report);
+    await runDiff({ base: 'develop' }, report);
     const table = logs.find((l) => l.includes('themes/_x.scss'));
     expect(table).toContain('a, b, c, d, e +2 more');
   });
 
-  it('gives a contextualized error and exits 1 when the base ref cannot be found', () => {
+  it('gives a contextualized error and exits 1 when the base ref cannot be found', async () => {
     const errors: string[] = [];
     vi.spyOn(console, 'error').mockImplementation((msg: string) => {
       errors.push(msg);
@@ -129,13 +158,13 @@ describe('runDiff', () => {
       throw new Error('fatal: invalid reference: this-ref-does-not-exist-xyz');
     });
 
-    runDiff({ base: 'this-ref-does-not-exist-xyz' });
+    await runDiff({ base: 'this-ref-does-not-exist-xyz' });
 
     expect(process.exitCode).toBe(1);
     expect(errors.some((e) => e.includes('not found locally'))).toBe(true);
   });
 
-  it('prints the raw error message for an unrelated failure', () => {
+  it('prints the raw error message for an unrelated failure', async () => {
     const errors: string[] = [];
     vi.spyOn(console, 'error').mockImplementation((msg: string) => {
       errors.push(msg);
@@ -144,7 +173,7 @@ describe('runDiff', () => {
       throw new Error('some other unexpected failure');
     });
 
-    runDiff({ base: 'develop' });
+    await runDiff({ base: 'develop' });
 
     expect(process.exitCode).toBe(1);
     expect(errors).toEqual(['some other unexpected failure']);

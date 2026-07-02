@@ -28,7 +28,7 @@ async function main(): Promise<void> {
       runSymbol(rest.join(' '), { cached: values.cached ?? false });
       return;
     case 'diff':
-      runDiff({ base: values.base ?? 'develop' });
+      await runDiff({ base: values.base ?? 'develop', mode: values.mode });
       return;
     default:
       console.error(
@@ -36,7 +36,7 @@ async function main(): Promise<void> {
           'Usage:\n' +
           '  cli.ts generate --mode=local|ci [--cache=<path-to-previous-index.json>]\n' +
           '  cli.ts symbol <name> [--cached]\n' +
-          '  cli.ts diff [--base=<ref>]',
+          '  cli.ts diff [--base=<ref>] [--mode=local|ci]',
       );
       process.exitCode = 1;
   }

@@ -2,13 +2,18 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   cleanupTempDir,
   createTempGitRepo,
   writePackageJson,
 } from '../discovery/test-utils.js';
+import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import { buildDiffReport } from './build-diff-report.js';
+
+vi.mock('../index-builder/build-ci-index.js', () => ({
+  buildCiIndex: vi.fn(),
+}));
 
 const ffFixtureDir = fileURLToPath(
   new URL('../../test/fixtures/ff-fixture', import.meta.url),
@@ -81,7 +86,7 @@ describe('buildDiffReport', () => {
     else process.env.IMPACT_ANALYZER_REPOS_ROOT = originalReposRoot;
   });
 
-  it('reports a signature change on Button with consumers/riskScore from the head index', () => {
+  it('reports a signature change on Button with consumers/riskScore from the head index', async () => {
     const baseCommit = execFileSync(
       'git',
       ['-C', ffRepoRoot, 'rev-parse', 'HEAD'],
@@ -114,7 +119,7 @@ describe('buildDiffReport', () => {
       },
     ];
 
-    const report = buildDiffReport(baseCommit, apps, {
+    const report = await buildDiffReport(baseCommit, apps, {
       repoRoot: ffRepoRoot,
       ffPackages: [{ packageDirName: 'fixture-pkg' }],
       ffEntryMap: FIXTURE_ENTRY_MAP,
@@ -134,7 +139,7 @@ describe('buildDiffReport', () => {
     expect(buttonDiff?.riskScore).toBe(10 * (1 + 1) * (1 + 1));
   });
 
-  it('sorts symbolDiffs by riskScore descending across mixed severities', () => {
+  it('sorts symbolDiffs by riskScore descending across mixed severities', async () => {
     const baseCommit = execFileSync(
       'git',
       ['-C', ffRepoRoot, 'rev-parse', 'HEAD'],
@@ -175,7 +180,7 @@ describe('buildDiffReport', () => {
       },
     ];
 
-    const report = buildDiffReport(baseCommit, apps, {
+    const report = await buildDiffReport(baseCommit, apps, {
       repoRoot: ffRepoRoot,
       ffPackages: [{ packageDirName: 'fixture-pkg' }],
       ffEntryMap: FIXTURE_ENTRY_MAP,
@@ -189,5 +194,39 @@ describe('buildDiffReport', () => {
     expect(report.symbolDiffs.find((d) => d.name === 'Button')?.severity).toBe(
       'needs-review',
     );
+  });
+
+  it('uses buildCiIndex for head discovery when mode is "ci", instead of local sibling repos', async () => {
+    const baseCommit = execFileSync(
+      'git',
+      ['-C', ffRepoRoot, 'rev-parse', 'HEAD'],
+      { encoding: 'utf-8' },
+    ).trim();
+
+    vi.mocked(buildCiIndex).mockResolvedValue({
+      schemaVersion: 1,
+      generatedAt: '2026-07-02T00:00:00.000Z',
+      mode: 'ci',
+      ffBranch: 'feat-x',
+      ffCommit: 'deadbeef',
+      ffDirty: false,
+      packages: [],
+      scanErrors: [],
+      symbols: [],
+      outOfContractImports: [],
+      cssComponents: [],
+      cssGlobalRisks: [],
+      appStates: [],
+    });
+
+    const report = await buildDiffReport(baseCommit, [], {
+      repoRoot: ffRepoRoot,
+      ffPackages: [{ packageDirName: 'fixture-pkg' }],
+      ffEntryMap: FIXTURE_ENTRY_MAP,
+      mode: 'ci',
+    });
+
+    expect(buildCiIndex).toHaveBeenCalledTimes(1);
+    expect(report.head.commit).toBe('deadbeef');
   });
 });

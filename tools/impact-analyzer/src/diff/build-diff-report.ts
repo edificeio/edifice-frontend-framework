@@ -1,6 +1,8 @@
 import { join } from 'node:path';
+import type { GithubClientOptions } from '../discovery/github-client.js';
 import { buildFfDeclarationsMap } from '../ff-map/build-ff-declarations-map.js';
 import { currentFfRepoRoot } from '../ff-map/entry-points.js';
+import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import {
   type BuildIndexOptions,
   buildLocalIndex,
@@ -16,23 +18,31 @@ import { cleanupSnapshot, createSnapshot } from './snapshot.js';
 import { diffSymbols } from './symbol-diff.js';
 
 export interface BuildDiffReportOptions extends BuildIndexOptions {
-  /** Overridable for tests — otherwise buildLocalIndex() is run for head. */
+  /** Overridable for tests — otherwise buildLocalIndex()/buildCiIndex() is run for head, per `mode`. */
   headIndex?: ImpactIndex;
+  /** How to discover head's consumer apps — local sibling repos (default) or the remote GitHub API, same distinction as `generate`. */
+  mode?: 'local' | 'ci';
+  githubClientOptions?: GithubClientOptions;
 }
 
 /**
  * Builds a base-vs-head diff report: snapshots `baseRef` into a disposable
  * worktree, re-extracts the FF symbol declarations there, compares against
- * head (buildLocalIndex, run once and reused for both the JS/TS and CSS
- * comparisons), and always cleans up the snapshot — even on failure.
+ * head (buildLocalIndex/buildCiIndex, run once and reused for both the
+ * JS/TS and CSS comparisons), and always cleans up the snapshot — even on
+ * failure.
  */
-export function buildDiffReport(
+export async function buildDiffReport(
   baseRef: string,
   apps: RegisteredApp[] = loadAppsRegistry(),
   options: BuildDiffReportOptions = {},
-): DiffReport {
+): Promise<DiffReport> {
   const repoRoot = options.repoRoot ?? currentFfRepoRoot();
-  const headIndex = options.headIndex ?? buildLocalIndex(apps, options);
+  const headIndex =
+    options.headIndex ??
+    (options.mode === 'ci'
+      ? await buildCiIndex(apps, options)
+      : buildLocalIndex(apps, options));
 
   const snapshot = createSnapshot(repoRoot, baseRef);
   try {

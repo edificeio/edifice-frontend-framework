@@ -5,6 +5,7 @@ import { renderTable } from './format-table.js';
 
 export interface DiffCommandOptions {
   base: string;
+  mode?: string;
 }
 
 const SEVERITY_EMOJI: Record<DiffSeverity, string> = {
@@ -68,20 +69,28 @@ function printCssDiffs(report: DiffReport): void {
 }
 
 /**
- * `impact diff [--base=<ref>]`. `reportOverride` exists purely for tests —
- * mirrors the injectability pattern already used for `runSymbol`.
+ * `impact diff [--base=<ref>] [--mode=local|ci]`. `reportOverride` exists
+ * purely for tests — mirrors the injectability pattern already used for
+ * `runSymbol`.
  */
-export function runDiff(
+export async function runDiff(
   options: DiffCommandOptions,
   reportOverride?: DiffReport,
-): void {
+): Promise<void> {
+  const mode = options.mode ?? 'local';
+  if (mode !== 'local' && mode !== 'ci') {
+    console.error(`Unknown mode "${mode}". Supported: local, ci.`);
+    process.exitCode = 1;
+    return;
+  }
+
   let report: DiffReport;
 
   if (reportOverride) {
     report = reportOverride;
   } else {
     try {
-      report = buildDiffReport(options.base);
+      report = await buildDiffReport(options.base, undefined, { mode });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       if (

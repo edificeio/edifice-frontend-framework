@@ -5,12 +5,13 @@ apps React consommatrices l'utilisent, où, et avec quel niveau de risque.
 Voir `PLAN-impact-analyzer.md` à la racine du repo pour le cadrage complet.
 
 Ce package couvre les **Jalons 0 à 5 et 7** du plan : mode local complet,
-discovery distante via l'API GitHub Contents (`--mode=ci`), cache incrémental
-par SHA, résilience aux échecs partiels, et automatisation via un workflow
-GitHub Actions CRON. Reste hors scope : le **Jalon 6** (commentaire PR,
-rapport QA, canal de diffusion — décision encore ouverte) et l'hébergement
-d'un viewer **partagé** (bloqué par la confidentialité de certaines apps
-consommatrices — voir "CRON" ci-dessous).
+discovery distante via l'API GitHub Contents (`--mode=ci`, pour `generate`
+**et** `diff`), cache incrémental par SHA, résilience aux échecs partiels, et
+automatisation via un workflow GitHub Actions CRON. **Jalon 6 en cours** :
+viewer hébergé en interne (périmètre retenu, pas de commentaire PR ni
+d'export QA séparé) — bloqué sur le choix d'hébergement/stockage côté infra,
+lui-même bloqué par la confidentialité de certaines apps consommatrices (voir
+"CRON" et "Limites connues" ci-dessous).
 
 ## Prérequis
 
@@ -49,6 +50,9 @@ tsx src/cli.ts symbol Dropdown              # recherche un symbole, régénère 
 tsx src/cli.ts symbol Dropdown --cached     # relit data/index.<branche>.json au lieu de régénérer
 tsx src/cli.ts diff --base=develop          # classification 🔴/🟠/🟡 + score de risque (défaut: develop)
                                              # écrit aussi data/diff.<base>..<head>.json pour le viewer
+tsx src/cli.ts diff --base=develop --mode=ci  # idem, mais découvre les apps consommatrices via l'API
+                                               # GitHub au lieu des repos frères sur disque (mêmes crédentials
+                                               # que generate --mode=ci) — pour tourner en CI, sans repos clonés
 
 # Mode distant (Jalon 4) — voir section dédiée ci-dessous
 pnpm --filter @edifice.io/impact-analyzer generate:ci
@@ -296,9 +300,17 @@ car cette convention diffère par package FF (voir commentaires dans
 - **Fichier CSS composant supprimé entre base et head** : reste dans le
   rapport de diff, mais avec une confiance indéterminée (repli `needs-review`)
   plutôt que d'être silencieusement omis.
-- **Jalon 6 hors scope** : pas de commentaire automatique sur PR, de rapport
-  QA formel, ni de canal de diffusion — décision encore ouverte.
-- **Pas de viewer hébergé partagé** : la confidentialité de certaines apps
-  consommatrices (`communities`, `collect`...) bloque toute publication sur
-  ce repo public ; l'index CRON vit dans un repo privé dédié, le viewer
-  reste un usage local (voir section "CRON" ci-dessus).
+- **Jalon 6 en cours** : périmètre retenu = viewer hébergé en interne
+  uniquement (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci`
+  est prêt (ce commit) ; restent à faire : le workflow GitHub Actions
+  déclenché sur `pull_request` qui l'appelle et pousse le résultat, et le
+  choix du stockage/hébergement — **en attente de la réponse infra** (accès
+  restreint requis, cf. contrainte de confidentialité ci-dessous). Rétention
+  actée : illimitée, un fichier par PR (paire branche origine/destination) —
+  projection à ~12 Mo après 5 ans au rythme actuel du repo, donc sans enjeu
+  de volumétrie.
+- **Pas de viewer hébergé partagé pour l'instant** : la confidentialité de
+  certaines apps consommatrices (`communities`, `collect`...) bloque toute
+  publication sur ce repo public ; l'index et les diffs CRON vivent dans un
+  repo privé dédié, le viewer reste un usage local en attendant l'hébergement
+  interne du Jalon 6 (voir section "CRON" ci-dessus).
