@@ -78,13 +78,18 @@ impact-analyzer-viewer: # alias déclaré dans Chart.yaml (cf. Chart.yaml.exampl
     - name: REFRESH_INTERVAL_SECONDS
       value: "300"
 
-  # Cluster cible : k8s-preprod-services (OVH) -> Vault. SRE monte le PAT
-  # GitHub (fine-grained, lecture seule, scopé à edificeio/impact-analyzer-data)
-  # une fois fourni. Reste à vérifier au premier déploiement : le nom exact du
-  # Secret Kubernetes généré et sa clé, pour l'exposer en DATA_REPO_GITHUB_TOKEN
-  # (probablement via une entrée extraEnvs avec secretKeyRef — à confirmer
-  # avec SRE, cf. templates/deployment.yaml du chart modèle).
+  # Cluster cible : k8s-preprod-services (OVH) -> Vault. Le PAT GitHub
+  # (fine-grained, lecture seule, scopé à edificeio/impact-analyzer-data) est
+  # stocké dans Vault par SRE, synchronisé vers un Secret Kubernetes du même
+  # nom via vaultSecrets, exposé en DATA_REPO_GITHUB_TOKEN via extraEnvs.
   vaultSecrets:
     - name: "impact-analyzer-data-token"
-      path: "cluster/preprod-services/impact-analyzer-viewer/data-token"
+      path: "cluster/preprod-services/impact-analyzer-viewer/github-pat"
       mount: "k8s_infra"
+
+  extraEnvs:
+    - name: DATA_REPO_GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: impact-analyzer-data-token
+          key: token
