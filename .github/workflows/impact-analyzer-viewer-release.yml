@@ -18,11 +18,19 @@ env:
 jobs:
   build-scan-push:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ github.event.inputs.image_tag || github.ref_name }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # A tag push gives the FULL tag name in github.ref_name (e.g.
+      # "impact-analyzer-viewer-v0.1.0") — strip the package prefix to get
+      # just the version for the Docker tag ("0.1.0"), matching
+      # values.yaml.example's image.tag. A manual workflow_dispatch value
+      # (no such prefix) passes through unchanged.
+      - name: Compute image tag
+        run: |
+          RAW="${{ github.event.inputs.image_tag || github.ref_name }}"
+          echo "IMAGE_TAG=${RAW#impact-analyzer-viewer-v}" >> "$GITHUB_ENV"
 
       - name: Log in to Docker registry
         run: echo "${{ secrets.CI_REGISTRY_PASSWORD }}" | docker login ${{ env.CI_REGISTRY }} -u "${{ secrets.CI_REGISTRY_USER }}" --password-stdin
