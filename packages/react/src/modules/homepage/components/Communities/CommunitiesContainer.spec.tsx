@@ -26,7 +26,7 @@ describe('CommunitiesContainer', () => {
       error: null,
     });
 
-    render(<CommunitiesContainer />);
+    render(<CommunitiesContainer onHeaderActionClick={vi.fn()} />);
 
     expect(screen.getByText('My community')).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument();
