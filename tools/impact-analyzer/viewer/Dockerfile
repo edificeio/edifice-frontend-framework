@@ -14,8 +14,12 @@ FROM node:22-slim AS build
 WORKDIR /workspace
 RUN corepack enable
 
+# pnpm-lock.yaml is intentionally NOT committed in this repo (gitignored) —
+# every other workflow here uses plain `pnpm install` for the same reason;
+# --frozen-lockfile would fail in a clean checkout with no lockfile to
+# freeze against.
 COPY . .
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 RUN pnpm --filter @edifice.io/impact-analyzer-viewer build
 
 # Keep this version in sync with `prom-client` in the root pnpm-workspace.yaml catalog.
