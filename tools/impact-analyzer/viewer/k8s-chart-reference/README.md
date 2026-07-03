@@ -13,7 +13,7 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
 - [x] Dépôt `chart-impact-analyzer-viewer` créé sur gitlab-infra.
 - [x] Secrets GitHub Actions ajoutés (`CI_REGISTRY_USER`, `CI_REGISTRY_PASSWORD`).
 - [x] PAT `DATA_REPO_GITHUB_TOKEN` créé et transmis à SRE, stocké dans Vault.
-- [ ] `Chart.yaml`/`values.yaml` copiés dans le dépôt gitlab-infra
+- [x] `Chart.yaml`/`values.yaml` copiés dans le dépôt gitlab-infra
       (`Chart.yaml.example`/`values.yaml.example` de ce dossier).
 - [ ] `helm dependency build` vérifié.
 - [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte.
