@@ -15,7 +15,7 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
 - [x] PAT `DATA_REPO_GITHUB_TOKEN` créé et transmis à SRE, stocké dans Vault.
 - [x] `Chart.yaml`/`values.yaml` copiés dans le dépôt gitlab-infra
       (`Chart.yaml.example`/`values.yaml.example` de ce dossier).
-- [ ] `helm dependency build` vérifié.
+- [x] `helm dependency build` vérifié.
 - [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte.
 - [ ] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo pour
       déclencher le premier build/scan/push réel de l'image.
