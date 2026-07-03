@@ -1,13 +1,12 @@
 # Référence pour le futur dépôt Helm dédié (gitlab-infra.ode.tools) — à
-# copier et compléter là-bas, PAS un fichier consommé par ce repo. Les
-# TODO ci-dessous sont les points encore ouverts avec l'équipe SRE
-# (cf. PLAN ENABLING-1023, section "points explicitement laissés ouverts").
+# copier et compléter là-bas, PAS un fichier consommé par ce repo.
+# Config validée par SRE (cluster k8s-preprod-services, Vault, Gateway).
 
-boilerplate-deployment:
+impact-analyzer-viewer: # alias déclaré dans Chart.yaml (cf. Chart.yaml.example)
   replicaCount: 1
 
   image:
-    repository: maven.opendigitaleducation.com/docker/repository/sre-docker-hosted/impact-analyzer-viewer
+    repository: maven.opendigitaleducation.com/enabling/impact-analyzer-viewer
     # Garder synchronisé avec le tag Git poussé (ex. tag impact-analyzer-viewer-v0.1.0 -> tag image "0.1.0").
     tag: "0.1.0"
 
@@ -24,15 +23,12 @@ boilerplate-deployment:
   ingress:
     enabled: false
 
-  # TODO (SRE) : nom exact du Gateway à référencer dans parentRefs, et
-  # hostname public/interne à utiliser. namespace/sectionName ont déjà des
-  # défauts corrects dans le chart modèle (envoy / https).
   httpRoutes:
     - name: impact-analyzer-viewer
       parentRefs:
-        - name: "TODO-nom-du-gateway"
+        - name: private-gateway
       hostnames:
-        - "TODO-hostname.ode.tools"
+        - impact-analyzer-viewer.ode.tools
       rules:
         - matches:
             - path:
@@ -82,25 +78,13 @@ boilerplate-deployment:
     - name: REFRESH_INTERVAL_SECONDS
       value: "300"
 
-  # TODO (SRE) : DATA_REPO_GITHUB_TOKEN (fine-grained PAT lecture seule,
-  # scopé UNIQUEMENT à edificeio/impact-analyzer-data — distinct du token
-  # lecture/écriture utilisé par le CRON GitHub Actions) doit être injecté
-  # en tant que Secret, jamais en dur ici. Le chart modèle propose deux
-  # mécanismes selon le cluster cible (à confirmer avec SRE) :
-  #
-  # - Vault (clusters OVH) :
-  #   vaultSecrets:
-  #     - name: "impact-analyzer-data-token"
-  #       path: "cluster/xxxxxx/impact-analyzer-viewer/data-token"
-  #       mount: "k8s_infra"
-  #
-  # - Scaleway Secrets Manager :
-  #   scwExternalSecrets:
-  #     - name: "impact-analyzer-data-token"
-  #       dataFrom:
-  #         key: "path:/impact-analyzer-viewer/data-token"
-  #
-  # Dans les deux cas, vérifier avec SRE le nom du Secret Kubernetes
-  # résultant et la clé exacte à référencer pour l'exposer en env var via
-  # secretKeyRef (cf. templates/deployment.yaml du chart modèle) — pas
-  # confirmé dans cette passe, à valider avant le premier déploiement réel.
+  # Cluster cible : k8s-preprod-services (OVH) -> Vault. SRE monte le PAT
+  # GitHub (fine-grained, lecture seule, scopé à edificeio/impact-analyzer-data)
+  # une fois fourni. Reste à vérifier au premier déploiement : le nom exact du
+  # Secret Kubernetes généré et sa clé, pour l'exposer en DATA_REPO_GITHUB_TOKEN
+  # (probablement via une entrée extraEnvs avec secretKeyRef — à confirmer
+  # avec SRE, cf. templates/deployment.yaml du chart modèle).
+  vaultSecrets:
+    - name: "impact-analyzer-data-token"
+      path: "cluster/preprod-services/impact-analyzer-viewer/data-token"
+      mount: "k8s_infra"

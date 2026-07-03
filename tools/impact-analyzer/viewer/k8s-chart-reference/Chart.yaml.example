@@ -1,9 +1,11 @@
 apiVersion: v2
 name: impact-analyzer-viewer
-description: Chart de déploiement pour le viewer Impact Analyzer (ENABLING-1023, Jalon 6)
+description: Chart de déploiement pour le viewer Impact Analyzer
 version: 0.1.0
 appVersion: "0.1.0"
 dependencies:
   - name: boilerplate-deployment
     version: ">=0.1.1"
     repository: "https://maven.opendigitaleducation.com/repository/sre-helm-hosted/"
+    # Alias recommandé par SRE — utilisé comme clé de premier niveau dans values.yaml.
+    alias: impact-analyzer-viewer
