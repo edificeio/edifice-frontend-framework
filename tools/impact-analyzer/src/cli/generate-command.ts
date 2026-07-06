@@ -2,7 +2,10 @@ import { existsSync, readFileSync } from 'node:fs';
 import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import { buildLocalIndex } from '../index-builder/build-index.js';
 import { writeIndex } from '../index-builder/write-index.js';
-import type { ImpactIndex } from '../types/index-schema.js';
+import {
+  isCompatibleImpactIndex,
+  type ImpactIndex,
+} from '../types/index-schema.js';
 
 export interface RunGenerateOptions {
   /** Path to a previous run's index.json (e.g. from the CRON's data repo) — enables the incremental cache in --mode=ci. Ignored in local mode, and if the file doesn't exist (first run). */
@@ -21,9 +24,16 @@ export async function runGenerate(
 
   let previousIndex: ImpactIndex | undefined;
   if (mode === 'ci' && options.cachePath && existsSync(options.cachePath)) {
-    previousIndex = JSON.parse(
+    const parsed: unknown = JSON.parse(
       readFileSync(options.cachePath, 'utf-8'),
-    ) as ImpactIndex;
+    );
+    if (isCompatibleImpactIndex(parsed)) {
+      previousIndex = parsed;
+    } else {
+      console.warn(
+        `Cache file ${options.cachePath} has an incompatible or missing schemaVersion — ignoring it (full re-scan for this run).`,
+      );
+    }
   }
 
   const index: ImpactIndex =

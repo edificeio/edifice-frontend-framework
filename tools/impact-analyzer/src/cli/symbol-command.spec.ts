@@ -1,6 +1,22 @@
+import { existsSync, readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ImpactIndex } from '../types/index-schema.js';
 import { runSymbol } from './symbol-command.js';
+
+vi.mock('node:fs', () => ({
+  existsSync: vi.fn(),
+  readFileSync: vi.fn(),
+}));
+vi.mock('../discovery/local-repo-resolver.js', () => ({
+  readRepoState: vi.fn(() => ({
+    branch: 'develop',
+    commit: 'abc',
+    dirty: false,
+  })),
+}));
+vi.mock('../ff-map/entry-points.js', () => ({
+  currentFfRepoRoot: vi.fn(() => '/fake/repo'),
+}));
 
 function makeIndex(): ImpactIndex {
   return {
@@ -110,5 +126,35 @@ describe('runSymbol', () => {
     runSymbol('   ', { cached: false }, makeIndex());
     expect(process.exitCode).toBe(1);
     expect(errors.some((l) => l.includes('Usage:'))).toBe(true);
+  });
+
+  describe('--cached', () => {
+    afterEach(() => {
+      vi.mocked(existsSync).mockReset();
+      vi.mocked(readFileSync).mockReset();
+    });
+
+    it('rejects a cached index with an incompatible or missing schemaVersion', () => {
+      vi.mocked(existsSync).mockReturnValue(true);
+      vi.mocked(readFileSync).mockReturnValue(
+        JSON.stringify({ schemaVersion: 999 }),
+      );
+
+      runSymbol('Dropdown', { cached: true });
+
+      expect(process.exitCode).toBe(1);
+      expect(
+        errors.some((l) => l.includes('incompatible or missing schemaVersion')),
+      ).toBe(true);
+    });
+
+    it('accepts a cached index with the current schemaVersion', () => {
+      vi.mocked(existsSync).mockReturnValue(true);
+      vi.mocked(readFileSync).mockReturnValue(JSON.stringify(makeIndex()));
+
+      runSymbol('Dropdown', { cached: true });
+
+      expect(logs.some((l) => l.includes('Dropdown'))).toBe(true);
+    });
   });
 });

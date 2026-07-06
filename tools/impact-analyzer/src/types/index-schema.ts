@@ -15,6 +15,23 @@ export interface ImpactIndex {
   appStates: AppBranchState[];
 }
 
+export const IMPACT_INDEX_SCHEMA_VERSION = 1 as const;
+
+/**
+ * Guards every `--cached`/`--cache=` read: a JSON file from an older or
+ * incompatible schema must be rejected explicitly rather than trusted as-is
+ * (a blind `as ImpactIndex` cast would silently produce wrong results
+ * downstream instead of failing where the problem actually is).
+ */
+export function isCompatibleImpactIndex(data: unknown): data is ImpactIndex {
+  return (
+    typeof data === 'object' &&
+    data !== null &&
+    (data as { schemaVersion?: unknown }).schemaVersion ===
+      IMPACT_INDEX_SCHEMA_VERSION
+  );
+}
+
 export interface ScanError {
   app: string;
   branch: string | null;

@@ -4,7 +4,11 @@ import { readRepoState } from '../discovery/local-repo-resolver.js';
 import { currentFfRepoRoot } from '../ff-map/entry-points.js';
 import { buildLocalIndex } from '../index-builder/build-index.js';
 import { indexFilePath } from '../index-builder/write-index.js';
-import type { ImpactIndex } from '../types/index-schema.js';
+import {
+  IMPACT_INDEX_SCHEMA_VERSION,
+  isCompatibleImpactIndex,
+  type ImpactIndex,
+} from '../types/index-schema.js';
 import { renderTable } from './format-table.js';
 
 export interface SymbolCommandOptions {
@@ -33,7 +37,15 @@ function resolveIndex(options: SymbolCommandOptions): ImpactIndex | null {
     );
     return null;
   }
-  return JSON.parse(readFileSync(filePath, 'utf-8')) as ImpactIndex;
+  const parsed: unknown = JSON.parse(readFileSync(filePath, 'utf-8'));
+  if (!isCompatibleImpactIndex(parsed)) {
+    console.error(
+      `Cached index at ${filePath} has an incompatible or missing schemaVersion ` +
+        `(expected ${IMPACT_INDEX_SCHEMA_VERSION}) — run 'generate' again.`,
+    );
+    return null;
+  }
+  return parsed;
 }
 
 /**

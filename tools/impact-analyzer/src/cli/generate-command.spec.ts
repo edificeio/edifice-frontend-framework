@@ -120,6 +120,21 @@ describe('runGenerate', () => {
     expect(logs.some((l) => l.includes('cache:'))).toBe(true);
   });
 
+  it('calls buildCiIndex without a previousIndex and warns when cachePath has an incompatible schemaVersion', async () => {
+    vi.mocked(buildCiIndex).mockResolvedValue(makeIndex());
+    const cachePath = join(tmpDir, 'index.json');
+    writeFileSync(cachePath, JSON.stringify({ schemaVersion: 999 }));
+
+    await runGenerate('ci', { cachePath });
+
+    expect(buildCiIndex).toHaveBeenCalledWith(undefined, {
+      previousIndex: undefined,
+    });
+    expect(
+      logs.some((l) => l.includes('incompatible or missing schemaVersion')),
+    ).toBe(true);
+  });
+
   it('reports the scanError staleSince marker in its log output', async () => {
     const previousIndex = makeIndex({
       appStates: [{ app: 'blog', branch: 'develop', commit: 'sha-1' }],
