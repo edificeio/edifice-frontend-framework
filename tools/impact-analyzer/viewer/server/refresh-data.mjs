@@ -1,8 +1,10 @@
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { randomUUID } from 'node:crypto';
+import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildManifest } from './manifest.mjs';
 
 const GITHUB_API_BASE = 'https://api.github.com';
+const FETCH_TIMEOUT_MS = 30_000;
 
 function log(level, message, extra = {}) {
   console[level === 'error' ? 'error' : 'log'](
@@ -15,13 +17,35 @@ function log(level, message, extra = {}) {
   );
 }
 
+/** Writes content to a temp file in the same dir, then renames — readers never observe a partial file. */
+function writeFileAtomic(targetPath, content) {
+  const tmpPath = `${targetPath}.tmp-${randomUUID()}`;
+  writeFileSync(tmpPath, content);
+  renameSync(tmpPath, targetPath);
+}
+
 async function githubContentsRequest(path, token) {
-  const res = await fetch(`${GITHUB_API_BASE}${path}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-    },
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  let res;
+  try {
+    res = await fetch(`${GITHUB_API_BASE}${path}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+      },
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(
+        `GitHub API request timed out after ${FETCH_TIMEOUT_MS}ms for ${path.split('?')[0]}`,
+      );
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
+  }
   if (!res.ok) {
     throw new Error(
       `GitHub API request failed (${res.status}) for ${path.split('?')[0]}`,
@@ -50,10 +74,10 @@ async function refreshOnce({ owner, repo, ref, token, dataDir }) {
       token,
     );
     const content = Buffer.from(file.content, 'base64').toString('utf-8');
-    writeFileSync(join(dataDir, fileName), content);
+    writeFileAtomic(join(dataDir, fileName), content);
   }
 
-  writeFileSync(
+  writeFileAtomic(
     join(dataDir, 'manifest.json'),
     JSON.stringify({ branches, diffs }, null, 2),
   );
@@ -81,8 +105,17 @@ export function startRefreshLoop({
     successCount: 0,
     failureCount: 0,
   };
+  // Guards against a slow cycle (large repo, slow API) still running when
+  // the next interval fires — overlapping refreshes would race on the same
+  // dataDir for no benefit.
+  let cycleRunning = false;
 
   async function cycle() {
+    if (cycleRunning) {
+      log('info', 'Skipping refresh cycle — previous one is still running');
+      return;
+    }
+    cycleRunning = true;
     try {
       const result = await refreshOnce({ owner, repo, ref, token, dataDir });
       state.lastSuccessAt = new Date().toISOString();
@@ -96,6 +129,7 @@ export function startRefreshLoop({
       });
     } finally {
       state.attempted = true;
+      cycleRunning = false;
     }
   }
 
