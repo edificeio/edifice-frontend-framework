@@ -1,6 +1,8 @@
+import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { extname, isAbsolute, relative, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import client from 'prom-client';
 import { startRefreshLoop } from './refresh-data.mjs';
 
@@ -73,16 +75,38 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon',
 };
 
+// Text-ish formats worth gzipping — the data/JS payloads this server exists
+// to serve, not the small binary icons.
+const COMPRESSIBLE_EXTENSIONS = new Set([
+  '.html',
+  '.js',
+  '.mjs',
+  '.css',
+  '.json',
+  '.svg',
+]);
+
+/**
+ * Vite content-hashes every filename under dist/assets/ (a build always
+ * produces new names), so those can be cached forever; everything else
+ * (index.html, and the periodically-refreshed /data/*.json) must always
+ * revalidate — the ETag below still avoids re-sending an unchanged body.
+ */
+function cacheControlFor(rootDir, sanitizedRelPath) {
+  if (rootDir === DIST_DIR && sanitizedRelPath.startsWith('assets/')) {
+    return 'public, max-age=31536000, immutable';
+  }
+  return 'no-cache';
+}
+
 /**
  * Resolves relativePath under rootDir, refusing any path that escapes it
  * (e.g. `../../etc/passwd`). A leading slash is stripped first — otherwise
  * `path.resolve` would treat it as absolute and silently discard `rootDir`.
  */
-function serveStaticFile(res, rootDir, relativePath) {
-  const target = resolve(
-    rootDir,
-    decodeURIComponent(relativePath).replace(/^\/+/, ''),
-  );
+function serveStaticFile(req, res, rootDir, relativePath) {
+  const sanitizedRelPath = decodeURIComponent(relativePath).replace(/^\/+/, '');
+  const target = resolve(rootDir, sanitizedRelPath);
   const rel = relative(rootDir, target);
   if (rel.startsWith('..') || isAbsolute(rel)) {
     res.writeHead(403);
@@ -94,10 +118,35 @@ function serveStaticFile(res, rootDir, relativePath) {
     res.end('Not found');
     return;
   }
-  res.writeHead(200, {
-    'Content-Type': MIME_TYPES[extname(target)] ?? 'application/octet-stream',
-  });
-  res.end(readFileSync(target));
+
+  const content = readFileSync(target);
+  const etag = `"${createHash('sha1').update(content).digest('hex')}"`;
+  const cacheControl = cacheControlFor(rootDir, sanitizedRelPath);
+
+  if (req.headers['if-none-match'] === etag) {
+    res.writeHead(304, { 'ETag': etag, 'Cache-Control': cacheControl });
+    res.end();
+    return;
+  }
+
+  const ext = extname(target);
+  const headers = {
+    'Content-Type': MIME_TYPES[ext] ?? 'application/octet-stream',
+    'ETag': etag,
+    'Cache-Control': cacheControl,
+  };
+
+  const acceptsGzip = (req.headers['accept-encoding'] ?? '').includes('gzip');
+  if (acceptsGzip && COMPRESSIBLE_EXTENSIONS.has(ext)) {
+    headers['Content-Encoding'] = 'gzip';
+    headers['Vary'] = 'Accept-Encoding';
+    res.writeHead(200, headers);
+    res.end(gzipSync(content));
+    return;
+  }
+
+  res.writeHead(200, headers);
+  res.end(content);
 }
 
 const server = createServer(async (req, res) => {
@@ -138,11 +187,16 @@ const server = createServer(async (req, res) => {
     }
 
     if (pathname.startsWith('/data/')) {
-      serveStaticFile(res, DATA_DIR, pathname.slice('/data/'.length));
+      serveStaticFile(req, res, DATA_DIR, pathname.slice('/data/'.length));
       return;
     }
 
-    serveStaticFile(res, DIST_DIR, pathname === '/' ? 'index.html' : pathname);
+    serveStaticFile(
+      req,
+      res,
+      DIST_DIR,
+      pathname === '/' ? 'index.html' : pathname,
+    );
   } catch (error) {
     log('error', 'Unhandled request error', {
       'error.message': error instanceof Error ? error.message : String(error),
