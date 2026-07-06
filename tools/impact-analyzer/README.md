@@ -2,7 +2,9 @@
 
 Cartographie, pour chaque export public des packages `@edifice.io/*`, quelles
 apps React consommatrices l'utilisent, où, et avec quel niveau de risque.
-Voir `PLAN-impact-analyzer.md` à la racine du repo pour le cadrage complet.
+Voir `PLAN-impact-analyzer.md` (cadrage complet) et
+`REVIEW-impact-analyzer.md` (revue critique, pistes d'évolution) dans ce
+dossier.
 
 Ce package couvre les **Jalons 0 à 7** du plan : mode local complet,
 discovery distante via l'API GitHub Contents (`--mode=ci`, pour `generate`
