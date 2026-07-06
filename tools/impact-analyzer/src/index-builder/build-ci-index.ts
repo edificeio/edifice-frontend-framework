@@ -269,11 +269,12 @@ export async function buildCiIndex(
     );
     const bootstrapSrcDir =
       options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');
-    const { cssComponents, cssGlobalRisks } = buildCssMap(
+    const { cssComponents, cssGlobalRisks, cssScanErrors } = buildCssMap(
       bootstrapSrcDir,
       symbols,
       cssApps,
     );
+    scanErrors.push(...cssScanErrors);
 
     // Cache-hit/stale apps weren't cloned this run, so buildCssMap never saw
     // them — reattach their CSS consumers, and their name in cssGlobalRisks

@@ -134,11 +134,12 @@ export function buildLocalIndex(
   }));
   const bootstrapSrcDir =
     options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');
-  const { cssComponents, cssGlobalRisks } = buildCssMap(
+  const { cssComponents, cssGlobalRisks, cssScanErrors } = buildCssMap(
     bootstrapSrcDir,
     symbols,
     cssApps,
   );
+  scanErrors.push(...cssScanErrors);
 
   return {
     schemaVersion: 1,

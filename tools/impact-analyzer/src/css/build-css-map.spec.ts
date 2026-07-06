@@ -76,6 +76,36 @@ describe('buildCssMap', () => {
     ]);
   });
 
+  it('isolates a malformed .scss file as a cssScanError instead of crashing the whole map', () => {
+    const { cssComponents, cssScanErrors } = buildCssMap(
+      bootstrapSrcDir,
+      [],
+      [
+        {
+          appName: 'fixture-app',
+          appBranch: 'develop',
+          pinsBootstrap: true,
+          srcRoot: `${appDir}/src`,
+        },
+      ],
+    );
+
+    expect(cssComponents.some((c) => c.file.endsWith('_malformed.scss'))).toBe(
+      false,
+    );
+    expect(cssScanErrors).toEqual([
+      expect.objectContaining({
+        app: 'components/_malformed.scss',
+        branch: null,
+        error: expect.stringContaining('Unclosed block'),
+      }),
+    ]);
+    // Other files must still parse fine — one bad file doesn't take down the rest.
+    expect(cssComponents.some((c) => c.file.endsWith('_button.scss'))).toBe(
+      true,
+    );
+  });
+
   it('excludes an app from cssGlobalRisks.affectedApps when it does not pin bootstrap', () => {
     const { cssGlobalRisks } = buildCssMap(
       bootstrapSrcDir,

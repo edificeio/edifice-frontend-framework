@@ -4,6 +4,7 @@ import type {
   CssComponentEntry,
   CssConsumerEntry,
   CssGlobalRisk,
+  ScanError,
   SymbolEntry,
 } from '../types/index-schema.js';
 import { listAppSourceFiles } from '../app-usage/source-files.js';
@@ -37,6 +38,7 @@ export interface CssAppContext {
 export interface BuildCssMapResult {
   cssComponents: CssComponentEntry[];
   cssGlobalRisks: CssGlobalRisk[];
+  cssScanErrors: ScanError[];
 }
 
 /**
@@ -74,11 +76,25 @@ export function buildCssMap(
   }));
 
   const cssComponents: CssComponentEntry[] = [];
+  const cssScanErrors: ScanError[] = [];
 
   for (const scssFile of scssFiles) {
-    const classes = extractClassNames(
-      parseScssSelectors(readFileSync(scssFile, 'utf-8')),
-    );
+    // A single malformed .scss file must not take down the whole CSS index —
+    // isolate the parse per file, matching the resilience already applied to
+    // per-app scan failures (build-ci-index.ts).
+    let selectors: string[];
+    try {
+      selectors = parseScssSelectors(readFileSync(scssFile, 'utf-8'));
+    } catch (error) {
+      cssScanErrors.push({
+        app: relative(bootstrapSrcDir, scssFile),
+        branch: null,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      continue;
+    }
+
+    const classes = extractClassNames(selectors);
     if (classes.length === 0) continue;
 
     const reactPeer = correlateComponent(basename(scssFile), componentNames);
@@ -128,5 +144,5 @@ export function buildCssMap(
     }
   }
 
-  return { cssComponents, cssGlobalRisks };
+  return { cssComponents, cssGlobalRisks, cssScanErrors };
 }
