@@ -15,7 +15,7 @@ import type { DiffReport } from '../types/diff-schema.js';
 import type { ImpactIndex } from '../types/index-schema.js';
 import { diffCss } from './css-diff.js';
 import { cleanupSnapshot, createSnapshot } from './snapshot.js';
-import { diffSymbols } from './symbol-diff.js';
+import { diffSymbols, listChangedFiles } from './symbol-diff.js';
 
 export interface BuildDiffReportOptions extends BuildIndexOptions {
   /** Overridable for tests — otherwise buildLocalIndex()/buildCiIndex() is run for head, per `mode`. */
@@ -62,7 +62,14 @@ export async function buildDiffReport(
       options.ffEntryMap,
     );
 
-    const symbolDiffs = diffSymbols({ baseSymbols, headSymbols, headIndex });
+    const changedFiles = listChangedFiles(repoRoot, baseRef);
+    const symbolDiffs = diffSymbols({
+      baseSymbols,
+      headSymbols,
+      headIndex,
+      changedFiles,
+      repoRoot,
+    });
 
     const bootstrapSrcDir =
       options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');

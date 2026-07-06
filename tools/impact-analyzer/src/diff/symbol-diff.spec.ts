@@ -190,6 +190,52 @@ describe('diffSymbols', () => {
     });
   });
 
+  it('skips the body compare entirely when changedFiles says nothing touched this symbol', () => {
+    baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
+    headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));
+
+    const baseSymbols = toDeclaredSymbols(
+      makeSymbols(baseDir, 'export function foo(x: number) { return x + 1; }'),
+    );
+    const headSymbols = toDeclaredSymbols(
+      makeSymbols(headDir, 'export function foo(x: number) { return x + 2; }'),
+    );
+
+    const entries = diffSymbols({
+      baseSymbols,
+      headSymbols,
+      headIndex: makeHeadIndex(),
+      changedFiles: new Set(), // git reports nothing changed at all
+      repoRoot: headDir,
+    });
+    expect(entries).toEqual([]);
+  });
+
+  it('still reports the change when changedFiles includes the touched file', () => {
+    baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
+    headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));
+
+    const baseSymbols = toDeclaredSymbols(
+      makeSymbols(baseDir, 'export function foo(x: number) { return x + 1; }'),
+    );
+    const headSymbols = toDeclaredSymbols(
+      makeSymbols(headDir, 'export function foo(x: number) { return x + 2; }'),
+    );
+
+    const [entry] = diffSymbols({
+      baseSymbols,
+      headSymbols,
+      headIndex: makeHeadIndex(),
+      changedFiles: new Set(['a.ts']),
+      repoRoot: headDir,
+    });
+    expect(entry).toMatchObject({
+      name: 'foo',
+      changeKind: 'body-changed',
+      severity: 'needs-review',
+    });
+  });
+
   it('classifies a changed compound component (non-comparable shape) as body-changed only', () => {
     baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
     headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));

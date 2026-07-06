@@ -1,4 +1,6 @@
+import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { relative } from 'node:path';
 import type { DeclaredSymbol } from '../ff-map/build-ff-declarations-map.js';
 import type {
   ConsumerImpactSummary,
@@ -15,6 +17,44 @@ export interface DiffSymbolsInput {
   headSymbols: DeclaredSymbol[];
   /** Already-built head index — consumers/riskScore are derived from it, never recomputed. */
   headIndex: ImpactIndex;
+  /**
+   * Repo-root-relative paths of files that actually differ between base and
+   * head (see `listChangedFiles`) — lets `pushIfRealChange` skip the
+   * read+compare entirely when none of a symbol's files changed at all
+   * (css-diff.ts already does the equivalent pre-filter). Optional and
+   * unfiltered when omitted, so unit tests that build synthetic
+   * base/headSymbols with no real git history behind them are unaffected.
+   */
+  changedFiles?: Set<string>;
+  /** Required alongside `changedFiles` — used to turn `sourceFiles`'s absolute paths into the same repo-relative form. */
+  repoRoot?: string;
+}
+
+/**
+ * Repo-root-relative paths of every file that differs between `baseRef` and
+ * the current working tree. No worktree needed (unlike snapshot.ts's use for
+ * base symbol extraction): `git diff` can compare a ref directly against the
+ * working tree, which already matches "head = whatever's on disk"
+ * (local-repo-resolver.ts's convention) — same approach as css-diff.ts's own
+ * pre-filter.
+ */
+export function listChangedFiles(
+  repoRoot: string,
+  baseRef: string,
+): Set<string> {
+  const output = execFileSync(
+    'git',
+    ['-C', repoRoot, 'diff', '--name-only', baseRef],
+    {
+      encoding: 'utf-8',
+    },
+  );
+  return new Set(
+    output
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean),
+  );
 }
 
 function keyOf(s: { package: string; entry: string; name: string }): string {
@@ -72,7 +112,18 @@ function pushIfRealChange(
   head: DeclaredSymbol,
   headIndex: ImpactIndex,
   entries: SymbolDiffEntry[],
+  changedFiles: Set<string> | undefined,
+  repoRoot: string | undefined,
 ): void {
+  if (changedFiles && repoRoot) {
+    const touched = head.sourceFiles.some((f) =>
+      changedFiles.has(relative(repoRoot, f)),
+    );
+    // git already told us none of this symbol's files changed at all —
+    // isCosmeticOnlyChange would necessarily find identical text anyway.
+    if (!touched) return;
+  }
+
   let baseText: string;
   let headText: string;
   try {
@@ -100,7 +151,7 @@ function pushIfRealChange(
  * consumers and is intentionally absent from the result.
  */
 export function diffSymbols(input: DiffSymbolsInput): SymbolDiffEntry[] {
-  const { baseSymbols, headSymbols, headIndex } = input;
+  const { baseSymbols, headSymbols, headIndex, changedFiles, repoRoot } = input;
   const baseByKey = new Map(baseSymbols.map((s) => [keyOf(s), s]));
   const headByKey = new Map(headSymbols.map((s) => [keyOf(s), s]));
 
@@ -121,14 +172,21 @@ export function diffSymbols(input: DiffSymbolsInput): SymbolDiffEntry[] {
       if (baseShape.shape !== headShape.shape) {
         entries.push(buildEntry(base, head, 'signature-changed', headIndex));
       } else {
-        pushIfRealChange(base, head, headIndex, entries);
+        pushIfRealChange(
+          base,
+          head,
+          headIndex,
+          entries,
+          changedFiles,
+          repoRoot,
+        );
       }
       continue;
     }
 
     // At least one side isn't comparable (e.g. a compound component) — never
     // report signature-changed, since we can't tell whether the shape moved.
-    pushIfRealChange(base, head, headIndex, entries);
+    pushIfRealChange(base, head, headIndex, entries, changedFiles, repoRoot);
   }
 
   return entries.sort((a, b) => b.riskScore - a.riskScore);
