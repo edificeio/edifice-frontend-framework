@@ -253,7 +253,11 @@ describe('discoverAppsRemote', () => {
         makeApp({ name: 'bad-app', repo: 'bad-app', branches: ['develop'] }),
         makeApp({ name: 'good-app', repo: 'good-app', branches: ['develop'] }),
       ],
-      { githubClientOptions: { fetchImpl } },
+      {
+        // 500 is retried (github-client.ts) — a no-op sleep keeps this test
+        // fast, the retry/backoff behavior itself has its own dedicated tests.
+        githubClientOptions: { fetchImpl, sleepImpl: async () => {} },
+      },
     );
 
     expect(scanErrors).toHaveLength(1);
