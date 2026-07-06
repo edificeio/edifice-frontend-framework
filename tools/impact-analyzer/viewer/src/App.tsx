@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ImpactIndex, SymbolEntry } from '@edifice.io/impact-analyzer';
+import { ErrorBoundary } from './components/ErrorBoundary.js';
 import {
   type DiffManifestEntry,
   loadIndexForBranch,
@@ -19,12 +20,13 @@ function symbolKey(s: Pick<SymbolEntry, 'package' | 'entry' | 'name'>): string {
   return `${s.package}|${s.entry}|${s.name}`;
 }
 
-export function App() {
+function AppContent() {
   const [branches, setBranches] = useState<string[]>([]);
   const [diffs, setDiffs] = useState<DiffManifestEntry[]>([]);
+  const [manifestError, setManifestError] = useState<string | null>(null);
   const [branch, setBranchState] = useState<string | null>(null);
   const [index, setIndex] = useState<ImpactIndex | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [indexError, setIndexError] = useState<string | null>(null);
   const [selectedSymbol, setSelectedSymbolState] = useState<SymbolEntry | null>(
     null,
   );
@@ -69,14 +71,17 @@ export function App() {
     setAppParam(next);
   }
 
-  useEffect(() => {
+  const fetchManifest = useCallback(() => {
+    setManifestError(null);
     loadManifest()
       .then((manifest) => {
         setBranches(manifest.branches);
         setDiffs(manifest.diffs);
       })
-      .catch((e) => setError(String(e)));
+      .catch((e) => setManifestError(String(e)));
   }, []);
+
+  useEffect(fetchManifest, [fetchManifest]);
 
   // Resolves the initial branch once the manifest loads: prefer the URL's
   // branch if it's actually valid, otherwise the first one — never
@@ -89,17 +94,20 @@ export function App() {
     );
   }, [branches, branch]);
 
-  useEffect(() => {
+  const fetchIndex = useCallback(() => {
     if (!branch) return;
     setIndex(null);
+    setIndexError(null);
     // Raw setters, not the URL-syncing wrappers — clearing a stale selection
     // must not erase a not-yet-hydrated symbol/app URL param.
     setSelectedSymbolState(null);
     setSelectedAppState(null);
     loadIndexForBranch(branch)
       .then(setIndex)
-      .catch((e) => setError(String(e)));
+      .catch((e) => setIndexError(String(e)));
   }, [branch]);
+
+  useEffect(fetchIndex, [fetchIndex]);
 
   // Resolves the initial symbol selection once the index for the (possibly
   // URL-provided) branch has loaded.
@@ -127,14 +135,6 @@ export function App() {
     initialAppFromUrl.current = null;
     if (fromUrl && appNames.includes(fromUrl)) setSelectedAppState(fromUrl);
   }, [appNames]);
-
-  if (error) {
-    return (
-      <div className="app-shell">
-        <p className="error">{error}</p>
-      </div>
-    );
-  }
 
   return (
     <div className="app-shell">
@@ -174,7 +174,17 @@ export function App() {
         </nav>
       </header>
 
-      {tab === 'diff' ? (
+      {manifestError ? (
+        // Without a manifest there's neither a branch list nor a diff list —
+        // unlike an index error, this genuinely blocks every tab.
+        <div className="panel">
+          <p className="error">{manifestError}</p>
+          <button onClick={fetchManifest}>Réessayer</button>
+        </div>
+      ) : tab === 'diff' ? (
+        // Independent of the index/branch below: diffs come entirely from
+        // the manifest, so a broken index for the selected branch must never
+        // take down this tab too.
         <DiffView
           diffs={diffs}
           selectedFile={diffParam}
@@ -185,6 +195,11 @@ export function App() {
           Aucun index trouvé — lancez "pnpm --filter @edifice.io/impact-analyzer
           generate:local".
         </p>
+      ) : indexError ? (
+        <div className="panel">
+          <p className="error">{indexError}</p>
+          <button onClick={fetchIndex}>Réessayer</button>
+        </div>
       ) : !index ? (
         <p className="hint">Chargement de l'index...</p>
       ) : (
@@ -221,5 +236,22 @@ export function App() {
         </>
       )}
     </div>
+  );
+}
+
+export function App() {
+  return (
+    <ErrorBoundary
+      fallback={(error, reset) => (
+        <div className="app-shell">
+          <p className="error">
+            Une erreur inattendue est survenue : {error.message}
+          </p>
+          <button onClick={reset}>Réessayer</button>
+        </div>
+      )}
+    >
+      <AppContent />
+    </ErrorBoundary>
   );
 }
