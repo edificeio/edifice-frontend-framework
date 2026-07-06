@@ -44,6 +44,43 @@ function looksLikeComponentReturnType(decl: Node): boolean {
   return false;
 }
 
+// React HOCs that wrap a component and return another callable — the wrap
+// itself is a strong enough signal by convention that we don't need to
+// resolve what's inside (also covers React.forwardRef/React.memo call forms).
+const COMPONENT_WRAPPER_CALLEES = new Set([
+  'forwardRef',
+  'React.forwardRef',
+  'memo',
+  'React.memo',
+]);
+
+/**
+ * Extends `looksLikeComponentReturnType` to "unwrap" the common ways a
+ * component gets reassigned before export instead of declared directly:
+ * `forwardRef(...)`, `memo(...)`, and the compound-component pattern
+ * `Object.assign(Root, { Trigger, ... })` (e.g. `Dropdown`). Without this,
+ * all three are classified `const` instead of `component`.
+ */
+function initializerLooksLikeComponent(initializer: Node): boolean {
+  if (looksLikeComponentReturnType(initializer)) return true;
+  if (!Node.isCallExpression(initializer)) return false;
+
+  const callee = initializer.getExpression().getText();
+  if (COMPONENT_WRAPPER_CALLEES.has(callee)) return true;
+
+  if (callee === 'Object.assign') {
+    const [first] = initializer.getArguments();
+    if (!first) return false;
+    if (looksLikeComponentReturnType(first)) return true;
+    // A bare identifier root (`Object.assign(Root, { Trigger })`) is the
+    // established compound-component pattern here — treat the wrapper call
+    // as sufficient signal rather than resolving Root's own declaration.
+    return Node.isIdentifier(first);
+  }
+
+  return false;
+}
+
 /**
  * Best-effort classification: exact kind isn't derivable from the AST alone
  * for every case, so this is a documented heuristic, not a guarantee
@@ -69,8 +106,8 @@ export function inferSymbolKind(
           ? d.getInitializer()
           : d;
         return initializer
-          ? looksLikeComponentReturnType(initializer)
-          : looksLikeComponentReturnType(d);
+          ? initializerLooksLikeComponent(initializer)
+          : initializerLooksLikeComponent(d);
       }
       return false;
     });
@@ -82,7 +119,7 @@ export function inferSymbolKind(
     declarations.every(
       (d) =>
         Node.isVariableDeclaration(d) &&
-        !looksLikeComponentReturnType(d.getInitializer() ?? d),
+        !initializerLooksLikeComponent(d.getInitializer() ?? d),
     );
   if (isConst) return 'const';
 
