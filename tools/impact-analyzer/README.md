@@ -305,10 +305,14 @@ car cette convention diffère par package FF (voir commentaires dans
   rapport de diff, mais avec une confiance indéterminée (repli `needs-review`)
   plutôt que d'être silencieusement omis.
 - **Jalon 6 livré** : périmètre retenu = viewer hébergé en interne uniquement
-  (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci` est prêt et
-  utilisable dès maintenant en local/CLI, mais **pas encore branché** sur un
-  workflow GitHub Actions déclenché sur `pull_request` — reste une extension
-  possible, pas engagée dans cette itération (voir `PLAN-impact-analyzer.md`
-  §8, §13). Rétention actée : illimitée, un fichier par PR (paire branche
+  (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci` est branché
+  sur un workflow `pull_request`
+  (`.github/workflows/impact-analyzer-diff-pr.yml`) : chaque PR touchant
+  `packages/**` vers `develop`/`develop-enabling` publie son rapport de diff
+  dans le repo de données privé, consultable dans l'onglet Diff du viewer
+  (les PR issues de forks sont sautées — pas de secrets sur un repo public).
+  Le **commentaire PR** (poster un résumé sur la PR elle-même) reste une
+  extension possible, pas engagée (voir `PLAN-impact-analyzer.md` §8, §13).
+  Rétention actée : illimitée, un fichier par PR (paire branche
   origine/destination) — projection à ~12 Mo après 5 ans au rythme actuel du
   repo, donc sans enjeu de volumétrie.
