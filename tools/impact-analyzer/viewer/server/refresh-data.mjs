@@ -24,7 +24,13 @@ function writeFileAtomic(targetPath, content) {
   renameSync(tmpPath, targetPath);
 }
 
-async function githubContentsRequest(path, token) {
+/**
+ * `raw: true` downloads the file body via the raw media type. The JSON media
+ * type must never be used to fetch file contents here: over 1 MB (the
+ * indexes are ~3 MB) it silently returns `content: ""` / `encoding: "none"`
+ * instead of base64, which used to end up as empty files on disk.
+ */
+async function githubContentsRequest(path, token, { raw = false } = {}) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   let res;
@@ -32,7 +38,7 @@ async function githubContentsRequest(path, token) {
     res = await fetch(`${GITHUB_API_BASE}${path}`, {
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
+        Accept: raw ? 'application/vnd.github.raw' : 'application/vnd.github+json',
       },
       signal: controller.signal,
     });
@@ -51,11 +57,11 @@ async function githubContentsRequest(path, token) {
       `GitHub API request failed (${res.status}) for ${path.split('?')[0]}`,
     );
   }
-  return res.json();
+  return raw ? res.text() : res.json();
 }
 
-/** Fetches every index.*.json/diff.*.json file at the repo root and writes them + manifest.json into dataDir. */
-async function refreshOnce({ owner, repo, ref, token, dataDir }) {
+/** Fetches every index.*.json/diff.*.json file at the repo root and writes them + manifest.json into dataDir. Exported for tests. */
+export async function refreshOnce({ owner, repo, ref, token, dataDir }) {
   const entries = await githubContentsRequest(
     `/repos/${owner}/${repo}/contents?ref=${encodeURIComponent(ref)}`,
     token,
@@ -69,11 +75,11 @@ async function refreshOnce({ owner, repo, ref, token, dataDir }) {
   mkdirSync(dataDir, { recursive: true });
 
   for (const fileName of [...indexFiles, ...diffFiles]) {
-    const file = await githubContentsRequest(
+    const content = await githubContentsRequest(
       `/repos/${owner}/${repo}/contents/${encodeURIComponent(fileName)}?ref=${encodeURIComponent(ref)}`,
       token,
+      { raw: true },
     );
-    const content = Buffer.from(file.content, 'base64').toString('utf-8');
     writeFileAtomic(join(dataDir, fileName), content);
   }
 
