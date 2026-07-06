@@ -3,6 +3,7 @@ import type { DiffReport } from '@edifice.io/impact-analyzer';
 import { SeverityBadge } from '../components/SeverityBadge.js';
 import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { loadDiffReport } from '../data/loadIndex.js';
+import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
 export interface DiffViewProps {
   diffs: DiffManifestEntry[];
@@ -93,14 +94,13 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                           ...new Set(d.consumers.map((c) => c.app)),
                         ];
                         return (
-                          <tr key={`${d.package}|${d.entry}|${d.name}`}>
+                          <tr key={symbolKey(d)}>
                             <td>
                               <SeverityBadge severity={d.severity} />
                             </td>
                             <td>
                               {d.package}
-                              {d.entry !== '.' ? d.entry.slice(1) : ''} ::{' '}
-                              {d.name}
+                              {formatEntry(d.entry)} :: {d.name}
                             </td>
                             <td>{d.changeKind}</td>
                             <td>{d.riskScore}</td>

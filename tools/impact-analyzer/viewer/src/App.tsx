@@ -7,6 +7,7 @@ import {
   loadManifest,
 } from './data/loadIndex.js';
 import { useUrlParam } from './hooks/useUrlParam.js';
+import { symbolKey } from './lib/symbol-display.js';
 import { SymbolSearch } from './views/SymbolSearch.js';
 import { WhoUses } from './views/WhoUses.js';
 import { AppSearch } from './views/AppSearch.js';
@@ -15,10 +16,6 @@ import { DiffView } from './views/DiffView.js';
 import './styles.css';
 
 type Tab = 'symbols' | 'apps' | 'diff';
-
-function symbolKey(s: Pick<SymbolEntry, 'package' | 'entry' | 'name'>): string {
-  return `${s.package}|${s.entry}|${s.name}`;
-}
 
 function AppContent() {
   const [branches, setBranches] = useState<string[]>([]);

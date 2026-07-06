@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
 import { UsageBadge } from '../components/UsageBadge.js';
+import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
 const MAX_ROWS = 200;
 
@@ -71,11 +72,11 @@ export function AppConsumes({
           </thead>
           <tbody>
             {rows.slice(0, MAX_ROWS).map(({ symbol, consumer }) => (
-              <tr key={`${symbol.package}-${symbol.entry}-${symbol.name}`}>
+              <tr key={symbolKey(symbol)}>
                 <td>{symbol.name}</td>
                 <td>
                   {symbol.package}
-                  {symbol.entry !== '.' ? symbol.entry.slice(1) : ''}
+                  {formatEntry(symbol.entry)}
                 </td>
                 <td>{consumer.usageSites}</td>
                 <td>{consumer.files.length}</td>

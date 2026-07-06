@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
 import { UsageBadge } from '../components/UsageBadge.js';
+import { formatEntry } from '../lib/symbol-display.js';
 
 export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
   // Hooks must run unconditionally, before the early return below.
@@ -27,8 +28,8 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       </h2>
       <p className="hint">
         {symbol.package}
-        {symbol.entry !== '.' ? symbol.entry.slice(1) : ''} —{' '}
-        {symbol.sourceFiles.length} fichier(s) source
+        {formatEntry(symbol.entry)} — {symbol.sourceFiles.length} fichier(s)
+        source
       </p>
 
       {sortedConsumers.length === 0 ? (
