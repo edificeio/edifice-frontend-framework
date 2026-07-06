@@ -24,7 +24,7 @@ impact-analyzer-viewer: # alias déclaré dans Chart.yaml (cf. Chart.yaml.exampl
     enabled: false
 
   httpRoutes:
-    - name: impact-analyzer-viewer
+    - name: preprod-impact-analyzer-viewer
       parentRefs:
         - name: private-gateway
       hostnames:
@@ -34,7 +34,9 @@ impact-analyzer-viewer: # alias déclaré dans Chart.yaml (cf. Chart.yaml.exampl
             - path:
                 value: /
           backendRefs:
-            - name: impact-analyzer-viewer
+            # Nom du Service rendu (fullname préfixé par la release ArgoCD),
+            # pas l'alias du sous-chart — sinon Envoy répond 500.
+            - name: preprod-impact-analyzer-viewer
               port: 80
 
   livenessProbe:
