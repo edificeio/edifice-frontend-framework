@@ -16,7 +16,6 @@ permissions:
 
 jobs:
   generate:
-    if: ${{ github.event.inputs.ff_branch == '' || github.event.inputs.ff_branch == matrix.ff_branch }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -24,11 +23,14 @@ jobs:
       # impact-analyzer-data repo, and running them concurrently would race
       # on that push (non-fast-forward on whichever job finishes second).
       max-parallel: 1
-      # V1 scope tracks two FF branches (plan §4/§10) — the schema and the
-      # viewer are already multi-branch, only this CRON was still hardcoded
-      # to develop alone, silently never covering develop-enabling.
+      # V1 scope tracks two FF branches (plan §4/§10). A non-empty ff_branch
+      # dispatch input shrinks the matrix to that single branch — the filter
+      # must live HERE, not in a job-level `if`: the `matrix` context is not
+      # available in `jobs.<id>.if` ("unrecognized named-value"), which
+      # invalidates the whole workflow file and turns every push into a 0s
+      # startup failure.
       matrix:
-        ff_branch: [develop, develop-enabling]
+        ff_branch: ${{ github.event.inputs.ff_branch != '' && fromJSON(format('[{0}]', toJSON(github.event.inputs.ff_branch))) || fromJSON('["develop", "develop-enabling"]') }}
     steps:
       - name: Checkout edifice-frontend-framework
         uses: actions/checkout@v4
