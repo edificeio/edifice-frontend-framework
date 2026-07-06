@@ -39,12 +39,14 @@ if (!DATA_REPO_GITHUB_TOKEN) {
 
 const register = new client.Registry();
 client.collectDefaultMetrics({ register });
-const refreshSuccessGauge = new client.Gauge({
+// successCount/failureCount only ever grow — real Counters, not Gauges (the
+// `_total` suffix is a Prometheus convention reserved for Counter metrics).
+const refreshSuccessCounter = new client.Counter({
   name: 'impact_analyzer_viewer_refresh_success_total',
   help: 'Total successful data refresh cycles since startup',
   registers: [register],
 });
-const refreshFailureGauge = new client.Gauge({
+const refreshFailureCounter = new client.Counter({
   name: 'impact_analyzer_viewer_refresh_failure_total',
   help: 'Total failed data refresh cycles since startup',
   registers: [register],
@@ -54,6 +56,11 @@ const lastRefreshGauge = new client.Gauge({
   help: 'Unix timestamp of the last successful data refresh, 0 if none yet',
   registers: [register],
 });
+// The counters above mirror refresher's own running totals (owned by
+// refresh-data.mjs, which knows nothing about Prometheus) — track what's
+// already been reported so each scrape only .inc()s by the delta.
+let reportedSuccessCount = 0;
+let reportedFailureCount = 0;
 
 const refresher = startRefreshLoop({
   owner: DATA_REPO_OWNER,
@@ -166,7 +173,13 @@ const server = createServer(async (req, res) => {
     }
 
     if (pathname === '/health/ready') {
-      const ready = refresher.getState().attempted;
+      // Not just "a cycle was attempted" — a token that's broken from the
+      // start would otherwise report ready forever with zero real data.
+      // Data already on disk (e.g. surviving a restart) also counts.
+      const state = refresher.getState();
+      const ready =
+        state.lastSuccessAt !== null ||
+        existsSync(resolve(DATA_DIR, 'manifest.json'));
       res.writeHead(ready ? 200 : 503, { 'Content-Type': 'text/plain' });
       res.end(ready ? 'ok' : 'not ready');
       return;
@@ -174,8 +187,10 @@ const server = createServer(async (req, res) => {
 
     if (pathname === '/health/metrics') {
       const state = refresher.getState();
-      refreshSuccessGauge.set(state.successCount);
-      refreshFailureGauge.set(state.failureCount);
+      refreshSuccessCounter.inc(state.successCount - reportedSuccessCount);
+      reportedSuccessCount = state.successCount;
+      refreshFailureCounter.inc(state.failureCount - reportedFailureCount);
+      reportedFailureCount = state.failureCount;
       lastRefreshGauge.set(
         state.lastSuccessAt
           ? Math.floor(new Date(state.lastSuccessAt).getTime() / 1000)
