@@ -16,7 +16,10 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
 - [x] `Chart.yaml`/`values.yaml` copiés dans le dépôt gitlab-infra
       (`Chart.yaml.example`/`values.yaml.example` de ce dossier).
 - [x] `helm dependency build` vérifié.
-- [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte.
+- [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte
+      (`argocd-application.yaml.example` de ce dossier — vérifier
+      `source.repoURL` et `destination.namespace` avant de l'utiliser,
+      voir l'avertissement en tête de ce fichier).
 - [x] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo :
       build/scan Trivy/push réels réussis, image disponible sur
       `maven.opendigitaleducation.com/enabling/impact-analyzer-viewer`
@@ -45,5 +48,8 @@ périodiquement).
 3. Pousser un tag `impact-analyzer-viewer-v0.1.0` sur ce repo pour que le
    workflow GitHub Actions construise, scanne et pousse la première image.
 4. Ajouter un manifeste ArgoCD dans le dépôt
-   [`argo-apps`](https://gitlab-infra.ode.tools/kubernetes/argo-apps)
-   (cluster `k8s-preprod-services`) et ouvrir une MR vers `main`.
+   [`argo-apps`](https://gitlab-infra.ode.tools/kubernetes/argo-apps), sous
+   `preprod-services/impact-analyzer-viewer.yaml`
+   (copier `argocd-application.yaml.example` de ce dossier — vérifier
+   `source.repoURL` contre le vrai chemin du dépôt `chart-impact-analyzer-viewer`
+   avant de l'utiliser), et ouvrir une MR vers `main`.
