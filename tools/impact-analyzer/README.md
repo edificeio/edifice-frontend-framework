@@ -4,14 +4,15 @@ Cartographie, pour chaque export public des packages `@edifice.io/*`, quelles
 apps React consommatrices l'utilisent, où, et avec quel niveau de risque.
 Voir `PLAN-impact-analyzer.md` à la racine du repo pour le cadrage complet.
 
-Ce package couvre les **Jalons 0 à 5 et 7** du plan : mode local complet,
+Ce package couvre les **Jalons 0 à 7** du plan : mode local complet,
 discovery distante via l'API GitHub Contents (`--mode=ci`, pour `generate`
-**et** `diff`), cache incrémental par SHA, résilience aux échecs partiels, et
-automatisation via un workflow GitHub Actions CRON. **Jalon 6 en cours** :
-viewer hébergé en interne (périmètre retenu, pas de commentaire PR ni
-d'export QA séparé) — bloqué sur le choix d'hébergement/stockage côté infra,
-lui-même bloqué par la confidentialité de certaines apps consommatrices (voir
-"CRON" et "Limites connues" ci-dessous).
+**et** `diff`), cache incrémental par SHA, résilience aux échecs partiels,
+automatisation via un workflow GitHub Actions CRON, et le **viewer hébergé en
+interne** (Jalon 6, périmètre retenu = viewer uniquement, pas de commentaire
+PR ni d'export QA séparé) — image Docker distroless, déployée par l'infra sur
+`k8s-preprod-services` (Helm + ArgoCD), accessible via VPN sur
+`impact-analyzer-viewer.ode.tools` (voir "CRON" et `viewer/k8s-chart-reference/`
+pour le détail).
 
 ## Prérequis
 
@@ -189,12 +190,14 @@ avec le cache incrémental branché sur le run précédent.
 référence des infos sur des apps privées (`communities`, `collect`...). Le
 publier tel quel ici (branche, artifact, ou GitHub Pages) les exposerait
 publiquement. L'index est donc poussé dans un **repo privé dédié**,
-`edificeio/impact-analyzer-data` — jamais dans ce repo. Conséquence directe :
-**pas de viewer hébergé partagé** pour l'instant (GitHub Pages n'est pas
-disponible pour un repo privé sur le plan **Free** de l'org `edificeio` —
-vérifié). Le viewer (`viewer/`, Jalon 3) continue de tourner en local,
-pointé sur un clone de ce repo de données. Réévaluer si l'outil se
-pérennise (upgrade de plan, ou infra d'hébergement privé dédiée).
+`edificeio/impact-analyzer-data` — jamais dans ce repo. GitHub Pages n'était
+de toute façon pas une option pour un repo privé sur le plan **Free** de
+l'org `edificeio` (vérifié) : le **viewer hébergé** (Jalon 6, livré) est donc
+une image Docker déployée en interne par l'infra, qui lit ce repo de données
+en continu (API GitHub Contents, token dédié lecture seule) — voir
+`viewer/k8s-chart-reference/README.md` pour le détail du déploiement. Le
+viewer reste aussi utilisable en local en complément (clone du repo de
+données + `pnpm --filter @edifice.io/impact-analyzer-viewer dev`).
 
 **Secrets requis** sur `edifice-frontend-framework`
 (Settings → Secrets and variables → Actions) :
@@ -282,7 +285,8 @@ car cette convention diffère par package FF (voir commentaires dans
   (pas de récursion sur tout son graphe applicatif).
 - **Fraîcheur local vs CI** : le mode local reflète l'état du disque à
   l'instant du run (jamais périmé par définition) ; l'index CI généré par le
-  CRON peut avoir jusqu'à ~24h de décalage (nocturne, hors week-end) — les
+  CRON peut avoir jusqu'à ~24h de décalage en semaine, et jusqu'à **~72h**
+  après un vendredi (le CRON ne tourne pas le week-end, `0 2 * * 1-5`) — les
   deux ne sont pas synchronisés automatiquement entre eux.
 - **Registre manuel** : rien ne garantit qu'une nouvelle app migrée soit
   ajoutée à `apps.json` au bon moment.
@@ -300,17 +304,11 @@ car cette convention diffère par package FF (voir commentaires dans
 - **Fichier CSS composant supprimé entre base et head** : reste dans le
   rapport de diff, mais avec une confiance indéterminée (repli `needs-review`)
   plutôt que d'être silencieusement omis.
-- **Jalon 6 en cours** : périmètre retenu = viewer hébergé en interne
-  uniquement (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci`
-  est prêt (ce commit) ; restent à faire : le workflow GitHub Actions
-  déclenché sur `pull_request` qui l'appelle et pousse le résultat, et le
-  choix du stockage/hébergement — **en attente de la réponse infra** (accès
-  restreint requis, cf. contrainte de confidentialité ci-dessous). Rétention
-  actée : illimitée, un fichier par PR (paire branche origine/destination) —
-  projection à ~12 Mo après 5 ans au rythme actuel du repo, donc sans enjeu
-  de volumétrie.
-- **Pas de viewer hébergé partagé pour l'instant** : la confidentialité de
-  certaines apps consommatrices (`communities`, `collect`...) bloque toute
-  publication sur ce repo public ; l'index et les diffs CRON vivent dans un
-  repo privé dédié, le viewer reste un usage local en attendant l'hébergement
-  interne du Jalon 6 (voir section "CRON" ci-dessus).
+- **Jalon 6 livré** : périmètre retenu = viewer hébergé en interne uniquement
+  (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci` est prêt et
+  utilisable dès maintenant en local/CLI, mais **pas encore branché** sur un
+  workflow GitHub Actions déclenché sur `pull_request` — reste une extension
+  possible, pas engagée dans cette itération (voir `PLAN-impact-analyzer.md`
+  §8, §13). Rétention actée : illimitée, un fichier par PR (paire branche
+  origine/destination) — projection à ~12 Mo après 5 ans au rythme actuel du
+  repo, donc sans enjeu de volumétrie.
