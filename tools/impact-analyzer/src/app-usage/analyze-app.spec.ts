@@ -51,15 +51,35 @@ describe('analyzeAppUsage', () => {
       ffEntries,
     );
 
-    expect(outOfContractImports).toEqual([
-      {
-        package: '@edifice.io/fixture',
-        importPath: '@edifice.io/fixture/dist/internal/Internal',
-        files: [`${appDir}/src/OutOfContract.tsx`],
-      },
-    ]);
+    expect(outOfContractImports).toEqual(
+      expect.arrayContaining([
+        {
+          package: '@edifice.io/fixture',
+          importPath: '@edifice.io/fixture/dist/internal/Internal',
+          files: [`${appDir}/src/OutOfContract.tsx`],
+        },
+      ]),
+    );
 
     expect(usages.some((u) => u.importedName === 'Internal')).toBe(false);
+  });
+
+  it('flags a side-effect-only import outside the contract, even with no named/namespace binding', () => {
+    const { outOfContractImports } = analyzeAppUsage(
+      `${appDir}/src`,
+      `${appDir}/tsconfig.json`,
+      ffEntries,
+    );
+
+    expect(outOfContractImports).toEqual(
+      expect.arrayContaining([
+        {
+          package: '@edifice.io/fixture',
+          importPath: '@edifice.io/fixture/dist/internal/side-effect.css',
+          files: [`${appDir}/src/SideEffectImport.tsx`],
+        },
+      ]),
+    );
   });
 
   it('silently ignores @edifice.io/* imports from packages outside the tracked set', () => {

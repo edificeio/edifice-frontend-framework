@@ -5,7 +5,10 @@ import {
   toImportPath,
   type KnownFfEntry,
 } from './contract-checker.js';
-import { resolveEdificeImports } from './import-resolver.js';
+import {
+  resolveEdificeImports,
+  resolveSideEffectEdificeSpecifiers,
+} from './import-resolver.js';
 import { listAppSourceFiles } from './source-files.js';
 import { resolveUsagesForFile } from './usage-counter.js';
 
@@ -53,6 +56,24 @@ export function analyzeAppUsage(
   const usageByKey = new Map<string, AppUsageAggregate>();
   const outOfContractByKey = new Map<string, OutOfContractUsage>();
 
+  function recordOutOfContract(
+    packageName: string,
+    entry: string,
+    file: string,
+  ): void {
+    const key = `${packageName}|${entry}`;
+    const existing = outOfContractByKey.get(key);
+    if (existing) {
+      if (!existing.files.includes(file)) existing.files.push(file);
+    } else {
+      outOfContractByKey.set(key, {
+        package: packageName,
+        importPath: toImportPath(packageName, entry),
+        files: [file],
+      });
+    }
+  }
+
   for (const file of files) {
     const sourceFile = project.getSourceFileOrThrow(file);
     // Only imports from the FF packages we actually track (react, client,
@@ -67,20 +88,20 @@ export function analyzeAppUsage(
 
     const inContractBindings = trackedBindings.filter((b) => {
       if (isEntryInContract(knownEntries, b.package, b.entry)) return true;
-
-      const key = `${b.package}|${b.entry}`;
-      const existing = outOfContractByKey.get(key);
-      if (existing) {
-        if (!existing.files.includes(file)) existing.files.push(file);
-      } else {
-        outOfContractByKey.set(key, {
-          package: b.package,
-          importPath: toImportPath(b.package, b.entry),
-          files: [file],
-        });
-      }
+      recordOutOfContract(b.package, b.entry, file);
       return false;
     });
+
+    // Side-effect-only static imports and dynamic import()/require() calls
+    // produce no named/namespace binding to count usage sites for, but they
+    // are a real dependency on the FF and must still be checked against the
+    // contract (e.g. `import '@edifice.io/react/.../styles.css'`).
+    for (const m of resolveSideEffectEdificeSpecifiers(sourceFile)) {
+      if (!trackedPackages.has(m.package)) continue;
+      if (!isEntryInContract(knownEntries, m.package, m.entry)) {
+        recordOutOfContract(m.package, m.entry, file);
+      }
+    }
 
     for (const usage of resolveUsagesForFile(sourceFile, inContractBindings)) {
       if (usage.usageSites === 0) continue;

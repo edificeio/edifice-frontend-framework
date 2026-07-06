@@ -1,4 +1,4 @@
-import { Node, SourceFile } from 'ts-morph';
+import { Node, SourceFile, SyntaxKind } from 'ts-morph';
 
 export interface NormalizedEdificeModule {
   package: string;
@@ -98,4 +98,43 @@ export function resolveEdificeImports(sourceFile: SourceFile): ImportBinding[] {
   }
 
   return bindings;
+}
+
+/**
+ * Resolves @edifice.io/* specifiers that produce no named/namespace binding
+ * to track usage against — side-effect-only static imports
+ * (`import '@edifice.io/react/.../styles.css'`) and dynamic `import()`/
+ * `require()` calls. `resolveEdificeImports` above never sees these (no
+ * import clause to walk), so a deep/out-of-contract path reached only this
+ * way was previously invisible to the contract checker.
+ */
+export function resolveSideEffectEdificeSpecifiers(
+  sourceFile: SourceFile,
+): NormalizedEdificeModule[] {
+  const specifiers: string[] = [];
+
+  for (const importDecl of sourceFile.getImportDeclarations()) {
+    const hasBinding =
+      importDecl.getNamespaceImport() !== undefined ||
+      importDecl.getDefaultImport() !== undefined ||
+      importDecl.getNamedImports().length > 0;
+    if (!hasBinding) specifiers.push(importDecl.getModuleSpecifierValue());
+  }
+
+  sourceFile.forEachDescendant((node) => {
+    if (!Node.isCallExpression(node)) return;
+    const callee = node.getExpression();
+    const isDynamicImport = callee.getKind() === SyntaxKind.ImportKeyword;
+    const isRequire =
+      Node.isIdentifier(callee) && callee.getText() === 'require';
+    if (!isDynamicImport && !isRequire) return;
+
+    const [arg] = node.getArguments();
+    if (arg && Node.isStringLiteral(arg))
+      specifiers.push(arg.getLiteralValue());
+  });
+
+  return specifiers
+    .map(normalizeEdificeModuleSpecifier)
+    .filter((m): m is NormalizedEdificeModule => m !== null);
 }

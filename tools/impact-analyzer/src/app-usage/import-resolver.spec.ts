@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   normalizeEdificeModuleSpecifier,
   resolveEdificeImports,
+  resolveSideEffectEdificeSpecifiers,
 } from './import-resolver.js';
 
 describe('normalizeEdificeModuleSpecifier', () => {
@@ -73,5 +74,42 @@ describe('resolveEdificeImports', () => {
   it('ignores non-@edifice.io imports', () => {
     const sf = parse(`import { useState } from 'react';`);
     expect(resolveEdificeImports(sf)).toEqual([]);
+  });
+});
+
+describe('resolveSideEffectEdificeSpecifiers', () => {
+  it('resolves a side-effect-only static import', () => {
+    const sf = parse(`import '@edifice.io/react/dist/styles.css';`);
+    expect(resolveSideEffectEdificeSpecifiers(sf)).toEqual([
+      { package: '@edifice.io/react', entry: './dist/styles.css' },
+    ]);
+  });
+
+  it('resolves a dynamic import() call', () => {
+    const sf = parse(
+      `async function load() { await import('@edifice.io/react/icons/nav'); }`,
+    );
+    expect(resolveSideEffectEdificeSpecifiers(sf)).toEqual([
+      { package: '@edifice.io/react', entry: './icons/nav' },
+    ]);
+  });
+
+  it('resolves a require() call', () => {
+    const sf = parse(`const react = require('@edifice.io/react');`);
+    expect(resolveSideEffectEdificeSpecifiers(sf)).toEqual([
+      { package: '@edifice.io/react', entry: '.' },
+    ]);
+  });
+
+  it('does not duplicate a regular named import as a side-effect specifier', () => {
+    const sf = parse(`import { Dropdown } from '@edifice.io/react';`);
+    expect(resolveSideEffectEdificeSpecifiers(sf)).toEqual([]);
+  });
+
+  it('ignores non-@edifice.io side-effect imports and dynamic imports', () => {
+    const sf = parse(
+      `import 'normalize.css';\nasync function load() { await import('react'); }`,
+    );
+    expect(resolveSideEffectEdificeSpecifiers(sf)).toEqual([]);
   });
 });
