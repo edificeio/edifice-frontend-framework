@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, unlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Project } from 'ts-morph';
@@ -152,6 +152,31 @@ describe('diffSymbols', () => {
     const headSymbols = toDeclaredSymbols(
       makeSymbols(headDir, 'export function foo(x: number) { return x + 2; }'),
     );
+
+    const [entry] = diffSymbols({
+      baseSymbols,
+      headSymbols,
+      headIndex: makeHeadIndex(),
+    });
+    expect(entry).toMatchObject({
+      name: 'foo',
+      changeKind: 'body-changed',
+      severity: 'needs-review',
+    });
+  });
+
+  it('reports needs-review instead of crashing when a base source file is missing on disk', () => {
+    baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
+    headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));
+
+    const baseSymbols = toDeclaredSymbols(
+      makeSymbols(baseDir, 'export function foo(x: number) { return x + 1; }'),
+    );
+    const headSymbols = toDeclaredSymbols(
+      makeSymbols(headDir, 'export function foo(x: number) { return x + 1; }'),
+    );
+    // Simulate the base worktree snapshot disappearing mid-read (race, cleanup).
+    unlinkSync(join(baseDir, 'a.ts'));
 
     const [entry] = diffSymbols({
       baseSymbols,

@@ -73,8 +73,18 @@ function pushIfRealChange(
   headIndex: ImpactIndex,
   entries: SymbolDiffEntry[],
 ): void {
-  const baseText = readSourceFilesText(base.sourceFiles);
-  const headText = readSourceFilesText(head.sourceFiles);
+  let baseText: string;
+  let headText: string;
+  try {
+    baseText = readSourceFilesText(base.sourceFiles);
+    headText = readSourceFilesText(head.sourceFiles);
+  } catch {
+    // A declared source file is missing on disk (e.g. the base worktree
+    // snapshot was cleaned up mid-read) — we can't tell whether the change
+    // is cosmetic, so report it (needs-review) rather than crash the diff.
+    entries.push(buildEntry(base, head, 'body-changed', headIndex));
+    return;
+  }
   if (isCosmeticOnlyChange(baseText, headText)) return; // no observable change at all
   entries.push(buildEntry(base, head, 'body-changed', headIndex));
 }
