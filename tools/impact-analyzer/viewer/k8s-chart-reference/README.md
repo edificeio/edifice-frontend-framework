@@ -16,10 +16,7 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
 - [x] `Chart.yaml`/`values.yaml` copiés dans le dépôt gitlab-infra
       (`Chart.yaml.example`/`values.yaml.example` de ce dossier).
 - [x] `helm dependency build` vérifié.
-- [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte
-      (`argocd-application.yaml.example` de ce dossier — vérifier
-      `source.repoURL` et `destination.namespace` avant de l'utiliser,
-      voir l'avertissement en tête de ce fichier).
+- [x] Manifeste ArgoCD ajouté sur `argo-apps`, MR ouverte et mergée par SRE.
 - [x] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo :
       build/scan Trivy/push réels réussis, image disponible sur
       `maven.opendigitaleducation.com/enabling/impact-analyzer-viewer`

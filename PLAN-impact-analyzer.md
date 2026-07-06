@@ -55,14 +55,14 @@ s'il atteint effectivement cet objectif.)*
 | **Robustesse du cœur** | **AST dès le départ** (`ts-morph`) pour la résolution JS ; parseur Sass pour le CSS. Le cœur doit être exact ; les sorties se livrent par étapes. |
 | **Emplacement** | **Nouveau package dans le monorepo FF** (`tools/impact-analyzer`, nom à confirmer — cf. §13). Réutilise Turbo/Vite/CI en place. |
 | **Nature du diff** | **Classifiée** en 3 niveaux (§6). |
-| **Graphe** | **Site statique dédié** généré depuis l'index (Vite + React, `viewer/`), **livré et fonctionnel en local dès le Jalon 3** — inclut désormais aussi un onglet **Diff**. Hébergement **partagé** : décidé — repo public exclu (confidentialité), GitHub Pages privé exclu (org sur plan Free), hébergement **interne** demandé à l'infra, en attente de réponse (Jalon 6, §9, §13). |
+| **Graphe** | **Site statique dédié** généré depuis l'index (Vite + React, `viewer/`), **livré et fonctionnel en local dès le Jalon 3** — inclut désormais aussi un onglet **Diff** (page par défaut). Hébergement **partagé** : **livré** (Jalon 6) — image Docker distroless servie via un serveur Node minimal, déployée par l'infra sur `k8s-preprod-services` (Helm + ArgoCD), accessible en interne via Gateway API (`impact-analyzer-viewer.ode.tools`, restriction réseau VPN, pas d'auth applicative) (§9, §13). |
 | **Exécution locale** | Le cœur tourne en **commande locale** dès le Jalon 1 (pas seulement en CI) — indépendant de la CRON et de la décision d'hébergement. Sert les démos et l'adoption (§9). **Livré.** |
 | **Séquencement** | **Cœur + graphe explorable d'abord** ; commentaire PR / rapport QA / CLI ensuite (réutilisent l'index sans retoucher le cœur). Réalisé dans cet ordre, à l'exception du commentaire PR/rapport QA — **volontairement recadrés hors du périmètre initial du Jalon 6** (§8, §13). |
-| **Fraîcheur** | **CRON nocturne hors week-end** + relance manuelle. **Livré** (`.github/workflows/impact-analyzer-generate.yml`). Temps quasi-réel par PR : la brique technique (`diff --mode=ci`) est livrée, son automatisation (workflow `pull_request`) est en attente de l'hébergement (§9, §13). |
+| **Fraîcheur** | **CRON nocturne hors week-end** + relance manuelle. **Livré** (`.github/workflows/impact-analyzer-generate.yml`). Le viewer hébergé rafraîchit sa copie locale des données toutes les 5 min (`REFRESH_INTERVAL_SECONDS`) depuis le repo privé. Temps quasi-réel par PR : la brique technique (`diff --mode=ci`) est livrée ; son automatisation (workflow `pull_request` qui l'appellerait à chaque PR) reste **hors périmètre**, recadrée avec le commentaire PR (§8, §13) — l'hébergement n'est plus un bloqueur. |
 | **Bruit du diff** | Diffs cosmétiques (formatage, commentaires, renommages locaux) filtrés avant classification 🟡 (§6). **Livré.** |
 | **Canal de restitution** | **Recadré** : périmètre du Jalon 6 réduit au viewer hébergé en interne uniquement. Le commentaire PR GitHub et le rapport QA formel restent des extensions possibles mais ne sont **plus** dans le périmètre engagé de cette itération (§8, §13). |
 | **Critères de succès** | Mini-section dédiée (§11), hors déclenchement des jalons techniques. |
-| **Confidentialité publication** | **Tranchée** : ni ce repo public, ni GitHub Pages (org Free) ; index + diffs stockés dans un repo privé dédié (`edificeio/impact-analyzer-data`) ; hébergement du viewer partagé demandé à l'infra, réponse en attente (§9, §13). |
+| **Confidentialité publication** | **Tranchée et livrée** : ni ce repo public, ni GitHub Pages (org Free) ; index + diffs stockés dans un repo privé dédié (`edificeio/impact-analyzer-data`) ; viewer déployé en interne par l'infra, accès réseau restreint au VPN (§9, §13). |
 
 ---
 
@@ -344,9 +344,9 @@ Toutes lisent l'index. Ordre de livraison = §10.
    branche FF, et un **onglet Diff** (badges de sévérité 🔴/🟠/🟡, tri par
    risque, sélecteur si plusieurs diffs) — onglet par défaut au chargement.
    Pas de vue graphe (Cytoscape/D3) : tableaux filtrables uniquement, jugé
-   suffisant en pratique. La **publication partagée** est en cours (Jalon 6,
-   §9, §13) : ni ce repo public ni GitHub Pages (org sur plan Free),
-   hébergement interne demandé à l'infra.
+   suffisant en pratique. La **publication partagée** est **livrée** (Jalon 6,
+   §9, §13) : ni ce repo public ni GitHub Pages (org sur plan Free) — image
+   Docker déployée en interne par l'infra, accès restreint au VPN.
 2. **Commentaire sur PR FF** — **recadré hors du périmètre initial du Jalon
    6** (décision explicite, §13) : le viewer hébergé couvre le besoin de
    consultation pour l'instant ; ce canal reste une extension possible mais
@@ -398,8 +398,42 @@ Toutes lisent l'index. Ordre de livraison = §10.
     `staleSince` — l'app ne disparaît jamais silencieusement du rapport.
   - **`diff --mode=ci`** (même logique de clone à la volée, réutilise
     `buildCiIndex`) permet de calculer un diff par PR sans dépendre de repos
-    frères déjà clonés — brique prête, pas encore automatisée par un workflow
-    `pull_request` (en attente de l'hébergement, §13).
+    frères déjà clonés — brique prête ; son automatisation par un workflow
+    `pull_request` reste hors périmètre, recadrée avec le commentaire PR
+    (§8, §13), pas bloquée par l'hébergement (qui est livré).
+- **Hébergement du viewer (Jalon 6) — livré** : l'infra a demandé une
+  **image Docker** (pas un simple hébergement de fichiers statiques). Livré :
+  - **Serveur** (`viewer/server/serve.mjs`, `http` natif, aucune dépendance
+    framework) : sert le build Vite (`dist/`), expose `/health/live`,
+    `/health/ready`, `/health/metrics` (Prometheus via `prom-client`), et
+    rafraîchit en tâche de fond (`refresh-data.mjs`, toutes les
+    `REFRESH_INTERVAL_SECONDS`, défaut 300s) une copie locale des données
+    lues depuis `edificeio/impact-analyzer-data` via l'API GitHub Contents
+    (token lecture seule dédié, distinct de celui du CRON).
+  - **`Dockerfile`** multi-stage : build sur `node:22-slim` (workspace pnpm
+    complet), runtime sur `gcr.io/distroless/nodejs22-debian12:nonroot`
+    (non-root, pas de shell/`git`/`curl`). `pnpm install` sans
+    `--frozen-lockfile` — ce repo ne commite pas `pnpm-lock.yaml`, comme tous
+    les autres workflows CI du repo.
+  - **`.github/workflows/impact-analyzer-viewer-release.yml`** : build → scan
+    Trivy (bloquant sur CRITICAL/HIGH, `.trivyignore` scopé et daté pour 6 CVE
+    `libssl3` qui sont un retard de publication de l'image distroless côté
+    Google, pas un problème côté FF) → push sur le registre Nexus interne
+    (`maven.opendigitaleducation.com/enabling/impact-analyzer-viewer`), sur
+    push d'un tag `impact-analyzer-viewer-v*.*.*` (+ `workflow_dispatch` pour
+    tester manuellement).
+  - **Déploiement k8s** (fait par l'infra/SRE, fichiers de référence dans
+    `tools/impact-analyzer/viewer/k8s-chart-reference/`, jamais poussés sur
+    GitHub) : chart Helm dédié sur gitlab-infra (`chart-impact-analyzer-viewer`,
+    dépendance OCI vers le chart modèle `boilerplate-deployment`), cluster
+    `k8s-preprod-services`, exposition via **Gateway API / Envoy Gateway**
+    (`httpRoutes`, pas `ingress` — déprécié chez Edifice), hostname
+    `impact-analyzer-viewer.ode.tools`. **Pas d'authentification applicative** :
+    l'infra restreint l'accès au **réseau VPN d'entreprise** uniquement. Le
+    token GitHub lecture seule (`DATA_REPO_GITHUB_TOKEN`) est stocké dans
+    Vault et injecté en variable d'env via le mécanisme `vaultSecrets` du
+    chart modèle. Manifeste ArgoCD ajouté sur `argo-apps`
+    (`preprod-services/impact-analyzer-viewer.yaml`), MR mergée par SRE.
 - **Accès GitHub** : deux fine-grained PAT en secrets CI
   (`IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` / `_OPEN_ENT_NG`), lecture seule,
   scopés aux repos du registre — **livré et validé en conditions réelles**.
@@ -425,24 +459,26 @@ publiquement** des informations sur des apps privées.
 
 **Décision prise** (option **a**, ci-dessous) :
 
-a. ✅ **Retenue.** L'index et les diffs générés par le CRON sont poussés vers
-   un **repo privé dédié**, `edificeio/impact-analyzer-data` (jamais ce repo
-   public). L'**hébergement d'un viewer partagé** (Jalon 6) est demandé à
-   l'**infra interne** (stockage + authentification + page statique) — GitHub
-   Actions calcule tout, l'infra n'a besoin d'aucun accès GitHub ni de faire
-   tourner de calcul. Demande consolidée avec projections de volumétrie (voir
-   §13) ; **réponse en attente**. En attendant, le viewer reste un usage
-   local (clone du repo de données + `pnpm --filter
-   @edifice.io/impact-analyzer-viewer dev`).
+a. ✅ **Retenue et livrée.** L'index et les diffs générés par le CRON sont
+   poussés vers un **repo privé dédié**, `edificeio/impact-analyzer-data`
+   (jamais ce repo public). L'**hébergement du viewer partagé** (Jalon 6) est
+   fait : l'infra a demandé une **image Docker** plutôt qu'une page statique
+   (voir §9 pour le détail technique — serveur Node distroless, pas
+   d'authentification applicative, restriction réseau VPN à la place).
+   L'infra a construit/déployé le chart Helm et l'application ArgoCD ; GitHub
+   Actions calcule et pousse tout (image + données), l'infra n'a besoin
+   d'aucun accès GitHub ni de faire tourner de calcul. L'usage local reste
+   possible en parallèle (clone du repo de données + `pnpm --filter
+   @edifice.io/impact-analyzer-viewer dev`), utile pour une démo hors VPN.
 b. ❌ **Écartée.** GitHub Pages en visibilité privée nécessite GitHub Team ou
    Enterprise Cloud — **vérifié : l'org `edificeio` est sur le plan Free**,
    qui ne propose pas Pages du tout pour un repo privé.
 c. ❌ **Écartée.** Anonymiser/agréger n'a pas été nécessaire, l'option (a)
    couvrant le besoin sans compromis sur la valeur pour la QA.
 
-En attendant la réponse de l'infra sur l'hébergement partagé, le viewer reste
-utilisable en **local et à la demande** (génération + consultation sur la
-machine du dev, cf. ci-dessus) — jamais de publication en Pages public.
+Le viewer reste aussi utilisable en **local et à la demande** (génération +
+consultation sur la machine du dev, cf. ci-dessus), en complément de
+l'hébergement partagé — jamais de publication en Pages public.
 
 ---
 
@@ -456,7 +492,7 @@ machine du dev, cf. ci-dessus) — jamais de publication en Pages public.
   exécutable en local.
 - ✅ **Jalon 2 — Cœur CSS.** Analyseur Sass §5.2 fusionné dans l'index.
 - ✅ **Jalon 3 — Graphe statique.** Viewer Vite + React (`viewer/`),
-  consultable en local. Publication partagée toujours en cours (Jalon 6).
+  consultable en local. Publication partagée livrée séparément (Jalon 6).
 - ✅ **Jalon 4 — CRON + cache.** Workflow GitHub Actions nocturne hors
   week-end, cache incrémental par SHA, résilience aux échecs partiels
   (`staleSince`) — pour `generate` **et** `diff` (`--mode=ci`). Index et
@@ -464,16 +500,17 @@ machine du dev, cf. ci-dessus) — jamais de publication en Pages public.
   (décision de confidentialité, §9).
 - ✅ **Jalon 5 — Classification du diff.** ④ (3 niveaux) + score de risque.
   Diff persisté en JSON (`data/diff.<base>..<head>.json`), lu par le viewer.
-- 🔶 **Jalon 6 — Viewer hébergé (recadré).** Périmètre initialement prévu
-  (commentaire PR + rapport QA) **réduit** au viewer hébergé en interne
+- ✅ **Jalon 6 — Viewer hébergé (recadré, livré).** Périmètre initialement
+  prévu (commentaire PR + rapport QA) **réduit** au viewer hébergé en interne
   uniquement — décision explicite, les deux autres canaux restent des
   extensions possibles mais ne sont plus engagés dans cette itération.
   Fait : `diff --mode=ci` (clone à la volée des apps via l'API GitHub, sans
-  dépendre de repos frères déjà clonés). **En attente** : réponse de
-  l'infra sur le stockage/l'hébergement (demande consolidée envoyée, avec
-  projections de volumétrie — rétention illimitée actée, ~12 Mo après 5 ans
-  au rythme actuel du repo) ; une fois reçue, reste à construire le workflow
-  GitHub Actions déclenché sur `pull_request` et le déploiement du viewer.
+  dépendre de repos frères déjà clonés) ; l'infra a demandé une **image
+  Docker** plutôt qu'un simple hébergement de fichiers statiques — serveur
+  Node, `Dockerfile` distroless, pipeline GitHub Actions (build/scan
+  Trivy/push), chart Helm + manifeste ArgoCD (détail technique complet en
+  §9). Premier tag `impact-analyzer-viewer-v0.1.0` poussé et release réelle
+  réussie ; MR ArgoCD mergée par SRE sur `argo-apps`.
 - ✅ **Jalon 7 — CLI locale.** `cli.ts symbol <nom>` (+ `--cached`),
   `cli.ts diff --base=<ref>` (+ `--mode=local|ci`).
 
@@ -534,8 +571,8 @@ ils servent à évaluer l'outil une fois en service, pas à le construire.
   horodatés) ; entre deux runs, un merge très récent peut ne pas encore y
   figurer. `diff --mode=ci` permet de calculer un diff à jour pour une PR
   précise à la demande — mais tant qu'il n'est pas branché sur un workflow
-  `pull_request` automatique (Jalon 6, en attente d'hébergement), ce trou
-  n'est comblé qu'en lançant la commande manuellement.
+  `pull_request` automatique (recadré hors périmètre avec le commentaire PR,
+  §8), ce trou n'est comblé qu'en lançant la commande manuellement.
 - **Couverture de branches partielle (V1)** : seules les branches déclarées
   dans `apps.json` par app (typiquement l'équivalent de `develop` et
   `develop-enabling`, sous des noms qui varient — `dev` sur certains repos)
@@ -580,10 +617,11 @@ ils servent à évaluer l'outil une fois en service, pas à le construire.
 - [ ] **Seuils du score de risque** (pondérations sévérité × sites × apps) à
       calibrer avec la QA après usage réel — **toujours ouvert**, pas encore
       fait (pas assez de recul à ce stade).
-- [ ] **Hébergement du viewer partagé (Jalon 6)** — demande envoyée à
-      l'infra (stockage + authentification + page statique, GitHub Actions
-      calcule et pousse ; rétention illimitée actée, projections de
-      volumétrie négligeables — voir demande consolidée). **Réponse en
-      attente.** Une fois reçue : construire le workflow GitHub Actions
-      déclenché sur `pull_request` (appelant `diff --mode=ci`) et le
-      déploiement du viewer.
+- [x] **Hébergement du viewer partagé (Jalon 6)** — **livré**. L'infra a
+      demandé une image Docker plutôt qu'un simple hébergement de fichiers
+      statiques (détail technique complet en §9) : serveur Node distroless,
+      pipeline GitHub Actions (build/scan Trivy/push vers le registre Nexus
+      interne), chart Helm + manifeste ArgoCD mergé par SRE sur `argo-apps`.
+      Pas d'authentification applicative : accès restreint au réseau VPN par
+      l'infra. Le workflow `pull_request` automatique reste hors périmètre
+      (recadré avec le commentaire PR, §8) — pas un reliquat de l'hébergement.
