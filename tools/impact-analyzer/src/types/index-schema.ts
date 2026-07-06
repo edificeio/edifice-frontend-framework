@@ -68,11 +68,23 @@ export interface SymbolEntry {
 export interface ConsumerEntry {
   app: string;
   org: string;
+  /**
+   * GitHub repo name (from apps.json) — `app` is a display name that only
+   * coincidentally matches it today. Optional because entries carried
+   * forward from a pre-repo index don't have it; readers fall back to `app`.
+   */
+  repo?: string;
   appBranch: string;
   pins: string;
   appCommit: string;
   appDirty: boolean;
   usageSites: number;
+  /**
+   * Repo-root-relative paths (e.g. "frontend/src/.../Foo.tsx") — the form
+   * needed to build GitHub blob permalinks. Entries carried forward from a
+   * pre-normalization index may still hold absolute paths; readers must
+   * treat those as non-linkable.
+   */
   files: string[];
   importedAs?: string;
   viaNamespace?: boolean;
@@ -99,7 +111,12 @@ export interface CssComponentEntry {
 export interface CssConsumerEntry {
   app: string;
   appBranch: string;
+  /** Same optionality/fallback rules as ConsumerEntry.org/repo/appCommit. */
+  org?: string;
+  repo?: string;
+  appCommit?: string;
   matchedSelectors: string[];
+  /** Repo-root-relative paths — same rules as ConsumerEntry.files. */
   files: string[];
   matchCount: number;
 }

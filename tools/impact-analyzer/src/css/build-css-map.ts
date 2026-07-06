@@ -8,6 +8,7 @@ import type {
   SymbolEntry,
 } from '../types/index-schema.js';
 import { listAppSourceFiles } from '../app-usage/source-files.js';
+import { toRepoRelativeFiles } from '../index-builder/repo-relative.js';
 import { classConfidence, findClassUsageInApp } from './class-usage-grep.js';
 import { correlateComponent } from './component-correlation.js';
 import { GLOBAL_SCOPE_DIRS } from './global-scope-detector.js';
@@ -31,6 +32,12 @@ function listScssFilesRecursively(dir: string): string[] {
 export interface CssAppContext {
   appName: string;
   appBranch: string;
+  /** GitHub coordinates + scanned commit — flow into CssConsumerEntry so the viewer can build blob permalinks. */
+  org: string;
+  repo: string;
+  appCommit: string;
+  /** App repo root — grep hits are stored relative to it (stable across runs, linkable). */
+  repoRoot: string;
   pinsBootstrap: boolean;
   srcRoot: string;
 }
@@ -112,8 +119,11 @@ export function buildCssMap(
         consumers.push({
           app: app.appName,
           appBranch: app.appBranch,
+          org: app.org,
+          repo: app.repo,
+          appCommit: app.appCommit,
           matchedSelectors: usage.matchedSelectors,
-          files: usage.files,
+          files: toRepoRelativeFiles(app.repoRoot, usage.files),
           matchCount: usage.matchCount,
         });
       }

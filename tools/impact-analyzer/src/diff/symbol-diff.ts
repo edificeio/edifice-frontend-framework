@@ -78,6 +78,12 @@ function consumersFor(
     app: c.app,
     appBranch: c.appBranch,
     usageSites: c.usageSites,
+    // Denormalized so the viewer can link each impacted file to its
+    // SHA-pinned GitHub blob without needing the (unpublished) head index.
+    org: c.org,
+    repo: c.repo,
+    appCommit: c.appCommit,
+    files: c.files,
   }));
 }
 

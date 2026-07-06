@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
+import { FileLinkList } from '../components/FileLinkList.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
@@ -79,7 +80,9 @@ export function AppConsumes({
                   {formatEntry(symbol.entry)}
                 </td>
                 <td>{consumer.usageSites}</td>
-                <td>{consumer.files.length}</td>
+                <td>
+                  <FileLinkList fileRef={consumer} files={consumer.files} />
+                </td>
                 <td>
                   {consumer.viaNamespace && (
                     <UsageBadge label="namespace" tone="info" />
@@ -106,6 +109,7 @@ export function AppConsumes({
                 <th>Composant scss</th>
                 <th>Pair React</th>
                 <th>Classes matchées</th>
+                <th>Fichiers</th>
                 <th>Confiance</th>
               </tr>
             </thead>
@@ -115,6 +119,9 @@ export function AppConsumes({
                   <td>{component.file}</td>
                   <td>{component.reactPeer ?? '—'}</td>
                   <td>{consumer.matchedSelectors.join(', ')}</td>
+                  <td>
+                    <FileLinkList fileRef={consumer} files={consumer.files} />
+                  </td>
                   <td>
                     <UsageBadge
                       label={component.confidence}

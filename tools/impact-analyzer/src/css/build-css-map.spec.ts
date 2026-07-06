@@ -40,6 +40,10 @@ describe('buildCssMap', () => {
         {
           appName: 'fixture-app',
           appBranch: 'develop',
+          org: 'edificeio',
+          repo: 'test-app',
+          appCommit: 'abc1234',
+          repoRoot: `${appDir}/src`,
           pinsBootstrap: true,
           srcRoot: `${appDir}/src`,
         },
@@ -84,6 +88,10 @@ describe('buildCssMap', () => {
         {
           appName: 'fixture-app',
           appBranch: 'develop',
+          org: 'edificeio',
+          repo: 'test-app',
+          appCommit: 'abc1234',
+          repoRoot: `${appDir}/src`,
           pinsBootstrap: true,
           srcRoot: `${appDir}/src`,
         },
@@ -114,6 +122,10 @@ describe('buildCssMap', () => {
         {
           appName: 'no-bootstrap-app',
           appBranch: 'develop',
+          org: 'edificeio',
+          repo: 'test-app',
+          appCommit: 'abc1234',
+          repoRoot: `${appDir}/src`,
           pinsBootstrap: false,
           srcRoot: `${appDir}/src`,
         },

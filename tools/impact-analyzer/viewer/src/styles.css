@@ -298,3 +298,26 @@ body {
 .error {
   color: #a02020;
 }
+
+.file-links summary {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.file-links ul {
+  margin: 0.25rem 0 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.file-links li {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.app-impacts {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
+import { FileLinkList } from '../components/FileLinkList.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry } from '../lib/symbol-display.js';
 
@@ -53,7 +54,9 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
                 <td>{c.appBranch}</td>
                 <td>{c.pins}</td>
                 <td>{c.usageSites}</td>
-                <td>{c.files.length}</td>
+                <td>
+                  <FileLinkList fileRef={c} files={c.files} />
+                </td>
                 <td>
                   {c.appDirty && <UsageBadge label="dirty" tone="warn" />}
                   {c.viaNamespace && (

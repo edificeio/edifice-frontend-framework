@@ -93,6 +93,15 @@ export function diffCss(input: DiffCssInput): CssDiffEntry[] {
       confidence,
       severity,
       affectedApps,
+      consumers: componentEntry?.consumers.map((c) => ({
+        app: c.app,
+        appBranch: c.appBranch,
+        matchCount: c.matchCount,
+        org: c.org,
+        repo: c.repo,
+        appCommit: c.appCommit,
+        files: c.files,
+      })),
       riskScore: computeRiskScore(
         severity,
         totalMatchCount,

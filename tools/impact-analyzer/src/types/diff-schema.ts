@@ -56,6 +56,27 @@ export interface ConsumerImpactSummary {
   app: string;
   appBranch: string;
   usageSites: number;
+  /**
+   * GitHub coordinates + SHA-pinned file list, denormalized from the head
+   * index at diff time so the viewer can link straight to the impacted
+   * code. Optional: reports written before this field existed don't have
+   * them, and carried-forward head entries may lack org/repo/commit.
+   */
+  org?: string;
+  repo?: string;
+  appCommit?: string;
+  files?: string[];
+}
+
+/** Per-app impact of a component-scoped CSS diff — same linking fields as ConsumerImpactSummary. */
+export interface CssConsumerImpactSummary {
+  app: string;
+  appBranch: string;
+  matchCount: number;
+  org?: string;
+  repo?: string;
+  appCommit?: string;
+  files?: string[];
 }
 
 export type CssChangeScope = 'component' | 'global';
@@ -70,5 +91,7 @@ export interface CssDiffEntry {
   confidence?: CssConfidence;
   severity: DiffSeverity;
   affectedApps: string[];
+  /** Present only when scope === 'component' — global changes affect apps without a specific file list. */
+  consumers?: CssConsumerImpactSummary[];
   riskScore: number;
 }

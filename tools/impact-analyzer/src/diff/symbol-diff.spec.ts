@@ -117,8 +117,17 @@ describe('diffSymbols', () => {
       changeKind: 'signature-changed',
       severity: 'likely-breaking',
     });
+    // Linking fields (org/repo/appCommit/files) are denormalized from the
+    // head index so the viewer can build GitHub permalinks.
     expect(entry.consumers).toEqual([
-      { app: 'communities', appBranch: 'develop', usageSites: 5 },
+      expect.objectContaining({
+        app: 'communities',
+        appBranch: 'develop',
+        usageSites: 5,
+        org: 'edificeio',
+        appCommit: 'x',
+        files: [],
+      }),
     ]);
     expect(entry.riskScore).toBe(10 * (5 + 1) * (1 + 1));
   });

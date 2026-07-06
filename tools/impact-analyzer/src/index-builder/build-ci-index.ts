@@ -33,6 +33,7 @@ import type {
   SymbolEntry,
 } from '../types/index-schema.js';
 import { aggregateIconConsumers } from './aggregate-icon-consumers.js';
+import { toRepoRelativeFiles } from './repo-relative.js';
 import {
   carryForwardCssConsumers,
   carryForwardOutOfContract,
@@ -192,12 +193,16 @@ export async function buildCiIndex(
           const consumer: ConsumerEntry = {
             app: app.app.name,
             org: app.app.org,
+            repo: app.app.repo,
             appBranch: app.branch,
             pins: pin?.raw ?? 'unknown',
             appCommit: app.commit,
             appDirty: false, // a fresh clone is never dirty
             usageSites: usage.usageSites,
-            files: usage.files,
+            files: toRepoRelativeFiles(
+              clonedThisIteration.repoPath,
+              usage.files,
+            ),
           };
           if (usage.viaNamespace) consumer.viaNamespace = true;
           symbol.consumers.push(consumer);
@@ -209,7 +214,10 @@ export async function buildCiIndex(
             appBranch: app.branch,
             package: outOfContract.package,
             importPath: outOfContract.importPath,
-            files: outOfContract.files,
+            files: toRepoRelativeFiles(
+              clonedThisIteration.repoPath,
+              outOfContract.files,
+            ),
           });
         }
 
@@ -261,6 +269,10 @@ export async function buildCiIndex(
       ({ discoveredApp, cloned }) => ({
         appName: discoveredApp.app.name,
         appBranch: discoveredApp.branch,
+        org: discoveredApp.app.org,
+        repo: discoveredApp.app.repo,
+        appCommit: discoveredApp.commit,
+        repoRoot: cloned.repoPath,
         pinsBootstrap: discoveredApp.pins.some(
           (p) => p.package === '@edifice.io/bootstrap',
         ),

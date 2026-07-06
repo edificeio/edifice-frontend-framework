@@ -109,9 +109,13 @@ describe('buildLocalIndex', () => {
     expect(buttonSymbol?.consumers[0]).toMatchObject({
       app: 'fixture-app',
       org: 'edificeio',
+      repo: repoName,
       appBranch: 'develop',
       pins: 'develop',
       usageSites: 1,
+      // Repo-root-relative (never absolute, never machine-specific) — the
+      // form GitHub blob permalinks are built from.
+      files: ['frontend/src/Widget.tsx'],
     });
 
     // Icons aggregate rolls up per-app usage even though no icon is used here.

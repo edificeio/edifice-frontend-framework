@@ -134,7 +134,12 @@ describe('buildDiffReport', () => {
       severity: 'likely-breaking',
     });
     expect(buttonDiff?.consumers).toEqual([
-      { app: 'fixture-app', appBranch: 'develop', usageSites: 1 },
+      expect.objectContaining({
+        app: 'fixture-app',
+        appBranch: 'develop',
+        usageSites: 1,
+        files: ['frontend/src/Widget.tsx'],
+      }),
     ]);
     expect(buttonDiff?.riskScore).toBe(10 * (1 + 1) * (1 + 1));
   });

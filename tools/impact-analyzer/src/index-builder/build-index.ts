@@ -22,6 +22,7 @@ import type {
   SymbolEntry,
 } from '../types/index-schema.js';
 import { aggregateIconConsumers } from './aggregate-icon-consumers.js';
+import { toRepoRelativeFiles } from './repo-relative.js';
 
 export interface BuildIndexOptions {
   /** Overridable for tests — defaults to the real monorepo this tool lives in. */
@@ -102,12 +103,13 @@ export function buildLocalIndex(
       const consumer: ConsumerEntry = {
         app: app.app.name,
         org: app.app.org,
+        repo: app.app.repo,
         appBranch: app.branch,
         pins: pin?.raw ?? 'unknown',
         appCommit: app.commit,
         appDirty: app.dirty,
         usageSites: usage.usageSites,
-        files: usage.files,
+        files: toRepoRelativeFiles(app.repoPath, usage.files),
       };
       if (usage.viaNamespace) consumer.viaNamespace = true;
       symbol.consumers.push(consumer);
@@ -119,7 +121,7 @@ export function buildLocalIndex(
         appBranch: app.branch,
         package: outOfContract.package,
         importPath: outOfContract.importPath,
-        files: outOfContract.files,
+        files: toRepoRelativeFiles(app.repoPath, outOfContract.files),
       });
     }
   }
@@ -129,6 +131,10 @@ export function buildLocalIndex(
   const cssApps: CssAppContext[] = discovered.map((app) => ({
     appName: app.app.name,
     appBranch: app.branch,
+    org: app.app.org,
+    repo: app.app.repo,
+    appCommit: app.commit,
+    repoRoot: app.repoPath,
     pinsBootstrap: app.pins.some((p) => p.package === '@edifice.io/bootstrap'),
     srcRoot: app.layout.srcRoot,
   }));

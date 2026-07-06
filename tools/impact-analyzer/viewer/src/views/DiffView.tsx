@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { DiffReport } from '@edifice.io/impact-analyzer';
+import { AppImpactList } from '../components/AppImpactList.js';
 import { SeverityBadge } from '../components/SeverityBadge.js';
 import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { loadDiffReport } from '../data/loadIndex.js';
@@ -89,25 +90,22 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {report.symbolDiffs.slice(0, MAX_ROWS).map((d) => {
-                        const apps = [
-                          ...new Set(d.consumers.map((c) => c.app)),
-                        ];
-                        return (
-                          <tr key={symbolKey(d)}>
-                            <td>
-                              <SeverityBadge severity={d.severity} />
-                            </td>
-                            <td>
-                              {d.package}
-                              {formatEntry(d.entry)} :: {d.name}
-                            </td>
-                            <td>{d.changeKind}</td>
-                            <td>{d.riskScore}</td>
-                            <td>{apps.join(', ') || '—'}</td>
-                          </tr>
-                        );
-                      })}
+                      {report.symbolDiffs.slice(0, MAX_ROWS).map((d) => (
+                        <tr key={symbolKey(d)}>
+                          <td>
+                            <SeverityBadge severity={d.severity} />
+                          </td>
+                          <td>
+                            {d.package}
+                            {formatEntry(d.entry)} :: {d.name}
+                          </td>
+                          <td>{d.changeKind}</td>
+                          <td>{d.riskScore}</td>
+                          <td>
+                            <AppImpactList impacts={d.consumers} />
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                   {report.symbolDiffs.length > MAX_ROWS && (
@@ -144,7 +142,13 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                             {d.globalScope ? ` (${d.globalScope})` : ''}
                           </td>
                           <td>{d.riskScore}</td>
-                          <td>{d.affectedApps.join(', ') || '—'}</td>
+                          <td>
+                            {d.consumers ? (
+                              <AppImpactList impacts={d.consumers} />
+                            ) : (
+                              d.affectedApps.join(', ') || '—'
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
