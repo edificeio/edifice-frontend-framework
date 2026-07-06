@@ -1,5 +1,8 @@
+import { useMemo } from 'react';
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
 import { UsageBadge } from '../components/UsageBadge.js';
+
+const MAX_ROWS = 200;
 
 export function AppConsumes({
   appName,
@@ -8,6 +11,32 @@ export function AppConsumes({
   appName: string | null;
   index: ImpactIndex;
 }) {
+  // Hooks must run unconditionally — computed even without a selection
+  // (cheap on an empty/no-op appName) rather than gating with an early
+  // return above these useMemo calls.
+  const rows = useMemo(() => {
+    if (!appName) return [];
+    return index.symbols
+      .filter((s) => !s.isAggregate)
+      .flatMap((s) =>
+        s.consumers
+          .filter((c) => c.app === appName)
+          .map((c) => ({ symbol: s, consumer: c })),
+      )
+      .sort((a, b) => b.consumer.usageSites - a.consumer.usageSites);
+  }, [index, appName]);
+
+  const cssRows = useMemo(() => {
+    if (!appName) return [];
+    return index.cssComponents
+      .flatMap((c) =>
+        c.consumers
+          .filter((cc) => cc.app === appName)
+          .map((cc) => ({ component: c, consumer: cc })),
+      )
+      .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
+  }, [index, appName]);
+
   if (!appName) {
     return (
       <div className="panel">
@@ -17,23 +46,6 @@ export function AppConsumes({
       </div>
     );
   }
-
-  const rows = index.symbols
-    .filter((s) => !s.isAggregate)
-    .flatMap((s) =>
-      s.consumers
-        .filter((c) => c.app === appName)
-        .map((c) => ({ symbol: s, consumer: c })),
-    )
-    .sort((a, b) => b.consumer.usageSites - a.consumer.usageSites);
-
-  const cssRows = index.cssComponents
-    .flatMap((c) =>
-      c.consumers
-        .filter((cc) => cc.app === appName)
-        .map((cc) => ({ component: c, consumer: cc })),
-    )
-    .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
 
   return (
     <div className="panel">
@@ -58,7 +70,7 @@ export function AppConsumes({
             </tr>
           </thead>
           <tbody>
-            {rows.map(({ symbol, consumer }) => (
+            {rows.slice(0, MAX_ROWS).map(({ symbol, consumer }) => (
               <tr key={`${symbol.package}-${symbol.entry}-${symbol.name}`}>
                 <td>{symbol.name}</td>
                 <td>
@@ -77,6 +89,12 @@ export function AppConsumes({
           </tbody>
         </table>
       )}
+      {rows.length > MAX_ROWS && (
+        <p className="hint">
+          {rows.length} résultats, {MAX_ROWS} affichés (triés par sites
+          d'usage).
+        </p>
+      )}
 
       {cssRows.length > 0 && (
         <>
@@ -91,7 +109,7 @@ export function AppConsumes({
               </tr>
             </thead>
             <tbody>
-              {cssRows.map(({ component, consumer }) => (
+              {cssRows.slice(0, MAX_ROWS).map(({ component, consumer }) => (
                 <tr key={component.file}>
                   <td>{component.file}</td>
                   <td>{component.reactPeer ?? '—'}</td>
@@ -106,6 +124,12 @@ export function AppConsumes({
               ))}
             </tbody>
           </table>
+          {cssRows.length > MAX_ROWS && (
+            <p className="hint">
+              {cssRows.length} résultats, {MAX_ROWS} affichés (triés par classes
+              matchées).
+            </p>
+          )}
         </>
       )}
     </div>

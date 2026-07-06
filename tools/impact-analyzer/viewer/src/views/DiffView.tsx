@@ -11,6 +11,8 @@ export interface DiffViewProps {
   onSelectFile: (file: string) => void;
 }
 
+const MAX_ROWS = 200;
+
 export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   const [report, setReport] = useState<DiffReport | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +88,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {report.symbolDiffs.map((d) => {
+                      {report.symbolDiffs.slice(0, MAX_ROWS).map((d) => {
                         const apps = [
                           ...new Set(d.consumers.map((c) => c.app)),
                         ];
@@ -108,6 +110,12 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                       })}
                     </tbody>
                   </table>
+                  {report.symbolDiffs.length > MAX_ROWS && (
+                    <p className="hint">
+                      {report.symbolDiffs.length} résultats, {MAX_ROWS} affichés
+                      (triés par risque).
+                    </p>
+                  )}
                 </div>
               )}
 
@@ -125,7 +133,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                       </tr>
                     </thead>
                     <tbody>
-                      {report.cssDiffs.map((d) => (
+                      {report.cssDiffs.slice(0, MAX_ROWS).map((d) => (
                         <tr key={d.file}>
                           <td>
                             <SeverityBadge severity={d.severity} />
@@ -141,6 +149,12 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                       ))}
                     </tbody>
                   </table>
+                  {report.cssDiffs.length > MAX_ROWS && (
+                    <p className="hint">
+                      {report.cssDiffs.length} résultats, {MAX_ROWS} affichés
+                      (triés par risque).
+                    </p>
+                  )}
                 </div>
               )}
             </>

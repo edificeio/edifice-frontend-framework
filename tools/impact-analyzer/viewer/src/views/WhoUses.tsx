@@ -1,7 +1,17 @@
+import { useMemo } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
 import { UsageBadge } from '../components/UsageBadge.js';
 
 export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
+  // Hooks must run unconditionally, before the early return below.
+  const sortedConsumers = useMemo(
+    () =>
+      [...(symbol?.consumers ?? [])].sort(
+        (a, b) => b.usageSites - a.usageSites,
+      ),
+    [symbol],
+  );
+
   if (!symbol) {
     return (
       <div className="panel">
@@ -9,10 +19,6 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       </div>
     );
   }
-
-  const sortedConsumers = [...symbol.consumers].sort(
-    (a, b) => b.usageSites - a.usageSites,
-  );
 
   return (
     <div className="panel">

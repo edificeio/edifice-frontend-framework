@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
 import { PackageFilter } from '../components/PackageFilter.js';
 import { UsageBadge } from '../components/UsageBadge.js';
+import { useDebouncedValue } from '../hooks/useDebouncedValue.js';
 
 export interface SymbolSearchProps {
   symbols: SymbolEntry[];
@@ -19,6 +20,7 @@ export function SymbolSearch({
   onSelect,
 }: SymbolSearchProps) {
   const [query, setQuery] = useState('');
+  const debouncedQuery = useDebouncedValue(query, 150);
   const [packageFilter, setPackageFilter] = useState('all');
 
   const packages = useMemo(
@@ -27,7 +29,7 @@ export function SymbolSearch({
   );
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = debouncedQuery.trim().toLowerCase();
     const byPackage =
       packageFilter === 'all'
         ? symbols
@@ -41,7 +43,7 @@ export function SymbolSearch({
       : byPackage;
 
     return [...matches].sort((a, b) => totalUsage(b) - totalUsage(a));
-  }, [symbols, query, packageFilter]);
+  }, [symbols, debouncedQuery, packageFilter]);
 
   return (
     <div className="panel">
