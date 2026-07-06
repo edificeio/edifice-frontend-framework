@@ -137,8 +137,12 @@ function AppContent() {
     <div className="app-shell">
       <header className="app-header">
         <h1>Impact Analyzer</h1>
-        {branches.length > 0 && (
+        {/* Selects which branch's INDEX feeds the Symboles/Apps tabs — it has
+            no effect on the Diff tab (which has its own report selector), so
+            it's hidden there rather than shown as a confusing dead control. */}
+        {branches.length > 0 && tab !== 'diff' && (
           <select
+            aria-label="Branche du framework"
             value={branch ?? ''}
             onChange={(e) => setBranch(e.target.value)}
           >
