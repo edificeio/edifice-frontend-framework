@@ -12,10 +12,11 @@ async function main(): Promise<void> {
     args,
     allowPositionals: true,
     options: {
-      mode: { type: 'string', default: 'local' },
-      cached: { type: 'boolean', default: false },
-      base: { type: 'string', default: 'develop' },
-      cache: { type: 'string' },
+      'mode': { type: 'string', default: 'local' },
+      'cached': { type: 'boolean', default: false },
+      'base': { type: 'string', default: 'develop' },
+      'cache': { type: 'string' },
+      'head-index': { type: 'string' },
     },
   });
 
@@ -28,7 +29,11 @@ async function main(): Promise<void> {
       runSymbol(rest.join(' '), { cached: values.cached ?? false });
       return;
     case 'diff':
-      await runDiff({ base: values.base ?? 'develop', mode: values.mode });
+      await runDiff({
+        base: values.base ?? 'develop',
+        mode: values.mode,
+        headIndexPath: values['head-index'],
+      });
       return;
     default:
       console.error(
@@ -36,7 +41,7 @@ async function main(): Promise<void> {
           'Usage:\n' +
           '  cli.ts generate --mode=local|ci [--cache=<path-to-previous-index.json>]\n' +
           '  cli.ts symbol <name> [--cached]\n' +
-          '  cli.ts diff [--base=<ref>] [--mode=local|ci]',
+          '  cli.ts diff [--base=<ref>] [--mode=local|ci] [--head-index=<path-to-index.json>]',
       );
       process.exitCode = 1;
   }

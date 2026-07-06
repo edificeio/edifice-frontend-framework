@@ -66,16 +66,58 @@ jobs:
         # run, which is a plain cache miss for every app (not an error).
         run: pnpm generate:ci -- --cache=../../impact-analyzer-data/index.${{ matrix.ff_branch }}.json
 
-      - name: Publish the new index to the data repo
+      # "What changed on this branch since the last published release" — the
+      # QA-facing diff, rendered by the viewer's Diff tab. Reuses the index
+      # generated just above (--head-index): no second app scan, no clones.
+      - name: Compute the release diff (skipped when nothing new)
+        working-directory: tools/impact-analyzer
+        env:
+          FF_BRANCH: ${{ matrix.ff_branch }}
+        run: |
+          git fetch --tags --force --quiet
+          # Latest published release = highest bare-semver tag (2.5.24
+          # style — ignores impact-analyzer-viewer-v* and legacy v1/v2-rc).
+          TAG=$(git tag -l | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          if [ -z "$TAG" ]; then
+            echo "No release tag found — skipping the release diff."
+            exit 0
+          fi
+          BASE_COMMIT=$(git rev-parse "$TAG^{commit}")
+          HEAD_COMMIT=$(git rev-parse HEAD)
+          if [ "$BASE_COMMIT" = "$HEAD_COMMIT" ]; then
+            echo "$FF_BRANCH is exactly at $TAG — nothing to diff."
+            exit 0
+          fi
+          # Already published for these exact commits (no new commits since
+          # the last run, or the run only moved other branches) — skip the
+          # whole computation, not just the push.
+          EXISTING="../../impact-analyzer-data/diff.${TAG}..${FF_BRANCH}.json"
+          if [ -f "$EXISTING" ] && jq -e --arg b "$BASE_COMMIT" --arg h "$HEAD_COMMIT" \
+               '.base.commit == $b and .head.commit == $h' "$EXISTING" >/dev/null; then
+            echo "Published $TAG..$FF_BRANCH diff already covers $HEAD_COMMIT — skipping."
+            exit 0
+          fi
+          pnpm diff:ci -- --base="$TAG" --head-index="data/index.${FF_BRANCH}.json"
+
+      - name: Publish the new index and diff to the data repo
         working-directory: impact-analyzer-data
         run: |
           cp ../tools/impact-analyzer/data/index.${{ matrix.ff_branch }}.json index.${{ matrix.ff_branch }}.json
+          if ls ../tools/impact-analyzer/data/diff.*.json >/dev/null 2>&1; then
+            cp ../tools/impact-analyzer/data/diff.*.json .
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
             echo "No changes to publish."
-          else
-            git commit -m "chore: refresh impact-analyzer index (${{ matrix.ff_branch }})"
-            git push
+            exit 0
           fi
+          git commit -m "chore: refresh impact-analyzer index (${{ matrix.ff_branch }})"
+          # PR-diff runs push to the same repo — rebase-and-retry instead of
+          # failing on a non-fast-forward.
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase
+          done
+          git push

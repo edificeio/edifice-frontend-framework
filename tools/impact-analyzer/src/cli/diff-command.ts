@@ -1,11 +1,24 @@
+import { readFileSync } from 'node:fs';
 import { buildDiffReport } from '../diff/build-diff-report.js';
+import { readRepoState } from '../discovery/local-repo-resolver.js';
+import { currentFfRepoRoot } from '../ff-map/entry-points.js';
 import { writeDiffReport } from '../diff/write-diff-report.js';
 import type { DiffReport, DiffSeverity } from '../types/diff-schema.js';
+import {
+  isCompatibleImpactIndex,
+  type ImpactIndex,
+} from '../types/index-schema.js';
 import { renderTable } from './format-table.js';
 
 export interface DiffCommandOptions {
   base: string;
   mode?: string;
+  /**
+   * Path to an index.json to reuse as the head index — skips the full head
+   * app scan. Meant for the CRON, which runs `generate` on the same commit
+   * in the same job right before diffing.
+   */
+  headIndexPath?: string;
 }
 
 const SEVERITY_EMOJI: Record<DiffSeverity, string> = {
@@ -84,13 +97,48 @@ export async function runDiff(
     return;
   }
 
+  let headIndex: ImpactIndex | undefined;
+  if (options.headIndexPath) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(readFileSync(options.headIndexPath, 'utf-8'));
+    } catch (error) {
+      console.error(
+        `Could not read head index ${options.headIndexPath}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    if (!isCompatibleImpactIndex(parsed)) {
+      console.error(
+        `${options.headIndexPath} has an incompatible or missing schemaVersion — regenerate it with \`generate\`.`,
+      );
+      process.exitCode = 1;
+      return;
+    }
+    headIndex = parsed;
+    try {
+      const currentCommit = readRepoState(currentFfRepoRoot()).commit;
+      if (currentCommit !== headIndex.ffCommit) {
+        console.warn(
+          `Warning: head index was generated at ${headIndex.ffCommit.slice(0, 7)} but HEAD is ${currentCommit.slice(0, 7)} — its consumer data may not match this diff; regenerate to be safe.`,
+        );
+      }
+    } catch {
+      // Best-effort staleness check only — never blocks the diff itself.
+    }
+  }
+
   let report: DiffReport;
 
   if (reportOverride) {
     report = reportOverride;
   } else {
     try {
-      report = await buildDiffReport(options.base, undefined, { mode });
+      report = await buildDiffReport(options.base, undefined, {
+        mode,
+        headIndex,
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       if (

@@ -185,8 +185,16 @@ dessous des 5000 req/h authentifiées).
 
 `.github/workflows/impact-analyzer-generate.yml` — nocturne, du lundi au
 vendredi (`0 2 * * 1-5`, plan §9), + déclenchement manuel
-(`workflow_dispatch`). Checkout de ce repo sur `develop`, `pnpm generate:ci`
-avec le cache incrémental branché sur le run précédent.
+(`workflow_dispatch`). Pour chaque branche FF suivie (`develop`,
+`develop-enabling`) : `pnpm generate:ci` avec le cache incrémental branché
+sur le run précédent, puis un **diff de release** (`diff
+--base=<dernier tag semver> --head-index=<index tout juste généré>`) —
+« tout ce qui a bougé sur la branche depuis la dernière release », trié par
+risque dans l'onglet Diff du viewer. Le `--head-index` réutilise l'index du
+même run : pas de second scan des apps. Le diff est **sauté** quand il n'y a
+rien de neuf : branche exactement sur le tag, ou rapport déjà publié pour la
+même paire de commits (base et head comparés au fichier présent dans le repo
+de données).
 
 **Confidentialité (décision actée)** : ce repo est **public**, et l'index
 référence des infos sur des apps privées (`communities`, `collect`...). Le

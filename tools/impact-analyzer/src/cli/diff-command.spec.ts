@@ -97,6 +97,83 @@ describe('runDiff', () => {
     expect(buildDiffReport).not.toHaveBeenCalled();
   });
 
+  it('loads --head-index and passes it through to buildDiffReport', async () => {
+    const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    const { join } = await import('node:path');
+    const dir = mkdtempSync(join(tmpdir(), 'diff-command-spec-'));
+    const headIndexPath = join(dir, 'index.develop.json');
+    writeFileSync(
+      headIndexPath,
+      JSON.stringify({
+        schemaVersion: 1,
+        generatedAt: '2026-01-01T00:00:00.000Z',
+        mode: 'ci',
+        ffBranch: 'develop',
+        ffCommit: 'bbb',
+        ffDirty: false,
+        packages: [],
+        scanErrors: [],
+        symbols: [],
+        outOfContractImports: [],
+        cssComponents: [],
+        cssGlobalRisks: [],
+        appStates: [],
+      }),
+    );
+    vi.mocked(buildDiffReport).mockResolvedValue(makeReport());
+
+    try {
+      await runDiff({ base: '2.5.24', mode: 'ci', headIndexPath });
+
+      expect(buildDiffReport).toHaveBeenCalledWith(
+        '2.5.24',
+        undefined,
+        expect.objectContaining({
+          headIndex: expect.objectContaining({ ffCommit: 'bbb' }),
+        }),
+      );
+      expect(process.exitCode).toBeUndefined();
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects an incompatible --head-index without building anything', async () => {
+    const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+    const { tmpdir } = await import('node:os');
+    const { join } = await import('node:path');
+    const errors: string[] = [];
+    vi.spyOn(console, 'error').mockImplementation((msg: string) => {
+      errors.push(msg);
+    });
+    const dir = mkdtempSync(join(tmpdir(), 'diff-command-spec-'));
+    const headIndexPath = join(dir, 'index.develop.json');
+    writeFileSync(headIndexPath, JSON.stringify({ schemaVersion: 999 }));
+
+    try {
+      await runDiff({ base: 'develop', headIndexPath });
+
+      expect(process.exitCode).toBe(1);
+      expect(buildDiffReport).not.toHaveBeenCalled();
+      expect(errors.some((e) => e.includes('schemaVersion'))).toBe(true);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects a missing --head-index file without building anything', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await runDiff({
+      base: 'develop',
+      headIndexPath: '/nonexistent/index.json',
+    });
+
+    expect(process.exitCode).toBe(1);
+    expect(buildDiffReport).not.toHaveBeenCalled();
+  });
+
   it('renders symbol diffs sorted as provided (already sorted by the report), with severity emoji', async () => {
     const report = makeReport({
       symbolDiffs: [
