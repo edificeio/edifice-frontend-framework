@@ -6,16 +6,18 @@ import { loadDiffReport } from '../data/loadIndex.js';
 
 export interface DiffViewProps {
   diffs: DiffManifestEntry[];
+  /** Controlled, like SymbolSearch/AppSearch — lets App.tsx mirror it in the URL for shareable links. */
+  selectedFile: string | null;
+  onSelectFile: (file: string) => void;
 }
 
-export function DiffView({ diffs }: DiffViewProps) {
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   const [report, setReport] = useState<DiffReport | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setSelectedFile((current) => current ?? diffs[0]?.file ?? null);
-  }, [diffs]);
+    if (!selectedFile && diffs[0]) onSelectFile(diffs[0].file);
+  }, [diffs, selectedFile, onSelectFile]);
 
   useEffect(() => {
     if (!selectedFile) return;
@@ -44,7 +46,7 @@ export function DiffView({ diffs }: DiffViewProps) {
         <select
           className="diff-select"
           value={selectedFile ?? ''}
-          onChange={(e) => setSelectedFile(e.target.value)}
+          onChange={(e) => onSelectFile(e.target.value)}
         >
           {diffs.map((d) => (
             <option key={d.file} value={d.file}>
