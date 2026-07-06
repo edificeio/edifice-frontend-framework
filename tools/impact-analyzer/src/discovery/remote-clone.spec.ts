@@ -127,4 +127,30 @@ describe('cloneTargetSparse / cleanupClone', () => {
       }),
     ).toThrow('git fetch failed for org/repo#develop');
   });
+
+  it('includes sanitized stderr detail in the error without leaking the token', () => {
+    let thrown: unknown;
+    try {
+      cloneTargetSparse({
+        org: 'org',
+        repo: 'repo',
+        branch: 'develop',
+        token: 'super-secret-fake-token',
+        sparsePath: 'frontend/src',
+        remoteUrl: 'file:///nonexistent/path/xyz',
+      });
+    } catch (error) {
+      thrown = error;
+    }
+
+    expect(thrown).toBeInstanceOf(Error);
+    const message = (thrown as Error).message;
+    expect(message).toContain('git fetch failed for org/repo#develop');
+    expect(message).not.toContain('super-secret-fake-token');
+    expect(message).not.toContain('http.extraheader');
+    // A real git stderr snippet should be appended beyond the bare prefix.
+    expect(message.length).toBeGreaterThan(
+      'git fetch failed for org/repo#develop: '.length,
+    );
+  });
 });

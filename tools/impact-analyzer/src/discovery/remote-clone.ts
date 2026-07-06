@@ -18,8 +18,45 @@ export interface CloneTargetOptions {
   remoteUrl?: string;
 }
 
+// A hung fetch (dead network, unresponsive remote) must not block the whole
+// CI run indefinitely — each git invocation gets its own bounded timeout.
+const GIT_TIMEOUT_MS = 60_000;
+
 function git(repoPath: string, ...args: string[]): void {
-  execFileSync('git', ['-C', repoPath, ...args], { stdio: 'pipe' });
+  execFileSync('git', ['-C', repoPath, ...args], {
+    stdio: 'pipe',
+    timeout: GIT_TIMEOUT_MS,
+  });
+}
+
+function isTimedOut(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'signal' in error &&
+    (error as { signal?: string | null }).signal != null
+  );
+}
+
+/**
+ * Extracts git's own stderr for diagnosis (a network failure and a missing
+ * branch currently produce the same opaque message otherwise), stripped of
+ * anything that could carry the auth header or the raw token.
+ */
+function sanitizeGitStderr(error: unknown, token: string): string | undefined {
+  if (!(error && typeof error === 'object' && 'stderr' in error))
+    return undefined;
+  const raw = String(
+    (error as { stderr?: Buffer | string }).stderr ?? '',
+  ).trim();
+  if (!raw) return undefined;
+  return raw
+    .split('\n')
+    .filter((line) => !line.includes('http.extraheader'))
+    .join('\n')
+    .split(token)
+    .join('[redacted]')
+    .trim();
 }
 
 /**
@@ -52,11 +89,14 @@ export function cloneTargetSparse(options: CloneTargetOptions): ClonedRepo {
       branch,
     );
     git(repoPath, 'checkout', '-q', 'FETCH_HEAD');
-  } catch {
+  } catch (error) {
     rmSync(repoPath, { recursive: true, force: true });
-    // Never surface the raw command/header in the error — only a generic,
-    // context-bearing message (the auth header must never be logged).
-    throw new Error(`git fetch failed for ${org}/${repo}#${branch}`);
+    // Never surface the raw command/header in the error — only a sanitized
+    // stderr (the auth header/token must never be logged) or a timeout marker.
+    const detail = isTimedOut(error)
+      ? `timed out after ${GIT_TIMEOUT_MS}ms`
+      : (sanitizeGitStderr(error, token) ?? 'see logs for detail');
+    throw new Error(`git fetch failed for ${org}/${repo}#${branch}: ${detail}`);
   }
 
   return { repoPath };
