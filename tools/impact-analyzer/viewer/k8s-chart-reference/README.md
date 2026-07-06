@@ -17,8 +17,10 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
       (`Chart.yaml.example`/`values.yaml.example` de ce dossier).
 - [x] `helm dependency build` vérifié.
 - [ ] Manifeste ArgoCD ajouté sur `argo-apps` + MR ouverte.
-- [ ] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo pour
-      déclencher le premier build/scan/push réel de l'image.
+- [x] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo :
+      build/scan Trivy/push réels réussis, image disponible sur
+      `maven.opendigitaleducation.com/enabling/impact-analyzer-viewer`
+      (tags `0.1.0` et `latest`).
 
 ### Note : ignore Trivy temporaire
 
