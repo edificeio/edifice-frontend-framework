@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { TextSkeleton } from '../../../../components';
 import Communities, { CommunitiesProps } from './Communities';
+import CommunitiesSkeleton from './CommunitiesSkeleton';
 import { CommunitiesModel, useCommunities } from './useCommunities';
 
 export type CommunitiesContainerProps = {
@@ -27,13 +27,7 @@ export function CommunitiesContainer({
     );
 
   if (isLoading) {
-    return (
-      <>
-        <TextSkeleton size="lg" />
-        <TextSkeleton size="lg" />
-        <TextSkeleton size="lg" />
-      </>
-    );
+    return <CommunitiesSkeleton />;
   }
 
   if (error) {

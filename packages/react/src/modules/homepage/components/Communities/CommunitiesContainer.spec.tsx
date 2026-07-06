@@ -12,6 +12,18 @@ describe('CommunitiesContainer', () => {
     vi.mocked(useCommunities).mockReset();
   });
 
+  it('renders the skeleton while communities are loading', () => {
+    vi.mocked(useCommunities).mockReturnValue({
+      communities: [],
+      isLoading: true,
+      error: null,
+    });
+
+    render(<CommunitiesContainer onHeaderActionClick={vi.fn()} />);
+
+    expect(screen.getByTestId('communities-skeleton')).toBeInTheDocument();
+  });
+
   it('renders the communities provided by the hook', () => {
     vi.mocked(useCommunities).mockReturnValue({
       communities: [
