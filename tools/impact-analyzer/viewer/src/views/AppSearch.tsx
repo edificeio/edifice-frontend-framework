@@ -17,7 +17,11 @@ export function AppSearch({ appNames, selected, onSelect }: AppSearchProps) {
   return (
     <div className="panel">
       <h2>Apps ({appNames.length})</h2>
+      <label htmlFor="app-search-input" className="visually-hidden">
+        Rechercher une app
+      </label>
       <input
+        id="app-search-input"
         className="search-input"
         placeholder="Rechercher une app..."
         value={query}

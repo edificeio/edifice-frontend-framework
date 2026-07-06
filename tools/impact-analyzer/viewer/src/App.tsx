@@ -152,20 +152,32 @@ function AppContent() {
             ))}
           </select>
         )}
-        <nav className="tabs">
+        <nav className="tabs" role="tablist" aria-label="Vues">
           <button
+            id="tab-symbols"
+            role="tab"
+            aria-selected={tab === 'symbols'}
+            aria-controls="tabpanel"
             className={tab === 'symbols' ? 'tab-active' : ''}
             onClick={() => setTab('symbols')}
           >
             Symboles
           </button>
           <button
+            id="tab-apps"
+            role="tab"
+            aria-selected={tab === 'apps'}
+            aria-controls="tabpanel"
             className={tab === 'apps' ? 'tab-active' : ''}
             onClick={() => setTab('apps')}
           >
             Apps
           </button>
           <button
+            id="tab-diff"
+            role="tab"
+            aria-selected={tab === 'diff'}
+            aria-controls="tabpanel"
             className={tab === 'diff' ? 'tab-active' : ''}
             onClick={() => setTab('diff')}
           >
@@ -174,67 +186,69 @@ function AppContent() {
         </nav>
       </header>
 
-      {manifestError ? (
-        // Without a manifest there's neither a branch list nor a diff list —
-        // unlike an index error, this genuinely blocks every tab.
-        <div className="panel">
-          <p className="error">{manifestError}</p>
-          <button onClick={fetchManifest}>Réessayer</button>
-        </div>
-      ) : tab === 'diff' ? (
-        // Independent of the index/branch below: diffs come entirely from
-        // the manifest, so a broken index for the selected branch must never
-        // take down this tab too.
-        <DiffView
-          diffs={diffs}
-          selectedFile={diffParam}
-          onSelectFile={setDiffParam}
-        />
-      ) : branches.length === 0 ? (
-        <p className="hint">
-          Aucun index trouvé — lancez "pnpm --filter @edifice.io/impact-analyzer
-          generate:local".
-        </p>
-      ) : indexError ? (
-        <div className="panel">
-          <p className="error">{indexError}</p>
-          <button onClick={fetchIndex}>Réessayer</button>
-        </div>
-      ) : !index ? (
-        <p className="hint">Chargement de l'index...</p>
-      ) : (
-        <>
-          <p className="index-meta">
-            FF {index.ffBranch}@{index.ffCommit.slice(0, 7)}
-            {index.ffDirty ? ' (dirty)' : ''} — généré le{' '}
-            {new Date(index.generatedAt).toLocaleString()}
-            {index.scanErrors.length > 0 &&
-              ` — ${index.scanErrors.length} scanError(s)`}
-          </p>
-
-          <div className="layout">
-            {tab === 'symbols' ? (
-              <>
-                <SymbolSearch
-                  symbols={index.symbols}
-                  selected={selectedSymbol}
-                  onSelect={setSelectedSymbol}
-                />
-                <WhoUses symbol={selectedSymbol} />
-              </>
-            ) : (
-              <>
-                <AppSearch
-                  appNames={appNames}
-                  selected={selectedApp}
-                  onSelect={setSelectedApp}
-                />
-                <AppConsumes appName={selectedApp} index={index} />
-              </>
-            )}
+      <div id="tabpanel" role="tabpanel" aria-labelledby={`tab-${tab}`}>
+        {manifestError ? (
+          // Without a manifest there's neither a branch list nor a diff list —
+          // unlike an index error, this genuinely blocks every tab.
+          <div className="panel">
+            <p className="error">{manifestError}</p>
+            <button onClick={fetchManifest}>Réessayer</button>
           </div>
-        </>
-      )}
+        ) : tab === 'diff' ? (
+          // Independent of the index/branch below: diffs come entirely from
+          // the manifest, so a broken index for the selected branch must never
+          // take down this tab too.
+          <DiffView
+            diffs={diffs}
+            selectedFile={diffParam}
+            onSelectFile={setDiffParam}
+          />
+        ) : branches.length === 0 ? (
+          <p className="hint">
+            Aucun index trouvé — lancez "pnpm --filter
+            @edifice.io/impact-analyzer generate:local".
+          </p>
+        ) : indexError ? (
+          <div className="panel">
+            <p className="error">{indexError}</p>
+            <button onClick={fetchIndex}>Réessayer</button>
+          </div>
+        ) : !index ? (
+          <p className="hint">Chargement de l'index...</p>
+        ) : (
+          <>
+            <p className="index-meta">
+              FF {index.ffBranch}@{index.ffCommit.slice(0, 7)}
+              {index.ffDirty ? ' (dirty)' : ''} — généré le{' '}
+              {new Date(index.generatedAt).toLocaleString()}
+              {index.scanErrors.length > 0 &&
+                ` — ${index.scanErrors.length} scanError(s)`}
+            </p>
+
+            <div className="layout">
+              {tab === 'symbols' ? (
+                <>
+                  <SymbolSearch
+                    symbols={index.symbols}
+                    selected={selectedSymbol}
+                    onSelect={setSelectedSymbol}
+                  />
+                  <WhoUses symbol={selectedSymbol} />
+                </>
+              ) : (
+                <>
+                  <AppSearch
+                    appNames={appNames}
+                    selected={selectedApp}
+                    onSelect={setSelectedApp}
+                  />
+                  <AppConsumes appName={selectedApp} index={index} />
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,8 @@ export function PackageFilter({
 }: PackageFilterProps) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLUListElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -27,9 +29,45 @@ export function PackageFilter({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!open) return;
+    // Moves keyboard focus into the menu as soon as it opens, onto the
+    // currently active option — Escape/arrow keys only make sense once
+    // focus has actually left the trigger button.
+    const items = menuRef.current?.querySelectorAll('button');
+    if (!items || items.length === 0) return;
+    const activeIndex = [...items].findIndex(
+      (el) => el.getAttribute('aria-checked') === 'true',
+    );
+    (items[activeIndex] ?? items[0]).focus();
+  }, [open]);
+
+  function close() {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }
+
   function select(next: string) {
     onChange(next);
-    setOpen(false);
+    close();
+  }
+
+  function handleMenuKeyDown(event: React.KeyboardEvent<HTMLUListElement>) {
+    const items = [...(menuRef.current?.querySelectorAll('button') ?? [])];
+    const currentIndex = items.indexOf(
+      document.activeElement as HTMLButtonElement,
+    );
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    } else if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      items[(currentIndex + 1) % items.length]?.focus();
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      items[(currentIndex - 1 + items.length) % items.length]?.focus();
+    }
   }
 
   const isActive = value !== 'all';
@@ -37,10 +75,13 @@ export function PackageFilter({
   return (
     <div className="package-filter-wrapper" ref={wrapperRef}>
       <button
+        ref={triggerRef}
         type="button"
         className={`icon-button${isActive ? ' icon-button-active' : ''}`}
         title={isActive ? `Filtré : ${value}` : 'Filtrer par package'}
         aria-label="Filtrer par package"
+        aria-haspopup="menu"
+        aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
         <svg
@@ -57,7 +98,13 @@ export function PackageFilter({
         </svg>
       </button>
       {open && (
-        <ul className="package-filter-menu">
+        <ul
+          className="package-filter-menu"
+          role="menu"
+          aria-label="Filtrer par package"
+          ref={menuRef}
+          onKeyDown={handleMenuKeyDown}
+        >
           <MenuItem
             label="Tous les packages"
             active={value === 'all'}
@@ -85,9 +132,11 @@ interface MenuItemProps {
 
 function MenuItem({ label, active, onClick }: MenuItemProps) {
   return (
-    <li>
+    <li role="none">
       <button
         type="button"
+        role="menuitemradio"
+        aria-checked={active}
         className={active ? 'package-filter-option-active' : ''}
         onClick={onClick}
       >

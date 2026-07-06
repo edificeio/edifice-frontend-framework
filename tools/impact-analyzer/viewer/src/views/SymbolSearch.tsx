@@ -49,7 +49,11 @@ export function SymbolSearch({
     <div className="panel">
       <h2>Symboles ({symbols.length})</h2>
       <div className="filter-row">
+        <label htmlFor="symbol-search-input" className="visually-hidden">
+          Rechercher un symbole ou un package
+        </label>
         <input
+          id="symbol-search-input"
           className="search-input"
           placeholder="Rechercher un symbole ou un package..."
           value={query}
