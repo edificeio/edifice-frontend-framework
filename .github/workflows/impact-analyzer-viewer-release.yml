@@ -45,7 +45,10 @@ jobs:
 
       # Blocking on CRITICAL/HIGH, per the K8s integration guide's
       # checklist — no continue-on-error (some sibling repos skip
-      # enforcement here, but ours doesn't).
+      # enforcement here, but ours doesn't). trivyignores points at a
+      # scoped, dated ignore list for CVEs that are an upstream distroless
+      # publishing lag, not something fixable in this Dockerfile — see that
+      # file's header for details and removal criteria.
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
@@ -53,6 +56,7 @@ jobs:
           format: "table"
           exit-code: "1"
           severity: "CRITICAL,HIGH"
+          trivyignores: "tools/impact-analyzer/viewer/.trivyignore"
 
       - name: Push Docker image
         run: |

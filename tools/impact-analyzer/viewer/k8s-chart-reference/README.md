@@ -20,6 +20,20 @@ secret via Vault (`impact-analyzer-data-token`, clé `token`), Gateway
 - [ ] Premier tag `impact-analyzer-viewer-v0.1.0` poussé sur ce repo pour
       déclencher le premier build/scan/push réel de l'image.
 
+### Note : ignore Trivy temporaire
+
+Le scan Trivy du premier run a bloqué sur 6 CVE `libssl3` (1 CRITICAL, 5
+HIGH) qui viennent uniquement du snapshot Debian utilisé par l'image de base
+`gcr.io/distroless/nodejs22-debian12:nonroot` (retard de publication côté
+Google — confirmé : `gcr.io/distroless/base-debian12:nonroot` est déjà sur
+Debian 12.14, qui contient le correctif ; `nodejs24-debian12:nonroot` a
+exactement les mêmes CVE, donc pas lié à la version de Node). Rien à corriger
+dans notre Dockerfile. Un ignore scopé et daté a été ajouté :
+`tools/impact-analyzer/viewer/.trivyignore` — à supprimer dès que l'image
+`nodejs22-debian12:nonroot` republiée par Google passe sur Debian ≥12.14
+(pas d'ETA annoncée par Google ; vérifier en relançant le workflow
+périodiquement).
+
 ## Procédure restante (résumé du guide de livraison)
 
 1. Copier `Chart.yaml.example` → `Chart.yaml` et `values.yaml.example` →
