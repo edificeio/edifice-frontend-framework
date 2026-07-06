@@ -22,8 +22,21 @@ function functionLikeShape(fn: Node): string | null {
   return null;
 }
 
+/**
+ * `getText()` on a type parameter includes its constraint and default
+ * (`T extends Foo = Bar`), so tightening a constraint or adding/removing a
+ * type parameter changes the shape.
+ */
+function typeParametersShape(
+  node: Node & { getTypeParameters: () => Node[] },
+): string {
+  const typeParams = node.getTypeParameters().map((tp) => tp.getText().trim());
+  return typeParams.length > 0 ? `<${typeParams.join(', ')}>` : '';
+}
+
 function shapeOfCallable(
   fn: Node & {
+    getTypeParameters: () => Node[];
     getParameters: () => Node[];
     getReturnTypeNode: () => Node | undefined;
   },
@@ -33,22 +46,31 @@ function shapeOfCallable(
     .map((p) => p.getText())
     .join(', ');
   const returnType = fn.getReturnTypeNode()?.getText() ?? '<inferred>';
-  return `(${params}) => ${returnType}`;
+  return `${typeParametersShape(fn)}(${params}) => ${returnType}`;
 }
 
 function interfaceOrTypeShape(decl: Node): string | null {
   if (Node.isInterfaceDeclaration(decl)) {
-    // Sorted so a pure member reorder isn't reported as a shape change.
-    return decl
+    // Sorted so a pure reorder (of extends or of members) isn't reported as
+    // a shape change. Heritage matters: swapping `extends BaseProps` for
+    // another interface changes the public surface without touching members.
+    const heritage = decl
+      .getExtends()
+      .map((e) => e.getText().trim())
+      .sort()
+      .join(', ');
+    const members = decl
       .getMembers()
       .map((m) => m.getText().trim())
       .sort()
       .join('; ');
+    return `${typeParametersShape(decl)}${heritage ? `extends ${heritage} :: ` : ''}${members}`;
   }
   if (Node.isTypeAliasDeclaration(decl)) {
     // No independent "members" to sort — a reordered union/tuple is treated
     // as a legitimate shape change for an alias, unlike an interface's props.
-    return decl.getTypeNode()?.getText() ?? decl.getText();
+    const aliased = decl.getTypeNode()?.getText() ?? decl.getText();
+    return `${typeParametersShape(decl)}${aliased}`;
   }
   return null;
 }
@@ -64,6 +86,19 @@ function isPublicMember(member: Node): boolean {
 function classShape(decl: Node): string | null {
   if (!Node.isClassDeclaration(decl)) return null;
 
+  // Extends is single and ordered by nature; implements are sorted so a
+  // pure reorder isn't reported as a shape change.
+  const heritage = [
+    decl.getExtends()?.getText().trim() ?? '',
+    decl
+      .getImplements()
+      .map((i) => i.getText().trim())
+      .sort()
+      .join(', '),
+  ]
+    .filter(Boolean)
+    .join(' :: ');
+
   const ctor = decl.getConstructors()[0];
   const ctorParams = ctor
     ? ctor
@@ -77,7 +112,7 @@ function classShape(decl: Node): string | null {
     .filter(isPublicMember)
     .map(
       (m) =>
-        `${m.getName()}(${m
+        `${m.getName()}${typeParametersShape(m)}(${m
           .getParameters()
           .map((p) => p.getText())
           .join(', ')}): ${m.getReturnTypeNode()?.getText() ?? '<inferred>'}`,
@@ -90,12 +125,15 @@ function classShape(decl: Node): string | null {
     .map((p) => `${p.getName()}: ${p.getTypeNode()?.getText() ?? '<inferred>'}`)
     .sort();
 
-  return `ctor(${ctorParams}) | ${methods.join(', ')} | ${properties.join(', ')}`;
+  return `${typeParametersShape(decl)}${heritage} | ctor(${ctorParams}) | ${methods.join(', ')} | ${properties.join(', ')}`;
 }
 
 /**
  * Produces a comparable "shape" string for an exported symbol from its
- * declaration text as written — never through the type checker, whose
+ * declaration text as written. The shape covers type parameters (including
+ * constraints and defaults) and heritage clauses (interface `extends`,
+ * class `extends`/`implements`) in addition to parameters, return types and
+ * members — never through the type checker, whose
  * `type.getText()` embeds an absolute file path (`import("/path").Foo`)
  * that would differ between a temporary base worktree and the real head
  * repo, causing false positives on every symbol referencing a local type.

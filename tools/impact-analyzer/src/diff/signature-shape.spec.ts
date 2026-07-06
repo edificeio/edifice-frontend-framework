@@ -83,6 +83,109 @@ describe('computeSignatureShape', () => {
     expect(computeSignatureShape(base)).toEqual(computeSignatureShape(head));
   });
 
+  it('detects an added type parameter on a function', () => {
+    const base = declarationsFor(
+      'export function foo<T>(a: T): T { return a; }',
+      'foo',
+    );
+    const head = declarationsFor(
+      'export function foo<T, U>(a: T): T { return a; }',
+      'foo',
+    );
+    expect(computeSignatureShape(base)).not.toEqual(
+      computeSignatureShape(head),
+    );
+  });
+
+  it('detects a tightened type parameter constraint', () => {
+    const base = declarationsFor(
+      'export function foo<T extends object>(a: T): T { return a; }',
+      'foo',
+    );
+    const head = declarationsFor(
+      'export function foo<T extends HTMLElement>(a: T): T { return a; }',
+      'foo',
+    );
+    expect(computeSignatureShape(base)).not.toEqual(
+      computeSignatureShape(head),
+    );
+  });
+
+  it('detects a changed extends clause on an interface', () => {
+    const base = declarationsFor(
+      `interface BaseProps { a: string; }
+       interface OtherProps { b: number; }
+       export interface Props extends BaseProps { size: string; }`,
+      'Props',
+    );
+    const head = declarationsFor(
+      `interface BaseProps { a: string; }
+       interface OtherProps { b: number; }
+       export interface Props extends OtherProps { size: string; }`,
+      'Props',
+    );
+    expect(computeSignatureShape(base)).not.toEqual(
+      computeSignatureShape(head),
+    );
+  });
+
+  it('is insensitive to interface extends reordering', () => {
+    const base = declarationsFor(
+      `interface A { a: string; }
+       interface B { b: number; }
+       export interface Props extends A, B { size: string; }`,
+      'Props',
+    );
+    const head = declarationsFor(
+      `interface A { a: string; }
+       interface B { b: number; }
+       export interface Props extends B, A { size: string; }`,
+      'Props',
+    );
+    expect(computeSignatureShape(base)).toEqual(computeSignatureShape(head));
+  });
+
+  it('detects a type parameter change on a type alias', () => {
+    const base = declarationsFor('export type Box<T> = { value: T };', 'Box');
+    const head = declarationsFor(
+      'export type Box<T extends string> = { value: T };',
+      'Box',
+    );
+    expect(computeSignatureShape(base)).not.toEqual(
+      computeSignatureShape(head),
+    );
+  });
+
+  it('detects a changed extends clause on a class', () => {
+    const base = declarationsFor(
+      `class A {}
+       class B {}
+       export class Client extends A {}`,
+      'Client',
+    );
+    const head = declarationsFor(
+      `class A {}
+       class B {}
+       export class Client extends B {}`,
+      'Client',
+    );
+    expect(computeSignatureShape(base)).not.toEqual(
+      computeSignatureShape(head),
+    );
+  });
+
+  it('produces the same shape for a generic function with a body-only change', () => {
+    const base = declarationsFor(
+      'export function pick<T extends object>(a: T): T { return a; }',
+      'pick',
+    );
+    const head = declarationsFor(
+      'export function pick<T extends object>(a: T): T { return { ...a }; }',
+      'pick',
+    );
+    expect(computeSignatureShape(base)).toEqual(computeSignatureShape(head));
+  });
+
   it('falls back to non-comparable for a compound component (Object.assign pattern)', () => {
     const decls = declarationsFor(
       `function Root() { return null; }
