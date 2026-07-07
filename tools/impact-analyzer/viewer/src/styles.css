@@ -79,11 +79,18 @@ body {
   margin: 0 0 16px;
 }
 
+/* Fixed sidebar width + minmax(0, 1fr): column sizes never move when
+   content changes (expanded file lists, long tables) — fr tracks would
+   otherwise re-negotiate widths on every expand/collapse. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(280px, 1fr) 2fr;
+  grid-template-columns: 340px minmax(0, 1fr);
   gap: 16px;
   align-items: start;
+}
+
+.layout > * {
+  min-width: 0;
 }
 
 .panel {
@@ -91,6 +98,9 @@ body {
   border: 1px solid #e2e2e8;
   border-radius: 8px;
   padding: 16px;
+  /* The right column is width-locked (see .layout): a wide table scrolls
+     inside its panel instead of re-widening the whole column. */
+  overflow-x: auto;
 }
 
 .panel h2 {
@@ -197,19 +207,25 @@ body {
   padding: 0;
   max-height: 60vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
+/* Two stacked lines per item (name + count, then package + badges), each
+   ellipsing rather than widening the sidebar — its width is fixed, so
+   nothing may force a horizontal scrollbar. */
 .result-item {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
   width: 100%;
-  padding: 8px;
+  padding: 6px 8px;
   border: none;
   background: none;
   text-align: left;
   cursor: pointer;
   border-radius: 6px;
+  min-width: 0;
 }
 
 .result-item:hover {
@@ -220,19 +236,38 @@ body {
   background: #e6e6fb;
 }
 
+.result-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
 .result-name {
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .result-meta {
   color: #6b6b76;
   font-size: 0.8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 0 1 auto;
 }
 
 .result-count {
   margin-left: auto;
   font-size: 0.8rem;
   color: #6b6b76;
+  flex: none;
+}
+
+.result-line .badge {
+  flex: none;
 }
 
 .data-table {
@@ -320,8 +355,9 @@ body {
   max-height: 260px;
   overflow-y: auto;
   /* Bounded width: inside a table cell (which stretches with content) the
-     dir-part ellipsis only engages if the row itself can't grow. */
-  max-width: 74ch;
+     dir-part ellipsis only engages if the row itself can't grow — and never
+     wider than the cell itself. */
+  max-width: min(74ch, 100%);
 }
 
 .file-link {

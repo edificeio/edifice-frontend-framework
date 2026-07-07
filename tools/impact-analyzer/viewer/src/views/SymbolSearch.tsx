@@ -62,16 +62,20 @@ export function SymbolSearch({
         matches={matches}
         renderItem={(s) => (
           <>
-            <span className="result-name">{s.name}</span>
-            <span className="result-meta">
-              {s.package}
-              {formatEntry(s.entry)}
+            <span className="result-line">
+              <span className="result-name">{s.name}</span>
+              <span className="result-count">{totalUsage(s)} usages</span>
             </span>
-            <UsageBadge label={s.kind} />
-            {s.isAggregate && (
-              <UsageBadge label={`${s.aggregateCount} icônes`} tone="info" />
-            )}
-            <span className="result-count">{totalUsage(s)} usages</span>
+            <span className="result-line">
+              <span className="result-meta">
+                {s.package}
+                {formatEntry(s.entry)}
+              </span>
+              <UsageBadge label={s.kind} />
+              {s.isAggregate && (
+                <UsageBadge label={`${s.aggregateCount} icônes`} tone="info" />
+              )}
+            </span>
           </>
         )}
         placeholder="Rechercher un symbole ou un package..."

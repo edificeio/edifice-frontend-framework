@@ -135,6 +135,10 @@ function AppContent() {
   }, [index]);
 
   useEffect(() => {
+    // Same guard as the symbol hydration above: the first render has an
+    // empty appNames (index not loaded yet) — consuming the ref there would
+    // silently drop the deep link.
+    if (appNames.length === 0) return;
     const fromUrl = initialAppFromUrl.current;
     initialAppFromUrl.current = null;
     if (fromUrl && appNames.includes(fromUrl)) setSelectedAppState(fromUrl);
