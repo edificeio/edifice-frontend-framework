@@ -27,11 +27,21 @@ export function AppImpactList({ impacts }: { impacts: AppImpact[] }) {
             <FileLinkList
               fileRef={impact}
               files={impact.files}
-              label={`${impact.app} (${impact.appBranch}) · ${impact.files.length} fichier${impact.files.length > 1 ? 's' : ''}`}
+              label={
+                <>
+                  <span className="app-impact-name">{impact.app}</span>
+                  <span className="app-impact-meta">
+                    {' '}
+                    ({impact.appBranch}) · {impact.files.length} fichier
+                    {impact.files.length > 1 ? 's' : ''}
+                  </span>
+                </>
+              }
             />
           ) : (
             <span>
-              {impact.app} ({impact.appBranch})
+              <span className="app-impact-name">{impact.app}</span>
+              <span className="app-impact-meta"> ({impact.appBranch})</span>
             </span>
           )}
         </li>

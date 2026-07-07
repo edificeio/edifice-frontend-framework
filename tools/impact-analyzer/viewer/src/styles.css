@@ -302,24 +302,105 @@ body {
 .file-links summary {
   cursor: pointer;
   white-space: nowrap;
+  border-radius: 4px;
+  padding: 1px 4px;
 }
 
+.file-links summary:hover {
+  background: #f0f1f5;
+}
+
+/* Indent guide: visually ties the file rows to their app entry, and keeps
+   a very long list scannable inside its own scroll area. */
 .file-links ul {
-  margin: 0.25rem 0 0;
-  padding-left: 1rem;
+  margin: 2px 0 6px 10px;
+  padding: 2px 0 2px 8px;
   list-style: none;
+  border-left: 2px solid #e4e4ea;
+  max-height: 260px;
+  overflow-y: auto;
+  /* Bounded width: inside a table cell (which stretches with content) the
+     dir-part ellipsis only engages if the row itself can't grow. */
+  max-width: 74ch;
 }
 
-.file-links li {
+.file-link {
+  display: flex;
+  align-items: baseline;
+  min-width: 0;
+  padding: 2px 6px;
+  border-radius: 4px;
   font-family: var(--font-mono, monospace);
-  font-size: 0.8rem;
-  overflow-wrap: anywhere;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* One line per file: the dimmed directory part shrinks with an ellipsis,
+   the file name never wraps nor truncates — it carries the information. */
+.file-link-dir {
+  color: #8a8a94;
+  flex: 0 1 auto;
+  min-width: 3ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-link-name {
+  color: #34343c;
+  font-weight: 600;
+  white-space: nowrap;
+  /* Never wraps; may itself ellipse as a last resort on absurdly long names. */
+  flex: 0 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 12ch;
+}
+
+.file-link-ext {
+  margin-left: auto;
+  padding-left: 8px;
+  color: #8a8a94;
+  opacity: 0;
+  flex: none;
+}
+
+a.file-link:hover {
+  background: #f0f1f5;
+}
+
+a.file-link:hover .file-link-name {
+  color: #2f54c9;
+  text-decoration: underline;
+}
+
+a.file-link:hover .file-link-ext,
+a.file-link:focus-visible .file-link-ext {
+  opacity: 1;
+}
+
+.file-link--plain .file-link-name {
+  font-weight: 500;
 }
 
 .app-impacts {
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.app-impacts > li + li {
+  margin-top: 2px;
+}
+
+.app-impact-name {
+  font-weight: 600;
+}
+
+.app-impact-meta {
+  color: #6b6b76;
 }
 
 .legend {

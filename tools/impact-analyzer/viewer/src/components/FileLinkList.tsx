@@ -1,6 +1,25 @@
+import type { ReactNode } from 'react';
 import { githubBlobUrl, type GithubFileRef } from '../lib/github-link.js';
 
 const MAX_FILES_SHOWN = 30;
+
+/**
+ * IDE-style single-line path: the (long) directory part is dimmed and
+ * middle-truncated by flexbox, the file name stays fully visible and
+ * carries the emphasis — a wrapped full-blue underlined URL is unreadable
+ * past a handful of entries.
+ */
+function SplitPath({ file }: { file: string }) {
+  const lastSlash = file.lastIndexOf('/');
+  const dir = lastSlash >= 0 ? file.slice(0, lastSlash + 1) : '';
+  const name = lastSlash >= 0 ? file.slice(lastSlash + 1) : file;
+  return (
+    <>
+      {dir && <span className="file-link-dir">{dir}</span>}
+      <span className="file-link-name">{name}</span>
+    </>
+  );
+}
 
 /**
  * Collapsed list of a consumer's files, each linking to the SHA-pinned
@@ -14,8 +33,8 @@ export function FileLinkList({
 }: {
   fileRef: GithubFileRef;
   files: string[];
-  /** Summary text override — defaults to the file count. */
-  label?: string;
+  /** Summary content override — defaults to the file count. */
+  label?: ReactNode;
 }) {
   if (files.length === 0) return <>{label ?? '0'}</>;
 
@@ -33,12 +52,24 @@ export function FileLinkList({
           return (
             <li key={file}>
               {url ? (
-                <a href={url} target="_blank" rel="noreferrer">
-                  {file}
+                <a
+                  className="file-link"
+                  href={url}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={file}
+                >
+                  <SplitPath file={file} />
+                  <span className="file-link-ext" aria-hidden="true">
+                    ↗
+                  </span>
                 </a>
               ) : (
-                <span title="Entrée héritée d'un ancien index — lien indisponible">
-                  {file}
+                <span
+                  className="file-link file-link--plain"
+                  title="Entrée héritée d'un ancien index — lien indisponible"
+                >
+                  <SplitPath file={file} />
                 </span>
               )}
             </li>
