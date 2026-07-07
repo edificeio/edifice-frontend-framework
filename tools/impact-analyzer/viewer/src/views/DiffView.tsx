@@ -3,7 +3,7 @@ import type { DiffReport } from '@edifice.io/impact-analyzer';
 import { AppImpactList } from '../components/AppImpactList.js';
 import { SeverityBadge } from '../components/SeverityBadge.js';
 import type { DiffManifestEntry } from '../data/loadIndex.js';
-import { loadDiffReport } from '../data/loadIndex.js';
+import { DataUnavailableError, loadDiffReport } from '../data/loadIndex.js';
 import { githubPrFileAnchorUrl } from '../lib/github-link.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
@@ -19,6 +19,8 @@ const MAX_ROWS = 200;
 export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   const [report, setReport] = useState<DiffReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // "Not there yet" (fresh deploy, file mid-sync) — a calm hint, not an error.
+  const [unavailable, setUnavailable] = useState(false);
   // symbol key -> deep link into the source PR's "Files changed" tab, for
   // the FF file behind the symbol. Async because the anchor is a
   // crypto.subtle sha256 of the file path.
@@ -55,15 +57,19 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
     if (!selectedFile) return;
     setReport(null);
     setError(null);
+    setUnavailable(false);
     loadDiffReport(selectedFile)
       .then(setReport)
-      .catch((e) => setError(String(e)));
+      .catch((e) => {
+        if (e instanceof DataUnavailableError) setUnavailable(true);
+        else setError(String(e));
+      });
   }, [selectedFile]);
 
   if (diffs.length === 0) {
     return (
       <p className="hint">
-        Aucun diff généré — lancez{' '}
+        Pas encore de rapport de diff à afficher. En local :{' '}
         <code>tsx src/cli.ts diff --base=develop</code> à la racine du package,
         puis rechargez cette page.
       </p>
@@ -71,6 +77,15 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   }
 
   if (error) return <p className="error">{error}</p>;
+
+  if (unavailable) {
+    return (
+      <p className="hint">
+        Ce rapport n'est pas (ou plus) disponible — les données sont peut-être
+        en cours de synchronisation. Rechargez la page dans quelques instants.
+      </p>
+    );
+  }
 
   return (
     <div>

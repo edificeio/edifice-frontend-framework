@@ -28,7 +28,7 @@ describe('DiffView', () => {
 
   it('shows a hint when no diff has been generated', () => {
     render(<DiffView diffs={[]} selectedFile={null} onSelectFile={vi.fn()} />);
-    expect(screen.getByText(/aucun diff généré/i)).toBeTruthy();
+    expect(screen.getByText(/pas encore de rapport de diff/i)).toBeTruthy();
   });
 
   it('requests the first diff via onSelectFile, then loads it once the (controlled) selection arrives', async () => {

@@ -11,24 +11,50 @@ export interface Manifest {
   diffs: DiffManifestEntry[];
 }
 
+/** "The data doesn't exist (yet)" — a normal state, not a failure (see fetchDataJson). */
+export class DataUnavailableError extends Error {
+  constructor(url: string) {
+    super(`No data available at ${url}`);
+    this.name = 'DataUnavailableError';
+  }
+}
+
+/**
+ * Fetches one of the /data JSON files, telling "not there yet" apart from a
+ * real failure: a 404 (prod server), an HTML body served with a 200 (Vite's
+ * SPA fallback for a missing public file, in dev) or an unparsable body
+ * (file mid-sync) all mean the data simply doesn't exist yet — e.g. right
+ * after a deploy on an empty data repo. Callers surface that as a calm
+ * "nothing to show yet" hint instead of a raw JSON.parse SyntaxError.
+ */
+async function fetchDataJson(url: string): Promise<unknown> {
+  const res = await fetch(url);
+  if (res.status === 404) throw new DataUnavailableError(url);
+  if (!res.ok) throw new Error(`Failed to load ${url} (${res.status})`);
+  const contentType = res.headers.get('content-type') ?? '';
+  if (!contentType.includes('json')) throw new DataUnavailableError(url);
+  try {
+    return (await res.json()) as unknown;
+  } catch {
+    throw new DataUnavailableError(url);
+  }
+}
+
+/** A missing manifest is the empty state (fresh deploy), never an error. */
 export async function loadManifest(): Promise<Manifest> {
-  const res = await fetch('/data/manifest.json');
-  if (!res.ok) throw new Error(`Failed to load manifest.json (${res.status})`);
-  return res.json();
+  try {
+    return (await fetchDataJson('/data/manifest.json')) as Manifest;
+  } catch (error) {
+    if (error instanceof DataUnavailableError)
+      return { branches: [], diffs: [] };
+    throw error;
+  }
 }
 
 export async function loadIndexForBranch(branch: string): Promise<ImpactIndex> {
-  const res = await fetch(`/data/index.${branch}.json`);
-  if (!res.ok)
-    throw new Error(
-      `Failed to load index for branch "${branch}" (${res.status})`,
-    );
-  return res.json();
+  return (await fetchDataJson(`/data/index.${branch}.json`)) as ImpactIndex;
 }
 
 export async function loadDiffReport(file: string): Promise<DiffReport> {
-  const res = await fetch(`/data/${file}`);
-  if (!res.ok)
-    throw new Error(`Failed to load diff report "${file}" (${res.status})`);
-  return res.json();
+  return (await fetchDataJson(`/data/${file}`)) as DiffReport;
 }

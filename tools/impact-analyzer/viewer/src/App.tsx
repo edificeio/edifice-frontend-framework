@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ImpactIndex, SymbolEntry } from '@edifice.io/impact-analyzer';
 import { ErrorBoundary } from './components/ErrorBoundary.js';
 import {
+  DataUnavailableError,
   type DiffManifestEntry,
   loadIndexForBranch,
   loadManifest,
@@ -101,7 +102,13 @@ function AppContent() {
     setSelectedAppState(null);
     loadIndexForBranch(branch)
       .then(setIndex)
-      .catch((e) => setIndexError(String(e)));
+      .catch((e) =>
+        setIndexError(
+          e instanceof DataUnavailableError
+            ? `Pas encore d'index disponible pour la branche « ${branch} » — les données sont peut-être en cours de synchronisation.`
+            : String(e),
+        ),
+      );
   }, [branch]);
 
   useEffect(fetchIndex, [fetchIndex]);
@@ -206,7 +213,8 @@ function AppContent() {
           />
         ) : branches.length === 0 ? (
           <p className="hint">
-            Aucun index trouvé — lancez "pnpm --filter
+            Pas encore de données à afficher — le premier index n'a pas encore
+            été généré ou synchronisé. En local : "pnpm --filter
             @edifice.io/impact-analyzer generate:local".
           </p>
         ) : indexError ? (
