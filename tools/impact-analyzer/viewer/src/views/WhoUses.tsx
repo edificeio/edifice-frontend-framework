@@ -68,6 +68,17 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
           </tbody>
         </table>
       )}
+
+      {/* Contextual legend — only when at least one row carries the badge. */}
+      {sortedConsumers.some((c) => c.appDirty) && (
+        <p className="hint legend">
+          <UsageBadge label="dirty" tone="warn" /> : le repo de cette app avait
+          des modifications non commitées au moment du scan (index généré en
+          local) — les chiffres reflètent l'état du disque, pas exactement le
+          commit enregistré, et les liens GitHub peuvent être décalés. Jamais le
+          cas sur l'index publié par la CI (clones frais).
+        </p>
+      )}
     </div>
   );
 }
