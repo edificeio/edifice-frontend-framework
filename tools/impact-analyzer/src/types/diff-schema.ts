@@ -9,11 +9,24 @@ import type {
  * intentionally NOT part of ImpactIndex's schema, which is a single-state
  * snapshot. schemaVersion is its own counter, independent of ImpactIndex's.
  */
+/**
+ * What triggered this report — extensible union (a 'release' kind for the
+ * nightly CRON diff is a natural next member). Optional on DiffReport:
+ * manual CLI runs and pre-existing reports have no provenance.
+ */
+export type DiffSource = {
+  kind: 'pull-request';
+  url: string;
+  number?: number;
+  title?: string;
+};
+
 export interface DiffReport {
   schemaVersion: 1;
   generatedAt: string;
   base: { ref: string; commit: string };
   head: { ref: string; commit: string };
+  source?: DiffSource;
   /** Sorted by riskScore descending. */
   symbolDiffs: SymbolDiffEntry[];
   /** Sorted by riskScore descending. */

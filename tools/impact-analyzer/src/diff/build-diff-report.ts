@@ -11,7 +11,8 @@ import {
   loadAppsRegistry,
   type RegisteredApp,
 } from '../registry/apps-registry.js';
-import type { DiffReport } from '../types/diff-schema.js';
+import { toRepoRelativeFiles } from '../index-builder/repo-relative.js';
+import type { DiffReport, DiffSource } from '../types/diff-schema.js';
 import type { ImpactIndex } from '../types/index-schema.js';
 import { diffCss } from './css-diff.js';
 import { cleanupSnapshot, createSnapshot } from './snapshot.js';
@@ -20,6 +21,8 @@ import { diffSymbols, listChangedFiles } from './symbol-diff.js';
 export interface BuildDiffReportOptions extends BuildIndexOptions {
   /** Overridable for tests — otherwise buildLocalIndex()/buildCiIndex() is run for head, per `mode`. */
   headIndex?: ImpactIndex;
+  /** Provenance recorded in the report (e.g. the PR that triggered a CI diff). */
+  source?: DiffSource;
   /** How to discover head's consumer apps — local sibling repos (default) or the remote GitHub API, same distinction as `generate`. */
   mode?: 'local' | 'ci';
   githubClientOptions?: GithubClientOptions;
@@ -69,7 +72,17 @@ export async function buildDiffReport(
       headIndex,
       changedFiles,
       repoRoot,
-    });
+    }).map((d) => ({
+      ...d,
+      // Internal diffing needs absolute paths (files are read from disk);
+      // the persisted report must not: base paths would leak the disposable
+      // snapshot worktree, head paths the runner's checkout dir.
+      sourceFilesBase: toRepoRelativeFiles(
+        snapshot.worktreePath,
+        d.sourceFilesBase,
+      ),
+      sourceFilesHead: toRepoRelativeFiles(repoRoot, d.sourceFilesHead),
+    }));
 
     const bootstrapSrcDir =
       options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');
@@ -86,6 +99,7 @@ export async function buildDiffReport(
       generatedAt: new Date().toISOString(),
       base: { ref: baseRef, commit: snapshot.commit },
       head: { ref: headIndex.ffBranch, commit: headIndex.ffCommit },
+      ...(options.source ? { source: options.source } : {}),
       symbolDiffs,
       cssDiffs,
       scanErrors: headIndex.scanErrors.map((e) => ({

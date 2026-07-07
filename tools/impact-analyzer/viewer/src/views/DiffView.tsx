@@ -4,6 +4,7 @@ import { AppImpactList } from '../components/AppImpactList.js';
 import { SeverityBadge } from '../components/SeverityBadge.js';
 import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { loadDiffReport } from '../data/loadIndex.js';
+import { githubPrFileAnchorUrl } from '../lib/github-link.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
 export interface DiffViewProps {
@@ -18,10 +19,37 @@ const MAX_ROWS = 200;
 export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   const [report, setReport] = useState<DiffReport | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // symbol key -> deep link into the source PR's "Files changed" tab, for
+  // the FF file behind the symbol. Async because the anchor is a
+  // crypto.subtle sha256 of the file path.
+  const [prAnchors, setPrAnchors] = useState<Map<string, string>>(new Map());
 
   useEffect(() => {
     if (!selectedFile && diffs[0]) onSelectFile(diffs[0].file);
   }, [diffs, selectedFile, onSelectFile]);
+
+  useEffect(() => {
+    setPrAnchors(new Map());
+    const prUrl = report?.source?.url;
+    if (!report || !prUrl) return;
+    let cancelled = false;
+    Promise.all(
+      report.symbolDiffs.map(async (d) => {
+        const file = d.sourceFilesHead[0] ?? d.sourceFilesBase[0];
+        if (!file) return null;
+        const url = await githubPrFileAnchorUrl(prUrl, file);
+        return url ? ([symbolKey(d), url] as const) : null;
+      }),
+    ).then((pairs) => {
+      if (!cancelled)
+        setPrAnchors(
+          new Map(pairs.filter((p): p is NonNullable<typeof p> => p !== null)),
+        );
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [report]);
 
   useEffect(() => {
     if (!selectedFile) return;
@@ -68,6 +96,15 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
             {report.base.ref}@{report.base.commit.slice(0, 7)} ..{' '}
             {report.head.ref}@{report.head.commit.slice(0, 7)} — généré le{' '}
             {new Date(report.generatedAt).toLocaleString()}
+            {report.source && (
+              <>
+                {' — '}
+                <a href={report.source.url} target="_blank" rel="noreferrer">
+                  PR{report.source.number ? ` #${report.source.number}` : ''}
+                  {report.source.title ? ` : ${report.source.title}` : ''} ⇗
+                </a>
+              </>
+            )}
           </p>
 
           {report.symbolDiffs.length === 0 && report.cssDiffs.length === 0 ? (
@@ -98,6 +135,20 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                           <td>
                             {d.package}
                             {formatEntry(d.entry)} :: {d.name}
+                            {prAnchors.has(symbolKey(d)) && (
+                              <>
+                                {' '}
+                                <a
+                                  className="pr-anchor"
+                                  href={prAnchors.get(symbolKey(d))}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  title="Voir ce fichier dans les changements de la PR"
+                                >
+                                  ↗
+                                </a>
+                              </>
+                            )}
                           </td>
                           <td>{d.changeKind}</td>
                           <td>{d.riskScore}</td>

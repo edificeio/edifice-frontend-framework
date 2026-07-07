@@ -17,6 +17,9 @@ async function main(): Promise<void> {
       'base': { type: 'string', default: 'develop' },
       'cache': { type: 'string' },
       'head-index': { type: 'string' },
+      'pr-url': { type: 'string' },
+      'pr-number': { type: 'string' },
+      'pr-title': { type: 'string' },
     },
   });
 
@@ -28,13 +31,20 @@ async function main(): Promise<void> {
     case 'symbol':
       runSymbol(rest.join(' '), { cached: values.cached ?? false });
       return;
-    case 'diff':
+    case 'diff': {
+      const prNumber = values['pr-number']
+        ? Number(values['pr-number'])
+        : undefined;
       await runDiff({
         base: values.base ?? 'develop',
         mode: values.mode,
         headIndexPath: values['head-index'],
+        prUrl: values['pr-url'],
+        prNumber: Number.isNaN(prNumber) ? undefined : prNumber,
+        prTitle: values['pr-title'],
       });
       return;
+    }
     default:
       console.error(
         `Unknown command: ${command ?? '(none)'}.\n` +

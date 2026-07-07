@@ -3,7 +3,11 @@ import { buildDiffReport } from '../diff/build-diff-report.js';
 import { readRepoState } from '../discovery/local-repo-resolver.js';
 import { currentFfRepoRoot } from '../ff-map/entry-points.js';
 import { writeDiffReport } from '../diff/write-diff-report.js';
-import type { DiffReport, DiffSeverity } from '../types/diff-schema.js';
+import type {
+  DiffReport,
+  DiffSeverity,
+  DiffSource,
+} from '../types/diff-schema.js';
 import {
   isCompatibleImpactIndex,
   type ImpactIndex,
@@ -19,6 +23,10 @@ export interface DiffCommandOptions {
    * in the same job right before diffing.
    */
   headIndexPath?: string;
+  /** PR provenance, recorded in the report (set by the pull_request workflow). */
+  prUrl?: string;
+  prNumber?: number;
+  prTitle?: string;
 }
 
 const SEVERITY_EMOJI: Record<DiffSeverity, string> = {
@@ -129,6 +137,15 @@ export async function runDiff(
     }
   }
 
+  const source: DiffSource | undefined = options.prUrl
+    ? {
+        kind: 'pull-request',
+        url: options.prUrl,
+        ...(options.prNumber !== undefined ? { number: options.prNumber } : {}),
+        ...(options.prTitle ? { title: options.prTitle } : {}),
+      }
+    : undefined;
+
   let report: DiffReport;
 
   if (reportOverride) {
@@ -138,6 +155,7 @@ export async function runDiff(
       report = await buildDiffReport(options.base, undefined, {
         mode,
         headIndex,
+        source,
       });
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

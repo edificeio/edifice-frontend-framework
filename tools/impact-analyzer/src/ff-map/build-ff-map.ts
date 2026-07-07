@@ -1,3 +1,4 @@
+import { toRepoRelativeFiles } from '../index-builder/repo-relative.js';
 import type { SymbolEntry } from '../types/index-schema.js';
 import {
   type FfEntryMap,
@@ -54,7 +55,12 @@ export function buildFfMap(
     const project = createFfProject(`${ffPackageDir}/${tsconfigFileName}`);
 
     for (const { package: packageName, entry, sourceFile } of entries) {
-      const symbols = extractSymbolsFromEntry(project, sourceFile);
+      // Repo-root-relative from here on: stable across machines/runs, and
+      // the form GitHub links (blob, PR file anchors) are built from.
+      const symbols = extractSymbolsFromEntry(project, sourceFile).map((s) => ({
+        ...s,
+        sourceFiles: toRepoRelativeFiles(repoRoot, s.sourceFiles),
+      }));
 
       if (isIconsEntry(entry)) {
         symbolEntries.push(

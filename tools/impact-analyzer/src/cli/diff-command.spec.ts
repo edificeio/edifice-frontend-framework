@@ -162,6 +162,39 @@ describe('runDiff', () => {
     }
   });
 
+  it('records PR provenance in the report when --pr-url is given', async () => {
+    vi.mocked(buildDiffReport).mockResolvedValue(makeReport());
+
+    await runDiff({
+      base: 'develop',
+      prUrl: 'https://github.com/edificeio/edifice-frontend-framework/pull/527',
+      prNumber: 527,
+      prTitle: 'fix: Dropdown focus',
+    });
+
+    expect(buildDiffReport).toHaveBeenCalledWith(
+      'develop',
+      undefined,
+      expect.objectContaining({
+        source: {
+          kind: 'pull-request',
+          url: 'https://github.com/edificeio/edifice-frontend-framework/pull/527',
+          number: 527,
+          title: 'fix: Dropdown focus',
+        },
+      }),
+    );
+  });
+
+  it('records no source when --pr-url is absent', async () => {
+    vi.mocked(buildDiffReport).mockResolvedValue(makeReport());
+
+    await runDiff({ base: 'develop' });
+
+    const options = vi.mocked(buildDiffReport).mock.calls[0][2];
+    expect(options?.source).toBeUndefined();
+  });
+
   it('rejects a missing --head-index file without building anything', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
 

@@ -56,7 +56,16 @@ jobs:
         env:
           IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO }}
           IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG }}
-        run: pnpm diff:ci -- --base="$BASE_REF"
+          # PR provenance recorded in the report — the viewer links the meta
+          # line to the PR and each symbol to its file anchor in the PR's
+          # Files tab. Title goes through env (attacker-controlled text on a
+          # public repo, never inlined in the script).
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pnpm diff:ci -- --base="$BASE_REF" \
+            --pr-url="$PR_URL" --pr-number="$PR_NUMBER" --pr-title="$PR_TITLE"
 
       # Same confidentiality rule as the nightly CRON: the report references
       # private consumer apps, it never lands anywhere on this public repo.

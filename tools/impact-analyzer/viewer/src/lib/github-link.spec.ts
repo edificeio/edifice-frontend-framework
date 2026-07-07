@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { githubBlobUrl } from './github-link.js';
+import { githubBlobUrl, githubPrFileAnchorUrl } from './github-link.js';
 
 describe('githubBlobUrl', () => {
   const ref = {
@@ -37,5 +37,26 @@ describe('githubBlobUrl', () => {
     expect(githubBlobUrl(ref, 'src/dossier avec espace/a.tsx')).toBe(
       `https://github.com/edificeio/blog/blob/${ref.appCommit}/src/dossier%20avec%20espace/a.tsx`,
     );
+  });
+});
+
+describe('githubPrFileAnchorUrl', () => {
+  it('anchors the PR Files tab at sha256 of the repo-relative path', async () => {
+    // Known vector, verified against the live HTML of a real PR files page:
+    // sha256('tools/impact-analyzer/src/cli.ts').
+    await expect(
+      githubPrFileAnchorUrl(
+        'https://github.com/edificeio/edifice-frontend-framework/pull/526',
+        'tools/impact-analyzer/src/cli.ts',
+      ),
+    ).resolves.toBe(
+      'https://github.com/edificeio/edifice-frontend-framework/pull/526/files#diff-f8ff221dda84bc04e9522a1d0de9c80b6a86be87c7dc55e9934c035f60f548f0',
+    );
+  });
+
+  it('returns null for pre-normalization absolute paths', async () => {
+    await expect(
+      githubPrFileAnchorUrl('https://github.com/o/r/pull/1', '/tmp/x.ts'),
+    ).resolves.toBeNull();
   });
 });
