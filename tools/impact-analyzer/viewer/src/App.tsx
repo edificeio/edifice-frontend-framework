@@ -145,60 +145,100 @@ function AppContent() {
   }, [appNames]);
 
   return (
-    <div className="app-shell">
+    <div className="app-frame">
       <header className="app-header">
-        <h1>Impact Analyzer</h1>
-        {/* Selects which branch's INDEX feeds the Symboles/Apps tabs — it has
-            no effect on the Diff tab (which has its own report selector), so
-            it's hidden there rather than shown as a confusing dead control. */}
-        {branches.length > 0 && tab !== 'diff' && (
-          <select
-            aria-label="Branche du framework"
-            value={branch ?? ''}
-            onChange={(e) => setBranch(e.target.value)}
+        <div className="app-header-inner">
+          {/* Concentric "impact" mark — pure inline SVG, no asset. */}
+          <svg
+            className="app-mark"
+            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            aria-hidden="true"
           >
-            {branches.map((b) => (
-              <option key={b} value={b}>
-                {b}
-              </option>
-            ))}
-          </select>
-        )}
-        <nav className="tabs" role="tablist" aria-label="Vues">
-          <button
-            id="tab-symbols"
-            role="tab"
-            aria-selected={tab === 'symbols'}
-            aria-controls="tabpanel"
-            className={tab === 'symbols' ? 'tab-active' : ''}
-            onClick={() => setTab('symbols')}
-          >
-            Symboles
-          </button>
-          <button
-            id="tab-apps"
-            role="tab"
-            aria-selected={tab === 'apps'}
-            aria-controls="tabpanel"
-            className={tab === 'apps' ? 'tab-active' : ''}
-            onClick={() => setTab('apps')}
-          >
-            Apps
-          </button>
-          <button
-            id="tab-diff"
-            role="tab"
-            aria-selected={tab === 'diff'}
-            aria-controls="tabpanel"
-            className={tab === 'diff' ? 'tab-active' : ''}
-            onClick={() => setTab('diff')}
-          >
-            Diff
-          </button>
-        </nav>
+            <circle
+              cx="12"
+              cy="12"
+              r="10"
+              fill="none"
+              stroke="currentColor"
+              strokeOpacity="0.35"
+              strokeWidth="1.5"
+            />
+            <circle
+              cx="12"
+              cy="12"
+              r="5.5"
+              fill="none"
+              stroke="currentColor"
+              strokeOpacity="0.7"
+              strokeWidth="1.5"
+            />
+            <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+            <circle cx="19.2" cy="5.4" r="1.6" className="app-mark-signal" />
+          </svg>
+          <h1>
+            Impact <span>Analyzer</span>
+          </h1>
+          {/* Selects which branch's INDEX feeds the Symboles/Apps tabs — it
+              has no effect on the Diff tab (which has its own report
+              selector), so it's hidden there rather than shown as a
+              confusing dead control. */}
+          {branches.length > 0 && tab !== 'diff' && (
+            <select
+              className="branch-select"
+              aria-label="Branche du framework"
+              value={branch ?? ''}
+              onChange={(e) => setBranch(e.target.value)}
+            >
+              {branches.map((b) => (
+                <option key={b} value={b}>
+                  {b}
+                </option>
+              ))}
+            </select>
+          )}
+          <nav className="tabs" role="tablist" aria-label="Vues">
+            <button
+              id="tab-symbols"
+              role="tab"
+              aria-selected={tab === 'symbols'}
+              aria-controls="tabpanel"
+              className={tab === 'symbols' ? 'tab-active' : ''}
+              onClick={() => setTab('symbols')}
+            >
+              Symboles
+            </button>
+            <button
+              id="tab-apps"
+              role="tab"
+              aria-selected={tab === 'apps'}
+              aria-controls="tabpanel"
+              className={tab === 'apps' ? 'tab-active' : ''}
+              onClick={() => setTab('apps')}
+            >
+              Apps
+            </button>
+            <button
+              id="tab-diff"
+              role="tab"
+              aria-selected={tab === 'diff'}
+              aria-controls="tabpanel"
+              className={tab === 'diff' ? 'tab-active' : ''}
+              onClick={() => setTab('diff')}
+            >
+              Diff
+            </button>
+          </nav>
+        </div>
       </header>
 
-      <div id="tabpanel" role="tabpanel" aria-labelledby={`tab-${tab}`}>
+      <div
+        className="app-shell"
+        id="tabpanel"
+        role="tabpanel"
+        aria-labelledby={`tab-${tab}`}
+      >
         {manifestError ? (
           // Without a manifest there's neither a branch list nor a diff list —
           // unlike an index error, this genuinely blocks every tab.

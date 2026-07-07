@@ -20,6 +20,8 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@fontsource-variable/archivo": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "prom-client": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
