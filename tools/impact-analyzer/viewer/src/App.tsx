@@ -200,6 +200,16 @@ function AppContent() {
           )}
           <nav className="tabs" role="tablist" aria-label="Vues">
             <button
+              id="tab-diff"
+              role="tab"
+              aria-selected={tab === 'diff'}
+              aria-controls="tabpanel"
+              className={tab === 'diff' ? 'tab-active' : ''}
+              onClick={() => setTab('diff')}
+            >
+              Diff
+            </button>
+            <button
               id="tab-symbols"
               role="tab"
               aria-selected={tab === 'symbols'}
@@ -218,16 +228,6 @@ function AppContent() {
               onClick={() => setTab('apps')}
             >
               Apps
-            </button>
-            <button
-              id="tab-diff"
-              role="tab"
-              aria-selected={tab === 'diff'}
-              aria-controls="tabpanel"
-              className={tab === 'diff' ? 'tab-active' : ''}
-              onClick={() => setTab('diff')}
-            >
-              Diff
             </button>
           </nav>
         </div>

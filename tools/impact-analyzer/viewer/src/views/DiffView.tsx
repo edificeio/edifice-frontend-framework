@@ -200,7 +200,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
         >
           {diffs.map((d) => (
             <option key={d.file} value={d.file}>
-              {d.base} .. {d.head}
+              {d.base} → {d.head}
             </option>
           ))}
         </select>
@@ -217,20 +217,43 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
         <p className="hint">Chargement du diff...</p>
       ) : (
         <>
-          <p className="index-meta">
-            {report.base.ref}@{report.base.commit.slice(0, 7)} ..{' '}
-            {report.head.ref}@{report.head.commit.slice(0, 7)} — généré le{' '}
-            {new Date(report.generatedAt).toLocaleString()}
+          {/* base → head as chips: the arrow reads as "what changed between
+              the released base and this head", where ".." read as nothing. */}
+          <div className="diff-meta">
+            <span className="ref-chip">
+              {report.base.ref}
+              <span className="ref-chip-commit">
+                @{report.base.commit.slice(0, 7)}
+              </span>
+            </span>
+            <span className="diff-arrow" aria-label="vers">
+              →
+            </span>
+            <span className="ref-chip">
+              {report.head.ref}
+              <span className="ref-chip-commit">
+                @{report.head.commit.slice(0, 7)}
+              </span>
+            </span>
             {report.source && (
-              <>
-                {' — '}
-                <a href={report.source.url} target="_blank" rel="noreferrer">
-                  PR{report.source.number ? ` #${report.source.number}` : ''}
-                  {report.source.title ? ` : ${report.source.title}` : ''} ⇗
-                </a>
-              </>
+              <a
+                className="pr-chip"
+                href={report.source.url}
+                target="_blank"
+                rel="noreferrer"
+                title={report.source.title ?? undefined}
+              >
+                PR{report.source.number ? ` #${report.source.number}` : ''}
+                {report.source.title && (
+                  <span className="pr-chip-title">{report.source.title}</span>
+                )}
+                <span aria-hidden="true"> ⤴</span>
+              </a>
             )}
-          </p>
+            <span className="diff-date">
+              généré le {new Date(report.generatedAt).toLocaleString()}
+            </span>
+          </div>
 
           {report.symbolDiffs.length === 0 && report.cssDiffs.length === 0 ? (
             <p className="hint">

@@ -694,3 +694,69 @@ a.file-link:focus-visible .file-link-ext {
   margin-top: 0.75rem;
   font-size: 0.83rem;
 }
+
+/* ------------------------------- Diff header ------------------------------ */
+
+.diff-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.ref-chip {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  max-width: 380px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ref-chip-commit {
+  color: var(--faint);
+  margin-left: 4px;
+}
+
+.diff-arrow {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.pr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 440px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.pr-chip:hover {
+  background: #dfe1fb;
+}
+
+.pr-chip-title {
+  font-weight: 450;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.diff-date {
+  margin-left: auto;
+  color: var(--faint);
+  font-size: 0.76rem;
+}
