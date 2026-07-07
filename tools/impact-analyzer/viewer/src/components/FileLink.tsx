@@ -1,18 +1,30 @@
 import { githubBlobUrl, type GithubFileRef } from '../lib/github-link.js';
 
 /**
- * IDE-style single-line path: the (long) directory part is dimmed and
- * middle-truncated by flexbox, the file name stays fully visible and
- * carries the emphasis.
+ * File-name-first rendering (JetBrains-style): the name is always fully
+ * visible and carries the emphasis, the remaining directory is dimmed after
+ * it and end-truncates when space runs out. `stripPrefix` removes the part
+ * shared by every file of the panel (shown once in its header instead of
+ * repeated on each row).
  */
-function SplitPath({ file }: { file: string }) {
-  const lastSlash = file.lastIndexOf('/');
-  const dir = lastSlash >= 0 ? file.slice(0, lastSlash + 1) : '';
-  const name = lastSlash >= 0 ? file.slice(lastSlash + 1) : file;
+function SplitPath({
+  file,
+  stripPrefix,
+}: {
+  file: string;
+  stripPrefix?: string;
+}) {
+  const rel =
+    stripPrefix && file.startsWith(stripPrefix)
+      ? file.slice(stripPrefix.length)
+      : file;
+  const lastSlash = rel.lastIndexOf('/');
+  const dir = lastSlash >= 0 ? rel.slice(0, lastSlash + 1) : '';
+  const name = lastSlash >= 0 ? rel.slice(lastSlash + 1) : rel;
   return (
     <>
-      {dir && <span className="file-link-dir">{dir}</span>}
       <span className="file-link-name">{name}</span>
+      {dir && <span className="file-link-dir">{dir}</span>}
     </>
   );
 }
@@ -25,9 +37,11 @@ function SplitPath({ file }: { file: string }) {
 export function FileLink({
   fileRef,
   file,
+  stripPrefix,
 }: {
   fileRef: GithubFileRef;
   file: string;
+  stripPrefix?: string;
 }) {
   const url = githubBlobUrl(fileRef, file);
   if (!url) {
@@ -36,7 +50,7 @@ export function FileLink({
         className="file-link file-link--plain"
         title="Entrée héritée d'un ancien index — lien indisponible"
       >
-        <SplitPath file={file} />
+        <SplitPath file={file} stripPrefix={stripPrefix} />
       </span>
     );
   }
@@ -48,7 +62,7 @@ export function FileLink({
       rel="noreferrer"
       title={file}
     >
-      <SplitPath file={file} />
+      <SplitPath file={file} stripPrefix={stripPrefix} />
       <span className="file-link-ext" aria-hidden="true">
         ↗
       </span>

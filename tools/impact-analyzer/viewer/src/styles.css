@@ -374,6 +374,11 @@ body {
   color: #6b6b76;
 }
 
+.file-grid-prefix {
+  font-family: var(--font-mono, monospace);
+  font-weight: 400;
+}
+
 .file-grid {
   margin: 0;
   padding: 0;
@@ -396,6 +401,7 @@ body {
 .file-link {
   display: flex;
   align-items: baseline;
+  gap: 8px;
   min-width: 0;
   padding: 2px 6px;
   border-radius: 4px;
@@ -406,26 +412,21 @@ body {
   color: inherit;
 }
 
-/* One line per file: the dimmed directory part shrinks with an ellipsis,
-   the file name never wraps nor truncates — it carries the information. */
-.file-link-dir {
-  color: #8a8a94;
-  flex: 0 1 auto;
-  min-width: 3ch;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
+/* Name first, always whole — the dimmed remaining directory follows and
+   absorbs all the shrinking (plain end-ellipsis). */
 .file-link-name {
   color: #34343c;
   font-weight: 600;
   white-space: nowrap;
-  /* Never wraps; may itself ellipse as a last resort on absurdly long names. */
+  flex: none;
+}
+
+.file-link-dir {
+  color: #8a8a94;
   flex: 0 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
-  min-width: 12ch;
+  white-space: nowrap;
 }
 
 .file-link-ext {
