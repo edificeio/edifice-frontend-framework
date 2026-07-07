@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
-import { FileLinkList } from '../components/FileLinkList.js';
+import { FileGridPanel } from '../components/FileGridPanel.js';
+import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
 
@@ -39,6 +40,18 @@ export function AppConsumes({
       .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
   }, [index, appName]);
 
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  useEffect(() => setExpanded(new Set()), [appName, index]);
+
+  function toggle(key: string): void {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
+
   if (!appName) {
     return (
       <div className="panel">
@@ -72,24 +85,48 @@ export function AppConsumes({
             </tr>
           </thead>
           <tbody>
-            {rows.slice(0, MAX_ROWS).map(({ symbol, consumer }) => (
-              <tr key={symbolKey(symbol)}>
-                <td>{symbol.name}</td>
-                <td>
-                  {symbol.package}
-                  {formatEntry(symbol.entry)}
-                </td>
-                <td>{consumer.usageSites}</td>
-                <td>
-                  <FileLinkList fileRef={consumer} files={consumer.files} />
-                </td>
-                <td>
-                  {consumer.viaNamespace && (
-                    <UsageBadge label="namespace" tone="info" />
+            {rows.slice(0, MAX_ROWS).map(({ symbol, consumer }) => {
+              const key = `js|${symbolKey(symbol)}|${consumer.appBranch}`;
+              const isOpen = expanded.has(key);
+              return (
+                <Fragment key={key}>
+                  <tr>
+                    <td>{symbol.name}</td>
+                    <td>
+                      {symbol.package}
+                      {formatEntry(symbol.entry)}
+                    </td>
+                    <td>{consumer.usageSites}</td>
+                    <td>
+                      {consumer.files.length === 0 ? (
+                        '0'
+                      ) : (
+                        <FileToggle
+                          expanded={isOpen}
+                          onToggle={() => toggle(key)}
+                          label={`${consumer.files.length} fichier${consumer.files.length > 1 ? 's' : ''}`}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {consumer.viaNamespace && (
+                        <UsageBadge label="namespace" tone="info" />
+                      )}
+                    </td>
+                  </tr>
+                  {isOpen && (
+                    <tr className="files-row">
+                      <td colSpan={5}>
+                        <FileGridPanel
+                          fileRef={consumer}
+                          files={consumer.files}
+                        />
+                      </td>
+                    </tr>
                   )}
-                </td>
-              </tr>
-            ))}
+                </Fragment>
+              );
+            })}
           </tbody>
         </table>
       )}
@@ -114,22 +151,48 @@ export function AppConsumes({
               </tr>
             </thead>
             <tbody>
-              {cssRows.slice(0, MAX_ROWS).map(({ component, consumer }) => (
-                <tr key={component.file}>
-                  <td>{component.file}</td>
-                  <td>{component.reactPeer ?? '—'}</td>
-                  <td>{consumer.matchedSelectors.join(', ')}</td>
-                  <td>
-                    <FileLinkList fileRef={consumer} files={consumer.files} />
-                  </td>
-                  <td>
-                    <UsageBadge
-                      label={component.confidence}
-                      tone={component.confidence === 'low' ? 'warn' : 'neutral'}
-                    />
-                  </td>
-                </tr>
-              ))}
+              {cssRows.slice(0, MAX_ROWS).map(({ component, consumer }) => {
+                const key = `css|${component.file}|${consumer.appBranch}`;
+                const isOpen = expanded.has(key);
+                return (
+                  <Fragment key={key}>
+                    <tr>
+                      <td>{component.file}</td>
+                      <td>{component.reactPeer ?? '—'}</td>
+                      <td>{consumer.matchedSelectors.join(', ')}</td>
+                      <td>
+                        {consumer.files.length === 0 ? (
+                          '0'
+                        ) : (
+                          <FileToggle
+                            expanded={isOpen}
+                            onToggle={() => toggle(key)}
+                            label={`${consumer.files.length} fichier${consumer.files.length > 1 ? 's' : ''}`}
+                          />
+                        )}
+                      </td>
+                      <td>
+                        <UsageBadge
+                          label={component.confidence}
+                          tone={
+                            component.confidence === 'low' ? 'warn' : 'neutral'
+                          }
+                        />
+                      </td>
+                    </tr>
+                    {isOpen && (
+                      <tr className="files-row">
+                        <td colSpan={5}>
+                          <FileGridPanel
+                            fileRef={consumer}
+                            files={consumer.files}
+                          />
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                );
+              })}
             </tbody>
           </table>
           {cssRows.length > MAX_ROWS && (

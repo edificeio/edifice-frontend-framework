@@ -36,7 +36,7 @@ body {
 }
 
 .app-shell {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 16px 24px 48px;
 }
@@ -334,30 +334,63 @@ body {
   color: #a02020;
 }
 
-.file-links summary {
-  cursor: pointer;
-  white-space: nowrap;
+.file-toggle {
+  border: none;
+  background: none;
+  padding: 2px 4px;
   border-radius: 4px;
-  padding: 1px 4px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
 }
 
-.file-links summary:hover {
+.file-toggle:hover {
   background: #f0f1f5;
 }
 
-/* Indent guide: visually ties the file rows to their app entry, and keeps
-   a very long list scannable inside its own scroll area. */
-.file-links ul {
-  margin: 2px 0 6px 10px;
-  padding: 2px 0 2px 8px;
+.file-toggle-chevron {
+  color: #8a8a94;
+  font-size: 0.75rem;
+}
+
+/* Full-width expansion row: the file list gets the whole panel width in a
+   multi-column grid instead of squeezing one table cell (which distorted
+   the column widths and forced a horizontal scrollbar). */
+.files-row > td {
+  padding: 0;
+  background: #fafafb;
+}
+
+.file-grid-panel {
+  padding: 8px 12px 10px 16px;
+  border-left: 3px solid #d8d8e2;
+}
+
+.file-grid-title {
+  margin: 0 0 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b6b76;
+}
+
+.file-grid {
+  margin: 0;
+  padding: 0;
   list-style: none;
-  border-left: 2px solid #e4e4ea;
+  display: grid;
+  /* Wide columns: a truncated directory is fine, a truncated file NAME is
+     not — 420px (~67ch) keeps typical paths fully readable, and narrow
+     panels just fall back to a single column. */
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  column-gap: 24px;
   max-height: 260px;
   overflow-y: auto;
-  /* Bounded width: inside a table cell (which stretches with content) the
-     dir-part ellipsis only engages if the row itself can't grow — and never
-     wider than the cell itself. */
-  max-width: min(74ch, 100%);
+  overflow-x: hidden;
+}
+
+.file-grid > li {
+  min-width: 0;
 }
 
 .file-link {

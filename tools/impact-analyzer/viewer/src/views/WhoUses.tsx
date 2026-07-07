@@ -1,6 +1,7 @@
-import { useMemo } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import type { SymbolEntry } from '@edifice.io/impact-analyzer';
-import { FileLinkList } from '../components/FileLinkList.js';
+import { FileGridPanel } from '../components/FileGridPanel.js';
+import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry } from '../lib/symbol-display.js';
 
@@ -13,6 +14,18 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       ),
     [symbol],
   );
+
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  useEffect(() => setExpanded(new Set()), [symbol]);
+
+  function toggle(key: string): void {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  }
 
   if (!symbol) {
     return (
@@ -48,23 +61,44 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             </tr>
           </thead>
           <tbody>
-            {sortedConsumers.map((c) => (
-              <tr key={`${c.app}-${c.appBranch}`}>
-                <td>{c.app}</td>
-                <td>{c.appBranch}</td>
-                <td>{c.pins}</td>
-                <td>{c.usageSites}</td>
-                <td>
-                  <FileLinkList fileRef={c} files={c.files} />
-                </td>
-                <td>
-                  {c.appDirty && <UsageBadge label="dirty" tone="warn" />}
-                  {c.viaNamespace && (
-                    <UsageBadge label="namespace" tone="info" />
+            {sortedConsumers.map((c) => {
+              const key = `${c.app}-${c.appBranch}`;
+              const isOpen = expanded.has(key);
+              return (
+                <Fragment key={key}>
+                  <tr>
+                    <td>{c.app}</td>
+                    <td>{c.appBranch}</td>
+                    <td>{c.pins}</td>
+                    <td>{c.usageSites}</td>
+                    <td>
+                      {c.files.length === 0 ? (
+                        '0'
+                      ) : (
+                        <FileToggle
+                          expanded={isOpen}
+                          onToggle={() => toggle(key)}
+                          label={`${c.files.length} fichier${c.files.length > 1 ? 's' : ''}`}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {c.appDirty && <UsageBadge label="dirty" tone="warn" />}
+                      {c.viaNamespace && (
+                        <UsageBadge label="namespace" tone="info" />
+                      )}
+                    </td>
+                  </tr>
+                  {isOpen && (
+                    <tr className="files-row">
+                      <td colSpan={6}>
+                        <FileGridPanel fileRef={c} files={c.files} />
+                      </td>
+                    </tr>
                   )}
-                </td>
-              </tr>
-            ))}
+                </Fragment>
+              );
+            })}
           </tbody>
         </table>
       )}
