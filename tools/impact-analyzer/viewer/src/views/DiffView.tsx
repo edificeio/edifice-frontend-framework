@@ -26,8 +26,15 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   // crypto.subtle sha256 of the file path.
   const [prAnchors, setPrAnchors] = useState<Map<string, string>>(new Map());
 
+  // Falls back to the first available report when nothing is selected OR
+  // when the (deep-linked) selection no longer exists in the manifest —
+  // e.g. a URL kept open across a data cleanup. Without this, a stale URL
+  // param would strand the user on "report unavailable" forever.
   useEffect(() => {
-    if (!selectedFile && diffs[0]) onSelectFile(diffs[0].file);
+    if (diffs.length === 0) return;
+    const selectionExists =
+      selectedFile !== null && diffs.some((d) => d.file === selectedFile);
+    if (!selectionExists) onSelectFile(diffs[0].file);
   }, [diffs, selectedFile, onSelectFile]);
 
   useEffect(() => {
@@ -76,19 +83,10 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
     );
   }
 
-  if (error) return <p className="error">{error}</p>;
-
-  if (unavailable) {
-    return (
-      <p className="hint">
-        Ce rapport n'est pas (ou plus) disponible — les données sont peut-être
-        en cours de synchronisation. Rechargez la page dans quelques instants.
-      </p>
-    );
-  }
-
   return (
     <div>
+      {/* Always rendered (even when the current report failed to load):
+          it's the only way to reach the other reports. */}
       {diffs.length > 1 && (
         <select
           className="diff-select"
@@ -103,7 +101,14 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
         </select>
       )}
 
-      {!report ? (
+      {error ? (
+        <p className="error">{error}</p>
+      ) : unavailable ? (
+        <p className="hint">
+          Ce rapport n'est pas (ou plus) disponible — les données sont peut-être
+          en cours de synchronisation. Rechargez la page dans quelques instants.
+        </p>
+      ) : !report ? (
         <p className="hint">Chargement du diff...</p>
       ) : (
         <>

@@ -31,6 +31,25 @@ describe('DiffView', () => {
     expect(screen.getByText(/pas encore de rapport de diff/i)).toBeTruthy();
   });
 
+  it('falls back to the first diff when the deep-linked selection no longer exists', () => {
+    vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
+    const onSelectFile = vi.fn();
+    const diffs = [
+      { base: 'develop', head: 'feat-a', file: 'diff.develop..feat-a.json' },
+      { base: 'develop', head: 'feat-b', file: 'diff.develop..feat-b.json' },
+    ];
+
+    render(
+      <DiffView
+        diffs={diffs}
+        selectedFile="diff.develop..deleted-report.json"
+        onSelectFile={onSelectFile}
+      />,
+    );
+
+    expect(onSelectFile).toHaveBeenCalledWith('diff.develop..feat-a.json');
+  });
+
   it('requests the first diff via onSelectFile, then loads it once the (controlled) selection arrives', async () => {
     vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
     const onSelectFile = vi.fn();
