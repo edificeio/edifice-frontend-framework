@@ -531,6 +531,28 @@ body {
   color: #8a7207;
 }
 
+.risk-badge {
+  display: inline-block;
+  min-width: 2.4em;
+  text-align: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.legend-gradient-swatch {
+  background: linear-gradient(
+    to right,
+    hsl(130, 68%, 90%),
+    hsl(65, 68%, 90%),
+    hsl(0, 68%, 90%)
+  );
+  color: var(--text);
+  font-weight: 600;
+}
+
 .hint {
   color: var(--muted);
 }
@@ -716,6 +738,36 @@ a.file-link:focus-visible .file-link-ext {
   max-width: 380px;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.diff-legend {
+  margin-top: 16px;
+  font-size: 0.83rem;
+}
+
+.diff-legend summary {
+  cursor: pointer;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.diff-legend ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.diff-legend li {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.diff-legend li strong {
+  color: var(--text);
+  font-weight: 650;
 }
 
 .ref-chip-commit {

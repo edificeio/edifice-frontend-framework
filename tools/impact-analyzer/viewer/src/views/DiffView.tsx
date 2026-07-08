@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import type { DiffReport } from '@edifice.io/impact-analyzer';
 import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
+import { RiskBadge } from '../components/RiskBadge.js';
 import { SeverityBadge } from '../components/SeverityBadge.js';
 import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { DataUnavailableError, loadDiffReport } from '../data/loadIndex.js';
@@ -106,6 +107,50 @@ function expandedFileRows(
         </td>
       </tr>
     ));
+}
+
+/**
+ * Raw severity/risk numbers mean nothing without context for a dev or QA
+ * landing on this page cold — spells out what each level actually detects,
+ * and is explicit that the risk score only sorts, it never certifies safety
+ * (plan §6: "🟡 is the most frequent and least precise level, on purpose").
+ */
+function DiffLegend() {
+  return (
+    <details className="panel diff-legend" open>
+      <summary>Comment lire ce rapport ?</summary>
+      <ul>
+        <li>
+          <SeverityBadge severity="breaking" /> un export a été{' '}
+          <strong>supprimé ou renommé</strong> — cassant pour toute app qui
+          l'utilise encore, à traiter avant merge.
+        </li>
+        <li>
+          <SeverityBadge severity="likely-breaking" /> la{' '}
+          <strong>signature a changé</strong> (paramètres, props, types) —
+          probablement cassant, à re-tester en priorité chez les apps listées.
+        </li>
+        <li>
+          <SeverityBadge severity="needs-review" /> seul le{' '}
+          <strong>corps a changé</strong>, signature identique — l'analyse
+          statique ne peut pas prouver l'impact réel : à vérifier à la main, pas
+          un signal à ignorer.
+        </li>
+        <li>
+          <span
+            className="risk-badge legend-gradient-swatch"
+            aria-hidden="true"
+          >
+            1 → N
+          </span>{' '}
+          <strong>risque</strong> = sévérité × sites d'usage × apps touchées,
+          coloré du plus sûr (vert) au plus risqué (rouge) de ce rapport — sert
+          uniquement à trier, ce n'est jamais une garantie qu'un changement est
+          sans danger.
+        </li>
+      </ul>
+    </details>
+  );
 }
 
 export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
@@ -300,7 +345,12 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                               )}
                             </td>
                             <td>{d.changeKind}</td>
-                            <td>{d.riskScore}</td>
+                            <td>
+                              <RiskBadge
+                                score={d.riskScore}
+                                maxScore={report.symbolDiffs[0].riskScore}
+                              />
+                            </td>
                             <td>
                               <AppToggleCell
                                 consumers={d.consumers}
@@ -354,7 +404,12 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                               {d.scope}
                               {d.globalScope ? ` (${d.globalScope})` : ''}
                             </td>
-                            <td>{d.riskScore}</td>
+                            <td>
+                              <RiskBadge
+                                score={d.riskScore}
+                                maxScore={report.cssDiffs[0].riskScore}
+                              />
+                            </td>
                             <td>
                               {d.consumers ? (
                                 <AppToggleCell
@@ -397,6 +452,8 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
               head — les données touchées peuvent être incomplètes.
             </p>
           )}
+
+          <DiffLegend />
         </>
       )}
     </div>
