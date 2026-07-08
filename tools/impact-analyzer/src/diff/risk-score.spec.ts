@@ -44,11 +44,17 @@ describe('severityForCssChange', () => {
 });
 
 describe('computeRiskScore', () => {
-  it('scales with severity, usage sites and app count', () => {
-    expect(computeRiskScore('breaking', 0, 0)).toBe(100);
-    expect(computeRiskScore('breaking', 9, 1)).toBe(100 * 10 * 2);
-    expect(computeRiskScore('likely-breaking', 9, 1)).toBe(10 * 10 * 2);
-    expect(computeRiskScore('needs-review', 9, 1)).toBe(1 * 10 * 2);
+  it('scales with severity, usage sites (log2) and app count (linear)', () => {
+    expect(computeRiskScore('breaking', 0, 0)).toBe(100); // log2(0+2) = 1
+    expect(computeRiskScore('breaking', 9, 1)).toBe(
+      Math.round(100 * Math.log2(11) * 2),
+    );
+    expect(computeRiskScore('likely-breaking', 9, 1)).toBe(
+      Math.round(10 * Math.log2(11) * 2),
+    );
+    expect(computeRiskScore('needs-review', 9, 1)).toBe(
+      Math.round(1 * Math.log2(11) * 2),
+    );
   });
 
   it('ranks breaking above likely-breaking above needs-review for identical usage', () => {
@@ -57,5 +63,11 @@ describe('computeRiskScore', () => {
     const needsReview = computeRiskScore('needs-review', 5, 3);
     expect(breaking).toBeGreaterThan(likelyBreaking);
     expect(likelyBreaking).toBeGreaterThan(needsReview);
+  });
+
+  it('no longer lets a huge usage count on a lower severity dwarf a higher one (regression: a CSS change at 58 usage sites across 7 apps used to outscore breaking changes by 47x under the old linear formula)', () => {
+    const massUsageLikelyBreaking = computeRiskScore('likely-breaking', 58, 7);
+    const typicalBreaking = computeRiskScore('breaking', 3, 2);
+    expect(massUsageLikelyBreaking).toBeLessThan(typicalBreaking);
   });
 });

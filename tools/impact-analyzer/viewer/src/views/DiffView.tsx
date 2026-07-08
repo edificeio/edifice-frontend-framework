@@ -137,16 +137,13 @@ function DiffLegend() {
           un signal à ignorer.
         </li>
         <li>
-          <span
-            className="risk-badge legend-gradient-swatch"
-            aria-hidden="true"
-          >
-            1 → N
-          </span>{' '}
-          <strong>risque</strong> = sévérité × sites d'usage × apps touchées,
-          coloré du plus sûr (vert) au plus risqué (rouge) de ce rapport — sert
-          uniquement à trier, ce n'est jamais une garantie qu'un changement est
-          sans danger.
+          <RiskBadge severity="breaking" score={100} />{' '}
+          <span aria-hidden="true">→</span>{' '}
+          <RiskBadge severity="breaking" score={6000} /> <strong>risque</strong>{' '}
+          (même sévérité, sites d'usage et apps touchées croissants) — la teinte
+          suit toujours la sévérité, seule sa saturation varie ; sert à trier au
+          sein d'un même niveau, jamais une garantie qu'un changement est sans
+          danger.
         </li>
       </ul>
     </details>
@@ -305,7 +302,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
               Aucun changement risqué détecté entre ces deux références.
             </p>
           ) : (
-            <>
+            <div className="diff-panels">
               {report.symbolDiffs.length > 0 && (
                 <div className="panel">
                   <h2>Symboles ({report.symbolDiffs.length})</h2>
@@ -347,8 +344,8 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                             <td>{d.changeKind}</td>
                             <td>
                               <RiskBadge
+                                severity={d.severity}
                                 score={d.riskScore}
-                                maxScore={report.symbolDiffs[0].riskScore}
                               />
                             </td>
                             <td>
@@ -406,8 +403,8 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                             </td>
                             <td>
                               <RiskBadge
+                                severity={d.severity}
                                 score={d.riskScore}
-                                maxScore={report.cssDiffs[0].riskScore}
                               />
                             </td>
                             <td>
@@ -443,7 +440,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
                   )}
                 </div>
               )}
-            </>
+            </div>
           )}
 
           {report.scanErrors.length > 0 && (

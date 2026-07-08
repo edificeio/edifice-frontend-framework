@@ -32,7 +32,9 @@ export interface DiffCommandOptions {
 const SEVERITY_EMOJI: Record<DiffSeverity, string> = {
   'breaking': '🔴',
   'likely-breaking': '🟠',
-  'needs-review': '🟡',
+  // Green, not yellow: matches the viewer's SeverityBadge — a body-only
+  // change is genuinely the least risky level, yellow overstated it.
+  'needs-review': '🟢',
 };
 
 const MAX_INLINE_APPS = 5;

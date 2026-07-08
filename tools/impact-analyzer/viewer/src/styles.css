@@ -264,6 +264,14 @@ body {
   color: var(--faint);
 }
 
+/* Symboles/CSS in DiffView: separate cards (each a distinct dataset),
+   spaced apart rather than touching. */
+.diff-panels {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 /* -------------------------------- Controls ------------------------------- */
 
 .search-input {
@@ -493,6 +501,12 @@ body {
   background: var(--hover);
 }
 
+/* The last row trailing off into empty space below the table doesn't need
+   its own line — the table's card edge already closes it off. */
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
 /* --------------------------------- Badges -------------------------------- */
 
 .badge {
@@ -527,8 +541,8 @@ body {
 }
 
 .badge-severity-needs-review {
-  background: #fdf7d8;
-  color: #8a7207;
+  background: #e3f5e6;
+  color: #1e6b2e;
 }
 
 .risk-badge {
@@ -540,17 +554,6 @@ body {
   font-size: 0.78rem;
   font-weight: 650;
   font-variant-numeric: tabular-nums;
-}
-
-.legend-gradient-swatch {
-  background: linear-gradient(
-    to right,
-    hsl(130, 68%, 90%),
-    hsl(65, 68%, 90%),
-    hsl(0, 68%, 90%)
-  );
-  color: var(--text);
-  font-weight: 600;
 }
 
 .hint {

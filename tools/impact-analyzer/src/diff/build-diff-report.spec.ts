@@ -141,7 +141,9 @@ describe('buildDiffReport', () => {
         files: ['frontend/src/Widget.tsx'],
       }),
     ]);
-    expect(buttonDiff?.riskScore).toBe(10 * (1 + 1) * (1 + 1));
+    expect(buttonDiff?.riskScore).toBe(
+      Math.round(10 * Math.log2(1 + 2) * (1 + 1)),
+    );
   });
 
   it('sorts symbolDiffs by riskScore descending across mixed severities', async () => {

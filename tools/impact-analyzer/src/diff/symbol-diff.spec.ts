@@ -129,7 +129,7 @@ describe('diffSymbols', () => {
         files: [],
       }),
     ]);
-    expect(entry.riskScore).toBe(10 * (5 + 1) * (1 + 1));
+    expect(entry.riskScore).toBe(Math.round(10 * Math.log2(5 + 2) * (1 + 1)));
   });
 
   it('produces no entry for a cosmetic-only change (comment added)', () => {
