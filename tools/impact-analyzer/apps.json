@@ -48,6 +48,12 @@
     "branches": ["dev", "develop-enabling"]
   },
   {
+    "name": "homeworks",
+    "org": "edificeio",
+    "repo": "homeworks",
+    "branches": ["dev"]
+  },
+  {
     "name": "rack",
     "org": "edificeio",
     "repo": "rack",
