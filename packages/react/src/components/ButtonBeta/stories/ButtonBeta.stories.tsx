@@ -20,9 +20,14 @@ const meta: Meta<typeof ButtonBeta> = {
       options: ['button', 'submit', 'reset'],
       control: { type: 'select' },
     },
+    size: {
+      options: ['small', 'medium'],
+      control: { type: 'select' },
+    },
   },
   args: {
     color: 'default',
+    size: 'medium',
     disabled: false,
   },
   parameters: {
@@ -154,6 +159,16 @@ export const IconOnly: Story = {
           'When no children are provided, the btn-beta--icon-only class is applied for square padding.',
       },
     },
+  },
+};
+
+export const SmallButton: Story = {
+  args: {
+    color: 'default',
+    children: 'Label',
+    type: 'button',
+    disabled: false,
+    size: 'small',
   },
 };
 
