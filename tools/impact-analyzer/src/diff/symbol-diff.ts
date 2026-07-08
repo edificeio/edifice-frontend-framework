@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
 import { relative } from 'node:path';
+import type { ExportedDeclarations } from 'ts-morph';
 import type { DeclaredSymbol } from '../ff-map/build-ff-declarations-map.js';
 import type {
   ConsumerImpactSummary,
@@ -61,10 +61,18 @@ function keyOf(s: { package: string; entry: string; name: string }): string {
   return `${s.package}|${s.entry}|${s.name}`;
 }
 
-function readSourceFilesText(paths: string[]): string {
-  return [...paths]
+/**
+ * Text of just this symbol's own declaration node(s) — never the whole
+ * file(s) they live in. Comparing whole files would flag every symbol
+ * colocated with a genuinely-changed one (e.g. a type alias sitting next to
+ * a hook whose body was rewritten), even though its own declaration didn't
+ * move a single character. Sorted so declaration reordering isn't reported
+ * as a change, matching computeSignatureShape's convention.
+ */
+function declarationsText(declarations: ExportedDeclarations[]): string {
+  return [...declarations]
+    .map((d) => d.getText())
     .sort()
-    .map((p) => readFileSync(p, 'utf-8'))
     .join('\n');
 }
 
@@ -130,18 +138,11 @@ function pushIfRealChange(
     if (!touched) return;
   }
 
-  let baseText: string;
-  let headText: string;
-  try {
-    baseText = readSourceFilesText(base.sourceFiles);
-    headText = readSourceFilesText(head.sourceFiles);
-  } catch {
-    // A declared source file is missing on disk (e.g. the base worktree
-    // snapshot was cleaned up mid-read) — we can't tell whether the change
-    // is cosmetic, so report it (needs-review) rather than crash the diff.
-    entries.push(buildEntry(base, head, 'body-changed', headIndex));
-    return;
-  }
+  // Nodes were parsed into memory when the base/head symbol tables were
+  // built, so this doesn't touch disk — unaffected by a worktree snapshot
+  // being cleaned up afterwards (unlike the old file-read comparison).
+  const baseText = declarationsText(base.declarations);
+  const headText = declarationsText(head.declarations);
   if (isCosmeticOnlyChange(baseText, headText)) return; // no observable change at all
   entries.push(buildEntry(base, head, 'body-changed', headIndex));
 }

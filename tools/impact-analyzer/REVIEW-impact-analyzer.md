@@ -236,7 +236,7 @@ Fonctionnel et sobre, mais en retrait par rapport à la rigueur du cœur :
 | 1.1 | Mettre à jour le README (Jalon 6 livré, viewer hébergé, fraîcheur ~72h le week-end) ; supprimer `src/shared/` vide | `README.md` | XS |
 | 1.2 | Intégrer `getTypeParameters()` et les clauses `extends`/`implements` dans la forme comparée | `signature-shape.ts` | S |
 | 1.3 | Try/catch par fichier autour de `scss.parse` → `scanError`/entrée `confidence: low` au lieu d'un crash global | `build-css-map.ts`, `scss-parser.ts` | XS |
-| 1.4 | Try/catch dans `readSourceFilesText` (fichier base disparu → `needs-review`, pas un crash du diff) | `symbol-diff.ts:24-29` | XS |
+| 1.4 | **Fait, autrement** : `pushIfRealChange` ne relit plus les fichiers source entiers (faux positif — tout symbole colocalisé avec un vrai changement était signalé `body-changed`) ; compare le texte des `declarations` ts-morph du symbole, déjà en mémoire → insensible à la disparition du fichier base, plus besoin de try/catch | `symbol-diff.ts` | XS |
 | 1.5 | Flagger les imports à effet de bord et `import()` dynamiques hors contrat | `import-resolver.ts` | S |
 | 1.6 | Valider `schemaVersion` à toute lecture d'index/diff, et `--mode` à la frontière CLI (erreur explicite) | `cli.ts`, lecteurs d'index | XS |
 | 1.7 | Détecter `forwardRef`/`memo`/`Object.assign` dans `inferSymbolKind` (dérouler le premier argument de l'appel) | `symbol-extractor.ts` | S |

@@ -174,7 +174,7 @@ describe('diffSymbols', () => {
     });
   });
 
-  it('reports needs-review instead of crashing when a base source file is missing on disk', () => {
+  it('still compares correctly when a base source file disappears from disk after parsing', () => {
     baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
     headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));
 
@@ -184,19 +184,42 @@ describe('diffSymbols', () => {
     const headSymbols = toDeclaredSymbols(
       makeSymbols(headDir, 'export function foo(x: number) { return x + 1; }'),
     );
-    // Simulate the base worktree snapshot disappearing mid-read (race, cleanup).
+    // Simulate the base worktree snapshot disappearing mid-read (race,
+    // cleanup) — the declaration nodes were already parsed into memory, so
+    // this must not affect the comparison at all (unlike the old
+    // file-re-read approach, which needed a try/catch here).
     unlinkSync(join(baseDir, 'a.ts'));
 
-    const [entry] = diffSymbols({
+    expect(
+      diffSymbols({ baseSymbols, headSymbols, headIndex: makeHeadIndex() }),
+    ).toEqual([]);
+  });
+
+  it('does not flag a symbol whose own declaration is untouched, even when another export in the same file genuinely changed', () => {
+    baseDir = mkdtempSync(join(tmpdir(), 'diff-base-'));
+    headDir = mkdtempSync(join(tmpdir(), 'diff-head-'));
+
+    const baseSymbols = toDeclaredSymbols(
+      makeSymbols(
+        baseDir,
+        'export type Foo = string;\nexport function bar() { return 1; }',
+      ),
+    );
+    const headSymbols = toDeclaredSymbols(
+      makeSymbols(
+        headDir,
+        'export type Foo = string;\nexport function bar() { return 2; }',
+      ),
+    );
+
+    const entries = diffSymbols({
       baseSymbols,
       headSymbols,
       headIndex: makeHeadIndex(),
     });
-    expect(entry).toMatchObject({
-      name: 'foo',
-      changeKind: 'body-changed',
-      severity: 'needs-review',
-    });
+    // Comparing whole files here would (wrongly) flag Foo too, since bar's
+    // body changed elsewhere in the same file.
+    expect(entries.map((e) => e.name)).toEqual(['bar']);
   });
 
   it('skips the body compare entirely when changedFiles says nothing touched this symbol', () => {
