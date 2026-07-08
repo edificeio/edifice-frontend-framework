@@ -17,7 +17,7 @@ export function AppConsumes({
   // Hooks must run unconditionally — computed even without a selection
   // (cheap on an empty/no-op appName) rather than gating with an early
   // return above these useMemo calls.
-  const rows = useMemo(() => {
+  const allRows = useMemo(() => {
     if (!appName) return [];
     return index.symbols
       .filter((s) => !s.isAggregate)
@@ -29,7 +29,7 @@ export function AppConsumes({
       .sort((a, b) => b.consumer.usageSites - a.consumer.usageSites);
   }, [index, appName]);
 
-  const cssRows = useMemo(() => {
+  const allCssRows = useMemo(() => {
     if (!appName) return [];
     return index.cssComponents
       .flatMap((c) =>
@@ -39,6 +39,35 @@ export function AppConsumes({
       )
       .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
   }, [index, appName]);
+
+  // An app can be scanned on several of its own branches (apps.json) — a
+  // symbol consumed on both shows up as two rows that otherwise look
+  // identical, hence the filter below rather than only the Branche column.
+  const branches = useMemo(() => {
+    const set = new Set<string>();
+    for (const r of allRows) set.add(r.consumer.appBranch);
+    for (const r of allCssRows) set.add(r.consumer.appBranch);
+    return [...set].sort();
+  }, [allRows, allCssRows]);
+
+  const [branchFilter, setBranchFilter] = useState<string>('all');
+  useEffect(() => setBranchFilter('all'), [appName]);
+
+  const rows = useMemo(
+    () =>
+      branchFilter === 'all'
+        ? allRows
+        : allRows.filter((r) => r.consumer.appBranch === branchFilter),
+    [allRows, branchFilter],
+  );
+
+  const cssRows = useMemo(
+    () =>
+      branchFilter === 'all'
+        ? allCssRows
+        : allCssRows.filter((r) => r.consumer.appBranch === branchFilter),
+    [allCssRows, branchFilter],
+  );
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   useEffect(() => setExpanded(new Set()), [appName, index]);
@@ -65,6 +94,21 @@ export function AppConsumes({
   return (
     <div className="panel">
       <h2>{appName}</h2>
+      {branches.length > 1 && (
+        <select
+          className="diff-select"
+          aria-label="Filtrer par branche de l'app"
+          value={branchFilter}
+          onChange={(e) => setBranchFilter(e.target.value)}
+        >
+          <option value="all">Toutes les branches ({branches.length})</option>
+          {branches.map((b) => (
+            <option key={b} value={b}>
+              {b}
+            </option>
+          ))}
+        </select>
+      )}
       <p className="hint">
         {rows.length} symbole(s) JS/TS consommé(s) — {cssRows.length}{' '}
         composant(s) CSS potentiellement concerné(s)
@@ -79,6 +123,7 @@ export function AppConsumes({
             <tr>
               <th>Symbole</th>
               <th>Package</th>
+              <th>Branche</th>
               <th>Sites d'usage</th>
               <th>Fichiers</th>
               <th></th>
@@ -96,6 +141,7 @@ export function AppConsumes({
                       {symbol.package}
                       {formatEntry(symbol.entry)}
                     </td>
+                    <td>{consumer.appBranch}</td>
                     <td>{consumer.usageSites}</td>
                     <td>
                       {consumer.files.length === 0 ? (
@@ -116,7 +162,7 @@ export function AppConsumes({
                   </tr>
                   {isOpen && (
                     <tr className="files-row">
-                      <td colSpan={5}>
+                      <td colSpan={6}>
                         <FileGridPanel
                           fileRef={consumer}
                           files={consumer.files}
@@ -145,6 +191,7 @@ export function AppConsumes({
               <tr>
                 <th>Composant scss</th>
                 <th>Pair React</th>
+                <th>Branche</th>
                 <th>Classes matchées</th>
                 <th>Fichiers</th>
                 <th>Confiance</th>
@@ -159,6 +206,7 @@ export function AppConsumes({
                     <tr>
                       <td>{component.file}</td>
                       <td>{component.reactPeer ?? '—'}</td>
+                      <td>{consumer.appBranch}</td>
                       <td>{consumer.matchedSelectors.join(', ')}</td>
                       <td>
                         {consumer.files.length === 0 ? (
@@ -182,7 +230,7 @@ export function AppConsumes({
                     </tr>
                     {isOpen && (
                       <tr className="files-row">
-                        <td colSpan={5}>
+                        <td colSpan={6}>
                           <FileGridPanel
                             fileRef={consumer}
                             files={consumer.files}

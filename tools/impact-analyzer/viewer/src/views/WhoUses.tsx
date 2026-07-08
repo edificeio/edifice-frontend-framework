@@ -4,6 +4,7 @@ import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry } from '../lib/symbol-display.js';
+import { branchGroupKey, branchGroupLabel } from '../lib/branch-group.js';
 
 export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
   // Hooks must run unconditionally, before the early return below.
@@ -13,6 +14,28 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
         (a, b) => b.usageSites - a.usageSites,
       ),
     [symbol],
+  );
+
+  // Grouped by role (develop/dev vs develop-enabling), not by raw branch
+  // name — spans every consuming app, unlike the per-app Apps tab, so the
+  // naming mismatch across repos (apps.json) actually shows up here.
+  const branchGroups = useMemo(() => {
+    const set = new Set<string>();
+    for (const c of sortedConsumers) set.add(branchGroupKey(c.appBranch));
+    return [...set].sort();
+  }, [sortedConsumers]);
+
+  const [branchFilter, setBranchFilter] = useState<string>('all');
+  useEffect(() => setBranchFilter('all'), [symbol]);
+
+  const filteredConsumers = useMemo(
+    () =>
+      branchFilter === 'all'
+        ? sortedConsumers
+        : sortedConsumers.filter(
+            (c) => branchGroupKey(c.appBranch) === branchFilter,
+          ),
+    [sortedConsumers, branchFilter],
   );
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -40,13 +63,30 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       <h2>
         {symbol.name} <UsageBadge label={symbol.kind} />
       </h2>
+      {branchGroups.length > 1 && (
+        <select
+          className="diff-select"
+          aria-label="Filtrer par branche"
+          value={branchFilter}
+          onChange={(e) => setBranchFilter(e.target.value)}
+        >
+          <option value="all">
+            Toutes les branches ({branchGroups.length})
+          </option>
+          {branchGroups.map((g) => (
+            <option key={g} value={g}>
+              {branchGroupLabel(g)}
+            </option>
+          ))}
+        </select>
+      )}
       <p className="hint">
         {symbol.package}
         {formatEntry(symbol.entry)} — {symbol.sourceFiles.length} fichier(s)
         source
       </p>
 
-      {sortedConsumers.length === 0 ? (
+      {filteredConsumers.length === 0 ? (
         <p className="hint">Aucune app connue n'utilise ce symbole.</p>
       ) : (
         <table className="data-table">
@@ -61,7 +101,7 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             </tr>
           </thead>
           <tbody>
-            {sortedConsumers.map((c) => {
+            {filteredConsumers.map((c) => {
               const key = `${c.app}-${c.appBranch}`;
               const isOpen = expanded.has(key);
               return (
@@ -104,7 +144,7 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       )}
 
       {/* Contextual legend — only when at least one row carries the badge. */}
-      {sortedConsumers.some((c) => c.appDirty) && (
+      {filteredConsumers.some((c) => c.appDirty) && (
         <p className="hint legend">
           <UsageBadge label="dirty" tone="warn" /> : le repo de cette app avait
           des modifications non commitées au moment du scan (index généré en
