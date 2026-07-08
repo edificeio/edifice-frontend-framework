@@ -126,6 +126,8 @@ export const Attachment = Node.create<AttachmentOptions>({
               return true;
             }
 
+            const mappedPos = transaction.mapping.map(pos);
+
             const links = node.attrs.links ?? [];
             const newLinks = links.filter((link) => {
               const linkDocumentId =
@@ -143,12 +145,13 @@ export const Attachment = Node.create<AttachmentOptions>({
             hasChanged = true;
 
             if (newLinks.length > 0) {
-              transaction = transaction.setNodeMarkup(pos, undefined, {
+              transaction = transaction.setNodeMarkup(mappedPos, undefined, {
                 ...node.attrs,
                 links: newLinks,
               });
             } else {
-              transaction = transaction.delete(pos, pos + node.nodeSize);
+              const mappedEnd = transaction.mapping.map(pos + node.nodeSize);
+              transaction = transaction.delete(mappedPos, mappedEnd);
             }
 
             return false;

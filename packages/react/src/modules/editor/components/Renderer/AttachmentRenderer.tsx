@@ -15,8 +15,9 @@ interface AttachmentProps {
 interface AttachmentAttrsProps {
   'name': string;
   'href': string;
-  'dataDocumentId': string;
-  'dataContentType': string;
+  'dataDocumentId'?: string;
+  'dataContentType'?: string;
+  'documentId'?: string;
   'data-document-id'?: string;
 }
 
@@ -37,7 +38,7 @@ const AttachmentRenderer = (props: AttachmentProps) => {
 
   const handleDelete = (index: number, documentId: string) => {
     const nextAttachments = (node.attrs.links ?? []).filter(
-      (link: AttachmentAttrsProps & Record<string, any>, i: number) => {
+      (link: AttachmentAttrsProps, i: number) => {
         const linkDocumentId =
           link.dataDocumentId ??
           link.documentId ??
