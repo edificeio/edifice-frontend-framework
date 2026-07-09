@@ -42,7 +42,8 @@ const HomeCardHeader = ({
       <h3 className="home-card-header-title">{title}</h3>
       {hasAction && (
         <ButtonBeta
-          color="default"
+          color="tertiary"
+          size="sm"
           variant="ghost"
           onClick={onActionClick}
           leftIcon={actionLeftIcon}
