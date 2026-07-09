@@ -98,12 +98,33 @@
     }
   }
 
-  &.btn-beta--with-icon {
-    padding-inline: prim.$spacer-12;
+  &.btn-beta--with-left-icon {
+    padding-inline-start: prim.$spacer-12;
+  }
+
+  &.btn-beta--with-right-icon {
+    padding-inline-end: prim.$spacer-12;
   }
 
   &.btn-beta--icon-only {
     padding-inline: prim.$spacer-8;
+  }
+
+  // Small
+  &.btn-beta--small {
+    padding: prim.$spacer-4 prim.$spacer-16;
+
+    &.btn-beta--with-left-icon {
+      padding-inline-start: prim.$spacer-8;
+    }
+
+    &.btn-beta--with-right-icon {
+      padding-inline-end: prim.$spacer-8;
+    }
+
+    &.btn-beta--icon-only {
+      padding-inline: prim.$spacer-8;
+    }
   }
 }
 
