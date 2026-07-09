@@ -2,6 +2,7 @@ import { Audio } from './Audio';
 import { ExternalLink } from './ExternalLink';
 import { Iframe } from './Iframe';
 import { InternalLink } from './InternalLink';
+import { Nextcloud } from './Nextcloud';
 import { Upload } from './Upload';
 import { Video } from './Video';
 import { VideoEmbedder } from './VideoEmbedder';
@@ -13,6 +14,7 @@ export const InnerTabs = {
   Upload,
   ExternalLink,
   Workspace,
+  Nextcloud,
   InternalLink,
   Iframe,
   VideoEmbedder,
