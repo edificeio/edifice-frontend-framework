@@ -12,7 +12,7 @@ export type ButtonBetaColor =
   | 'secondary'
   | 'tertiary';
 
-export type ButtonBetaSizes = 'small' | 'medium';
+export type ButtonBetaSizes = 'sm' | 'md';
 
 export type ButtonBetaVariant = 'filled' | 'outline' | 'ghost';
 
@@ -67,7 +67,7 @@ const ButtonBeta = forwardRef(
     {
       color = 'default',
       type = 'button',
-      size = 'medium',
+      size = 'md',
       variant = 'filled',
       children,
       isLoading,
@@ -84,7 +84,7 @@ const ButtonBeta = forwardRef(
       {
         'btn-beta--outline': variant === 'outline',
         'btn-beta--ghost': variant === 'ghost',
-        'btn-beta--small': size === 'small',
+        'btn-beta--small': size === 'sm',
         'btn-beta--icon-only': !children,
         'btn-beta--with-left-icon': Boolean(leftIcon && children),
         'btn-beta--with-right-icon': Boolean(rightIcon && children),

@@ -21,13 +21,13 @@ const meta: Meta<typeof ButtonBeta> = {
       control: { type: 'select' },
     },
     size: {
-      options: ['small', 'medium'],
+      options: ['sm', 'md'],
       control: { type: 'select' },
     },
   },
   args: {
     color: 'default',
-    size: 'medium',
+    size: 'md',
     disabled: false,
   },
   parameters: {
@@ -168,7 +168,7 @@ export const SmallButton: Story = {
     children: 'Label',
     type: 'button',
     disabled: false,
-    size: 'small',
+    size: 'sm',
   },
 };
 
