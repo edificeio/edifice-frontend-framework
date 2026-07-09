@@ -30,7 +30,7 @@ export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
    */
   variant?: ButtonBetaVariant;
   /**
-   * `small` or `medium`
+   * `sm` or `md`
    */
   size?: ButtonBetaSizes;
   /**
