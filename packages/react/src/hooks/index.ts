@@ -23,6 +23,7 @@ export * from './useIsAdmlcOrAdmc';
 export * from './useKeyPress';
 export * from './useLibraryUrl';
 export * from './useMediaLibrary';
+export * from './useNextcloudSearch';
 export * from './usePublicConf';
 export * from './useScreeb';
 export * from './useScrollToTop';
