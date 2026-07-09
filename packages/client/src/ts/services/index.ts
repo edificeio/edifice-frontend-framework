@@ -9,6 +9,7 @@ import { IOdeServices, OdeServices } from './OdeServices';
 export const odeServices: IOdeServices = new OdeServices().initialize();
 
 export * from '../directory/interface';
+export * from '../nextcloud/interface';
 export type { ILinkedResource } from '../resources/behaviours/AbstractBehaviourService'; // FIXME to be removed when dropping behaviours
 export * from '../resources/interface';
 export * from '../resources/ResourceService';
