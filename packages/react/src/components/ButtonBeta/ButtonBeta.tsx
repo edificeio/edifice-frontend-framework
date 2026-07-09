@@ -12,6 +12,8 @@ export type ButtonBetaColor =
   | 'secondary'
   | 'tertiary';
 
+export type ButtonBetaSizes = 'sm' | 'md';
+
 export type ButtonBetaVariant = 'filled' | 'outline' | 'ghost';
 
 export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
@@ -27,6 +29,10 @@ export interface ButtonBetaProps extends React.ComponentPropsWithRef<'button'> {
    * `filled`, `outline` or `ghost`
    */
   variant?: ButtonBetaVariant;
+  /**
+   * `sm` or `md`
+   */
+  size?: ButtonBetaSizes;
   /**
    * Does it has a text ?
    */
@@ -61,6 +67,7 @@ const ButtonBeta = forwardRef(
     {
       color = 'default',
       type = 'button',
+      size = 'md',
       variant = 'filled',
       children,
       isLoading,
@@ -71,16 +78,16 @@ const ButtonBeta = forwardRef(
     }: ButtonBetaProps,
     ref: Ref<ButtonBetaRef>,
   ) => {
-    const hasIcon = Boolean(leftIcon || rightIcon);
-
     const classes = clsx(
       'btn-beta',
       `btn-beta-${color}`,
       {
         'btn-beta--outline': variant === 'outline',
         'btn-beta--ghost': variant === 'ghost',
+        'btn-beta--small': size === 'sm',
         'btn-beta--icon-only': !children,
-        'btn-beta--with-icon': hasIcon && Boolean(children),
+        'btn-beta--with-left-icon': Boolean(leftIcon && children),
+        'btn-beta--with-right-icon': Boolean(rightIcon && children),
         'btn-beta--loading': isLoading,
       },
       className,
