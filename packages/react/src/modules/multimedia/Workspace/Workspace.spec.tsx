@@ -2,16 +2,19 @@ import { Role, WorkspaceElement } from '@edifice.io/client';
 import { render, screen, waitFor } from '~/setup';
 import Workspace from './Workspace';
 
-const { useWorkspaceSearch, findTreeNode } = vi.hoisted(() => ({
+const { useWorkspaceSearch, findTreeNode, useHasWorkflow } = vi.hoisted(() => ({
   useWorkspaceSearch: vi.fn(),
   findTreeNode: vi.fn(),
+  useHasWorkflow: vi.fn(),
 }));
 
-// Only the workspace search is replaced: the real components pulled in by this
-// spec (Dropdown, SearchBar) rely on other hooks of the same barrel.
+// Only the workspace search (and the workspace.view workflow check) is
+// replaced: the real components pulled in by this spec (Dropdown, SearchBar)
+// rely on other hooks of the same barrel.
 vi.mock('../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../hooks')>()),
   useWorkspaceSearch,
+  useHasWorkflow,
 }));
 
 vi.mock('../../../components/TreeView/utilities', () => ({ findTreeNode }));
@@ -94,14 +97,22 @@ function setup(
     multiple?: boolean;
     showPublicFolder?: boolean;
     defaultFolder?: 'owner' | 'shared' | 'protected' | 'public';
+    hasWorkspaceViewRight?: boolean;
   } = {},
 ) {
-  const { multiple = true, showPublicFolder = false, defaultFolder } = options;
+  const {
+    multiple = true,
+    showPublicFolder = false,
+    defaultFolder,
+    hasWorkspaceViewRight = true,
+  } = options;
   // An explicit `files: undefined` means "folder not loaded yet" and must
   // survive, hence the key check rather than a default parameter.
   const files = 'files' in options ? options.files : [element({ _id: 'a' })];
   const loaders: Record<string, ReturnType<typeof vi.fn>> = {};
   const roots: Record<string, ReturnType<typeof root>> = {};
+
+  useHasWorkflow.mockReturnValue(hasWorkspaceViewRight);
 
   // The roots must keep their identity across renders — the real hook holds them
   // in a reducer. A fresh object per render would retrigger the effect that
@@ -151,6 +162,43 @@ describe('Workspace', () => {
     setup({ showPublicFolder: true });
 
     expect(screen.getByTestId('tree-Public folder')).toBeInTheDocument();
+  });
+
+  describe('personal folders visibility', () => {
+    it('shows the owner and shared folders when the user has the workspace view right', () => {
+      setup({ hasWorkspaceViewRight: true });
+
+      expect(screen.getByTestId('tree-My folder')).toBeInTheDocument();
+      expect(screen.getByTestId('tree-Shared')).toBeInTheDocument();
+    });
+
+    it('hides the owner and shared folders when the user lacks the workspace view right', () => {
+      setup({ hasWorkspaceViewRight: false });
+
+      expect(screen.queryByTestId('tree-My folder')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('tree-Shared')).not.toBeInTheDocument();
+    });
+
+    it('always shows the protected (apps) folder regardless of the right', () => {
+      setup({ hasWorkspaceViewRight: false });
+
+      expect(screen.getByTestId('tree-Private')).toBeInTheDocument();
+    });
+
+    it('falls back to the protected folder by default when the right is missing', async () => {
+      const { loaders } = setup({ hasWorkspaceViewRight: false });
+
+      await waitFor(() => expect(loaders.protected).toHaveBeenCalled());
+    });
+
+    it('redirects away from an explicit owner/shared default folder when the right is missing', async () => {
+      const { loaders } = setup({
+        defaultFolder: 'shared',
+        hasWorkspaceViewRight: false,
+      });
+
+      await waitFor(() => expect(loaders.protected).toHaveBeenCalled());
+    });
   });
 
   it('queries every filter for the requested roles', () => {

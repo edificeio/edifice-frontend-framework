@@ -3,8 +3,9 @@ import { createRef, useContext } from 'react';
 import { render, screen, waitFor } from '~/setup';
 import MediaLibrary, { MediaLibraryRef } from './MediaLibrary';
 
-const { useHasWorkflow, transferDocuments } = vi.hoisted(() => ({
+const { useHasWorkflow, usePublicConf, transferDocuments } = vi.hoisted(() => ({
   useHasWorkflow: vi.fn(),
+  usePublicConf: vi.fn(),
   transferDocuments: vi.fn(),
 }));
 
@@ -12,12 +13,13 @@ vi.mock('@edifice.io/client', () => ({
   odeServices: { workspace: () => ({ transferDocuments }) },
 }));
 
-// Only the two hooks the library itself uses are replaced: the real Modal and
+// Only the hooks the library itself uses are replaced: the real Modal and
 // Button pulled in by this spec rely on other hooks of the same barrel.
 vi.mock('../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../hooks')>()),
   useHasWorkflow,
   useHttpErrorToast: vi.fn(),
+  usePublicConf,
 }));
 
 /**
@@ -109,6 +111,15 @@ vi.mock('./innertabs', async () => {
         </button>
         <button
           onClick={() =>
+            context?.setPreSuccess?.(
+              () => () => Promise.reject(new Error('pre-success failed')),
+            )
+          }
+        >
+          set-pre-success-error
+        </button>
+        <button
+          onClick={() =>
             context?.setCancellable?.([{ _id: 'upload-1' } as WorkspaceElement])
           }
         >
@@ -131,6 +142,7 @@ vi.mock('./innertabs', async () => {
       InternalLink: () => <Probe name="internal" />,
       Iframe: () => <Probe name="iframe" />,
       VideoEmbedder: () => <Probe name="video-embedder" />,
+      Nextcloud: () => <Probe name="nextcloud" />,
     },
   };
 });
@@ -139,15 +151,22 @@ const WORKSPACE_CREATE =
   'org.entcore.workspace.controllers.WorkspaceController|addDocument';
 const VIDEO_CAPTURE =
   'com.opendigitaleducation.video.controllers.VideoController|capture';
+const NEXTCLOUD_VIEW =
+  'fr.openent.nextcloud.controller.NextcloudController|view';
 
 function setup({
   visibility = 'protected' as 'protected' | 'public' | 'external',
   workflows = { [WORKSPACE_CREATE]: true, [VIDEO_CAPTURE]: true },
+  folderServices = [] as string[],
 }: {
   visibility?: 'protected' | 'public' | 'external';
   workflows?: Record<string, boolean>;
+  folderServices?: string[];
 } = {}) {
   useHasWorkflow.mockImplementation((workflow: string) => workflows[workflow]);
+  usePublicConf.mockReturnValue({
+    data: { 'folder-service': folderServices },
+  });
 
   const onSuccess = vi.fn();
   const onCancel = vi.fn();
@@ -258,6 +277,51 @@ describe('MediaLibrary', () => {
 
       await waitFor(() => expect(tabIds()).not.toContain('upload'));
       expect(tabIds()).not.toContain('audio-capture');
+    });
+
+    it('offers the nextcloud tab when the folder-service config and workflow are both enabled', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [NEXTCLOUD_VIEW]: true,
+        },
+        folderServices: ['nextcloud'],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).toContain('nextcloud'));
+    });
+
+    it('hides the nextcloud tab without the folder-service config, even with the workflow', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [NEXTCLOUD_VIEW]: true,
+        },
+        folderServices: [],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).not.toContain('nextcloud'));
+    });
+
+    it('hides the nextcloud tab without the workflow, even with the folder-service config', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [NEXTCLOUD_VIEW]: false,
+        },
+        folderServices: ['nextcloud'],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).not.toContain('nextcloud'));
     });
 
     it('hides the video capture without its workflow', async () => {
@@ -416,6 +480,24 @@ describe('MediaLibrary', () => {
       await waitFor(() =>
         expect(onSuccess).toHaveBeenCalledWith('from pre-success'),
       );
+    });
+
+    it('keeps the selection and does not call onSuccess when the pre-success action rejects', async () => {
+      const { ref, user, onSuccess } = setup({ visibility: 'external' });
+      await waitFor(() => ref.current?.show('image'));
+
+      await user.click(
+        await screen.findByRole('button', { name: 'set-result' }),
+      );
+      await user.click(
+        screen.getByRole('button', { name: 'set-pre-success-error' }),
+      );
+      await user.click(addButton());
+
+      // Once the pre-success action rejects, onSuccess is never called and
+      // the button becomes usable again (not stuck disabled).
+      await waitFor(() => expect(addButton()).not.toBeDisabled());
+      expect(onSuccess).not.toHaveBeenCalled();
     });
 
     it('counts the selection on the add button', async () => {
