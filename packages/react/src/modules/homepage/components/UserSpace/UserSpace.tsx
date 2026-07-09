@@ -21,28 +21,26 @@ export default function UserSpace({
 
   return (
     <HomeCard variant="user">
-      <HomeCard.Header>
-        <Flex className={'user-space'} direction="row" gap="8">
-          <Avatar
-            className={'user-space--avatar'}
-            size={'auto'}
-            alt={name}
-            src={avatar}
-            variant="circle"
-          />
-          <Flex direction="column">
-            <div data-testid="user-space-name" className={'user-space--name'}>
-              {name}
-            </div>
-            <div
-              data-testid="user-space-profile"
-              className={'user-space--profile'}
-            >
-              {t(profile)}
-            </div>
-          </Flex>
+      <Flex className={'user-space'} direction="row" gap="8">
+        <Avatar
+          className={'user-space--avatar'}
+          size={'auto'}
+          alt={name}
+          src={avatar}
+          variant="circle"
+        />
+        <Flex direction="column">
+          <div data-testid="user-space-name" className={'user-space--name'}>
+            {name}
+          </div>
+          <div
+            data-testid="user-space-profile"
+            className={'user-space--profile'}
+          >
+            {t(profile)}
+          </div>
         </Flex>
-      </HomeCard.Header>
+      </Flex>
       {children && <HomeCard.Content>{children}</HomeCard.Content>}
     </HomeCard>
   );
