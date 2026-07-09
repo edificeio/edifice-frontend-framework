@@ -58,6 +58,26 @@ function makeFakeClone(): string {
   return dir;
 }
 
+/**
+ * Same as makeFakeClone(), but nested under a monorepo subdir (e.g.
+ * 'conversation') — mirrors the entcore layout (`<path>/frontend/...`), so
+ * the sparse-checkout's srcRelPath/packageJsonRelPath (which now carry the
+ * `path` prefix) resolve to real files on disk.
+ */
+function makeFakeMonorepoClone(subdir: string): string {
+  const dir = mkdtempSync(join(tmpdir(), 'impact-analyzer-fakeclone-'));
+  mkdirSync(join(dir, subdir, 'frontend', 'src'), { recursive: true });
+  writeFileSync(
+    join(dir, subdir, 'frontend', 'tsconfig.json'),
+    JSON.stringify(APP_TSCONFIG),
+  );
+  writeFileSync(
+    join(dir, subdir, 'frontend', 'src', 'Widget.tsx'),
+    `import { Button } from '@edifice.io/fixture';\nexport function Widget() { return <Button />; }\n`,
+  );
+  return dir;
+}
+
 describe('buildCiIndex', () => {
   let ffRepoRoot: string;
   const fakeCloneDirs: string[] = [];
@@ -323,6 +343,70 @@ describe('buildCiIndex', () => {
     );
     expect(buttonSymbol?.consumers).toHaveLength(1);
     expect(buttonSymbol?.consumers[0].app).toBe('good-app');
+  });
+
+  it('e2e monorepo case: an entcore-style app (path) produces repo-relative files prefixed by its subdir', async () => {
+    vi.mocked(cloneTargetSparse).mockImplementation((opts) => {
+      const dir = makeFakeMonorepoClone('conversation');
+      fakeCloneDirs.push(dir);
+      // Real remote-clone.ts uses opts.sparsePath for `git sparse-checkout
+      // set` — nothing to assert on disk here since it's mocked, but keep
+      // it referenced so a future signature change isn't silently ignored.
+      expect(opts.sparsePath).toBe('conversation/frontend/src');
+      return { repoPath: dir };
+    });
+
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/repos/edificeio/entcore/branches/'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha-conv' } }));
+      if (
+        url.includes('/contents/conversation/frontend/package.json.template')
+      ) {
+        return new Response(
+          JSON.stringify({
+            content: b64({
+              dependencies: { '@edifice.io/fixture': 'develop' },
+            }),
+          }),
+        );
+      }
+      if (url.includes('/contents/conversation/frontend/package.json')) {
+        return new Response(null, { status: 404 });
+      }
+      return new Response(null, { status: 404 });
+    });
+
+    const index = await buildCiIndex(
+      [
+        {
+          name: 'conversation',
+          org: 'edificeio',
+          repo: 'entcore',
+          path: 'conversation',
+          branches: ['dev'],
+        },
+      ],
+      {
+        repoRoot: ffRepoRoot,
+        ffPackages: [{ packageDirName: 'fixture-pkg' }],
+        ffEntryMap: FIXTURE_ENTRY_MAP,
+        githubClientOptions: { fetchImpl },
+      },
+    );
+
+    expect(index.scanErrors).toEqual([]);
+
+    const buttonSymbol = index.symbols.find(
+      (s) => s.name === 'Button' && !s.isAggregate,
+    );
+    expect(buttonSymbol?.consumers).toEqual([
+      expect.objectContaining({
+        app: 'conversation',
+        repo: 'entcore',
+        appBranch: 'dev',
+        files: ['conversation/frontend/src/Widget.tsx'],
+      }),
+    ]);
   });
 
   it('reports a scanError (missing token) without crashing, and cleans up no clone for that app', async () => {

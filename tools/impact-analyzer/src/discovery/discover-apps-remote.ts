@@ -12,8 +12,11 @@ import {
 } from './pin-reader.js';
 
 export interface RemoteAppLayout {
-  packageJsonRelPath: 'frontend/package.json' | 'package.json';
-  srcRelPath: 'frontend/src' | 'src';
+  // Widened from a closed literal union: with `app.path` prefixing (monorepo
+  // apps sharing one repo, e.g. entcore), these are no longer one of 2 fixed
+  // strings but `${prefix}frontend/package.json` etc.
+  packageJsonRelPath: string;
+  srcRelPath: string;
 }
 
 export interface DiscoveredRemoteApp {
@@ -68,38 +71,51 @@ export async function discoverAppsRemote(
         );
         if (!head) continue; // branch doesn't exist on GitHub for this app — silent skip, not an error.
 
-        const frontendContent = await fetchFileContent(
-          app.org,
-          app.repo,
-          'frontend/package.json',
-          branch,
-          token,
-          options.githubClientOptions,
-        );
-        const layout: RemoteAppLayout = frontendContent
-          ? {
-              packageJsonRelPath: 'frontend/package.json',
-              srcRelPath: 'frontend/src',
-            }
-          : { packageJsonRelPath: 'package.json', srcRelPath: 'src' };
+        // `app.path` prefixes every candidate for monorepo apps sharing one
+        // repo (e.g. entcore: conversation/timeline/portal). The template
+        // probe covers entcore apps that gitignore the real
+        // `frontend/package.json` (generated at build time) and commit a
+        // `.template` with placeholder pins instead — see pin-reader.ts.
+        const prefix = app.path ? `${app.path}/` : '';
+        const candidates: RemoteAppLayout[] = [
+          {
+            packageJsonRelPath: `${prefix}frontend/package.json`,
+            srcRelPath: `${prefix}frontend/src`,
+          },
+          {
+            packageJsonRelPath: `${prefix}frontend/package.json.template`,
+            srcRelPath: `${prefix}frontend/src`,
+          },
+          {
+            packageJsonRelPath: `${prefix}package.json`,
+            srcRelPath: `${prefix}src`,
+          },
+        ];
 
-        const content =
-          frontendContent ??
-          (await fetchFileContent(
+        let layout: RemoteAppLayout | undefined;
+        let content: string | null = null;
+        for (const candidate of candidates) {
+          // Sequential by design: first hit wins, no need to fetch further candidates.
+          content = await fetchFileContent(
             app.org,
             app.repo,
-            'package.json',
+            candidate.packageJsonRelPath,
             branch,
             token,
             options.githubClientOptions,
-          ));
+          );
+          if (content) {
+            layout = candidate;
+            break;
+          }
+        }
 
-        if (!content) {
+        if (!layout || !content) {
           scanErrorsForApp++;
           scanErrors.push({
             app: app.name,
             branch,
-            error: `Neither frontend/package.json nor package.json found on branch "${branch}"`,
+            error: `None of [${candidates.map((c) => c.packageJsonRelPath).join(', ')}] found on branch "${branch}"`,
           });
           continue;
         }

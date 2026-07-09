@@ -49,12 +49,19 @@ export function commitFile(
   return git('rev-parse', 'HEAD').trim();
 }
 
+/**
+ * `subdir` accepts nested paths (e.g. `'conversation/frontend'`) for
+ * monorepo-style fixtures. `fileName` defaults to `'package.json'`;
+ * pass `'package.json.template'` to write the entcore-style template
+ * fallback instead (content is still JSON — see pin-reader.ts).
+ */
 export function writePackageJson(
   repoPath: string,
   subdir: string | null,
   content: unknown,
+  fileName = 'package.json',
 ): void {
   const dir = subdir ? join(repoPath, subdir) : repoPath;
   mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'package.json'), JSON.stringify(content, null, 2));
+  writeFileSync(join(dir, fileName), JSON.stringify(content, null, 2));
 }

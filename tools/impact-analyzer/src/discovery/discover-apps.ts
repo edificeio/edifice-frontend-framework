@@ -49,7 +49,7 @@ export function discoverApps(apps: RegisteredApp[]): DiscoveryResult {
       }
 
       const { branch, commit, dirty } = readRepoState(repoPath);
-      const layout = resolveAppLayout(repoPath);
+      const layout = resolveAppLayout(repoPath, app.path);
       const pins = readEdificePins(layout.packageJsonPath);
 
       discovered.push({ app, repoPath, branch, commit, dirty, layout, pins });

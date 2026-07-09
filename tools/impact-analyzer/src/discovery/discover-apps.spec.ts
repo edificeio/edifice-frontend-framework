@@ -1,3 +1,4 @@
+import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import type { RegisteredApp } from '../registry/apps-registry.js';
 import {
@@ -90,6 +91,80 @@ describe('discoverApps', () => {
     expect(scanErrors).toHaveLength(1);
     expect(scanErrors[0].app).toBe('demo');
     expect(scanErrors[0].branch).toBeNull();
+  });
+
+  it('discovers two apps sharing one repo via distinct `path`s (monorepo), same repoPath/commit', () => {
+    const repoPath = createTempGitRepo();
+    reposToClean.push(repoPath);
+    writePackageJson(repoPath, 'conversation/frontend', {
+      name: 'conversation-frontend',
+      dependencies: { '@edifice.io/react': 'dev' },
+    });
+    writePackageJson(
+      repoPath,
+      'timeline/frontend',
+      {
+        name: 'timeline-frontend',
+        dependencies: { '@edifice.io/react': '%packageVersion%' },
+      },
+      'package.json.template',
+    );
+
+    process.env.IMPACT_ANALYZER_REPOS_ROOT = repoPath.slice(
+      0,
+      repoPath.lastIndexOf('/'),
+    );
+    const repoName = repoPath.slice(repoPath.lastIndexOf('/') + 1);
+
+    const { discovered, scanErrors } = discoverApps([
+      makeApp({ name: 'conversation', repo: repoName, path: 'conversation' }),
+      makeApp({ name: 'timeline', repo: repoName, path: 'timeline' }),
+    ]);
+
+    expect(scanErrors).toEqual([]);
+    expect(discovered).toHaveLength(2);
+
+    const conversation = discovered.find((d) => d.app.name === 'conversation');
+    const timeline = discovered.find((d) => d.app.name === 'timeline');
+
+    expect(conversation?.repoPath).toBe(timeline?.repoPath);
+    expect(conversation?.commit).toBe(timeline?.commit);
+    expect(conversation?.layout.packageJsonPath).toBe(
+      join(repoPath, 'conversation', 'frontend', 'package.json'),
+    );
+    expect(conversation?.pins).toEqual([
+      { package: '@edifice.io/react', raw: 'dev', type: 'branch' },
+    ]);
+    expect(timeline?.layout.packageJsonPath).toBe(
+      join(repoPath, 'timeline', 'frontend', 'package.json.template'),
+    );
+    expect(timeline?.pins).toEqual([
+      {
+        package: '@edifice.io/react',
+        raw: '%packageVersion%',
+        type: 'template',
+      },
+    ]);
+  });
+
+  it('reports a scanError naming the missing subdir when `path` points at a directory that does not exist', () => {
+    const repoPath = createTempGitRepo();
+    reposToClean.push(repoPath);
+    // no `portal/` subdir written on purpose
+
+    process.env.IMPACT_ANALYZER_REPOS_ROOT = repoPath.slice(
+      0,
+      repoPath.lastIndexOf('/'),
+    );
+    const repoName = repoPath.slice(repoPath.lastIndexOf('/') + 1);
+
+    const { discovered, scanErrors } = discoverApps([
+      makeApp({ name: 'portal', repo: repoName, path: 'portal' }),
+    ]);
+
+    expect(discovered).toEqual([]);
+    expect(scanErrors).toHaveLength(1);
+    expect(scanErrors[0].error).toContain(join(repoPath, 'portal'));
   });
 
   it('reports a scanError when the repo has no readable package.json', () => {

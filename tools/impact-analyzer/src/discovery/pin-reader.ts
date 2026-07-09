@@ -14,32 +14,58 @@ export class AppLayoutNotFoundError extends Error {}
  * monorepo layout with a backend package.json at the root and a
  * `frontend/` subdir. FF dependency pins always live in the frontend
  * package.json when one exists.
+ *
+ * `appPath` (optional) is a repo-relative subdirectory for monorepos where
+ * several registered apps share one repo (e.g. `edificeio/entcore`:
+ * conversation/timeline/portal each under their own top-level dir). When
+ * absent, `base` is the repo root itself — identical to the pre-existing
+ * behavior.
+ *
+ * A third probe covers `frontend/package.json.template`: some entcore apps
+ * gitignore the real `frontend/package.json` (generated at build time) and
+ * commit a template instead, with `%packageVersion%`-style placeholder pins
+ * (see `classifyPin`'s `'template'` case below).
  */
-export function resolveAppLayout(repoPath: string): AppLayout {
-  const frontendPkg = join(repoPath, 'frontend', 'package.json');
+export function resolveAppLayout(
+  repoPath: string,
+  appPath?: string,
+): AppLayout {
+  const base = appPath ? join(repoPath, appPath) : repoPath;
+
+  const frontendPkg = join(base, 'frontend', 'package.json');
   if (existsSync(frontendPkg)) {
     return {
       packageJsonPath: frontendPkg,
-      srcRoot: join(repoPath, 'frontend', 'src'),
+      srcRoot: join(base, 'frontend', 'src'),
       usesFrontendSubdir: true,
     };
   }
 
-  const rootPkg = join(repoPath, 'package.json');
+  const frontendPkgTemplate = join(base, 'frontend', 'package.json.template');
+  if (existsSync(frontendPkgTemplate)) {
+    return {
+      packageJsonPath: frontendPkgTemplate,
+      srcRoot: join(base, 'frontend', 'src'),
+      usesFrontendSubdir: true,
+    };
+  }
+
+  const rootPkg = join(base, 'package.json');
   if (existsSync(rootPkg)) {
     return {
       packageJsonPath: rootPkg,
-      srcRoot: join(repoPath, 'src'),
+      srcRoot: join(base, 'src'),
       usesFrontendSubdir: false,
     };
   }
 
   throw new AppLayoutNotFoundError(
-    `Neither frontend/package.json nor package.json found under ${repoPath}`,
+    `Neither frontend/package.json, frontend/package.json.template, nor ` +
+      `package.json found under ${base}`,
   );
 }
 
-export type PinType = 'branch' | 'semver' | 'workspace';
+export type PinType = 'branch' | 'semver' | 'workspace' | 'template';
 
 export interface PinEntry {
   package: string;
@@ -49,6 +75,7 @@ export interface PinEntry {
 
 function classifyPin(raw: string): PinType {
   if (raw.startsWith('workspace:')) return 'workspace';
+  if (/^%.+%$/.test(raw)) return 'template';
   if (/^[\^~]?\d/.test(raw)) return 'semver';
   return 'branch';
 }

@@ -48,10 +48,24 @@
     "branches": ["dev", "develop-enabling"]
   },
   {
+    "name": "conversation",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "conversation",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
     "name": "homeworks",
     "org": "edificeio",
     "repo": "homeworks",
     "branches": ["dev"]
+  },
+  {
+    "name": "portal",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "portal",
+    "branches": ["dev", "develop-enabling"]
   },
   {
     "name": "rack",
@@ -63,6 +77,13 @@
     "name": "support",
     "org": "OPEN-ENT-NG",
     "repo": "support",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "timeline",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "timeline",
     "branches": ["dev", "develop-enabling"]
   }
 ]

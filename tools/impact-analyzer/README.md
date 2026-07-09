@@ -26,6 +26,13 @@ pour le détail).
   repos frères : l'outil lit uniquement l'état actuellement présent sur
   disque (branche, SHA, dirty) et le restitue tel quel — jamais de mutation
   du working tree d'un autre repo.
+- Plusieurs apps enregistrées peuvent partager un même repo frère via le
+  champ `path` (ex. `conversation`/`portal`/`timeline`, toutes trois dans
+  `../entcore`) : en mode local, elles lisent donc **le même clone, la même
+  branche courante et le même commit** — cette branche n'est pas forcément
+  l'une des branches V1 listées dans `apps.json` (aucun checkout automatique,
+  cf. ci-dessus), c'est une limitation déjà existante du mode local,
+  simplement partagée par les trois apps au lieu d'une seule.
 - `impact diff` matérialise la branche `base` du FF **dans ce repo** via un
   `git worktree` jetable (jamais de checkout sur le worktree principal),
   puis symlink `node_modules` (racine + chaque `packages/*/node_modules`)
@@ -88,17 +95,39 @@ la branche réellement présente sur disque, quelle qu'elle soit. En mode
 `--mode=ci`, c'est en revanche la seule source de vérité pour savoir quelles
 branches interroger à distance (cf. ci-dessous).
 
+Champ optionnel `path` : sous-dossier repo-relatif dans lequel vit l'app,
+pour les monorepos où **plusieurs apps enregistrées partagent le même
+`repo`**. Cas d'usage : `edificeio/entcore` héberge `conversation`,
+`portal` et `timeline`, chacune dans son propre sous-dossier
+(`conversation/`, `portal/`, `timeline/`) — trois entrées distinctes dans
+`apps.json`, un `name` unique par entrée (contrainte inchangée), un `repo`
+identique pour les trois. Absent = l'app vit à la racine du repo (layout de
+toutes les apps enregistrées avant l'ajout de ce champ). Validé à l'import
+(`assertOptionalPath`) : rejette les chemins avec `/` de tête/queue, `\`,
+segment `.`/`..`, ou vide.
+
 ## Mode distant (`--mode=ci`)
 
 Différences avec le mode local :
 - Les apps sont découvertes via l'**API GitHub Contents** (pas de repo
   frère nécessaire sur disque) : pour chaque app × chaque branche listée
   dans son `apps.json.branches` (nom réel par app, jamais recoupé avec une
-  liste générique), lecture de `frontend/package.json` (repli
-  `package.json`) à distance. Une branche absente côté GitHub est sautée
-  silencieusement (comme en local) ; un `package.json` introuvable alors que
-  la branche existe est un `scanError`. Si **toutes** les branches d'une app
-  sont absentes, un `scanError` informatif signale l'app entière (permet de
+  liste générique), lecture à distance dans cet ordre de probe (premier hit
+  gagne, préfixé par `<path>/` quand l'app a un `path` de monorepo) :
+  1. `<path>/frontend/package.json`
+  2. `<path>/frontend/package.json.template`
+  3. `<path>/package.json`
+  L'étape 2 existe pour des apps comme `conversation`/`portal` (entcore) qui
+  gitignorent leur vrai `frontend/package.json` (généré au build) et
+  committent à la place un `.template` avec des pins placeholder du type
+  `%packageVersion%` — sinon 404 systématique en mode `--mode=ci` pour ces
+  apps. Ces pins sont classées `template` par `classifyPin` (au lieu de
+  `branch` par défaut) et affichées **telles quelles** (brutes) dans le
+  viewer, sans tenter de les résoudre. Une branche absente côté GitHub est
+  sautée silencieusement (comme en local) ; aucun des trois fichiers
+  introuvable alors que la branche existe est un `scanError` listant les
+  trois chemins préfixés tentés. Si **toutes** les branches d'une app sont
+  absentes, un `scanError` informatif signale l'app entière (permet de
   distinguer un trou de config d'un souci d'accès repo/branche).
 - Les couples `(app, branche)` confirmés consommateurs sont ensuite clonés
   **à la volée** dans un répertoire jetable (`git sparse-checkout`,
@@ -213,7 +242,10 @@ données + `pnpm --filter @edifice.io/impact-analyzer-viewer dev`).
 (Settings → Secrets and variables → Actions) :
 - `IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` / `IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG`
   — les mêmes fine-grained PAT lecture seule que pour un usage local (voir
-  ci-dessus).
+  ci-dessus). Le PAT `IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` doit inclure le
+  repo `entcore` (pour `conversation`/`portal`/`timeline`) en plus des repos
+  déjà couverts — comme `homeworks`, approbation en attente au moment de
+  l'écriture de cette note.
 - `IMPACT_ANALYZER_DATA_PUSH_TOKEN` — **nouveau** fine-grained PAT dédié,
   scope repos = **uniquement** `edificeio/impact-analyzer-data`, permission
   Contents = **Read and write** (c'est le seul des trois qui a besoin

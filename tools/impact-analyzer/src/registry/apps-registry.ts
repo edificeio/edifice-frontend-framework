@@ -5,6 +5,13 @@ export interface RegisteredApp {
   name: string;
   org: string;
   repo: string;
+  /**
+   * Repo-relative subdirectory the app lives under, for monorepos where
+   * several registered apps share one `repo` (e.g. `edificeio/entcore`:
+   * conversation/timeline/portal). Absent = the app lives at the repo root
+   * (the layout of every app registered before this field existed).
+   */
+  path?: string;
   branches: string[];
 }
 
@@ -20,6 +27,43 @@ function assertString(value: unknown, field: string, appIndex: number): string {
       `apps.json[${appIndex}].${field} must be a non-empty string`,
     );
   }
+  return value;
+}
+
+/**
+ * `path` is optional, but when present must be a clean repo-relative
+ * subdirectory: no leading/trailing slash, no backslash (Windows-style
+ * separators would silently break `join()` on POSIX), no `..`/`.` segment
+ * (path traversal or a no-op segment — both signal a typo), never empty.
+ */
+function assertOptionalPath(
+  value: unknown,
+  appIndex: number,
+): string | undefined {
+  if (value === undefined) return undefined;
+
+  if (typeof value !== 'string' || value.length === 0) {
+    throw new AppsRegistryError(
+      `apps.json[${appIndex}].path must be a non-empty string when present`,
+    );
+  }
+  if (value.startsWith('/') || value.endsWith('/')) {
+    throw new AppsRegistryError(
+      `apps.json[${appIndex}].path must not start or end with "/": "${value}"`,
+    );
+  }
+  if (value.includes('\\')) {
+    throw new AppsRegistryError(
+      `apps.json[${appIndex}].path must not contain "\\": "${value}"`,
+    );
+  }
+  const segments = value.split('/');
+  if (segments.some((segment) => segment === '..' || segment === '.')) {
+    throw new AppsRegistryError(
+      `apps.json[${appIndex}].path must not contain "." or ".." segments: "${value}"`,
+    );
+  }
+
   return value;
 }
 
@@ -55,6 +99,7 @@ export function loadAppsRegistry(
     const name = assertString(entry.name, 'name', index);
     const org = assertString(entry.org, 'org', index);
     const repo = assertString(entry.repo, 'repo', index);
+    const path = assertOptionalPath(entry.path, index);
     const branches = assertBranches(entry.branches, index);
 
     if (seenNames.has(name)) {
@@ -64,6 +109,10 @@ export function loadAppsRegistry(
     }
     seenNames.add(name);
 
-    return { name, org, repo, branches };
+    // Conditionally spread `path` so a `path: undefined` key never leaks
+    // into snapshots/serialized JSON for the (majority) apps without one.
+    return path
+      ? { name, org, repo, path, branches }
+      : { name, org, repo, branches };
   });
 }

@@ -44,6 +44,80 @@ describe('resolveAppLayout', () => {
     repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
     expect(() => resolveAppLayout(repoPath)).toThrow(AppLayoutNotFoundError);
   });
+
+  it('resolves a layout under a repo-relative appPath (monorepo)', () => {
+    repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
+    writePackageJson(repoPath, 'conversation/frontend', {
+      name: 'conversation-frontend',
+    });
+
+    const layout = resolveAppLayout(repoPath, 'conversation');
+    expect(layout.usesFrontendSubdir).toBe(true);
+    expect(layout.packageJsonPath).toBe(
+      join(repoPath, 'conversation', 'frontend', 'package.json'),
+    );
+    expect(layout.srcRoot).toBe(
+      join(repoPath, 'conversation', 'frontend', 'src'),
+    );
+  });
+
+  it('falls back to frontend/package.json.template when the real package.json is absent (appPath given)', () => {
+    repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
+    writePackageJson(
+      repoPath,
+      'conversation/frontend',
+      { name: 'conversation-frontend', dependencies: {} },
+      'package.json.template',
+    );
+
+    const layout = resolveAppLayout(repoPath, 'conversation');
+    expect(layout.usesFrontendSubdir).toBe(true);
+    expect(layout.packageJsonPath).toBe(
+      join(repoPath, 'conversation', 'frontend', 'package.json.template'),
+    );
+    expect(layout.srcRoot).toBe(
+      join(repoPath, 'conversation', 'frontend', 'src'),
+    );
+  });
+
+  it('falls back to frontend/package.json.template when there is no appPath either', () => {
+    repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
+    writePackageJson(
+      repoPath,
+      'frontend',
+      { name: 'app-frontend' },
+      'package.json.template',
+    );
+
+    const layout = resolveAppLayout(repoPath);
+    expect(layout.packageJsonPath).toBe(
+      join(repoPath, 'frontend', 'package.json.template'),
+    );
+  });
+
+  it('prefers the real frontend/package.json over the template when both exist', () => {
+    repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
+    writePackageJson(repoPath, 'frontend', { name: 'real' });
+    writePackageJson(
+      repoPath,
+      'frontend',
+      { name: 'template' },
+      'package.json.template',
+    );
+
+    const layout = resolveAppLayout(repoPath);
+    expect(layout.packageJsonPath).toBe(
+      join(repoPath, 'frontend', 'package.json'),
+    );
+  });
+
+  it('names the probed base directory in the error when nothing is found', () => {
+    repoPath = mkdtempSync(join(tmpdir(), 'impact-analyzer-layout-'));
+
+    expect(() => resolveAppLayout(repoPath, 'typo-subdir')).toThrow(
+      join(repoPath, 'typo-subdir'),
+    );
+  });
 });
 
 describe('readEdificePins', () => {
@@ -108,5 +182,37 @@ describe('extractEdificePinsFromPackageJson', () => {
     expect(extractEdificePinsFromPackageJson(content)[0].type).toBe(
       'workspace',
     );
+  });
+
+  it('classifies a %placeholder% pin as "template" (entcore package.json.template)', () => {
+    const content = JSON.stringify({
+      dependencies: { '@edifice.io/react': '%packageVersion%' },
+    });
+    expect(extractEdificePinsFromPackageJson(content)).toEqual([
+      {
+        package: '@edifice.io/react',
+        raw: '%packageVersion%',
+        type: 'template',
+      },
+    ]);
+  });
+
+  // Regression guards: %packageVersion% must NOT be swallowed by the
+  // pre-existing "branch" fallthrough, and unrelated pin shapes must keep
+  // classifying the same way now that the template check runs first.
+  it('still classifies a real branch name as "branch"', () => {
+    const content = JSON.stringify({
+      dependencies: { '@edifice.io/react': 'develop-enabling' },
+    });
+    expect(extractEdificePinsFromPackageJson(content)[0].type).toBe('branch');
+  });
+
+  it('still classifies a pinned semver as "semver"', () => {
+    const content = JSON.stringify({
+      dependencies: {
+        '@edifice.io/react': '2.5.24-develop-enabling.20260629161142',
+      },
+    });
+    expect(extractEdificePinsFromPackageJson(content)[0].type).toBe('semver');
   });
 });

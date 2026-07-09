@@ -210,9 +210,10 @@ describe('discoverAppsRemote', () => {
 
     expect(discovered).toEqual([]);
     expect(scanErrors).toHaveLength(1);
-    expect(scanErrors[0].error).toContain(
-      'Neither frontend/package.json nor package.json',
-    );
+    expect(scanErrors[0].error).toContain('None of [');
+    expect(scanErrors[0].error).toContain('frontend/package.json');
+    expect(scanErrors[0].error).toContain('frontend/package.json.template');
+    expect(scanErrors[0].error).toContain('package.json');
   });
 
   it('reports a scanError with the status but never the token on a 403/500', async () => {
@@ -231,6 +232,128 @@ describe('discoverAppsRemote', () => {
     expect(scanErrors).toHaveLength(1);
     expect(scanErrors[0].error).toContain('403');
     expect(scanErrors[0].error).not.toContain('super-secret-token');
+  });
+
+  it('discovers a monorepo app (path) via the frontend/package.json.template fallback when the real package.json 404s', async () => {
+    process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/branches/'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha-conv' } }));
+      // 'conversation/frontend/package.json' is a substring of
+      // '.../package.json.template' (the URL also carries a trailing
+      // '?ref=...', so endsWith() wouldn't work either) — checking the
+      // (longer, more specific) template path FIRST avoids a false-positive
+      // match on the shorter real-package.json branch below.
+      if (
+        url.includes('/contents/conversation/frontend/package.json.template')
+      ) {
+        return new Response(
+          JSON.stringify({
+            content: b64({
+              dependencies: { '@edifice.io/react': '%packageVersion%' },
+            }),
+          }),
+        );
+      }
+      if (url.includes('/contents/conversation/frontend/package.json')) {
+        return new Response(null, { status: 404 });
+      }
+      return new Response(null, { status: 404 });
+    });
+
+    const { discovered, scanErrors } = await discoverAppsRemote(
+      [
+        makeApp({
+          name: 'conversation',
+          repo: 'entcore',
+          path: 'conversation',
+          branches: ['dev'],
+        }),
+      ],
+      { githubClientOptions: { fetchImpl } },
+    );
+
+    expect(scanErrors).toEqual([]);
+    expect(discovered).toHaveLength(1);
+    expect(discovered[0]).toMatchObject({
+      layout: {
+        packageJsonRelPath: 'conversation/frontend/package.json.template',
+        srcRelPath: 'conversation/frontend/src',
+      },
+      pins: [
+        {
+          package: '@edifice.io/react',
+          raw: '%packageVersion%',
+          type: 'template',
+        },
+      ],
+    });
+  });
+
+  it('discovers a monorepo app (path) via a direct frontend/package.json hit (timeline case)', async () => {
+    process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/branches/'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha-tl' } }));
+      if (url.includes('/contents/timeline/frontend/package.json')) {
+        return new Response(
+          JSON.stringify({
+            content: b64({
+              dependencies: { '@edifice.io/react': '2.5.24-develop.1' },
+            }),
+          }),
+        );
+      }
+      return new Response(null, { status: 404 });
+    });
+
+    const { discovered, scanErrors } = await discoverAppsRemote(
+      [
+        makeApp({
+          name: 'timeline',
+          repo: 'entcore',
+          path: 'timeline',
+          branches: ['dev'],
+        }),
+      ],
+      { githubClientOptions: { fetchImpl } },
+    );
+
+    expect(scanErrors).toEqual([]);
+    expect(discovered).toHaveLength(1);
+    expect(discovered[0].layout).toEqual({
+      packageJsonRelPath: 'timeline/frontend/package.json',
+      srcRelPath: 'timeline/frontend/src',
+    });
+  });
+
+  it('reports a scanError listing the prefixed candidates when none of the 3 monorepo probes hit', async () => {
+    process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
+    const fetchImpl = vi.fn(async (url: string) => {
+      if (url.includes('/branches/'))
+        return new Response(JSON.stringify({ commit: { sha: 'sha' } }));
+      return new Response(null, { status: 404 });
+    });
+
+    const { discovered, scanErrors } = await discoverAppsRemote(
+      [
+        makeApp({
+          name: 'portal',
+          repo: 'entcore',
+          path: 'portal',
+          branches: ['dev'],
+        }),
+      ],
+      { githubClientOptions: { fetchImpl } },
+    );
+
+    expect(discovered).toEqual([]);
+    expect(scanErrors).toHaveLength(1);
+    expect(scanErrors[0].error).toContain('portal/frontend/package.json');
+    expect(scanErrors[0].error).toContain(
+      'portal/frontend/package.json.template',
+    );
+    expect(scanErrors[0].error).toContain('portal/package.json');
   });
 
   it('keeps processing other apps when one app fails', async () => {
