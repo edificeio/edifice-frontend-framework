@@ -228,6 +228,7 @@ const Nextcloud = ({
                     <NextcloudFileCard
                       key={doc.path}
                       doc={doc}
+                      userId={user!.userId}
                       isSelected={isSelected}
                       onClick={() => handleSelectDoc(doc)}
                     />

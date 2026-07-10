@@ -78,4 +78,21 @@ export class NextcloudService {
     );
     return res.data.filter((doc): doc is WorkspaceElement => !!doc?._id);
   }
+
+  /**
+   * Build the URL to download/preview a Nextcloud document.
+   * There is no dedicated thumbnail endpoint on the backend, so this is also
+   * used as an image preview source for image documents.
+   * @param userId - the id of the user who owns the file.
+   * @param doc - the document to build the URL for.
+   */
+  getFileUrl(userId: string, doc: NextcloudDocument): string {
+    return `/nextcloud/files/user/${userId}/file/${encodeURIComponent(
+      doc.name,
+    )}/download?path=${encodeURIComponent(
+      doc.path,
+    )}&contentType=${encodeURIComponent(doc.contentType ?? '')}&isFolder=${
+      doc.isFolder
+    }`;
+  }
 }
