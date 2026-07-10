@@ -4,7 +4,7 @@ import {
   odeServices,
 } from '@edifice.io/client';
 
-import { useUser } from '../../../../hooks';
+import { useUser } from '../../../../hooks/useUser';
 import { Nextcloud as Component } from '../../Nextcloud';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
 

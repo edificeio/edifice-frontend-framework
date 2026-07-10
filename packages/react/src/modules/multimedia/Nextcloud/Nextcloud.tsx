@@ -1,18 +1,22 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { NextcloudDocument } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import {
-  Dropdown,
-  EmptyScreen,
-  Grid,
-  LoadingScreen,
-  SearchBar,
-  TreeView,
-  TreeViewHandlers_V1,
-} from '../../../components';
+import { Dropdown } from '../../../components/Dropdown';
+import { EmptyScreen } from '../../../components/EmptyScreen';
+import { Grid } from '../../../components/Grid';
+import { LoadingScreen } from '../../../components/LoadingScreen';
+import { SearchBar } from '../../../components/SearchBar';
+import { TreeView, TreeViewHandlers_V1 } from '../../../components/TreeView';
 import { findTreeNode } from '../../../components/TreeView/utilities';
 import { useNextcloudSearch, useUser } from '../../../hooks';
 import { NextcloudFolderNode } from '../../../hooks/useNextcloudSearch/useNextcloudSearch';
@@ -24,6 +28,12 @@ import {
 import { NextcloudFileCard } from '../FileCard';
 
 const ROOT_ID = 'root';
+
+function compare(a?: string, b?: string) {
+  if (!a) return -1;
+  if (!b) return 1;
+  return a.localeCompare(b);
+}
 
 /**
  * Nextcloud component properties
@@ -67,8 +77,6 @@ const Nextcloud = ({
       (node) => node.id === currentNodeId,
     ) as NextcloudFolderNode) ?? root;
 
-  const [documents, setDocuments] = useState<NextcloudDocument[] | undefined>();
-
   const [searchTerm, setSearchTerm] = useState<string | undefined>(null!);
 
   const [sortOrder, setSortOrder] = useState<[string, string]>([
@@ -94,30 +102,30 @@ const Nextcloud = ({
     treeRef.current?.select(ROOT_ID);
   }, [loadContent]);
 
-  /** Display documents when currentNode or searchTerm or sortOrder changes */
-  useEffect(() => {
-    if (currentNode.files) {
-      let list = ([] as NextcloudDocument[]).concat(currentNode.files);
-      if (searchTerm) {
-        list = list.filter((f) => f.name.indexOf(searchTerm) >= 0);
-      }
-      const sortFunction: (
-        a: NextcloudDocument,
-        b: NextcloudDocument,
-      ) => number =
-        sortOrder[0] === 'name'
-          ? sortOrder[1] === 'asc'
-            ? (a, b) => compare(a.name, b.name)
-            : (a, b) => compare(b.name, a.name)
-          : (a, b) => compare(b.lastModified, a.lastModified);
-
-      setDocuments(() => list.sort(sortFunction));
-    } else {
-      setDocuments(undefined);
+  /** Derive documents from currentNode, searchTerm and sortOrder. */
+  const documents = useMemo(() => {
+    if (!currentNode.files) return undefined;
+    let list = ([] as NextcloudDocument[]).concat(currentNode.files);
+    if (searchTerm) {
+      list = list.filter((f) => f.name.indexOf(searchTerm) >= 0);
     }
+    const sortFunction: (a: NextcloudDocument, b: NextcloudDocument) => number =
+      sortOrder[0] === 'name'
+        ? sortOrder[1] === 'asc'
+          ? (a, b) => compare(a.name, b.name)
+          : (a, b) => compare(b.name, a.name)
+        : (a, b) => compare(b.lastModified, a.lastModified);
+
+    return list.sort(sortFunction);
     // `root` is required: nodes are mutated in place by the reducer, only the
     // root wrapper gets a new identity, so it must be a dep to react to loads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [root, currentNode, searchTerm, sortOrder]);
+
+  const selectedPaths = useMemo(
+    () => new Set(selectedDocuments.map((d) => d.path)),
+    [selectedDocuments],
+  );
 
   const handleSearchChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -125,12 +133,6 @@ const Nextcloud = ({
     },
     [setSearchTerm],
   );
-
-  function compare(a?: string, b?: string) {
-    if (!a) return -1;
-    if (!b) return 1;
-    return a.localeCompare(b);
-  }
 
   function getSortOrderLabel() {
     return sortOrder[0] === 'name'
@@ -223,7 +225,7 @@ const Nextcloud = ({
             ) : documents.length !== 0 ? (
               <div className="grid grid-workspace">
                 {documents.map((doc) => {
-                  const isSelected = selectedDocuments.includes(doc);
+                  const isSelected = selectedPaths.has(doc.path);
                   return (
                     <NextcloudFileCard
                       key={doc.path}
