@@ -245,6 +245,13 @@ i18n.use(initReactI18next).init({
         'editor.preview.moreMedia': '+[[mediaCount]] images',
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
+        //----------------- BetaSwitch -----------------
+        'betaSwitch.button': 'Quittez la Bêta',
+        'betaSwitch.title': "L'ancienne version vous manque ?",
+        'betaSwitch.description':
+          'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
+        'betaSwitch.error': 'Erreur de paramétrage.',
+        //----------------- HOMEPAGE -----------------
         //----------------- Communities -----------------
         'homepage.widget.communities.title': 'Communautés',
         'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
@@ -254,28 +261,11 @@ i18n.use(initReactI18next).init({
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
         'homepage.communities.subtitle':
           'Créez votre première communauté pour animez votre classe!',
-        //------------------------------------------------------
         //----------------- LastInfosList -----------------
         'homepage.last-infos-list.empty':
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
         'homepage.last-infos-list.see.more': 'Voir plus',
         'homepage.last-infos-list.title': 'Dernières actualités',
-        //------------------------------------------------------
-
-        //----------------- useDate (formatTimeAgo) -----------------
-        'date.format.yesterday': 'Yesterday',
-        'date.format.currentWeek': 'dddd',
-        'date.format.currentYear': 'D MMM',
-        'date.format.previousYear': 'D MMM YYYY',
-        //------------------------------------------------------
-
-        //----------------- BetaSwitch -----------------
-        'betaSwitch.button': 'Quittez la Bêta',
-        'betaSwitch.title': "L'ancienne version vous manque ?",
-        'betaSwitch.description':
-          'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
-        'betaSwitch.error': 'Erreur de paramétrage.',
-        //------------------------------------------------------
         //------------------ Notifications -------------------------
         'homepage.notifications-list.title': 'Notifications',
         'homepage.notifications-list.close': 'Close notifications',
@@ -283,6 +273,15 @@ i18n.use(initReactI18next).init({
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
+        //------------------ UserSpace -------------------------
+        'homepage.userspace.teacher.link.classes': 'Mes classes',
+        'homepage.userspace.student.link.classes': 'Mes classes',
+        'homepage.userspace.student.link.teachers': 'Mes enseignants',
+        'homepage.userspace.personnel.link.classesAndGroups':
+          'Classes et groupes',
+        'homepage.userspace.relative.link.classes':
+          'La classe de [[childName]]',
+
         //------------------------------------------------------
         //------------------ Header navigation -----------------
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
@@ -295,6 +294,12 @@ i18n.use(initReactI18next).init({
         'support': 'Support',
         'actualites': 'Actualités',
         'rbs': 'RBS',
+        //------------------------------------------------------
+        //----------------- useDate (formatTimeAgo) -----------------
+        'date.format.yesterday': 'Yesterday',
+        'date.format.currentWeek': 'dddd',
+        'date.format.currentYear': 'D MMM',
+        'date.format.previousYear': 'D MMM YYYY',
         //------------------------------------------------------
       },
     },

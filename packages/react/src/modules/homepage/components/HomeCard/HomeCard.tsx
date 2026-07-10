@@ -2,6 +2,7 @@ import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 import clsx from 'clsx';
 
+import { Flex } from '../../../../components';
 import HomeCardContent from './HomeCardContent';
 import HomeCardHeader, { HomeCardHeaderProps } from './HomeCardHeader';
 
@@ -26,6 +27,10 @@ export interface HomeCardProps extends ComponentPropsWithoutRef<'div'> {
    * `HomeCard.Header` is rendered with these props.
    */
   headerProps?: HomeCardHeaderProps;
+  /**
+   * Optional footer
+   */
+  footer?: ReactNode;
 }
 
 /**
@@ -41,14 +46,18 @@ const Root = ({
   variant = 'user',
   children,
   headerProps,
+  footer,
   className,
   ...rest
 }: HomeCardProps) => {
-  return (
+  const classNames = clsx('home-card', `home-card--${variant}`, className, {
+    'home-card--with-footer': !!footer,
+  });
+  const content = (
     <div
       data-testid="home-card"
       data-variant={variant}
-      className={clsx('home-card', `home-card--${variant}`, className)}
+      className={classNames}
       {...rest}
     >
       {headerProps && !children ? (
@@ -57,6 +66,17 @@ const Root = ({
         children
       )}
     </div>
+  );
+
+  return footer ? (
+    <div className="home-card-footer">
+      {content}
+      <Flex direction="row" justify="center" gap="8" className="px-16 py-4">
+        {footer}
+      </Flex>
+    </div>
+  ) : (
+    content
   );
 };
 
