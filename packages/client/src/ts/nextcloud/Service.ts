@@ -64,10 +64,17 @@ export class NextcloudService {
     paths: string[],
     parentId?: string,
   ): Promise<WorkspaceElement[]> {
+    // Build the `path` query param manually: the backend reads repeated bare
+    // `path=` keys (request.params().getAll("path")), but axios's default
+    // array serialization would send `path[]=` instead, which the backend
+    // doesn't recognize and rejects with a 400.
+    const pathQuery = paths
+      .map((path) => `path=${encodeURIComponent(path)}`)
+      .join('&');
     const res = await this.http.put<{ data: (WorkspaceElement | null)[] }>(
-      `/nextcloud/files/user/${userId}/copy/workspace`,
+      `/nextcloud/files/user/${userId}/copy/workspace?${pathQuery}`,
       undefined,
-      { queryParams: parentId ? { path: paths, parentId } : { path: paths } },
+      { queryParams: parentId ? { parentId } : undefined },
     );
     return res.data.filter((doc): doc is WorkspaceElement => !!doc?._id);
   }
