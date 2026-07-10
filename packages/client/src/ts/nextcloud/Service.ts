@@ -9,16 +9,13 @@ import { NextcloudDocument, NextcloudDocumentResponse } from './interface';
  * (e.g. `/Documents/`). Strip the webdav/userId prefix so paths are
  * consistent for both directions.
  */
-function toRelativePath(path: string, userId: string): string {
-  return path.split(userId).pop() ?? path;
-}
 
 function toNextcloudDocument(
   raw: NextcloudDocumentResponse,
   userId: string,
 ): NextcloudDocument {
   return {
-    path: toRelativePath(raw.path, userId),
+    path: decodeURIComponent(raw.path.split(userId).pop() ?? raw.path),
     name: decodeURIComponent(raw.displayname),
     ownerDisplayName: raw.ownerDisplayName,
     contentType: raw.contentType,

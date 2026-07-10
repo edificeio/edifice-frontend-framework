@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { NextcloudDocument } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -16,8 +9,9 @@ import { EmptyScreen } from '../../../components/EmptyScreen';
 import { Grid } from '../../../components/Grid';
 import { LoadingScreen } from '../../../components/LoadingScreen';
 import { SearchBar } from '../../../components/SearchBar';
-import { TreeView, TreeViewHandlers_V1 } from '../../../components/TreeView';
-import { findTreeNode } from '../../../components/TreeView/utilities';
+import { Tree } from '../../../components/Tree';
+import { findNodeById } from '../../../components/Tree/utilities/tree';
+import { TreeItem } from '../../../components/Tree/types';
 import { useNextcloudSearch, useUser } from '../../../hooks';
 import { NextcloudFolderNode } from '../../../hooks/useNextcloudSearch/useNextcloudSearch';
 import {
@@ -26,6 +20,8 @@ import {
   IconSortTime,
 } from '../../icons/components';
 import { NextcloudFileCard } from '../FileCard';
+
+import illuNoContentInFolder from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-no-content-in-folder.svg';
 
 const ROOT_ID = 'root';
 
@@ -67,15 +63,14 @@ const Nextcloud = ({
     user?.userId,
   );
 
-  const treeRef = useRef<TreeViewHandlers_V1>(null);
-
   const [currentNodeId, setCurrentNodeId] = useState<string>(ROOT_ID);
 
+  // `NextcloudFolderNode` (TreeData) and `TreeItem` are structurally
+  // compatible but declared separately; bridge the two here.
+  const treeRoot = root as unknown as TreeItem;
+
   const currentNode: NextcloudFolderNode =
-    (findTreeNode(
-      root,
-      (node) => node.id === currentNodeId,
-    ) as NextcloudFolderNode) ?? root;
+    (findNodeById(treeRoot, currentNodeId) as NextcloudFolderNode) ?? root;
 
   const [searchTerm, setSearchTerm] = useState<string | undefined>(null!);
 
@@ -96,10 +91,9 @@ const Nextcloud = ({
     [loadContent],
   );
 
-  /** Load root content once and select it in the tree. */
+  /** Load root content once; it's selected by default via `currentNodeId`. */
   useEffect(() => {
     loadContent(ROOT_ID);
-    treeRef.current?.select(ROOT_ID);
   }, [loadContent]);
 
   /** Derive documents from currentNode, searchTerm and sortOrder. */
@@ -168,9 +162,10 @@ const Nextcloud = ({
         className="workspace-folders p-12 pt-0 gap-12"
       >
         <div style={{ position: 'sticky', top: 0, paddingTop: '1.2rem' }}>
-          <TreeView
-            ref={treeRef}
-            data={root}
+          <Tree
+            nodes={treeRoot}
+            selectedNodeId={currentNodeId}
+            showIcon
             onTreeItemClick={handleTreeItemChange}
             onTreeItemUnfold={handleTreeItemChange}
           />
@@ -238,7 +233,11 @@ const Nextcloud = ({
                 })}
               </div>
             ) : (
-              <EmptyScreen text={t('nextcloud.empty.docSpace')} />
+              <EmptyScreen
+                imageSrc={illuNoContentInFolder}
+                size={64}
+                text={t('nextcloud.empty.docSpace')}
+              />
             )}
           </Grid.Col>
         </Grid>
