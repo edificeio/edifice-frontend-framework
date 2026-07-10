@@ -1,0 +1,181 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Integrations/Screeb/5. Angular" />
+
+# Screeb — Angular apps
+
+Angular apps (e.g. `admin`, Angular 14) use `@screeb/sdk-angular` — an Angular wrapper around `@screeb/sdk-browser` — via a dedicated `ScreebService`, on the same model as the [AngularJS integration](?path=/docs/integrations-screeb-4-angularjs--docs).
+
+See [Screeb](?path=/docs/integrations-screeb-1-overview--docs) for the common configuration.
+
+---
+
+## Installation
+
+```bash
+npm install @screeb/sdk-angular @screeb/sdk-browser
+```
+
+---
+
+## Module setup
+
+Import `ScreebModule` in the root module with `autoInit: false` and `shouldLoad: false`: the app id is only known at runtime (from the platform `publicConf`), and no script must be loaded at all when Screeb is disabled for the platform.
+
+```typescript
+import { ScreebModule } from '@screeb/sdk-angular';
+
+@NgModule({
+  imports: [
+    // ...
+    ScreebModule.forRoot({
+      autoInit: false,
+      shouldLoad: false,
+    }),
+  ],
+})
+export class AppModule {}
+```
+
+`ScreebModule` registers the injectable `Screeb` service, which exposes the raw SDK (`load`, `init`, `eventTrack`, `surveyStart`, …). Never inject and call it directly from components — always go through `ScreebService` below.
+
+---
+
+## ScreebService
+
+Create `src/app/core/services/screeb.service.ts`:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Screeb } from '@screeb/sdk-angular';
+import http from 'axios';
+import { Session } from '../store/mappings/session';
+
+type ScreebPublicConf = {
+  'screeb-app-id'?: string;
+  'screeb-allowed-profiles'?: string[];
+};
+
+@Injectable()
+export class ScreebService {
+  constructor(private screeb: Screeb) {}
+
+  /**
+   * Reads the platform configuration and initializes Screeb when enabled
+   * for this platform and allowed for the user's profile.
+   */
+  public async initFromPlatformConf(session: Session): Promise<void> {
+    const conf = (await http.get<ScreebPublicConf>('/admin/conf/public')).data;
+    const appId = conf?.['screeb-app-id'];
+    if (!appId) {
+      return;
+    }
+    const allowedProfiles = conf['screeb-allowed-profiles'];
+    if (
+      allowedProfiles &&
+      allowedProfiles.length > 0 &&
+      !allowedProfiles.includes(session.type)
+    ) {
+      return;
+    }
+    await this.init(appId, session);
+  }
+
+  /**
+   * Loads the Screeb tag and identifies the user in a single init call
+   * (no anonymous entry created). The user identifier sent to Screeb is
+   * hashed: the real userId is never transmitted.
+   */
+  public async init(appId: string, session: Session): Promise<void> {
+    await this.screeb.load();
+    const hashedId = await this.hashUserId(session.userId);
+    await this.screeb.init(appId, hashedId, { profile: session.type });
+  }
+
+  /** SHA-256 hash truncated to 16 hexadecimal characters (privacy rule shared with the other integrations). */
+  private async hashUserId(userId: string): Promise<string> {
+    const hashBuffer = await crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(userId),
+    );
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('')
+      .slice(0, 16);
+  }
+}
+```
+
+Register it as a provider in the relevant module:
+
+```typescript
+import { ScreebService } from './services/screeb.service';
+
+@NgModule({
+  providers: [
+    // ...
+    ScreebService,
+  ],
+})
+export class CoreModule {}
+```
+
+---
+
+## Initialization
+
+Call `screebService.initFromPlatformConf()` once the session is available — typically in the root component's `ngOnInit`, right after the session is resolved:
+
+```typescript
+constructor(injector: Injector, private readonly screebService: ScreebService) {
+  super(injector);
+}
+
+async ngOnInit() {
+  // ... session resolved above ...
+  this.screebService.initFromPlatformConf(session).catch((err) => {
+    console.error('Failed to initialize Screeb:', err);
+  });
+}
+```
+
+`GET /admin/conf/public` exposes `screeb-app-id` (and optionally `screeb-allowed-profiles`) from the platform `publicConf`, added server-side via `template.j2`. If the key is absent or empty, no Screeb script is loaded and no network call is made.
+
+> **Dev proxy mock** — until `template.j2` is deployed on a given recette, the backend won't serve the key. Set `SCREEB_APP_ID_DEV` in `.env` to make `proxy-development.conf.js` mock the `/admin/conf/public` response locally while developing.
+
+---
+
+## Usage in components
+
+Inject the `Screeb` service from `@screeb/sdk-angular` directly wherever you need to trigger events, surveys, or messages — `ScreebService` only owns initialization.
+
+```typescript
+import { Screeb } from '@screeb/sdk-angular';
+
+constructor(private readonly screeb: Screeb) {}
+
+// Track an event
+this.screeb.eventTrack('structure-created', { type: 'school' });
+
+// Trigger a survey with a callback
+this.screeb.surveyStart(
+  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+  undefined,
+  false,
+  undefined,
+  {
+    onSurveyCompleted: (payload) => console.log('Survey response:', payload),
+  },
+);
+
+// Trigger a message
+this.screeb.messageStart('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+
+// Update user attributes
+this.screeb.identityProperties({ nb_structures_managed: 12 });
+
+// On logout
+this.screeb.identityReset();
+```
+
+> `surveyStart` and `messageStart` take positional arguments (`distributionId`, `allowMultipleResponses`, `hiddenFields`, `hooks`, `language`, …) rather than an options object — check the `Screeb` service's JSDoc (from `@screeb/sdk-angular`) in your editor for the full signature of each method.
