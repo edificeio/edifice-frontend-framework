@@ -8,7 +8,7 @@ import {
 } from '@edifice.io/client';
 import clsx from 'clsx';
 
-import { Card, CardProps } from '../../../components';
+import { Card, CardProps } from '../../../components/Card';
 import { useThumbnail } from '../../../hooks/useThumbnail';
 import {
   IconLandscape,
