@@ -1,9 +1,15 @@
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 
-import { DocumentHelper, NextcloudDocument, Role } from '@edifice.io/client';
+import {
+  DocumentHelper,
+  NextcloudDocument,
+  Role,
+  odeServices,
+} from '@edifice.io/client';
 import clsx from 'clsx';
 
 import { Card, CardProps } from '../../../components';
+import { useThumbnail } from '../../../hooks/useThumbnail';
 import {
   IconLandscape,
   IconMic,
@@ -14,6 +20,10 @@ import FileIcon from './FileIcon';
 
 export interface NextcloudFileCardProps extends CardProps {
   doc: NextcloudDocument;
+  /**
+   * Id of the user who owns the Nextcloud document, used to build the preview URL.
+   */
+  userId: string;
   /**
    * Custom icon to override the default based on file type
    * Can be a string or a React node
@@ -29,6 +39,7 @@ export interface NextcloudFileCardProps extends CardProps {
 // INFO: This component is for internal use only. It is not exported for external use.
 const NextcloudFileCard = ({
   doc,
+  userId,
   isClickable = true,
   isSelectable = false,
   isSelected = false,
@@ -40,6 +51,8 @@ const NextcloudFileCard = ({
   customIcon,
   customColor,
 }: NextcloudFileCardProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+
   const type = DocumentHelper.role(doc.contentType, false);
 
   function getRoleMap(type: Role | 'unknown'): {
@@ -89,6 +102,16 @@ const NextcloudFileCard = ({
     roleMap?.color ?? 'bg-yellow-200',
   );
 
+  const mediaSrc =
+    type === 'img' ? odeServices.nextcloud().getFileUrl(userId, doc) : null;
+
+  const hasThumbnail = useThumbnail(mediaSrc, { ref });
+
+  const imageStyles = hasThumbnail && {
+    backgroundImage: `url(${mediaSrc})`,
+    backgroundSize: 'cover',
+  };
+
   return (
     <Card
       className={clsx('card-file', className)}
@@ -101,8 +124,14 @@ const NextcloudFileCard = ({
       onSelect={onSelect}
     >
       <Card.Body space="8">
-        <div className={file} style={{ aspectRatio: '16/10' }}>
-          <FileIcon type={type} roleMap={roleMap} />
+        <div
+          ref={ref}
+          className={file}
+          style={{ aspectRatio: '16/10', ...imageStyles }}
+        >
+          {type !== 'img' || (type === 'img' && !hasThumbnail) ? (
+            <FileIcon type={type} roleMap={roleMap} />
+          ) : null}
         </div>
         <div className="mt-4">
           <Card.Text>{doc.name}</Card.Text>
