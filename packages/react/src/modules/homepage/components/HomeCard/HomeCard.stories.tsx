@@ -102,6 +102,21 @@ export const Secondary: Story = {
   },
 };
 
+export const WithFooter: Story = {
+  args: {
+    footer: <p>Placer du contenu additionnel ici si besoin.</p>,
+  },
+  render: renderCard,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Variante `secondary` — padding 8/16/16/16, gap 4, fond grey-100, titre en font body bold/small.',
+      },
+    },
+  },
+};
+
 export const WithoutAction: Story = {
   args: { variant: 'primary' },
   render: (args: HomeCardProps) => (
