@@ -234,10 +234,15 @@ const MediaLibrary = forwardRef(
     const videoCaptureWorkflow = useHasWorkflow(
       'com.opendigitaleducation.video.controllers.VideoController|capture',
     );
-    const { data: publicConf } = usePublicConf<{
-      'enable-nextcloud'?: boolean;
+    const nextcloudViewWorkflow = useHasWorkflow(
+      'fr.openent.nextcloud.controller.NextcloudController|view',
+    );
+    const { data: workspacePublicConf } = usePublicConf<{
+      'folder-service'?: [string];
     }>('workspace');
-    const enableNextcloud = publicConf?.['enable-nextcloud'] === true;
+    const enableNextcloudTab =
+      workspacePublicConf?.['folder-service']?.includes('nextcloud') &&
+      nextcloudViewWorkflow;
 
     const [type, setType] = useState<MediaLibraryType | null>(null);
 
@@ -265,7 +270,7 @@ const MediaLibrary = forwardRef(
         label: t('bbm.nextcloud'),
         content: <InnerTabs.Nextcloud />,
         availableFor: ['audio', 'video', 'image', 'attachment'],
-        isEnable: () => enableNextcloud,
+        isEnable: () => (enableNextcloudTab ? true : false),
       },
       'upload': {
         id: 'upload',
