@@ -245,6 +245,16 @@ i18n.use(initReactI18next).init({
         'editor.preview.moreMedia': '+[[mediaCount]] images',
         'mediaWrapper.attachment.open': 'Open link',
         'mediaWrapper.attachment.download': 'Download',
+        //----------------- Communities -----------------
+        'homepage.widget.communities.title': 'Communautés',
+        'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
+        'homepage.widget.communities.actionLabel.create':
+          'Créer une communauté',
+        'homepage.communities.description':
+          'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
+        'homepage.communities.subtitle':
+          'Créez votre première communauté pour animez votre classe!',
+        //------------------------------------------------------
         //----------------- LastInfosList -----------------
         'homepage.last-infos-list.empty':
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
