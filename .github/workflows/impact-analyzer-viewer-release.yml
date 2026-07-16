@@ -1,0 +1,64 @@
+name: "Impact Analyzer Viewer: build, scan & push"
+
+on:
+  push:
+    tags:
+      - "impact-analyzer-viewer-v*.*.*"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Tag to use for the Docker image"
+        required: true
+        default: "test-manual"
+
+env:
+  CI_REGISTRY: maven.opendigitaleducation.com
+  CI_REGISTRY_IMAGE: maven.opendigitaleducation.com/enabling/impact-analyzer-viewer
+
+jobs:
+  build-scan-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # A tag push gives the FULL tag name in github.ref_name (e.g.
+      # "impact-analyzer-viewer-v0.1.0") — strip the package prefix to get
+      # just the version for the Docker tag ("0.1.0"), matching
+      # values.yaml.example's image.tag. A manual workflow_dispatch value
+      # (no such prefix) passes through unchanged.
+      - name: Compute image tag
+        run: |
+          RAW="${{ github.event.inputs.image_tag || github.ref_name }}"
+          echo "IMAGE_TAG=${RAW#impact-analyzer-viewer-v}" >> "$GITHUB_ENV"
+
+      - name: Log in to Docker registry
+        run: echo "${{ secrets.CI_REGISTRY_PASSWORD }}" | docker login ${{ env.CI_REGISTRY }} -u "${{ secrets.CI_REGISTRY_USER }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}" \
+            -t "${{ env.CI_REGISTRY_IMAGE }}:latest" \
+            -f tools/impact-analyzer/viewer/Dockerfile \
+            .
+
+      # Blocking on CRITICAL/HIGH, per the K8s integration guide's
+      # checklist — no continue-on-error (some sibling repos skip
+      # enforcement here, but ours doesn't). trivyignores points at a
+      # scoped, dated ignore list for CVEs that are an upstream distroless
+      # publishing lag, not something fixable in this Dockerfile — see that
+      # file's header for details and removal criteria.
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}"
+          format: "table"
+          exit-code: "1"
+          severity: "CRITICAL,HIGH"
+          trivyignores: "tools/impact-analyzer/viewer/.trivyignore"
+
+      - name: Push Docker image
+        run: |
+          docker push "${{ env.CI_REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}"
+          docker push "${{ env.CI_REGISTRY_IMAGE }}:latest"

@@ -1,0 +1,32 @@
+{
+  "@edifice.io/react": {
+    ".": "src/index.ts",
+    "./audience": "src/modules/audience/index.ts",
+    "./comments": "src/modules/comments/index.ts",
+    "./editor": "src/modules/editor/index.ts",
+    "./icons": "src/modules/icons/components/index.ts",
+    "./icons/nav": "src/modules/icons/components/nav/index.ts",
+    "./icons/apps": "src/modules/icons/components/apps/index.ts",
+    "./icons/audience": "src/modules/icons/components/audience/index.ts",
+    "./modals": "src/modules/modals/index.ts",
+    "./multimedia": "src/modules/multimedia/index.ts",
+    "./widgets": "src/modules/widgets/index.ts",
+    "./homepage": "src/modules/homepage/index.ts"
+  },
+  "@edifice.io/client": {
+    ".": "src/ts/index.ts"
+  },
+  "@edifice.io/utilities": {
+    ".": "src/index.ts"
+  },
+  "@edifice.io/tiptap-extensions": {
+    ".": "src/index.ts",
+    "__convention__": "src/<subpath>/index.ts"
+  },
+  "@edifice.io/rest-client-base": {
+    ".": "src/index.ts",
+    "./node": "src/index.ts",
+    "./browser": "src/index.ts",
+    "./react-native": "src/index.ts"
+  }
+}

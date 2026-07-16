@@ -1,0 +1,123 @@
+name: "Impact Analyzer: generate (CRON)"
+
+on:
+  schedule:
+    # Nightly, Monday-Friday, 02:00 UTC (plan §9 — "CRON nocturne hors week-end").
+    - cron: "0 2 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      ff_branch:
+        description: "Run only this FF branch (leave empty to run both develop and develop-enabling)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      # Sequential, not parallel: both matrix jobs push to the same
+      # impact-analyzer-data repo, and running them concurrently would race
+      # on that push (non-fast-forward on whichever job finishes second).
+      max-parallel: 1
+      # V1 scope tracks two FF branches (plan §4/§10). A non-empty ff_branch
+      # dispatch input shrinks the matrix to that single branch — the filter
+      # must live HERE, not in a job-level `if`: the `matrix` context is not
+      # available in `jobs.<id>.if` ("unrecognized named-value"), which
+      # invalidates the whole workflow file and turns every push into a 0s
+      # startup failure.
+      matrix:
+        ff_branch: ${{ github.event.inputs.ff_branch != '' && fromJSON(format('[{0}]', toJSON(github.event.inputs.ff_branch))) || fromJSON('["develop", "develop-enabling"]') }}
+    steps:
+      - name: Checkout edifice-frontend-framework
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.ff_branch }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Confidentiality (plan §9): this repo is public, so the index (app
+      # names, file paths, usage volumes for private apps like communities)
+      # is never committed here. It's stored in a separate private repo.
+      - name: Checkout impact-analyzer-data (previous run's cache)
+        uses: actions/checkout@v4
+        with:
+          repository: edificeio/impact-analyzer-data
+          token: ${{ secrets.IMPACT_ANALYZER_DATA_PUSH_TOKEN }}
+          path: impact-analyzer-data
+
+      - name: Generate the CI-mode index
+        working-directory: tools/impact-analyzer
+        env:
+          IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO }}
+          IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG }}
+        # --cache points at the previous run's output (if any) — enables the
+        # incremental cache: an app-branch whose commit hasn't moved is
+        # reused instead of re-cloned/re-analyzed. Missing on the very first
+        # run, which is a plain cache miss for every app (not an error).
+        run: pnpm generate:ci -- --cache=../../impact-analyzer-data/index.${{ matrix.ff_branch }}.json
+
+      # "What changed on this branch since the last published release" — the
+      # QA-facing diff, rendered by the viewer's Diff tab. Reuses the index
+      # generated just above (--head-index): no second app scan, no clones.
+      - name: Compute the release diff (skipped when nothing new)
+        working-directory: tools/impact-analyzer
+        env:
+          FF_BRANCH: ${{ matrix.ff_branch }}
+        run: |
+          git fetch --tags --force --quiet
+          # Latest published release = highest bare-semver tag (2.5.24
+          # style — ignores impact-analyzer-viewer-v* and legacy v1/v2-rc).
+          TAG=$(git tag -l | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+          if [ -z "$TAG" ]; then
+            echo "No release tag found — skipping the release diff."
+            exit 0
+          fi
+          BASE_COMMIT=$(git rev-parse "$TAG^{commit}")
+          HEAD_COMMIT=$(git rev-parse HEAD)
+          if [ "$BASE_COMMIT" = "$HEAD_COMMIT" ]; then
+            echo "$FF_BRANCH is exactly at $TAG — nothing to diff."
+            exit 0
+          fi
+          # Already published for these exact commits (no new commits since
+          # the last run, or the run only moved other branches) — skip the
+          # whole computation, not just the push.
+          EXISTING="../../impact-analyzer-data/diff.${TAG}..${FF_BRANCH}.json"
+          if [ -f "$EXISTING" ] && jq -e --arg b "$BASE_COMMIT" --arg h "$HEAD_COMMIT" \
+               '.base.commit == $b and .head.commit == $h' "$EXISTING" >/dev/null; then
+            echo "Published $TAG..$FF_BRANCH diff already covers $HEAD_COMMIT — skipping."
+            exit 0
+          fi
+          pnpm diff:ci -- --base="$TAG" --head-index="data/index.${FF_BRANCH}.json"
+
+      - name: Publish the new index and diff to the data repo
+        working-directory: impact-analyzer-data
+        run: |
+          cp ../tools/impact-analyzer/data/index.${{ matrix.ff_branch }}.json index.${{ matrix.ff_branch }}.json
+          if ls ../tools/impact-analyzer/data/diff.*.json >/dev/null 2>&1; then
+            cp ../tools/impact-analyzer/data/diff.*.json .
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "chore: refresh impact-analyzer index (${{ matrix.ff_branch }})"
+          # PR-diff runs push to the same repo — rebase-and-retry instead of
+          # failing on a non-fast-forward.
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase
+          done
+          git push

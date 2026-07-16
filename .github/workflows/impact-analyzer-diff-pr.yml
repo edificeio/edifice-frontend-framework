@@ -1,0 +1,97 @@
+name: "Impact Analyzer: diff (PR)"
+
+on:
+  pull_request:
+    branches: [develop, develop-enabling]
+    # Only FF package changes can impact consumer apps — tools/docs/CI
+    # changes never produce a meaningful diff report.
+    paths: ["packages/**"]
+
+permissions:
+  contents: read
+
+# One computation per PR at a time; a new push supersedes the previous run.
+concurrency:
+  group: impact-analyzer-diff-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  diff:
+    # Fork PRs get no repository secrets on this public repo — the org PATs
+    # would be empty and every remote call would fail. Skip cleanly instead.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    env:
+      # Branch names are attacker-controlled on a public repo — always go
+      # through env vars in `run:` scripts, never inline ${{ }} interpolation.
+      BASE_REF: ${{ github.base_ref }}
+      HEAD_REF: ${{ github.head_ref }}
+    steps:
+      - name: Checkout the PR branch
+        uses: actions/checkout@v4
+        with:
+          # A real local branch checkout (not the detached merge commit the
+          # default ref would give): the diff report's head ref — and the
+          # published file name — is the checked-out branch name.
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Materialize the base branch locally
+        # `impact diff` resolves --base as a plain local ref and never
+        # fetches by itself; a bare branch name does not resolve through
+        # origin/* remote-tracking refs.
+        run: |
+          git fetch origin "$BASE_REF"
+          git branch --force "$BASE_REF" "origin/$BASE_REF"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Compute the diff report
+        working-directory: tools/impact-analyzer
+        env:
+          IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO }}
+          IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG: ${{ secrets.IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG }}
+          # PR provenance recorded in the report — the viewer links the meta
+          # line to the PR and each symbol to its file anchor in the PR's
+          # Files tab. Title goes through env (attacker-controlled text on a
+          # public repo, never inlined in the script).
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          pnpm diff:ci -- --base="$BASE_REF" \
+            --pr-url="$PR_URL" --pr-number="$PR_NUMBER" --pr-title="$PR_TITLE"
+
+      # Same confidentiality rule as the nightly CRON: the report references
+      # private consumer apps, it never lands anywhere on this public repo.
+      - name: Checkout impact-analyzer-data
+        uses: actions/checkout@v4
+        with:
+          repository: edificeio/impact-analyzer-data
+          token: ${{ secrets.IMPACT_ANALYZER_DATA_PUSH_TOKEN }}
+          path: impact-analyzer-data
+
+      - name: Publish the diff report to the data repo
+        working-directory: impact-analyzer-data
+        run: |
+          cp ../tools/impact-analyzer/data/diff.*.json .
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to publish."
+            exit 0
+          fi
+          git commit -m "chore: refresh PR diff (#${{ github.event.pull_request.number }})"
+          # Concurrent PR runs (and the nightly CRON) push to the same repo —
+          # rebase-and-retry instead of failing on a non-fast-forward.
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            git pull --rebase
+          done
+          git push

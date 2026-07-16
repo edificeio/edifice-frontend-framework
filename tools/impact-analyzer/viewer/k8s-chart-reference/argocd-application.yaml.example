@@ -1,0 +1,34 @@
+# Référence pour le futur dépôt argo-apps (gitlab-infra.ode.tools) — à copier
+# dans argo-apps/preprod-services/impact-analyzer-viewer.yaml puis MR vers
+# main, PAS un fichier consommé par ce repo.
+#
+# Calqué sur le modèle du guide de livraison
+# (https://edifice-community.atlassian.net/wiki/spaces/ODE/pages/4610392074).
+#
+# ⚠️ À vérifier avant d'ouvrir la MR :
+#   - `source.repoURL` : URL exacte du dépôt `chart-impact-analyzer-viewer`
+#     déjà créé sur gitlab-infra (le chemin de groupe a déjà différé une fois
+#     de la doc Confluence pour boilerplate-deployment — se fier au vrai
+#     chemin du dépôt créé, pas à ce placeholder).
+#   - `destination.namespace` : proposé = nom de l'appli, à confirmer avec
+#     SRE s'ils préfèrent un autre namespace sur k8s-preprod-services.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: preprod-impact-analyzer-viewer
+  namespace: argocd
+spec:
+  project: preprod-services
+  source:
+    repoURL: https://gitlab-infra.ode.tools/kubernetes/helm-charts/chart-impact-analyzer-viewer.git
+    targetRevision: main
+    path: .
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    name: k8s-preprod-services
+    namespace: impact-analyzer-viewer
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

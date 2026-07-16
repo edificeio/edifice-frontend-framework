@@ -1,0 +1,89 @@
+[
+  {
+    "name": "blog",
+    "org": "edificeio",
+    "repo": "blog",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "collaborative-wall",
+    "org": "OPEN-ENT-NG",
+    "repo": "collaborative-wall",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "collect",
+    "org": "edificeio",
+    "repo": "collect",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "communities",
+    "org": "edificeio",
+    "repo": "communities",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "explorer",
+    "org": "edificeio",
+    "repo": "explorer",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "mindmap",
+    "org": "OPEN-ENT-NG",
+    "repo": "mindmap",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "wiki",
+    "org": "OPEN-ENT-NG",
+    "repo": "wiki",
+    "branches": ["develop", "develop-enabling"]
+  },
+  {
+    "name": "actualites",
+    "org": "OPEN-ENT-NG",
+    "repo": "actualites",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "conversation",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "conversation",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "homeworks",
+    "org": "edificeio",
+    "repo": "homeworks",
+    "branches": ["dev"]
+  },
+  {
+    "name": "portal",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "portal",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "rack",
+    "org": "edificeio",
+    "repo": "rack",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "support",
+    "org": "OPEN-ENT-NG",
+    "repo": "support",
+    "branches": ["dev", "develop-enabling"]
+  },
+  {
+    "name": "timeline",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "timeline",
+    "branches": ["dev", "develop-enabling"]
+  }
+]

@@ -1,0 +1,20 @@
+.dropdown {
+  width: min-content;
+
+  &-item {
+    cursor: pointer;
+
+    &.active,
+    &:active {
+      color: red;
+    }
+
+    &[role='menuitemradio'] {
+      cursor: pointer;
+    }
+  }
+
+  &-menu {
+    display: flex;
+  }
+}

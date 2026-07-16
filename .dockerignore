@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+.git
+**/dist
+tools/impact-analyzer/data
+**/.turbo
+**/*.spec.ts
+**/*.spec.tsx
+**/*.spec.mjs
+tools/impact-analyzer/viewer/server/test-fixtures

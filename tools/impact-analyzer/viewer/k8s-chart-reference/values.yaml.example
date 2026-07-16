@@ -1,0 +1,97 @@
+# Référence pour le futur dépôt Helm dédié (gitlab-infra.ode.tools) — à
+# copier et compléter là-bas, PAS un fichier consommé par ce repo.
+# Config validée par SRE (cluster k8s-preprod-services, Vault, Gateway).
+
+impact-analyzer-viewer: # alias déclaré dans Chart.yaml (cf. Chart.yaml.example)
+  replicaCount: 1
+
+  image:
+    repository: maven.opendigitaleducation.com/enabling/impact-analyzer-viewer
+    # Garder synchronisé avec le tag Git poussé (ex. tag impact-analyzer-viewer-v0.1.0 -> tag image "0.1.0").
+    tag: "0.1.0"
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 80
+    # Le process tourne en utilisateur non-root (image distroless) : il ne
+    # peut pas biner le port 80 lui-même, d'où ce mapping.
+    targetPort: 8080
+
+  # Ingress est déprécié chez Edifice — utiliser httpRoutes (Gateway API /
+  # Envoy Gateway) à la place, jamais ce bloc.
+  ingress:
+    enabled: false
+
+  httpRoutes:
+    - name: preprod-impact-analyzer-viewer
+      parentRefs:
+        - name: private-gateway
+      hostnames:
+        - impact-analyzer-viewer.ode.tools
+      rules:
+        - matches:
+            - path:
+                value: /
+          backendRefs:
+            # Nom du Service rendu (fullname préfixé par la release ArgoCD),
+            # pas l'alias du sous-chart — sinon Envoy répond 500.
+            - name: preprod-impact-analyzer-viewer
+              port: 80
+
+  livenessProbe:
+    httpGet:
+      path: /health/live
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 20
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  readinessProbe:
+    httpGet:
+      path: /health/ready
+      port: 8080
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+
+  # Le chemin par défaut du chart modèle est déjà /health/metrics — exactement
+  # ce que le serveur expose, rien à surcharger ici.
+  serviceMonitor:
+    enabled: true
+
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "200m"
+      memory: "128Mi"
+
+  commonEnvs:
+    - name: DATA_REPO_OWNER
+      value: "edificeio"
+    - name: DATA_REPO_NAME
+      value: "impact-analyzer-data"
+    - name: DATA_REPO_REF
+      value: "main"
+    - name: REFRESH_INTERVAL_SECONDS
+      value: "300"
+
+  # Cluster cible : k8s-preprod-services (OVH) -> Vault. Le PAT GitHub
+  # (fine-grained, lecture seule, scopé à edificeio/impact-analyzer-data) est
+  # stocké dans Vault par SRE, synchronisé vers un Secret Kubernetes du même
+  # nom via vaultSecrets, exposé en DATA_REPO_GITHUB_TOKEN via extraEnvs.
+  vaultSecrets:
+    - name: "impact-analyzer-data-token"
+      path: "cluster/preprod-services/impact-analyzer-viewer/github-pat"
+      mount: "k8s_infra"
+
+  extraEnvs:
+    - name: DATA_REPO_GITHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: impact-analyzer-data-token
+          key: token

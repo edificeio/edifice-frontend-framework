@@ -1,0 +1,17 @@
+[
+  { "name": "foo", "org": "edificeio", "repo": "foo", "branches": ["develop"] },
+  {
+    "name": "conversation",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "conversation",
+    "branches": ["dev"]
+  },
+  {
+    "name": "timeline",
+    "org": "edificeio",
+    "repo": "entcore",
+    "path": "timeline",
+    "branches": ["dev"]
+  }
+]

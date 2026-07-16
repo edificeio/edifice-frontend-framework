@@ -1,0 +1,4 @@
+[
+  { "name": "foo", "org": "edificeio", "repo": "foo", "branches": ["develop"] },
+  { "name": "bar", "org": "OPEN-ENT-NG", "repo": "bar", "branches": ["develop", "develop-enabling"] }
+]

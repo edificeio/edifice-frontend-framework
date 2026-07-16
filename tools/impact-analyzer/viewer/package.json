@@ -1,0 +1,40 @@
+{
+  "name": "@edifice.io/impact-analyzer-viewer",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Graphe explorable de l'index Impact Analyzer (ENABLING-1023, Jalon 3)",
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/sync-data.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/sync-data.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server/serve.mjs",
+    "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --check \"src/**/*.{ts,tsx}\"",
+    "format:write": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@fontsource-variable/archivo": "^5.2.8",
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "prom-client": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@edifice.io/impact-analyzer": "workspace:*",
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "jsdom": "25.0.1",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "3.2.4"
+  }
+}

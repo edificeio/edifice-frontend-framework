@@ -1,0 +1,6 @@
+{
+  "name": "fixture-app-frontend",
+  "dependencies": {
+    "@edifice.io/fixture": "develop"
+  }
+}

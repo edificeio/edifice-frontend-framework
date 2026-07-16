@@ -1,0 +1,20 @@
+# Temporary ignore list — upstream distroless publishing lag, NOT a fix in
+# our code. Added 2026-07-06.
+#
+# gcr.io/distroless/nodejs22-debian12:nonroot is currently pinned to a stale
+# Debian 12.13 snapshot (confirmed: gcr.io/distroless/base-debian12:nonroot
+# is already on 12.14, which carries the openssl fix — only the Node-specific
+# distroless variants lag behind). No fix is possible on our side: the final
+# stage is distroless (no shell/package manager) so we can't patch libssl3
+# in place, and switching Node major version doesn't help (nodejs24-debian12
+# has the identical 6 CVEs, same stale OS snapshot).
+#
+# Action: remove this file once `docker pull gcr.io/distroless/nodejs22-debian12:nonroot`
+# reports Debian >=12.14 (re-run the release workflow periodically to check —
+# no ETA published by Google).
+CVE-2026-31789
+CVE-2026-28387
+CVE-2026-28388
+CVE-2026-28389
+CVE-2026-28390
+CVE-2026-45447
