@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/impact-analyzer-viewer",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "private": true,
   "description": "Graphe explorable de l'index Impact Analyzer (ENABLING-1023, Jalon 3)",
   "license": "AGPL-3.0",
