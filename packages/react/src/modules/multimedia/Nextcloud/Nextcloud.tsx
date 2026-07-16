@@ -1,6 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
-import { NextcloudDocument } from '@edifice.io/client';
+import { DocumentHelper, NextcloudDocument, Role } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
@@ -44,6 +44,10 @@ export interface NextcloudProps {
    */
   multiple?: boolean | undefined;
   /**
+   * Document roles to filter files by; null (default) shows all roles.
+   */
+  roles?: Role | Role[] | null;
+  /**
    * Optional class for styling purpose
    */
   className?: string;
@@ -52,6 +56,7 @@ export interface NextcloudProps {
 const Nextcloud = ({
   onSelect,
   multiple = true,
+  roles,
   className,
 }: NextcloudProps) => {
   const { t } = useTranslation();
@@ -59,7 +64,7 @@ const Nextcloud = ({
 
   const { root, loadContent } = useNextcloudSearch(
     ROOT_ID,
-    t('nextcloud.tree.root'),
+    t('nextcloud'),
     user?.userId,
   );
 
@@ -103,6 +108,15 @@ const Nextcloud = ({
     if (searchTerm) {
       list = list.filter((f) => f.name.indexOf(searchTerm) >= 0);
     }
+    // Filter out files of undesired role.
+    if (roles) {
+      list = list.filter((f) => {
+        const role = DocumentHelper.role(f.contentType, false);
+        if (typeof roles === 'string') return roles === role;
+        if (Array.isArray(roles)) return roles.includes(role as Role);
+        return false;
+      });
+    }
     const sortFunction: (a: NextcloudDocument, b: NextcloudDocument) => number =
       sortOrder[0] === 'name'
         ? sortOrder[1] === 'asc'
@@ -114,7 +128,7 @@ const Nextcloud = ({
     // `root` is required: nodes are mutated in place by the reducer, only the
     // root wrapper gets a new identity, so it must be a dep to react to loads.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [root, currentNode, searchTerm, sortOrder]);
+  }, [root, currentNode, searchTerm, sortOrder, roles]);
 
   const selectedPaths = useMemo(
     () => new Set(selectedDocuments.map((d) => d.path)),
