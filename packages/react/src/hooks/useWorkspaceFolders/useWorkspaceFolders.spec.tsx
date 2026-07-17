@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 
 import { IUserInfo } from '@edifice.io/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { act, renderHook, waitFor } from '~/setup';
+import { renderHook, wrapper as sharedWrapper, act, waitFor } from '~/setup';
 import { EdificeClientContext } from '../../providers/EdificeClientProvider/EdificeClientProvider.context';
 import useWorkspaceFolders from './useWorkspaceFolders';
 
@@ -27,17 +26,17 @@ vi.mock('react-hot-toast', () => ({
 
 const user = { userId: 'user-1', groupsIds: ['group-1'] } as IUserInfo;
 
-// Each test gets its own QueryClient + EdificeClientContext to avoid cache
-// pollution from the module-level singleton used by the shared MockedProvider.
+// Overrides the shared MockedProvider's default user with a controlled one,
+// nested inside it so the QueryClientProvider it already sets up is reused.
 function createWrapper(currentUser: IUserInfo | undefined = user) {
-  const queryClient = new QueryClient();
+  const SharedWrapper = sharedWrapper;
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
-      <QueryClientProvider client={queryClient}>
+      <SharedWrapper>
         <EdificeClientContext.Provider value={{ user: currentUser } as any}>
           {children}
         </EdificeClientContext.Provider>
-      </QueryClientProvider>
+      </SharedWrapper>
     );
   };
 }

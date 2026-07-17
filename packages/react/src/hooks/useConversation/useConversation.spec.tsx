@@ -1,7 +1,4 @@
-import { ReactNode } from 'react';
-
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { renderHook, waitFor } from '~/setup';
+import { renderHook, waitFor, wrapper } from '~/setup';
 import useConversation from './useConversation';
 
 const { hasWorkflowRight, get } = vi.hoisted(() => ({
@@ -15,17 +12,6 @@ vi.mock('@edifice.io/client', () => ({
     http: () => ({ get }),
   },
 }));
-
-// Each test gets its own QueryClient to avoid cache pollution from the
-// module-level singleton used by the shared MockedProvider.
-function createWrapper() {
-  const queryClient = new QueryClient();
-  return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-    );
-  };
-}
 
 function mockGet(overrides: Record<string, unknown>) {
   get.mockImplementation(async (url: string) => {
@@ -47,7 +33,7 @@ describe('useConversation', () => {
     });
 
     const { result } = renderHook(() => useConversation(), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
     expect(result.current.messages).toBe(0);
@@ -69,7 +55,7 @@ describe('useConversation', () => {
     });
 
     const { result } = renderHook(() => useConversation(), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
     await waitFor(() => expect(result.current.messages).toBe(5));
@@ -90,7 +76,7 @@ describe('useConversation', () => {
     });
 
     const { result } = renderHook(() => useConversation(), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
     await waitFor(() =>
@@ -117,7 +103,7 @@ describe('useConversation', () => {
     });
 
     const { result } = renderHook(() => useConversation(), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
     await waitFor(() =>
@@ -138,7 +124,7 @@ describe('useConversation', () => {
     });
 
     const { result } = renderHook(() => useConversation(), {
-      wrapper: createWrapper(),
+      wrapper,
     });
 
     await waitFor(() =>
