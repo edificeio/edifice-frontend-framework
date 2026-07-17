@@ -2,12 +2,8 @@
   "$schema": "node_modules/turbo/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false
@@ -15,15 +11,14 @@
     "test": {
       "cache": false
     },
+    "test:coverage": {
+      "cache": false
+    },
     "docs": {
       "cache": false
     },
     "deploy": {
-      "dependsOn": [
-        "build",
-        "lint",
-        "fix"
-      ],
+      "dependsOn": ["build", "lint", "fix"],
       "outputs": []
     },
     "preview": {

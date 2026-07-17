@@ -102,6 +102,32 @@ export default defineConfig(({ mode }) => {
       watch: false,
       clearMocks: true,
       restoreMocks: true,
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html', 'lcov'],
+        include: ['src/**/*.{ts,tsx}'],
+        exclude: [
+          'src/**/*.stories.tsx',
+          'src/**/*.spec.{ts,tsx}',
+          'src/**/*.d.ts',
+          'src/**/index.ts',
+          'src/modules/icons/components/**',
+          'src/types/**',
+        ],
+        // Starting thresholds intentionally set below the actual measured
+        // baseline (see ENABLING-996) so CI doesn't fail on the current
+        // state of the package. Audit target: 30% then 50% within 6 months
+        // — raise these floors incrementally as coverage improves, never
+        // lower them.
+        // Measured baseline at the time these floors were set: lines/
+        // statements 23.5%, functions 35.8%, branches 76.6%.
+        thresholds: {
+          lines: 20,
+          statements: 20,
+          functions: 30,
+          branches: 70,
+        },
+      },
     },
   };
 });
