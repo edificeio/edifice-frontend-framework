@@ -21,6 +21,8 @@ jobs:
       - uses: pnpm/action-setup@v4
       - name: Install dependencies
         run: pnpm install
+      - name: Build workspace dependencies
+        run: pnpm run build
       - name: Lint
         run: pnpm --filter @edifice.io/react lint
       - name: Format
@@ -47,6 +49,8 @@ jobs:
       - uses: pnpm/action-setup@v4
       - name: Install dependencies
         run: pnpm install
+      - name: Build workspace dependencies
+        run: pnpm run build
       - name: Lint
         run: pnpm --filter @edifice.io/client lint
       - name: Format
