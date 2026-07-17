@@ -1,14 +1,25 @@
-import { ComponentPropsWithoutRef, type ReactNode } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  Suspense,
+  lazy,
+  type ReactNode,
+} from 'react';
 
 import clsx from 'clsx';
 import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, Button } from '..';
-import { useCantoo, useZendeskGuide } from '../../hooks';
+import { useCantoo, useUiOverride, useZendeskGuide } from '../../hooks';
 import { useCookiesConsent } from '../../hooks/useCookiesConsent';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import Header from './components/Header';
+import HeaderNotificationsOverlay from './components/HeaderNotificationsOverlay';
+import { useOverlay } from '../PageLayout/hook/useOverlay';
+
+const HeaderV2 = lazy(
+  () => import('../../modules/homepage/components/Header/Header'),
+);
 
 export interface LayoutProps extends ComponentPropsWithoutRef<any> {
   /**  Main content of an application */
@@ -29,6 +40,9 @@ export const Layout = ({
   ...restProps
 }: LayoutProps) => {
   const { theme } = useEdificeTheme();
+  const override = useUiOverride('layout.header');
+  const isHeaderV2 = override?.variant === 'v2';
+  const { toggleOverlay } = useOverlay();
 
   const { t } = useTranslation();
 
@@ -54,8 +68,22 @@ export const Layout = ({
   );
 
   const renderHeader = !headless ? (
-    <Header is1d={theme?.is1d} src={theme?.basePath} />
+    isHeaderV2 ? (
+      <Suspense fallback={null}>
+        <HeaderV2
+          src={theme?.basePath}
+          dataProduct={override?.theme}
+          onNotificationsClick={toggleOverlay}
+        />
+      </Suspense>
+    ) : (
+      <Header is1d={theme?.is1d} src={theme?.basePath} />
+    )
   ) : null;
+
+  const renderNotificationsOverlay = !headless && isHeaderV2 && (
+    <HeaderNotificationsOverlay />
+  );
 
   const renderCookies = showCookiesConsent && (
     <Alert
@@ -86,6 +114,7 @@ export const Layout = ({
   return (
     <>
       {renderHeader}
+      {renderNotificationsOverlay}
 
       <main className={classes} {...restProps}>
         {children}

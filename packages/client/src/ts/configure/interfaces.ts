@@ -176,6 +176,9 @@ export interface IThemeConf {
   overriding: Array<IThemeConfOverriding>;
 }
 
+/** A UI override is either a plain variant name, or an object enriching it with a scoped theme. */
+export type UiOverride = string | { variant: string; theme?: string };
+
 //-------------------------------------
 export interface IThemeConfOverriding {
   //-------------------------------------
@@ -190,6 +193,7 @@ export interface IThemeConfOverriding {
     pattern: string;
     ignoreSubjects?: Array<string>;
   };
+  uiOverrides?: Record<string, UiOverride>;
 }
 
 export type IThemeOverrides = {
@@ -243,6 +247,7 @@ export interface IOdeTheme {
   themeName: string;
   themeUrl: string;
   npmTheme: string | undefined;
+  uiOverrides?: Record<string, UiOverride>;
 }
 
 export interface IGetConf {
