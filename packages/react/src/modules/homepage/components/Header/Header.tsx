@@ -35,11 +35,14 @@ import {
 export interface HeaderProps {
   src: string | undefined;
   onNotificationsClick?: () => void;
+  /** Scope this header's CSS theme (`data-product`) to its own subtree, independently of the page's ambient theme. */
+  dataProduct?: string;
 }
 
 const Header = ({
   src = '',
   onNotificationsClick,
+  dataProduct,
 }: HeaderProps): JSX.Element => {
   const { t } = useTranslation();
   const { messages } = useConversation();
@@ -73,7 +76,7 @@ const Header = ({
   };
 
   return (
-    <header className={classes}>
+    <header className={classes} data-product={dataProduct}>
       <Navbar className="px-24">
         <LogoBeta src={`${src}/img/illustrations/logo.png`} />
         <ul className="navbar-nav">

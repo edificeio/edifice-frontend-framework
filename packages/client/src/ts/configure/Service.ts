@@ -165,6 +165,7 @@ export class ConfService {
       themeName: themeOverride?.child,
       themeUrl,
       npmTheme: themeOverride?.npmTheme ?? undefined,
+      uiOverrides: themeOverride?.uiOverrides,
     };
   }
 

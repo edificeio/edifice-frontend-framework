@@ -30,6 +30,7 @@ export * from './useToast';
 export * from './useToggle';
 export * from './useTrapFocus';
 export * from './useTrashedResource';
+export * from './useUiOverride';
 export * from './useUpload';
 export * from './useUploadFiles';
 export * from './useUser';
