@@ -59,7 +59,6 @@ publish () {
   # unrelated release trains sharing this repo's tag namespace (e.g.
   # impact-analyzer-viewer-v*.*.*) can never be picked as the nearest tag.
   LATEST_TAG=$(git describe --tags --abbrev=0 --match '[0-9]*.[0-9]*.[0-9]*' 2>/dev/null || echo "1.0.0")
-  LATEST_TAG=${LATEST_TAG#v}
 
   # Définition du tag de la branche
   if [ "$LOCAL_BRANCH" = "main" ]; then
