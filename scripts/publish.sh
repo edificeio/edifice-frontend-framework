@@ -55,7 +55,10 @@ publish () {
   # Récupération de la date et du timestamp
   TIMESTAMP=`date +%Y%m%d%H%M%S`
   # Récupération du dernier tag stable
-  LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "1.0.0")
+  # --match restricts candidates to bare semver tags (2.6.0-style), so
+  # unrelated release trains sharing this repo's tag namespace (e.g.
+  # impact-analyzer-viewer-v*.*.*) can never be picked as the nearest tag.
+  LATEST_TAG=$(git describe --tags --abbrev=0 --match '[0-9]*.[0-9]*.[0-9]*' 2>/dev/null || echo "1.0.0")
   LATEST_TAG=${LATEST_TAG#v}
 
   # Définition du tag de la branche
