@@ -72,11 +72,19 @@ describe('useTrashedResource', () => {
       resources: [{ assetId: 'res-1', trashed: true, trashedBy: [] }],
     });
 
+    // Even though the Boundary catches it, React's dev-mode guarded callback
+    // also dispatches a window 'error' event for the thrown Response, which
+    // jsdom would otherwise log as an "Uncaught" exception.
+    const preventDefault = (event: ErrorEvent) => event.preventDefault();
+    window.addEventListener('error', preventDefault);
+
     render(<Trasher id="res-1" />, { wrapper: Boundary });
 
     await waitFor(() =>
       expect(screen.getByText('error-caught')).toBeInTheDocument(),
     );
+
+    window.removeEventListener('error', preventDefault);
   });
 
   it('throws a 404 when the resource was trashed by the current user', async () => {
@@ -84,10 +92,15 @@ describe('useTrashedResource', () => {
       resources: [{ assetId: 'res-1', trashed: false, trashedBy: ['user-1'] }],
     });
 
+    const preventDefault = (event: ErrorEvent) => event.preventDefault();
+    window.addEventListener('error', preventDefault);
+
     render(<Trasher id="res-1" />, { wrapper: Boundary });
 
     await waitFor(() =>
       expect(screen.getByText('error-caught')).toBeInTheDocument(),
     );
+
+    window.removeEventListener('error', preventDefault);
   });
 });

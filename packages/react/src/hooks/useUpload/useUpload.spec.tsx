@@ -103,6 +103,11 @@ describe('useUpload', () => {
   });
 
   it('marks the file as error and returns null when the upload fails', async () => {
+    // The hook logs the error via console.error; silence it for this
+    // expected-failure case instead of letting it clutter the test output.
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
     create.mockRejectedValue(new Error('boom'));
     const { result } = renderHook(() => useUpload());
     const file = createFile('a.png', 'image/png');
@@ -114,9 +119,15 @@ describe('useUpload', () => {
 
     expect(uploaded).toBeNull();
     expect(result.current.getUploadStatus(file)).toBe('error');
+
+    consoleError.mockRestore();
   });
 
   it('returns null for a non-video blob (unsupported)', async () => {
+    // Same as above: the hook logs the unsupported-type error via console.error.
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
     const { result } = renderHook(() => useUpload());
     const blob = new Blob(['x'], { type: 'application/pdf' });
 
@@ -127,6 +138,8 @@ describe('useUpload', () => {
 
     expect(uploaded).toBeNull();
     expect(result.current.getUploadStatus(blob)).toBe('error');
+
+    consoleError.mockRestore();
   });
 
   it('uploads a video blob through the video service', async () => {
