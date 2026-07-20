@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import { createRef, type MutableRefObject } from 'react';
 import { mergeRefs, setRef } from './ref';
 
 describe('setRef', () => {
@@ -51,9 +51,11 @@ describe('setRef', () => {
   });
 
   it('assigns null to a ref when val is null', () => {
-    const ref = { current: document.createElement('div') };
+    const ref: MutableRefObject<HTMLDivElement | null> = {
+      current: document.createElement('div'),
+    };
 
-    setRef(null, ref as any);
+    setRef<HTMLDivElement | null>(null, ref);
 
     expect(ref.current).toBeNull();
   });
@@ -104,11 +106,11 @@ describe('mergeRefs', () => {
   });
 
   it('propagates null when the node is unmounted', () => {
-    const ref = createRef<HTMLDivElement>();
+    const ref: MutableRefObject<HTMLDivElement | null> = { current: null };
     const callback = vi.fn();
 
-    const merged = mergeRefs(ref, callback);
-    merged(null as any);
+    const merged = mergeRefs<HTMLDivElement | null>(ref, callback);
+    merged(null);
 
     expect(ref.current).toBeNull();
     expect(callback).toHaveBeenCalledWith(null);

@@ -15,15 +15,13 @@ describe('Heading', () => {
     expect(screen.getByText('Title')).toHaveClass('h1');
   });
 
-  it('renders the correct heading element for each level', () => {
-    const levels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const;
-    const { rerender } = render(<Heading level="h1">Title</Heading>);
-
-    for (const level of levels) {
-      rerender(<Heading level={level}>Title</Heading>);
+  it.each(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] as const)(
+    'renders a %s element',
+    (level) => {
+      render(<Heading level={level}>Title</Heading>);
       expect(screen.getByText('Title').tagName).toBe(level.toUpperCase());
-    }
-  });
+    },
+  );
 
   it('applies the headingStyle class independently from the level', () => {
     render(

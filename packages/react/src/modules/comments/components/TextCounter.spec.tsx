@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import { expect } from 'vitest';
+import { render, screen } from '~/setup';
 import { TextCounter } from './TextCounter';
 
 describe('TextCounter', () => {
