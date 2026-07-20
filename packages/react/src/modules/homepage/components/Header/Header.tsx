@@ -173,7 +173,8 @@ const Header = ({
               />
             </NavLink>
             <Popover
-              className="top-100 widget"
+              align="end"
+              className="widget"
               id={popoverUserId}
               isVisible={isUserHovered}
             >
@@ -182,7 +183,7 @@ const Header = ({
                   href={
                     '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
                   }
-                  className="nav-link d-flex align-items-center gap-8"
+                  className="nav-link logout d-flex align-items-center gap-8"
                   data-testid="header-logout-button"
                 >
                   <IconDisconnect className="icon logout" />

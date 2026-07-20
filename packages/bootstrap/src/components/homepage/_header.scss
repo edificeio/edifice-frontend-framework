@@ -62,6 +62,14 @@
     .popover svg {
       --navbar-nav-link-icon-size: 2.2rem;
     }
+
+    .popover {
+      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.18);
+    }
+
+    .popover .logout {
+      color: var(--color-support-danger-700);
+    }
   }
 
   .badge {
