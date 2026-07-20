@@ -19,7 +19,7 @@ vi.mock(
 );
 
 afterEach(() => {
-  useOverlayStore.setState({ overlayOpen: false });
+  act(() => useOverlayStore.setState({ overlayOpen: false }));
 });
 
 describe('HeaderNotificationsOverlay', () => {
