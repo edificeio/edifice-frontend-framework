@@ -39,8 +39,21 @@ describe('FormControl', () => {
 
   it('throws when a field is rendered outside a FormControl', () => {
     // useFormControl() throws synchronously during render without a provider.
+    // React's dev-mode guarded callback both logs its own "above error
+    // occurred" console.error and dispatches a real window 'error' event,
+    // which jsdom would otherwise log as an "Uncaught" exception — even
+    // though the test expects and handles the throw.
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const preventDefault = (event: ErrorEvent) => event.preventDefault();
+    window.addEventListener('error', preventDefault);
+
     expect(() => render(<Input type="text" size="md" />)).toThrow(
       /outside the FormControl/,
     );
+
+    window.removeEventListener('error', preventDefault);
+    consoleError.mockRestore();
   });
 });

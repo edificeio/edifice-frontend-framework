@@ -34,17 +34,29 @@ describe('useResource', () => {
   });
 
   it('does not fetch when the id is empty', () => {
+    // The hook logs this expected case via console.warn.
+    const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     renderHook(() => useResource('blog', ''));
 
     expect(searchResource).not.toHaveBeenCalled();
+
+    consoleWarn.mockRestore();
   });
 
   it('stays null when the fetch fails', async () => {
+    // The hook logs the error via console.error; silence it for this
+    // expected-failure case instead of letting it clutter the test output.
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
     searchResource.mockRejectedValue(new Error('boom'));
 
     const { result } = renderHook(() => useResource('blog', 'id-1'));
 
     await waitFor(() => expect(searchResource).toHaveBeenCalled());
     expect(result.current).toBeNull();
+
+    consoleError.mockRestore();
   });
 });
