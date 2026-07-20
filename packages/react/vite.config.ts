@@ -119,13 +119,14 @@ export default defineConfig(({ mode }) => {
         // state of the package. Audit target: 30% then 50% within 6 months
         // — raise these floors incrementally as coverage improves, never
         // lower them.
-        // Measured baseline at the time these floors were set: lines/
-        // statements 23.5%, functions 35.8%, branches 76.6%.
+        // Measured baseline as of 2026-07-20 (after the ENABLING-987/991/
+        // 992/995 unit test lots): lines/statements 37.1%, functions
+        // 54.31%, branches 81.42%.
         thresholds: {
-          lines: 20,
-          statements: 20,
-          functions: 30,
-          branches: 70,
+          lines: 35,
+          statements: 35,
+          functions: 50,
+          branches: 78,
         },
       },
     },
