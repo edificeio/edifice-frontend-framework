@@ -39,7 +39,7 @@ Monorepo publiant les **packages `@edifice.io/*`** consommés par les apps Edifi
 | Storybook (dev) | `pnpm docs` <!-- storybook dev -p 6006 --> |
 | Storybook (build) | `pnpm docs:build` |
 
-> Pre-commit (Husky) : `lint && format && test`. Cibler un package via le filtre Turbo (`--filter=./packages/<pkg>`).
+> Husky : pre-commit lance `lint && format` ; pre-push lance `test` (react + client). Cibler un package via le filtre Turbo (`--filter=./packages/<pkg>`).
 
 ## Conventions
 

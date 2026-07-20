@@ -102,6 +102,33 @@ export default defineConfig(({ mode }) => {
       watch: false,
       clearMocks: true,
       restoreMocks: true,
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html', 'lcov'],
+        include: ['src/**/*.{ts,tsx}'],
+        exclude: [
+          'src/**/*.stories.tsx',
+          'src/**/*.spec.{ts,tsx}',
+          'src/**/*.d.ts',
+          'src/**/index.ts',
+          'src/modules/icons/components/**',
+          'src/types/**',
+        ],
+        // Starting thresholds intentionally set below the actual measured
+        // baseline (see ENABLING-996) so CI doesn't fail on the current
+        // state of the package. Audit target: 30% then 50% within 6 months
+        // — raise these floors incrementally as coverage improves, never
+        // lower them.
+        // Measured baseline as of 2026-07-20 (after the ENABLING-987/991/
+        // 992/995 unit test lots): lines/statements 37.1%, functions
+        // 54.31%, branches 81.42%.
+        thresholds: {
+          lines: 35,
+          statements: 35,
+          functions: 50,
+          branches: 78,
+        },
+      },
     },
   };
 });

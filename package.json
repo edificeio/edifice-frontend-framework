@@ -32,11 +32,14 @@
     "format": "turbo run format --filter=./packages/** --filter=./tools/**",
     "preinstall": "npx only-allow pnpm",
     "lint": "turbo run lint --filter=./packages/** --filter=./tools/**",
-    "pre-commit": "pnpm run lint && pnpm run format && pnpm run test",
+    "pre-commit": "pnpm run lint && pnpm run format",
+    "pre-push": "pnpm run test && pnpm run test:client",
     "prepare": "husky",
     "test": "turbo run test --filter=./packages/react",
     "test:client": "turbo run test --filter=./packages/client",
-    "test:impact-analyzer": "turbo run test --filter=./tools/**"
+    "test:impact-analyzer": "turbo run test --filter=./tools/**",
+    "test:coverage": "turbo run test:coverage --filter=./packages/react",
+    "test:coverage:client": "turbo run test:coverage --filter=./packages/client"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "5.1.2",

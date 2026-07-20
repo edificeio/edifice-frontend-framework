@@ -40,7 +40,8 @@
     "format": "prettier --check \"src/ts/**/*.ts\"",
     "format:write": "prettier --write \"src/ts/**/*.ts\"",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",

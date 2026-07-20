@@ -1,0 +1,66 @@
+name: 'Tests'
+
+on:
+  pull_request:
+    paths:
+      - 'packages/react/**'
+      - 'packages/client/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/tests.yml'
+
+jobs:
+  test-react:
+    name: '@edifice.io/react — lint, format, test (coverage)'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build workspace dependencies
+        run: pnpm run build
+      - name: Lint
+        run: pnpm --filter @edifice.io/react lint
+      - name: Format
+        run: pnpm --filter @edifice.io/react format
+      - name: Test with coverage
+        run: pnpm --filter @edifice.io/react test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-react
+          path: packages/react/coverage/
+          retention-days: 14
+
+  test-client:
+    name: '@edifice.io/client — lint, format, test (coverage)'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build workspace dependencies
+        run: pnpm run build
+      - name: Lint
+        run: pnpm --filter @edifice.io/client lint
+      - name: Format
+        run: pnpm --filter @edifice.io/client format
+      - name: Test with coverage
+        run: pnpm --filter @edifice.io/client test:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-client
+          path: packages/client/coverage/
+          retention-days: 14
