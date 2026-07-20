@@ -100,7 +100,7 @@
     "@popperjs/core": "2.11.8",
     "@screeb/sdk-browser": "0.5.0",
     "@screeb/sdk-react": "0.6.0",
-    "@tiptap/core": "2.11.0",
+    "@tiptap/core": "catalog:",
     "@tiptap/extension-blockquote": "2.11.0",
     "@tiptap/extension-bullet-list": "2.11.0",
     "@tiptap/extension-character-count": "2.11.0",
@@ -161,7 +161,7 @@
     "@edifice.io/client": "workspace:*",
     "@edifice.io/config": "workspace:*",
     "@eslint/js": "catalog:",
-    "@react-spring/web": "9.7.5",
+    "@react-spring/web": "catalog:",
     "@svgr/cli": "8.1.0",
     "@tanstack/query-core": "5.90.20",
     "@tanstack/react-query": "catalog:",
@@ -181,12 +181,10 @@
     "react-dom": "catalog:",
     "react-hook-form": "catalog:",
     "react-i18next": "catalog:",
-    "rollup-plugin-pure": "catalog:",
-    "rollup-plugin-visualizer": "catalog:",
+    "sonda": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
-    "vite-plugin-dts": "catalog:",
-    "vite-tsconfig-paths": "catalog:"
+    "vite-plugin-dts": "catalog:"
   },
   "peerDependencies": {
     "@react-spring/web": "catalog:",

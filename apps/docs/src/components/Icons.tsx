@@ -5,7 +5,14 @@ export const Icons = ({ icons }: { [key: string]: any }) => {
 
   return (
     <div className="grid">
-      {Object.keys(odeIcons).map((item, index) => {
+      {/*
+        Rolldown (Vite 8) expose en plus de chaque icône l'objet `*_exports`
+        utilisé en interne pour les `import * as` (cf. AppIcon.tsx).
+        On filtre les valeurs non-fonctions pour ne rendre que les composants.
+      */}
+      {Object.keys(odeIcons)
+        .filter((item) => typeof odeIcons[item] === 'function')
+        .map((item, index) => {
         const Icon: any = odeIcons[item];
         return (
           <Card

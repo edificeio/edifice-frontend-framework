@@ -6,9 +6,6 @@ import dts from "vite-plugin-dts";
 import { dependencies } from "./package.json";
 
 export default defineConfig({
-  esbuild: {
-    minifyIdentifiers: false,
-  },
   build: {
     sourcemap: true,
     lib: {
@@ -16,7 +13,7 @@ export default defineConfig({
         index: resolve(__dirname, "src/index.ts"),
       },
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: [
         {
           preserveModules: true,
@@ -24,6 +21,7 @@ export default defineConfig({
           entryFileNames: ({ name: fileName }) => {
             return `${fileName}.js`;
           },
+          minify: { mangle: false },
         },
         {
           preserveModules: true,
@@ -32,6 +30,7 @@ export default defineConfig({
           entryFileNames: ({ name: fileName }) => {
             return `${fileName}.cjs`;
           },
+          minify: { mangle: false },
         },
       ],
       external: [...Object.keys(dependencies)],
