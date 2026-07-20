@@ -10,6 +10,7 @@ import {
   IconPrint,
 } from '../../../modules/icons/components';
 import IconButton, { IconButtonProps } from '../../Button/IconButton';
+import { Checkbox } from '../../Checkbox';
 import { ColorPicker, DefaultPalette } from '../../ColorPicker';
 import Dropdown from '../Dropdown';
 
@@ -477,6 +478,150 @@ export const CustomMenu: Story = {
           </>
         )}
       </Dropdown>`,
+      },
+    },
+  },
+};
+
+interface CityOption {
+  id: string;
+  name: string;
+}
+
+const cities: CityOption[] = Array.from({ length: 6800 }, (_, index) => ({
+  id: String(index),
+  name: `Établissement ${String(index + 1).padStart(4, '0')}`,
+}));
+
+export const VirtualizedSearchableSelect: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<CityOption | null>(null);
+
+    return (
+      <div style={{ width: 320 }}>
+        <Dropdown block>
+          <Dropdown.Trigger
+            label={selected ? selected.name : 'Sélectionner…'}
+          />
+          <Dropdown.VirtualizedMenu<CityOption>
+            block
+            searchable
+            items={cities}
+            aria-label="Établissements"
+            getItemKey={(item) => item.id}
+            getItemText={(item) => item.name}
+            searchPlaceholder="Rechercher un établissement…"
+            onSelect={(item) => setSelected(item)}
+            renderItem={(item, { active }) => (
+              <div className={`dropdown-item ${active ? 'focus' : ''}`}>
+                {item.name}
+              </div>
+            )}
+          />
+        </Dropdown>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story: `**\`Dropdown.VirtualizedMenu\`** renders a long option list with windowing: only the visible rows (plus a small overscan) are mounted, so the DOM node count — and therefore performance — stays constant whether the list has 50 or 50 000 options.
+
+### When to use it
+
+Use it instead of \`Dropdown.Menu\` when the number of options is large enough to make a plain menu sluggish (roughly a few hundred and up: long pickers of users, schools, classes, tags…). For small, static menus keep the regular compound API (\`Dropdown.Menu\` + \`Dropdown.Item\`): it is simpler and supports rich item types (checkboxes, groups, separators).
+
+### Normal vs virtualized
+
+The switch is **not automatic** for the Dropdown: you opt in by choosing the component. \`Dropdown.Menu\` renders the children you pass; \`Dropdown.VirtualizedMenu\` is data-driven — you give it the \`items\` array and a \`renderItem\` function, and it owns the rendering so it can mount only what is visible. (The \`Table\` component, by contrast, switches to virtualization automatically past a threshold.)
+
+### Data & rendering
+
+- \`items\`: the full array of options (any shape).
+- \`renderItem(item, { index, active })\`: returns the content of one option. \`active\` is \`true\` for the option currently highlighted by keyboard or hover — use it to style the highlight (here, the \`focus\` class).
+- \`getItemKey(item, index)\`: stable React key (defaults to the index).
+- \`onSelect(item, index)\`: called when an option is chosen by click or Enter. By default the menu closes afterwards (\`closeOnSelect\`, default \`true\`).
+
+### Integrated search (combobox)
+
+- \`searchable\`: adds a search field at the top of the panel. Focus stays in the field (combobox pattern) while the arrow keys drive the list below.
+- \`getItemText(item)\`: the text each option is matched against — required for the built-in filtering.
+- \`searchPlaceholder\` / \`noResultsLabel\`: field placeholder and empty-state message.
+- \`onSearch(query)\`: notified on every query change (e.g. to fetch remotely). Without \`searchable\`, no field is shown and the whole list is browsable.
+
+### Keyboard & accessibility
+
+Arrow Up/Down move the active option, Home/End jump to the ends, Enter selects, Escape/Tab close. The active option is always scrolled into view. Roles \`listbox\`/\`option\`, \`aria-selected\` and \`aria-activedescendant\` are wired up; with \`searchable\`, the field is a \`combobox\` controlling the listbox.
+
+### Sizing & tuning
+
+- \`maxHeight\` (px): height of the scroll area (default \`320\`).
+- \`estimateItemHeight\` (px): first guess before each row is measured; rows are then measured dynamically, so variable heights are supported. A good estimate just reduces the initial scrollbar jump.
+- \`overscan\`: number of off-screen rows kept mounted on each side to smooth fast scrolling.
+- \`block\`: makes the panel take the full trigger width; \`unstyled\` drops the default panel styling.
+
+The example below is a single-select over ~6 800 options with integrated search.`,
+      },
+    },
+  },
+};
+
+export const VirtualizedMultiSelect: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<Set<string>>(
+      () => new Set(cities.map((city) => city.id)),
+    );
+
+    const toggle = (id: string) =>
+      setSelected((current) => {
+        const next = new Set(current);
+        next.has(id) ? next.delete(id) : next.add(id);
+        return next;
+      });
+
+    return (
+      <div style={{ width: 360 }}>
+        <Dropdown block>
+          <Dropdown.Trigger label={`Établissements (${selected.size})`} />
+          <Dropdown.VirtualizedMenu<CityOption>
+            block
+            searchable
+            closeOnSelect={false}
+            items={cities}
+            aria-label="Établissements"
+            getItemKey={(item) => item.id}
+            getItemText={(item) => item.name}
+            searchPlaceholder="Rechercher un établissement…"
+            onSelect={(item) => toggle(item.id)}
+            renderItem={(item, { active }) => (
+              <div
+                className={`dropdown-item d-flex align-items-center justify-content-between gap-8 ${
+                  active ? 'focus' : ''
+                }`}
+              >
+                <span className="text-truncate">{item.name}</span>
+                <Checkbox checked={selected.has(item.id)} onChange={() => {}} />
+              </div>
+            )}
+          />
+        </Dropdown>
+      </div>
+    );
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story: `Multi-select with checkboxes (e.g. an establishments filter).
+
+### How selection works here
+
+\`VirtualizedMenu\` does **not** own the selection — you do. Keep a \`Set\` (or array) of selected ids in your component; \`onSelect(item)\` toggles it, \`renderItem\` reads it to show each \`Checkbox\` checked or not, and \`closeOnSelect={false}\` keeps the panel open so several options can be ticked in a row. You then exploit that set directly: count it for the trigger label (\`Établissements (\${selected.size})\`), use it to filter your data, or send it on submit.
+
+### Why not \`Dropdown.CheckboxItem\`?
+
+\`Dropdown.CheckboxItem\` belongs to the regular \`Dropdown.Menu\`: it registers each item in the dropdown's ref map for roving DOM focus and reads the menu's own search/selection context. That model is incompatible with windowing, where options mount and unmount as you scroll — the focus map would churn and fight the virtualized navigation. So in a virtualized menu the option is plain \`renderItem\` content and the checkbox is **presentational** (controlled \`checked\`, the row click drives the toggle), which is why selection lives in your state rather than in a compound item.`,
       },
     },
   },
