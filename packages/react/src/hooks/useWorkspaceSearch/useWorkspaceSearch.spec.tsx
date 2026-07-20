@@ -45,6 +45,13 @@ async function renderReady(format: any = null) {
     useWorkspaceSearch('root-id', 'Root', 'all' as any, format),
   );
   await waitFor(() => expect(hasWorkflowRight).toHaveBeenCalledTimes(2));
+  // Being called twice only proves the effects fired, not that their
+  // resolved value has been applied to state yet. Await the actual
+  // promises the hook is waiting on, inside act(), so the resulting
+  // setState calls are flushed before the test proceeds.
+  await act(async () => {
+    await Promise.all(hasWorkflowRight.mock.results.map((r) => r.value));
+  });
   return utils;
 }
 
