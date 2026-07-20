@@ -40,7 +40,7 @@
     "format": "prettier --check \"src/ts/**/*.ts\"",
     "format:write": "prettier --write \"src/ts/**/*.ts\"",
     "lint": "eslint --max-warnings 0",
-    "test": "vitest"
+    "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
