@@ -33,6 +33,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative',
         'user / personnel',
         'user / guest',
+        'status / validate',
+        'status / success',
+        'status / warning',
+        'status / danger',
+        'status / info',
       ],
       mapping: {
         'content / success / background': {
@@ -117,6 +122,11 @@ const meta: Meta<typeof Badge> = {
         'user / relative': { type: 'user', profile: 'relative' },
         'user / personnel': { type: 'user', profile: 'personnel' },
         'user / guest': { type: 'user', profile: 'guest' },
+        'status / validate': { type: 'status', level: 'validate' },
+        'status / success': { type: 'status', level: 'success' },
+        'status / warning': { type: 'status', level: 'warning' },
+        'status / danger': { type: 'status', level: 'danger' },
+        'status / info': { type: 'status', level: 'info' },
       },
     },
   },
@@ -178,6 +188,25 @@ export const BadgeProfile: Story = {
       description: {
         story:
           'Badge of type `user` expects different levels: `Student | Teacher | Personnel | Relative | Guest`. You can add `background` key to the variant object to set a backgroundColor',
+      },
+    },
+  },
+};
+
+export const BadgeStatus: Story = {
+  args: {
+    variant: { type: 'status', level: 'success' },
+  },
+
+  render: (args) => {
+    return <Badge {...args}>Status</Badge>;
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Badge of type `status` expects different levels: `success | validate | warning | danger | info`.',
       },
     },
   },
