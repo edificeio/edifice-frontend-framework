@@ -282,7 +282,7 @@ export const BadgeBetaCommunities: Story = {
   args: {
     children: null,
     variant: {
-      type: 'beta',
+      type: 'appVersion',
       app: {
         name: 'communities',
         address: '',
@@ -298,7 +298,7 @@ export const BadgeBetaCommunities: Story = {
     docs: {
       description: {
         story:
-          'Badge of type `beta` is used to indicate that a feature or component is in beta status. You can customize the color of the badge using the `color` property, which accepts a hex color code.',
+          'Badge of type `appVersion` is used to display the version of an app (BETA, NEW, ALPHA, custom label version). You can customize the color of the badge using the `color` property, which accepts a hex color code.',
       },
     },
   },
@@ -307,11 +307,41 @@ export const BadgeBetaCommunities: Story = {
   },
 };
 
+export const BadgeNewCommunities: Story = {
+  args: {
+    children: null,
+    variant: {
+      type: 'appVersion',
+      app: {
+        name: 'communities',
+        address: '',
+        display: false,
+        displayName: 'Communities',
+        icon: '',
+        isExternal: false,
+        scope: [],
+        version: 'NEW',
+      },
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Badge of type `appVersion` is used to display the version of an app (BETA, NEW, ALPHA, custom label version). You can customize the color of the badge using the `color` property, which accepts a hex color code.',
+      },
+    },
+  },
+  render: (args) => {
+    return <Badge {...args}>{args.variant.app.version}</Badge>;
+  },
+};
+
 export const BadgeBetaBlog: Story = {
   args: {
     children: null,
     variant: {
-      type: 'beta',
+      type: 'appVersion',
       app: {
         name: 'blog',
         address: '',
@@ -327,7 +357,7 @@ export const BadgeBetaBlog: Story = {
     docs: {
       description: {
         story:
-          'Badge of type `beta` is used to indicate that a feature or component is in beta status. You can customize the color of the badge using the `color` property, which accepts a hex color code.',
+          'Badge of type `appVersion` is used to display the version of an app (BETA, NEW, ALPHA, custom label version). You can customize the color of the badge using the `color` property, which accepts a hex color code.',
       },
     },
   },
