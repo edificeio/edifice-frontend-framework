@@ -43,18 +43,25 @@ export type LinkBadgeVariant = {
 };
 
 /**
- * Badge variant : beta.
- * Beta Badge is used to indicate that a feature is in beta phase.
- * The color prop allows to customize the badge color to match the app color.
- * Defaults to black if not provided.
- * Beta Badge has a fixed text 'BÊTA' unless children is provided.
- * If app is provided, the color of the Beta Badge is derived from the application colors.
- * Example:
- * <Badge variant={{ type: 'beta', color: '#823AA1', app: myApp }} />
- * where myApp is of type IWebApp.
+ * Badge variant : App Version.
+ *
+ * Displays a badge showing the app version, for example: BÊTA, ALPHA, NEW or a custom version label.
+ *
+ * Default label is BÊTA unless a label is provided as a children of the component.
+ * Example of usage:
+ * <Badge variant={{ type: 'appVersion', app: myApp }}>NEW</Badge>
+ *
+ * The color prop allows to customize the badge color to match the app color (Defaults to black if not provided).
+ * Example of usage:
+ * <Badge variant={{ type: 'appVersion', color: '#823AA1' }} />
+ *
+ * If app prop is provided, the color of the App Version Badge is derived from the application colors,
+ * for example if the app provided is Blog then the Badge will have the same color as Blog app.
+ * Example of usage:
+ * <Badge variant={{ type: 'appVersion', app: blog }} />
  */
-export type BetaBadgeVariant = {
-  type: 'beta';
+export type AppVersionBadgeVariant = {
+  type: 'appVersion';
   color?: string;
   app?: IWebApp;
 };
@@ -66,7 +73,7 @@ export type BadgeVariants =
   | ProfileBadgeVariant
   | ChipBadgeVariant
   | LinkBadgeVariant
-  | BetaBadgeVariant;
+  | AppVersionBadgeVariant;
 
 export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   /**
@@ -76,7 +83,6 @@ export interface BadgeProps extends React.ComponentPropsWithRef<'span'> {
   variant?: BadgeVariants;
   /**
    * Text or icon (or whatever) to render as children elements.
-   * Defaults to 'BÊTA' for beta variant.
    */
   children?: ReactNode;
   /**
@@ -98,19 +104,19 @@ const Badge = forwardRef(
     }: BadgeProps,
     ref: Ref<BadgeRef>,
   ) => {
-    // Colors for the Beta Badge
+    // Colors for the App Version Badge
     const { getIconClass, getBackgroundLightIconClass, getBorderIconClass } =
       useEdificeIcons();
-    let badgeColorClassName = '';
-    if (variant.type === 'beta' && variant.app) {
+    let appVersionBadgeColorClassName = '';
+    if (variant.type === 'appVersion' && variant.app) {
       const colorAppClassName = getIconClass(variant.app);
       const backgroundLightAppClassName = getBackgroundLightIconClass(
         variant.app,
       );
       const borderAppClassName = getBorderIconClass(variant.app);
-      badgeColorClassName = `${colorAppClassName} ${backgroundLightAppClassName} ${borderAppClassName}`;
+      appVersionBadgeColorClassName = `${colorAppClassName} ${backgroundLightAppClassName} ${borderAppClassName}`;
     }
-    // End of Colors for the Beta Badge
+    // End of Colors for the App Version Badge
 
     const classes = clsx(
       'badge rounded-pill',
@@ -130,7 +136,7 @@ const Badge = forwardRef(
         `badge-profile-${variant.profile.toLowerCase()}`,
       variant.type === 'link' && 'badge-link border border-0',
       variant.type === 'chip' && 'bg-gray-200',
-      variant.type === 'beta' && badgeColorClassName,
+      variant.type === 'appVersion' && appVersionBadgeColorClassName,
       className,
     );
 
@@ -139,8 +145,8 @@ const Badge = forwardRef(
         {variant.type === 'chip' && (
           <div className="d-flex fw-800 align-items-center">{children}</div>
         )}
-        {variant.type === 'beta' && (children ?? 'BÊTA')}
-        {variant.type !== 'chip' && variant.type !== 'beta' && children}
+        {variant.type === 'appVersion' && (children ?? 'BÊTA')}
+        {variant.type !== 'chip' && variant.type !== 'appVersion' && children}
       </span>
     );
   },
