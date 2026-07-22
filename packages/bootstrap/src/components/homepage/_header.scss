@@ -24,16 +24,17 @@
     --navbar-brand-padding-x: 0;
     --navbar-brand-margin-end: 0;
     --navbar-brand-logo-height: 30px;
+    --navbar-brand-logo-width: 150px;
 
     grid-area: logo;
 
     .logo {
       display: none;
       height: var(--navbar-brand-logo-height);
+      width: var(--navbar-brand-logo-width);
       object-fit: contain;
       object-position: left;
       max-width: 100%;
-      width: auto;
     }
   }
 
@@ -64,7 +65,7 @@
     }
 
     .popover {
-      box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.18);
+      box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
     }
 
     .popover .logout {
@@ -88,7 +89,8 @@
   }
 
   .header-beta .navbar-brand {
-    --navbar-brand-logo-height: 20px;
+    --navbar-brand-logo-height: 32px;
+    --navbar-brand-logo-width: 240px;
 
     .logo {
       display: inline-block;
@@ -116,6 +118,7 @@
 
 @include medias.respond-from('desktop-small') {
   .header-beta .navbar-brand {
-    --navbar-brand-logo-height: 24px;
+    --navbar-brand-logo-height: 40px;
+    --navbar-brand-logo-width: 300px;
   }
 }
