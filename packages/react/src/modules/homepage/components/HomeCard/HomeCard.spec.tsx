@@ -67,6 +67,45 @@ describe('HomeCard', () => {
     expect(screen.getByText('From props')).toBeInTheDocument();
     expect(screen.getByTestId('home-card-header-action')).toBeInTheDocument();
   });
+
+  it('does not render a footer wrapper when no footer is provided', () => {
+    const { container } = render(
+      <HomeCard>
+        <HomeCard.Content>content</HomeCard.Content>
+      </HomeCard>,
+    );
+
+    expect(
+      container.querySelector('.home-card-footer'),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId('home-card')).not.toHaveClass(
+      'home-card--with-footer',
+    );
+  });
+
+  it('renders the footer wrapper and content when footer is provided', () => {
+    const { container } = render(
+      <HomeCard footer={<span>My footer</span>}>
+        <HomeCard.Content>content</HomeCard.Content>
+      </HomeCard>,
+    );
+
+    const footerWrapper = container.querySelector('.home-card-footer');
+    expect(footerWrapper).toBeInTheDocument();
+    expect(screen.getByText('My footer')).toBeInTheDocument();
+  });
+
+  it('applies the "home-card--with-footer" class when footer is provided', () => {
+    render(
+      <HomeCard footer={<span>My footer</span>}>
+        <HomeCard.Content>content</HomeCard.Content>
+      </HomeCard>,
+    );
+
+    expect(screen.getByTestId('home-card')).toHaveClass(
+      'home-card--with-footer',
+    );
+  });
 });
 
 describe('HomeCard.Header', () => {

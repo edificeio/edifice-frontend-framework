@@ -11,18 +11,13 @@ type ChildInfo = {
   firstName: string;
 };
 
-/** Generates user's links to show in the UserSpace widget. */
+/** Generates user's links to show in the UserSpace home component. */
 export function useProfileLinks(
   profile: UserProfile[number],
 ): Array<ProfileLink> | undefined {
   const { user } = useEdificeClient();
   const { t } = useTranslation();
 
-  if (profile === 'Guest') {
-    return undefined;
-  }
-
-  // Retrieve structure ID
   const structureId = user?.structures?.[0];
 
   if (structureId && profile) {
@@ -59,7 +54,7 @@ export function useProfileLinks(
           text: t('homepage.userspace.relative.link.classes', {
             childName: `${child.firstName}`,
           }),
-          url: `${baseUrl}?filters=groups&structure=${structureId}`,
+          url: `${baseUrl}?filters=groups&structure=${structureId}`, //TODO: Add child class ID "&class=classID" to the URL when the backend supports it
         }));
       }
       case 'Personnel': {
@@ -70,6 +65,9 @@ export function useProfileLinks(
           },
         ];
       }
+
+      case 'Guest':
+        return undefined;
     }
   }
 
