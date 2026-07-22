@@ -1,5 +1,3 @@
-@use '../abstracts/' as *;
-
 .badge {
   --badge-padding-x: 1.2rem;
 
@@ -51,29 +49,31 @@
   }
 
   &.badge-status {
+    border: 1px solid var(--primitive-white);
+
     &-validate {
-      background-color: var(--#{$prefix}green);
-      color: var(--#{$prefix}white);
+      background-color: var(--primitive-success-500);
+      color: var(--primitive-white);
     }
 
     &-success {
-      background-color: var(--#{$prefix}green-200);
-      color: var(--#{$prefix}green-800);
+      background-color: var(--primitive-green-200);
+      color: var(--primitive-green-700);
     }
 
     &-warning {
-      background-color: var(--#{$prefix}orange-200);
-      color: var(--#{$prefix}orange-500);
+      background-color: var(--primitive-orange-200);
+      color: var(--primitive-orange-700);
     }
 
     &-danger {
-      background-color: var(--#{$prefix}red-200);
-      color: var(--#{$prefix}red);
+      background-color: var(--primitive-danger-200);
+      color: var(--primitive-danger-700);
     }
 
     &-info {
-      background-color: var(--#{$prefix}blue-200);
-      color: var(--#{$prefix}blue-800);
+      background-color: var(--primitive-info-200);
+      color: var(--primitive-info-700);
     }
   }
 
