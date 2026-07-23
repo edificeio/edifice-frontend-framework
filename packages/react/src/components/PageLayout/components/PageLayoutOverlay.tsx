@@ -1,6 +1,7 @@
 import {
   type ComponentPropsWithoutRef,
   type ReactNode,
+  useCallback,
   useEffect,
 } from 'react';
 
@@ -30,10 +31,10 @@ const PageLayoutOverlay = ({
   const { t } = useTranslation();
   const { isOverlayOpen, updateOverlayOpen } = useOverlay();
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     updateOverlayOpen(false);
     onClose?.();
-  };
+  }, [onClose, updateOverlayOpen]);
 
   useEffect(() => {
     if (!isOverlayOpen) return;
@@ -60,7 +61,6 @@ const PageLayoutOverlay = ({
           className,
         )}
         aria-hidden={!isOverlayOpen}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore — inert is not yet in React's HTMLAttributes but is valid HTML
         inert={!isOverlayOpen ? '' : undefined}
         {...props}

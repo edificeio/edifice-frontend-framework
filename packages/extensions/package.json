@@ -126,7 +126,7 @@
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --check \"src/**/*.ts\"",
     "format:write": "prettier --write \"src/**/*.ts\"",
-    "lint": "eslint"
+    "lint": "eslint --max-warnings 0"
   },
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",
