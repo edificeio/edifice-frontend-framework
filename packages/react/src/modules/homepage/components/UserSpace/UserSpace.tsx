@@ -25,17 +25,23 @@ export default function UserSpace({
   return (
     <HomeCard
       variant="user"
-      footer={links?.map((link) => (
-        <ButtonBeta
-          key={link.url}
-          size="sm"
-          variant="ghost"
-          leftIcon={<IconClass />}
-          onClick={() => (window.location.href = link.url)}
-        >
-          {link.text}
-        </ButtonBeta>
-      ))}
+      footer={
+        !!links && (
+          <Flex>
+            {links.map((link, index) => (
+              <ButtonBeta
+                key={`${link.url}-${index}`}
+                size="sm"
+                variant="ghost"
+                leftIcon={<IconClass />}
+                onClick={() => (window.location.href = link.url)}
+              >
+                {link.text}
+              </ButtonBeta>
+            ))}
+          </Flex>
+        )
+      }
     >
       <Flex className={'user-space'} direction="row" gap="8">
         <Avatar
