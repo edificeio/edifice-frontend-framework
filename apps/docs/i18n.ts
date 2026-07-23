@@ -252,11 +252,49 @@ i18n.use(initReactI18next).init({
         'homepage.last-infos-list.title': 'Dernières actualités',
         //------------------------------------------------------
 
-        //----------------- useDate (formatTimeAgo) -----------------
+        //----------------- useDate (deprecated formatTimeAgo) -----------------
         'date.format.yesterday': 'Yesterday',
         'date.format.currentWeek': 'dddd',
         'date.format.currentYear': 'D MMM',
         'date.format.previousYear': 'D MMM YYYY',
+        //----------------- useDate (date format spec) -----------------
+        // Friendly - with time
+        'date.friendly.datetime.yesterday': '[Yesterday at] h:mma',
+        'date.friendly.datetime.tomorrow': '[Tomorrow at] h:mma',
+        'date.friendly.datetime.weekday': 'dddd [at] h:mma',
+        'date.friendly.datetime.currentYear': 'MMMM D [at] h:mma',
+        'date.friendly.datetime.otherYear': 'MMMM D, YYYY [at] h:mma',
+        // Friendly - without time
+        'date.friendly.date.yesterday': '[Yesterday]',
+        'date.friendly.date.tomorrow': '[Tomorrow]',
+        'date.friendly.date.weekday': 'dddd',
+        'date.friendly.date.currentYear': 'MMM D',
+        'date.friendly.date.otherYear': 'MMM D, YYYY',
+        // Simple & textual
+        'date.long.datetime': 'MMMM D, YYYY [at] HH:mm',
+        'date.long.date': 'MMMM D, YYYY',
+        // Raw
+        'date.raw.date': 'MM/DD/YYYY',
+        'date.raw.datetime': 'MM/DD/YYYY HH:mm',
+        // Calendar
+        'date.calendar.today': 'Today',
+        'date.calendar.yesterday': 'Yesterday',
+        'date.calendar.tomorrow': 'Tomorrow',
+        'date.calendar.full.currentYear': 'dddd MMMM D',
+        'date.calendar.full.otherYear': 'dddd MMMM D, YYYY',
+        'date.calendar.short.currentYear': 'dddd MMM D',
+        'date.calendar.short.otherYear': 'dddd MMM D, YYYY',
+        'date.calendar.abbr.currentYear': 'MM/DD',
+        'date.calendar.abbr.otherYear': 'MM/DD/YY',
+        // Week
+        'date.week.current': 'This week',
+        'date.week.last': 'Last week (from [[start]] to [[end]])',
+        'date.week.next': 'Next week (from [[start]] to [[end]])',
+        'date.week.other.currentYear': 'Week of [[start]] to [[end]]',
+        'date.week.other.otherYear': 'Week of [[start]] to [[end]] [[year]]',
+        'date.week.boundary.short': 'MMM D',
+        'date.week.boundary.day': 'D',
+        'date.week.boundary.dayMonth': 'MMMM D',
         //------------------------------------------------------
 
         //----------------- BetaSwitch -----------------
@@ -285,6 +323,54 @@ i18n.use(initReactI18next).init({
         'support': 'Support',
         'actualites': 'Actualités',
         'rbs': 'RBS',
+        //------------------------------------------------------
+      },
+    },
+    fr: {
+      translation: {
+        //----------------- useDate (deprecated formatTimeAgo) -----------------
+        'date.format.yesterday': 'Hier',
+        'date.format.currentWeek': 'dddd',
+        'date.format.currentYear': 'D MMM',
+        'date.format.previousYear': 'D MMM YYYY',
+        //----------------- useDate (date format spec) -----------------
+        // Friendly - with time
+        'date.friendly.datetime.yesterday': '[Hier à] HH[h]mm',
+        'date.friendly.datetime.tomorrow': '[Demain à] HH[h]mm',
+        'date.friendly.datetime.weekday': 'dddd [à] HH[h]mm',
+        'date.friendly.datetime.currentYear': '[le] D MMMM [à] HH[h]mm',
+        'date.friendly.datetime.otherYear': '[le] D MMMM YYYY [à] HH[h]mm',
+        // Friendly - without time
+        'date.friendly.date.yesterday': '[Hier]',
+        'date.friendly.date.tomorrow': '[Demain]',
+        'date.friendly.date.weekday': 'dddd',
+        'date.friendly.date.currentYear': 'D MMM',
+        'date.friendly.date.otherYear': 'D MMM YYYY',
+        // Simple & textual
+        'date.long.datetime': 'D MMMM YYYY [à] HH:mm',
+        'date.long.date': 'D MMMM YYYY',
+        // Raw
+        'date.raw.date': 'DD/MM/YYYY',
+        'date.raw.datetime': 'DD/MM/YYYY HH:mm',
+        // Calendar
+        'date.calendar.today': "Aujourd'hui",
+        'date.calendar.yesterday': 'Hier',
+        'date.calendar.tomorrow': 'Demain',
+        'date.calendar.full.currentYear': 'dddd D MMMM',
+        'date.calendar.full.otherYear': 'dddd D MMMM YYYY',
+        'date.calendar.short.currentYear': 'dddd D MMM',
+        'date.calendar.short.otherYear': 'dddd D MMM YYYY',
+        'date.calendar.abbr.currentYear': 'DD/MM',
+        'date.calendar.abbr.otherYear': 'DD/MM/YY',
+        // Week
+        'date.week.current': 'Cette semaine',
+        'date.week.last': 'Semaine dernière (du [[start]] au [[end]])',
+        'date.week.next': 'Semaine prochaine (du [[start]] au [[end]])',
+        'date.week.other.currentYear': 'Semaine du [[start]] au [[end]]',
+        'date.week.other.otherYear': 'Semaine du [[start]] au [[end]] [[year]]',
+        'date.week.boundary.short': 'D MMM',
+        'date.week.boundary.day': 'D',
+        'date.week.boundary.dayMonth': 'D MMMM',
         //------------------------------------------------------
       },
     },

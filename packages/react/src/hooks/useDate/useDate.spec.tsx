@@ -1,118 +1,231 @@
+import dayjs from 'dayjs';
+import { getI18n } from 'react-i18next';
+
 import { renderHook, wrapper } from '~/setup';
 import useDate from './useDate';
 
-// The MockedProvider wrapper supplies currentLanguage = 'fr'.
-function render() {
-  return renderHook(() => useDate(), { wrapper });
-}
+/**
+ * The MockedProvider sets `currentLanguage` to 'fr', so dayjs formats in
+ * French. We align i18next on 'fr' too, so the label/pattern keys match the
+ * dayjs locale and the outputs follow the date format spec examples.
+ */
 
-describe('useDate', () => {
-  describe('formatDate', () => {
-    it('formats a short date using the localized L pattern', () => {
-      const { result } = render();
+// Frozen "now": Wednesday, June 24th 2026 at 16:22.
+const NOW = new Date(2026, 5, 24, 16, 22, 0);
 
-      expect(result.current.formatDate('2021-03-24', 'short')).toBe(
-        '24/03/2021',
-      );
-    });
+const renderUseDate = () => renderHook(() => useDate(), { wrapper }).result;
 
-    it('honors a custom dayjs format string', () => {
-      const { result } = render();
+// French formatting computed with dayjs, to assert weekday/week-dependent
+// outputs without hardcoding locale data.
+const fr = (date: Date, pattern: string) =>
+  dayjs(date).locale('fr').format(pattern);
 
-      expect(result.current.formatDate('2021-03-24', 'YYYY-MM-DD')).toBe(
-        '2021-03-24',
-      );
-    });
+describe('useDate hook', () => {
+  beforeAll(async () => {
+    await getI18n().changeLanguage('fr');
+  });
 
-    it('formats a numeric (epoch) date', () => {
-      const { result } = render();
+  afterAll(async () => {
+    await getI18n().changeLanguage('en');
+  });
 
-      // 2021-06-15T12:00:00Z
-      expect(result.current.formatDate(1623758400000, 'YYYY')).toBe('2021');
-    });
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(NOW);
+  });
 
-    it('formats a MongoDate ($date epoch)', () => {
-      const { result } = render();
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
-      expect(result.current.formatDate({ $date: 1623758400000 }, 'YYYY')).toBe(
-        '2021',
-      );
-    });
-
-    it('returns an empty string for an invalid date', () => {
-      const { result } = render();
-
+  describe('formatRelativeDateTime (friendly, with time)', () => {
+    it('uses a relative wording for recent dates', () => {
+      const { current } = renderUseDate();
       expect(
-        result.current.formatDate('not a valid date at all', 'short'),
-      ).toBe('');
+        current.formatRelativeDateTime(new Date(2026, 5, 24, 15, 42)),
+      ).toBe('il y a 40 minutes');
+    });
+
+    it('formats yesterday and tomorrow with time', () => {
+      const { current } = renderUseDate();
+      expect(
+        current.formatRelativeDateTime(new Date(2026, 5, 23, 16, 22)),
+      ).toBe('Hier à 16h22');
+      expect(
+        current.formatRelativeDateTime(new Date(2026, 5, 25, 16, 22)),
+      ).toBe('Demain à 16h22');
+    });
+
+    it('formats a date within the week as a weekday with time', () => {
+      const { current } = renderUseDate();
+      const target = new Date(2026, 5, 28, 16, 22);
+      expect(current.formatRelativeDateTime(target)).toBe(
+        fr(target, 'dddd [à] HH[h]mm'),
+      );
+    });
+
+    it('formats dates of the current and other years', () => {
+      const { current } = renderUseDate();
+      expect(
+        current.formatRelativeDateTime(new Date(2026, 1, 10, 16, 22)),
+      ).toBe('le 10 février à 16h22');
+      expect(
+        current.formatRelativeDateTime(new Date(2020, 10, 25, 16, 22)),
+      ).toBe('le 25 novembre 2020 à 16h22');
     });
   });
 
-  describe('comparisons', () => {
-    it('dateIsSame compares by day and by unit', () => {
-      const { result } = render();
-
-      expect(result.current.dateIsSame('2021-03-24', '2021-03-24')).toBe(true);
-      expect(result.current.dateIsSame('2021-03-24', '2021-03-25')).toBe(false);
-      expect(
-        result.current.dateIsSame('2021-03-24', '2021-03-25', 'month'),
-      ).toBe(true);
-    });
-
-    it('dateIsSameOrAfter checks the ordering', () => {
-      const { result } = render();
-
-      expect(result.current.dateIsSameOrAfter('2021-03-25', '2021-03-24')).toBe(
-        true,
+  describe('formatRelativeDate (friendly, without time)', () => {
+    it('formats yesterday, current year and other year without time', () => {
+      const { current } = renderUseDate();
+      expect(current.formatRelativeDate(new Date(2026, 5, 23, 16, 22))).toBe(
+        'Hier',
       );
-      expect(result.current.dateIsSameOrAfter('2021-03-23', '2021-03-24')).toBe(
-        false,
+      expect(current.formatRelativeDate(new Date(2026, 1, 10, 16, 22))).toBe(
+        '10 févr.',
+      );
+      expect(current.formatRelativeDate(new Date(2020, 10, 25, 16, 22))).toBe(
+        '25 nov. 2020',
       );
     });
   });
 
-  describe('now-relative helpers', () => {
-    afterEach(() => {
-      vi.useRealTimers();
+  describe('simple & textual formats', () => {
+    it('formatLongDateTime', () => {
+      const { current } = renderUseDate();
+      expect(current.formatLongDateTime(new Date(2021, 6, 23, 17, 46))).toBe(
+        '23 juillet 2021 à 17:46',
+      );
     });
 
-    it('dateIsToday reflects the system date', () => {
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date(2021, 5, 15, 12, 0, 0));
-      const { result } = render();
+    it('formatLongDate', () => {
+      const { current } = renderUseDate();
+      expect(current.formatLongDate(new Date(2021, 6, 23))).toBe(
+        '23 juillet 2021',
+      );
+    });
+  });
 
-      expect(result.current.dateIsToday('2021-06-15')).toBe(true);
-      expect(result.current.dateIsToday('2000-01-01')).toBe(false);
+  describe('raw formats', () => {
+    it('formatRawDate', () => {
+      const { current } = renderUseDate();
+      expect(current.formatRawDate(new Date(2025, 1, 28))).toBe('28/02/2025');
     });
 
-    it('formatTimeAgo returns the localized "Yesterday" label', () => {
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date(2021, 5, 15, 12, 0, 0));
-      const { result } = render();
+    it('formatRawDateTime', () => {
+      const { current } = renderUseDate();
+      expect(current.formatRawDateTime(new Date(2019, 10, 18, 15, 36))).toBe(
+        '18/11/2019 15:36',
+      );
+    });
+  });
 
-      expect(result.current.formatTimeAgo('2021-06-14')).toBe('Yesterday');
+  describe('formatCalendarDate', () => {
+    it('shows today/yesterday/tomorrow as words for every variant', () => {
+      const { current } = renderUseDate();
+      expect(current.formatCalendarDate(NOW, 'full')).toBe("Aujourd'hui");
+      expect(current.formatCalendarDate(NOW, 'abbr')).toBe("Aujourd'hui");
+      expect(current.formatCalendarDate(new Date(2026, 5, 23), 'short')).toBe(
+        'Hier',
+      );
     });
 
-    it('formatTimeAgo returns an empty string for an invalid date', () => {
-      const { result } = render();
-
-      expect(result.current.formatTimeAgo('not a valid date at all')).toBe('');
+    it('formats full and short variants with weekday', () => {
+      const { current } = renderUseDate();
+      const sameYear = new Date(2026, 3, 16);
+      const otherYear = new Date(2022, 0, 12);
+      expect(current.formatCalendarDate(sameYear, 'full')).toBe(
+        fr(sameYear, 'dddd D MMMM'),
+      );
+      expect(current.formatCalendarDate(otherYear, 'short')).toBe(
+        fr(otherYear, 'dddd D MMM YYYY'),
+      );
     });
 
-    it('fromNow returns a non-empty string for a valid date', () => {
-      vi.useFakeTimers();
-      vi.setSystemTime(new Date(2021, 5, 15, 12, 0, 0));
-      const { result } = render();
+    it('formats the abbreviated variant for current and other years', () => {
+      const { current } = renderUseDate();
+      expect(current.formatCalendarDate(new Date(2026, 3, 16), 'abbr')).toBe(
+        '16/04',
+      );
+      expect(current.formatCalendarDate(new Date(2020, 7, 30), 'abbr')).toBe(
+        '30/08/20',
+      );
+    });
+  });
 
-      const value = result.current.fromNow('2021-06-14');
-      expect(typeof value).toBe('string');
-      expect(value.length).toBeGreaterThan(0);
+  describe('formatWeek', () => {
+    it('formats the current week', () => {
+      const { current } = renderUseDate();
+      expect(current.formatWeek(NOW)).toBe('Cette semaine');
     });
 
-    it('fromNow returns an empty string for an invalid date', () => {
-      const { result } = render();
+    it('formats the next week with its bounds', () => {
+      const { current } = renderUseDate();
+      const next = new Date(2026, 6, 1);
+      const start = dayjs(next).locale('fr').startOf('week');
+      const end = dayjs(next).locale('fr').endOf('week');
+      expect(current.formatWeek(next)).toBe(
+        `Semaine prochaine (du ${start.format('D MMM')} au ${end.format('D MMM')})`,
+      );
+    });
 
-      expect(result.current.fromNow('not a valid date at all')).toBe('');
+    it('formats another week of the current year', () => {
+      const { current } = renderUseDate();
+      const other = new Date(2026, 0, 20);
+      const start = dayjs(other).locale('fr').startOf('week');
+      const end = dayjs(other).locale('fr').endOf('week');
+      expect(current.formatWeek(other)).toBe(
+        `Semaine du ${start.format('D')} au ${end.format('D MMMM')}`,
+      );
+    });
+  });
+
+  describe('conversions', () => {
+    const ref = new Date(2021, 2, 24, 16, 36, 5);
+
+    it('converts to a native Date, timestamp, ISO string and MongoDate', () => {
+      const { current } = renderUseDate();
+      expect(current.toJsDate(ref)?.getTime()).toBe(ref.getTime());
+      expect(current.toTimestamp(ref)).toBe(ref.getTime());
+      expect(current.toIsoDate(ref)).toBe(dayjs(ref).toISOString());
+      expect(current.toMongoDate(ref)).toEqual({ $date: ref.getTime() });
+    });
+
+    it('round-trips a MongoDate input', () => {
+      const { current } = renderUseDate();
+      const mongo = { $date: ref.getTime() };
+      expect(current.toTimestamp(mongo)).toBe(ref.getTime());
+    });
+
+    it('returns undefined for invalid input', () => {
+      const { current } = renderUseDate();
+      expect(current.toTimestamp('not-a-date')).toBeUndefined();
+      expect(current.toJsDate('not-a-date')).toBeUndefined();
+      expect(current.toIsoDate('not-a-date')).toBeUndefined();
+      expect(current.toMongoDate('not-a-date')).toBeUndefined();
+    });
+  });
+
+  describe('empty string for invalid dates', () => {
+    it('returns "" from formatters when the date is invalid', () => {
+      const { current } = renderUseDate();
+      expect(current.formatRawDate('not-a-date')).toBe('');
+      expect(current.formatRelativeDateTime('not-a-date')).toBe('');
+      expect(current.formatCalendarDate('not-a-date')).toBe('');
+      expect(current.formatWeek('not-a-date')).toBe('');
+    });
+  });
+
+  describe('deprecated methods still work', () => {
+    it('fromNow, formatDate and formatTimeAgo', () => {
+      const { current } = renderUseDate();
+      expect(current.fromNow(new Date(2026, 5, 24, 15, 42))).toBe(
+        'il y a 40 minutes',
+      );
+      expect(current.formatDate(new Date(2025, 1, 28), 'short')).toBe(
+        '28/02/2025',
+      );
+      expect(current.formatTimeAgo(new Date(2026, 5, 23, 16, 22))).toBe('Hier');
     });
   });
 });
