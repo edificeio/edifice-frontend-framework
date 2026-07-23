@@ -13,11 +13,19 @@ const PROFILES = [
 ] as const;
 
 const RELATIVE_CHILDREN = {
-  '24827863-82d6-4812-944f-13608b07a811': {
-    lastName: 'WEASLEY',
-    firstName: 'Ronald',
+  '4d9edf62-3185-461b-8639-7b27bf95d5ac': {
+    lastName: 'Weasley',
+    firstName: 'Ron',
   },
-  '55f8fa0e-b690-4feb-85bb-1f6a84dfd6c7': {
+  '93c2611a-b024-4732-b03b-2466c8307086': {
+    lastName: 'WEASLEY',
+    firstName: 'Fred',
+  },
+  '637b68b9-ccf3-4b15-8aa7-d0395de4946f': {
+    lastName: 'Weasley',
+    firstName: 'George',
+  },
+  'cf6c8e8c-dbc4-4fee-98b1-12f0687bc89d': {
     lastName: 'WEASLEY',
     firstName: 'Ginny',
   },

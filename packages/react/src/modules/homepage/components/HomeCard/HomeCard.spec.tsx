@@ -76,11 +76,8 @@ describe('HomeCard', () => {
     );
 
     expect(
-      container.querySelector('.home-card-footer'),
+      container.querySelector('.home-card--with-footer'),
     ).not.toBeInTheDocument();
-    expect(screen.getByTestId('home-card')).not.toHaveClass(
-      'home-card--with-footer',
-    );
   });
 
   it('renders the footer wrapper and content when footer is provided', () => {
@@ -90,21 +87,9 @@ describe('HomeCard', () => {
       </HomeCard>,
     );
 
-    const footerWrapper = container.querySelector('.home-card-footer');
+    const footerWrapper = container.querySelector('.home-card--with-footer');
     expect(footerWrapper).toBeInTheDocument();
     expect(screen.getByText('My footer')).toBeInTheDocument();
-  });
-
-  it('applies the "home-card--with-footer" class when footer is provided', () => {
-    render(
-      <HomeCard footer={<span>My footer</span>}>
-        <HomeCard.Content>content</HomeCard.Content>
-      </HomeCard>,
-    );
-
-    expect(screen.getByTestId('home-card')).toHaveClass(
-      'home-card--with-footer',
-    );
   });
 });
 

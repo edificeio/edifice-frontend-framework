@@ -50,9 +50,7 @@ const Root = ({
   className,
   ...rest
 }: HomeCardProps) => {
-  const classNames = clsx('home-card', `home-card--${variant}`, className, {
-    'home-card--with-footer': !!footer,
-  });
+  const classNames = clsx('home-card', `home-card--${variant}`, className);
   const content = (
     <div
       data-testid="home-card"
@@ -69,9 +67,14 @@ const Root = ({
   );
 
   return footer ? (
-    <div className="home-card-footer">
+    <div className="home-card--with-footer">
       {content}
-      <Flex direction="row" justify="center" gap="8" className="px-16 py-4">
+      <Flex
+        direction="row"
+        justify="center"
+        gap="8"
+        className="px-16 py-4 home-card-footer"
+      >
         {footer}
       </Flex>
     </div>

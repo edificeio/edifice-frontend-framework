@@ -32,10 +32,6 @@
     box-shadow: none;
   }
 
-  &--with-footer {
-    box-shadow: none;
-  }
-
   // ---- Header ----
   &-header-title {
     margin: 0;
@@ -63,9 +59,17 @@
 
   // ---- Footer ----
 
-  &-footer {
+  &--with-footer {
     background-color: var(--primitive-grey-100);
     border-radius: var(--primitive-border-radius-2xl);
     box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
+    .home-card--user {
+      box-shadow: none;
+    }
+
+    .home-card-footer {
+      overflow: auto;
+    }
   }
 }

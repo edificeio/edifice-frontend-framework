@@ -23,20 +23,33 @@ export function useProfileLinks(
   if (structureId && profile) {
     const baseUrl = '/userbook/annuaire#/search';
 
+    const buildStructureGroupsUrl = () => {
+      const params = new URLSearchParams({
+        filters: 'groups',
+        structure: structureId,
+      });
+      return `${baseUrl}?${params.toString()}`;
+    };
+
+    const buildClassesUrl = (classIds: string[] = []) => {
+      const params = new URLSearchParams({
+        filters: 'groups',
+        structure: structureId,
+      });
+      classIds.forEach((c) => params.append('class', String(c)));
+      return `${baseUrl}?${params.toString()}`;
+    };
+
     switch (profile) {
       case 'Teacher': {
-        let classesUrl = `${baseUrl}?filters=groups&structure=${structureId}`;
-        user.classes.forEach((c) => (classesUrl += '&class=' + c));
         return [
           {
             text: t('homepage.userspace.teacher.link.classes'),
-            url: classesUrl,
+            url: buildClassesUrl(user.classes),
           },
         ];
       }
       case 'Student': {
-        let url = `${baseUrl}?filters=groups&structure=${structureId}`;
-        user.classes.forEach((c) => (url += '&class=' + c));
         return [
           {
             text: t('homepage.userspace.student.link.teachers'),
@@ -44,24 +57,28 @@ export function useProfileLinks(
           },
           {
             text: t('homepage.userspace.student.link.classes'),
-            url,
+            url: buildClassesUrl(user.classes),
           },
         ];
       }
       case 'Relative': {
-        const children = user.children as Record<string, ChildInfo>;
-        return Object.entries(children).map(([, child]) => ({
+        const children = (user.children ?? {}) as Record<string, ChildInfo>;
+        const childrenArray = Object.entries(children);
+        if (!childrenArray.length) return undefined;
+
+        const classIds: string[] = []; //TODO: Add child class ID "&class=classID" to the URL when the backend supports it
+        return childrenArray.map(([, child]) => ({
           text: t('homepage.userspace.relative.link.classes', {
             childName: `${child.firstName}`,
           }),
-          url: `${baseUrl}?filters=groups&structure=${structureId}`, //TODO: Add child class ID "&class=classID" to the URL when the backend supports it
+          url: buildClassesUrl(classIds),
         }));
       }
       case 'Personnel': {
         return [
           {
             text: t('homepage.userspace.personnel.link.classesAndGroups'),
-            url: `${baseUrl}?filters=groups&structure=${structureId}`,
+            url: buildStructureGroupsUrl(),
           },
         ];
       }
