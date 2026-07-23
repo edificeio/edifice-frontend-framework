@@ -13,6 +13,13 @@ export interface PopoverProps {
    */
   isVisible?: boolean;
   /**
+   * Horizontal alignment relative to the trigger.
+   * `center` (default) centers the popover under the trigger.
+   * `end` aligns the popover's right edge with the trigger's right edge,
+   * which prevents overflow when the trigger sits near the viewport's right edge.
+   */
+  align?: 'center' | 'end';
+  /**
    * React Node
    */
   children: ReactNode;
@@ -49,9 +56,15 @@ export const PopoverFooter = ({ children, className }: PopoverProps) => {
 };
 
 export const Popover = forwardRef<HTMLDivElement, PopoverProps>(
-  ({ children, className, id, isVisible, ...restProps }, ref) => {
+  (
+    { align = 'center', children, className, id, isVisible, ...restProps },
+    ref,
+  ) => {
     const classes = clsx(
-      'popover d-block position-absolute top-100 start-50 translate-middle-x',
+      'popover d-block position-absolute top-100',
+      align === 'end'
+        ? 'end-0 popover-align-end'
+        : 'start-50 translate-middle-x',
       className,
     );
 

@@ -29,6 +29,14 @@
     transform: translateX(-50%);
   }
 
+  // When aligned to the trigger's right edge, the arrow follows suit
+  // instead of centering on the whole (wider) popover box.
+  &-align-end::before {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
   &::after {
     display: none;
   }
