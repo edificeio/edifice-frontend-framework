@@ -55,7 +55,7 @@ export const Base: Story = {
   args: {
     color: 'primary',
     variant: 'filled',
-    children: 'Label TurboSnap test',
+    children: 'Label',
     type: 'button',
     disabled: false,
   },
