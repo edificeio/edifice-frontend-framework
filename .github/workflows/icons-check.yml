@@ -2,10 +2,6 @@ name: "Icons check"
 
 on:
   pull_request:
-    paths:
-      - "packages/react/src/modules/icons/**"
-      - "packages/react/svgr.config.cjs"
-      - ".github/workflows/icons-check.yml"
 
 jobs:
   icons-check:
