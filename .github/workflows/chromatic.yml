@@ -1,17 +1,32 @@
 name: "Chromatic"
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - develop
+      - develop*
+      - epic-*
   workflow_dispatch:
 
 jobs:
   chromatic:
     name: Run Chromatic
     runs-on: ubuntu-latest
+    env:
+      # Required for TurboSnap to correctly detect changed files on pull_request events.
+      # See https://www.chromatic.com/docs/github-actions/
+      CHROMATIC_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
+      CHROMATIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      CHROMATIC_SLUG: ${{ github.repository }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -27,7 +42,7 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@v18
         with:
           # ⚠️ Make sure to configure a `CHROMATIC_PROJECT_TOKEN` repository secret
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

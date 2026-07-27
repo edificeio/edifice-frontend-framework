@@ -1,5 +1,6 @@
 {
   "onlyChanged": true,
+  "untraced": ["**/package.json"],
   "projectId": "6717abe597612cd54fd9ea66",
   "storybookBaseDir": "apps/docs",
   "buildScriptName": "build",
