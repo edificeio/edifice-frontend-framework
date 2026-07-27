@@ -36,7 +36,7 @@ describe('ButtonBeta', () => {
     render(<ButtonBeta leftIcon={<span>icon</span>}>Save</ButtonBeta>);
 
     const button = screen.getByTestId('button-beta');
-    expect(button).toHaveClass('btn-beta--with-icon');
+    expect(button).toHaveClass('btn-beta--with-left-icon');
     expect(button).not.toHaveClass('btn-beta--icon-only');
   });
 
