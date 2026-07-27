@@ -17,5 +17,3 @@ This package contains shared utility functions and helpers used across multiple 
 ```bash
 pnpm add @edifice.io/utilities
 ```
-
-<!-- ci test: validating tests.yml paths-filter fast-skip, will revert -->
