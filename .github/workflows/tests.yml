@@ -2,35 +2,47 @@ name: 'Tests'
 
 on:
   pull_request:
-    paths:
-      - 'packages/react/**'
-      - 'packages/client/**'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/tests.yml'
 
 jobs:
+  changes:
+    name: Detect relevant changes
+    runs-on: ubuntu-latest
+    outputs:
+      react: ${{ steps.filter.outputs.react }}
+      client: ${{ steps.filter.outputs.client }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            react:
+              - 'packages/react/**'
+              - '.github/workflows/tests.yml'
+            client:
+              - 'packages/client/**'
+              - '.github/workflows/tests.yml'
+
   test-react:
     name: '@edifice.io/react — lint, format, test (coverage)'
+    needs: changes
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - uses: pnpm/action-setup@v4
-      - name: Install dependencies
-        run: pnpm install
-      - name: Build workspace dependencies
-        run: pnpm run build
-      - name: Lint
-        run: pnpm --filter @edifice.io/react lint
-      - name: Format
-        run: pnpm --filter @edifice.io/react format
-      - name: Test with coverage
-        run: pnpm --filter @edifice.io/react test:coverage
+      - name: Install, lint, format, test (coverage)
+        if: needs.changes.outputs.react == 'true'
+        run: |
+          pnpm install
+          pnpm run build
+          pnpm --filter @edifice.io/react lint
+          pnpm --filter @edifice.io/react format
+          pnpm --filter @edifice.io/react test:coverage
       - name: Upload coverage report
-        if: always()
+        if: needs.changes.outputs.react == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-react
@@ -39,26 +51,24 @@ jobs:
 
   test-client:
     name: '@edifice.io/client — lint, format, test (coverage)'
+    needs: changes
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - uses: pnpm/action-setup@v4
-      - name: Install dependencies
-        run: pnpm install
-      - name: Build workspace dependencies
-        run: pnpm run build
-      - name: Lint
-        run: pnpm --filter @edifice.io/client lint
-      - name: Format
-        run: pnpm --filter @edifice.io/client format
-      - name: Test with coverage
-        run: pnpm --filter @edifice.io/client test:coverage
+      - name: Install, lint, format, test (coverage)
+        if: needs.changes.outputs.client == 'true'
+        run: |
+          pnpm install
+          pnpm run build
+          pnpm --filter @edifice.io/client lint
+          pnpm --filter @edifice.io/client format
+          pnpm --filter @edifice.io/client test:coverage
       - name: Upload coverage report
-        if: always()
+        if: needs.changes.outputs.client == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: coverage-client
