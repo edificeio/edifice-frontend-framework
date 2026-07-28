@@ -13,6 +13,14 @@ import MediaLibrary, {
 const meta: Meta<typeof MediaLibrary> = {
   title: 'Modules/Multimedia/MediaLibrary',
   component: MediaLibrary,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `MediaLibrary` component is the modal through which the user picks or produces a media. It gathers every source behind tabs: the workspace, a device upload, an external link, embed code, and direct audio or video recording. Which tabs appear depends on the requested `MediaLibraryType`, so the same component serves an image picker as well as an attachment picker. It is driven imperatively through a `MediaLibraryRef` — the host app opens it on the right tab and receives the user's selection as a `MediaLibraryResult`. Most apps reach it indirectly through the editor rather than mounting it themselves.",
+      },
+    },
+  },
   decorators: [
     (Story) => {
       return (

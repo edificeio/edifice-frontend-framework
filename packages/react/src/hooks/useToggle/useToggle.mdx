@@ -1,0 +1,45 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as useToggleStories from './useToggle.stories';
+
+<Meta of={useToggleStories} />
+
+# useToggle
+
+## Usage
+
+This hook manages a boolean state and returns a function that flips it. Typical uses:
+
+- show or hide a panel
+- switch an icon between two states
+- drive an `aria-expanded` attribute
+
+## Example
+
+<Canvas of={useToggleStories.Example} />
+
+## Hook usage
+
+```jsx
+const [isOpen, toggle] = useToggle(false);
+
+<>
+  <button onClick={toggle} aria-expanded={isOpen}>
+    {isOpen ? 'Hide' : 'Show'}
+  </button>
+  {isOpen && <Panel />}
+</>;
+```
+
+## Parameters
+
+- `initialState` (boolean, optional): The starting value. Defaults to `false`.
+
+## Returns
+
+A `[state, toggle]` tuple:
+
+- `state` (boolean): The current value.
+- `toggle` (function): Flips the value.
+
+`toggle` is wrapped in `useCallback` with no dependencies, so its identity is stable
+across renders — it can be passed to a memoized child without triggering a re-render.

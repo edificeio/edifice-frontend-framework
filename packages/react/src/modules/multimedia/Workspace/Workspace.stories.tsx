@@ -5,6 +5,14 @@ import Workspace from './Workspace';
 const meta: Meta<typeof Workspace> = {
   title: 'Modules/Multimedia/Workspace',
   component: Workspace,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `Workspace` component is the document browser used inside the media library: a folder tree on one side, the documents of the selected folder on the other, with search and sorting (by name or by date). The `roles` prop filters which media types are listed — pass `null` to show everything — while `defaultFolder` pre-selects a folder on open and `showPublicFolder` exposes public documents. It handles browsing and selection only; uploading is the media library's job.",
+      },
+    },
+  },
   args: {},
 };
 

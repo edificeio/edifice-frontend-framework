@@ -5,6 +5,14 @@ import { ExternalLinker } from './ExternalLinker';
 const meta: Meta<typeof ExternalLinker> = {
   title: 'Modules/Multimedia/ExternalLinker',
   component: ExternalLinker,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The `ExternalLinker` component is the form used to attach an external URL, typically from the editor link dialog. It edits a `{ url, text, target }` triple and reports every change through `onChange`, leaving validation and persistence to the caller. Pass an existing `link` to edit it rather than create a new one. When several nodes are selected in the editor, set `multiNodeSelected` so the component hides the link-text field — that text cannot apply to a multi-node selection. Its counterpart for internal resources is `InternalLinker`.',
+      },
+    },
+  },
   args: {},
 };
 

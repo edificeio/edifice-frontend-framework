@@ -4,6 +4,14 @@ import { Grid } from '../Grid';
 const meta: Meta<typeof Grid> = {
   title: 'Layout/Grid',
   component: Grid,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The `Grid` component is the responsive layout container of the design system. It defines a grid of **12 columns on desktop, 8 on tablet and 4 on mobile**, and expects `Grid.Col` children to place content in it. It only carries the grid itself — column spans are declared per breakpoint on each `Grid.Col`. See the `Column` page for the sizing props.',
+      },
+    },
+  },
 };
 
 export default meta;
