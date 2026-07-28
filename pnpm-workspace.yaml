@@ -17,6 +17,9 @@ catalog:
   '@types/react': 18.3.27
   '@types/react-dom': 18.3.7
   '@vitejs/plugin-react': 6.0.2
+  '@vitest/browser': 4.1.7
+  '@vitest/coverage-v8': 4.1.7
+  '@vitest/ui': 4.1.7
   'clsx': 2.1.1
   'eslint': 9.39.2
   'eslint-plugin-react-hooks': 5.1.0-rc.0
@@ -39,3 +42,4 @@ catalog:
   'typescript-eslint': 8.54.0
   'vite': 8.0.14
   'vite-plugin-dts': 4.5.4
+  'vitest': 4.1.7
