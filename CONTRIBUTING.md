@@ -89,7 +89,19 @@ with the sections `# useX`, `## Usage`, `## Parameters`, `## Returns` and `## Ex
   Chromatic snapshot.
 - **With a visual demo** (`useToast`, `useDropzone`, `useTrapFocus`…): add a story and
   attach the page to it with `<Meta of={useXStories} />`, then embed the demo where it
-  belongs with `<Canvas of={useXStories.Example} />`.
+  belongs with `<Canvas of={useXStories.Example} />`. Such a story is a demo, not a
+  design system visual to watch for regressions, so exclude it from Chromatic:
+
+  ```tsx
+  const meta: Meta<typeof useX> = {
+    title: 'Hooks/useX',
+    parameters: {
+      chromatic: { disableSnapshot: true },
+    },
+  };
+  ```
+
+  The demo stays fully interactive in Storybook, it only leaves the snapshot scope.
 
 When a page is attached this way it **replaces** the autodocs page, so do not also add a
 `docs.description.component` to the story — the MDX carries the narrative.
