@@ -25,7 +25,7 @@ const meta: Meta<typeof Header> = {
     docs: {
       description: {
         component:
-          'Legacy portal header. It renders the main navigation (home, applications, messaging, community, help, account) and adapts its layout to the school level through the `is1d` prop: the 2nd degree (default) layout uses a single navbar, while the 1st degree layout (`is1d`) displays a dedicated secondary navbar. Messaging, community, search and help entries are gated by the user workflows.',
+          'Legacy portal header. It renders the main navigation (home, applications, messaging, communities, help, account) and adapts its layout to the school level through the `is1d` prop: the 2nd degree (default) layout uses a single navbar, while the 1st degree layout (`is1d`) displays a dedicated secondary navbar. Messaging, communities, search and help entries are gated by the user workflows.',
       },
     },
   },
