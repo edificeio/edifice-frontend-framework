@@ -55,7 +55,7 @@ const Header = ({
 
   const classes = clsx('header-beta d-print-none no-2d no-1d');
 
-  const { userAvatar, userName, communityWorkflow, conversationWorflow } =
+  const { userAvatar, userName, communitiesWorkflow, conversationWorflow } =
     useHeader({ user, avatar });
   const { theme } = useEdificeTheme();
 
@@ -89,7 +89,7 @@ const Header = ({
               <IconHomeBeta />
             </NavLink>
           </NavItem>
-          {communityWorkflow && (
+          {communitiesWorkflow && (
             <NavItem>
               <NavLink
                 link="/communities"
