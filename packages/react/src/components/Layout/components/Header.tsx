@@ -16,7 +16,6 @@ import { useEdificeTheme } from '../../../providers/EdificeThemeProvider/Edifice
 
 import { IconRafterDown } from '../../../modules/icons/components';
 import {
-  IconCommunity,
   IconCommunities,
   IconDisconnect,
   IconHome,
@@ -81,7 +80,6 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
     userAvatar,
     userName,
     welcomeUser,
-    communityWorkflow,
     communitiesWorkflow,
     conversationWorflow,
     searchWorkflow,
@@ -399,16 +397,6 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                     }`}
                     id="dropdown-navbar"
                   >
-                    {communityWorkflow && (
-                      <NavItem>
-                        <a href="/community" className="nav-link dropdown-item">
-                          <IconCommunity className="icon community" />
-                          <span className="nav-text">
-                            {t('navbar.community')}
-                          </span>
-                        </a>
-                      </NavItem>
-                    )}
                     {communitiesWorkflow && (
                       <NavItem>
                         <a
