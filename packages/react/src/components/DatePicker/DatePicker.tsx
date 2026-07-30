@@ -52,6 +52,12 @@ export interface DatePickerProps extends Omit<
    * Maximum selectable date
    */
   maxDate?: Date;
+
+  /**
+   * Disables the input and prevents the calendar popup from opening.
+   * @default false
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -87,6 +93,7 @@ const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       dateFormat = 'DD / MM / YYYY',
       minDate,
       maxDate,
+      disabled,
       ...htmlProps
     },
     ref,
@@ -101,6 +108,7 @@ const DatePicker = forwardRef<HTMLElement, DatePickerProps>(
       format: dateFormat,
       minDate: minDate ? dayjs(minDate) : undefined,
       maxDate: maxDate ? dayjs(maxDate) : undefined,
+      disabled,
       ref: ref as any, // Cast necessary because AntDatePicker expects a specific type, but our API exposes only HTMLElement to avoid dependency on Ant Design-specific features.
       ...htmlProps,
     };
