@@ -12,6 +12,11 @@ const meta: Meta<typeof DatePicker> = {
       control: { type: 'date' },
       description: 'Selected date value',
     },
+    disabled: {
+      control: { type: 'boolean' },
+      description:
+        'Disables the input and prevents the calendar popup from opening',
+    },
   },
   parameters: {
     docs: {
@@ -37,6 +42,7 @@ export const Default: Story = {
       today.getMonth(),
       today.getDate() + 3,
     ),
+    disabled: false,
     onChange: (date) => {
       console.log('Selected date:', date);
     },
@@ -48,6 +54,7 @@ export const Default: Story = {
         maxDate={args.maxDate}
         minDate={args.minDate}
         value={date}
+        disabled={args.disabled}
         data-testid="date-picker-default"
         dateFormat={args.dateFormat}
         onChange={(newDate) => {
@@ -58,4 +65,20 @@ export const Default: Story = {
       />
     );
   },
+};
+
+export const Disabled: Story = {
+  args: {
+    value: new Date(),
+    dateFormat: 'DD / MM / YYYY',
+    disabled: true,
+  },
+  render: (args) => (
+    <DatePicker
+      value={args.value}
+      disabled={args.disabled}
+      dateFormat={args.dateFormat}
+      data-testid="date-picker-disabled"
+    />
+  ),
 };

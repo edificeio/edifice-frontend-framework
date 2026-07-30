@@ -79,4 +79,24 @@ describe('DatePicker', () => {
 
     expect(onChange).toHaveBeenCalledWith(undefined);
   });
+
+  it('disables the input and does not open the calendar when disabled', async () => {
+    const onChange = vi.fn();
+    const { user } = render(
+      <DatePicker
+        value={new Date(2026, 0, 15)}
+        onChange={onChange}
+        disabled
+        data-testid="date-picker"
+      />,
+    );
+
+    const input = screen.getByTestId('date-picker');
+    expect(input).toBeDisabled();
+
+    await user.click(input);
+
+    expect(screen.queryByText('20')).not.toBeInTheDocument();
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });
