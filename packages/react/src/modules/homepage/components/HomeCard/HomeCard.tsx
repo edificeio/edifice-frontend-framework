@@ -69,12 +69,7 @@ const Root = ({
   return footer ? (
     <div className="home-card--with-footer">
       {content}
-      <Flex
-        direction="row"
-        justify="center"
-        gap="8"
-        className="px-16 py-4 home-card-footer"
-      >
+      <Flex direction="row" gap="8" className="px-16 py-4 home-card-footer">
         {footer}
       </Flex>
     </div>
