@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import TextSkeleton from './TextSkeleton';
 
 const meta = {
-  title: 'Components/Skeleton/TextSkeleton',
+  title: 'Components/Skeleton/TextSkeleton (deprecated)',
   component: TextSkeleton,
   argTypes: {
     className: {
@@ -23,7 +23,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'The TextSkeleton component is a placeholder for text content, used to indicate loading states in the UI. It mimics the appearance of text without any interactive functionality. This is useful for providing visual feedback while content is being loaded or processed.',
+          '⚠️ **Deprecated — use the `Skeleton` primitive instead** (`<Skeleton variant="text" width={…} height={…} />`). This component is kept only for backward compatibility and will be removed in a future version. It is built on the Bootstrap `.placeholder` class, whose animation runs unconditionally and ignores `prefers-reduced-motion`, and whose grey comes from the legacy `gray-*` scale rather than the `grey-*` design tokens.\n\nThe TextSkeleton component is a placeholder for text content, used to indicate loading states in the UI. It mimics the appearance of text without any interactive functionality.',
       },
     },
   },

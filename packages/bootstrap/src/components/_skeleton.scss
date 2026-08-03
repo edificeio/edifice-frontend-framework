@@ -1,0 +1,214 @@
+// Geometric placeholder used by the `Skeleton` React primitive.
+// Deliberately not built on top of `.placeholder`: that class forces an
+// animation and a 50% opacity that cannot be opted out of, which would defeat
+// both the `static` animation and the `prefers-reduced-motion` requirement.
+// `min-height` keeps an unsized block visible without introducing a pixel
+// value that would drift from the content it stands for, and `width` defaults
+// here rather than inline so an unsized block carries no style attribute.
+.skeleton {
+  display: block;
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 1em;
+  background-color: var(--primitive-grey-300);
+
+  &-strong {
+    background-color: var(--primitive-grey-500);
+  }
+
+  &-text,
+  &-block {
+    border-radius: var(--primitive-border-radius-sm);
+  }
+
+  // The missing dimension is derived from the provided one, so a circle stays
+  // a circle whether the caller sizes it by width or by height.
+  // `fit-content` rather than `auto`: an `auto` width is stretched by a flex
+  // column parent, which resolves the width and drops the aspect ratio — an
+  // oval. `fit-content` is not stretched, so the circle holds in a block, a
+  // flex row and a flex column alike.
+  &-circle {
+    width: fit-content;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  &-pill {
+    border-radius: var(--primitive-border-radius-pill);
+  }
+
+  &-pulse {
+    animation: skeleton-pulse 1.6s ease-in-out infinite;
+  }
+
+  // The highlight is a layer sweeping over the tone rather than a moving
+  // background position. Translating it keeps the loop seamless — the band is
+  // fully out of view at both ends of the cycle instead of jumping from one edge
+  // to the other — lets `overflow` clip it to the block's own radius, and keeps
+  // the animation on the compositor.
+  &-shimmer {
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(
+        90deg,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 70%) 50%,
+        rgb(255 255 255 / 0%) 100%
+      );
+      animation: skeleton-shimmer 1.6s ease-in-out infinite;
+      content: '';
+    }
+  }
+}
+
+// Stack of blocks standing in for a wrapped paragraph. It owns its layout rather
+// than borrowing utility classes, because the component it mirrors holds a single
+// text node and therefore has no gap to inherit. No `gap` here on purpose: each
+// line reserves its own spacing, see `.notification-item-skeleton-line`.
+.skeleton-lines {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+// Component variants. The geometry of each component's skeleton lives here,
+// after the primitive, so its dimensions win over the full-width default on
+// equal specificity.
+
+// Mirrors `.notification-item`. Every value below is derived from
+// _notification-item.scss, never measured on a mockup.
+.notification-item-skeleton {
+  // One real line box of `.notification-item-message`, the visual gap being
+  // reserved inside it by a transparent border rather than by a flex gap. The
+  // stack therefore always totals exactly `count × line-height`, whatever the
+  // line count, where a fixed height plus a gap would only be right for two.
+  &-line {
+    height: var(--primitive-font-lineheight-xs);
+    border-bottom: var(--primitive-spacer-2) solid transparent;
+    background-clip: padding-box;
+
+    // The mockup draws its last line shorter than the others: 217 of 276.
+    &:last-child {
+      width: 79%;
+    }
+  }
+
+  // Height of `.notification-item-resource`: 0.2 of padding, twice, around a
+  // 2rem icon itself sitting in 0.2 of padding, twice. Its width is driven by a
+  // translated label, so it is the one representative value here.
+  &-chip {
+    width: 13.5rem;
+    height: 2.8rem;
+  }
+
+  // Height of `.notification-item-date`, whose width is driven by a relative
+  // date and is therefore representative too.
+  &-date {
+    width: 6.3rem;
+    height: var(--primitive-font-lineheight-3xs);
+  }
+}
+
+// Storybook scaffolding. Layout of the comparison stories, kept here so the
+// stories carry no inline style. Nothing below is used by a shipped component.
+.skeleton-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-32);
+  width: 52rem;
+
+  &-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-12);
+  }
+
+  &-heading {
+    display: flex;
+    gap: var(--primitive-spacer-8);
+    align-items: baseline;
+  }
+
+  &-row {
+    display: flex;
+    gap: var(--primitive-spacer-12);
+    align-items: center;
+  }
+
+  &-note {
+    margin: 0;
+    color: var(--primitive-grey-800);
+    font-size: var(--primitive-font-size-caption);
+  }
+
+  &-label {
+    flex-shrink: 0;
+    width: 9.6rem;
+    color: var(--primitive-grey-800);
+    font-size: var(--primitive-font-size-caption);
+  }
+
+  &-name {
+    text-transform: capitalize;
+  }
+
+  // The three shapes the notification mockup uses, so the comparison shows the
+  // animations on realistic geometry rather than on arbitrary rectangles.
+  &-avatar {
+    height: 3.2rem;
+  }
+
+  // Shares the row with the circle and the chip, which the full-width default of
+  // `.skeleton` would otherwise push out of the frame.
+  &-line {
+    flex: 1;
+    width: auto;
+    height: 2rem;
+  }
+
+  &-chip {
+    flex-shrink: 0;
+    width: 12rem;
+    height: 2.8rem;
+  }
+}
+
+.skeleton-overlay {
+  position: relative;
+
+  // Superimposing the skeleton on the loaded row turns any geometric drift into
+  // a visible offset, which stacking the two cannot show as precisely.
+  &-top {
+    position: absolute;
+    inset: 0 0 auto;
+    opacity: 0.6;
+  }
+
+  &-stack {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Width the notification mockup is drawn at, so the comparison stories run at
+  // the geometry the design was validated on.
+  &-frame {
+    width: 40rem;
+  }
+}
+
+// Motion is opted out at the OS level and cannot be forced back on by a prop.
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-pulse {
+    animation: none;
+  }
+
+  // Dropping the highlight layer altogether leaves the flat tone, which is what
+  // the `static` animation renders.
+  .skeleton-shimmer::after {
+    display: none;
+  }
+}
