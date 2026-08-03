@@ -90,4 +90,79 @@ describe('Card', () => {
 
     expect(ref.current).toHaveClass('card');
   });
+
+  it('falls back to the placeholder icon code without an application', () => {
+    render(
+      <Card>{(appCode) => <span data-testid="app-code">{appCode}</span>}</Card>,
+    );
+
+    expect(screen.getByTestId('app-code')).toHaveTextContent('placeholder');
+  });
+
+  it('hands the resolved icon code to a render-prop child', () => {
+    render(
+      <Card app={{ address: '/blog', displayName: 'Blog' } as never}>
+        {(appCode) => <span data-testid="app-code">{appCode}</span>}
+      </Card>,
+    );
+
+    expect(screen.getByTestId('app-code').textContent).toBeTruthy();
+  });
+
+  // Without an image source the fallback app icon is rendered, and the
+  // landscape variant stretches it through width/height props.
+  it('stretches the landscape fallback icon to the full width', () => {
+    const { container } = render(
+      <Card>
+        <Card.Image variant="landscape" />
+      </Card>,
+    );
+
+    // `{...style}` is spread as props on the fallback AppIcon, so the effect is
+    // not observable in the DOM — the variant class is.
+    expect(container.querySelector('.card-image.landscape')).not.toBeNull();
+  });
+
+  it('leaves the other variants at their own size', () => {
+    const { container } = render(
+      <Card>
+        <Card.Image variant="small" />
+      </Card>,
+    );
+
+    expect(container.querySelector('.card-image.small')).not.toBeNull();
+  });
+
+  it('renders a user avatar with an empty alt when the creator is unknown', () => {
+    const { container } = render(
+      <Card>
+        <Card.User userSrc="/avatar.png" creatorName="" />
+      </Card>,
+    );
+
+    expect(container.querySelector('img')).toHaveAttribute('alt', '');
+  });
+
+  it('renders no avatar without a user source', () => {
+    const { container } = render(
+      <Card>
+        <Card.User userSrc="" creatorName="Pascal" />
+      </Card>,
+    );
+
+    expect(container.querySelector('img')).toBeNull();
+  });
+
+  it('refuses to render a context-aware part outside of a Card', () => {
+    // The context guard keeps a misplaced part from failing silently.
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    expect(() => render(<Card.Image imageSrc="/cover.png" />)).toThrow(
+      'Cannot be rendered outside the Card component',
+    );
+
+    consoleError.mockRestore();
+  });
 });
