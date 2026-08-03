@@ -1,6 +1,7 @@
 export * from './apps/timeline/interfaces';
 export * from './audience/interface';
 export * from './configure/interfaces';
+export * from './directory/interface';
 export * from './embedder/interface';
 export * from './globals';
 export * from './notify/interfaces';

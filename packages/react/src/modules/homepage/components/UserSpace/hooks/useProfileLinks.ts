@@ -1,14 +1,11 @@
 import { UserProfile } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { useEdificeClient } from '../../../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { useChildren } from './useChildren';
 
 type ProfileLink = {
   url: string;
   text: string;
-};
-
-type ChildInfo = {
-  firstName: string;
 };
 
 /** Generates user's links to show in the UserSpace home component. */
@@ -17,6 +14,9 @@ export function useProfileLinks(
 ): Array<ProfileLink> | undefined {
   const { user } = useEdificeClient();
   const { t } = useTranslation();
+
+  const isRelative = profile === 'Relative';
+  const { data: children } = useChildren(user?.userId, isRelative);
 
   const structureId = user?.structures?.[0];
 
@@ -62,16 +62,13 @@ export function useProfileLinks(
         ];
       }
       case 'Relative': {
-        const children = (user.children ?? {}) as Record<string, ChildInfo>;
-        const childrenArray = Object.entries(children);
-        if (!childrenArray.length) return undefined;
+        if (!children?.length) return undefined;
 
-        const classIds: string[] = []; //TODO: Add child class ID "&class=classID" to the URL when the backend supports it
-        return childrenArray.map(([, child]) => ({
+        return children.map((child) => ({
           text: t('homepage.userspace.relative.link.classes', {
-            childName: `${child.firstName}`,
+            childName: child.firstName,
           }),
-          url: buildClassesUrl(classIds),
+          url: buildClassesUrl(child.classes?.map(({ id }) => id)),
         }));
       }
       case 'Personnel': {

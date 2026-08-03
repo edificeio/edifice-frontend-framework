@@ -62,3 +62,23 @@ export interface BookmarkGetResponse {
     activationCode: boolean;
   }>;
 }
+
+/**
+ * Class a child belongs to, as returned by the /children endpoint.
+ */
+export interface ChildClass {
+  id: string;
+  name: string;
+}
+
+/**
+ * Child of a "Relative" user, as returned by the /children endpoint.
+ */
+export interface Child {
+  id: string;
+  firstName: string;
+  displayName: string;
+  externalId: string;
+  classesNames: string[];
+  classes: ChildClass[];
+}

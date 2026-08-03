@@ -5,6 +5,7 @@ import {
   BookmarkSaveResponse,
   BookmarkWithDetails,
   BookmarkWithMembers,
+  Child,
   Group,
   User,
 } from './interface';
@@ -28,6 +29,11 @@ export class DirectoryService {
     return type === 'user'
       ? `/userbook/annuaire#/${id}`
       : `/userbook/annuaire#/group-view/${id}`;
+  }
+
+  /** Get the children of a "Relative" user, including their classes. */
+  getChildren(userId: string): Promise<Child[]> {
+    return this.http.get<Child[]>(`/directory/user/${userId}/children`);
   }
 
   async getBookMarks(): Promise<Bookmark[]> {

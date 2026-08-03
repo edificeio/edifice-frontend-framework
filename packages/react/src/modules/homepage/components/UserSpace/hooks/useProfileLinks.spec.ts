@@ -4,6 +4,7 @@ import { useProfileLinks } from './useProfileLinks';
 
 const mocks = vi.hoisted(() => ({
   useEdificeClient: vi.fn(),
+  useChildren: vi.fn(),
 }));
 
 vi.mock(
@@ -13,15 +14,20 @@ vi.mock(
   }),
 );
 
+vi.mock('./useChildren', () => ({
+  useChildren: mocks.useChildren,
+}));
+
 describe('useProfileLinks', () => {
   beforeEach(() => {
     mocks.useEdificeClient.mockReturnValue({
       user: {
+        userId: 'user-id',
         structures: ['structure-id'],
         classes: [],
-        children: {},
       },
     });
+    mocks.useChildren.mockReturnValue({ data: undefined });
   });
 
   it('returns undefined for the Guest profile', () => {
@@ -85,29 +91,56 @@ describe('useProfileLinks', () => {
     ]);
   });
 
-  //TODO add test for Relative profile when user has children (wait API)
-  // it('returns one link per child for the Relative profile', () => {
-  //   mocks.useEdificeClient.mockReturnValue({
-  //     user: {
-  //       structures: ['structure-id'],
-  //       children: {
-  //         'child-id-1': { firstName: 'Ronald', lastName: 'WEASLEY' },
-  //         'child-id-2': { firstName: 'Ginny', lastName: 'WEASLEY' },
-  //       },
-  //     },
-  //   });
+  it('returns undefined for the Relative profile when the user has no children', () => {
+    mocks.useChildren.mockReturnValue({ data: [] });
 
-  //   const { result } = renderHook(() => useProfileLinks('Relative'));
+    const { result } = renderHook(() => useProfileLinks('Relative'));
 
-  //   expect(result.current).toEqual([
-  //     {
-  //       text: 'La classe de Ronald',
-  //       url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=child-id-1',
-  //     },
-  //     {
-  //       text: 'La classe de Ginny',
-  //       url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=child-id-2',
-  //     },
-  //   ]);
-  // });
+    expect(result.current).toBeUndefined();
+    expect(mocks.useChildren).toHaveBeenCalledWith('user-id', true);
+  });
+
+  it('returns one link per child for the Relative profile', () => {
+    mocks.useChildren.mockReturnValue({
+      data: [
+        {
+          id: 'child-id-1',
+          firstName: 'Ronald',
+          displayName: 'Ronald WEASLEY',
+          externalId: 'ext-1',
+          classesNames: ['CE2-A'],
+          classes: [{ id: 'class-id-1', name: 'CE2-A' }],
+        },
+        {
+          id: 'child-id-2',
+          firstName: 'Ginny',
+          displayName: 'Ginny WEASLEY',
+          externalId: 'ext-2',
+          classesNames: ['CM1-B'],
+          classes: [{ id: 'class-id-2', name: 'CM1-B' }],
+        },
+      ],
+    });
+
+    const { result } = renderHook(() => useProfileLinks('Relative'));
+
+    expect(result.current).toEqual([
+      {
+        text: 'La classe de Ronald',
+        url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=class-id-1',
+      },
+      {
+        text: 'La classe de Ginny',
+        url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=class-id-2',
+      },
+    ]);
+  });
+
+  it('does not fetch children for non-Relative profiles', () => {
+    mocks.useChildren.mockReturnValue({ data: undefined });
+
+    renderHook(() => useProfileLinks('Teacher'));
+
+    expect(mocks.useChildren).toHaveBeenCalledWith('user-id', false);
+  });
 });

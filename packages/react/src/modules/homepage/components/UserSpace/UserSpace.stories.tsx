@@ -1,7 +1,5 @@
-import { userInfo } from '@edifice.io/config';
 import { USER_AVATAR } from '@edifice.io/config/src/msw/mocks/auth';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { http, HttpResponse } from 'msw';
 import { default as UserSpace } from './UserSpace';
 
 const PROFILES = [
@@ -11,25 +9,6 @@ const PROFILES = [
   'Personnel',
   'Invite',
 ] as const;
-
-const RELATIVE_CHILDREN = {
-  '4d9edf62-3185-461b-8639-7b27bf95d5ac': {
-    lastName: 'Weasley',
-    firstName: 'Ron',
-  },
-  '93c2611a-b024-4732-b03b-2466c8307086': {
-    lastName: 'WEASLEY',
-    firstName: 'Fred',
-  },
-  '637b68b9-ccf3-4b15-8aa7-d0395de4946f': {
-    lastName: 'Weasley',
-    firstName: 'George',
-  },
-  'cf6c8e8c-dbc4-4fee-98b1-12f0687bc89d': {
-    lastName: 'WEASLEY',
-    firstName: 'Ginny',
-  },
-};
 
 const meta: Meta<typeof UserSpace> = {
   title: 'Modules/Homepage/UserSpace',
@@ -66,7 +45,7 @@ type Story = StoryObj<typeof UserSpace>;
 export const DefaultUserSpace: Story = {
   args: {
     name: 'Marc',
-    profile: 'Teacher',
+    profile: 'Relative',
     avatar: USER_AVATAR,
   },
   render: (args) => (
@@ -76,21 +55,6 @@ export const DefaultUserSpace: Story = {
     docs: {
       description: {
         story: `Affiche l'avatar de l'utilisateur connecté, et son profil. D'autres widgets peuvent être incorporés`,
-      },
-    },
-    msw: {
-      // Keyed object form so Storybook deep-merges with the global handlers
-      // instead of replacing them (only the "auth" handler is overridden).
-      handlers: {
-        auth: [
-          http.get('/auth/oauth2/userinfo', () =>
-            HttpResponse.json({
-              ...userInfo,
-              children: RELATIVE_CHILDREN,
-              childrenIds: Object.keys(RELATIVE_CHILDREN),
-            }),
-          ),
-        ],
       },
     },
   },
