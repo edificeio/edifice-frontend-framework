@@ -23,3 +23,22 @@
     opacity: 0.3;
   }
 }
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// Sweeps the highlight layer of `.skeleton-shimmer` across its block, from fully
+// off the left edge to fully off the right one, so every cycle starts and ends
+// with no highlight in view and the loop shows no jump.
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
