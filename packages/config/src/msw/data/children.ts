@@ -1,4 +1,4 @@
-import { Child } from '../../../../client';
+import { Child, StructureChildren } from '../../../../client';
 
 export const childRonWeasley: Child = {
   id: '4d9edf62-3185-461b-8639-7b27bf95d5ac',
@@ -39,9 +39,18 @@ export const childGinnyWeasley: Child = {
   classes: [{ id: 'class-cm2-c', name: 'CM2-C' }],
 };
 
-export const mockChildren: Child[] = [
-  childRonWeasley,
-  childFredWeasley,
-  childGeorgeWeasley,
-  childGinnyWeasley,
+// A relative can be attached to several structures, each listing its own children.
+export const structureMobilePoudlard: StructureChildren = {
+  structureName: '0 TEST MOBILE POUDLARD',
+  children: [childRonWeasley, childFredWeasley],
+};
+
+export const structurePoudlard: StructureChildren = {
+  structureName: 'Poudlard',
+  children: [childGeorgeWeasley, childGinnyWeasley],
+};
+
+export const mockChildrenByStructure: StructureChildren[] = [
+  structureMobilePoudlard,
+  structurePoudlard,
 ];
