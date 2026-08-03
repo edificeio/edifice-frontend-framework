@@ -1,6 +1,10 @@
 import { http, HttpResponse } from 'msw';
+import { mockChildrenByStructure } from '../data';
 
 export const handlers = [
+  http.get('/directory/user/:userId/children', () => {
+    return HttpResponse.json(mockChildrenByStructure);
+  }),
   http.get('/directory/userbook/:userId', () => {
     return HttpResponse.json({
       mood: 'default',
