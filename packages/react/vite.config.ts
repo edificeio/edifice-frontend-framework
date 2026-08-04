@@ -113,6 +113,7 @@ export default defineConfig(({ mode }) => {
           'src/**/index.ts',
           'src/modules/icons/components/**',
           'src/types/**',
+          'src/modules/editor/test-utils/**',
         ],
         // Starting thresholds intentionally set below the actual measured
         // baseline (see ENABLING-996) so CI doesn't fail on the current
@@ -120,13 +121,13 @@ export default defineConfig(({ mode }) => {
         // — raise these floors incrementally as coverage improves, never
         // lower them.
         // Measured baseline as of 2026-08-04 (after the ENABLING-1135 lot 15
-        // modals pass, on top of lots 12-14): lines/statements 47.82%,
-        // functions 64.13%, branches 85.34%.
+        // editor batch 1, on top of lots 12-14): lines/statements 51.71%,
+        // functions 63.44%, branches 87.44%.
         thresholds: {
-          lines: 45,
-          statements: 45,
+          lines: 48,
+          statements: 48,
           functions: 61,
-          branches: 82,
+          branches: 84,
         },
       },
     },
