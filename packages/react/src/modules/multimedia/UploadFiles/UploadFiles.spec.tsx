@@ -66,7 +66,7 @@ vi.mock('../ImageEditor/components/ImageEditor', () => ({
   ),
 }));
 
-function file(name: string, type = 'image/png', size = 2048) {
+function file(name: string, type = 'image/png') {
   return new File(['x'], name, { type });
 }
 
