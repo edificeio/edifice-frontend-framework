@@ -73,6 +73,13 @@
 
   &-title {
     font-weight: var(--primitive-font-weight-bold);
+    margin: 0;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    word-break: break-word;
   }
 
   &-excerpt {

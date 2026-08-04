@@ -47,7 +47,7 @@ export function LastInfosList({
         </ButtonBeta>
       </Flex>
 
-      <Flex gap="16" direction="column" className="last-infos-list-body">
+      <div className="last-infos-list-body">
         {infos.length === 0 ? (
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
@@ -63,7 +63,7 @@ export function LastInfosList({
             />
           ))
         )}
-      </Flex>
+      </div>
     </Flex>
   );
 }
