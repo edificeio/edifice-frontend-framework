@@ -120,13 +120,13 @@ export default defineConfig(({ mode }) => {
         // — raise these floors incrementally as coverage improves, never
         // lower them.
         // Measured baseline as of 2026-08-04 (after the ENABLING-1135 lot 15
-        // hooks pass, on top of lots 12-14): lines/statements 42.64%,
-        // functions 60.57%, branches 84.27%.
+        // modals pass, on top of lots 12-14): lines/statements 47.82%,
+        // functions 64.13%, branches 85.34%.
         thresholds: {
-          lines: 40,
-          statements: 40,
-          functions: 57,
-          branches: 81,
+          lines: 45,
+          statements: 45,
+          functions: 61,
+          branches: 82,
         },
       },
     },
