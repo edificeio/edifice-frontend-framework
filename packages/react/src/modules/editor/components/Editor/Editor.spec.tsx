@@ -105,12 +105,16 @@ vi.mock('../../../multimedia', async (importOriginal) => {
   return {
     ...actual,
     MediaLibrary: forwardRef(
-      (props: {
-        appCode?: string;
-        visibility?: string;
-        multiple?: boolean;
-      }) => (
+      (
+        props: {
+          appCode?: string;
+          visibility?: string;
+          multiple?: boolean;
+        },
+        ref,
+      ) => (
         <div
+          ref={ref as React.Ref<HTMLDivElement>}
           data-testid="mock-media-library"
           data-app-code={props.appCode}
           data-visibility={props.visibility}
