@@ -4,6 +4,12 @@ import { RenderOptions, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { ReactElement } from 'react';
+// This file lives outside `src/`, the only directory `tsconfig.lib.json`
+// includes - it only joins the TS program transitively (other specs import
+// it through the `~/setup` path alias). Editors resolving it directly can
+// miss that and lose the ambient `vitest/globals` types, so import the
+// vitest lifecycle hooks explicitly instead of relying on globals here.
+import { afterAll, afterEach, beforeAll, vi } from 'vitest';
 
 import '../../apps/docs/i18n';
 import { MockedProvider } from './src/providers/MockedProvider/MockedProvider';
