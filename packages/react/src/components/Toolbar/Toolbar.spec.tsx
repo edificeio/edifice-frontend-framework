@@ -232,4 +232,137 @@ describe('Toolbar', () => {
     expect(toolbar).toHaveAttribute('aria-controls', 'editor-1');
     expect(ref.current).toBe(toolbar);
   });
+
+  it('moves to the previous item with ArrowLeft, away from the ends', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'one', props: { children: 'One' } },
+      { type: 'button', name: 'two', props: { children: 'Two' } },
+      { type: 'button', name: 'three', props: { children: 'Three' } },
+    ];
+    const { container } = render(<Toolbar items={items} />);
+    const [one, , three] = getButtons(container);
+
+    three.focus();
+    fireEvent.keyDown(three, { code: 'ArrowLeft' });
+
+    expect(getButtons(container)[1]).toHaveFocus();
+    expect(one).not.toHaveFocus();
+  });
+
+  it('leaves the focus alone on any other key', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'one', props: { children: 'One' } },
+      { type: 'button', name: 'two', props: { children: 'Two' } },
+    ];
+    const { container } = render(<Toolbar items={items} />);
+    const [one] = getButtons(container);
+
+    one.focus();
+    fireEvent.keyDown(one, { code: 'KeyA' });
+
+    expect(one).toHaveFocus();
+  });
+
+  describe('tooltips', () => {
+    it('accepts a plain string, placed on top', async () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'icon',
+          name: 'save',
+          tooltip: 'Save the document',
+          props: { 'icon': <span />, 'aria-label': 'save' },
+        },
+      ];
+      const { user } = render(<Toolbar items={items} />);
+
+      await user.hover(screen.getByRole('button', { name: 'save' }));
+
+      expect(await screen.findByText('Save the document')).toBeInTheDocument();
+    });
+
+    it('accepts a message and its position', async () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'icon',
+          name: 'save',
+          tooltip: { message: 'Save the document', position: 'bottom' },
+          props: { 'icon': <span />, 'aria-label': 'save' },
+        },
+      ];
+      const { user } = render(<Toolbar items={items} />);
+
+      await user.hover(screen.getByRole('button', { name: 'save' }));
+
+      expect(await screen.findByText('Save the document')).toBeInTheDocument();
+    });
+
+    it('renders no tooltip when the item declares none', async () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'icon',
+          name: 'save',
+          props: { 'icon': <span />, 'aria-label': 'save' },
+        },
+      ];
+      const { user } = render(<Toolbar items={items} />);
+
+      await user.hover(screen.getByRole('button', { name: 'save' }));
+
+      expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    });
+  });
+
+  describe('items without a name', () => {
+    it('falls back to the item index as a key for a button', () => {
+      const items = [
+        { type: 'button', props: { children: 'First' } },
+        { type: 'button', props: { children: 'Second' } },
+      ] as unknown as ToolbarItem[];
+      const { container } = render(<Toolbar items={items} />);
+
+      expect(getButtons(container)).toHaveLength(2);
+    });
+
+    it('falls back to the item index as a key for an icon', () => {
+      const items = [
+        { type: 'icon', props: { icon: <span /> } },
+        { type: 'icon', props: { icon: <span /> } },
+      ] as unknown as ToolbarItem[];
+      const { container } = render(<Toolbar items={items} />);
+
+      expect(getButtons(container)).toHaveLength(2);
+    });
+
+    it('falls back to the item index as a key for a dropdown', () => {
+      const items = [
+        {
+          type: 'dropdown',
+          props: {
+            children: (triggerProps: object) => (
+              <>
+                <Dropdown.Trigger label="More" {...triggerProps} />
+                <Dropdown.Menu>
+                  <Dropdown.Item>Action</Dropdown.Item>
+                </Dropdown.Menu>
+              </>
+            ),
+          },
+        },
+      ] as unknown as ToolbarItem[];
+
+      render(<Toolbar items={items} />);
+
+      expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument();
+    });
+  });
+
+  it('renders nothing for an unknown item type', () => {
+    const items = [
+      { type: 'unknown-type', name: 'ghost', props: {} },
+    ] as unknown as ToolbarItem[];
+
+    render(<Toolbar items={items} />);
+
+    expect(screen.getByRole('toolbar')).toBeEmptyDOMElement();
+  });
 });

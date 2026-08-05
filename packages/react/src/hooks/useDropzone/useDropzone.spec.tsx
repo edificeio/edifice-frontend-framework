@@ -1,6 +1,15 @@
 import { act, renderHook } from '~/setup';
 import useDropzone from './useDropzone';
 
+// The HEIC converter is imported dynamically and relies on canvas/Worker, both
+// absent from jsdom.
+const { isHeic, heicTo } = vi.hoisted(() => ({
+  isHeic: vi.fn(),
+  heicTo: vi.fn(),
+}));
+
+vi.mock('heic-to', () => ({ isHeic, heicTo }));
+
 function createFile(name: string, type = 'image/png') {
   return new File(['content'], name, { type });
 }
@@ -126,5 +135,124 @@ describe('useDropzone', () => {
     });
 
     expect(result.current.files.map((f) => f.name)).toEqual(['keep.png']);
+  });
+
+  it('replaces the last file of the list', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFile(createFile('a.png'));
+    });
+    await act(async () => {
+      await result.current.addFile(createFile('b.png'));
+    });
+    await act(() => result.current.replaceFileAt(1, createFile('c.png')));
+
+    expect(result.current.files.map(({ name }) => name)).toEqual([
+      'a.png',
+      'c.png',
+    ]);
+  });
+
+  it('leaves the list untouched for an out-of-range index', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFile(createFile('a.png'));
+    });
+    await act(() => result.current.replaceFileAt(9, createFile('c.png')));
+
+    expect(result.current.files.map(({ name }) => name)).toEqual(['a.png']);
+  });
+
+  it('adds nothing when given an empty selection', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFiles([]);
+    });
+
+    expect(result.current.files).toEqual([]);
+  });
+
+  // `addFiles` sanitises the names and converts HEIC images into `filesToAdd`,
+  // but the default branch stores the untouched `files` argument instead — so
+  // both only reach the list when `forceFilters` is on.
+  it('strips the characters vertx chokes on when filters are forced', async () => {
+    const { result } = renderHook(() => useDropzone({ forceFilters: true }));
+
+    await act(async () => {
+      await result.current.addFile(createFile('photo!:,;="\'.png'));
+    });
+
+    expect(result.current.files[0].name).toBe('photo.png');
+  });
+
+  it('keeps the raw file name without forced filters', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFile(createFile('photo!:,;="\'.png'));
+    });
+
+    expect(result.current.files[0].name).toBe('photo!:,;="\'.png');
+  });
+
+  describe('HEIC images', () => {
+    it('converts a HEIC image to JPEG when filters are forced', async () => {
+      isHeic.mockReturnValue(true);
+      heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
+      const { result } = renderHook(() => useDropzone({ forceFilters: true }));
+
+      await act(async () => {
+        await result.current.addFile(createFile('photo.heic', 'image/heic'));
+      });
+
+      expect(heicTo).toHaveBeenCalled();
+      expect(result.current.files[0].name).toBe('photo.jpeg');
+      expect(result.current.files[0].type).toBe('image/jpeg');
+    });
+
+    // Same quirk as the name sanitising: the converted file never reaches the
+    // list unless the filters are forced.
+    it('stores the untouched HEIC file without forced filters', async () => {
+      isHeic.mockReturnValue(true);
+      heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
+      const { result } = renderHook(() => useDropzone());
+
+      await act(async () => {
+        await result.current.addFile(createFile('photo.heic', 'image/heic'));
+      });
+
+      expect(heicTo).toHaveBeenCalled();
+      expect(result.current.files[0].type).toBe('image/heic');
+    });
+
+    it('keeps the original file when the conversion fails', async () => {
+      const consoleError = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+      isHeic.mockReturnValue(true);
+      heicTo.mockRejectedValue(new Error('conversion failed'));
+      const { result } = renderHook(() => useDropzone({ forceFilters: true }));
+
+      await act(async () => {
+        await result.current.addFile(createFile('photo.heic', 'image/heic'));
+      });
+
+      expect(result.current.files[0].name).toBe('photo.heic');
+      consoleError.mockRestore();
+    });
+
+    it('never loads the converter for a plain image', async () => {
+      const { result } = renderHook(() => useDropzone({ forceFilters: true }));
+
+      await act(async () => {
+        await result.current.addFile(createFile('photo.png'));
+      });
+
+      expect(heicTo).not.toHaveBeenCalled();
+      expect(result.current.files[0].name).toBe('photo.png');
+    });
   });
 });

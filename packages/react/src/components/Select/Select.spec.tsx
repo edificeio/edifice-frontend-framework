@@ -107,4 +107,47 @@ describe('Select', () => {
 
     expect(getTrigger()).toHaveTextContent('Droit');
   });
+
+  describe('plain string options', () => {
+    it('lists them and selects one', async () => {
+      const onValueChange = vi.fn();
+      const { user } = render(
+        <Select
+          options={['Chimie', 'Droit']}
+          placeholderOption="Choisir…"
+          onValueChange={onValueChange}
+        />,
+      );
+
+      await user.click(getTrigger());
+      await user.click(screen.getByText('Droit'));
+
+      expect(getTrigger()).toHaveTextContent('Droit');
+      expect(onValueChange).toHaveBeenCalledWith('Droit');
+    });
+
+    it('preselects the matching default value', () => {
+      render(
+        <Select
+          options={['Chimie', 'Droit']}
+          placeholderOption="Choisir…"
+          defaultValue="Chimie"
+        />,
+      );
+
+      expect(getTrigger()).toHaveTextContent('Chimie');
+    });
+
+    it('ignores a default value absent from the options', () => {
+      render(
+        <Select
+          options={['Chimie', 'Droit']}
+          placeholderOption="Choisir…"
+          defaultValue="Physique"
+        />,
+      );
+
+      expect(getTrigger()).toHaveTextContent('Choisir…');
+    });
+  });
 });

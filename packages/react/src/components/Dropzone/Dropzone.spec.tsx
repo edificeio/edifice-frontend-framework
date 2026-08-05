@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '~/setup';
+import { fireEvent, render, screen, waitFor } from '~/setup';
 import Dropzone from './Dropzone';
 
 function createFile(name: string, type = 'image/png') {
@@ -83,7 +83,78 @@ describe('Dropzone', () => {
       'image/png,image/jpeg',
     );
   });
+
+  it('highlights the drop area while dragging over a multiple dropzone', () => {
+    const { container } = render(<Dropzone multiple>child content</Dropzone>);
+    const dropzone = container.querySelector('.dropzone') as HTMLElement;
+
+    fireEvent.dragEnter(dropzone);
+
+    expect(dropzone).toHaveClass('is-dragging');
+  });
+
+  it('stops highlighting a single-file dropzone that already holds a file', async () => {
+    const { container } = render(
+      <Dropzone multiple={false}>child content</Dropzone>,
+    );
+    relaxFileList(getFileInput(container));
+    const dropzone = container.querySelector('.dropzone') as HTMLElement;
+
+    fireEventDrop(dropzone, [createFile('a.png')]);
+    await waitFor(() =>
+      expect(container.querySelector('.drop-file-wrapper')).toHaveClass(
+        'd-block',
+      ),
+    );
+
+    fireEvent.dragEnter(dropzone);
+
+    expect(dropzone).not.toHaveClass('is-dragging');
+  });
+
+  it('ignores a second drop on a single-file dropzone', async () => {
+    const { container } = render(
+      <Dropzone multiple={false}>child content</Dropzone>,
+    );
+    relaxFileList(getFileInput(container));
+    const dropzone = container.querySelector('.dropzone') as HTMLElement;
+
+    fireEventDrop(dropzone, [createFile('a.png')]);
+    await waitFor(() =>
+      expect(container.querySelector('.drop-file-wrapper')).toHaveClass(
+        'd-block',
+      ),
+    );
+
+    fireEventDrop(dropzone, [createFile('b.png')]);
+
+    // The drop handler is detached once a file is there, so nothing is added.
+    await waitFor(() =>
+      expect(screen.queryByText('b.png')).not.toBeInTheDocument(),
+    );
+  });
+
+  it('refuses to render a part outside of a Dropzone', () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    expect(() => render(<Dropzone.File />)).toThrow(
+      'Cannot be rendered outside Dropzone Provider',
+    );
+
+    consoleError.mockRestore();
+  });
 });
+
+// jsdom's FileList setter rejects a plain array, unlike a real dataTransfer.
+function relaxFileList(input: HTMLInputElement) {
+  Object.defineProperty(input, 'files', {
+    value: undefined,
+    writable: true,
+    configurable: true,
+  });
+}
 
 function fireEventDrop(element: HTMLElement, files: File[]) {
   const dataTransfer = { files };

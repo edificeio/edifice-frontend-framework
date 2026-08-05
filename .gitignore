@@ -41,3 +41,4 @@ coverage
 pnpm-lock.yaml
 .pnpm-store
 .claude
+.playwright-mcp
