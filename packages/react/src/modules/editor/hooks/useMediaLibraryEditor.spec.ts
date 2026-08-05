@@ -1,3 +1,5 @@
+import { MutableRefObject } from 'react';
+
 import { Editor } from '@tiptap/react';
 import { WorkspaceElement } from '@edifice.io/client';
 import { act, renderHook } from '~/setup';
@@ -7,6 +9,14 @@ import {
   MediaLibraryRef,
 } from '../../multimedia';
 import { useMediaLibraryEditor } from './useMediaLibraryEditor';
+
+// The hook exposes a ref meant to be attached to a real <MediaLibrary>
+// component; writing to `.current` here simulates that attachment. The
+// exposed type has a read-only `current`, so cast to the writable shape
+// instead of scattering casts at every call site.
+const setRefCurrent = <T>(ref: { current: T }, value: T) => {
+  (ref as MutableRefObject<T>).current = value;
+};
 
 const { removeMock } = vi.hoisted(() => ({
   removeMock: vi.fn(),
@@ -81,7 +91,7 @@ const buildEditor = () => {
     },
     state: { selection },
     view: { state: { selection } },
-    isActive: vi.fn(() => false),
+    isActive: vi.fn<(name: string) => boolean>(() => false),
   };
   return {
     editor: editor as unknown as Editor,
@@ -109,7 +119,7 @@ describe('useMediaLibraryEditor', () => {
     it('appends a single (protected) image and does not deselect it', () => {
       const { editor, editorMock, chainMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('image');
+      setRefCurrent(result.current.ref, buildRef('image'));
 
       const images = [
         buildWorkspaceElement({ _id: 'img-1', alt: 'alt-1', title: 'title-1' }),
@@ -141,7 +151,7 @@ describe('useMediaLibraryEditor', () => {
     it('appends multiple (public) images and deselects all but the last', () => {
       const { editor, editorMock, chainMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('image');
+      setRefCurrent(result.current.ref, buildRef('image'));
 
       const images = [
         buildWorkspaceElement({ _id: 'img-1', public: true }),
@@ -175,7 +185,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor, editorMock, selection } = buildEditor();
       selection.from = 42;
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('audio');
+      setRefCurrent(result.current.ref, buildRef('audio'));
 
       const sounds = [buildWorkspaceElement({ _id: 'sound-1', public: false })];
 
@@ -193,7 +203,7 @@ describe('useMediaLibraryEditor', () => {
     it('inserts multiple sounds, one setAudio call per sound (public url)', () => {
       const { editor, editorMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('audio');
+      setRefCurrent(result.current.ref, buildRef('audio'));
 
       const sounds = [
         buildWorkspaceElement({ _id: 'sound-1', public: true }),
@@ -221,7 +231,7 @@ describe('useMediaLibraryEditor', () => {
     it('inserts an embedded iframe code as-is (string result)', () => {
       const { editor, editorMock, selection } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('video');
+      setRefCurrent(result.current.ref, buildRef('video'));
 
       const embedCode = '<iframe src="https://provider/video"></iframe>';
 
@@ -238,7 +248,7 @@ describe('useMediaLibraryEditor', () => {
     it('inserts one or more videos (WorkspaceElement[] result, public/protected)', () => {
       const { editor, editorMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('video');
+      setRefCurrent(result.current.ref, buildRef('video'));
 
       const videos = [
         buildWorkspaceElement({ _id: 'video-1', public: true }),
@@ -267,7 +277,7 @@ describe('useMediaLibraryEditor', () => {
     it('builds an HTML fragment with every link name and inserts it', () => {
       const { editor, editorMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('attachment');
+      setRefCurrent(result.current.ref, buildRef('attachment'));
 
       const attachments = [
         buildWorkspaceElement({ _id: 'att-1', name: 'first-file.pdf' }),
@@ -295,9 +305,9 @@ describe('useMediaLibraryEditor', () => {
   describe('onSuccess / appendResult - hyperlink', () => {
     it('unsets a pre-existing linker mark when isActive("linker") is true', () => {
       const { editor, editorMock } = buildEditor();
-      editorMock.isActive = vi.fn((name: string) => name === 'linker');
+      editorMock.isActive = vi.fn((name: string): boolean => name === 'linker');
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const resourceResult: InternalLinkTabResult = {
         resources: [
@@ -320,9 +330,11 @@ describe('useMediaLibraryEditor', () => {
 
     it('cancels a pre-existing hyperlink mark when isActive("hyperlink") is true', () => {
       const { editor, editorMock } = buildEditor();
-      editorMock.isActive = vi.fn((name: string) => name === 'hyperlink');
+      editorMock.isActive = vi.fn(
+        (name: string): boolean => name === 'hyperlink',
+      );
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const resourceResult: InternalLinkTabResult = {
         resources: [
@@ -347,7 +359,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor, editorMock, selection } = buildEditor();
       selection.empty = true;
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const resourceResult: InternalLinkTabResult = {
         target: '_blank',
@@ -388,7 +400,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor, editorMock, selection } = buildEditor();
       selection.empty = true;
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const resourceResult: InternalLinkTabResult = {
         resources: [
@@ -414,7 +426,7 @@ describe('useMediaLibraryEditor', () => {
       selection.empty = false;
       selection.head = 5;
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const resourceResult: InternalLinkTabResult = {
         target: '_blank',
@@ -455,7 +467,7 @@ describe('useMediaLibraryEditor', () => {
       selection.empty = true;
       selection.head = 10;
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const externalLink: IExternalLink = {
         url: 'https://example.org',
@@ -488,7 +500,7 @@ describe('useMediaLibraryEditor', () => {
         content: { child: vi.fn(() => ({ textContent: 'Same text' })) },
       }));
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const externalLink: IExternalLink = {
         url: 'https://example.org',
@@ -516,7 +528,7 @@ describe('useMediaLibraryEditor', () => {
         content: { child: vi.fn(() => ({ textContent: 'Old text' })) },
       }));
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('hyperlink');
+      setRefCurrent(result.current.ref, buildRef('hyperlink'));
 
       const externalLink: IExternalLink = {
         url: 'https://example.org',
@@ -548,7 +560,7 @@ describe('useMediaLibraryEditor', () => {
     it('inserts the raw result and calls enter()', () => {
       const { editor, editorMock, selection } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = buildRef('embedder');
+      setRefCurrent(result.current.ref, buildRef('embedder'));
 
       const embedResult = '<iframe src="https://embed"></iframe>';
 
@@ -569,7 +581,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor, editorMock, chainMock } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       // 'studio' is a valid MediaLibraryType but has no `case` in the switch.
-      result.current.ref.current = buildRef('studio');
+      setRefCurrent(result.current.ref, buildRef('studio'));
 
       act(() => {
         result.current.onSuccess([]);
@@ -588,7 +600,7 @@ describe('useMediaLibraryEditor', () => {
   describe('onSuccess / appendResult - early return guards', () => {
     it('does not throw when editor is null (type set) and still hides the modal', () => {
       const { result } = renderHook(() => useMediaLibraryEditor(null));
-      result.current.ref.current = buildRef('image');
+      setRefCurrent(result.current.ref, buildRef('image'));
 
       expect(() => {
         act(() => {
@@ -606,7 +618,7 @@ describe('useMediaLibraryEditor', () => {
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
       ref.type = null as unknown as MediaLibraryRef['type'];
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
 
       act(() => {
         result.current.onSuccess([buildWorkspaceElement()]);
@@ -621,7 +633,7 @@ describe('useMediaLibraryEditor', () => {
     it('does not throw when the ref itself is null', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
-      result.current.ref.current = null;
+      setRefCurrent(result.current.ref, null);
 
       expect(() => {
         act(() => {
@@ -636,7 +648,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
       const uploads = [buildWorkspaceElement({ _id: 'up-1' })];
 
       await act(async () => {
@@ -651,7 +663,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
 
       await act(async () => {
         await result.current.onCancel(undefined);
@@ -665,7 +677,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
 
       await act(async () => {
         await result.current.onCancel([]);
@@ -679,7 +691,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef(null as unknown as MediaLibraryRef['type']);
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
       const uploads = [buildWorkspaceElement({ _id: 'up-1' })];
 
       await act(async () => {
@@ -696,7 +708,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
       const uploads = [buildWorkspaceElement({ _id: 'up-1' })];
 
       await act(async () => {
@@ -711,7 +723,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef('image');
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
 
       await act(async () => {
         await result.current.onTabChange({ id: 'workspace' } as any);
@@ -725,7 +737,7 @@ describe('useMediaLibraryEditor', () => {
       const { editor } = buildEditor();
       const { result } = renderHook(() => useMediaLibraryEditor(editor));
       const ref = buildRef(null as unknown as MediaLibraryRef['type']);
-      result.current.ref.current = ref;
+      setRefCurrent(result.current.ref, ref);
       const uploads = [buildWorkspaceElement({ _id: 'up-1' })];
 
       await act(async () => {

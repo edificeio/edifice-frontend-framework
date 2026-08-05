@@ -9,10 +9,15 @@ function makeNode(type: string) {
 }
 
 function renderInformationPane(node: any) {
-  const props = {
+  // `InformationPaneRenderer` only reads `node`, but `MediaResizeProps`
+  // (shared with the other media NodeView renderers) also requires
+  // `updateAttributes` - provide a no-op so the fixture matches the real
+  // prop contract instead of casting past a missing required field.
+  const props: MediaResizeProps = {
     node,
     editor: {} as Editor,
-  } as MediaResizeProps;
+    updateAttributes: vi.fn(),
+  };
 
   return render(<InformationPaneRenderer {...props} />);
 }

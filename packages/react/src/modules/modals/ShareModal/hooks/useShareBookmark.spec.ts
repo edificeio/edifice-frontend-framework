@@ -1,7 +1,17 @@
+import { MutableRefObject } from 'react';
+
 import { ShareRight, ShareRightWithVisibles } from '@edifice.io/client';
 
 import { act, renderHook } from '~/setup';
 import { useShareBookmark } from './useShareBookmark';
+
+// The hook exposes a ref meant to be attached to a real <input>; writing to
+// `.current` here simulates that attachment. The exposed type has a
+// read-only `current`, so cast to the writable shape instead of scattering
+// casts at every call site.
+const setRefCurrent = <T>(ref: { current: T }, value: T) => {
+  (ref as MutableRefObject<T>).current = value;
+};
 
 const { saveBookmarks } = vi.hoisted(() => ({
   saveBookmarks: vi.fn(),
@@ -21,7 +31,7 @@ vi.mock('@edifice.io/client', async (importOriginal) => {
 
 const { toast } = vi.hoisted(() => ({
   toast: {
-    custom: vi.fn(() => 'toast-id'),
+    custom: vi.fn(),
     loading: vi.fn(),
     dismiss: vi.fn(),
     remove: vi.fn(),
@@ -65,9 +75,9 @@ describe('useShareBookmark', () => {
       );
 
       act(() => {
-        result.current.refBookmark.current = {
+        setRefCurrent(result.current.refBookmark, {
           value: 'My Bookmark',
-        } as HTMLInputElement;
+        } as HTMLInputElement);
       });
 
       act(() => {
@@ -129,9 +139,9 @@ describe('useShareBookmark', () => {
       expect(result.current.showBookmarkInput).toBe(true);
 
       act(() => {
-        result.current.refBookmark.current = {
+        setRefCurrent(result.current.refBookmark, {
           value: 'New Bookmark',
-        } as HTMLInputElement;
+        } as HTMLInputElement);
       });
 
       await act(async () => {
@@ -177,9 +187,9 @@ describe('useShareBookmark', () => {
       );
 
       act(() => {
-        result.current.refBookmark.current = {
+        setRefCurrent(result.current.refBookmark, {
           value: 'New Bookmark',
-        } as HTMLInputElement;
+        } as HTMLInputElement);
       });
 
       await act(async () => {

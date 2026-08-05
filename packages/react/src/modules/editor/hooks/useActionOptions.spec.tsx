@@ -2,8 +2,25 @@ import { RefObject } from 'react';
 
 import { Editor } from '@tiptap/react';
 import { renderHook } from '~/setup';
+import { DropdownMenuOptions } from '../../../components';
 import { MediaLibraryRef } from '../../multimedia';
 import { useActionOptions } from './useActionOptions';
+
+type ActionOption = Exclude<DropdownMenuOptions, { type: 'divider' }>;
+
+// The hook builds a fixed-order array (dividers asserted separately below);
+// this narrows a raw index to the non-divider variant instead of casting,
+// and throws a clear message if the source ever reorders the array so that
+// a given index stops being an action item.
+function actionAt(options: DropdownMenuOptions[], index: number): ActionOption {
+  const option = options[index];
+  if (option.type === 'divider') {
+    throw new Error(
+      `Expected an action option at index ${index}, got a divider`,
+    );
+  }
+  return option;
+}
 
 // Chainable mock: every method returns the same object so calls like
 // `.chain().focus().insertTable(...).run()` can be composed freely.
@@ -77,46 +94,46 @@ describe('useActionOptions', () => {
     expect(options[3]).toEqual({ type: 'divider' });
     expect(options[7]).toEqual({ type: 'divider' });
 
-    const removeFormat = options[0];
-    removeFormat.action();
+    const removeFormat = actionAt(options, 0);
+    removeFormat.action(undefined);
     expect(chainMock.clearNodes).toHaveBeenCalled();
     expect(chainMock.unsetAllMarks).toHaveBeenCalled();
     expect(chainMock.run).toHaveBeenCalled();
 
-    const table = options[2];
-    table.action();
+    const table = actionAt(options, 2);
+    table.action(undefined);
     expect(chainMock.insertTable).toHaveBeenCalledWith({
       rows: 3,
       cols: 3,
       withHeaderRow: true,
     });
 
-    const superscript = options[4];
-    superscript.action();
+    const superscript = actionAt(options, 4);
+    superscript.action(undefined);
     expect(chainMock.toggleSuperscript).toHaveBeenCalled();
 
-    const subscript = options[5];
-    subscript.action();
+    const subscript = actionAt(options, 5);
+    subscript.action(undefined);
     expect(chainMock.toggleSubscript).toHaveBeenCalled();
 
-    const maths = options[6];
-    maths.action();
+    const maths = actionAt(options, 6);
+    maths.action(undefined);
     expect(toggleMathsModal).toHaveBeenCalled();
 
-    const embed = options[8];
-    embed.action();
+    const embed = actionAt(options, 8);
+    embed.action(undefined);
     expect(mediaLibraryRef.current?.show).toHaveBeenCalledWith('embedder');
 
-    const bulletList = listOptions[0];
-    bulletList.action();
+    const bulletList = actionAt(listOptions, 0);
+    bulletList.action(undefined);
     expect(chainMock.toggleBulletList).toHaveBeenCalled();
 
-    const orderedList = listOptions[1];
-    orderedList.action();
+    const orderedList = actionAt(listOptions, 1);
+    orderedList.action(undefined);
     expect(chainMock.toggleOrderedList).toHaveBeenCalled();
 
-    const alignCenter = alignmentOptions[1];
-    alignCenter.action();
+    const alignCenter = actionAt(alignmentOptions, 1);
+    alignCenter.action(undefined);
     expect(chainMock.setTextAlign).toHaveBeenCalledWith('center');
   });
 });
