@@ -189,7 +189,7 @@ const Alert = forwardRef(
         {isVisible ? (
           <div ref={refAlert} className={divContainerClasses} role="alert">
             {!isConfirm && mapping[type].icon}
-            <div className="alert-content small">{children}</div>
+            <div className="alert-content small flex-grow-1">{children}</div>
             {button && (
               <div className="ms-12">
                 {button}{' '}
