@@ -120,14 +120,14 @@ export default defineConfig(({ mode }) => {
         // state of the package. Audit target: 30% then 50% within 6 months
         // — raise these floors incrementally as coverage improves, never
         // lower them.
-        // Measured baseline as of 2026-08-04 (after the ENABLING-1135 lot 15
-        // editor batch 1, on top of lots 12-14): lines/statements 51.71%,
-        // functions 63.44%, branches 87.44%.
+        // Measured baseline as of 2026-08-05 (after the ENABLING-1135 lot 15
+        // editor batch 2, on top of lots 12-14): lines/statements 55.11%,
+        // functions 68.34%, branches 88.32%.
         thresholds: {
-          lines: 48,
-          statements: 48,
-          functions: 61,
-          branches: 84,
+          lines: 52,
+          statements: 52,
+          functions: 65,
+          branches: 85,
         },
       },
     },
