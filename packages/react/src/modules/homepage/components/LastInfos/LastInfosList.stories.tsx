@@ -28,7 +28,7 @@ export default meta;
 type Story = StoryObj<typeof LastInfosList>;
 
 const renderWithProps = (props: LastInfosListProps) => () => {
-  function handleInfoClick(threadId: number | string, id: number | string) {
+  function handleInfoClick(_threadId: number | string, id: number | string) {
     alert(`Info ID=${id} was clicked`);
   }
 

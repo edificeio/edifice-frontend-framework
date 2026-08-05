@@ -68,7 +68,6 @@ describe('DatePicker', () => {
         value={new Date(2026, 0, 15)}
         onChange={onChange}
         data-testid="date-picker"
-        allowClear
       />,
     );
 

@@ -97,6 +97,11 @@ describe('useWorkspaceFile', () => {
         uri: '/workspace/document/abc-123',
       });
 
+      // A valid workspace `uri` always takes the update branch (returning
+      // `{ file, src }`); the string branch is only for brand-new files.
+      if (typeof updated === 'string') {
+        throw new Error('Expected the update branch to return { file, src }');
+      }
       expect(updated.src).toBe('/workspace/pub/document/abc-123');
     });
   });

@@ -1,4 +1,4 @@
-import { WorkspaceElement } from '@edifice.io/client';
+import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { createRef, useContext } from 'react';
 import { render, screen, waitFor } from '~/setup';
 import MediaLibrary, { MediaLibraryRef } from './MediaLibrary';
@@ -159,7 +159,10 @@ function setup({
       <MediaLibrary
         ref={ref}
         appCode="blog"
-        visibility={visibility}
+        // A couple of tests deliberately pass 'external' (not a real
+        // WorkspaceVisibility) to exercise the component's defensive
+        // ['protected', 'public'].includes(visibility) branch.
+        visibility={visibility as WorkspaceVisibility}
         multiple
         onSuccess={onSuccess}
         onCancel={onCancel}

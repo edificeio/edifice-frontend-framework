@@ -6,7 +6,7 @@ import {
   IconRafterLeft,
   IconRafterRight,
 } from '../../../modules/icons/components';
-import ButtonBeta, { ButtonBetaProps } from '../ButtonBeta';
+import ButtonBeta from '../ButtonBeta';
 
 const meta: Meta<typeof ButtonBeta> = {
   title: 'Components/Buttons/ButtonBeta',
@@ -190,7 +190,7 @@ export const Loading: Story = {
 };
 
 export const ButtonGroup: Story = {
-  render: (args: ButtonBetaProps) => {
+  render: (args) => {
     return (
       <div className="d-flex align-items-center gap-8">
         <ButtonBeta {...args} color="default">

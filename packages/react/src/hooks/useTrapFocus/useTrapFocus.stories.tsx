@@ -1,3 +1,5 @@
+import { RefObject } from 'react';
+
 import { Meta, StoryObj } from '@storybook/react-vite';
 import Button from '../../components/Button/Button';
 import FormControl from '../../components/Form/FormControl';
@@ -24,7 +26,10 @@ export const Base: Story = {
     const ref = useTrapFocus();
 
     return (
-      <div ref={ref} className="border rounded-4 m-64 py-12 px-8">
+      <div
+        ref={ref as RefObject<HTMLDivElement>}
+        className="border rounded-4 m-64 py-12 px-8"
+      >
         <h2 className="p-12">Trap Focus!</h2>
         <p className="p-12">
           Press Tab or Shift+Tab to cycle through elements focus

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconApplications, IconViewList } from '../../modules/icons/components';
-import Radio, { RadioProps } from './Radio';
+import Radio from './Radio';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Radio> = {
