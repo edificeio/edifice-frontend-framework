@@ -1,6 +1,3 @@
-/**
- * DO NOT MODIFY
- */
 import { handlers } from '@edifice.io/config';
 import '@testing-library/jest-dom/vitest';
 import { RenderOptions, render } from '@testing-library/react';

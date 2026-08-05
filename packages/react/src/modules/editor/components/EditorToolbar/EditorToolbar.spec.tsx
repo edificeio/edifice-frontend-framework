@@ -217,9 +217,20 @@ describe('EditorToolbar', () => {
       // this same crash in production.
       const editor = makeNoHistoryEditor();
 
-      expect(() => renderToolbar(editor)).toThrow(
-        /can\(\.\.\.\)\.undo is not a function/,
-      );
+      // React (dev mode) and jsdom both log this expected render crash to
+      // the console; silence it locally so it doesn't drown out real
+      // failures elsewhere, while still asserting the throw itself below.
+      const consoleErrorSpy = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      try {
+        expect(() => renderToolbar(editor)).toThrow(
+          /can\(\.\.\.\)\.undo is not a function/,
+        );
+      } finally {
+        consoleErrorSpy.mockRestore();
+      }
     });
   });
 

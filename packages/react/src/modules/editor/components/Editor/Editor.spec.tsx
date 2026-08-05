@@ -3,6 +3,14 @@ import { createRef, forwardRef } from 'react';
 import { act, render, screen } from '~/setup';
 import Editor, { EditorProps, EditorRef } from './Editor';
 
+// The real `useTipTapEditor` (kept real, see below) unconditionally includes
+// the SpeechRecognition extension, which warns on `onCreate` when the
+// browser doesn't expose the SpeechRecognition API - true of jsdom. Stub it
+// at module scope (this file's jsdom environment is torn down when the file
+// finishes, so there's nothing to restore) so the check genuinely passes
+// instead of silencing its warning.
+(globalThis as { SpeechRecognition?: unknown }).SpeechRecognition = class {};
+
 // Editor.tsx composes a large number of already independently-tested
 // subsystems (see hooks/*.spec.* and components/**/*.spec.* in this module).
 // This spec focuses on Editor.tsx's OWN branch logic: mode/toolbar/variant

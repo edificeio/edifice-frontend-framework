@@ -102,30 +102,6 @@ export default defineConfig(({ mode }) => {
       watch: false,
       clearMocks: true,
       restoreMocks: true,
-      // Filters known, expected test-environment noise so real failures
-      // aren't buried under it. Matches narrow substrings only - anything
-      // else still prints normally. Extend this list only for noise that is
-      // genuinely unavoidable (jsdom limitations, deliberate crash-path
-      // tests), never to hide a warning that could point at a real bug.
-      onConsoleLog(log) {
-        const expectedNoise = [
-          // jsdom has no SpeechRecognition API; the extension warns on every
-          // mount of a real editor that includes it (e.g. Editor.spec.tsx).
-          'requires a browser supporting the SpeechRecognition API',
-          // jsdom does not implement canvas rendering.
-          'Not implemented: HTMLCanvasElement.prototype.getContext',
-          // React's act() advisory: a few specs mount hooks/components whose
-          // effects settle asynchronously (TanStack Query, timers) after the
-          // initial act() scope closes - investigated and considered benign.
-          'was not wrapped in act(...)',
-          // EditorToolbar.spec.tsx and useMediaLibraryContext specs
-          // deliberately render a component that throws, to assert a
-          // crash/guard behavior; jsdom reports it as an uncaught exception.
-          'editor?.can(...).undo is not a function',
-          'Innertabs compound components cannot be rendered outside the MediaLibrary component',
-        ];
-        return !expectedNoise.some((needle) => log.includes(needle));
-      },
       coverage: {
         provider: 'v8',
         reporter: ['text', 'html', 'lcov'],

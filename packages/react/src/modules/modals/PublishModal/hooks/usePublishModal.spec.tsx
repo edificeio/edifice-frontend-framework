@@ -1,6 +1,6 @@
 import type { IResource } from '@edifice.io/client';
 
-import { act, renderHook, wrapper } from '~/setup';
+import { act, renderHook, waitFor, wrapper } from '~/setup';
 import usePublishModal, { type FormDataProps } from './usePublishModal';
 
 const { httpGet, publish } = vi.hoisted(() => ({
@@ -53,7 +53,7 @@ describe('usePublishModal', () => {
   });
 
   describe('selectActivities / selectSubjects', () => {
-    it('toggles a value into and out of selectedActivities', () => {
+    it('toggles a value into and out of selectedActivities', async () => {
       // `resource` must be a stable reference across re-renders: passing a
       // freshly built object inline would retrigger the "reset cover" effect
       // (dependency array [resource]) after every state update.
@@ -61,6 +61,10 @@ describe('usePublishModal', () => {
       const { result } = renderHook(() => usePublishModal({ resource }), {
         wrapper,
       });
+      // MockedProvider's QueryClientProvider settles a subscription update
+      // one tick after mount, outside the initial act() scope; flush it
+      // before interacting so React doesn't warn about it later.
+      await waitFor(() => {});
 
       act(() => result.current.selectActivities('sport'));
       expect(result.current.selectedActivities).toEqual(['sport']);
@@ -69,11 +73,12 @@ describe('usePublishModal', () => {
       expect(result.current.selectedActivities).toEqual([]);
     });
 
-    it('toggles a value into and out of selectedSubjectAreas', () => {
+    it('toggles a value into and out of selectedSubjectAreas', async () => {
       const resource = buildResource();
       const { result } = renderHook(() => usePublishModal({ resource }), {
         wrapper,
       });
+      await waitFor(() => {});
 
       act(() => result.current.selectSubjects('math'));
       expect(result.current.selectedSubjectAreas).toEqual(['math']);
@@ -84,11 +89,12 @@ describe('usePublishModal', () => {
   });
 
   describe('handleUploadImage / handleDeleteImage', () => {
-    it('sets cover from an uploaded file', () => {
+    it('sets cover from an uploaded file', async () => {
       const resource = buildResource();
       const { result } = renderHook(() => usePublishModal({ resource }), {
         wrapper,
       });
+      await waitFor(() => {});
 
       const file = new File(['x'], 'cover.png', { type: 'image/png' });
       act(() => result.current.handleUploadImage(file));
@@ -96,11 +102,12 @@ describe('usePublishModal', () => {
       expect(result.current.cover).toBe(file);
     });
 
-    it('clears cover on delete', () => {
+    it('clears cover on delete', async () => {
       const resource = buildResource();
       const { result } = renderHook(() => usePublishModal({ resource }), {
         wrapper,
       });
+      await waitFor(() => {});
 
       act(() => result.current.handleDeleteImage());
 
@@ -117,6 +124,7 @@ describe('usePublishModal', () => {
         ({ resource }) => usePublishModal({ resource }),
         { wrapper, initialProps: { resource: resourceA } },
       );
+      await waitFor(() => {});
 
       act(() => result.current.handleUploadImage('changed.png'));
       expect(result.current.cover).toBe('changed.png');

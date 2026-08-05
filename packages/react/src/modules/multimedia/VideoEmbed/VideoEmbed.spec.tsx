@@ -53,8 +53,11 @@ describe('VideoEmbed', () => {
     expect(getCustom).toHaveBeenCalled();
   });
 
-  it('shows the URL field', () => {
+  it('shows the URL field', async () => {
     setup();
+    // Flush the mount-time getDefault()/getCustom() resolution before
+    // asserting, so React doesn't warn about it settling afterward.
+    await waitFor(() => expect(getDefault).toHaveBeenCalled());
 
     expect(screen.getByText('Video URL')).toBeInTheDocument();
     expect(urlField()).toBeInTheDocument();
@@ -166,17 +169,19 @@ describe('VideoEmbed', () => {
   });
 
   describe('before anything is typed', () => {
-    it('offers the embed-code shortcut when the caller can switch', () => {
+    it('offers the embed-code shortcut when the caller can switch', async () => {
       const switchType = vi.fn();
       setup({ switchType });
+      await waitFor(() => expect(getDefault).toHaveBeenCalled());
 
       expect(
         screen.getByRole('button', { name: /Use embed or iframe code/ }),
       ).toBeInTheDocument();
     });
 
-    it('shows nothing else when the caller cannot switch', () => {
+    it('shows nothing else when the caller cannot switch', async () => {
       setup();
+      await waitFor(() => expect(getDefault).toHaveBeenCalled());
 
       expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
