@@ -1,0 +1,53 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useHttpErrorToast" />
+
+# useHttpErrorToast
+
+The `useHttpErrorToast` hook subscribes to the transport layer of `@edifice.io/client`
+and displays an error toast whenever an HTTP request fails, so an app gets global error
+feedback without wiring a handler on every call.
+
+## Usage
+
+```tsx
+import { useHttpErrorToast } from '@edifice.io/react';
+
+function App() {
+  useHttpErrorToast();
+
+  return <Router />;
+}
+```
+
+Call it once, high in the tree — mounting it in several components would show duplicate
+toasts for the same error.
+
+## Parameters
+
+- `active` (boolean, optional): Enables the subscription. Defaults to `true`. Set it to
+  `false` to suspend the global toasts on a screen handling its errors itself.
+- `...options` (`CustomToastOptions`, optional): Forwarded to `useToast`, to adjust the
+  duration or position of the toast.
+
+## Returns
+
+Nothing. The hook only registers a subscription, and revokes it on unmount.
+
+## Message resolution
+
+The message shown is resolved in this order:
+
+1. The i18n key carried by the error payload (`payload.error`), when the backend provides one.
+2. Otherwise, the translation of the HTTP status code for a known error — `e400`, `e401`,
+   `e403`, `e404`, `e408`, `e413`, `e500`, `e504`.
+3. Otherwise, the raw `statusText` of the response, which may be technical and in English.
+
+If none of these yields a string, no toast is displayed: an empty toast is never shown.
+
+## Example
+
+```tsx
+// Suspend global toasts on a screen that renders its own error state
+useHttpErrorToast({ active: !isCustomErrorScreen });
+```

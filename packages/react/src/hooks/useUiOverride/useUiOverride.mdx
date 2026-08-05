@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useUiOverride" />
+
+# useUiOverride
+
+The `useUiOverride` hook reads a UI override declared by the platform in its
+`theme-conf`, so a deployment can switch a component variant without any code change
+in the consuming app.
+
+## Usage
+
+```tsx
+import useUiOverride from './useUiOverride';
+
+const override = useUiOverride('layout.header');
+```
+
+## Parameters
+
+- `key` (string): The override key to look up, as registered in the theme configuration
+  (for example `layout.header`).
+
+## Returns
+
+- `override` (object | undefined): The override registered under `key`, or `undefined`
+  when the platform declares none.
+
+The value is **normalized**: a `theme-conf` may declare an override either as a plain
+string or as an object. A string is returned as `{ variant: '<the string>' }`, so
+callers can always read `override?.variant` without testing the type.
+
+## Example
+
+```tsx
+const override = useUiOverride('layout.header');
+
+// theme-conf: { 'layout.header': 'v2' }
+//   → { variant: 'v2' }
+// theme-conf: { 'layout.header': { variant: 'v2', theme: 'crna' } }
+//   → { variant: 'v2', theme: 'crna' }
+
+return override?.variant === 'v2' ? <HeaderV2 /> : <Header />;
+```
+
+Prefer this hook over hard-coding a platform test (`if (theme === 'crna')`): the
+condition then lives in the platform configuration rather than in the framework.

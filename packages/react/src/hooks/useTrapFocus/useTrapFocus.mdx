@@ -1,0 +1,46 @@
+import { Canvas, Meta } from '@storybook/addon-docs/blocks';
+import * as useTrapFocusStories from './useTrapFocus.stories';
+
+<Meta of={useTrapFocusStories} />
+
+# useTrapFocus
+
+## Usage
+
+This hook confines keyboard navigation inside a container:
+
+- pressing `Tab` on the last focusable element loops back to the first
+- pressing `Shift+Tab` on the first loops to the last
+
+It is an accessibility building block. Without it, keyboard and screen reader users can
+tab out of an open dialog and reach the page behind it.
+
+## Example
+
+Click inside the box below, then press `Tab` or `Shift+Tab` to cycle through the fields.
+
+<Canvas of={useTrapFocusStories.Base} />
+
+## Hook usage
+
+```jsx
+const ref = useTrapFocus(isOpen);
+
+<div ref={ref} role="dialog" aria-modal="true">
+  <input name="email" />
+  <input name="password" />
+  <button onClick={onClose}>Close</button>
+</div>;
+```
+
+## Parameters
+
+- `isActive` (boolean, optional): Enables the trap. Pass the open state of the dialog so
+  focus is only confined while it is displayed.
+
+## Returns
+
+- `ref` (ref): To attach to the container element.
+
+Focusable elements are detected automatically — buttons, links, inputs, selects,
+textareas and anything with a non-negative `tabindex`. Disabled buttons are excluded.

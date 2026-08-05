@@ -6,6 +6,14 @@ import WorkspaceFolders from './WorkspaceFolders';
 const meta: Meta<typeof Workspace> = {
   title: 'Modules/Multimedia/WorkspaceFolders',
   component: WorkspaceFolders,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The `WorkspaceFolders` component displays the workspace folder tree — personal folders and shared folders — with a search field and the ability to create a folder. It is the destination picker used when copying a document into the workspace. Each selection triggers `onFolderSelected` with the folder id **and** a `canCopyFileInto` flag, since the user may browse a shared folder without holding write access to it: the caller must honour that flag before enabling its own confirm action. Folders are fetched by the component itself through `useWorkspaceFolders`.',
+      },
+    },
+  },
   args: {},
 };
 

@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useWorkspaceFolders" />
+
+# useWorkspaceFolders
+
+The `useWorkspaceFolders` hook loads the user's workspace folders — personal and shared —
+and exposes folder creation. Its companion `useWorkspaceFoldersTree` turns that flat list
+into a searchable tree.
+
+## Usage
+
+```tsx
+import useWorkspaceFolders from './useWorkspaceFolders';
+
+const { folders, createFolderMutation, canCopyFileIntoFolder, isLoading } =
+  useWorkspaceFolders();
+```
+
+## Returns
+
+- `folders` (WorkspaceElement[]): Personal and shared folders, merged.
+- `createFolderMutation` (mutation): TanStack Query mutation taking
+  `{ folderName, folderParentId? }`. On success it updates the cache directly instead of
+  refetching; on failure it shows an error toast.
+- `canCopyFileIntoFolder` (function): Tells whether the user may copy a file into a given
+  folder — a shared folder can be browsable without being writable.
+- `isLoading` (boolean): True while either the personal or the shared list is loading.
+
+Both lists are fetched through TanStack Query under the keys
+`['workspace', 'folders', 'owner']` and `['workspace', 'folders', 'shared']`.
+
+## useWorkspaceFoldersTree
+
+```tsx
+const { foldersTree, filterTree } = useWorkspaceFoldersTree(folders);
+```
+
+Builds the two root nodes ("My documents" and "Shared documents") and nests folders under
+them. `filterTree` narrows the tree to nodes matching a search query.
+
+Two constants identify the roots, which have no real id on the backend:
+
+- `WORKSPACE_USER_FOLDER_ID`
+- `WORKSPACE_SHARED_FOLDER_ID`
+
+When passing a selection to the API, the personal root must be sent as an **empty string**
+rather than its constant, since the backend expects an empty `parentId` at that level.
+
+## Example
+
+```tsx
+const { folders, isLoading } = useWorkspaceFolders();
+const { foldersTree } = useWorkspaceFoldersTree(folders);
+
+if (isLoading) return <LoadingScreen />;
+return <TreeView data={foldersTree} onTreeItemClick={handleSelect} />;
+```
+
+The `WorkspaceFolders` component of the multimedia module already wires all of this
+together — use it rather than rebuilding the picker.

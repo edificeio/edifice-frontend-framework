@@ -16,6 +16,14 @@ const mockShareOptions: ShareOptions = {
 const meta: Meta<typeof ShareResources> = {
   title: 'Modules/ShareResources',
   component: ShareResources,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'The `ShareResources` component is the sharing panel itself, without any dialog around it: user and group search, the rights matrix (read, contribute, manage…) and bookmark handling. Most apps should use `ShareModal`, which already embeds it together with the confirm/cancel actions — reach for `ShareResources` directly only when the panel must be hosted in a custom container. It exposes a `ShareResourcesRef` so the parent can trigger the submission from its own button, and reports state through `onChange` (current rights plus a dirty flag) and `onSubmit`.',
+      },
+    },
+  },
   globals: {
     app: 'actualites',
   },
