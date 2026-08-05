@@ -6,6 +6,14 @@ import BookmarkedApps from './BookmarkedApps';
 const meta: Meta<typeof BookmarkedApps> = {
   title: 'Modules/Widgets/Bookmarked Apps',
   component: BookmarkedApps,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `BookmarkedApps` component is the homepage widget listing the user's favourite applications as clickable icons linking to each app. It renders **at most the first six** entries of the `data` array it receives — the caller decides the ordering. When the list is empty, it falls back to a link inviting the user to pick their favourite apps. It is a pure display component: it neither fetches nor persists the bookmarks.",
+      },
+    },
+  },
   decorators: [
     (Story) => (
       <div style={{ width: '300px' }}>

@@ -13,6 +13,12 @@ const meta = {
   component: StackedGroup,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'The `StackedGroup` component lays out its children in a row with a controlled overlap, the way stacked avatars or cards are usually displayed. The `overlap` prop sets how many pixels each item bites into the previous one (20 by default), and `stackingOrder` decides which end sits on top: `leftFirst` (default) gives the highest z-index to the rightmost item, `rightFirst` does the opposite — useful when the first item must stay fully visible. With `wrap`, items flow onto several lines instead of a single row. It only handles positioning: the children provide their own shape and styling.',
+      },
+    },
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof StackedGroup>;

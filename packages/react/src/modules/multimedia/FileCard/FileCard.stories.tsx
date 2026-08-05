@@ -5,6 +5,14 @@ import FileCard from './FileCard';
 const meta: Meta<typeof FileCard> = {
   title: 'Components/Card/File Card',
   component: FileCard,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The `FileCard` component renders a workspace document (`WorkspaceElement`) as a card. The icon and colour are derived automatically from the file type — image, video, audio or text — and can be overridden through `customIcon` and `customColor`. Being built on `Card`, it inherits its interaction props (`isClickable`, `isSelectable`, `isSelected`, `onClick`), which makes it usable both as a simple link and as an item in a multi-selection list. Note: this component is meant for internal use inside the multimedia module and isn't part of the package's public exports.",
+      },
+    },
+  },
   args: {
     isSelectable: false,
     isClickable: true,
