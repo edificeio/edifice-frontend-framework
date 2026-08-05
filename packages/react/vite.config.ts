@@ -121,13 +121,13 @@ export default defineConfig(({ mode }) => {
         // — raise these floors incrementally as coverage improves, never
         // lower them.
         // Measured baseline as of 2026-08-05 (after the ENABLING-1135 lot 15
-        // editor batch 2, on top of lots 12-14): lines/statements 55.11%,
-        // functions 68.34%, branches 88.32%.
+        // editor batch 3 — modules/editor complete — on top of lots 12-14):
+        // lines/statements 58.05%, functions 70.05%, branches 88.59%.
         thresholds: {
-          lines: 52,
-          statements: 52,
-          functions: 65,
-          branches: 85,
+          lines: 55,
+          statements: 55,
+          functions: 67,
+          branches: 86,
         },
       },
     },
