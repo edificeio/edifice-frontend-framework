@@ -16,6 +16,74 @@ See [Screeb](?path=/docs/integrations-screeb-1-overview--docs) for the common co
 npm install @screeb/sdk-browser
 ```
 
+> This guide is based on a real, browser-tested implementation (the `edt` module). Every gotcha below was reproduced and confirmed live before being written down — not guessed from reading the SDK's source.
+
+---
+
+## Backend requirement: exposing `publicConf`
+
+The service below reads its `screeb-app-id` from `<app-address>/conf/public` (e.g. `/edt/conf/public`), following the [common configuration](?path=/docs/integrations-screeb-1-overview--docs) convention.
+
+**You do not need to write any backend code for this.** Every entcore module server extends `org.entcore.common.http.BaseServer`, which already registers `org.entcore.common.controller.ConfController` — the generic controller that serves `GET /conf/public` and renders `config.getJsonObject("publicConf")`. This is inherited automatically; do not add a custom controller or route for it.
+
+The only thing your module needs is the `publicConf` key in its **deployed** configuration (`template.j2`, `conf.json.template`, or whatever your infra uses):
+
+```json
+"publicConf": {
+  "screeb-app-id": "{{ screebAppId | default('') }}"
+}
+```
+
+Without this key in the deployed config, `/conf/public` responds `{}` and Screeb silently never loads (this is the intended opt-in behavior — see [Configuration](?path=/docs/integrations-screeb-1-overview--docs) — but it is also the first thing to check if nothing appears in the Network tab).
+
+---
+
+## TypeScript compatibility (older `tsconfig.json`)
+
+`@screeb/sdk-browser`'s own `.d.ts` files use the `unknown` type, which requires **TypeScript >= 3.0**. Many legacy AngularJS modules are still pinned to an older TypeScript (2.x) and will fail to compile against the real typings.
+
+If that's your case, don't downgrade the SDK's types — write a minimal local shim and remap the module to it via `tsconfig.json` paths. This is **types-only**: at runtime, webpack still resolves the real package from `node_modules`, so the shim must mirror the real exports exactly.
+
+`src/types/screeb-sdk.d.ts`:
+
+```typescript
+// Minimal local typings for @screeb/sdk-browser: the package's .d.ts require
+// TS >= 3.0 (the `unknown` type). The remap below is types-only — at runtime,
+// webpack resolves the real node_modules package.
+export type PropertyRecord = { [key: string]: any };
+export function load(options?: any): Promise<any>;
+export function init(websiteId: string, userId?: string, userProperties?: PropertyRecord, hooks?: any, language?: string): Promise<any>;
+export function eventTrack(eventName: string, eventProperties?: PropertyRecord): Promise<any>;
+export function surveyStart(surveyId: string, distributionId?: string, allowMultipleResponses?: boolean, hiddenFields?: PropertyRecord, hooks?: any, language?: string, selectors?: string | string[]): Promise<any>;
+export function messageStart(messageId: string, allowMultipleResponses?: boolean, hiddenFields?: PropertyRecord, hooks?: any, language?: string): Promise<any>;
+export function surveyClose(): Promise<any>;
+export function targetingDebug(): Promise<any>;
+export function identityProperties(userProperties: PropertyRecord): Promise<any>;
+export function identityReset(): Promise<any>;
+
+declare global {
+  // Absent from TS 2.x's dom lib; present in every supported browser.
+  class TextEncoder {
+    encode(input?: string): Uint8Array;
+  }
+}
+```
+
+`tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@screeb/sdk-browser": ["src/types/screeb-sdk"]
+    }
+  }
+}
+```
+
+> ⚠️ **Keep this shim in sync with the real package.** TypeScript will happily compile a function name that doesn't exist in the shim's source — but at runtime, importing a name the real SDK doesn't export resolves to `undefined`, and calling it throws only when actually invoked, with no build-time warning. This is exactly how a previous version of this guide shipped `targetingCheck`, which **does not exist** in `@screeb/sdk-browser` (the real export is `targetingDebug`) — the mistake compiled cleanly and only surfaced as a runtime `TypeError` when the function was called. Whenever you bump the SDK version, diff the shim against the real `node_modules/@screeb/sdk-browser/dist/es/index.d.ts` exports.
+
 ---
 
 ## ScreebService
@@ -30,73 +98,116 @@ import {
   init,
   load,
   messageStart,
+  PropertyRecord,
   surveyClose,
   surveyStart,
-  targetingCheck,
+  targetingDebug,
 } from '@screeb/sdk-browser';
-import type { HooksMessageStart, HooksSurveyStart, PropertyRecord } from '@screeb/sdk-browser';
 import { ng, model } from 'entcore';
+import http from 'axios';
 
+const SESSION_POLL_MS = 50;
+const SESSION_TIMEOUT_MS = 15000;
+
+// entcore populates `model.me` asynchronously (~300ms after the page loads): at
+// app.ts evaluation time it is still undefined. Do NOT wait for it via
+// `Me.onSessionReady()` or `model.one('userinfo-loaded')`: entcore's `unbind`
+// identifies handlers by comparing their `toString()`, but every wrapper created
+// by `model.one()` shares the same source string. The first handler that fires
+// therefore unregisters the WRONG handler from the array `trigger` is currently
+// iterating, silently dropping others (reproduced live: 3 handlers registered on
+// `userinfo-loaded`, only 1 ever executed). Polling on `model.me.userId` is immune
+// to this bug.
+function whenSessionReady(): Promise<void> {
+  const start = Date.now();
+  return new Promise<void>((resolve, reject) => {
+    const check = (): void => {
+      if (model.me && model.me.userId) {
+        resolve();
+      } else if (Date.now() - start > SESSION_TIMEOUT_MS) {
+        reject(new Error('entcore session unavailable after ' + SESSION_TIMEOUT_MS + 'ms'));
+      } else {
+        setTimeout(check, SESSION_POLL_MS);
+      }
+    };
+    check();
+  });
+}
+
+// Privacy: the userId sent to Screeb is SHA-256 hashed and truncated
+// to 16 hex characters (rule shared by all Edifice integrations).
 async function hashUserId(userId: string): Promise<string> {
   const hashBuffer = await crypto.subtle.digest(
     'SHA-256',
     new TextEncoder().encode(userId),
   );
   return Array.from(new Uint8Array(hashBuffer))
-    .map((b) => b.toString(16).padStart(2, '0'))
+    .map((b: number) => ('0' + b.toString(16)).slice(-2))
     .join('')
     .slice(0, 16);
 }
 
 export interface IScreebService {
-  init(appId: string): Promise<void>;
+  initFromPublicConf(): Promise<void>;
   trackEvent(name: string, properties?: PropertyRecord): void;
-  triggerSurvey(surveyId: string, hooks?: HooksSurveyStart, hiddenFields?: PropertyRecord): void;
-  triggerMessage(messageId: string, hooks?: HooksMessageStart): void;
+  triggerSurvey(surveyId: string, hooks?: any, hiddenFields?: PropertyRecord): void;
+  triggerMessage(messageId: string, hooks?: any): void;
   closeSurvey(): void;
-  forceTargetingCheck(): void;
+  debugTargeting(): void;
   setIdentityProperties(properties: PropertyRecord): void;
   reset(): void;
 }
 
 export const screebService: IScreebService = {
-  async init(appId: string): Promise<void> {
+  // Screeb is opt-in per platform: without a screeb-app-id in the module's
+  // publicConf, nothing is loaded (no network call to Screeb at all).
+  initFromPublicConf: async (): Promise<void> => {
+    await whenSessionReady();
+    const res = await http.get('/<app-address>/conf/public');
+    const appId: string = res.data && res.data['screeb-app-id'];
+    if (!appId) {
+      return;
+    }
     await load();
     const hashedId = await hashUserId(model.me.userId);
     await init(appId, hashedId, { profile: model.me.type });
   },
 
-  trackEvent(name: string, properties?: PropertyRecord): void {
+  trackEvent: (name: string, properties?: PropertyRecord): void => {
     eventTrack(name, properties);
   },
 
-  triggerSurvey(surveyId: string, hooks?: HooksSurveyStart, hiddenFields?: PropertyRecord): void {
+  triggerSurvey: (surveyId: string, hooks?: any, hiddenFields?: PropertyRecord): void => {
     surveyStart(surveyId, undefined, undefined, hiddenFields, hooks);
   },
 
-  triggerMessage(messageId: string, hooks?: HooksMessageStart): void {
+  triggerMessage: (messageId: string, hooks?: any): void => {
     messageStart(messageId, undefined, undefined, hooks);
   },
 
-  closeSurvey(): void {
+  closeSurvey: (): void => {
     surveyClose();
   },
 
-  forceTargetingCheck(): void {
-    targetingCheck();
+  debugTargeting: (): void => {
+    targetingDebug();
   },
 
-  setIdentityProperties(properties: PropertyRecord): void {
+  setIdentityProperties: (properties: PropertyRecord): void => {
     identityProperties(properties);
   },
 
-  reset(): void {
+  reset: (): void => {
     identityReset();
   },
 };
 
 export const ScreebService = ng.service('ScreebService', (): IScreebService => screebService);
 ```
+
+Replace `/<app-address>/conf/public` with your module's actual address (e.g. `/edt/conf/public`).
+
+> **Limitation:** unlike the React integration, this service does not currently filter on `screeb-allowed-profiles`. If your module needs it, check `model.me.type` against the allowed list before calling `load()`/`init()` — but note entcore's AngularJS `model.me.type` uses different values than the ones documented in [Configuration](?path=/docs/integrations-screeb-1-overview--docs) (French, uppercase codes such as `ENSEIGNANT` rather than `Teacher`), so don't copy the profile list as-is without checking what `model.me.type` actually returns in your app.
 
 ---
 
@@ -114,22 +225,21 @@ The service is automatically registered with AngularJS when `app.ts` loads.
 
 ## Initialization
 
-Call `screebService.init()` once at app startup, after `model.me` is populated. The right place is typically the main controller's `$onInit` or a `.run()` block:
+Call `screebService.initFromPublicConf()` once, at module load — typically right after registering services in `app.ts`. It handles the session-readiness wait itself, so it does **not** need to be called from a controller's `$onInit`:
 
 ```typescript
-import { screebService } from '../services';
+import * as services from './services';
 
-// In your main controller or .run() block:
-const SCREEB_APP_ID = window.SCREEB_APP_ID; // injected via server-side template
-
-if (SCREEB_APP_ID) {
-  screebService.init(SCREEB_APP_ID).catch((err) => {
-    console.error('Failed to initialize Screeb:', err);
-  });
+for (const service in services) {
+  ng.services.push(services[service]);
 }
+
+services.screebService.initFromPublicConf().catch((err) =>
+  console.error('Screeb initialization failed:', err),
+);
 ```
 
-> The `screeb-app-id` can be injected into the page via a server-side template variable, similar to how `ENABLE_RBS` and other feature flags are handled in the HTML entry point.
+> If this silently does nothing, check the Network tab for `/<app-address>/conf/public` first — an empty `{}` response means `publicConf.screeb-app-id` isn't set in your deployed config (see [Backend requirement](#backend-requirement-exposing-publicconf) above), which is the most common cause.
 
 ---
 
@@ -149,9 +259,10 @@ screebService.triggerSurvey(
   },
 );
 
-// Force targeting re-evaluation after a key event
-screebService.trackEvent('tenth-event-this-month');
-screebService.forceTargetingCheck();
+// Print the current state of the targeting engine — which rules pass/fail for
+// each survey on this respondent. Useful to debug why a survey isn't showing;
+// it does NOT force a re-evaluation, it only reports the current state.
+screebService.debugTargeting();
 
 // On logout
 screebService.reset();
