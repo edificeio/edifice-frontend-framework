@@ -31,6 +31,8 @@ export function NavLink({
   className,
   children,
   translate,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  button,
   ...restProps
 }: NavLinkProps<string>) {
   const classes = clsx('nav-link', className);
