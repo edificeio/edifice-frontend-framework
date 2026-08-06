@@ -148,17 +148,22 @@ describe('useHelp', () => {
       );
     });
 
-    // The effect only depends on the application code and the help path, so a
-    // workflow resolved after the first render does not trigger the fetch.
-    it('does not refetch when the workflow flag arrives later', async () => {
+    // hasOldHelpEnableWorkflow comes from useHasWorkflow, which starts
+    // undefined and resolves asynchronously — the effect must depend on it
+    // so the fetch still fires once the right is confirmed.
+    it('refetches once the workflow flag resolves to true', async () => {
       const { rerender } = renderHook(
         ({ workflow }: { workflow: boolean }) => useHelp(workflow),
         { initialProps: { workflow: false } },
       );
 
+      expect(fetchMock).not.toHaveBeenCalled();
+
       rerender({ workflow: true });
 
-      await waitFor(() => expect(fetchMock).not.toHaveBeenCalled());
+      await waitFor(() =>
+        expect(fetchMock).toHaveBeenCalledWith('/help-2d/application/blog/'),
+      );
     });
   });
 
