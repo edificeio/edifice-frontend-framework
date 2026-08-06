@@ -1,7 +1,7 @@
 import { Meta, StoryFn, StoryObj } from '@storybook/react-vite';
 import { useRef, useState } from 'react';
 import { Button } from '../Button';
-import TreeView, { TreeViewHandlers } from './TreeView';
+import TreeView, { TreeViewHandlers_V1 } from './TreeView';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof TreeView> = {
@@ -137,15 +137,15 @@ export const SyncTreeView: Story = {
 
 export const SyncTreeViewWithRef: Story = {
   render: (args) => {
-    const treeViewRef = useRef<TreeViewHandlers>(null);
+    const treeViewRef = useRef<TreeViewHandlers_V1>(null);
 
     return (
       <>
         <div className="my-16">
-          <Button onClick={() => treeViewRef?.current.select('7')}>
+          <Button onClick={() => treeViewRef.current?.select('7')}>
             Open node 7
           </Button>
-          <Button onClick={() => treeViewRef?.current.select('2')}>
+          <Button onClick={() => treeViewRef.current?.select('2')}>
             Open node 2
           </Button>
         </div>

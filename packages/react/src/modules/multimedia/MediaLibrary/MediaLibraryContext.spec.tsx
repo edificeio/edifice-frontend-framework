@@ -40,8 +40,19 @@ describe('useMediaLibraryContext', () => {
   it('refuses to run outside the MediaLibrary', () => {
     // The context has no default value, so an innertab rendered on its own
     // gets null and must fail loudly rather than crash further down.
-    expect(() => renderHook(() => useMediaLibraryContext())).toThrow(
-      /cannot be rendered outside the MediaLibrary component/,
-    );
+    // React (dev mode) and jsdom both log this expected render crash to the
+    // console; silence it locally so it doesn't drown out real failures
+    // elsewhere, while still asserting the throw itself below.
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    try {
+      expect(() => renderHook(() => useMediaLibraryContext())).toThrow(
+        /cannot be rendered outside the MediaLibrary component/,
+      );
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });

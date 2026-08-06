@@ -75,7 +75,7 @@ vi.mock('../FileCard', () => ({
 }));
 
 function element(
-  partial: Partial<WorkspaceElement> & { _id: string },
+  partial: Partial<WorkspaceElement> & { _id: string; modified?: string },
 ): WorkspaceElement {
   return {
     name: `file-${partial._id}`,

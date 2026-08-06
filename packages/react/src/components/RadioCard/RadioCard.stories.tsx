@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import RadioCard, { RadioCardProps } from './RadioCard';
+import RadioCard from './RadioCard';
 import { Flex } from '../Flex';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

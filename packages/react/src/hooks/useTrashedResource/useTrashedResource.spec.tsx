@@ -61,7 +61,11 @@ describe('useTrashedResource', () => {
       resources: [{ assetId: 'res-1', trashed: false, trashedBy: [] }],
     });
 
-    render(<Trasher id="res-1" />, { wrapper: Boundary });
+    render(
+      <Boundary>
+        <Trasher id="res-1" />
+      </Boundary>,
+    );
 
     await waitFor(() => expect(get).toHaveBeenCalled());
     expect(screen.getByText('resource-ok')).toBeInTheDocument();
@@ -78,7 +82,11 @@ describe('useTrashedResource', () => {
     const preventDefault = (event: ErrorEvent) => event.preventDefault();
     window.addEventListener('error', preventDefault);
 
-    render(<Trasher id="res-1" />, { wrapper: Boundary });
+    render(
+      <Boundary>
+        <Trasher id="res-1" />
+      </Boundary>,
+    );
 
     await waitFor(() =>
       expect(screen.getByText('error-caught')).toBeInTheDocument(),
@@ -95,7 +103,11 @@ describe('useTrashedResource', () => {
     const preventDefault = (event: ErrorEvent) => event.preventDefault();
     window.addEventListener('error', preventDefault);
 
-    render(<Trasher id="res-1" />, { wrapper: Boundary });
+    render(
+      <Boundary>
+        <Trasher id="res-1" />
+      </Boundary>,
+    );
 
     await waitFor(() =>
       expect(screen.getByText('error-caught')).toBeInTheDocument(),

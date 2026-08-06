@@ -42,8 +42,13 @@ type Story = StoryObj<typeof ReactionChoice>;
 
 export const Base: Story = {
   render: ({ summary, availableReactions }: ReactionChoiceProps) => {
-    const [currentSummary, setCurrentSummary] =
-      useState<ReactionSummaryData>(summary);
+    const [currentSummary, setCurrentSummary] = useState<ReactionSummaryData>(
+      summary ?? {
+        reactionTypes: [],
+        userReaction: null,
+        totalReactionsCounter: 0,
+      },
+    );
 
     const handleChange = (newReaction?: ReactionType | undefined) => {
       setCurrentSummary(({ userReaction, ...restSummary }) => {

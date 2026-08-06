@@ -145,7 +145,7 @@ describe('crop effect', () => {
         cornerName(corner),
         true,
       )!;
-      handle.emit('pointerdown');
+      handle.emit('pointerdown', {} as never);
       application.stage.emit('pointermove', {
         global: new PIXI.Point(to.x, to.y),
       } as never);
@@ -256,7 +256,7 @@ describe('crop effect', () => {
         cornerName('TOP_LEFT'),
         true,
       )!;
-      handle.emit('pointerdown');
+      handle.emit('pointerdown', {} as never);
       application.stage.emit('pointermove', {
         global: new PIXI.Point(20, 10),
       } as never);
@@ -287,7 +287,7 @@ describe('crop effect', () => {
         cornerName('TOP_LEFT'),
         true,
       )!;
-      handle.emit('pointerdown');
+      handle.emit('pointerdown', {} as never);
       mask(application).removeFromParent();
 
       expect(() =>
@@ -308,7 +308,7 @@ describe('crop effect', () => {
         cornerName('TOP_LEFT'),
         true,
       )!;
-      handle.emit('pointerdown');
+      handle.emit('pointerdown', {} as never);
       application.stage.emit('pointermove', {
         global: new PIXI.Point(20, 10),
       } as never);

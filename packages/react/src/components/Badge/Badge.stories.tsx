@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IconHourglass } from '../../modules/icons/components';
-import Badge, { BadgeProps } from './Badge';
+import Badge from './Badge';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Badge> = {
@@ -304,7 +304,11 @@ export const BadgeNewCommunities: Story = {
     },
   },
   render: (args) => {
-    return <Badge {...args}>{args.variant.app.version}</Badge>;
+    const version =
+      args.variant?.type === 'appVersion'
+        ? args.variant.app?.version
+        : undefined;
+    return <Badge {...args}>{version}</Badge>;
   },
 };
 

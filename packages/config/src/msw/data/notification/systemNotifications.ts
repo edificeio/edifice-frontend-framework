@@ -1,4 +1,4 @@
-import { NotificationModel } from '../../../../client';
+import { NotificationModel } from '../../../../../client';
 
 // Support
 export const supportNotification: NotificationModel = {

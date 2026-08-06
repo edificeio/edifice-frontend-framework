@@ -3,7 +3,7 @@ import useToast from './useToast';
 
 const { toast } = vi.hoisted(() => ({
   toast: {
-    custom: vi.fn(() => 'toast-id'),
+    custom: vi.fn(),
     loading: vi.fn(),
     dismiss: vi.fn(),
     remove: vi.fn(),

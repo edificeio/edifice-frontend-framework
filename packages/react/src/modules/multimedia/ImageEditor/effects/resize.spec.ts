@@ -53,7 +53,7 @@ function dragCorner(
   to: { x: number; y: number },
 ) {
   const handle = application.stage.getChildByLabel(cornerName(corner), true)!;
-  handle.emit('pointerdown');
+  handle.emit('pointerdown', {} as never);
   application.stage.emit('pointermove', {
     global: new PIXI.Point(to.x, to.y),
   } as never);
@@ -255,7 +255,7 @@ describe('resize effect', () => {
         cornerName('TOP_LEFT'),
         true,
       )!;
-      handle.emit('pointerdown');
+      handle.emit('pointerdown', {} as never);
       application.stage.getChildByLabel(SPRITE_NAME, true)!.removeFromParent();
 
       expect(() =>

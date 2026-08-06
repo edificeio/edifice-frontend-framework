@@ -7,7 +7,7 @@ import {
   IconRafterLeft,
   IconRafterRight,
 } from '../../../modules/icons/components';
-import Button, { ButtonProps } from '../Button';
+import Button from '../Button';
 import IconButton from '../IconButton';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export

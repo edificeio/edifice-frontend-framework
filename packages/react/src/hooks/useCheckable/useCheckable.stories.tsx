@@ -16,17 +16,17 @@ export default meta;
 type Story = StoryObj<typeof useCheckable>;
 
 interface Data {
-  id: string;
+  _id: string;
   title: string;
 }
 
 const data: Data[] = [
   {
-    id: 'ab60dbdb-f3f0-4c99-a239-64c8a2f50c77',
+    _id: 'ab60dbdb-f3f0-4c99-a239-64c8a2f50c77',
     title: 'Title 1',
   },
   {
-    id: 'a0d86fe6-909e-4c4a-8ceb-c15daee525a9',
+    _id: 'a0d86fe6-909e-4c4a-8ceb-c15daee525a9',
     title: 'Title 2',
   },
 ];

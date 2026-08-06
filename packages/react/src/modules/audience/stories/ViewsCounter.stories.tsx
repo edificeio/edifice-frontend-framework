@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import ViewsCounter, { ViewsCounterProps } from '../ViewsCounter';
+import ViewsCounter from '../ViewsCounter';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof ViewsCounter> = {

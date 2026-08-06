@@ -244,7 +244,9 @@ export class FakeAudioWorkletNode {
 export class FakeAudioContext {
   static instances: FakeAudioContext[] = [];
   /** Replaceable, to exercise the addModule failure path. */
-  static addModule = vi.fn(async (): Promise<void> => undefined);
+  static addModule = vi.fn<(moduleURL: string) => Promise<void>>(
+    async () => undefined,
+  );
 
   readonly sampleRate: number;
   /** Writable: the hook reads it to compute the elapsed recording time. */

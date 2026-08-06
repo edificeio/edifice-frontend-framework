@@ -39,6 +39,13 @@ const pointerMove = (application: PIXI.Application, x: number, y: number) =>
   } as never);
 
 describe('blur effect', () => {
+  // jsdom doesn't implement canvas; PIXI probes it while building a
+  // TextureSource. Stub it so the (harmless, expected) capability check
+  // passes instead of logging a "not implemented" warning.
+  beforeAll(() => {
+    HTMLCanvasElement.prototype.getContext = vi.fn() as never;
+  });
+
   // The brush aggregates its points over a debounce window before painting.
   beforeEach(() => {
     vi.useFakeTimers();

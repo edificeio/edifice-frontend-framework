@@ -1,12 +1,24 @@
 import { WorkspaceElement } from '@edifice.io/client';
 
 import { act, renderHook, waitFor } from '~/setup';
-
+import {
+  ToolbarDividerItem,
+  ToolbarDropdownItem,
+  ToolbarItem,
+} from '../../../components';
 import {
   installMediaHarness,
   installWebAudioHarness,
 } from '../testing/mediaHarness';
 import useAudioRecorder from './useAudioRecorder';
+
+// This hook's toolbar only ever exposes button/icon items (record, save,
+// etc.) - no dropdowns - so narrow that far to get real `onClick`/
+// `disabled`/`aria-label` typing on `.props` instead of a loose cast.
+type NonDividerToolbarItem = Exclude<
+  ToolbarItem,
+  ToolbarDividerItem | ToolbarDropdownItem
+>;
 
 const { create } = vi.hoisted(() => ({ create: vi.fn() }));
 
@@ -48,10 +60,15 @@ function setup({
 type Harness = ReturnType<typeof setup>;
 
 /** Finds a toolbar entry by the name the hook gives it. */
-const item = (harness: Harness, name: string) =>
-  harness.result.current.toolbarItems.find(
+const item = (harness: Harness, name: string): NonDividerToolbarItem => {
+  const found = harness.result.current.toolbarItems.find(
     (entry) => 'name' in entry && entry.name === name,
-  ) as { visibility?: string; props: Record<string, unknown> };
+  );
+  if (!found || found.type === 'divider' || found.type === 'dropdown') {
+    throw new Error(`Expected a button/icon toolbar item named "${name}"`);
+  }
+  return found;
+};
 
 const click = async (harness: Harness, name: string) => {
   await act(async () => {

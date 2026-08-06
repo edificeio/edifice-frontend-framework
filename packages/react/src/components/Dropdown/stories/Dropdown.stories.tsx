@@ -10,7 +10,11 @@ import {
   IconPrint,
 } from '../../../modules/icons/components';
 import IconButton, { IconButtonProps } from '../../Button/IconButton';
-import { ColorPicker, DefaultPalette } from '../../ColorPicker';
+import {
+  ColorPaletteItem,
+  ColorPicker,
+  DefaultPalette,
+} from '../../ColorPicker';
 import Dropdown from '../Dropdown';
 
 const meta: Meta<typeof Dropdown> = {
@@ -400,7 +404,8 @@ export const CustomTrigger: Story = {
 export const CustomMenu: Story = {
   render: () => {
     const [currentColor, setCurrentColor] = useState<string>('#4A4A4A');
-    const handleOnChange = (color: string) => setCurrentColor(color);
+    const handleOnSuccess = (item: ColorPaletteItem) =>
+      setCurrentColor(item.value);
     return (
       <Dropdown>
         {(
@@ -429,7 +434,7 @@ export const CustomMenu: Story = {
                   },
                 ]}
                 model={currentColor}
-                onChange={handleOnChange}
+                onSuccess={handleOnSuccess}
               />
             </Dropdown.Menu>
           </>
@@ -471,7 +476,7 @@ export const CustomMenu: Story = {
                   },
                 ]}
                 model={currentColor}
-                onChange={handleOnChange}
+                onSuccess={handleOnSuccess}
               />
             </Dropdown.Menu>
           </>

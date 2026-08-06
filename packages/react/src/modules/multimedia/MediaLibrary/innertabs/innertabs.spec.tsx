@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { Ref, ReactNode } from 'react';
 
 import { WorkspaceElement } from '@edifice.io/client';
 
@@ -57,7 +57,7 @@ vi.mock('../../../../components/Dropzone', () => ({
 vi.mock('../../AudioRecorder', async () => {
   const { forwardRef, useImperativeHandle } = await import('react');
   return {
-    AudioRecorder: forwardRef((props: unknown, ref: never) => {
+    AudioRecorder: forwardRef((props: unknown, ref: Ref<unknown>) => {
       childProps.AudioRecorder = props;
       useImperativeHandle(ref, () => ({ save: recorderSave }));
       return null;
@@ -67,7 +67,7 @@ vi.mock('../../AudioRecorder', async () => {
 vi.mock('../../VideoRecorder', async () => {
   const { forwardRef, useImperativeHandle } = await import('react');
   return {
-    VideoRecorder: forwardRef((props: unknown, ref: never) => {
+    VideoRecorder: forwardRef((props: unknown, ref: Ref<unknown>) => {
       childProps.VideoRecorder = props;
       useImperativeHandle(ref, () => ({ save: recorderSave }));
       return null;

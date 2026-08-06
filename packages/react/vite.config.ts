@@ -113,20 +113,21 @@ export default defineConfig(({ mode }) => {
           'src/**/index.ts',
           'src/modules/icons/components/**',
           'src/types/**',
+          'src/modules/editor/test-utils/**',
         ],
         // Starting thresholds intentionally set below the actual measured
         // baseline (see ENABLING-996) so CI doesn't fail on the current
         // state of the package. Audit target: 30% then 50% within 6 months
         // — raise these floors incrementally as coverage improves, never
         // lower them.
-        // Measured baseline as of 2026-07-20 (after the ENABLING-987/991/
-        // 992/995 unit test lots): lines/statements 37.1%, functions
-        // 54.31%, branches 81.42%.
+        // Measured baseline as of 2026-08-05 (after the ENABLING-1135 lot 15
+        // editor batch 3 — modules/editor complete — on top of lots 12-14):
+        // lines/statements 58.05%, functions 70.05%, branches 88.59%.
         thresholds: {
-          lines: 35,
-          statements: 35,
-          functions: 50,
-          branches: 78,
+          lines: 55,
+          statements: 55,
+          functions: 67,
+          branches: 86,
         },
       },
     },
