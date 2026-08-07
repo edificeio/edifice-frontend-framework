@@ -22,11 +22,11 @@ const SchoolSpace = ({
   const [isExpanded, toggleExpanded] = useToggle(false);
   const { t } = useTranslation();
 
-  // Only show dropdown if there are multiple schools to choose from
-  const hasManySchools = schools && schools.length > 1;
-
   // Do not render anything if no school is selected
   if (!selectedSchool) return null;
+
+  // Only show dropdown if there are multiple schools to choose from
+  const hasManySchools = schools && schools.length > 1;
 
   const directoryUrl = `/userbook/annuaire#/search?${new URLSearchParams({
     structure: selectedSchool.id,
