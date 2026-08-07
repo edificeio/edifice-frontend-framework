@@ -1,4 +1,4 @@
-import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
+import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-notifications.png';
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import {

@@ -3,7 +3,7 @@ import { ButtonBeta, EmptyScreen, Flex } from '../../../../components';
 import { IconArrowRight } from '../../../icons/components';
 import LastInfos, { LastInfosProps } from './LastInfos';
 
-import illuLastInfosEmptyScreen from '@edifice.io/bootstrap/dist/images/homepage/illu-last-infos-beta.svg';
+import illuLastInfosEmptyScreen from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-last-infos.png';
 
 export interface LastInfosListProps {
   /** List of Info to display. */
@@ -51,7 +51,7 @@ export function LastInfosList({
         {infos.length === 0 ? (
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
-            size={64}
+            size={134}
             text={t('homepage.last-infos-list.empty')}
           />
         ) : (

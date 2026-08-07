@@ -1,8 +1,6 @@
-@use '../../themes/configs/primitives' as *;
-
 .last-infos-card {
-  --background-color: #{$orange-200};
-  --background-color-headline: #{$yellow-200};
+  --background-color: var(--primitive-orange-200);
+  --background-color-headline: var(--primitive-yellow-200);
 
   display: flex;
   position: relative;
@@ -29,7 +27,7 @@
     margin: 0;
     padding: 0;
     border: 0;
-    border-radius: var(--border-radius);
+    border-radius: var(--primitive-border-radius-lg);
     background: transparent;
   }
 
@@ -93,7 +91,7 @@
   }
 
   &-medias {
-    --gap: #{$spacer-8};
+    --gap: var(--primitive-spacer-8);
 
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -117,17 +115,17 @@
   }
 
   &-media-overlay {
-    --overlay-color: #{$white};
+    --overlay-color: var(--primitive-white);
     --overlay-background: rgb(0 0 0 / 55%);
     --overlay-font-size: 0.875rem;
-    --overlay-font-weight: #{$font-weight-bold};
+    --overlay-font-weight: var(--primitive-font-weight-bold);
 
     position: absolute;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--border-radius);
+    border-radius: var(--primitive-border-radius-lg);
     color: var(--overlay-color);
     background-color: var(--overlay-background);
     font-size: var(--overlay-font-size);
