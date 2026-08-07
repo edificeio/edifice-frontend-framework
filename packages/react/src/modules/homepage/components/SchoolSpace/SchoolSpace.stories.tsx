@@ -1,5 +1,6 @@
 import { School } from '@edifice.io/client';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { mockSchools as schools } from '../../../../../../config/src/msw/data/schoolSpace';
 import SchoolSpace, { SchoolSpaceProps } from './SchoolSpace';
 
 const meta: Meta<typeof SchoolSpace> = {
@@ -31,23 +32,6 @@ const renderWithProps = (props: SchoolSpaceProps) => () => (
     <SchoolSpace {...props} />
   </div>
 );
-
-const schools = [
-  {
-    id: 'school-1',
-    name: 'Collège Jean Moulin',
-    UAI: '0012345A',
-    classes: [],
-    exports: [],
-  },
-  {
-    id: 'school-2',
-    name: 'Lycée Jeanne Ferry de Loisette en Royan',
-    UAI: '0098765Z',
-    classes: [],
-    exports: [],
-  },
-] satisfies Array<School>;
 
 export const MultipleSchools: Story = {
   render: renderWithProps({

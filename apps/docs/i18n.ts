@@ -281,6 +281,8 @@ i18n.use(initReactI18next).init({
           'Classes et groupes',
         'homepage.userspace.relative.link.classes':
           'La classe de [[childName]]',
+        //------------------ SchoolSpace -------------------------
+        'homepage.school-space.directory': 'Annuaire',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

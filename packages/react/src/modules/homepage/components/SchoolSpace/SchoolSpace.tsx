@@ -1,8 +1,8 @@
 import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { Dropdown, Flex, IconButton, useToggle } from '../../../..';
+import { ButtonBeta, Dropdown, Flex, IconButton, useToggle } from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
-import { IconRafterUp } from '../../../icons/components';
+import { IconRafterUp, IconUserSearch } from '../../../icons/components';
 
 /**
  * SchoolSpace component displays the currently selected school and provides
@@ -22,14 +22,18 @@ const SchoolSpace = ({
   const [isExpanded, toggleExpanded] = useToggle(false);
   const { t } = useTranslation();
 
-  // Only show dropdown if there are multiple schools to choose from
-  const hasManySchools = schools && schools.length > 1;
-
   // Do not render anything if no school is selected
   if (!selectedSchool) return null;
 
+  // Only show dropdown if there are multiple schools to choose from
+  const hasManySchools = schools && schools.length > 1;
+
+  const directoryUrl = `/userbook/annuaire#/search?${new URLSearchParams({
+    structure: selectedSchool.id,
+  }).toString()}`;
+
   return (
-    <div className="school-space">
+    <Flex gap="4" direction="column" className="school-space">
       <Flex
         className="school-space-container"
         justify="center"
@@ -72,7 +76,15 @@ const SchoolSpace = ({
           </Dropdown>
         )}
       </Flex>
-    </div>
+      <ButtonBeta
+        variant="outline"
+        className="school-space-directory-button"
+        leftIcon={<IconUserSearch />}
+        onClick={() => (window.location.href = directoryUrl)}
+      >
+        {t('homepage.school-space.directory')}
+      </ButtonBeta>
+    </Flex>
   );
 };
 
