@@ -209,19 +209,26 @@ describe('Toolbar', () => {
     expect(button).toHaveClass('btn-md');
   });
 
-  it('coerces any explicit custom size down to sm regardless of hideLabel (existing behavior)', () => {
-    // `size={item.props.size || hideLabel ? 'sm' : 'md'}` evaluates as
-    // `(item.props.size || hideLabel) ? 'sm' : 'md'` due to operator
-    // precedence — any truthy custom size always yields 'sm', never the
-    // requested value, unless both size and hideLabel are falsy (-> 'md').
+  it('respects an explicit custom size', () => {
     const items: ToolbarItem[] = [
       { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
     ];
     render(<Toolbar items={items} />);
 
     const button = screen.getByRole('button', { name: 'save' });
-    expect(button).toHaveClass('btn-sm');
-    expect(button).not.toHaveClass('btn-lg');
+    expect(button).toHaveClass('btn-lg');
+    expect(button).not.toHaveClass('btn-sm');
+  });
+
+  it('lets an explicit custom size take precedence over hideLabel', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
+    ];
+    render(<Toolbar items={items} shouldHideLabelsOnMobile />);
+
+    const button = screen.getByRole('button', { name: 'save' });
+    expect(button).toHaveClass('btn-lg');
+    expect(button).not.toHaveClass('btn-sm');
   });
 
   it('forwards ariaControls and a ref to the root element', () => {
