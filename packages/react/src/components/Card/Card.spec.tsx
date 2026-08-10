@@ -109,18 +109,15 @@ describe('Card', () => {
     expect(screen.getByTestId('app-code').textContent).toBeTruthy();
   });
 
-  // Without an image source the fallback app icon is rendered, and the
-  // landscape variant stretches it through width/height props.
-  it('stretches the landscape fallback icon to the full width', () => {
+  it('keeps the fallback icon at its own size in the landscape variant', () => {
     const { container } = render(
       <Card>
         <Card.Image variant="landscape" />
       </Card>,
     );
 
-    // `{...style}` is spread as props on the fallback AppIcon, so the effect is
-    // not observable in the DOM — the variant class is.
-    expect(container.querySelector('.card-image.landscape')).not.toBeNull();
+    const icon = container.querySelector('.card-image.landscape .app-icon');
+    expect(icon).toHaveStyle({ width: '80px', height: '80px' });
   });
 
   it('leaves the other variants at their own size', () => {
