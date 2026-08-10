@@ -175,9 +175,6 @@ describe('useDropzone', () => {
     expect(result.current.files).toEqual([]);
   });
 
-  // `addFiles` sanitises the names and converts HEIC images into `filesToAdd`,
-  // but the default branch stores the untouched `files` argument instead — so
-  // both only reach the list when `forceFilters` is on.
   it('strips the characters vertx chokes on when filters are forced', async () => {
     const { result } = renderHook(() => useDropzone({ forceFilters: true }));
 
@@ -188,14 +185,14 @@ describe('useDropzone', () => {
     expect(result.current.files[0].name).toBe('photo.png');
   });
 
-  it('keeps the raw file name without forced filters', async () => {
+  it('strips the characters vertx chokes on even without forced filters', async () => {
     const { result } = renderHook(() => useDropzone());
 
     await act(async () => {
       await result.current.addFile(createFile('photo!:,;="\'.png'));
     });
 
-    expect(result.current.files[0].name).toBe('photo!:,;="\'.png');
+    expect(result.current.files[0].name).toBe('photo.png');
   });
 
   describe('HEIC images', () => {
@@ -213,9 +210,7 @@ describe('useDropzone', () => {
       expect(result.current.files[0].type).toBe('image/jpeg');
     });
 
-    // Same quirk as the name sanitising: the converted file never reaches the
-    // list unless the filters are forced.
-    it('stores the untouched HEIC file without forced filters', async () => {
+    it('converts a HEIC image to JPEG even without forced filters', async () => {
       isHeic.mockReturnValue(true);
       heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
       const { result } = renderHook(() => useDropzone());
@@ -225,7 +220,8 @@ describe('useDropzone', () => {
       });
 
       expect(heicTo).toHaveBeenCalled();
-      expect(result.current.files[0].type).toBe('image/heic');
+      expect(result.current.files[0].name).toBe('photo.jpeg');
+      expect(result.current.files[0].type).toBe('image/jpeg');
     });
 
     it('keeps the original file when the conversion fails', async () => {
