@@ -1,0 +1,55 @@
+{
+  "name": "@edifice.io/vite-plugins",
+  "version": "2.6.2",
+  "description": "Shared Vite plugins for Edifice frontend modules (dev proxy, local i18n serving, bootstrap cache-busting, dev entry rewriting)",
+  "keywords": [
+    "vite-plugin",
+    "edifice",
+    "frontend",
+    "framework"
+  ],
+  "homepage": "https://github.com/edificeio/edifice-frontend-framework/tree/main/packages/vite-plugins#readme",
+  "bugs": {
+    "url": "https://github.com/edificeio/edifice-frontend-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/edificeio/edifice-frontend-framework.git",
+    "directory": "packages/vite-plugins"
+  },
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --check \"src/**/*.ts\"",
+    "format:write": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint",
+    "test": "vitest"
+  },
+  "peerDependencies": {
+    "vite": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-dts": "catalog:"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
