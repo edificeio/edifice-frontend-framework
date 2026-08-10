@@ -38,7 +38,7 @@ const CardImage = ({
           iconFit="ratio"
           size="80"
           variant="rounded"
-          {...style}
+          style={style ?? undefined}
         />
       )}
     </div>

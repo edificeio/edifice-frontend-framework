@@ -135,15 +135,11 @@ describe('EdificeThemeProvider', () => {
     await waitFor(() => expect(html()).toHaveAttribute('data-product', ''));
   });
 
-  // Nothing guards the undefined case, so the attribute is set to the string
-  // "undefined" rather than left out.
-  it('writes a literal "undefined" product without a bootstrap version', async () => {
+  it('does not write a data-product attribute without a bootstrap version', async () => {
     mockConf({ skinName: 'default' });
 
     renderProvider();
 
-    await waitFor(() =>
-      expect(html()).toHaveAttribute('data-product', 'undefined'),
-    );
+    await waitFor(() => expect(html()).not.toHaveAttribute('data-product'));
   });
 });
