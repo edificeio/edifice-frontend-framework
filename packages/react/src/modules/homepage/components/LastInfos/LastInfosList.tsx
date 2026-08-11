@@ -51,7 +51,7 @@ export function LastInfosList({
         {infos.length === 0 ? (
           <EmptyScreen
             imageSrc={illuLastInfosEmptyScreen}
-            size={134}
+            size={135}
             text={t('homepage.last-infos-list.empty')}
           />
         ) : (
