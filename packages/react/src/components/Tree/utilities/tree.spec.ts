@@ -274,17 +274,19 @@ describe('Tree utilities', () => {
       expect(b?.children?.[1].folder.ancestors).toEqual(['root', 'b']);
     });
 
-    // The destination lookup is scoped to the destination subtree, so a node
-    // living elsewhere is removed from its original position without being
-    // re-attached.
-    it('removes a node moved from outside the destination subtree', () => {
+    it('re-attaches a node moved from outside the destination subtree', () => {
       const result = moveNode(makeTree(), {
         destinationId: 'b',
         folders: ['a1'],
       });
 
-      expect(findNodeById(result, 'a1')).toBeUndefined();
-      expect(findNodeById(result, 'b')?.children ?? []).toEqual([]);
+      expect(findNodeById(result, 'b')?.children?.map(({ id }) => id)).toEqual([
+        'a1',
+      ]);
+      expect(findNodeById(result, 'b')?.children?.[0].folder.ancestors).toEqual(
+        ['b'],
+      );
+      expect(findNodeById(result, 'a')?.children ?? []).toEqual([]);
     });
 
     it('keeps a node already sitting in the destination children', () => {
