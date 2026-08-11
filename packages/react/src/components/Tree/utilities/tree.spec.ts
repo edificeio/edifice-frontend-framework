@@ -206,10 +206,8 @@ describe('Tree utilities', () => {
       expect(hasChildren('leaf', { id: 'leaf', name: 'Leaf' })).toBe(false);
     });
 
-    // The recursive branch forwards the parent id instead of the searched one,
-    // so only a node passed as the root of the traversal can answer true.
-    it('is false for a nested id, because the lookup only matches the traversal root', () => {
-      expect(hasChildren('a', makeTree())).toBe(false);
+    it('is true for a nested id holding children', () => {
+      expect(hasChildren('a', makeTree())).toBe(true);
     });
   });
 
