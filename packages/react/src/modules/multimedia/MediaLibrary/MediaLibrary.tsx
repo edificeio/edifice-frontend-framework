@@ -159,7 +159,7 @@ export type MediaLibraryResult =
   | WorkspaceElement // Workspace result
   | InternalLinkTabResult // Linker result
   | string
-  | /*TODO type des autres résultats ?*/ any;
+  | /*TODO(ENABLING-1155): type des autres résultats ?*/ any;
 
 /**
  * MediaLibrary component properties
@@ -352,7 +352,7 @@ const MediaLibrary = forwardRef(
     function setVisibleTab(tab: AvailableTab) {
       const index = tabs.findIndex((t) => t.id === tab);
       if (index < 0) throw 'tab.not.visible';
-      // TODO améliorer le composant Tabs pour pouvoir le piloter depuis le parent.
+      // TODO(ENABLING-1156): améliorer le composant Tabs pour pouvoir le piloter depuis le parent.
       throw 'not.implemented.yet';
     }
 
