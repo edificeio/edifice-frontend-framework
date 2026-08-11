@@ -64,7 +64,7 @@ describe('EditorToolbarHighlightColor', () => {
 
     expect(
       screen.getByRole('button', { name: 'Highlight color' }),
-    ).not.toHaveClass('selected');
+    ).not.toHaveClass('is-selected');
   });
 
   it('marks the trigger as selected when the selection carries a hex-colored highlight', () => {
@@ -78,7 +78,7 @@ describe('EditorToolbarHighlightColor', () => {
     renderHighlightColor(editor);
 
     expect(screen.getByRole('button', { name: 'Highlight color' })).toHaveClass(
-      'selected',
+      'is-selected',
     );
   });
 

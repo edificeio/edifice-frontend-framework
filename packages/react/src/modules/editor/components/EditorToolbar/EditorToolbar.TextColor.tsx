@@ -94,7 +94,7 @@ export const EditorToolbarTextColor = ({ triggerProps, itemRefs }: Props) => {
           color="tertiary"
           icon={<IconTextColor />}
           aria-label={t('tiptap.toolbar.color.text')}
-          className={isActive ? 'selected' : ''}
+          className={isActive ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>
