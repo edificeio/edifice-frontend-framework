@@ -10,10 +10,8 @@ import { createTestEditor } from '../../test-utils/createTestEditor';
 import { EditorToolbarTypography } from './EditorToolbar.Typography';
 
 // The component reads/writes the `fontFamily` attribute of the `textStyle`
-// mark, and the trigger's "selected" state (as coded) actually checks the
-// `color` attribute instead - see the dedicated test below. Neither
-// `textStyle`, `fontFamily` nor `color` are part of createTestEditor's
-// default extension set.
+// mark. Neither `textStyle`, `fontFamily` nor `color` are part of
+// createTestEditor's default extension set.
 function buildEditor(content = '<p>Hello</p>') {
   return createTestEditor({
     content,
@@ -128,11 +126,7 @@ describe('EditorToolbarTypography', () => {
     ).toHaveAttribute('aria-checked', 'false');
   });
 
-  it('does not mark the trigger as selected from a fontFamily change alone', async () => {
-    // As written, the trigger's "selected" class is driven by an active
-    // `color` matching a hex pattern, not by the fontFamily - this looks
-    // like a copy/paste artifact from EditorToolbar.TextColor, but we test
-    // the component as it actually behaves rather than as intended.
+  it('marks the trigger as selected once a custom fontFamily is applied', async () => {
     editor = buildEditor();
     editor.commands.selectAll();
     const { user } = renderTypography(editor);
@@ -140,17 +134,17 @@ describe('EditorToolbarTypography', () => {
     await user.click(getTrigger());
     await user.click(screen.getByRole('menuitemradio', { name: 'Serif' }));
 
-    expect(getTrigger()).not.toHaveClass('selected');
+    expect(getTrigger()).toHaveClass('selected');
   });
 
-  it('marks the trigger as selected once a hex color is active, regardless of fontFamily', () => {
+  it('does not mark the trigger as selected from an active color alone', () => {
     editor = buildEditor();
     editor.commands.selectAll();
     editor.chain().setColor('#4A4A4A').run();
 
     renderTypography(editor);
 
-    expect(getTrigger()).toHaveClass('selected');
+    expect(getTrigger()).not.toHaveClass('selected');
   });
 
   it('still renders all options and does not throw when the editor is null', async () => {
