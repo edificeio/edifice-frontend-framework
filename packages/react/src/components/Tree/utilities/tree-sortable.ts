@@ -151,12 +151,12 @@ export function findItemIndexInTree(
     }
     if (node.children && node.children.length > 0) {
       const result = findItemIndexInTree(node.children, itemId);
-      if (result) {
+      if (result !== null) {
         return result;
       }
     }
   }
-  return 0;
+  return null;
 }
 
 export function generateUpdateData(

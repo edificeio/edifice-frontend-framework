@@ -358,11 +358,12 @@ describe('Tree sortable utilities', () => {
       expect(findItemIndexInTree(makeNodes(), 'a2')).toBe(1);
     });
 
-    // A nested first child resolves to 0, which the caller cannot tell apart
-    // from "not found" — both answers collapse onto the same value.
-    it('returns 0 for a nested first child as well as for an unknown id', () => {
+    it('returns the index of a nested first child', () => {
       expect(findItemIndexInTree(makeNodes(), 'a1')).toBe(0);
-      expect(findItemIndexInTree(makeNodes(), 'ghost')).toBe(0);
+    });
+
+    it('returns null for an unknown id', () => {
+      expect(findItemIndexInTree(makeNodes(), 'ghost')).toBeNull();
     });
   });
 
