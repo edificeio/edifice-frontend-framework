@@ -116,7 +116,9 @@ export function hasChildren(folderId: string, data: TreeItem): boolean {
   }
 
   if (data.children) {
-    return data.children.some((child: TreeItem) => hasChildren(data.id, child));
+    return data.children.some((child: TreeItem) =>
+      hasChildren(folderId, child),
+    );
   }
   return false;
 }
