@@ -134,7 +134,7 @@ describe('EditorToolbarTypography', () => {
     await user.click(getTrigger());
     await user.click(screen.getByRole('menuitemradio', { name: 'Serif' }));
 
-    expect(getTrigger()).toHaveClass('selected');
+    expect(getTrigger()).toHaveClass('is-selected');
   });
 
   it('does not mark the trigger as selected from an active color alone', () => {
@@ -144,7 +144,7 @@ describe('EditorToolbarTypography', () => {
 
     renderTypography(editor);
 
-    expect(getTrigger()).not.toHaveClass('selected');
+    expect(getTrigger()).not.toHaveClass('is-selected');
   });
 
   it('still renders all options and does not throw when the editor is null', async () => {

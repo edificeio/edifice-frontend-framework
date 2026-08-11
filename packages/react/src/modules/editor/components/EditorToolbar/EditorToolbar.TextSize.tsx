@@ -1,4 +1,4 @@
-import { Fragment, RefAttributes } from 'react';
+import { Fragment, RefAttributes, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -24,6 +24,18 @@ interface Props {
 export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
   const { t } = useTranslation();
   const { editor } = useEditorContext();
+
+  const isActive = useMemo(() => {
+    // `setCustomHeading` delegates to the shared `setHeading` command, which
+    // creates a `heading` node (not `customHeading`) - see EditorToolbar.TextSize.spec.tsx.
+    const fontSize = editor?.getAttributes('textStyle')?.fontSize;
+    return (
+      editor?.isActive('heading', { level: 1 }) ||
+      editor?.isActive('heading', { level: 2 }) ||
+      (!!fontSize && fontSize !== '16px')
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editor, editor?.state]);
 
   const textOptions = [
     {
@@ -89,6 +101,7 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
           color="tertiary"
           icon={<IconTextSize />}
           aria-label={t('tiptap.toolbar.size.choice')}
+          className={isActive ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>

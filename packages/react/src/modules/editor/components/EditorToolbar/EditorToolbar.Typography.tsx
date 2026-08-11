@@ -69,7 +69,7 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
           color="tertiary"
           icon={<IconTextTypo />}
           aria-label={t('tiptap.toolbar.typo.choice')}
-          className={value ? 'selected' : ''}
+          className={value ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>

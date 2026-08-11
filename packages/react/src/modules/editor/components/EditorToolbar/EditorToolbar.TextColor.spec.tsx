@@ -101,7 +101,7 @@ describe('EditorToolbarTextColor', () => {
 
     renderTextColor(editor);
 
-    expect(getTrigger()).toHaveClass('selected');
+    expect(getTrigger()).toHaveClass('is-selected');
   });
 
   it('does not mark the trigger as selected when no color is active', () => {
@@ -109,7 +109,7 @@ describe('EditorToolbarTextColor', () => {
 
     renderTextColor(editor);
 
-    expect(getTrigger()).not.toHaveClass('selected');
+    expect(getTrigger()).not.toHaveClass('is-selected');
   });
 
   it('does not throw when the editor is null', async () => {

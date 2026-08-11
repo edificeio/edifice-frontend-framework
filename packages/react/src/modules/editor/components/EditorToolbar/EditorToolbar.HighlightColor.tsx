@@ -93,7 +93,7 @@ export const EditorToolbarHighlightColor = ({
           color="tertiary"
           icon={<IconTextHighlight />}
           aria-label={t('tiptap.toolbar.highlight.back')}
-          className={isActive ? 'selected' : ''}
+          className={isActive ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>
