@@ -204,33 +204,24 @@ describe('EditorToolbar', () => {
       expect(editor.getText()).toContain('some text');
     });
 
-    it('crashes when the editor has no history extension, because `disabled` is computed unconditionally', () => {
-      // NOTE: this documents an actual quirk of the source rather than an
-      // aspirational behavior. `visibility` only controls whether the
-      // Toolbar *renders* an item; the item's `props` (including
-      // `disabled: !editor?.can().undo()`) are still built eagerly for
-      // every item on every render, regardless of that item's visibility.
-      // When `history` is absent, tiptap's `can()` proxy has no `undo`/
-      // `redo` keys at all (they only exist once the extension registers
-      // those commands), so `editor?.can().undo()` throws instead of
-      // evaluating to `false`. A real editor without `history` would hit
-      // this same crash in production.
+    it('does not crash when the editor has no history extension', () => {
+      // `visibility` only controls whether the Toolbar *renders* an item;
+      // the item's `props` (including `disabled`) are still built eagerly
+      // for every item on every render, regardless of that item's
+      // visibility. When `history` is absent, tiptap's `can()` proxy has no
+      // `undo`/`redo` keys at all (they only exist once the extension
+      // registers those commands), so `disabled` must be short-circuited by
+      // the same `hasExtension('history', editor)` guard as `visibility`
+      // instead of calling `editor?.can().undo()` unconditionally.
       const editor = makeNoHistoryEditor();
 
-      // React (dev mode) and jsdom both log this expected render crash to
-      // the console; silence it locally so it doesn't drown out real
-      // failures elsewhere, while still asserting the throw itself below.
-      const consoleErrorSpy = vi
-        .spyOn(console, 'error')
-        .mockImplementation(() => {});
-
-      try {
-        expect(() => renderToolbar(editor)).toThrow(
-          /can\(\.\.\.\)\.undo is not a function/,
-        );
-      } finally {
-        consoleErrorSpy.mockRestore();
-      }
+      expect(() => renderToolbar(editor)).not.toThrow();
+      expect(
+        screen.queryByRole('button', { name: 'Undo' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Redo' }),
+      ).not.toBeInTheDocument();
     });
   });
 
