@@ -276,11 +276,6 @@ export function getProjection(
       return previousItem.id;
     }
 
-    const newParent = newItems
-      .slice(0, overItemIndex)
-      .reverse()
-      .find((item) => item.depth === depth)?.parentId;
-
-    return newParent ?? null;
+    return null;
   }
 }
