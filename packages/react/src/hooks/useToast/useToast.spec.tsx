@@ -31,12 +31,16 @@ describe('useToast', () => {
 
       (result.current as any)[method]('Hello');
 
-      const [element, options] = toast.custom.mock.calls[0];
+      const [renderToast, options] = toast.custom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
+
       expect(element.props.type).toBe(alertType);
       expect(element.props.isToast).toBe(true);
+      expect(element.props.autoClose).toBe(true);
+      expect(element.props.autoCloseDelay).toBe(5000);
       expect(element.props.children).toBe('Hello');
       expect(options).toMatchObject({
-        duration: 5000,
+        duration: Infinity,
         position: 'top-right',
         id: undefined,
       });
@@ -53,13 +57,29 @@ describe('useToast', () => {
       isDismissible: true,
     });
 
-    const [element, options] = toast.custom.mock.calls[0];
+    const [renderToast, options] = toast.custom.mock.calls[0];
+    const element = renderToast({ id: 'my-id' });
+
     expect(element.props.isDismissible).toBe(true);
+    expect(element.props.autoClose).toBe(false);
+    expect(element.props.autoCloseDelay).toBe(1000);
     expect(options).toMatchObject({
       id: 'my-id',
-      duration: 1000,
+      duration: Infinity,
       position: 'bottom-left',
     });
+  });
+
+  it('dismisses the underlying toast when the rendered Alert closes', () => {
+    const { result } = renderHook(() => useToast());
+
+    result.current.success('Hello');
+
+    const [renderToast] = toast.custom.mock.calls[0];
+    const element = renderToast({ id: 'toast-id' });
+    element.props.onClose();
+
+    expect(toast.dismiss).toHaveBeenCalledWith('toast-id');
   });
 
   it('dismisses a toast by id', () => {
