@@ -1,7 +1,7 @@
 import { useCallback, useReducer } from 'react';
 
 import { ID, NextcloudDocument, odeServices } from '@edifice.io/client';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { findNodeById } from '../../components/TreeView/utilities/treeview';
 import { TreeData } from '../../types';
@@ -54,6 +54,14 @@ export default function useNextcloudSearch(
 
   const queryClient = useQueryClient();
 
+  const oauth2StatusQuery = useQuery({
+    queryKey: ['nextcloud', 'oauth2-status', userId],
+    queryFn: () => odeServices.nextcloud().getOauth2Status(userId as string),
+    enabled: !!userId,
+  });
+
+  const needsAuth = !oauth2StatusQuery.data?.connected;
+
   const loadContent = useCallback(
     async (folderId?: ID) => {
       if (!userId) return;
@@ -86,8 +94,17 @@ export default function useNextcloudSearch(
     [rootId, userId, queryClient],
   );
 
-  return { root, loadContent } as {
+  return {
+    root,
+    needsAuth,
+    isCheckingAuth: oauth2StatusQuery.isLoading,
+    refetchAuthStatus: oauth2StatusQuery.refetch,
+    loadContent,
+  } as {
     root: NextcloudFolderNode;
+    needsAuth: boolean;
+    isCheckingAuth: boolean;
+    refetchAuthStatus: () => void;
     loadContent: (folderId?: ID) => void;
   };
 }
