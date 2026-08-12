@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 
-import { act, render, screen } from '~/setup';
+import { act, fireEvent, render, screen } from '~/setup';
 import Alert, { AlertRef } from './Alert';
 
 describe('Alert component', () => {
@@ -104,6 +104,71 @@ describe('Alert component', () => {
         vi.advanceTimersByTime(3000);
       });
 
+      expect(onClose).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('renders the progress bar only for an auto-closing, non-dismissible toast', () => {
+    const { rerender } = render(
+      <Alert isToast autoClose>
+        Hello
+      </Alert>,
+    );
+    expect(document.querySelector('.alert-progress')).toBeInTheDocument();
+
+    rerender(
+      <Alert isToast autoClose isDismissible>
+        Hello
+      </Alert>,
+    );
+    expect(document.querySelector('.alert-progress')).toBeNull();
+
+    rerender(<Alert autoClose>Hello</Alert>);
+    expect(document.querySelector('.alert-progress')).toBeNull();
+
+    rerender(<Alert isToast>Hello</Alert>);
+    expect(document.querySelector('.alert-progress')).toBeNull();
+  });
+
+  it('pauses the auto-close timer on hover and resumes on mouse leave', () => {
+    vi.useFakeTimers();
+    try {
+      const onClose = vi.fn();
+      render(
+        <Alert isToast autoClose autoCloseDelay={3000} onClose={onClose}>
+          Hello
+        </Alert>,
+      );
+      const alert = screen.getByRole('alert');
+
+      act(() => {
+        vi.advanceTimersByTime(2000);
+      });
+      fireEvent.mouseEnter(alert);
+      expect(alert.querySelector('.alert-progress')).toHaveClass('is-paused');
+
+      // Waiting past the original delay has no effect while paused
+      act(() => {
+        vi.advanceTimersByTime(3000);
+      });
+      expect(onClose).not.toHaveBeenCalled();
+
+      fireEvent.mouseLeave(alert);
+      expect(alert.querySelector('.alert-progress')).not.toHaveClass(
+        'is-paused',
+      );
+
+      // Only the remaining ~1000ms should be left after the pause
+      act(() => {
+        vi.advanceTimersByTime(999);
+      });
+      expect(onClose).not.toHaveBeenCalled();
+
+      act(() => {
+        vi.advanceTimersByTime(1);
+      });
       expect(onClose).toHaveBeenCalledTimes(1);
     } finally {
       vi.useRealTimers();

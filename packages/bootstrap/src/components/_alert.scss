@@ -1,6 +1,15 @@
-@use 'sass:map';
 @use '../abstracts/' as *;
 @use '../vendors/bootstrap';
+
+@keyframes alert-progress-shrink {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
 
 .alert {
   --#{$prefix}alert-border-left-color: var(--#{prefix}gray-800);
@@ -14,12 +23,17 @@
   border-color: var(--#{$prefix}alert-border-color);
   border-left: $alert-left-border-width solid
     var(--#{$prefix}alert-border-left-color);
+  border-radius: var(--primitive-border-radius-md);
 
-  svg {
+  // Only the type icon (a direct child) uses the semantic color; the close
+  // button's icon (nested inside .btn-close-container) keeps its own color
+  > svg {
     color: var(--#{$prefix}alert-color);
   }
 
   .alert-content {
+    flex: 1 1 0%;
+    min-width: 0;
     font-size: bootstrap.$small-font-size;
   }
 
@@ -30,16 +44,13 @@
     width: 100%;
     height: 4px;
     background-color: var(--#{$prefix}alert-border-color);
-    transition-property: transform;
-    transform: scaleX(0);
     transform-origin: left;
-  }
+    animation: alert-progress-shrink var(--alert-progress-duration) linear
+      forwards;
 
-  .btn-close {
-    opacity: 1;
-    box-sizing: border-box;
-    width: 2rem;
-    height: 2rem;
+    &.is-paused {
+      animation-play-state: paused;
+    }
   }
 
   &.is-toast {
@@ -68,6 +79,11 @@
     box-shadow: var(--#{$prefix}box-shadow);
 
     .alert-content {
+      // is-confirm lays out its children in a column, so the flex-grow
+      // that pushes the actions row right in the default row layout must
+      // not apply here (it would stretch the text vertically instead)
+
+      flex: none;
       padding-top: $spacer-24;
       padding-inline: $spacer-12;
     }
@@ -86,17 +102,6 @@
   &.rgpd {
     @include bootstrap.media-breakpoint-down(md) {
       margin: 0 !important;
-    }
-  }
-
-  &.is-dismissible {
-    padding-right: $spacer-32;
-
-    .btn-close {
-      position: absolute;
-      right: $spacer-12;
-      top: 50%;
-      transform: translateY(-50%);
     }
   }
 
@@ -121,10 +126,10 @@
   }
 }
 
-@each $state, $key in $support-colors {
+@each $state in ('success', 'warning', 'info', 'danger') {
   .alert-#{$state} {
-    --#{$prefix}alert-color: #{map.get($key, 'base')};
-    --#{$prefix}alert-border-color: #{map.get($key, 'pale')};
-    --#{$prefix}alert-border-left-color: #{map.get($key, 'base')};
+    --#{$prefix}alert-color: var(--color-support-#{$state}-500);
+    --#{$prefix}alert-border-color: var(--color-support-#{$state}-300);
+    --#{$prefix}alert-border-left-color: var(--color-support-#{$state}-500);
   }
 }
