@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import { LastInfosList } from '../../modules/homepage/components/LastInfos';
+import { LastInfosProps } from '../../modules/homepage/components/LastInfos/LastInfos';
 import AppHeader from '../AppHeader/AppHeader';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { Button } from '../Button';
@@ -17,6 +19,22 @@ const blogApp = {
   displayName: 'Blog',
   isExternal: false,
 };
+
+// Minimal LastInfos mock — the overflow bug is structural (percentage-based
+// min-width under an indefinite containing block), not content-driven, so a
+// handful of short cards is enough to trigger the horizontally-scrolling
+// carousel on mobile.
+const mockLastInfos: LastInfosProps[] = Array.from({ length: 4 }, (_, i) => ({
+  id: `info-${i}`,
+  icon: '',
+  threadId: `thread-${i}`,
+  threadName: 'Vie scolaire',
+  title: `Actualité ${i + 1}`,
+  content: 'Contenu de la carte actualité.',
+  publicationDate: new Date(2026, 0, i + 1).toISOString(),
+  isHeadline: i === 0,
+  username: 'Jean Dupont',
+}));
 
 const meta: Meta<typeof PageLayout> = {
   title: 'Components/PageLayout',
@@ -500,6 +518,49 @@ export const CustomHeader: Story = {
         <div style={innerStyle('content')}>
           Content with a custom header override
         </div>
+      </PageLayout.Content>
+    </PageLayout>
+  ),
+};
+
+// ==========================================================================
+// Regression — sidebar overflow with a horizontally-scrolling carousel
+//
+// LastInfosList's carousel (".last-infos-list-body", cards with
+// min-width: calc(100% - 32px)) only switches to a horizontally-scrolling
+// row below the 768px breakpoint. Below that width, ".pagelayout-mainarea"
+// used to collapse to a single "auto" grid column, which sized itself to
+// the carousel's full intrinsic content width instead of the viewport,
+// pushing the sidebar past the edge of the screen and causing a page-wide
+// horizontal scrollbar. Fixed by bounding every grid track with
+// minmax(0, Nfr) instead of a bare Nfr/auto.
+//
+// Manual check: at any viewport width,
+// document.documentElement.scrollWidth === window.innerWidth, while the
+// carousel itself keeps scrolling horizontally inside its own column.
+// ==========================================================================
+
+export const RegressionSidebarCarouselOverflowMobile: Story = {
+  globals: {
+    viewport: { value: 'mobile' },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Sidebar carousel overflow regression, mobile viewport. Before the fix, this pushed the whole page into horizontal scroll. The "fullpage" variant collapses through its own mobile grid-template rule but renders identically at this viewport, so it is covered by the same manual/Chromatic check rather than a separate story.',
+      },
+    },
+  },
+  render: (args) => (
+    <PageLayout {...args}>
+      <PageLayout.Header />
+      <PageLayout.Breadcrumb>{appHeaderExample}</PageLayout.Breadcrumb>
+      <PageLayout.SidebarLeft>
+        <LastInfosList infos={mockLastInfos} />
+      </PageLayout.SidebarLeft>
+      <PageLayout.Content style={colStyle('content')}>
+        <div style={innerStyle('content')}>Content</div>
       </PageLayout.Content>
     </PageLayout>
   ),
