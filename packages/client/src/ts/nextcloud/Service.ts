@@ -77,6 +77,16 @@ export class NextcloudService {
   }
 
   /**
+   * Check whether a user has an active Nextcloud OAuth2 connection.
+   * @param userId - the id of the user to check.
+   */
+  async getOauth2Status(userId: string): Promise<{ connected: boolean }> {
+    return this.http.get<{ connected: boolean }>(
+      `/nextcloud/user/${userId}/oauth2/status`,
+    );
+  }
+
+  /**
    * Build the URL to download/preview a Nextcloud document.
    * There is no dedicated thumbnail endpoint on the backend, so this is also
    * used as an image preview source for image documents.
