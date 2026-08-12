@@ -1,5 +1,4 @@
-@use '../abstracts/' as *;
-@use '../vendors/bootstrap';
+@use '../themes/configs/breakpoints' as medias;
 
 @keyframes alert-progress-shrink {
   from {
@@ -12,29 +11,28 @@
 }
 
 .alert {
-  --#{$prefix}alert-border-left-color: var(--#{prefix}gray-800);
-  --#{$prefix}alert-bg: #{$white};
-  --#{$prefix}z-index: 9999;
+  --edifice-alert-border-left-color: var(--primitive-grey-800);
+  --edifice-alert-bg: var(--primitive-white);
+  --edifice-z-index: 9999;
 
   display: flex;
   align-items: center;
   overflow: hidden;
-  color: var(--#{$prefix}body-color);
-  border-color: var(--#{$prefix}alert-border-color);
-  border-left: $alert-left-border-width solid
-    var(--#{$prefix}alert-border-left-color);
+  color: var(--edifice-body-color);
+  border-color: var(--edifice-alert-border-color);
+  border-left: 8px solid var(--edifice-alert-border-left-color);
   border-radius: var(--primitive-border-radius-md);
 
   // Only the type icon (a direct child) uses the semantic color; the close
   // button's icon (nested inside .btn-close-container) keeps its own color
   > svg {
-    color: var(--#{$prefix}alert-color);
+    color: var(--edifice-alert-color);
   }
 
   .alert-content {
     flex: 1 1 0%;
     min-width: 0;
-    font-size: bootstrap.$small-font-size;
+    font-size: var(--primitive-font-size-small);
   }
 
   // Wraps the caller-provided action button next to the (isConfirm-only)
@@ -42,7 +40,7 @@
   .alert-actions {
     display: flex;
     align-items: center;
-    margin-inline-start: $spacer-12;
+    margin-inline-start: var(--primitive-spacer-12);
     gap: 1rem;
   }
 
@@ -52,7 +50,7 @@
     left: 0;
     width: 100%;
     height: 4px;
-    background-color: var(--#{$prefix}alert-border-color);
+    background-color: var(--edifice-alert-border-color);
     transform-origin: left;
     animation: alert-progress-shrink var(--alert-progress-duration) linear
       forwards;
@@ -64,21 +62,18 @@
 
   &.is-toast {
     padding-right: 2rem;
-    z-index: var(--#{$prefix}z-index);
+    z-index: var(--edifice-z-index);
     min-width: 352px;
     max-width: calc(402px - 2rem);
-    box-shadow: var(--#{$prefix}box-shadow);
-
-    @include bootstrap.media-breakpoint-up(xs) {
-      width: 100%;
-    }
+    box-shadow: var(--edifice-box-shadow);
+    width: 100%;
   }
 
   &.is-confirm {
     position: fixed;
-    margin: $spacer-12;
-    z-index: var(--#{$prefix}z-index);
-    gap: $spacer-0 !important;
+    margin: var(--primitive-spacer-12);
+    z-index: var(--edifice-z-index);
+    gap: var(--primitive-spacer-0) !important;
     display: flex;
     flex-direction: column;
     align-items: end;
@@ -86,7 +81,8 @@
     max-width: 60rem;
     border-left: none;
     border-radius: var(--primitive-border-radius-xl);
-    box-shadow: var(--#{$prefix}box-shadow);
+    box-shadow: var(--edifice-box-shadow);
+    width: 100%;
 
     .alert-content {
       // is-confirm lays out its children in a column, so the flex-grow
@@ -94,52 +90,48 @@
       // not apply here (it would stretch the text vertically instead)
 
       flex: none;
-      padding-top: $spacer-24;
-      padding-inline: $spacer-12;
+      padding-top: var(--primitive-spacer-24);
+      padding-inline: var(--primitive-spacer-12);
     }
 
     .btn-close-container {
       position: absolute;
-      top: $spacer-12;
-      right: $spacer-12;
-    }
-
-    @include bootstrap.media-breakpoint-up(xs) {
-      width: 100%;
+      top: var(--primitive-spacer-12);
+      right: var(--primitive-spacer-12);
     }
   }
 
   &.rgpd {
-    @include bootstrap.media-breakpoint-down(md) {
+    @include medias.respond-below('tablet') {
       margin: 0 !important;
     }
   }
 
   &.top-left {
-    top: $spacer-0;
-    left: $spacer-0;
+    top: var(--primitive-spacer-0);
+    left: var(--primitive-spacer-0);
   }
 
   &.top-right {
-    top: $spacer-0;
-    right: $spacer-0;
+    top: var(--primitive-spacer-0);
+    right: var(--primitive-spacer-0);
   }
 
   &.bottom-left {
-    bottom: $spacer-0;
-    left: $spacer-0;
+    bottom: var(--primitive-spacer-0);
+    left: var(--primitive-spacer-0);
   }
 
   &.bottom-right {
-    bottom: $spacer-0;
-    right: $spacer-0;
+    bottom: var(--primitive-spacer-0);
+    right: var(--primitive-spacer-0);
   }
 }
 
 @each $state in ('success', 'warning', 'info', 'danger') {
   .alert-#{$state} {
-    --#{$prefix}alert-color: var(--color-support-#{$state}-500);
-    --#{$prefix}alert-border-color: var(--color-support-#{$state}-300);
-    --#{$prefix}alert-border-left-color: var(--color-support-#{$state}-500);
+    --edifice-alert-color: var(--color-support-#{$state}-500);
+    --edifice-alert-border-color: var(--color-support-#{$state}-300);
+    --edifice-alert-border-left-color: var(--color-support-#{$state}-500);
   }
 }
