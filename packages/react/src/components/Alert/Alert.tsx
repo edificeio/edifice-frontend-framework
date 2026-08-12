@@ -22,7 +22,7 @@ import {
   IconInfoCircle,
   IconSuccessOutline,
 } from '../../modules/icons/components';
-import { Button } from '../ButtonBeta';
+import { ButtonBeta as Button } from '../ButtonBeta';
 
 export interface AlertRef {
   show: () => void;
