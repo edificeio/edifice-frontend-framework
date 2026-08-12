@@ -176,7 +176,7 @@ const Nextcloud = ({
 
   const openLoginPopup = () => {
     popupRef.current = window.open(
-      `https://recette-ode4.opendigitaleducation.com/nextcloud/user/oauth2/client`,
+      `${window.location.origin}/nextcloud/user/oauth2/init`,
       '',
       'popup, height=600, width=400',
     );
