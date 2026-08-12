@@ -164,7 +164,7 @@ export const Confirm: Story = {
     isConfirm: true,
     position: 'bottom-right',
     button: (
-      <Button type="button" variant="ghost" color="tertiary">
+      <Button type="button" variant="outline">
         Consulter
       </Button>
     ),

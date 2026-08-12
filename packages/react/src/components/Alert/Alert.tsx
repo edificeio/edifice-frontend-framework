@@ -244,7 +244,7 @@ const Alert = forwardRef(
             <div className="alert-content small flex-grow-1">{children}</div>
             {button && (
               <div className="ms-12">
-                {button}{' '}
+                {button}
                 {isConfirm && <Button onClick={hide}>{t('close')}</Button>}
               </div>
             )}

@@ -37,6 +37,15 @@
     font-size: bootstrap.$small-font-size;
   }
 
+  // Wraps the caller-provided action button next to the (isConfirm-only)
+  // internal close button; a literal space separates them in the markup,
+  // which isn't a reliable gap, so lay them out as a small flex row instead
+  .ms-12 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
   .alert-progress {
     position: absolute;
     bottom: 0;
@@ -76,6 +85,7 @@
     min-width: 35rem;
     max-width: 60rem;
     border-left: none;
+    border-radius: var(--primitive-border-radius-xl);
     box-shadow: var(--#{$prefix}box-shadow);
 
     .alert-content {
