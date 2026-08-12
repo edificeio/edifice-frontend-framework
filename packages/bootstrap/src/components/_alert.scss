@@ -38,11 +38,11 @@
   }
 
   // Wraps the caller-provided action button next to the (isConfirm-only)
-  // internal close button; a literal space separates them in the markup,
-  // which isn't a reliable gap, so lay them out as a small flex row instead
-  .ms-12 {
+  // internal close button, spaced from the alert content and from each other
+  .alert-actions {
     display: flex;
     align-items: center;
+    margin-inline-start: $spacer-12;
     gap: 1rem;
   }
 

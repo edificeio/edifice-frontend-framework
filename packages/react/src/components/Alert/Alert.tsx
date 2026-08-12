@@ -243,7 +243,7 @@ const Alert = forwardRef(
             {!isConfirm && mapping[type].icon}
             <div className="alert-content small flex-grow-1">{children}</div>
             {button && (
-              <div className="ms-12">
+              <div className="alert-actions">
                 {button}
                 {isConfirm && <Button onClick={hide}>{t('close')}</Button>}
               </div>
