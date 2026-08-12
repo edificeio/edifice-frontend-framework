@@ -1,4 +1,11 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { DocumentHelper, NextcloudDocument, Role } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -22,6 +29,7 @@ import {
 import { NextcloudFileCard } from '../FileCard';
 
 import illuNoContentInFolder from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-no-content-in-folder.svg';
+import { Button, Flex } from 'src/components';
 
 const ROOT_ID = 'root';
 
@@ -62,11 +70,10 @@ const Nextcloud = ({
   const { t } = useTranslation();
   const { user } = useUser();
 
-  const { root, loadContent } = useNextcloudSearch(
-    ROOT_ID,
-    t('nextcloud'),
-    user?.userId,
-  );
+  const { root, needsAuth, isCheckingAuth, refetchAuthStatus, loadContent } =
+    useNextcloudSearch(ROOT_ID, t('nextcloud'), user?.userId);
+
+  const popupRef = useRef<Window | null>(null);
 
   const [currentNodeId, setCurrentNodeId] = useState<string>(ROOT_ID);
 
@@ -166,6 +173,51 @@ const Nextcloud = ({
   }
 
   const nextcloud = clsx('workspace flex-grow-1 gap-0', className);
+
+  const openLoginPopup = () => {
+    popupRef.current = window.open(
+      `https://recette-ode4.opendigitaleducation.com/nextcloud/user/oauth2/client`,
+      '',
+      'popup, height=600, width=400',
+    );
+  };
+
+  useEffect(() => {
+    function handleMessage(event: MessageEvent) {
+      if (
+        event.origin !== window.location.origin ||
+        event.data?.type !== 'nextcloud-connected'
+      ) {
+        return;
+      }
+      if (popupRef.current && !popupRef.current.closed) {
+        popupRef.current.close();
+      }
+      refetchAuthStatus();
+    }
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [refetchAuthStatus]);
+
+  if (isCheckingAuth) {
+    return <LoadingScreen />;
+  }
+
+  if (needsAuth) {
+    return (
+      <Flex
+        direction="column"
+        gap="8"
+        className="h-full w-100"
+        justify="center"
+        align="center"
+      >
+        <EmptyScreen imageSrc={illuNoContentInFolder} />
+
+        <Button onClick={openLoginPopup}>Login to nextcloud</Button>
+      </Flex>
+    );
+  }
 
   return (
     <Grid className={nextcloud}>
