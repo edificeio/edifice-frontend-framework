@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        font-family:
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        font-size: 12px;
+        padding: 12px;
+        margin: 0;
+      }
+      button {
+        padding: 8px 16px;
+        margin-bottom: 8px;
+        margin-right: 8px;
+        cursor: pointer;
+      }
+      textarea {
+        width: 100%;
+        height: 480px;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 11px;
+        box-sizing: border-box;
+      }
+      #status {
+        color: #888;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="export-btn">Exporter les variables</button>
+    <button id="copy-btn">Copier</button>
+    <span id="status"></span>
+    <textarea
+      id="output"
+      readonly
+      placeholder="Le JSON exporté apparaîtra ici..."
+    ></textarea>
+
+    <script>
+      const exportBtn = document.getElementById("export-btn");
+      const copyBtn = document.getElementById("copy-btn");
+      const output = document.getElementById("output");
+      const status = document.getElementById("status");
+
+      exportBtn.onclick = () => {
+        status.textContent = "Extraction en cours...";
+        parent.postMessage({ pluginMessage: { type: "export" } }, "*");
+      };
+
+      copyBtn.onclick = () => {
+        output.select();
+        document.execCommand("copy");
+        status.textContent = "Copié dans le presse-papier.";
+      };
+
+      onmessage = (event) => {
+        const msg = event.data.pluginMessage;
+        if (!msg) return;
+
+        if (msg.type === "export-result") {
+          output.value = JSON.stringify(msg.payload, null, 2);
+          const topLevelCount = Object.keys(msg.payload.data).length;
+          status.textContent = `Terminé — fichier "${msg.payload.fileName}", ${topLevelCount} entrée(s) au premier niveau.`;
+        } else if (msg.type === "export-error") {
+          status.textContent = "Erreur : " + msg.message;
+        }
+      };
+    </script>
+  </body>
+</html>
