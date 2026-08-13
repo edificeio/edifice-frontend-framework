@@ -1,0 +1,13 @@
+{
+  "name": "Edifice Token Extractor",
+  "id": "REPLACE_WITH_ID_GENERATED_BY_FIGMA",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma", "dev"],
+  "capabilities": ["inspect"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}
