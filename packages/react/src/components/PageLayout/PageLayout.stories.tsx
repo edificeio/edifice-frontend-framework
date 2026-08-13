@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { LastInfosList } from '../../modules/homepage/components/LastInfos';
-import { LastInfosProps } from '../../modules/homepage/components/LastInfos/LastInfos';
+import type { LastInfosProps } from '../../modules/homepage/components/LastInfos/LastInfos';
 import AppHeader from '../AppHeader/AppHeader';
 import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { Button } from '../Button';
