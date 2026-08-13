@@ -33,7 +33,14 @@ export type WebNotification = UserWebNotification | SystemWebNotification;
 const resolveNotificationResourceUri = (
   params: NotificationModel['params'],
   type: NotificationType,
+  appCode: string,
+  eventType?: NotificationModel['event-type'],
 ): string | undefined => {
+  // When the notification is a report, open the admin console.
+  if (appCode === 'timeline' && eventType === 'NOTIFY-REPORT') {
+    return '/admin';
+  }
+
   if (type === 'user') {
     return params.resourceUri || params.uri;
   }
@@ -96,9 +103,14 @@ export const notificationAdapter = (
   notification: NotificationModel,
 ): WebNotification => {
   const type = notification.sender ? 'user' : 'system';
-  const uri = resolveNotificationResourceUri(notification.params, type);
-  const date = new Date(notification.date.$date);
   const appCode = getAppCode(notification.type);
+  const uri = resolveNotificationResourceUri(
+    notification.params,
+    type,
+    appCode,
+    notification['event-type'] || notification['eventType'],
+  );
+  const date = new Date(notification.date.$date);
   const message = parseNotificationMessage(notification.message);
   const base = {
     id: notification._id,
