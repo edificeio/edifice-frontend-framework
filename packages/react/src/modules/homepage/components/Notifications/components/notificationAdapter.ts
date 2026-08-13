@@ -2,18 +2,24 @@ import { NotificationModel } from '@edifice.io/client';
 
 type NotificationType = 'system' | 'user';
 
-type WebNotificationBase = {
+interface WebNotificationParamsBase {
+  appCode: string;
+  appI18nKey: string;
+}
+
+interface WebNotificationBase {
+  type: NotificationType;
   id: string;
   uri?: string;
   message: string;
   date: Date;
-};
+  params: WebNotificationParamsBase;
+}
 
 /** Notification triggered by another user (e.g. shared a resource). */
 export type UserWebNotification = WebNotificationBase & {
   type: 'user';
-  params: {
-    appCode: string;
+  params: WebNotificationParamsBase & {
     username: string;
     userId: string;
   };
@@ -22,9 +28,6 @@ export type UserWebNotification = WebNotificationBase & {
 /** Notification triggered by an application event (no sender). */
 export type SystemWebNotification = WebNotificationBase & {
   type: 'system';
-  params: {
-    appCode: string;
-  };
 };
 
 /** Discriminated union — narrow on `type` to get the specific variant. */
@@ -65,6 +68,42 @@ const parseNotificationMessage = (message: string): string => {
     .replace(/<a\b[^>]*>/gi, '<strong>');
 };
 
+const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
+  appCode = appCode.toLowerCase();
+  let appI18nKey;
+
+  // Some notification return the wrong appcode for historical reasons, we need to match the real application type to apply the correct color in the timeline.
+  switch (appCode) {
+    case 'collaborativewall':
+      appI18nKey = appCode;
+      appCode = 'collaborative-wall';
+      break;
+    case 'formulaire':
+      appCode = appI18nKey = 'forms';
+      break;
+    case 'messagerie':
+      appCode = appI18nKey = 'conversation';
+      break;
+    case 'news':
+      appCode = appI18nKey = 'actualites';
+      break;
+    case 'homeworks':
+      appI18nKey = appCode;
+      appCode = 'cahier-de-texte';
+      break;
+    case 'userbook_motto':
+    case 'userbook_mood':
+    case 'userbook_discovervisiblegroups':
+      appI18nKey = appCode;
+      appCode = 'userbook';
+      break;
+    default:
+      appI18nKey = appCode = appCode.replace(/_/g, '-');
+  }
+
+  return [appCode, appI18nKey];
+};
+
 /**
  * Transforms a raw `NotificationModel` (API shape) into a `WebNotification`
  * ready for rendering.
@@ -76,34 +115,11 @@ const parseNotificationMessage = (message: string): string => {
  * - Normalises the `type` field into a kebab-case `appCode` (e.g. `"BLOG_POST"` → `"blog-post"`).
  * - Strips anchor tags from the message, keeping only the inner text as `<strong>`.
  */
-const getAppCode = (appCode: string): string => {
-  appCode = appCode.toLowerCase();
-  // Some notification return the wrong appcode for historical reasons, we need to match the real application type to apply the correct color in the timeline.
-  switch (appCode) {
-    case 'collaborativewall':
-      return 'collaborative-wall';
-    case 'formulaire':
-      return 'forms';
-    case 'messagerie':
-      return 'conversation';
-    case 'news':
-      return 'actualites';
-    case 'homeworks':
-      return 'cahier-de-texte';
-    case 'userbook_motto':
-    case 'userbook_mood':
-    case 'userbook_discovervisiblegroups':
-      return 'userbook';
-    default:
-      return appCode.replace(/_/g, '-');
-  }
-};
-
 export const notificationAdapter = (
   notification: NotificationModel,
 ): WebNotification => {
   const type = notification.sender ? 'user' : 'system';
-  const appCode = getAppCode(notification.type);
+  const [appCode, appI18nKey] = getAppCodeAndI18nKey(notification.type);
   const uri = resolveNotificationResourceUri(
     notification.params,
     type,
@@ -127,6 +143,7 @@ export const notificationAdapter = (
         username: notification.params.username!, // cannot be undefined if sender is present (user type)
         userId: notification.sender!, // cannot be undefined if sender is present (user type)
         appCode,
+        appI18nKey,
       },
     };
   }
@@ -134,6 +151,6 @@ export const notificationAdapter = (
   return {
     ...base,
     type: 'system',
-    params: { appCode },
+    params: { appCode, appI18nKey },
   };
 };
