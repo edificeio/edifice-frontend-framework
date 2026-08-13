@@ -70,31 +70,28 @@ const parseNotificationMessage = (message: string): string => {
 
 const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
   appCode = appCode.toLowerCase();
-  let appI18nKey;
+  let appI18nKey: string = appCode;
 
   // Some notification return the wrong appcode for historical reasons, we need to match the real application type to apply the correct color in the timeline.
   switch (appCode) {
     case 'collaborativewall':
-      appI18nKey = appCode;
       appCode = 'collaborative-wall';
       break;
     case 'formulaire':
-      appCode = appI18nKey = 'forms';
+      appI18nKey = appCode = 'forms';
       break;
     case 'messagerie':
-      appCode = appI18nKey = 'conversation';
+      appI18nKey = appCode = 'conversation';
       break;
     case 'news':
-      appCode = appI18nKey = 'actualites';
+      appI18nKey = appCode = 'actualites';
       break;
     case 'homeworks':
-      appI18nKey = appCode;
       appCode = 'cahier-de-texte';
       break;
     case 'userbook_motto':
     case 'userbook_mood':
     case 'userbook_discovervisiblegroups':
-      appI18nKey = appCode;
       appCode = 'userbook';
       break;
     default:
