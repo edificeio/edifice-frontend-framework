@@ -3,7 +3,7 @@ $white: #fff;
 
 $grey-900: #383838;
 $grey-800: #696969;
-$grey-700: #828282;
+$grey-700: #949494;
 $grey-500: #c7c7c7;
 $grey-300: #e4e4e4;
 $grey-200: #f2f2f2;
@@ -146,9 +146,15 @@ $font-lineheight-xl: 3.6rem;
 $font-lineheight-l: 3.2rem;
 $font-lineheight-m: 2.8rem;
 $font-lineheight-s: 2.6rem;
-$font-lineheight-xs: 2.2rem;
-$font-lineheight-2xs: 2rem;
+$font-lineheight-xs: 2.4rem;
+$font-lineheight-2xs: 2.2rem;
 $font-lineheight-3xs: 1.8rem;
 
 // Not in figma, but useful for consistency
 $box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
+// Ajoute automatiquement depuis Figma le 2026-08-13
+$spacer-128: $numbers-128;
+$border-radius-none: $numbers-0;
+$font-family-open-dyslexic: 'OpenDyslexic';
+$clients-crna-100: #fff0f3;
