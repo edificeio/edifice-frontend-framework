@@ -65,6 +65,17 @@ $neo: (
       light: $neo-orange-300,
       default: $neo-orange-500,
       dark: $neo-orange-700,
+      feather: $neo-orange-200,
+    ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: $neo-orange-500,
+      produce: $neo-blue-500,
+      organise: $neo-green-500,
+      admin: $neo-yellow-500,
+      special: $neo-purple-500,
     ),
     profil: (
       guest: $neo-pink-500,
@@ -122,5 +133,6 @@ $neo: (
   ),
   radius: (
     button: $border-radius-md,
+    maincontainer: $border-radius-none,
   ),
 );
