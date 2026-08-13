@@ -100,7 +100,9 @@ $spacer-32: $numbers-32;
 $spacer-40: $numbers-40;
 $spacer-48: $numbers-48;
 $spacer-64: $numbers-64;
+$spacer-128: $numbers-128;
 
+$border-radius-none: $numbers-0;
 $border-radius-sm: $numbers-4;
 $border-radius-md: $numbers-8;
 $border-radius-lg: $numbers-12;
@@ -120,6 +122,7 @@ $clients-crna-700: #b6002c;
 $clients-crna-500: #ed0039;
 $clients-crna-300: #f6b3c3;
 $clients-crna-200: #ffdee6;
+$clients-crna-100: #fff0f3;
 
 /** Text variables **/
 $text-color-default: $grey-900;
@@ -129,6 +132,7 @@ $text-color-subtext: $grey-800;
 $font-family-urbanist: 'Urbanist';
 $font-family-playpensans: 'Playpen Sans';
 $font-family-arimo: 'Arimo';
+$font-family-open-dyslexic: 'OpenDyslexic';
 
 $font-size-xl: 3.2rem;
 $font-size-l: 2.6rem;
@@ -152,9 +156,3 @@ $font-lineheight-3xs: 1.8rem;
 
 // Not in figma, but useful for consistency
 $box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
-
-// Ajoute automatiquement depuis Figma le 2026-08-13
-$spacer-128: $numbers-128;
-$border-radius-none: $numbers-0;
-$font-family-open-dyslexic: 'OpenDyslexic';
-$clients-crna-100: #fff0f3;
