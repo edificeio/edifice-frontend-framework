@@ -34,7 +34,7 @@ export function Favorites({
         <div className="favorites-content">
           {apps.length === 0 ? (
             <Flex align="center" gap="12">
-              <img src={illuEmptyFavorite} alt="" width={80} height={80} />
+              <img src={illuEmptyFavorite} alt="" width={50} height={50} />
               <span className="favorites-empty-text">
                 {t(
                   'homepage.favorites.empty',

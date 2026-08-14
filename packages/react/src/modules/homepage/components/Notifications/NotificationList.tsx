@@ -74,7 +74,7 @@ const NotificationList = ({
         {notifications?.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
-              size={120}
+              size={135}
               imageSrc={illuEmptyNotification}
               imageAlt={t('homepage.notifications-list.empty.description')}
               text={t('homepage.notifications-list.empty.description')}

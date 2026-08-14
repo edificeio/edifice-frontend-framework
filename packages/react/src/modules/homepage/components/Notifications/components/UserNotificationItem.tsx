@@ -40,7 +40,10 @@ const UserNotificationItem = ({ notification }: UserNotificationItemProps) => {
         </a>
       }
     >
-      <NotificationItemResource appCode={params.appCode} />
+      <NotificationItemResource
+        appCode={params.appCode}
+        appI18nKey={params.appI18nKey}
+      />
     </CommonNotificationItem>
   );
 };

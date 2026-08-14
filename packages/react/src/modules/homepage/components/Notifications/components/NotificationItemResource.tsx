@@ -3,6 +3,7 @@ import { AppIcon } from '../../../../..';
 
 export type NotificationItemResourceProps = {
   appCode: string;
+  appI18nKey: string;
 };
 
 /**
@@ -14,10 +15,11 @@ export type NotificationItemResourceProps = {
  */
 const NotificationItemResource = ({
   appCode,
+  appI18nKey,
 }: NotificationItemResourceProps) => {
   const { t } = useTranslation();
 
-  const appLabel = t(`${appCode}`, {
+  const appLabel = t(`${appI18nKey}`, {
     defaultValue: appCode,
   });
 
