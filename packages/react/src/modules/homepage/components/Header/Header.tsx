@@ -23,6 +23,7 @@ import { NavItem } from '../../../../components/Layout/components/NavItem';
 import { NavLink } from '../../../../components/Layout/components/NavLink';
 import useHeader from '../../../../components/Layout/hooks/useHeader';
 import { useEdificeTheme } from '../../../../providers/';
+import { IconSetBackground } from '../../../icons/components';
 import {
   IconCommunitiesBeta,
   IconDisconnect,
@@ -201,6 +202,16 @@ const Header = ({
               isVisible={isUserHovered}
             >
               <PopoverBody>
+                <a
+                  href="/timeline/customize"
+                  className="nav-link customize d-flex align-items-center gap-8"
+                  data-testid="header-customize-button"
+                >
+                  <IconSetBackground className="icon" />
+                  <span id="cutomize-label" className="nav-text">
+                    {t('navbar.customize')}
+                  </span>
+                </a>
                 <a
                   href={
                     '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
