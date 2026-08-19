@@ -34,6 +34,7 @@ import {
   IconCode,
   IconFolder,
   IconGlobe,
+  IconGlobe2,
   IconMic,
   IconRecordVideo,
   IconSmartphone,
@@ -266,7 +267,7 @@ const MediaLibrary = forwardRef(
       },
       'nextcloud': {
         id: 'nextcloud',
-        icon: <IconGlobe />,
+        icon: <IconGlobe2 />,
         label: t('bbm.nextcloud'),
         content: <InnerTabs.Nextcloud />,
         availableFor: ['audio', 'video', 'image', 'attachment'],
@@ -432,16 +433,11 @@ const MediaLibrary = forwardRef(
       resetState();
     };
 
-    const isWorkspaceElementArray = (
-      result: MediaLibraryResult,
-    ): result is WorkspaceElement[] =>
-      Array.isArray(result) && (result.length === 0 || 'eType' in result[0]);
-
     const handleOnSuccess = useCallback(() => {
       const triggerSuccess = async (result: MediaLibraryResult) => {
         // Copy WorkspaceElement from shared/owner folder to protected/public folder
         if (
-          isWorkspaceElementArray(result) &&
+          result instanceof Array &&
           ['protected', 'public'].findIndex((v) => v === visibility) >= 0
         ) {
           result = await odeServices
