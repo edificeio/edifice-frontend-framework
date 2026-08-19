@@ -18,6 +18,52 @@ import {
 } from '../../icons/components';
 import FileIcon from './FileIcon';
 
+interface RoleMap {
+  icon: ReactNode | string;
+  color: string;
+  hasShadow?: boolean;
+}
+
+const roleMappings: Record<Role | 'unknown', RoleMap> = {
+  csv: { icon: '.CSV', color: 'bg-orange-200' },
+  xls: { icon: '.XLS', color: 'bg-green-200' },
+  doc: { icon: '.DOC', color: 'bg-blue-200' },
+  txt: { icon: '.TXT', color: 'bg-blue-200' },
+  pdf: { icon: '.PDF', color: 'bg-red-200' },
+  audio: { icon: <IconMic width={22} height={22} />, color: 'bg-red-200' },
+  ppt: { icon: '.PPT', color: 'bg-red-200' },
+  img: {
+    icon: <IconLandscape width={22} height={22} />,
+    color: 'bg-green-200',
+  },
+  video: {
+    icon: <IconVideo width={22} height={22} />,
+    color: 'bg-purple-200',
+  },
+  zip: { icon: '.ZIP', color: 'bg-gray-300' },
+  md: { icon: '.MD', color: 'bg-blue-200' },
+  unknown: {
+    icon: <IconTextPage width={22} height={22} />,
+    color: 'bg-gray-300',
+  },
+};
+
+function getRoleMap(
+  type: Role | 'unknown',
+  customIcon?: ReactNode,
+  customColor?: string,
+): RoleMap {
+  if (customIcon !== undefined || customColor !== undefined) {
+    return {
+      icon: customIcon || <IconTextPage width={22} height={22} />,
+      color: customColor || 'bg-gray-300',
+      hasShadow: false,
+    };
+  }
+
+  return roleMappings[type] ?? roleMappings.unknown;
+}
+
 export interface NextcloudFileCardProps extends CardProps {
   doc: NextcloudDocument;
   /**
@@ -55,47 +101,7 @@ const NextcloudFileCard = ({
 
   const type = DocumentHelper.role(doc.contentType, false);
 
-  function getRoleMap(type: Role | 'unknown'): {
-    icon: ReactNode | string;
-    color: string;
-    hasShadow?: boolean;
-  } {
-    if (customIcon !== undefined || customColor !== undefined) {
-      return {
-        icon: customIcon || <IconTextPage width={22} height={22} />,
-        color: customColor || 'bg-gray-300',
-        hasShadow: false,
-      };
-    }
-
-    const roleMappings = {
-      csv: { icon: '.CSV', color: 'bg-orange-200' },
-      xls: { icon: '.XLS', color: 'bg-green-200' },
-      doc: { icon: '.DOC', color: 'bg-blue-200' },
-      txt: { icon: '.TXT', color: 'bg-blue-200' },
-      pdf: { icon: '.PDF', color: 'bg-red-200' },
-      audio: { icon: <IconMic width={22} height={22} />, color: 'bg-red-200' },
-      ppt: { icon: '.PPT', color: 'bg-red-200' },
-      img: {
-        icon: <IconLandscape width={22} height={22} />,
-        color: 'bg-green-200',
-      },
-      video: {
-        icon: <IconVideo width={22} height={22} />,
-        color: 'bg-purple-200',
-      },
-      zip: { icon: '.ZIP', color: 'bg-gray-300' },
-      md: { icon: '.MD', color: 'bg-blue-200' },
-      unknown: {
-        icon: <IconTextPage width={22} height={22} />,
-        color: 'bg-gray-300',
-      },
-    };
-
-    return roleMappings[type] || roleMappings.unknown;
-  }
-
-  const roleMap = getRoleMap(type ?? 'unknown');
+  const roleMap = getRoleMap(type ?? 'unknown', customIcon, customColor);
 
   const file = clsx(
     'file position-relative rounded',
@@ -129,7 +135,7 @@ const NextcloudFileCard = ({
           className={file}
           style={{ aspectRatio: '16/10', ...imageStyles }}
         >
-          {type !== 'img' || (type === 'img' && !hasThumbnail) ? (
+          {type !== 'img' || !hasThumbnail ? (
             <FileIcon type={type} roleMap={roleMap} />
           ) : null}
         </div>
