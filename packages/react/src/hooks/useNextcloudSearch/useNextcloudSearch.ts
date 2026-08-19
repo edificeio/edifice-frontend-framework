@@ -1,12 +1,12 @@
-import { useCallback, useReducer } from 'react';
+import { useCallback, useState } from 'react';
 
 import { ID, NextcloudDocument, odeServices } from '@edifice.io/client';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { findNodeById } from '../../components/TreeView/utilities/treeview';
-import { TreeData } from '../../types';
+import { findNodeById, modifyNode } from '../../components/Tree/utilities/tree';
+import { TreeItem } from '../../components/Tree/types';
 
-export type NextcloudFolderNode = TreeData & { files?: NextcloudDocument[] };
+export type NextcloudFolderNode = TreeItem & { files?: NextcloudDocument[] };
 
 export default function useNextcloudSearch(
   rootId: string,
@@ -14,43 +14,42 @@ export default function useNextcloudSearch(
   userId?: string,
 ) {
   /**
-   * A nextcloud search maintains a tree of TreeNodes (which can be rendered in a TreeView),
+   * A nextcloud search maintains a tree of TreeNodes (rendered by `Tree`),
    * starting at its `root`. Each node is a folder, keyed by its Nextcloud `path`,
    * with its sub-folders as children (also TreeNodes) and an array of contained `files`.
    */
-  function treeReducer(
-    state: NextcloudFolderNode,
-    action: {
-      type: 'update';
-      folderId?: ID; // Can be undefined to target the root node
-      subfolders: NextcloudDocument[];
-      files: NextcloudDocument[];
-    },
-  ) {
-    switch (action.type) {
-      case 'update': {
-        const node = findNodeById(state, action.folderId as string);
-        if (node) {
-          node.children = action.subfolders.map((f) => ({
-            id: f.path,
-            name: f.name,
-          }));
-          node.files = action.files;
-        }
-        return {
-          ...state,
-        };
-      }
-      default:
-        throw Error('[useNextcloudSearch] Unknown action type: ' + action.type);
-    }
-  }
-
-  const [root, dispatch] = useReducer(treeReducer, {
+  const [root, setRoot] = useState<NextcloudFolderNode>({
     id: rootId,
     name: rootName,
     section: true,
   });
+
+  const updateFolder = useCallback(
+    (
+      folderId: ID | undefined,
+      subfolders: NextcloudDocument[],
+      files: NextcloudDocument[],
+    ) => {
+      setRoot((prev) => {
+        const node = findNodeById(prev, folderId as string) as
+          | NextcloudFolderNode
+          | undefined;
+        if (!node) return prev;
+
+        const children = subfolders.map((f) => {
+          const existing = node.children?.find((c) => c.id === f.path);
+          return existing
+            ? { ...existing, name: f.name }
+            : { id: f.path, name: f.name };
+        });
+
+        return modifyNode(prev, (n) =>
+          n.id === node.id ? { ...n, children, files } : n,
+        ) as NextcloudFolderNode;
+      });
+    },
+    [],
+  );
 
   const queryClient = useQueryClient();
 
@@ -89,9 +88,9 @@ export default function useNextcloudSearch(
             files.push(doc);
           }
         });
-      dispatch({ folderId, subfolders, files, type: 'update' });
+      updateFolder(folderId, subfolders, files);
     },
-    [rootId, userId, queryClient],
+    [rootId, userId, queryClient, updateFolder],
   );
 
   return {

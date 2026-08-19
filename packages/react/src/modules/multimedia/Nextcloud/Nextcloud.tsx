@@ -18,7 +18,6 @@ import { LoadingScreen } from '../../../components/LoadingScreen';
 import { SearchBar } from '../../../components/SearchBar';
 import { Tree } from '../../../components/Tree';
 import { findNodeById } from '../../../components/Tree/utilities/tree';
-import { TreeItem } from '../../../components/Tree/types';
 import { useNextcloudSearch, useUser } from '../../../hooks';
 import { NextcloudFolderNode } from '../../../hooks/useNextcloudSearch/useNextcloudSearch';
 import {
@@ -29,7 +28,8 @@ import {
 import { NextcloudFileCard } from '../FileCard';
 
 import illuNoContentInFolder from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-no-content-in-folder.svg';
-import { Button, Flex } from 'src/components';
+import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
+import { Button, Flex } from '../../../components';
 
 const ROOT_ID = 'root';
 
@@ -77,12 +77,8 @@ const Nextcloud = ({
 
   const [currentNodeId, setCurrentNodeId] = useState<string>(ROOT_ID);
 
-  // `NextcloudFolderNode` (TreeData) and `TreeItem` are structurally
-  // compatible but declared separately; bridge the two here.
-  const treeRoot = root as unknown as TreeItem;
-
   const currentNode: NextcloudFolderNode =
-    (findNodeById(treeRoot, currentNodeId) as NextcloudFolderNode) ?? root;
+    (findNodeById(root, currentNodeId) as NextcloudFolderNode) ?? root;
 
   const [searchTerm, setSearchTerm] = useState<string | undefined>(null!);
 
@@ -103,39 +99,39 @@ const Nextcloud = ({
     [loadContent],
   );
 
-  /** Load root content once; it's selected by default via `currentNodeId`. */
+  /** Load root content once authenticated; it's selected by default via `currentNodeId`. */
   useEffect(() => {
-    loadContent(ROOT_ID);
-  }, [loadContent]);
+    if (!needsAuth) loadContent(ROOT_ID);
+  }, [loadContent, needsAuth]);
 
   /** Derive documents from currentNode, searchTerm and sortOrder. */
   const documents = useMemo(() => {
     if (!currentNode.files) return undefined;
-    let list = ([] as NextcloudDocument[]).concat(currentNode.files);
-    if (searchTerm) {
-      list = list.filter((f) => f.name.indexOf(searchTerm) >= 0);
-    }
-    // Filter out files of undesired role.
-    if (roles) {
-      list = list.filter((f) => {
-        const role = DocumentHelper.role(f.contentType, false);
-        if (typeof roles === 'string') return roles === role;
-        if (Array.isArray(roles)) return roles.includes(role as Role);
-        return false;
-      });
-    }
-    const sortFunction: (a: NextcloudDocument, b: NextcloudDocument) => number =
-      sortOrder[0] === 'name'
-        ? sortOrder[1] === 'asc'
+
+    const matchesRole = (doc: NextcloudDocument) => {
+      if (!roles) return true;
+      const role = DocumentHelper.role(doc.contentType, false);
+      return Array.isArray(roles)
+        ? roles.includes(role as Role)
+        : roles === role;
+    };
+
+    const list = currentNode.files.filter(
+      (f) => (!searchTerm || f.name.indexOf(searchTerm) >= 0) && matchesRole(f),
+    );
+
+    let sortFunction: (a: NextcloudDocument, b: NextcloudDocument) => number;
+    if (sortOrder[0] === 'name') {
+      sortFunction =
+        sortOrder[1] === 'asc'
           ? (a, b) => compare(a.name, b.name)
-          : (a, b) => compare(b.name, a.name)
-        : (a, b) => compare(b.lastModified, a.lastModified);
+          : (a, b) => compare(b.name, a.name);
+    } else {
+      sortFunction = (a, b) => compare(b.lastModified, a.lastModified);
+    }
 
     return list.sort(sortFunction);
-    // `root` is required: nodes are mutated in place by the reducer, only the
-    // root wrapper gets a new identity, so it must be a dep to react to loads.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [root, currentNode, searchTerm, sortOrder, roles]);
+  }, [currentNode, searchTerm, sortOrder, roles]);
 
   const selectedPaths = useMemo(
     () => new Set(selectedDocuments.map((d) => d.path)),
@@ -207,14 +203,23 @@ const Nextcloud = ({
     return (
       <Flex
         direction="column"
-        gap="8"
+        gap="12"
         className="h-full w-100"
         justify="center"
         align="center"
       >
-        <EmptyScreen imageSrc={illuNoContentInFolder} />
+        <Flex direction="column" gap="8" justify="center" align="center">
+          <EmptyScreen imageSrc={illuNoContentInFolder} />
+          <h2 className="h2 text-secondary mb-8">
+            Connectez vos Documents Synchronisés
+          </h2>
+          <div className="text">
+            Connectez-vous pour parcourir vos Documents Synchronisés et les
+            insérer ici.
+          </div>
+        </Flex>
 
-        <Button onClick={openLoginPopup}>Login to nextcloud</Button>
+        <Button onClick={openLoginPopup}>Se connecter</Button>
       </Flex>
     );
   }
@@ -229,7 +234,7 @@ const Nextcloud = ({
       >
         <div style={{ position: 'sticky', top: 0, paddingTop: '1.2rem' }}>
           <Tree
-            nodes={treeRoot}
+            nodes={root}
             selectedNodeId={currentNodeId}
             showIcon
             onTreeItemClick={handleTreeItemChange}
@@ -247,7 +252,7 @@ const Nextcloud = ({
                 onChange={handleSearchChange}
               />
             </div>
-            <div className="d-flex align-items-center justify-content-end px-8 py-4">
+            <Flex className="px-8 py-4" align="center" justify="end">
               <small className="text-muted">
                 {t('workspace.search.order')}
               </small>
@@ -278,7 +283,7 @@ const Nextcloud = ({
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            </div>
+            </Flex>
           </Grid.Col>
           <Grid.Col sm="4" md="8" xl="12" className="p-8 gap-8">
             {!documents ? (
@@ -300,9 +305,9 @@ const Nextcloud = ({
               </div>
             ) : (
               <EmptyScreen
-                imageSrc={illuNoContentInFolder}
-                size={64}
-                text={t('nextcloud.empty.docSpace')}
+                imageSrc={illuTrash}
+                text={t('workspace.empty.docSpace')}
+                title={t('explorer.emptyScreen.trash.title')}
               />
             )}
           </Grid.Col>
