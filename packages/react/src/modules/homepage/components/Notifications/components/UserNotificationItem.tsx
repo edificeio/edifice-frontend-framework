@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, useDirectory } from '../../../../..';
 import CommonNotificationItem from './CommonNotificationItem';
@@ -6,6 +7,7 @@ import NotificationItemResource from './NotificationItemResource';
 
 export type UserNotificationItemProps = {
   notification: UserWebNotification;
+  menu?: ReactNode;
 };
 
 /**
@@ -14,7 +16,10 @@ export type UserNotificationItemProps = {
  * The avatar and its link are resolved via `useDirectory`. Wraps `NotificationItem`
  * — prefer using `Notification` at the top level rather than this component directly.
  */
-const UserNotificationItem = ({ notification }: UserNotificationItemProps) => {
+const UserNotificationItem = ({
+  notification,
+  menu,
+}: UserNotificationItemProps) => {
   const { getAvatarURL, getUserbookURL } = useDirectory();
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
@@ -24,6 +29,7 @@ const UserNotificationItem = ({ notification }: UserNotificationItemProps) => {
       uri={uri}
       message={message}
       date={date}
+      menu={menu}
       picture={
         <a
           href={getUserbookURL(params.userId, 'user')}

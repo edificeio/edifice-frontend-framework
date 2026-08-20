@@ -1,9 +1,12 @@
 import { NotificationModel } from '@edifice.io/client';
 import {
+  InfiniteData,
   infiniteQueryOptions,
   queryOptions,
   useInfiniteQuery,
+  useMutation,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { notificationService } from '../api';
 
@@ -68,4 +71,29 @@ export const useNotifications = (
 
 export const useNotificationTypes = () => {
   return useQuery(notificationQueryOptions.getNotificationTypes());
+};
+
+export const useReportNotification = () => {
+  return useMutation({
+    mutationFn: (id: string) => notificationService.reportNotification(id),
+  });
+};
+
+export const useDeleteNotification = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => notificationService.deleteNotification(id),
+    onSuccess: (_data, id) => {
+      queryClient.setQueriesData<InfiniteData<NotificationModel[]>>(
+        { queryKey: [...notificationQueryKeys.all(), 'list'] },
+        (data) =>
+          data && {
+            ...data,
+            pages: data.pages.map((page) =>
+              page.filter((notification) => notification._id !== id),
+            ),
+          },
+      );
+    },
+  });
 };

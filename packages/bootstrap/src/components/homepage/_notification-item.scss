@@ -9,6 +9,16 @@
     min-width: var(--primitive-numbers-32);
   }
 
+  &-content-wrapper {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &-link {
+    flex: 1;
+    min-width: 0;
+  }
+
   &-message {
     color: var(--primitive-text-color-default);
     font-size: var(--primitive-font-size-small);
@@ -63,5 +73,9 @@
     color: var(--primitive-text-color-subtext);
     font-style: italic;
     white-space: nowrap;
+  }
+
+  &-menu {
+    flex-shrink: 0;
   }
 }

@@ -273,6 +273,15 @@ i18n.use(initReactI18next).init({
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
+        'homepage.notifications.options.label': 'Options de la notification',
+        'homepage.notifications.options.report': 'Signaler',
+        'homepage.notifications.options.delete': 'Supprimer',
+        'homepage.notifications.report-modal.title':
+          'Signaler une notification',
+        'homepage.notifications.report-modal.body':
+          "Attention ! Vous souhaitez signaler une notification inappropriée ou qui ne respecte pas les conditions d'utilisation de ONE. L'heure et l'origine de ce signalement seront enregistrées et transmises à un administrateur pour traitement.",
+        'homepage.notifications.report-modal.confirm':
+          'Signaler la notification',
         //------------------ UserSpace -------------------------
         'homepage.userspace.teacher.link.classes': 'Mes classes',
         'homepage.userspace.student.link.classes': 'Mes classes',

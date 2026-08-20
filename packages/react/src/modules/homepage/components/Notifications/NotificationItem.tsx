@@ -1,4 +1,5 @@
 import { NotificationModel } from '@edifice.io/client';
+import NotificationOptionsMenu from './components/NotificationOptionsMenu';
 import SystemNotificationItem from './components/SystemNotificationItem';
 import UserNotificationItem from './components/UserNotificationItem';
 import { notificationAdapter } from './components/notificationAdapter';
@@ -25,11 +26,14 @@ export type NotificationProps = {
  */
 const NotificationItem = ({ notification }: NotificationProps) => {
   const notif = notificationAdapter(notification);
+  const menu = <NotificationOptionsMenu notificationId={notification._id} />;
   return (
     <>
-      {notif.type === 'user' && <UserNotificationItem notification={notif} />}
+      {notif.type === 'user' && (
+        <UserNotificationItem notification={notif} menu={menu} />
+      )}
       {notif.type === 'system' && (
-        <SystemNotificationItem notification={notif} />
+        <SystemNotificationItem notification={notif} menu={menu} />
       )}
     </>
   );
