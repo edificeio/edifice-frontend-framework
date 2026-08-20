@@ -1,0 +1,10 @@
+// ==========================================================================
+// Layout — legacy app shell background image
+// ==========================================================================
+.layout-has-background-image {
+  min-height: 100vh;
+  background-image: var(--layout-background-image, none);
+  background-size: var(--layout-background-size, cover);
+  background-position: var(--layout-background-position, center);
+  background-repeat: var(--layout-background-repeat, no-repeat);
+}
