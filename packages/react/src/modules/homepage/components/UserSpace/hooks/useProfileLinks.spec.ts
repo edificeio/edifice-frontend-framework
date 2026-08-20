@@ -36,17 +36,7 @@ describe('useProfileLinks', () => {
     expect(result.current).toBeUndefined();
   });
 
-  it('returns undefined when the user has no structure', () => {
-    mocks.useEdificeClient.mockReturnValue({
-      user: { structures: [], classes: [] },
-    });
-
-    const { result } = renderHook(() => useProfileLinks('Teacher'));
-
-    expect(result.current).toBeUndefined();
-  });
-
-  it('returns a classes link for the Teacher profile, appending each class', () => {
+  it('returns a classes link for the Teacher profile, without classes', () => {
     mocks.useEdificeClient.mockReturnValue({
       user: { structures: ['structure-id'], classes: ['class-1', 'class-2'] },
     });
@@ -56,7 +46,7 @@ describe('useProfileLinks', () => {
     expect(result.current).toEqual([
       {
         text: 'Mes classes',
-        url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=class-1&class=class-2',
+        url: '/userbook/annuaire#/search?filters=groups',
       },
     ]);
   });
@@ -75,7 +65,7 @@ describe('useProfileLinks', () => {
       },
       {
         text: 'Mes classes',
-        url: '/userbook/annuaire#/search?filters=groups&structure=structure-id&class=class-1',
+        url: '/userbook/annuaire#/search?filters=groups',
       },
     ]);
   });
