@@ -31,11 +31,19 @@ export function useProfileLinks(
       return `${baseUrl}?${params.toString()}`;
     };
 
-    const buildClassesUrl = (classIds: string[] = []) => {
-      const params = new URLSearchParams({
-        filters: 'groups',
-        structure: structureId,
-      });
+    /**
+     * @param parameters Mandatory query params
+     * @param classIds Optional List of classes ID as query params
+     * @returns Link to all those classes, in specified or all structures.
+     */
+    const buildClassesUrl = (
+      parameters: {
+        filters: 'groups' | 'users';
+        structure?: string;
+      },
+      classIds: string[] = [],
+    ) => {
+      const params = new URLSearchParams(parameters);
       classIds.forEach((c) => params.append('class', String(c)));
       return `${baseUrl}?${params.toString()}`;
     };
@@ -45,7 +53,11 @@ export function useProfileLinks(
         return [
           {
             text: t('homepage.userspace.teacher.link.classes'),
-            url: buildClassesUrl(user.classes),
+            url: buildClassesUrl(
+              {
+                filters: 'groups',
+              } /* Do not explicitely add classes ids, because none <=> see all*/,
+            ),
           },
         ];
       }
@@ -57,7 +69,11 @@ export function useProfileLinks(
           },
           {
             text: t('homepage.userspace.student.link.classes'),
-            url: buildClassesUrl(user.classes),
+            url: buildClassesUrl(
+              {
+                filters: 'groups',
+              } /* Do not explicitely add classes ids, because none <=> see all*/,
+            ),
           },
         ];
       }
@@ -68,7 +84,10 @@ export function useProfileLinks(
           text: t('homepage.userspace.relative.link.classes', {
             childName: child.firstName,
           }),
-          url: buildClassesUrl(child.classes?.map(({ id }) => id)),
+          url: buildClassesUrl(
+            { filters: 'groups', structure: structureId },
+            child.classes?.map(({ id }) => id),
+          ),
         }));
       }
       case 'Personnel': {
