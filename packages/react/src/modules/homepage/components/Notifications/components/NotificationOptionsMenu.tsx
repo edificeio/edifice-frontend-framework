@@ -41,7 +41,9 @@ const NotificationOptionsMenu = ({
             <IconButton
               {...triggerProps}
               type="button"
-              aria-label={t('homepage.notifications.options.label')}
+              aria-label={t('homepage.notifications.options.label', {
+                defaultValue: 'Options de la notification',
+              })}
               color="tertiary"
               variant="ghost"
               icon={<IconOptions />}
@@ -52,13 +54,17 @@ const NotificationOptionsMenu = ({
                 icon={<IconAlertTriangle />}
                 onClick={() => setIsReportModalOpen(true)}
               >
-                {t('homepage.notifications.options.report')}
+                {t('homepage.notifications.options.report', {
+                  defaultValue: 'Signaler',
+                })}
               </Dropdown.Item>
               <Dropdown.Item
                 icon={<IconDelete />}
                 onClick={() => deleteNotification(notificationId)}
               >
-                {t('homepage.notifications.options.delete')}
+                {t('homepage.notifications.options.delete', {
+                  defaultValue: 'Supprimer',
+                })}
               </Dropdown.Item>
             </Dropdown.Menu>
           </>
