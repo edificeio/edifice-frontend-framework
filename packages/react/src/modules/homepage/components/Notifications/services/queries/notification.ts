@@ -1,4 +1,4 @@
-import { NotificationModel } from '@edifice.io/client';
+import { NotificationModel, odeServices } from '@edifice.io/client';
 import {
   InfiniteData,
   infiniteQueryOptions,
@@ -10,11 +10,19 @@ import {
 } from '@tanstack/react-query';
 import { notificationService } from '../api';
 
+/** Shape of the `timeline` userbook preference (only `type` is read/written here). */
+export interface TimelinePreference {
+  page?: number;
+  type: string[];
+  config?: Record<string, unknown>;
+}
+
 export const notificationQueryKeys = {
   all: () => ['notifications'] as const,
   notifications: (types: string[] = []) =>
     [...notificationQueryKeys.all(), 'list', types] as const,
   types: () => [...notificationQueryKeys.all(), 'types'] as const,
+  preference: () => [...notificationQueryKeys.all(), 'preference'] as const,
 };
 
 export const notificationQueryOptions = {
@@ -71,6 +79,30 @@ export const useNotifications = (
 
 export const useNotificationTypes = () => {
   return useQuery(notificationQueryOptions.getNotificationTypes());
+};
+
+export const useTimelinePreference = () => {
+  return useQuery({
+    queryKey: notificationQueryKeys.preference(),
+    queryFn: () =>
+      odeServices.conf().getPreference<TimelinePreference>('timeline'),
+  });
+};
+
+export const useSaveTimelinePreference = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (preference: TimelinePreference) =>
+      odeServices.conf().savePreference('timeline', preference),
+    onSuccess: (_data, preference) => {
+      queryClient.setQueryData(notificationQueryKeys.preference(), preference);
+    },
+    onError: () => {
+      queryClient.invalidateQueries({
+        queryKey: notificationQueryKeys.preference(),
+      });
+    },
+  });
 };
 
 export const useReportNotification = () => {

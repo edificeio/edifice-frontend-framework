@@ -68,7 +68,7 @@ const parseNotificationMessage = (message: string): string => {
     .replace(/<a\b[^>]*>/gi, '<strong>');
 };
 
-const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
+export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
   appCode = appCode.toLowerCase();
   let appI18nKey: string = appCode;
 

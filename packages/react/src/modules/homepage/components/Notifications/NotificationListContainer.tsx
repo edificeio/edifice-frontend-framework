@@ -8,8 +8,15 @@ export type NotificationListContainerProps = {
 export const NotificationListContainer = ({
   onCloseNotifications,
 }: NotificationListContainerProps) => {
-  const { notifications, hasNextPage, loadNextPage, isLoading } =
-    useNotificationListContainer();
+  const {
+    notifications,
+    notificationTypes,
+    selectedTypes,
+    setSelectedTypes,
+    hasNextPage,
+    loadNextPage,
+    isLoading,
+  } = useNotificationListContainer();
 
   const handleLoadNextPage = () => {
     if (hasNextPage && !isLoading) {
@@ -20,6 +27,9 @@ export const NotificationListContainer = ({
   return (
     <NotificationList
       notifications={notifications}
+      notificationTypes={notificationTypes}
+      selectedTypes={selectedTypes}
+      onFilterChange={setSelectedTypes}
       onCloseNotifications={onCloseNotifications}
       onLoadNextPage={handleLoadNextPage}
       hasNextPage={hasNextPage}

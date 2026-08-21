@@ -282,6 +282,16 @@ i18n.use(initReactI18next).init({
           "Attention ! Vous souhaitez signaler une notification inappropriée ou qui ne respecte pas les conditions d'utilisation de ONE. L'heure et l'origine de ce signalement seront enregistrées et transmises à un administrateur pour traitement.",
         'homepage.notifications.report-modal.confirm':
           'Signaler la notification',
+        'homepage.notifications.filter-modal.trigger':
+          'Filtrer les notifications',
+        'homepage.notifications.filter-modal.title':
+          'Filtrer les notifications',
+        'homepage.notifications.filter-modal.subtitle':
+          'Sélectionnez seulement les notifications importantes pour vous',
+        'homepage.notifications.filter-modal.select-all': 'Tout sélectionner',
+        'homepage.notifications.filter-modal.count':
+          '[[selected]] / [[total]] sélectionnées',
+        'homepage.notifications.filter-modal.confirm': 'Enregistrer',
         //------------------ UserSpace -------------------------
         'homepage.userspace.teacher.link.classes': 'Mes classes',
         'homepage.userspace.student.link.classes': 'Mes classes',
