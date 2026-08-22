@@ -1,3 +1,35 @@
-[data-product='crna'] .last-infos-card {
-  --background-color-headline: var(--color-primary-pale);
+@use '../../configs/breakpoints' as medias;
+
+[data-product='crna'] {
+  .last-infos-card {
+    --background-color-headline: var(--color-primary-pale);
+  }
+
+  .last-infos-list {
+    // Without this, the mobile horizontal scroll row below (`&-body`) has no
+    // wrap, so its min-content is the summed width of every card — with no
+    // clamp here, that pushes past the viewport instead of staying scrollable.
+    min-width: 0;
+
+    &-header {
+      padding: 0;
+    }
+  }
+
+  @include medias.respond-below('tablet') {
+    .last-infos-list {
+      // Match `.home-card`'s padding/shadow/gap so this widget's title and
+      // content sit at the same position as the other HomeCard-based homepage
+      // widgets — scoped to mobile only, where it's placed inline in the page
+      // flow instead of its usual card slot.
+      padding: var(--primitive-spacer-16);
+      box-shadow: var(--primitive-box-shadow);
+      // Flex's `gap` prop utility classes carry `!important`; match it here.
+      gap: var(--primitive-spacer-16) !important;
+
+      &-title {
+        margin: 0;
+      }
+    }
+  }
 }

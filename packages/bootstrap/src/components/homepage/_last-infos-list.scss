@@ -33,16 +33,15 @@
 
 @include medias.respond-below('tablet') {
   .last-infos-list {
-
     &-body {
       flex-direction: row;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       overscroll-behavior-x: contain;
 
-      &>* {
+      & > * {
         align-self: start;
-        min-width: calc(100% - 2*var(--primitive-spacer-16));
+        min-width: calc(100% - 2 * var(--primitive-spacer-16));
         scroll-snap-align: start;
         scroll-snap-stop: always;
       }
