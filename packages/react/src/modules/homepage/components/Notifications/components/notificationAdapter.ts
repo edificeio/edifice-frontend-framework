@@ -78,7 +78,8 @@ export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
       appCode = 'collaborative-wall';
       break;
     case 'formulaire':
-      appI18nKey = appCode = 'forms';
+      appI18nKey = 'formulaire';
+      appCode = 'forms';
       break;
     case 'messagerie':
       appI18nKey = appCode = 'conversation';
@@ -90,8 +91,15 @@ export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
       appCode = 'cahier-de-texte';
       break;
     case 'userbook_motto':
+      appI18nKey = 'userbook_motto';
+      appCode = 'userbook';
+      break;
     case 'userbook_mood':
+      appI18nKey = 'userbook_mood';
+      appCode = 'userbook';
+      break;
     case 'userbook_discovervisiblegroups':
+      appI18nKey = 'userbook_discovervisiblegroups';
       appCode = 'userbook';
       break;
     default:
