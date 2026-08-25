@@ -53,4 +53,15 @@ describe('parseScssSelectors', () => {
     `);
     expect(resolved).toContain('.dropdown-item svg');
   });
+
+  it('throws on malformed SCSS (unclosed block) instead of silently returning a partial result', () => {
+    // build-css-map.ts relies on this throwing — it's what turns a bad file
+    // into an isolated cssScanError instead of taking down the whole index.
+    expect(() =>
+      parseScssSelectors(`
+        .broken {
+          color: red;
+      `),
+    ).toThrow();
+  });
 });

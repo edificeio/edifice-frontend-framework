@@ -109,4 +109,30 @@ describe('inferSymbolKind', () => {
     );
     expect(inferSymbolKind('Config', declarations)).toBe('const');
   });
+
+  it('classifies a generic function component as component, type parameters included', () => {
+    const declarations = declarationsFor(
+      `export function List<T>({ items }: { items: T[] }) {
+         return <ul>{items.length}</ul>;
+       }`,
+      'List',
+    );
+    expect(inferSymbolKind('List', declarations)).toBe('component');
+  });
+
+  it('classifies a generic type alias as type, not const', () => {
+    const declarations = declarationsFor(
+      `export type Box<T> = { value: T };`,
+      'Box',
+    );
+    expect(inferSymbolKind('Box', declarations)).toBe('type');
+  });
+
+  it('classifies a generic interface as type', () => {
+    const declarations = declarationsFor(
+      `export interface Pair<A, B> { first: A; second: B; }`,
+      'Pair',
+    );
+    expect(inferSymbolKind('Pair', declarations)).toBe('type');
+  });
 });

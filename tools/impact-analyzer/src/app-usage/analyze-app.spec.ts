@@ -82,6 +82,30 @@ describe('analyzeAppUsage', () => {
     );
   });
 
+  it('does not trace usage through an app-internal re-export (single-level depth, README "limites connues")', () => {
+    // ReExportedFromApp.ts re-exports Button from @edifice.io/fixture;
+    // UsesAppReExport.tsx imports Button from that app-internal module (a
+    // relative specifier, not @edifice.io/*) and uses it. Neither hop is
+    // visible to the analyzer: the re-export is an ExportDeclaration
+    // (resolveEdificeImports only walks ImportDeclarations), and the
+    // consuming file's import specifier is relative, not @edifice.io/*.
+    const { usages } = analyzeAppUsage(
+      `${appDir}/src`,
+      `${appDir}/tsconfig.json`,
+      ffEntries,
+    );
+
+    const namedButtonUsage = usages.find(
+      (u) => u.importedName === 'Button' && !u.viaNamespace,
+    );
+    expect(namedButtonUsage?.files).not.toContain(
+      `${appDir}/src/UsesAppReExport.tsx`,
+    );
+    expect(namedButtonUsage?.files).not.toContain(
+      `${appDir}/src/ReExportedFromApp.ts`,
+    );
+  });
+
   it('silently ignores @edifice.io/* imports from packages outside the tracked set', () => {
     const { usages, outOfContractImports } = analyzeAppUsage(
       `${appDir}/src`,

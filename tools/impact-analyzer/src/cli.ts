@@ -3,11 +3,14 @@ import { runDiff } from './cli/diff-command.js';
 import { runGenerate } from './cli/generate-command.js';
 import { runSymbol } from './cli/symbol-command.js';
 
-async function main(): Promise<void> {
+/** Exported for tests — `argv` defaults to the real process argv (excluding node/script path) when run for real. */
+export async function main(
+  argv: string[] = process.argv.slice(2),
+): Promise<void> {
   // `pnpm run <script> -- --flag` inserts a literal "--" ahead of the
   // forwarded args — Node's parseArgs treats that as an option terminator
   // and would otherwise silently dump every flag after it into positionals.
-  const args = process.argv.slice(2).filter((arg) => arg !== '--');
+  const args = argv.filter((arg) => arg !== '--');
   const { positionals, values } = parseArgs({
     args,
     allowPositionals: true,
@@ -57,7 +60,13 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error: unknown) => {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exitCode = 1;
-});
+// Only auto-run when this file is the actual entry point (`tsx src/cli.ts
+// ...`) — never on import, so tests can import `main` and drive it with a
+// controlled argv without triggering a real run against the test runner's
+// own process.argv.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exitCode = 1;
+  });
+}
