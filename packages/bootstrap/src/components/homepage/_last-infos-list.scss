@@ -33,17 +33,33 @@
 
 @include medias.respond-below('tablet') {
   .last-infos-list {
+    --slider-inset-x: var(--primitive-spacer-64);
+
     &-body {
       flex-direction: row;
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       overscroll-behavior-x: contain;
+      // Bleed cards past the surrounding container's edges. scroll-padding-inline
+      // is required alongside padding-inline-start: with scroll-snap-type
+      // mandatory, snapping aligns to the scrollport edge, not the visual
+      // margin/padding — without it, snapping would rest cards at the
+      // container's actual (bled) edge instead of the expected margin.
+      margin-inline: calc(var(--pagelayout-sidebarleft-padding-x) * -1);
+      padding-inline-start: var(--pagelayout-sidebarleft-padding-x);
+      scroll-padding-inline: var(--pagelayout-sidebarleft-padding-x);
 
       & > * {
-        align-self: start;
-        min-width: calc(100% - 2 * var(--primitive-spacer-16));
+        min-width: calc(100% - var(--slider-inset-x));
         scroll-snap-align: start;
         scroll-snap-stop: always;
+      }
+
+      // Trailing padding on an overflow-x flex container isn't reliable
+      // (unlike start padding, respected at scrollLeft: 0) — margin on the
+      // last child instead.
+      & > :last-child {
+        margin-inline-end: calc(var(--slider-inset-x));
       }
     }
   }

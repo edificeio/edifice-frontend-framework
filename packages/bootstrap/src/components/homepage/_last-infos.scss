@@ -44,6 +44,7 @@
   }
 
   &-content {
+    flex: 1 1 auto;
     background-color: var(--primitive-white);
     border-radius: var(--primitive-border-radius-lg);
     padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
@@ -54,6 +55,7 @@
   }
 
   &-thread-icon {
+    align-self: stretch;
     border-radius: var(--primitive-border-radius-md);
   }
 
