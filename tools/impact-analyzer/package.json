@@ -13,8 +13,8 @@
     "generate:ci": "tsx --env-file-if-exists=.env src/cli.ts generate --mode=ci",
     "diff:ci": "tsx --env-file-if-exists=.env src/cli.ts diff --mode=ci",
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --check \"src/**/*.ts\"",
-    "format:write": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --check \"src/**/*.ts\" \"scripts/**/*.ts\"",
+    "format:write": "prettier --write \"src/**/*.ts\" \"scripts/**/*.ts\"",
     "lint": "eslint",
     "test": "vitest run"
   },

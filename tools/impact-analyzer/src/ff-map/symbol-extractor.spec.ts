@@ -3,7 +3,7 @@ import { Project, ts } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 import {
   createFfProject,
-  extractSymbolsFromEntry,
+  extractSymbolsWithDeclarations,
   inferSymbolKind,
 } from './symbol-extractor.js';
 
@@ -21,10 +21,10 @@ const fixtureDir = fileURLToPath(
 );
 const fixtureTsconfig = `${fixtureDir}/tsconfig.json`;
 
-describe('extractSymbolsFromEntry', () => {
+describe('extractSymbolsWithDeclarations', () => {
   it('resolves symbols through multi-level barrels and export renames', () => {
     const project = createFfProject(fixtureTsconfig);
-    const symbols = extractSymbolsFromEntry(
+    const symbols = extractSymbolsWithDeclarations(
       project,
       `${fixtureDir}/src/index.ts`,
     );
@@ -49,11 +49,12 @@ describe('extractSymbolsFromEntry', () => {
       `${fixtureDir}/src/thing.ts`,
     ]);
     expect(byName.RenamedThing.kind).toBe('const');
+    expect(byName.Button.declarations.length).toBeGreaterThan(0);
   });
 
   it('resolves the icons subpath to its individual icon components', () => {
     const project = createFfProject(fixtureTsconfig);
-    const symbols = extractSymbolsFromEntry(
+    const symbols = extractSymbolsWithDeclarations(
       project,
       `${fixtureDir}/src/icons/index.ts`,
     );

@@ -170,12 +170,3 @@ export function extractSymbolsWithDeclarations(
   }
   return symbols;
 }
-
-export function extractSymbolsFromEntry(
-  project: Project,
-  entrySourceFile: string,
-): ExtractedSymbol[] {
-  return extractSymbolsWithDeclarations(project, entrySourceFile).map(
-    ({ name, kind, sourceFiles }) => ({ name, kind, sourceFiles }),
-  );
-}
