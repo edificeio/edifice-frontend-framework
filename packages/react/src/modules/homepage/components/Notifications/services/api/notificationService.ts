@@ -44,4 +44,18 @@ export const createNotificationService = (baseURL: string) => ({
   getNotificationTypes() {
     return odeServices.http().get<string[]>(`${baseURL}/timeline/types`);
   },
+
+  /**
+   * Report a notification as inappropriate.
+   */
+  reportNotification(id: string) {
+    return odeServices.http().put(`${baseURL}/timeline/${id}/report`);
+  },
+
+  /**
+   * Delete a notification.
+   */
+  deleteNotification(id: string) {
+    return odeServices.http().put(`${baseURL}/timeline/${id}`);
+  },
 });

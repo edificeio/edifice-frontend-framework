@@ -7,6 +7,7 @@ export type NotificationItemProps = {
   date: Date;
   uri?: string;
   children?: ReactNode;
+  menu?: ReactNode;
 };
 
 /**
@@ -26,28 +27,41 @@ const CommonNotificationItem = ({
   date,
   uri,
   children,
+  menu,
 }: NotificationItemProps) => {
   const { formatTimeAgo, formatDate } = useDate();
 
   return (
     <Flex direction="column" className="notification-item" gap="8">
-      <Flex direction="row" gap="8">
-        <div className="notification-item-picture">{picture}</div>
-        <a href={uri} data-testid="notification-item-content">
-          <Flex direction="column" gap="8">
-            <div
-              className="notification-item-message"
-              dangerouslySetInnerHTML={{ __html: message }}
-            />
-            {children}
-            <p
-              className="notification-item-date"
-              title={formatDate(date, 'LLL')}
-            >
-              {formatTimeAgo(date)}
-            </p>
-          </Flex>
-        </a>
+      <Flex direction="row" justify="between" wrap="nowrap" gap="8">
+        <Flex
+          direction="row"
+          align="start"
+          gap="8"
+          className="notification-item-content-wrapper"
+        >
+          <div className="notification-item-picture">{picture}</div>
+          <a
+            href={uri}
+            className="notification-item-link"
+            data-testid="notification-item-content"
+          >
+            <Flex direction="column" gap="8">
+              <div
+                className="notification-item-message"
+                dangerouslySetInnerHTML={{ __html: message }}
+              />
+              {children}
+              <p
+                className="notification-item-date"
+                title={formatDate(date, 'LLL')}
+              >
+                {formatTimeAgo(date)}
+              </p>
+            </Flex>
+          </a>
+        </Flex>
+        {menu && <div className="notification-item-menu">{menu}</div>}
       </Flex>
     </Flex>
   );

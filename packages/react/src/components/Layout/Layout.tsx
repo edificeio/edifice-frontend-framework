@@ -42,6 +42,8 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
+  const backgroundOverride = useUiOverride('layout.background');
+  const hasBackgroundImage = backgroundOverride?.variant === 'image';
   const { toggleOverlay } = useOverlay();
 
   const { t } = useTranslation();
@@ -112,7 +114,12 @@ export const Layout = ({
   );
 
   return (
-    <>
+    <div
+      className={clsx('layout', {
+        'layout-has-background-image': hasBackgroundImage,
+      })}
+      data-product={hasBackgroundImage ? backgroundOverride?.theme : undefined}
+    >
       {renderHeader}
       {renderNotificationsOverlay}
 
@@ -122,7 +129,7 @@ export const Layout = ({
 
       {renderToaster}
       {renderCookies}
-    </>
+    </div>
   );
 };
 

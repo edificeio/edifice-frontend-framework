@@ -1,8 +1,10 @@
 import { UserProfile } from '@edifice.io/client';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Avatar, Flex } from '../../../..';
+import { Avatar, ButtonBeta, Flex } from '../../../..';
+import { IconClass } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
+import { useProfileLinks } from './hooks/useProfileLinks';
 
 export type UserSpaceProps = {
   name: string;
@@ -18,9 +20,29 @@ export default function UserSpace({
   children,
 }: UserSpaceProps) {
   const { t } = useTranslation();
+  const links = useProfileLinks(profile);
 
   return (
-    <HomeCard variant="user">
+    <HomeCard
+      variant="user"
+      footer={
+        !!links && (
+          <Flex>
+            {links.map((link, index) => (
+              <ButtonBeta
+                key={`${link.url}-${index}`}
+                size="sm"
+                variant="ghost"
+                leftIcon={<IconClass />}
+                onClick={() => (window.location.href = link.url)}
+              >
+                {link.text}
+              </ButtonBeta>
+            ))}
+          </Flex>
+        )
+      }
+    >
       <Flex className={'user-space'} direction="row" gap="8">
         <Avatar
           className={'user-space--avatar'}

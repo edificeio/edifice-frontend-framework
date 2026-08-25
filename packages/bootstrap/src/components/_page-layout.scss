@@ -44,11 +44,14 @@
   }
 
   // --- Main area (grid container for sidebars + content) ---
+  // All tracks use minmax(0, Nfr): plain Nfr/auto tracks let a column grow to
+  // the intrinsic content size of its children (eg. a horizontally-scrolling
+  // carousel), overflowing the page.
 
   &-mainarea {
     display: grid;
     column-gap: 0;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: 'content';
 
     &.has-gap {
@@ -56,17 +59,17 @@
     }
 
     &.has-both-sidebars {
-      grid-template-columns: 1fr 2fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
       grid-template-areas: 'sidebarLeft content sidebarRight';
     }
 
     &.has-left-sidebar-only {
-      grid-template-columns: 1fr 2fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
       grid-template-areas: 'sidebarLeft content';
     }
 
     &.has-right-sidebar-only {
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
       grid-template-areas: 'content sidebarRight';
     }
 
@@ -235,7 +238,7 @@
     'content';
 
   &.has-both-sidebars {
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
     grid-template-areas:
       'breadcrumb  breadcrumb breadcrumb  '
       'sidebarLeft content    sidebarRight';
@@ -243,7 +246,7 @@
 
   // 3-column grid with right column at 0fr so CSS can interpolate to has-both-sidebars
   &.has-left-sidebar-only {
-    grid-template-columns: 1fr 2fr 0fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 0fr);
     grid-template-areas:
       'breadcrumb  breadcrumb breadcrumb  '
       'sidebarLeft content    sidebarRight';
@@ -346,7 +349,7 @@
   .pagelayout-fullpage .pagelayout-mainarea.has-left-sidebar-only,
   .pagelayout-fullpage .pagelayout-mainarea.has-right-sidebar-only,
   .pagelayout-fullpage.pagelayout-scroll-columns .pagelayout-mainarea {
-    grid-template: 1fr / auto;
+    grid-template: 1fr / minmax(0, 1fr);
     grid-template-areas:
       'breadcrumb'
       'sidebarLeft'

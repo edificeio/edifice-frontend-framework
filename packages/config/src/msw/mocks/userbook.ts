@@ -9,6 +9,11 @@ let onboardingModalCustomPreference = {
   type: 'Date',
   value: '2025-02-09T09:00:00.000Z',
 };
+let timelinePreference = {
+  page: 0,
+  type: ['BLOG', 'WIKI'],
+  config: {},
+};
 
 export const handlers = [
   http.get(
@@ -19,28 +24,29 @@ export const handlers = [
       });
     },
   ),
-  http.put<
-    { id: string },
-    {
-      key: unknown;
-    }
-  >(`/userbook/preference/:id`, async ({ request, params }) => {
-    const payload = await request.json();
-    if (!payload) {
-      return HttpResponse.text('Bad Request', { status: 400 });
-    }
-    switch (params.id) {
-      case ONBOARDING_MODAL_PREFERENCE_IDENTIFIER:
-        onboardingModalDefaultPreference =
-          payload.key as typeof onboardingModalDefaultPreference;
-        break;
-      case ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER:
-        onboardingModalCustomPreference =
-          payload.key as typeof onboardingModalCustomPreference;
-        break;
-    }
-    return HttpResponse.json({});
-  }),
+  http.put<{ id: string }, Record<string, unknown>>(
+    `/userbook/preference/:id`,
+    async ({ request, params }) => {
+      const payload = await request.json();
+      if (!payload) {
+        return HttpResponse.text('Bad Request', { status: 400 });
+      }
+      switch (params.id) {
+        case ONBOARDING_MODAL_PREFERENCE_IDENTIFIER:
+          onboardingModalDefaultPreference =
+            payload.key as typeof onboardingModalDefaultPreference;
+          break;
+        case ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER:
+          onboardingModalCustomPreference =
+            payload.key as typeof onboardingModalCustomPreference;
+          break;
+        case 'timeline':
+          timelinePreference = payload as typeof timelinePreference;
+          break;
+      }
+      return HttpResponse.json({});
+    },
+  ),
   http.get(
     `/userbook/preference/${ONBOARDING_MODAL_CUSTOM_PREFERENCE_IDENTIFIER}`,
     () => {
@@ -139,6 +145,11 @@ export const handlers = [
   http.get('/userbook/preference/apps', () => {
     return HttpResponse.json({
       preference: '{"bookmarks":[],"applications":["Blog"]}',
+    });
+  }),
+  http.get('/userbook/preference/timeline', () => {
+    return HttpResponse.json({
+      preference: JSON.stringify(timelinePreference),
     });
   }),
 ];

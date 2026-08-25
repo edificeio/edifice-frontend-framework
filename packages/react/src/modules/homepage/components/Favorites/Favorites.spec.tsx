@@ -29,7 +29,7 @@ describe('Favorites', () => {
 
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(3);
-    expect(links[0]).toHaveAttribute('href', '/mindmap');
-    expect(links[0]).toHaveAttribute('aria-label', 'Mindmap App');
+    expect(links[0]).toHaveAttribute('href', '/blog');
+    expect(links[0]).toHaveAttribute('aria-label', 'Blog App');
   });
 });

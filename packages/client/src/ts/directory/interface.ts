@@ -62,3 +62,33 @@ export interface BookmarkGetResponse {
     activationCode: boolean;
   }>;
 }
+
+/**
+ * Class a child belongs to, as returned by the /children endpoint.
+ */
+export interface ChildClass {
+  id: string;
+  name: string;
+}
+
+/**
+ * Child of a "Relative" user, as returned by the /children endpoint.
+ * `classes` may be omitted on environments not yet running #IMPULS-5874.
+ */
+export interface Child {
+  id: string;
+  firstName: string;
+  displayName: string;
+  externalId: string;
+  classesNames: string[];
+  classes?: ChildClass[];
+}
+
+/**
+ * Children of a "Relative" user, grouped by the structure they belong to.
+ * A relative attached to several structures gets one entry per structure.
+ */
+export interface StructureChildren {
+  structureName: string;
+  children: Child[];
+}

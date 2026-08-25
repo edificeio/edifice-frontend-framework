@@ -31,6 +31,7 @@ import {
   IconMyAppsBeta,
   IconNotificationBeta,
 } from '../../../icons/components/nav';
+import { useHasNotificationToday } from '../Notifications/hooks/useNotificationList';
 
 export interface HeaderProps {
   src: string | undefined;
@@ -60,6 +61,7 @@ const Header = ({
   const { theme } = useEdificeTheme();
 
   const hasMessages = messages > 0;
+  const hasNotificationToday = useHasNotificationToday();
 
   /**
    * useHover hook
@@ -142,12 +144,32 @@ const Header = ({
               <IconMyAppsBeta />
             </NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem className="position-relative">
             <ButtonBeta
               leftIcon={<IconNotificationBeta />}
               variant="ghost"
               onClick={handleNotificationsClick}
             />
+            {hasNotificationToday && (
+              <span
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: 15,
+                  height: 15,
+                  background: 'red',
+                  borderRadius: '50%',
+                  border: '2px solid white',
+                  pointerEvents: 'none',
+                  zIndex: 1,
+                  display: 'block',
+                }}
+                aria-label={t('homepage.notifications.new-badge', {
+                  defaultValue: 'Nouvelle notification',
+                })}
+              />
+            )}
           </NavItem>
           <NavItem
             className="position-relative"

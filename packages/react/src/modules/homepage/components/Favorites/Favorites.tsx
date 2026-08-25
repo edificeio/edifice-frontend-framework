@@ -1,4 +1,5 @@
 import { type IWebApp } from '@edifice.io/client';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite.svg';
@@ -22,6 +23,18 @@ export function Favorites({
       ? t(app.prefix.substring(1))
       : t(app.displayName) || '';
 
+  const visibleApps = useMemo(
+    () =>
+      apps
+        .filter((app) => app.display !== false)
+        .sort((a, b) =>
+          getAppName(a).localeCompare(getAppName(b), undefined, {
+            sensitivity: 'base',
+          }),
+        ),
+    [apps, t],
+  );
+
   return (
     <HomeCard variant="secondary">
       <HomeCard.Header
@@ -32,9 +45,9 @@ export function Favorites({
       />
       <HomeCard.Content>
         <div className="favorites-content">
-          {apps.length === 0 ? (
+          {visibleApps.length === 0 ? (
             <Flex align="center" gap="12">
-              <img src={illuEmptyFavorite} alt="" width={80} height={80} />
+              <img src={illuEmptyFavorite} alt="" width={50} height={50} />
               <span className="favorites-empty-text">
                 {t(
                   'homepage.favorites.empty',
@@ -44,7 +57,7 @@ export function Favorites({
             </Flex>
           ) : (
             <Flex wrap="wrap" gap="8 16">
-              {apps.map((app) => {
+              {visibleApps.map((app) => {
                 const appName = getAppName(app);
                 const opensInNewTab = app.isExternal || app.target === '_blank';
                 return (

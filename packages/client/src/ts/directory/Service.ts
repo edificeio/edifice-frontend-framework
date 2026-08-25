@@ -6,6 +6,7 @@ import {
   BookmarkWithDetails,
   BookmarkWithMembers,
   Group,
+  StructureChildren,
   User,
 } from './interface';
 
@@ -28,6 +29,13 @@ export class DirectoryService {
     return type === 'user'
       ? `/userbook/annuaire#/${id}`
       : `/userbook/annuaire#/group-view/${id}`;
+  }
+
+  /** Get the children of a "Relative" user, grouped by structure. */
+  getChildren(userId: string): Promise<StructureChildren[]> {
+    return this.http.get<StructureChildren[]>(
+      `/directory/user/${userId}/children`,
+    );
   }
 
   async getBookMarks(): Promise<Bookmark[]> {

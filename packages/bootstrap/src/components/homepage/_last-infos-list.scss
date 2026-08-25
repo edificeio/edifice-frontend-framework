@@ -1,4 +1,4 @@
-@use '../../themes/configs/primitives' as *;
+@use '../../themes/configs/breakpoints' as medias;
 
 .last-infos-list {
   background-color: var(--primitive-white);
@@ -22,5 +22,29 @@
     font-size: var(--primitive-font-size-default);
     line-height: var(--primitive-font-lineheight-s);
     color: var(--primitive-color-text-button-primary-other-default);
+  }
+
+  &-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-16);
+  }
+}
+
+@include medias.respond-below('tablet') {
+  .last-infos-list {
+    &-body {
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+
+      & > * {
+        align-self: start;
+        min-width: calc(100% - 2 * var(--primitive-spacer-16));
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+    }
   }
 }

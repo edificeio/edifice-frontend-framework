@@ -108,7 +108,7 @@ export const WithAction: Story = {
       </Button>
     ),
     children:
-      'Ornare senectus inceptos, laboriosam montes suscipit, tristique rhoncus, tristique irure itaque cum, tellus imperdiet ornare nostra nec curae cumque vitae, minus ridiculus? Auctor eget.',
+      'Ornare senectus inceptos, laboriosam montes suscipit, tristique rhoncus !',
     isDismissible: true,
   },
 };

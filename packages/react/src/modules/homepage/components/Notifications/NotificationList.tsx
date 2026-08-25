@@ -1,4 +1,4 @@
-import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-notifications.png';
+import illuEmptyNotification from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-notifications.png';
 import { NotificationModel } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import {
@@ -9,6 +9,7 @@ import {
   useInfiniteScroll,
 } from '../../../..';
 import { IconClose } from '../../../icons/components';
+import NotificationFilterMenu from './components/NotificationFilterMenu';
 import NotificationItem from './NotificationItem';
 import NotificationListSkeleton from './NotificationListSkeleton';
 import NotificationSkeleton from './NotificationSkeleton';
@@ -16,6 +17,13 @@ import NotificationSkeleton from './NotificationSkeleton';
 export type NotificationListProps = {
   /** List of notifications to display */
   notifications?: NotificationModel[];
+
+  /** All notification types available to filter on */
+  notificationTypes?: string[];
+  /** Notification types currently applied as filter */
+  selectedTypes?: string[];
+  /** Callback when the user validates a new filter selection */
+  onFilterChange?: (types: string[]) => void;
 
   /** Callback when the notifications list is closed */
   onCloseNotifications?: () => void;
@@ -30,6 +38,9 @@ export type NotificationListProps = {
 
 const NotificationList = ({
   notifications,
+  notificationTypes,
+  selectedTypes,
+  onFilterChange,
   onCloseNotifications,
   onLoadNextPage,
   hasNextPage,
@@ -56,9 +67,18 @@ const NotificationList = ({
           wrap="nowrap"
           className="py-16 ps-24 pe-8"
         >
-          <h4 className="text-truncate">
-            {t('homepage.notifications-list.title')}
-          </h4>
+          <Flex align="center" gap="8" className="notification-list-title">
+            <h4 className="text-truncate">
+              {t('homepage.notifications-list.title')}
+            </h4>
+            {notificationTypes && notificationTypes.length > 0 && (
+              <NotificationFilterMenu
+                notificationTypes={notificationTypes}
+                selectedTypes={selectedTypes ?? notificationTypes}
+                onFilterChange={(types) => onFilterChange?.(types)}
+              />
+            )}
+          </Flex>
           {onCloseNotifications && (
             <ButtonBeta
               color="tertiary"
@@ -74,7 +94,7 @@ const NotificationList = ({
         {notifications?.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
-              size={120}
+              size={135}
               imageSrc={illuEmptyNotification}
               imageAlt={t('homepage.notifications-list.empty.description')}
               text={t('homepage.notifications-list.empty.description')}

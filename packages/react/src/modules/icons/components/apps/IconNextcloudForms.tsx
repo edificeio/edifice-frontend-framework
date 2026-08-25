@@ -1,0 +1,27 @@
+import type { SVGProps } from 'react';
+interface SVGRProps {
+  title?: string;
+  titleId?: string;
+}
+const SvgIconNextcloudForms = ({
+  title,
+  titleId,
+  ...props
+}: SVGProps<SVGSVGElement> & SVGRProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 512 512"
+    width="24"
+    height="24"
+    aria-hidden="true"
+    aria-labelledby={titleId}
+    {...props}
+  >
+    {title ? <title id={titleId}>{title}</title> : null}
+    <path
+      fill="currentColor"
+      d="M209.3 365.1V334h186.9v31.1zm0-93.5v-31.1h186.9v31.1zm0-93.5V147h186.9v31.1zm-62.4 202.5c-8.6 0-15.9-3-21.9-9.2-5.9-5.8-9.3-13.7-9.2-22 0-8.6 3-15.9 9.2-21.9 5.8-5.9 13.6-9.3 21.9-9.2 8.6 0 15.9 3 22 9.2 6 6 9.2 13.4 9.2 21.9.1 8.3-3.2 16.3-9.2 22-5.7 6-13.7 9.3-22 9.2m0-93.5c-8.6 0-15.9-3-21.9-9.2-5.9-5.8-9.3-13.7-9.2-22 0-8.6 3-15.9 9.2-22 5.8-5.9 13.6-9.3 21.9-9.2 8.6 0 15.9 3 22 9.2 6 6.1 9.2 13.4 9.2 22 .1 8.3-3.2 16.3-9.2 22-5.7 6.1-13.7 9.4-22 9.2m0-93.4c-8.6 0-15.9-3-21.9-9.2-5.9-5.8-9.3-13.6-9.2-21.9 0-8.6 3-15.9 9.2-22 5.8-5.9 13.6-9.3 21.9-9.2 8.6 0 15.9 3 22 9.2 6 6.1 9.2 13.4 9.2 22s-3 15.9-9.2 21.9c-5.7 6-13.7 9.4-22 9.2"
+    />
+  </svg>
+);
+export default SvgIconNextcloudForms;

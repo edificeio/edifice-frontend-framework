@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppIcon } from '../../../../..';
 import CommonNotificationItem from './CommonNotificationItem';
@@ -5,6 +6,7 @@ import type { SystemWebNotification } from './notificationAdapter';
 
 export type SystemNotificationItemProps = {
   notification: SystemWebNotification;
+  menu?: ReactNode;
 };
 
 /**
@@ -15,6 +17,7 @@ export type SystemNotificationItemProps = {
  */
 const SystemNotificationItem = ({
   notification,
+  menu,
 }: SystemNotificationItemProps) => {
   const { params, message, date, uri } = notification;
   const { t } = useTranslation();
@@ -25,6 +28,7 @@ const SystemNotificationItem = ({
       uri={uri}
       message={message}
       date={date}
+      menu={menu}
       picture={
         <a
           href={uri}
