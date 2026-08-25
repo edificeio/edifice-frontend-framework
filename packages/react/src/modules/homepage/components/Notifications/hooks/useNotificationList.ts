@@ -1,5 +1,6 @@
 import { NotificationModel } from '@edifice.io/client';
 import { useEffect, useState } from 'react';
+import { useDate } from '../../../../..';
 import {
   useNotifications,
   useNotificationTypes,
@@ -95,3 +96,25 @@ export const useNotificationListContainer =
       error: errorTypes || errorNotifications,
     };
   };
+
+/**
+ * Indicates whether the user has at least one notification dated today,
+ * across all notification types. Used to display a "new notification"
+ * badge on the notification bell icon, independently of the list overlay.
+ */
+export const useHasNotificationToday = (): boolean => {
+  const { dateIsToday } = useDate();
+  // `lastNotifications` returns no result when no `type` is given, so all
+  // known types must be fetched first and passed explicitly.
+  const { data: notificationTypes, isFetched: isFetchedTypes } =
+    useNotificationTypes();
+  const { data: notifications } = useNotifications(
+    notificationTypes ?? [],
+    isFetchedTypes,
+  );
+
+  return (
+    notifications?.some((notification) => dateIsToday(notification.date)) ??
+    false
+  );
+};
