@@ -106,6 +106,15 @@ toutes les apps enregistrées avant l'ajout de ce champ). Validé à l'import
 (`assertOptionalPath`) : rejette les chemins avec `/` de tête/queue, `\`,
 segment `.`/`..`, ou vide.
 
+La liste restant manuelle, une branche de squad créée après coup sur un
+repo d'app n'apparaît pas toute seule dans `apps.json` (déjà arrivé :
+`develop-enabling` manquant sur `homeworks` pendant des mois). Pour
+repérer ces oublis sans changer la nature du fichier (toujours vérifié,
+jamais spéculatif) : `pnpm check:squad-branches` interroge GitHub pour
+chaque branche de squad connue absente d'une entrée et signale celles qui
+existent réellement — à ajouter à la main dans `apps.json` si le rapport
+en trouve.
+
 ## Mode distant (`--mode=ci`)
 
 Différences avec le mode local :

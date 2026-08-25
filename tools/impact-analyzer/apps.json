@@ -74,7 +74,7 @@
     "name": "homeworks",
     "org": "edificeio",
     "repo": "homeworks",
-    "branches": ["dev", "develop-pedago"]
+    "branches": ["dev", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "portal",
