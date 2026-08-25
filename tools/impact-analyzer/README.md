@@ -206,9 +206,16 @@ l'org). Le token n'est jamais embarqué dans une URL de clone (auth via
 `-c http.extraheader` sur la commande `fetch` uniquement) ni loggé en cas
 d'échec (message d'erreur générique).
 
-**Limites explicites de ce périmètre** : séquentiel (pas de gestion de
-rate-limit/concurrence — ~9 apps × 2 branches × 2 fichiers reste très en
-dessous des 5000 req/h authentifiées).
+**Limites explicites de ce périmètre** : la découverte (`discover-apps-remote.ts`,
+API Contents — lecture des `package.json`/pins) reste séquentielle par
+app-branche, mais reste très en dessous des 5000 req/h authentifiées (~9 apps
+× 2 branches × 2 fichiers) ; le retry/backoff sur 5xx et le rate-limit sont
+gérés par `github-client.ts`. Le clonage + l'analyse (`build-ci-index.ts`,
+l'étape coûteuse — un `git fetch` par app-branche) tourne avec une
+**concurrence bornée** (6 par défaut, configurable via `cloneConcurrency`),
+et chaque `git fetch` retente automatiquement en cas d'échec transitoire
+(timeout, 5xx du backend git smart-HTTP — jusqu'à 4 tentatives, backoff
+exponentiel, cf. scanErrors observés en prod dans `impact-analyzer-data`).
 
 ## CRON (GitHub Actions)
 
@@ -265,7 +272,8 @@ il ne doit jamais bloquer la publication du reste.
   Mode distant (Jalon 4 partiel) : `github-client.ts` (client Contents API,
   `fetch` injectable), `github-credentials.ts` (résolution token par org),
   `discover-apps-remote.ts` (discovery via API), `remote-clone.ts` (clone
-  sparse-checkout jetable, auth par header, jamais dans l'URL).
+  sparse-checkout jetable, auth par header, jamais dans l'URL — le `git
+  fetch` retente automatiquement, backoff exponentiel, sur échec transitoire).
 - `src/ff-map/` — table `export public → fichiers source` pour
   `react`/`client`/`utilities`/`tiptap-extensions`/`rest-client-base`, via
   `ts-morph`. Les subpaths `./icons*` sont agrégés (voir
@@ -287,6 +295,11 @@ il ne doit jamais bloquer la publication du reste.
   `--mode=ci` : recopie les `ConsumerEntry`/`CssConsumerEntry`/
   `OutOfContractImport` d'une app-branche depuis l'index précédent quand son
   commit n'a pas bougé, ou en secours (`staleSince`) si le scan échoue.
+  `concurrency-pool.ts` borne le nombre d'app-branches clonées/analysées en
+  parallèle (`build-ci-index.ts` sépare la phase réseau, parallélisable via
+  ce pool, de l'application des résultats aux collections partagées, qui
+  reste séquentielle dans l'ordre de découverte — l'index produit est donc
+  déterministe quel que soit l'ordre réel de résolution des clones).
 - `src/diff/` — classification de diff base vs head (Jalon 5) :
   `snapshot.ts` matérialise `base` dans un `git worktree` jetable (jamais de
   mutation du worktree principal), `signature-shape.ts`/

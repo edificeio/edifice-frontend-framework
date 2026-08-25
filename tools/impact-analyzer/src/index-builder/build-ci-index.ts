@@ -1,5 +1,8 @@
 import { dirname, join } from 'node:path';
-import { analyzeAppUsage } from '../app-usage/analyze-app.js';
+import {
+  analyzeAppUsage,
+  type AnalyzeAppResult,
+} from '../app-usage/analyze-app.js';
 import { resolveAppTsconfigPath } from '../app-usage/resolve-app-tsconfig.js';
 import { buildCssMap, type CssAppContext } from '../css/build-css-map.js';
 import {
@@ -33,6 +36,7 @@ import type {
   SymbolEntry,
 } from '../types/index-schema.js';
 import { aggregateIconConsumers } from './aggregate-icon-consumers.js';
+import { runWithConcurrencyLimit } from './concurrency-pool.js';
 import { toRepoRelativeFiles } from './repo-relative.js';
 import {
   carryForwardCssConsumers,
@@ -40,6 +44,12 @@ import {
   carryForwardSymbolConsumers,
   findAppState,
 } from './carry-forward.js';
+
+// A registry sized for ~10 apps could afford full parallelism, but this is
+// also the concurrency GitHub sees on the clone step — bounded well under
+// its abuse-detection thresholds regardless of registry size (plan §9,
+// REVIEW-impact-analyzer.md P4.1).
+const DEFAULT_CLONE_CONCURRENCY = 6;
 
 export interface BuildCiIndexOptions {
   /** FF repo — always local, the tool runs inside it, same as buildLocalIndex. */
@@ -50,6 +60,8 @@ export interface BuildCiIndexOptions {
   githubClientOptions?: GithubClientOptions;
   /** Previous run's index (e.g. loaded from the CRON's data repo) — enables the incremental cache (plan §9). */
   previousIndex?: ImpactIndex;
+  /** Max app-branches cloned/analyzed at once. Defaults to DEFAULT_CLONE_CONCURRENCY. */
+  cloneConcurrency?: number;
 }
 
 interface ActiveClone {
@@ -61,6 +73,85 @@ interface ActiveClone {
 /** An app-branch this run didn't clone (cache hit or stale fallback) — still needs CSS/global-risk carry-forward. */
 interface CarriedForwardApp {
   discoveredApp: DiscoveredRemoteApp;
+}
+
+/**
+ * Result of the network/clone/analyze phase for one app-branch — carries no
+ * side effect of its own, so it can be produced concurrently (bounded pool)
+ * without racing on the shared `symbols`/`scanErrors`/etc. collections.
+ * Applying it (pushing consumers, recording scanErrors...) happens
+ * afterwards in a plain sequential loop, in the original `discovered`
+ * order, so the resulting index stays byte-for-byte deterministic
+ * regardless of which app-branch's network call happened to finish first.
+ */
+type AppOutcome =
+  | { kind: 'cache-hit'; app: DiscoveredRemoteApp; cachedState: AppBranchState }
+  | {
+      kind: 'cloned';
+      app: DiscoveredRemoteApp;
+      cloned: ClonedRepo;
+      tsconfigPath: string;
+      result: AnalyzeAppResult;
+    }
+  | {
+      kind: 'error';
+      app: DiscoveredRemoteApp;
+      message: string;
+      cachedState: AppBranchState | undefined;
+    };
+
+/**
+ * Network/clone/analyze work for a single app-branch — the part that's
+ * safe to run concurrently. Never throws: any failure (missing token,
+ * clone/timeout, missing tsconfig, analyze error) becomes an `'error'`
+ * outcome instead, same resilience contract as before (plan §9: an
+ * isolated failure never aborts the rest of the run).
+ */
+async function processApp(
+  app: DiscoveredRemoteApp,
+  knownEntries: { package: string; entry: string }[],
+  previousIndex: ImpactIndex | undefined,
+): Promise<AppOutcome> {
+  const cachedState = findAppState(previousIndex, app.app.name, app.branch);
+  if (cachedState && cachedState.commit === app.commit) {
+    return { kind: 'cache-hit', app, cachedState };
+  }
+
+  let cloned: ClonedRepo | undefined;
+  try {
+    const token = requireGithubToken(app.app.org);
+    cloned = await cloneTargetSparse({
+      org: app.app.org,
+      repo: app.app.repo,
+      branch: app.branch,
+      token,
+      sparsePath: app.layout.srcRelPath,
+    });
+
+    const appDir = join(
+      cloned.repoPath,
+      dirname(app.layout.packageJsonRelPath),
+    );
+    const tsconfigPath = resolveAppTsconfigPath(appDir);
+    if (!tsconfigPath) {
+      throw new Error(
+        `No usable tsconfig found under ${appDir} (checked tsconfig.app.json, tsconfig.lib.json, tsconfig.json)`,
+      );
+    }
+
+    const srcRoot = join(cloned.repoPath, app.layout.srcRelPath);
+    const result = analyzeAppUsage(srcRoot, tsconfigPath, knownEntries);
+
+    return { kind: 'cloned', app, cloned, tsconfigPath, result };
+  } catch (error) {
+    if (cloned) cleanupClone(cloned);
+    return {
+      kind: 'error',
+      app,
+      message: error instanceof Error ? error.message : String(error),
+      cachedState,
+    };
+  }
 }
 
 /**
@@ -129,10 +220,22 @@ export async function buildCiIndex(
   const appStates: AppBranchState[] = [];
 
   try {
-    for (const app of discovered) {
-      const cachedState = findAppState(previousIndex, app.app.name, app.branch);
+    // Network/clone/analyze work runs with bounded concurrency (plan §9,
+    // REVIEW-impact-analyzer.md P4.1 — a fully sequential loop over a
+    // growing app registry made this the dominant cost of a CI run).
+    // Applying each outcome below stays a plain sequential loop over
+    // `discovered`'s original order, so the resulting index is unaffected
+    // by which network call happened to resolve first.
+    const outcomes = await runWithConcurrencyLimit(
+      discovered,
+      options.cloneConcurrency ?? DEFAULT_CLONE_CONCURRENCY,
+      (app) => processApp(app, knownEntries, previousIndex),
+    );
 
-      if (cachedState && cachedState.commit === app.commit) {
+    for (const outcome of outcomes) {
+      const app = outcome.app;
+
+      if (outcome.kind === 'cache-hit') {
         carryForwardSymbolConsumers(
           symbols,
           previousSymbols,
@@ -155,95 +258,17 @@ export async function buildCiIndex(
         continue;
       }
 
-      let clonedThisIteration: ClonedRepo | undefined;
-      try {
-        const token = requireGithubToken(app.app.org);
-        clonedThisIteration = cloneTargetSparse({
-          org: app.app.org,
-          repo: app.app.repo,
-          branch: app.branch,
-          token,
-          sparsePath: app.layout.srcRelPath,
-        });
-
-        const appDir = join(
-          clonedThisIteration.repoPath,
-          dirname(app.layout.packageJsonRelPath),
-        );
-        const tsconfigPath = resolveAppTsconfigPath(appDir);
-        if (!tsconfigPath) {
-          throw new Error(
-            `No usable tsconfig found under ${appDir} (checked tsconfig.app.json, tsconfig.lib.json, tsconfig.json)`,
-          );
-        }
-
-        const srcRoot = join(
-          clonedThisIteration.repoPath,
-          app.layout.srcRelPath,
-        );
-        const result = analyzeAppUsage(srcRoot, tsconfigPath, knownEntries);
-
-        for (const usage of result.usages) {
-          const symbol = symbolByKey.get(
-            `${usage.package}|${usage.entry}|${usage.importedName}`,
-          );
-          if (!symbol) continue;
-
-          const pin = app.pins.find((p) => p.package === usage.package);
-          const consumer: ConsumerEntry = {
-            app: app.app.name,
-            org: app.app.org,
-            repo: app.app.repo,
-            appBranch: app.branch,
-            pins: pin?.raw ?? 'unknown',
-            appCommit: app.commit,
-            appDirty: false, // a fresh clone is never dirty
-            usageSites: usage.usageSites,
-            files: toRepoRelativeFiles(
-              clonedThisIteration.repoPath,
-              usage.files,
-            ),
-          };
-          if (usage.viaNamespace) consumer.viaNamespace = true;
-          symbol.consumers.push(consumer);
-        }
-
-        for (const outOfContract of result.outOfContractImports) {
-          outOfContractImports.push({
-            app: app.app.name,
-            appBranch: app.branch,
-            package: outOfContract.package,
-            importPath: outOfContract.importPath,
-            files: toRepoRelativeFiles(
-              clonedThisIteration.repoPath,
-              outOfContract.files,
-            ),
-          });
-        }
-
-        activeClones.push({
-          discoveredApp: app,
-          cloned: clonedThisIteration,
-          tsconfigPath,
-        });
-        appStates.push({
-          app: app.app.name,
-          branch: app.branch,
-          commit: app.commit,
-        });
-      } catch (error) {
-        if (clonedThisIteration) cleanupClone(clonedThisIteration);
-
+      if (outcome.kind === 'error') {
         scanErrors.push({
           app: app.app.name,
           branch: app.branch,
-          error: error instanceof Error ? error.message : String(error),
-          ...(cachedState && previousIndex
+          error: outcome.message,
+          ...(outcome.cachedState && previousIndex
             ? { staleSince: previousIndex.generatedAt }
             : {}),
         });
 
-        if (cachedState) {
+        if (outcome.cachedState) {
           carryForwardSymbolConsumers(
             symbols,
             previousSymbols,
@@ -258,9 +283,57 @@ export async function buildCiIndex(
             ),
           );
           carriedForwardApps.push({ discoveredApp: app });
-          appStates.push(cachedState); // keep the OLD commit so the next run still attempts a real scan.
+          appStates.push(outcome.cachedState); // keep the OLD commit so the next run still attempts a real scan.
         }
+        continue;
       }
+
+      // outcome.kind === 'cloned'
+      for (const usage of outcome.result.usages) {
+        const symbol = symbolByKey.get(
+          `${usage.package}|${usage.entry}|${usage.importedName}`,
+        );
+        if (!symbol) continue;
+
+        const pin = app.pins.find((p) => p.package === usage.package);
+        const consumer: ConsumerEntry = {
+          app: app.app.name,
+          org: app.app.org,
+          repo: app.app.repo,
+          appBranch: app.branch,
+          pins: pin?.raw ?? 'unknown',
+          appCommit: app.commit,
+          appDirty: false, // a fresh clone is never dirty
+          usageSites: usage.usageSites,
+          files: toRepoRelativeFiles(outcome.cloned.repoPath, usage.files),
+        };
+        if (usage.viaNamespace) consumer.viaNamespace = true;
+        symbol.consumers.push(consumer);
+      }
+
+      for (const outOfContract of outcome.result.outOfContractImports) {
+        outOfContractImports.push({
+          app: app.app.name,
+          appBranch: app.branch,
+          package: outOfContract.package,
+          importPath: outOfContract.importPath,
+          files: toRepoRelativeFiles(
+            outcome.cloned.repoPath,
+            outOfContract.files,
+          ),
+        });
+      }
+
+      activeClones.push({
+        discoveredApp: app,
+        cloned: outcome.cloned,
+        tsconfigPath: outcome.tsconfigPath,
+      });
+      appStates.push({
+        app: app.app.name,
+        branch: app.branch,
+        commit: app.commit,
+      });
     }
 
     aggregateIconConsumers(symbols);
