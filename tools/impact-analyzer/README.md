@@ -109,6 +109,7 @@ segment `.`/`..`, ou vide.
 ## Mode distant (`--mode=ci`)
 
 Différences avec le mode local :
+
 - Les apps sont découvertes via l'**API GitHub Contents** (pas de repo
   frère nécessaire sur disque) : pour chaque app × chaque branche listée
   dans son `apps.json.branches` (nom réel par app, jamais recoupé avec une
@@ -117,18 +118,18 @@ Différences avec le mode local :
   1. `<path>/frontend/package.json`
   2. `<path>/frontend/package.json.template`
   3. `<path>/package.json`
-  L'étape 2 existe pour des apps comme `conversation`/`portal` (entcore) qui
-  gitignorent leur vrai `frontend/package.json` (généré au build) et
-  committent à la place un `.template` avec des pins placeholder du type
-  `%packageVersion%` — sinon 404 systématique en mode `--mode=ci` pour ces
-  apps. Ces pins sont classées `template` par `classifyPin` (au lieu de
-  `branch` par défaut) et affichées **telles quelles** (brutes) dans le
-  viewer, sans tenter de les résoudre. Une branche absente côté GitHub est
-  sautée silencieusement (comme en local) ; aucun des trois fichiers
-  introuvable alors que la branche existe est un `scanError` listant les
-  trois chemins préfixés tentés. Si **toutes** les branches d'une app sont
-  absentes, un `scanError` informatif signale l'app entière (permet de
-  distinguer un trou de config d'un souci d'accès repo/branche).
+     L'étape 2 existe pour des apps comme `conversation`/`portal` (entcore) qui
+     gitignorent leur vrai `frontend/package.json` (généré au build) et
+     committent à la place un `.template` avec des pins placeholder du type
+     `%packageVersion%` — sinon 404 systématique en mode `--mode=ci` pour ces
+     apps. Ces pins sont classées `template` par `classifyPin` (au lieu de
+     `branch` par défaut) et affichées **telles quelles** (brutes) dans le
+     viewer, sans tenter de les résoudre. Une branche absente côté GitHub est
+     sautée silencieusement (comme en local) ; aucun des trois fichiers
+     introuvable alors que la branche existe est un `scanError` listant les
+     trois chemins préfixés tentés. Si **toutes** les branches d'une app sont
+     absentes, un `scanError` informatif signale l'app entière (permet de
+     distinguer un trou de config d'un souci d'accès repo/branche).
 - Les couples `(app, branche)` confirmés consommateurs sont ensuite clonés
   **à la volée** dans un répertoire jetable (`git sparse-checkout`,
   profondeur 1, uniquement le sous-répertoire `src` pertinent), analysés
@@ -169,11 +170,13 @@ cp .env.example .env
 (`tsx --env-file-if-exists=.env`, natif Node ≥20.6, pas de dépendance
 `dotenv`). Pour une invocation directe (`tsx src/cli.ts ...` sans passer par
 un script `pnpm`), ajouter le flag à la main :
+
 ```bash
 tsx --env-file-if-exists=.env src/cli.ts generate --mode=ci
 ```
 
 Contenu de `.env` :
+
 ```bash
 # Générique — fallback si un seul classic PAT couvre tout
 IMPACT_ANALYZER_GITHUB_TOKEN=
@@ -186,6 +189,7 @@ IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG=
 **Comment générer le générique `IMPACT_ANALYZER_GITHUB_TOKEN`** (classic
 PAT, un seul token couvrant les deux orgs — alternative aux deux
 fine-grained PAT par org si tu ne veux gérer qu'un seul secret) :
+
 1. https://github.com/settings/tokens/new (classic, pas fine-grained).
 2. Note explicite (ex. "impact-analyzer read-only"), expiration 90 jours.
 3. Scope à cocher : **`repo`** uniquement (les classic PAT n'ont pas de
@@ -222,7 +226,10 @@ exponentiel, cf. scanErrors observés en prod dans `impact-analyzer-data`).
 `.github/workflows/impact-analyzer-generate.yml` — nocturne, du lundi au
 vendredi (`0 2 * * 1-5`, plan §9), + déclenchement manuel
 (`workflow_dispatch`). Pour chaque branche FF suivie (`develop`,
-`develop-enabling`) : `pnpm generate:ci` avec le cache incrémental branché
+`develop-enabling`, `develop-b2school`, `develop-pedago`,
+`develop-integration`, `develop-orga` — une par squad ; `develop-orga`
+produit un index à 0 consommateur tant que les repos d'apps n'ont pas encore
+cette branche, squad récente) : `pnpm generate:ci` avec le cache incrémental branché
 sur le run précédent, puis un **diff de release** (`diff
 --base=<dernier tag semver> --head-index=<index tout juste généré>`) —
 « tout ce qui a bougé sur la branche depuis la dernière release », trié par
@@ -247,6 +254,7 @@ données + `pnpm --filter @edifice.io/impact-analyzer-viewer dev`).
 
 **Secrets requis** sur `edifice-frontend-framework`
 (Settings → Secrets and variables → Actions) :
+
 - `IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` / `IMPACT_ANALYZER_GITHUB_TOKEN_OPEN_ENT_NG`
   — les mêmes fine-grained PAT lecture seule que pour un usage local (voir
   ci-dessus). Le PAT `IMPACT_ANALYZER_GITHUB_TOKEN_EDIFICEIO` doit inclure le
@@ -273,7 +281,7 @@ il ne doit jamais bloquer la publication du reste.
   `fetch` injectable), `github-credentials.ts` (résolution token par org),
   `discover-apps-remote.ts` (discovery via API), `remote-clone.ts` (clone
   sparse-checkout jetable, auth par header, jamais dans l'URL — le `git
-  fetch` retente automatiquement, backoff exponentiel, sur échec transitoire).
+fetch` retente automatiquement, backoff exponentiel, sur échec transitoire).
 - `src/ff-map/` — table `export public → fichiers source` pour
   `react`/`client`/`utilities`/`tiptap-extensions`/`rest-client-base`, via
   `ts-morph`. Les subpaths `./icons*` sont agrégés (voir
@@ -363,7 +371,9 @@ car cette convention diffère par package FF (voir commentaires dans
   (pas de commentaire PR ni d'export QA séparé). `diff --mode=ci` est branché
   sur un workflow `pull_request`
   (`.github/workflows/impact-analyzer-diff-pr.yml`) : chaque PR touchant
-  `packages/**` vers `develop`/`develop-enabling` publie son rapport de diff
+  `packages/**` vers une branche FF suivie (`develop`, `develop-enabling`,
+  `develop-b2school`, `develop-pedago`, `develop-integration`,
+  `develop-orga`) publie son rapport de diff
   dans le repo de données privé, consultable dans l'onglet Diff du viewer
   (les PR issues de forks sont sautées — pas de secrets sur un repo public).
   Le **commentaire PR** (poster un résumé sur la PR elle-même) reste une

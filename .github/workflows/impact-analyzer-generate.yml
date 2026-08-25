@@ -1,15 +1,15 @@
-name: "Impact Analyzer: generate (CRON)"
+name: 'Impact Analyzer: generate (CRON)'
 
 on:
   schedule:
     # Nightly, Monday-Friday, 02:00 UTC (plan §9 — "CRON nocturne hors week-end").
-    - cron: "0 2 * * 1-5"
+    - cron: '0 2 * * 1-5'
   workflow_dispatch:
     inputs:
       ff_branch:
-        description: "Run only this FF branch (leave empty to run both develop and develop-enabling)"
+        description: 'Run only this FF branch (leave empty to run all tracked squad branches)'
         required: false
-        default: ""
+        default: ''
 
 permissions:
   contents: read
@@ -23,14 +23,17 @@ jobs:
       # impact-analyzer-data repo, and running them concurrently would race
       # on that push (non-fast-forward on whichever job finishes second).
       max-parallel: 1
-      # V1 scope tracks two FF branches (plan §4/§10). A non-empty ff_branch
-      # dispatch input shrinks the matrix to that single branch — the filter
-      # must live HERE, not in a job-level `if`: the `matrix` context is not
-      # available in `jobs.<id>.if` ("unrecognized named-value"), which
-      # invalidates the whole workflow file and turns every push into a 0s
-      # startup failure.
+      # Tracks one FF branch per squad (plan §4/§10, extended per ENABLING-1175
+      # §4.6). A non-empty ff_branch dispatch input shrinks the matrix to that
+      # single branch — the filter must live HERE, not in a job-level `if`:
+      # the `matrix` context is not available in `jobs.<id>.if` ("unrecognized
+      # named-value"), which invalidates the whole workflow file and turns
+      # every push into a 0s startup failure.
+      # Note: develop-orga has no matching consumer-app branches yet (new
+      # squad) — it still runs, it just produces an index with 0 consumers
+      # until app repos grow that branch.
       matrix:
-        ff_branch: ${{ github.event.inputs.ff_branch != '' && fromJSON(format('[{0}]', toJSON(github.event.inputs.ff_branch))) || fromJSON('["develop", "develop-enabling"]') }}
+        ff_branch: ${{ github.event.inputs.ff_branch != '' && fromJSON(format('[{0}]', toJSON(github.event.inputs.ff_branch))) || fromJSON('["develop", "develop-enabling", "develop-b2school", "develop-pedago", "develop-integration", "develop-orga"]') }}
     steps:
       - name: Checkout edifice-frontend-framework
         uses: actions/checkout@v4
