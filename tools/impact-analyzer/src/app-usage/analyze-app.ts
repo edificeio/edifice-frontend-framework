@@ -30,6 +30,13 @@ export interface OutOfContractUsage {
 export interface AnalyzeAppResult {
   usages: AppUsageAggregate[];
   outOfContractImports: OutOfContractUsage[];
+  /**
+   * Every source file's text, already read once by ts-morph to build the
+   * project above — reused by the CSS grep pass (build-css-map.ts) so the
+   * same app's files aren't read from disk a second time
+   * (REVIEW-impact-analyzer.md P4.3).
+   */
+  fileContents: { path: string; content: string }[];
 }
 
 /**
@@ -74,8 +81,12 @@ export function analyzeAppUsage(
     }
   }
 
+  const fileContents: { path: string; content: string }[] = [];
+
   for (const file of files) {
     const sourceFile = project.getSourceFileOrThrow(file);
+    fileContents.push({ path: file, content: sourceFile.getFullText() });
+
     // Only imports from the FF packages we actually track (react, client,
     // utilities, tiptap-extensions, rest-client-base — plan §10 Jalon 1)
     // are evaluated at all. An @edifice.io/* import from an untracked
@@ -130,5 +141,6 @@ export function analyzeAppUsage(
   return {
     usages: [...usageByKey.values()],
     outOfContractImports: [...outOfContractByKey.values()],
+    fileContents,
   };
 }

@@ -68,6 +68,8 @@ interface ActiveClone {
   discoveredApp: DiscoveredRemoteApp;
   cloned: ClonedRepo;
   tsconfigPath: string;
+  /** Reused by the CSS pass instead of reading this app's files from disk again (P4.3). */
+  fileContents: { path: string; content: string }[];
 }
 
 /** An app-branch this run didn't clone (cache hit or stale fallback) — still needs CSS/global-risk carry-forward. */
@@ -328,6 +330,7 @@ export async function buildCiIndex(
         discoveredApp: app,
         cloned: outcome.cloned,
         tsconfigPath: outcome.tsconfigPath,
+        fileContents: outcome.result.fileContents,
       });
       appStates.push({
         app: app.app.name,
@@ -339,7 +342,7 @@ export async function buildCiIndex(
     aggregateIconConsumers(symbols);
 
     const cssApps: CssAppContext[] = activeClones.map(
-      ({ discoveredApp, cloned }) => ({
+      ({ discoveredApp, cloned, fileContents }) => ({
         appName: discoveredApp.app.name,
         appBranch: discoveredApp.branch,
         org: discoveredApp.app.org,
@@ -350,6 +353,7 @@ export async function buildCiIndex(
           (p) => p.package === '@edifice.io/bootstrap',
         ),
         srcRoot: join(cloned.repoPath, discoveredApp.layout.srcRelPath),
+        fileContents,
       }),
     );
     const bootstrapSrcDir =

@@ -68,6 +68,14 @@ export function buildLocalIndex(
 
   const scanErrors: ScanError[] = [...discoveryErrors];
   const outOfContractImports: OutOfContractImport[] = [];
+  // Keyed by app name — lets the CSS pass below reuse each app's file
+  // contents from its JS analysis instead of reading them from disk again
+  // (P4.3). Absent for an app whose JS analysis failed (no result to reuse);
+  // buildCssMap falls back to reading srcRoot itself for those.
+  const fileContentsByApp = new Map<
+    string,
+    { path: string; content: string }[]
+  >();
 
   for (const app of discovered) {
     const appDir = dirname(app.layout.packageJsonPath);
@@ -92,6 +100,7 @@ export function buildLocalIndex(
       });
       continue;
     }
+    fileContentsByApp.set(app.app.name, result.fileContents);
 
     for (const usage of result.usages) {
       const symbol = symbolByKey.get(
@@ -137,6 +146,7 @@ export function buildLocalIndex(
     repoRoot: app.repoPath,
     pinsBootstrap: app.pins.some((p) => p.package === '@edifice.io/bootstrap'),
     srcRoot: app.layout.srcRoot,
+    fileContents: fileContentsByApp.get(app.app.name),
   }));
   const bootstrapSrcDir =
     options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');
