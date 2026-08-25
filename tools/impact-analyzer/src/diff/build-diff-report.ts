@@ -1,6 +1,10 @@
 import { join } from 'node:path';
 import type { GithubClientOptions } from '../discovery/github-client.js';
-import { buildFfDeclarationsMap } from '../ff-map/build-ff-declarations-map.js';
+import {
+  buildFfDeclarationsMap,
+  type DeclaredSymbol,
+} from '../ff-map/build-ff-declarations-map.js';
+import { projectDeclaredSymbols } from '../ff-map/build-ff-map.js';
 import { currentFfRepoRoot } from '../ff-map/entry-points.js';
 import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import {
@@ -34,6 +38,14 @@ export interface BuildDiffReportOptions extends BuildIndexOptions {
  * head (buildLocalIndex/buildCiIndex, run once and reused for both the
  * JS/TS and CSS comparisons), and always cleans up the snapshot — even on
  * failure.
+ *
+ * Head's declarations are read from the real repoRoot exactly once: when
+ * `options.headIndex` isn't overridden, buildLocalIndex/buildCiIndex would
+ * otherwise re-traverse the same FF packages at the same commit internally
+ * (via buildFfMap) to build their own symbol table — `ffSymbols` short-
+ * circuits that with a projection of the declarations already computed
+ * here (P4.4 follow-up, REVIEW-impact-analyzer.md §2.4 "trois passes
+ * ts-morph FF complètes par diff", now two: head once, base once).
  */
 export async function buildDiffReport(
   baseRef: string,
@@ -41,26 +53,33 @@ export async function buildDiffReport(
   options: BuildDiffReportOptions = {},
 ): Promise<DiffReport> {
   const repoRoot = options.repoRoot ?? currentFfRepoRoot();
-  const headIndex =
-    options.headIndex ??
-    (options.mode === 'ci'
-      ? await buildCiIndex(apps, options)
-      : buildLocalIndex(apps, options));
+
+  let headSymbols: DeclaredSymbol[];
+  let headIndex: ImpactIndex;
+  if (options.headIndex) {
+    headIndex = options.headIndex;
+    headSymbols = buildFfDeclarationsMap(
+      repoRoot,
+      options.ffPackages,
+      options.ffEntryMap,
+    );
+  } else {
+    headSymbols = buildFfDeclarationsMap(
+      repoRoot,
+      options.ffPackages,
+      options.ffEntryMap,
+    );
+    const ffSymbols = projectDeclaredSymbols(repoRoot, headSymbols);
+    headIndex =
+      options.mode === 'ci'
+        ? await buildCiIndex(apps, { ...options, ffSymbols })
+        : buildLocalIndex(apps, { ...options, ffSymbols });
+  }
 
   const snapshot = createSnapshot(repoRoot, baseRef);
   try {
     const baseSymbols = buildFfDeclarationsMap(
       snapshot.worktreePath,
-      options.ffPackages,
-      options.ffEntryMap,
-    );
-    // A second declarations-carrying pass for head — buildLocalIndex()
-    // above already ran buildFfMap() internally, but that variant discards
-    // declarations (they aren't part of the serialized ImpactIndex schema).
-    // Accepted as part of the "two full ts-morph passes" cost already
-    // called out for this command.
-    const headSymbols = buildFfDeclarationsMap(
-      repoRoot,
       options.ffPackages,
       options.ffEntryMap,
     );

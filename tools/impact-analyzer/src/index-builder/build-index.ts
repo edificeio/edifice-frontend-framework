@@ -30,6 +30,15 @@ export interface BuildIndexOptions {
   ffPackages?: FfPackageSpec[];
   ffEntryMap?: FfEntryMap;
   bootstrapSrcDir?: string;
+  /**
+   * Precomputed FF symbol table — skips this function's own buildFfMap call
+   * when given. Lets build-diff-report.ts reuse the buildFfDeclarationsMap
+   * pass it already ran for head instead of a second full ts-morph
+   * traversal of the same repoRoot/commit (P4.4 follow-up,
+   * REVIEW-impact-analyzer.md §2.4 "trois passes ts-morph FF complètes par
+   * diff"). Mutated in place (consumers attached) — pass a fresh array.
+   */
+  ffSymbols?: SymbolEntry[];
 }
 
 /**
@@ -48,11 +57,9 @@ export function buildLocalIndex(
 
   const { discovered, scanErrors: discoveryErrors } = discoverApps(apps);
 
-  const symbols = buildFfMap(
-    repoRoot,
-    options.ffPackages ?? FF_PACKAGES,
-    options.ffEntryMap,
-  );
+  const symbols =
+    options.ffSymbols ??
+    buildFfMap(repoRoot, options.ffPackages ?? FF_PACKAGES, options.ffEntryMap);
   const knownEntries = [
     ...new Set(symbols.map((s) => `${s.package}|${s.entry}`)),
   ].map((key) => {

@@ -34,22 +34,18 @@ function groupByPackageEntry(
 }
 
 /**
- * Builds the FF-side symbol table (② in the plan) for every declared
- * `exports` subpath of the given FF packages: export name -> source
- * files, with icon subpaths aggregated (icons-aggregator.ts). A projection
- * over buildFfDeclarationsMap's single traversal (P4.4,
- * REVIEW-impact-analyzer.md — buildFfMap and buildFfDeclarationsMap used to
- * independently re-run the exact same traversal, risking the two silently
- * diverging): repo-relative paths (stable across machines/runs, and the
- * form GitHub links are built from), icon aggregation, declarations
- * dropped (not part of the serialized index).
+ * The buildFfMap projection, split out so a caller who already has
+ * `declaredSymbols` from its own buildFfDeclarationsMap call (build-
+ * diff-report.ts, for head — same repoRoot/commit that buildLocalIndex/
+ * buildCiIndex would otherwise re-traverse from scratch) can reuse it
+ * instead of paying for a second full ts-morph pass. Repo-relative paths
+ * (stable across machines/runs, and the form GitHub links are built from),
+ * icon aggregation, declarations dropped (not part of the serialized index).
  */
-export function buildFfMap(
+export function projectDeclaredSymbols(
   repoRoot: string,
-  packages: FfPackageSpec[] = FF_PACKAGES,
-  entryMap: FfEntryMap = loadFfEntryMap(),
+  declaredSymbols: DeclaredSymbol[],
 ): SymbolEntry[] {
-  const declaredSymbols = buildFfDeclarationsMap(repoRoot, packages, entryMap);
   const symbolEntries: SymbolEntry[] = [];
 
   for (const { package: packageName, entry, symbols } of groupByPackageEntry(
@@ -80,4 +76,22 @@ export function buildFfMap(
   }
 
   return symbolEntries;
+}
+
+/**
+ * Builds the FF-side symbol table (② in the plan) for every declared
+ * `exports` subpath of the given FF packages: export name -> source
+ * files, with icon subpaths aggregated (icons-aggregator.ts). A projection
+ * over buildFfDeclarationsMap's single traversal (P4.4,
+ * REVIEW-impact-analyzer.md — buildFfMap and buildFfDeclarationsMap used to
+ * independently re-run the exact same traversal, risking the two silently
+ * diverging).
+ */
+export function buildFfMap(
+  repoRoot: string,
+  packages: FfPackageSpec[] = FF_PACKAGES,
+  entryMap: FfEntryMap = loadFfEntryMap(),
+): SymbolEntry[] {
+  const declaredSymbols = buildFfDeclarationsMap(repoRoot, packages, entryMap);
+  return projectDeclaredSymbols(repoRoot, declaredSymbols);
 }
