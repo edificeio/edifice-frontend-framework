@@ -50,6 +50,26 @@ describe('DiffView', () => {
     expect(onSelectFile).toHaveBeenCalledWith('diff.develop..feat-a.json');
   });
 
+  it('gives the report-selection dropdown an accessible name', () => {
+    vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
+    const diffs = [
+      { base: 'develop', head: 'feat-a', file: 'diff.develop..feat-a.json' },
+      { base: 'develop', head: 'feat-b', file: 'diff.develop..feat-b.json' },
+    ];
+
+    render(
+      <DiffView
+        diffs={diffs}
+        selectedFile="diff.develop..feat-a.json"
+        onSelectFile={vi.fn()}
+      />,
+    );
+
+    expect(
+      screen.getByRole('combobox', { name: /sélectionner le rapport/i }),
+    ).toBeTruthy();
+  });
+
   it('requests the first diff via onSelectFile, then loads it once the (controlled) selection arrives', async () => {
     vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
     const onSelectFile = vi.fn();

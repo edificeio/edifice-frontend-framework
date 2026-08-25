@@ -237,6 +237,7 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
       {diffs.length > 1 && (
         <select
           className="diff-select"
+          aria-label="Sélectionner le rapport de diff"
           value={selectedFile ?? ''}
           onChange={(e) => onSelectFile(e.target.value)}
         >

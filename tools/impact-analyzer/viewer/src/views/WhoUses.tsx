@@ -6,6 +6,8 @@ import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry } from '../lib/symbol-display.js';
 import { branchGroupKey, branchGroupLabel } from '../lib/branch-group.js';
 
+const MAX_ROWS = 200;
+
 export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
   // Hooks must run unconditionally, before the early return below.
   const sortedConsumers = useMemo(
@@ -101,7 +103,7 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             </tr>
           </thead>
           <tbody>
-            {filteredConsumers.map((c) => {
+            {filteredConsumers.slice(0, MAX_ROWS).map((c) => {
               const key = `${c.app}-${c.appBranch}`;
               const isOpen = expanded.has(key);
               return (
@@ -141,6 +143,12 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             })}
           </tbody>
         </table>
+      )}
+      {filteredConsumers.length > MAX_ROWS && (
+        <p className="hint">
+          {filteredConsumers.length} résultats, {MAX_ROWS} affichés (triés par
+          sites d'usage).
+        </p>
       )}
 
       {/* Contextual legend — only when at least one row carries the badge. */}
