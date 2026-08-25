@@ -10,6 +10,7 @@ import {
 } from '../discovery/test-utils.js';
 import { buildCiIndex } from '../index-builder/build-ci-index.js';
 import { buildDiffReport } from './build-diff-report.js';
+import { computeRiskScore } from './risk-score.js';
 
 vi.mock('../index-builder/build-ci-index.js', () => ({
   buildCiIndex: vi.fn(),
@@ -142,7 +143,7 @@ describe('buildDiffReport', () => {
       }),
     ]);
     expect(buttonDiff?.riskScore).toBe(
-      Math.round(10 * Math.log2(1 + 2) * (1 + 1)),
+      computeRiskScore('likely-breaking', 1, 1),
     );
   });
 
