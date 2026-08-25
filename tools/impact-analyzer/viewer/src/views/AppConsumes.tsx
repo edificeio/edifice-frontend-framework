@@ -4,15 +4,27 @@ import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
+import { isMainlineBranch } from '../lib/branch-group.js';
 
 const MAX_ROWS = 200;
 
 export function AppConsumes({
   appName,
   index,
+  branchFilter,
+  onBranchFilterChange,
 }: {
   appName: string | null;
   index: ImpactIndex;
+  /**
+   * Controlled, like DiffView's selectedFile — owned by App.tsx so it
+   * survives an app switch. `null` means "not decided yet"; this component
+   * asks the parent (via onBranchFilterChange) for this app's own mainline
+   * branch as soon as the current value isn't valid for it (never valid yet,
+   * or a branch the previous app had but this one doesn't).
+   */
+  branchFilter: string | null;
+  onBranchFilterChange: (branch: string) => void;
 }) {
   // Hooks must run unconditionally — computed even without a selection
   // (cheap on an empty/no-op appName) rather than gating with an early
@@ -50,23 +62,41 @@ export function AppConsumes({
     return [...set].sort();
   }, [allRows, allCssRows]);
 
-  const [branchFilter, setBranchFilter] = useState<string>('all');
-  useEffect(() => setBranchFilter('all'), [appName]);
+  // Defaults to this app's own mainline branch (dev or develop, whichever it
+  // actually uses) rather than "all" — that's the branch reviewers actually
+  // care about day to day; squad branches are an opt-in filter. But once a
+  // value is explicitly set (including "all"), it's carried across app
+  // switches as-is — only corrected here when it's genuinely not applicable
+  // to the newly selected app (unset yet, or a branch this app doesn't have).
+  useEffect(() => {
+    if (branches.length === 0) return;
+    if (
+      branchFilter !== null &&
+      (branchFilter === 'all' || branches.includes(branchFilter))
+    ) {
+      return;
+    }
+    onBranchFilterChange(branches.find(isMainlineBranch) ?? 'all');
+  }, [branches, branchFilter, onBranchFilterChange]);
+
+  const effectiveBranchFilter = branchFilter ?? 'all';
 
   const rows = useMemo(
     () =>
-      branchFilter === 'all'
+      effectiveBranchFilter === 'all'
         ? allRows
-        : allRows.filter((r) => r.consumer.appBranch === branchFilter),
-    [allRows, branchFilter],
+        : allRows.filter((r) => r.consumer.appBranch === effectiveBranchFilter),
+    [allRows, effectiveBranchFilter],
   );
 
   const cssRows = useMemo(
     () =>
-      branchFilter === 'all'
+      effectiveBranchFilter === 'all'
         ? allCssRows
-        : allCssRows.filter((r) => r.consumer.appBranch === branchFilter),
-    [allCssRows, branchFilter],
+        : allCssRows.filter(
+            (r) => r.consumer.appBranch === effectiveBranchFilter,
+          ),
+    [allCssRows, effectiveBranchFilter],
   );
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -98,8 +128,8 @@ export function AppConsumes({
         <select
           className="diff-select"
           aria-label="Filtrer par branche de l'app"
-          value={branchFilter}
-          onChange={(e) => setBranchFilter(e.target.value)}
+          value={effectiveBranchFilter}
+          onChange={(e) => onBranchFilterChange(e.target.value)}
         >
           <option value="all">Toutes les branches ({branches.length})</option>
           {branches.map((b) => (

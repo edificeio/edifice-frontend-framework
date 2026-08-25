@@ -1,6 +1,6 @@
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { AppConsumes } from './AppConsumes.js';
 
 function makeIndex(overrides: Partial<ImpactIndex> = {}): ImpactIndex {
@@ -22,9 +22,29 @@ function makeIndex(overrides: Partial<ImpactIndex> = {}): ImpactIndex {
   };
 }
 
+function consumer(app: string, appBranch: string, usageSites: number) {
+  return {
+    app,
+    org: 'edificeio',
+    appBranch,
+    pins: appBranch,
+    appCommit: 'x',
+    appDirty: false,
+    usageSites,
+    files: [],
+  };
+}
+
 describe('AppConsumes', () => {
   it('shows a hint when no app is selected', () => {
-    render(<AppConsumes appName={null} index={makeIndex()} />);
+    render(
+      <AppConsumes
+        appName={null}
+        index={makeIndex()}
+        branchFilter={null}
+        onBranchFilterChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText(/sélectionnez une app/i)).toBeTruthy();
   });
 
@@ -37,23 +57,19 @@ describe('AppConsumes', () => {
           name: 'Dropdown',
           kind: 'component',
           sourceFiles: [],
-          consumers: [
-            {
-              app: 'communities',
-              org: 'edificeio',
-              appBranch: 'develop',
-              pins: 'develop',
-              appCommit: 'x',
-              appDirty: false,
-              usageSites: 3,
-              files: ['a.tsx'],
-            },
-          ],
+          consumers: [consumer('communities', 'develop', 3)],
         },
       ],
     });
 
-    render(<AppConsumes appName="communities" index={index} />);
+    render(
+      <AppConsumes
+        appName="communities"
+        index={index}
+        branchFilter="all"
+        onBranchFilterChange={vi.fn()}
+      />,
+    );
 
     expect(screen.getByText('communities')).toBeTruthy();
     expect(screen.getByText('Dropdown')).toBeTruthy();
@@ -61,7 +77,133 @@ describe('AppConsumes', () => {
   });
 
   it('reports no usage for an app that consumes nothing', () => {
-    render(<AppConsumes appName="blog" index={makeIndex()} />);
+    render(
+      <AppConsumes
+        appName="blog"
+        index={makeIndex()}
+        branchFilter="all"
+        onBranchFilterChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText('Aucun usage détecté.')).toBeTruthy();
+  });
+
+  it("requests the app's own mainline branch when no filter is set yet", () => {
+    const index = makeIndex({
+      symbols: [
+        {
+          package: '@edifice.io/react',
+          entry: '.',
+          name: 'Dropdown',
+          kind: 'component',
+          sourceFiles: [],
+          // homeworks uses "dev" as its mainline branch, unlike most apps.
+          consumers: [
+            consumer('homeworks', 'dev', 3),
+            consumer('homeworks', 'develop-pedago', 7),
+          ],
+        },
+      ],
+    });
+    const onBranchFilterChange = vi.fn();
+
+    render(
+      <AppConsumes
+        appName="homeworks"
+        index={index}
+        branchFilter={null}
+        onBranchFilterChange={onBranchFilterChange}
+      />,
+    );
+
+    expect(onBranchFilterChange).toHaveBeenCalledWith('dev');
+  });
+
+  it('keeps an explicit branch selection when switching to an app that still has it', () => {
+    const index = makeIndex({
+      symbols: [
+        {
+          package: '@edifice.io/react',
+          entry: '.',
+          name: 'Dropdown',
+          kind: 'component',
+          sourceFiles: [],
+          consumers: [
+            consumer('blog', 'develop', 2),
+            consumer('blog', 'develop-pedago', 5),
+            consumer('communities', 'develop', 1),
+            consumer('communities', 'develop-pedago', 4),
+          ],
+        },
+      ],
+    });
+    const onBranchFilterChange = vi.fn();
+
+    const { rerender } = render(
+      <AppConsumes
+        appName="blog"
+        index={index}
+        branchFilter="develop-pedago"
+        onBranchFilterChange={onBranchFilterChange}
+      />,
+    );
+    expect(onBranchFilterChange).not.toHaveBeenCalled();
+
+    rerender(
+      <AppConsumes
+        appName="communities"
+        index={index}
+        branchFilter="develop-pedago"
+        onBranchFilterChange={onBranchFilterChange}
+      />,
+    );
+
+    // Still valid for communities too — the switch alone must not reset it.
+    expect(onBranchFilterChange).not.toHaveBeenCalled();
+    const rows = screen.getAllByRole('row').slice(1);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].textContent).toContain('develop-pedago');
+  });
+
+  it("falls back to the new app's mainline when the kept branch doesn't exist there", () => {
+    const index = makeIndex({
+      symbols: [
+        {
+          package: '@edifice.io/react',
+          entry: '.',
+          name: 'Dropdown',
+          kind: 'component',
+          sourceFiles: [],
+          consumers: [
+            consumer('blog', 'develop', 2),
+            consumer('blog', 'develop-pedago', 5),
+            consumer('homeworks', 'dev', 1),
+          ],
+        },
+      ],
+    });
+    const onBranchFilterChange = vi.fn();
+
+    const { rerender } = render(
+      <AppConsumes
+        appName="blog"
+        index={index}
+        branchFilter="develop-pedago"
+        onBranchFilterChange={onBranchFilterChange}
+      />,
+    );
+    expect(onBranchFilterChange).not.toHaveBeenCalled();
+
+    // homeworks never had develop-pedago — falls back to its own mainline.
+    rerender(
+      <AppConsumes
+        appName="homeworks"
+        index={index}
+        branchFilter="develop-pedago"
+        onBranchFilterChange={onBranchFilterChange}
+      />,
+    );
+
+    expect(onBranchFilterChange).toHaveBeenCalledWith('dev');
   });
 });

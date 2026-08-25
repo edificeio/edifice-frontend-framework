@@ -8,6 +8,7 @@ import {
   loadManifest,
 } from './data/loadIndex.js';
 import { useUrlParam } from './hooks/useUrlParam.js';
+import { branchGroupKey, branchGroupLabel } from './lib/branch-group.js';
 import { symbolKey } from './lib/symbol-display.js';
 import { SymbolSearch } from './views/SymbolSearch.js';
 import { WhoUses } from './views/WhoUses.js';
@@ -29,6 +30,15 @@ function AppContent() {
     null,
   );
   const [selectedApp, setSelectedAppState] = useState<string | null>(null);
+  // Branch filters for the Symboles/Apps tabs — deliberately NOT reset when
+  // the selected symbol/app changes (that was the bug: switching symbols
+  // used to silently drop the user back to the default every time). `null`
+  // means "not decided yet"; each consumer resolves it to a real default the
+  // first time it has data to decide with.
+  const [symbolBranchFilter, setSymbolBranchFilter] = useState<string | null>(
+    null,
+  );
+  const [appBranchFilter, setAppBranchFilter] = useState<string | null>(null);
 
   // Deep-linking: the current tab/branch/selection is mirrored in the URL
   // query string, so a link to "who uses Dropdown on develop-enabling" can
@@ -123,6 +133,35 @@ function AppContent() {
     const match = index.symbols.find((s) => symbolKey(s) === fromUrl);
     if (match) setSelectedSymbolState(match);
   }, [index]);
+
+  // Spans every symbol in the index, not just the selected one — the
+  // Symboles tab's branch filter lives outside the per-symbol panel
+  // (WhoUses), so its option list must not shrink/change as the selection
+  // changes.
+  const allSymbolBranchGroups = useMemo(() => {
+    if (!index) return [];
+    const set = new Set<string>();
+    for (const s of index.symbols)
+      for (const c of s.consumers) set.add(branchGroupKey(c.appBranch));
+    return [...set].sort();
+  }, [index]);
+
+  // Defaults to the mainline group (develop/dev) — corrected only when the
+  // current value isn't valid for this index (unset yet, or an FF-branch
+  // switch dropped the group entirely); never touched by a symbol switch.
+  useEffect(() => {
+    if (allSymbolBranchGroups.length === 0) return;
+    if (
+      symbolBranchFilter !== null &&
+      (symbolBranchFilter === 'all' ||
+        allSymbolBranchGroups.includes(symbolBranchFilter))
+    ) {
+      return;
+    }
+    setSymbolBranchFilter(
+      allSymbolBranchGroups.includes('develop') ? 'develop' : 'all',
+    );
+  }, [allSymbolBranchGroups, symbolBranchFilter]);
 
   const appNames = useMemo(() => {
     if (!index) return [];
@@ -278,6 +317,26 @@ function AppContent() {
                 ` — ${index.scanErrors.length} scanError(s)`}
             </p>
 
+            {tab === 'symbols' && allSymbolBranchGroups.length > 1 && (
+              // Outside WhoUses on purpose: it spans every symbol, so
+              // switching symbols must never move or reset it.
+              <select
+                className="diff-select"
+                aria-label="Filtrer par branche"
+                value={symbolBranchFilter ?? 'all'}
+                onChange={(e) => setSymbolBranchFilter(e.target.value)}
+              >
+                <option value="all">
+                  Toutes les branches ({allSymbolBranchGroups.length})
+                </option>
+                {allSymbolBranchGroups.map((g) => (
+                  <option key={g} value={g}>
+                    {branchGroupLabel(g)}
+                  </option>
+                ))}
+              </select>
+            )}
+
             <div className="layout">
               {tab === 'symbols' ? (
                 <>
@@ -286,7 +345,10 @@ function AppContent() {
                     selected={selectedSymbol}
                     onSelect={setSelectedSymbol}
                   />
-                  <WhoUses symbol={selectedSymbol} />
+                  <WhoUses
+                    symbol={selectedSymbol}
+                    branchFilter={symbolBranchFilter ?? 'all'}
+                  />
                 </>
               ) : (
                 <>
@@ -295,7 +357,12 @@ function AppContent() {
                     selected={selectedApp}
                     onSelect={setSelectedApp}
                   />
-                  <AppConsumes appName={selectedApp} index={index} />
+                  <AppConsumes
+                    appName={selectedApp}
+                    index={index}
+                    branchFilter={appBranchFilter}
+                    onBranchFilterChange={setAppBranchFilter}
+                  />
                 </>
               )}
             </div>
