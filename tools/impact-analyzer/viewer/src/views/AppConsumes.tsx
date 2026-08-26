@@ -4,7 +4,7 @@ import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
-import { isMainlineBranch } from '../lib/branch-group.js';
+import { branchGroupKey } from '../lib/branch-group.js';
 
 const MAX_ROWS = 200;
 
@@ -12,19 +12,15 @@ export function AppConsumes({
   appName,
   index,
   branchFilter,
-  onBranchFilterChange,
 }: {
   appName: string | null;
   index: ImpactIndex;
   /**
-   * Controlled, like DiffView's selectedFile — owned by App.tsx so it
-   * survives an app switch. `null` means "not decided yet"; this component
-   * asks the parent (via onBranchFilterChange) for this app's own mainline
-   * branch as soon as the current value isn't valid for it (never valid yet,
-   * or a branch the previous app had but this one doesn't).
+   * Owned by App.tsx (spans every app, unlike the per-app data below) so
+   * switching apps never resets it — see the branch-filter select next to
+   * the tab layout, not rendered in here.
    */
-  branchFilter: string | null;
-  onBranchFilterChange: (branch: string) => void;
+  branchFilter: string;
 }) {
   // Hooks must run unconditionally — computed even without a selection
   // (cheap on an empty/no-op appName) rather than gating with an early
@@ -52,51 +48,24 @@ export function AppConsumes({
       .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
   }, [index, appName]);
 
-  // An app can be scanned on several of its own branches (apps.json) — a
-  // symbol consumed on both shows up as two rows that otherwise look
-  // identical, hence the filter below rather than only the Branche column.
-  const branches = useMemo(() => {
-    const set = new Set<string>();
-    for (const r of allRows) set.add(r.consumer.appBranch);
-    for (const r of allCssRows) set.add(r.consumer.appBranch);
-    return [...set].sort();
-  }, [allRows, allCssRows]);
-
-  // Defaults to this app's own mainline branch (dev or develop, whichever it
-  // actually uses) rather than "all" — that's the branch reviewers actually
-  // care about day to day; squad branches are an opt-in filter. But once a
-  // value is explicitly set (including "all"), it's carried across app
-  // switches as-is — only corrected here when it's genuinely not applicable
-  // to the newly selected app (unset yet, or a branch this app doesn't have).
-  useEffect(() => {
-    if (branches.length === 0) return;
-    if (
-      branchFilter !== null &&
-      (branchFilter === 'all' || branches.includes(branchFilter))
-    ) {
-      return;
-    }
-    onBranchFilterChange(branches.find(isMainlineBranch) ?? 'all');
-  }, [branches, branchFilter, onBranchFilterChange]);
-
-  const effectiveBranchFilter = branchFilter ?? 'all';
-
   const rows = useMemo(
     () =>
-      effectiveBranchFilter === 'all'
+      branchFilter === 'all'
         ? allRows
-        : allRows.filter((r) => r.consumer.appBranch === effectiveBranchFilter),
-    [allRows, effectiveBranchFilter],
+        : allRows.filter(
+            (r) => branchGroupKey(r.consumer.appBranch) === branchFilter,
+          ),
+    [allRows, branchFilter],
   );
 
   const cssRows = useMemo(
     () =>
-      effectiveBranchFilter === 'all'
+      branchFilter === 'all'
         ? allCssRows
         : allCssRows.filter(
-            (r) => r.consumer.appBranch === effectiveBranchFilter,
+            (r) => branchGroupKey(r.consumer.appBranch) === branchFilter,
           ),
-    [allCssRows, effectiveBranchFilter],
+    [allCssRows, branchFilter],
   );
 
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
@@ -124,21 +93,6 @@ export function AppConsumes({
   return (
     <div className="panel">
       <h2>{appName}</h2>
-      {branches.length > 1 && (
-        <select
-          className="diff-select"
-          aria-label="Filtrer par branche de l'app"
-          value={effectiveBranchFilter}
-          onChange={(e) => onBranchFilterChange(e.target.value)}
-        >
-          <option value="all">Toutes les branches ({branches.length})</option>
-          {branches.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
-      )}
       <p className="hint">
         {rows.length} symbole(s) JS/TS consommé(s) — {cssRows.length}{' '}
         composant(s) CSS potentiellement concerné(s)

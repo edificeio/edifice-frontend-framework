@@ -10,8 +10,3 @@ export function branchGroupKey(appBranch: string): string {
 export function branchGroupLabel(groupKey: string): string {
   return groupKey === 'develop' ? 'develop / dev' : groupKey;
 }
-
-/** True for either of the two mainline branch names used across app repos. */
-export function isMainlineBranch(appBranch: string): boolean {
-  return appBranch === 'dev' || appBranch === 'develop';
-}

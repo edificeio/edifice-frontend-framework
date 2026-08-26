@@ -1,6 +1,6 @@
 import type { ImpactIndex } from '@edifice.io/impact-analyzer';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { AppConsumes } from './AppConsumes.js';
 
 function makeIndex(overrides: Partial<ImpactIndex> = {}): ImpactIndex {
@@ -38,12 +38,7 @@ function consumer(app: string, appBranch: string, usageSites: number) {
 describe('AppConsumes', () => {
   it('shows a hint when no app is selected', () => {
     render(
-      <AppConsumes
-        appName={null}
-        index={makeIndex()}
-        branchFilter={null}
-        onBranchFilterChange={vi.fn()}
-      />,
+      <AppConsumes appName={null} index={makeIndex()} branchFilter="all" />,
     );
     expect(screen.getByText(/sélectionnez une app/i)).toBeTruthy();
   });
@@ -63,12 +58,7 @@ describe('AppConsumes', () => {
     });
 
     render(
-      <AppConsumes
-        appName="communities"
-        index={index}
-        branchFilter="all"
-        onBranchFilterChange={vi.fn()}
-      />,
+      <AppConsumes appName="communities" index={index} branchFilter="all" />,
     );
 
     expect(screen.getByText('communities')).toBeTruthy();
@@ -78,17 +68,12 @@ describe('AppConsumes', () => {
 
   it('reports no usage for an app that consumes nothing', () => {
     render(
-      <AppConsumes
-        appName="blog"
-        index={makeIndex()}
-        branchFilter="all"
-        onBranchFilterChange={vi.fn()}
-      />,
+      <AppConsumes appName="blog" index={makeIndex()} branchFilter="all" />,
     );
     expect(screen.getByText('Aucun usage détecté.')).toBeTruthy();
   });
 
-  it("requests the app's own mainline branch when no filter is set yet", () => {
+  it('filters rows by the mainline group (develop/dev), excluding squad branches', () => {
     const index = makeIndex({
       symbols: [
         {
@@ -105,21 +90,23 @@ describe('AppConsumes', () => {
         },
       ],
     });
-    const onBranchFilterChange = vi.fn();
 
+    // The filter is owned by App.tsx (not AppConsumes) precisely so
+    // switching apps never resets it — AppConsumes only needs to honor
+    // whatever value it's handed, "dev" folding into the "develop" group.
     render(
-      <AppConsumes
-        appName="homeworks"
-        index={index}
-        branchFilter={null}
-        onBranchFilterChange={onBranchFilterChange}
-      />,
+      <AppConsumes appName="homeworks" index={index} branchFilter="develop" />,
     );
 
-    expect(onBranchFilterChange).toHaveBeenCalledWith('dev');
+    const rows = screen.getAllByRole('row').slice(1);
+    expect(rows).toHaveLength(1);
+    expect(rows[0].textContent).toContain('dev');
+    expect(
+      rows.some((row) => row.textContent?.includes('develop-pedago')),
+    ).toBe(false);
   });
 
-  it('keeps an explicit branch selection when switching to an app that still has it', () => {
+  it('keeps filtering correctly across an app switch', () => {
     const index = makeIndex({
       symbols: [
         {
@@ -137,73 +124,26 @@ describe('AppConsumes', () => {
         },
       ],
     });
-    const onBranchFilterChange = vi.fn();
 
     const { rerender } = render(
       <AppConsumes
         appName="blog"
         index={index}
         branchFilter="develop-pedago"
-        onBranchFilterChange={onBranchFilterChange}
       />,
     );
-    expect(onBranchFilterChange).not.toHaveBeenCalled();
+    expect(screen.getAllByRole('row').slice(1)).toHaveLength(1);
 
     rerender(
       <AppConsumes
         appName="communities"
         index={index}
         branchFilter="develop-pedago"
-        onBranchFilterChange={onBranchFilterChange}
       />,
     );
 
-    // Still valid for communities too — the switch alone must not reset it.
-    expect(onBranchFilterChange).not.toHaveBeenCalled();
     const rows = screen.getAllByRole('row').slice(1);
     expect(rows).toHaveLength(1);
     expect(rows[0].textContent).toContain('develop-pedago');
-  });
-
-  it("falls back to the new app's mainline when the kept branch doesn't exist there", () => {
-    const index = makeIndex({
-      symbols: [
-        {
-          package: '@edifice.io/react',
-          entry: '.',
-          name: 'Dropdown',
-          kind: 'component',
-          sourceFiles: [],
-          consumers: [
-            consumer('blog', 'develop', 2),
-            consumer('blog', 'develop-pedago', 5),
-            consumer('homeworks', 'dev', 1),
-          ],
-        },
-      ],
-    });
-    const onBranchFilterChange = vi.fn();
-
-    const { rerender } = render(
-      <AppConsumes
-        appName="blog"
-        index={index}
-        branchFilter="develop-pedago"
-        onBranchFilterChange={onBranchFilterChange}
-      />,
-    );
-    expect(onBranchFilterChange).not.toHaveBeenCalled();
-
-    // homeworks never had develop-pedago — falls back to its own mainline.
-    rerender(
-      <AppConsumes
-        appName="homeworks"
-        index={index}
-        branchFilter="develop-pedago"
-        onBranchFilterChange={onBranchFilterChange}
-      />,
-    );
-
-    expect(onBranchFilterChange).toHaveBeenCalledWith('dev');
   });
 });

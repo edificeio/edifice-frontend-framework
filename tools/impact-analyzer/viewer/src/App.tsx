@@ -134,34 +134,38 @@ function AppContent() {
     if (match) setSelectedSymbolState(match);
   }, [index]);
 
-  // Spans every symbol in the index, not just the selected one — the
-  // Symboles tab's branch filter lives outside the per-symbol panel
-  // (WhoUses), so its option list must not shrink/change as the selection
-  // changes.
-  const allSymbolBranchGroups = useMemo(() => {
+  // Spans the whole index (every symbol AND every CSS component, not just
+  // the current selection) — shared by both tabs' branch-group filters, so
+  // their option list never shrinks/changes as the selection changes.
+  const allBranchGroups = useMemo(() => {
     if (!index) return [];
     const set = new Set<string>();
     for (const s of index.symbols)
       for (const c of s.consumers) set.add(branchGroupKey(c.appBranch));
+    for (const c of index.cssComponents)
+      for (const cc of c.consumers) set.add(branchGroupKey(cc.appBranch));
     return [...set].sort();
   }, [index]);
 
   // Defaults to the mainline group (develop/dev) — corrected only when the
   // current value isn't valid for this index (unset yet, or an FF-branch
-  // switch dropped the group entirely); never touched by a symbol switch.
+  // switch dropped the group entirely); never touched by a symbol/app switch.
   useEffect(() => {
-    if (allSymbolBranchGroups.length === 0) return;
-    if (
-      symbolBranchFilter !== null &&
-      (symbolBranchFilter === 'all' ||
-        allSymbolBranchGroups.includes(symbolBranchFilter))
-    ) {
-      return;
-    }
-    setSymbolBranchFilter(
-      allSymbolBranchGroups.includes('develop') ? 'develop' : 'all',
+    if (allBranchGroups.length === 0) return;
+    const fallback = allBranchGroups.includes('develop') ? 'develop' : 'all';
+    setSymbolBranchFilter((current) =>
+      current !== null &&
+      (current === 'all' || allBranchGroups.includes(current))
+        ? current
+        : fallback,
     );
-  }, [allSymbolBranchGroups, symbolBranchFilter]);
+    setAppBranchFilter((current) =>
+      current !== null &&
+      (current === 'all' || allBranchGroups.includes(current))
+        ? current
+        : fallback,
+    );
+  }, [allBranchGroups]);
 
   const appNames = useMemo(() => {
     if (!index) return [];
@@ -219,24 +223,6 @@ function AppContent() {
           <h1>
             Impact <span>Analyzer</span>
           </h1>
-          {/* Selects which branch's INDEX feeds the Symboles/Apps tabs — it
-              has no effect on the Diff tab (which has its own report
-              selector), so it's hidden there rather than shown as a
-              confusing dead control. */}
-          {branches.length > 0 && tab !== 'diff' && (
-            <select
-              className="branch-select"
-              aria-label="Branche du framework"
-              value={branch ?? ''}
-              onChange={(e) => setBranch(e.target.value)}
-            >
-              {branches.map((b) => (
-                <option key={b} value={b}>
-                  {b}
-                </option>
-              ))}
-            </select>
-          )}
           <nav className="tabs" role="tablist" aria-label="Vues">
             <button
               id="tab-diff"
@@ -317,25 +303,57 @@ function AppContent() {
                 ` — ${index.scanErrors.length} scanError(s)`}
             </p>
 
-            {tab === 'symbols' && allSymbolBranchGroups.length > 1 && (
-              // Outside WhoUses on purpose: it spans every symbol, so
-              // switching symbols must never move or reset it.
-              <select
-                className="diff-select"
-                aria-label="Filtrer par branche"
-                value={symbolBranchFilter ?? 'all'}
-                onChange={(e) => setSymbolBranchFilter(e.target.value)}
-              >
-                <option value="all">
-                  Toutes les branches ({allSymbolBranchGroups.length})
-                </option>
-                {allSymbolBranchGroups.map((g) => (
-                  <option key={g} value={g}>
-                    {branchGroupLabel(g)}
-                  </option>
-                ))}
-              </select>
-            )}
+            {/* Both branch filters together, explicitly labeled: "Branche du
+                FF" (which index — packages/exports — is loaded, moved here
+                from the header) is a different axis from "Branche de l'app"
+                (which of a consuming app's own branches to look at within
+                that index) — grouping them side by side with real labels is
+                the whole point, they were easy to mistake for duplicates. */}
+            <div className="filters-bar">
+              {branches.length > 0 && (
+                <label className="filter-field">
+                  <span>Branche du FF</span>
+                  <select
+                    className="diff-select"
+                    value={branch ?? ''}
+                    onChange={(e) => setBranch(e.target.value)}
+                  >
+                    {branches.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {allBranchGroups.length > 1 && (
+                <label className="filter-field">
+                  <span>Branche de l'app</span>
+                  <select
+                    className="diff-select"
+                    value={
+                      (tab === 'symbols'
+                        ? symbolBranchFilter
+                        : appBranchFilter) ?? 'all'
+                    }
+                    onChange={(e) =>
+                      tab === 'symbols'
+                        ? setSymbolBranchFilter(e.target.value)
+                        : setAppBranchFilter(e.target.value)
+                    }
+                  >
+                    <option value="all">
+                      Toutes les branches ({allBranchGroups.length})
+                    </option>
+                    {allBranchGroups.map((g) => (
+                      <option key={g} value={g}>
+                        {branchGroupLabel(g)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
 
             <div className="layout">
               {tab === 'symbols' ? (
@@ -360,8 +378,7 @@ function AppContent() {
                   <AppConsumes
                     appName={selectedApp}
                     index={index}
-                    branchFilter={appBranchFilter}
-                    onBranchFilterChange={setAppBranchFilter}
+                    branchFilter={appBranchFilter ?? 'all'}
                   />
                 </>
               )}
