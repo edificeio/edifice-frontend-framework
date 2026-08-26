@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import type { DiffReport } from '@edifice.io/impact-analyzer';
+import { DiffReportPicker } from '../components/DiffReportPicker.js';
 import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { RiskBadge } from '../components/RiskBadge.js';
@@ -257,18 +258,11 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
         {/* Always rendered (even when the current report failed to load):
             it's the only way to reach the other reports. */}
         {diffs.length > 1 && (
-          <select
-            className="diff-select"
-            aria-label="Sélectionner le rapport de diff"
-            value={selectedFile ?? ''}
-            onChange={(e) => onSelectFile(e.target.value)}
-          >
-            {diffs.map((d) => (
-              <option key={d.file} value={d.file}>
-                {d.base} → {d.head}
-              </option>
-            ))}
-          </select>
+          <DiffReportPicker
+            diffs={diffs}
+            selectedFile={selectedFile}
+            onSelectFile={onSelectFile}
+          />
         )}
 
         {/* SHA-only chips: the branch names are already in the select above

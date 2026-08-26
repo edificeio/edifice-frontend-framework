@@ -47,6 +47,41 @@ describe('loadManifest', () => {
     stubFetch({ status: 500 });
     await expect(loadManifest()).rejects.toThrow('500');
   });
+
+  it('sorts diffs by generatedAt descending, with dateless entries last', async () => {
+    stubFetch({
+      body: JSON.stringify({
+        branches: ['develop'],
+        diffs: [
+          {
+            base: 'develop',
+            head: 'feat-old',
+            file: 'diff.develop..feat-old.json',
+            generatedAt: '2026-01-01T00:00:00.000Z',
+          },
+          {
+            base: 'develop',
+            head: 'feat-no-date',
+            file: 'diff.develop..feat-no-date.json',
+            generatedAt: null,
+          },
+          {
+            base: 'develop',
+            head: 'feat-new',
+            file: 'diff.develop..feat-new.json',
+            generatedAt: '2026-06-01T00:00:00.000Z',
+          },
+        ],
+      }),
+    });
+
+    const manifest = await loadManifest();
+    expect(manifest.diffs.map((d) => d.head)).toEqual([
+      'feat-new',
+      'feat-old',
+      'feat-no-date',
+    ]);
+  });
 });
 
 describe('loadIndexForBranch / loadDiffReport', () => {

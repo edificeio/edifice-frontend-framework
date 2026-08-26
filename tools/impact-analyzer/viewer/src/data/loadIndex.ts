@@ -4,11 +4,25 @@ export interface DiffManifestEntry {
   base: string;
   head: string;
   file: string;
+  /** The report's own generatedAt, read server-side while it's downloaded — null when unreadable (sorts last). */
+  generatedAt: string | null;
 }
 
 export interface Manifest {
   branches: string[];
   diffs: DiffManifestEntry[];
+}
+
+/** Most recent first; entries without a date (older manifests, unreadable content) sort last, in their original order. */
+function sortDiffsByDateDesc(diffs: DiffManifestEntry[]): DiffManifestEntry[] {
+  return [...diffs].sort((a, b) => {
+    if (a.generatedAt && b.generatedAt) {
+      return b.generatedAt.localeCompare(a.generatedAt);
+    }
+    if (a.generatedAt) return -1;
+    if (b.generatedAt) return 1;
+    return 0;
+  });
 }
 
 /** "The data doesn't exist (yet)" — a normal state, not a failure (see fetchDataJson). */
@@ -43,7 +57,8 @@ async function fetchDataJson(url: string): Promise<unknown> {
 /** A missing manifest is the empty state (fresh deploy), never an error. */
 export async function loadManifest(): Promise<Manifest> {
   try {
-    return (await fetchDataJson('/data/manifest.json')) as Manifest;
+    const manifest = (await fetchDataJson('/data/manifest.json')) as Manifest;
+    return { ...manifest, diffs: sortDiffsByDateDesc(manifest.diffs) };
   } catch (error) {
     if (error instanceof DataUnavailableError)
       return { branches: [], diffs: [] };

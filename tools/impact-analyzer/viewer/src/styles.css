@@ -738,6 +738,92 @@ a.file-link:focus-visible .file-link-ext {
   margin-bottom: 0;
 }
 
+/* ------------------------------ Diff picker ------------------------------ */
+
+.diff-picker {
+  position: relative;
+}
+
+.diff-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 420px;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background-color: var(--card);
+  font: inherit;
+  font-size: 0.88rem;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.diff-picker-trigger > :first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diff-picker-caret {
+  flex-shrink: 0;
+  margin-left: auto;
+  width: 10px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23667085' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+}
+
+.diff-picker-popup {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10;
+  width: 640px;
+  max-width: 90vw;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(18, 20, 34, 0.14);
+}
+
+.diff-picker-popup .search-input {
+  margin-bottom: 8px;
+}
+
+.diff-picker-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.diff-picker-empty {
+  margin: 4px 2px 2px;
+}
+
+.diff-picker-option {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 0.86rem;
+  font-family: var(--font-mono);
+  border-radius: 6px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.diff-picker-option-active {
+  background: var(--hover);
+}
+
+.diff-picker-option-selected {
+  color: var(--accent-strong);
+  font-weight: 650;
+}
+
 .diff-refs {
   display: flex;
   align-items: center;

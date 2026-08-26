@@ -1,8 +1,29 @@
 import type { DiffReport } from '@edifice.io/impact-analyzer';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { DiffView } from './DiffView.js';
+import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { loadDiffReport } from '../data/loadIndex.js';
+
+// jsdom has no layout engine at all (every element measures 0×0, and there's
+// no ResizeObserver), so the real @tanstack/react-virtual would render zero
+// rows regardless of how the container is stubbed. Swapped for a
+// deterministic "render everything, no windowing" stand-in: these tests are
+// about DiffReportPicker's own behavior (filtering, selection, a11y wiring),
+// not about the virtualization library — the real windowing was verified
+// against a real browser (dev server + Playwright).
+vi.mock('@tanstack/react-virtual', () => ({
+  useVirtualizer: ({ count }: { count: number }) => ({
+    getTotalSize: () => count * 34,
+    getVirtualItems: () =>
+      Array.from({ length: count }, (_, index) => ({
+        index,
+        start: index * 34,
+        size: 34,
+      })),
+    scrollToIndex: () => {},
+  }),
+}));
 
 vi.mock('../data/loadIndex.js', () => ({
   loadDiffReport: vi.fn(),
@@ -21,11 +42,19 @@ function makeReport(overrides: Partial<DiffReport> = {}): DiffReport {
   };
 }
 
-describe('DiffView', () => {
-  afterEach(() => {
-    vi.mocked(loadDiffReport).mockReset();
-  });
+function makeDiff(
+  overrides: Partial<DiffManifestEntry> = {},
+): DiffManifestEntry {
+  return {
+    base: 'develop',
+    head: 'feat-x',
+    file: 'diff.a.json',
+    generatedAt: null,
+    ...overrides,
+  };
+}
 
+describe('DiffView', () => {
   it('shows a hint when no diff has been generated', () => {
     render(<DiffView diffs={[]} selectedFile={null} onSelectFile={vi.fn()} />);
     expect(screen.getByText(/pas encore de rapport de diff/i)).toBeTruthy();
@@ -35,8 +64,8 @@ describe('DiffView', () => {
     vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
     const onSelectFile = vi.fn();
     const diffs = [
-      { base: 'develop', head: 'feat-a', file: 'diff.develop..feat-a.json' },
-      { base: 'develop', head: 'feat-b', file: 'diff.develop..feat-b.json' },
+      makeDiff({ head: 'feat-a', file: 'diff.develop..feat-a.json' }),
+      makeDiff({ head: 'feat-b', file: 'diff.develop..feat-b.json' }),
     ];
 
     render(
@@ -50,11 +79,43 @@ describe('DiffView', () => {
     expect(onSelectFile).toHaveBeenCalledWith('diff.develop..feat-a.json');
   });
 
-  it('gives the report-selection dropdown an accessible name', () => {
+  it('opens the report picker on a search combobox with an accessible name, and can select a report from it', () => {
+    vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
+    const onSelectFile = vi.fn();
+    const diffs = [
+      makeDiff({ head: 'feat-a', file: 'diff.develop..feat-a.json' }),
+      makeDiff({ head: 'feat-b', file: 'diff.develop..feat-b.json' }),
+    ];
+
+    render(
+      <DiffView
+        diffs={diffs}
+        selectedFile="diff.develop..feat-a.json"
+        onSelectFile={onSelectFile}
+      />,
+    );
+
+    // The trigger button itself carries the current selection as its label.
+    const trigger = screen.getByRole('button', { name: /develop.*feat-a/i });
+    fireEvent.click(trigger);
+
+    const search = screen.getByRole('combobox', {
+      name: /rechercher un rapport/i,
+    });
+    expect(search).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('option', { name: /develop.*feat-b/i }));
+    expect(onSelectFile).toHaveBeenCalledWith('diff.develop..feat-b.json');
+  });
+
+  it('filters the picker options by search query', () => {
     vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
     const diffs = [
-      { base: 'develop', head: 'feat-a', file: 'diff.develop..feat-a.json' },
-      { base: 'develop', head: 'feat-b', file: 'diff.develop..feat-b.json' },
+      makeDiff({ head: 'feat-a', file: 'diff.develop..feat-a.json' }),
+      makeDiff({
+        head: 'storybook-guides',
+        file: 'diff.develop..storybook.json',
+      }),
     ];
 
     render(
@@ -65,15 +126,20 @@ describe('DiffView', () => {
       />,
     );
 
-    expect(
-      screen.getByRole('combobox', { name: /sélectionner le rapport/i }),
-    ).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: /develop.*feat-a/i }));
+    fireEvent.change(
+      screen.getByRole('combobox', { name: /rechercher un rapport/i }),
+      { target: { value: 'storybook' } },
+    );
+
+    expect(screen.getByRole('option', { name: /storybook/i })).toBeTruthy();
+    expect(screen.queryByRole('option', { name: /feat-a/i })).toBeNull();
   });
 
   it('requests the first diff via onSelectFile, then loads it once the (controlled) selection arrives', async () => {
     vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
     const onSelectFile = vi.fn();
-    const diffs = [{ base: 'develop', head: 'feat-x', file: 'diff.a.json' }];
+    const diffs = [makeDiff()];
 
     // Like SymbolSearch/AppSearch, DiffView is a controlled component: it
     // asks the parent to pick a default via onSelectFile but can't apply
@@ -107,7 +173,7 @@ describe('DiffView', () => {
 
     render(
       <DiffView
-        diffs={[{ base: 'develop', head: 'feat-x', file: 'diff.a.json' }]}
+        diffs={[makeDiff()]}
         selectedFile="diff.a.json"
         onSelectFile={vi.fn()}
       />,
@@ -151,7 +217,7 @@ describe('DiffView', () => {
 
     render(
       <DiffView
-        diffs={[{ base: 'develop', head: 'feat-x', file: 'diff.a.json' }]}
+        diffs={[makeDiff()]}
         selectedFile="diff.a.json"
         onSelectFile={vi.fn()}
       />,

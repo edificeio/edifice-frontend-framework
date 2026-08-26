@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { buildManifest } from './manifest.mjs';
+import { buildManifest, classifyDataFileNames } from './manifest.mjs';
 
 const GITHUB_API_BASE = 'https://api.github.com';
 const FETCH_TIMEOUT_MS = 30_000;
@@ -60,6 +60,20 @@ async function githubContentsRequest(path, token, { raw = false } = {}) {
   return raw ? res.text() : res.json();
 }
 
+/** Reads `generatedAt` out of a diff report's raw content — used to sort the picker without a second fetch per file. Malformed content just means no date (sorts last), never a hard failure. */
+function extractGeneratedAt(content, fileName) {
+  try {
+    const parsed = JSON.parse(content);
+    return typeof parsed.generatedAt === 'string' ? parsed.generatedAt : null;
+  } catch (error) {
+    log('error', 'Could not read generatedAt from a diff report', {
+      file: fileName,
+      'error.message': error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
 /** Fetches every index.*.json/diff.*.json file at the repo root and writes them + manifest.json into dataDir. Exported for tests. */
 export async function refreshOnce({ owner, repo, ref, token, dataDir }) {
   const entries = await githubContentsRequest(
@@ -69,11 +83,15 @@ export async function refreshOnce({ owner, repo, ref, token, dataDir }) {
   const fileNames = entries
     .filter((entry) => entry.type === 'file')
     .map((entry) => entry.name);
-
-  const { branches, diffs, indexFiles, diffFiles } = buildManifest(fileNames);
+  const { indexFiles, diffFiles } = classifyDataFileNames(fileNames);
+  const diffFileSet = new Set(diffFiles);
 
   mkdirSync(dataDir, { recursive: true });
 
+  // Every diff file's content is already downloaded here — reading its own
+  // generatedAt while we have it avoids a second round trip per file just
+  // to sort the picker.
+  const diffGeneratedAt = new Map();
   for (const fileName of [...indexFiles, ...diffFiles]) {
     const content = await githubContentsRequest(
       `/repos/${owner}/${repo}/contents/${encodeURIComponent(fileName)}?ref=${encodeURIComponent(ref)}`,
@@ -81,7 +99,13 @@ export async function refreshOnce({ owner, repo, ref, token, dataDir }) {
       { raw: true },
     );
     writeFileAtomic(join(dataDir, fileName), content);
+    if (diffFileSet.has(fileName)) {
+      const generatedAt = extractGeneratedAt(content, fileName);
+      if (generatedAt) diffGeneratedAt.set(fileName, generatedAt);
+    }
   }
+
+  const { branches, diffs } = buildManifest(fileNames, diffGeneratedAt);
 
   writeFileAtomic(
     join(dataDir, 'manifest.json'),

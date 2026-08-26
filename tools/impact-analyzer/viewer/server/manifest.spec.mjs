@@ -45,6 +45,28 @@ describe('buildManifest', () => {
         base: 'develop',
         head: 'feat-ENABLING-1023-impact-analyzer',
         file: 'diff.develop..feat-ENABLING-1023-impact-analyzer.json',
+        generatedAt: null,
+      },
+    ]);
+  });
+
+  it('attaches generatedAt from the map when the caller provides one', () => {
+    const { diffs } = buildManifest(
+      ['diff.develop..feat-a.json', 'diff.develop..feat-b.json'],
+      new Map([['diff.develop..feat-a.json', '2026-08-20T10:00:00.000Z']]),
+    );
+    expect(diffs).toEqual([
+      {
+        base: 'develop',
+        head: 'feat-a',
+        file: 'diff.develop..feat-a.json',
+        generatedAt: '2026-08-20T10:00:00.000Z',
+      },
+      {
+        base: 'develop',
+        head: 'feat-b',
+        file: 'diff.develop..feat-b.json',
+        generatedAt: null,
       },
     ]);
   });
