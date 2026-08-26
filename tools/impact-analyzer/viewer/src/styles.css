@@ -874,6 +874,27 @@ a.file-link:focus-visible .file-link-ext {
   font-weight: 650;
 }
 
+.verify-prompt-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  border: none;
+  border-radius: 999px;
+  padding: 3px 12px;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.verify-prompt-button:hover {
+  background: #dfe1fb;
+}
+
 .diff-legend {
   margin-top: 16px;
   font-size: 0.83rem;

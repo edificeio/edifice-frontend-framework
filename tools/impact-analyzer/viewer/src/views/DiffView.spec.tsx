@@ -195,6 +195,33 @@ describe('DiffView', () => {
     expect(writeText).toHaveBeenCalledWith('def5678');
   });
 
+  it('copies a pointer to the report (not its content) for the verify-impact-finding skill', async () => {
+    vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+
+    render(
+      <DiffView
+        diffs={[makeDiff({ file: 'diff.develop..feat-x.json' })]}
+        selectedFile="diff.develop..feat-x.json"
+        onSelectFile={vi.fn()}
+      />,
+    );
+
+    const button = await screen.findByRole('button', {
+      name: /copier le prompt de vérification/i,
+    });
+    fireEvent.click(button);
+
+    expect(writeText).toHaveBeenCalledWith(
+      expect.stringContaining('diff.develop..feat-x.json'),
+    );
+    expect(writeText).toHaveBeenCalledWith(
+      expect.stringContaining('edificeio/impact-analyzer-data'),
+    );
+    await waitFor(() => expect(screen.getByText('✓ Copié')).toBeTruthy());
+  });
+
   it('renders symbol diffs sorted by risk with severity and change kind', async () => {
     vi.mocked(loadDiffReport).mockResolvedValue(
       makeReport({

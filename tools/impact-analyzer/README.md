@@ -390,3 +390,14 @@ car cette convention diffère par package FF (voir commentaires dans
   Rétention actée : illimitée, un fichier par PR (paire branche
   origine/destination) — projection à ~12 Mo après 5 ans au rythme actuel du
   repo, donc sans enjeu de volumétrie.
+- **Vérification assistée (ENABLING-1175 §4.6)** : le rapport pointe déjà
+  chaque fichier consommateur touché (permalien GitHub SHA-pinné), mais ne
+  dit pas si l'usage réel casse vraiment. Le bouton « Copier le prompt de
+  vérification » de l'onglet Diff copie un pointeur minuscule (repo +
+  fichier de rapport, pas son contenu) à coller dans une session Claude
+  Code ouverte sur ce repo — la skill `verify-impact-finding`
+  (`.claude/skills/verify-impact-finding/SKILL.md`) va chercher le rapport,
+  déduit la squad depuis la branche git courante, ne vérifie que les
+  consommateurs de cette squad, et lit le code réel (repos sibling `../` si
+  disponibles, sinon GitHub) pour rendre un verdict par fichier. Analyse
+  uniquement, aucune édition.
