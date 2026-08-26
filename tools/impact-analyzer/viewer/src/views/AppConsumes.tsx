@@ -4,15 +4,23 @@ import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
+import { branchGroupKey } from '../lib/branch-group.js';
 
 const MAX_ROWS = 200;
 
 export function AppConsumes({
   appName,
   index,
+  branchFilter,
 }: {
   appName: string | null;
   index: ImpactIndex;
+  /**
+   * Owned by App.tsx (spans every app, unlike the per-app data below) so
+   * switching apps never resets it — see the branch-filter select next to
+   * the tab layout, not rendered in here.
+   */
+  branchFilter: string;
 }) {
   // Hooks must run unconditionally — computed even without a selection
   // (cheap on an empty/no-op appName) rather than gating with an early
@@ -40,24 +48,13 @@ export function AppConsumes({
       .sort((a, b) => b.consumer.matchCount - a.consumer.matchCount);
   }, [index, appName]);
 
-  // An app can be scanned on several of its own branches (apps.json) — a
-  // symbol consumed on both shows up as two rows that otherwise look
-  // identical, hence the filter below rather than only the Branche column.
-  const branches = useMemo(() => {
-    const set = new Set<string>();
-    for (const r of allRows) set.add(r.consumer.appBranch);
-    for (const r of allCssRows) set.add(r.consumer.appBranch);
-    return [...set].sort();
-  }, [allRows, allCssRows]);
-
-  const [branchFilter, setBranchFilter] = useState<string>('all');
-  useEffect(() => setBranchFilter('all'), [appName]);
-
   const rows = useMemo(
     () =>
       branchFilter === 'all'
         ? allRows
-        : allRows.filter((r) => r.consumer.appBranch === branchFilter),
+        : allRows.filter(
+            (r) => branchGroupKey(r.consumer.appBranch) === branchFilter,
+          ),
     [allRows, branchFilter],
   );
 
@@ -65,7 +62,9 @@ export function AppConsumes({
     () =>
       branchFilter === 'all'
         ? allCssRows
-        : allCssRows.filter((r) => r.consumer.appBranch === branchFilter),
+        : allCssRows.filter(
+            (r) => branchGroupKey(r.consumer.appBranch) === branchFilter,
+          ),
     [allCssRows, branchFilter],
   );
 
@@ -94,21 +93,6 @@ export function AppConsumes({
   return (
     <div className="panel">
       <h2>{appName}</h2>
-      {branches.length > 1 && (
-        <select
-          className="diff-select"
-          aria-label="Filtrer par branche de l'app"
-          value={branchFilter}
-          onChange={(e) => setBranchFilter(e.target.value)}
-        >
-          <option value="all">Toutes les branches ({branches.length})</option>
-          {branches.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
-      )}
       <p className="hint">
         {rows.length} symbole(s) JS/TS consommé(s) — {cssRows.length}{' '}
         composant(s) CSS potentiellement concerné(s)

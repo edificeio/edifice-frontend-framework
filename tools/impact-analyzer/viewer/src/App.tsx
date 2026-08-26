@@ -8,6 +8,7 @@ import {
   loadManifest,
 } from './data/loadIndex.js';
 import { useUrlParam } from './hooks/useUrlParam.js';
+import { branchGroupKey, branchGroupLabel } from './lib/branch-group.js';
 import { symbolKey } from './lib/symbol-display.js';
 import { SymbolSearch } from './views/SymbolSearch.js';
 import { WhoUses } from './views/WhoUses.js';
@@ -29,6 +30,15 @@ function AppContent() {
     null,
   );
   const [selectedApp, setSelectedAppState] = useState<string | null>(null);
+  // Branch filters for the Symboles/Apps tabs — deliberately NOT reset when
+  // the selected symbol/app changes (that was the bug: switching symbols
+  // used to silently drop the user back to the default every time). `null`
+  // means "not decided yet"; each consumer resolves it to a real default the
+  // first time it has data to decide with.
+  const [symbolBranchFilter, setSymbolBranchFilter] = useState<string | null>(
+    null,
+  );
+  const [appBranchFilter, setAppBranchFilter] = useState<string | null>(null);
 
   // Deep-linking: the current tab/branch/selection is mirrored in the URL
   // query string, so a link to "who uses Dropdown on develop-enabling" can
@@ -124,6 +134,39 @@ function AppContent() {
     if (match) setSelectedSymbolState(match);
   }, [index]);
 
+  // Spans the whole index (every symbol AND every CSS component, not just
+  // the current selection) — shared by both tabs' branch-group filters, so
+  // their option list never shrinks/changes as the selection changes.
+  const allBranchGroups = useMemo(() => {
+    if (!index) return [];
+    const set = new Set<string>();
+    for (const s of index.symbols)
+      for (const c of s.consumers) set.add(branchGroupKey(c.appBranch));
+    for (const c of index.cssComponents)
+      for (const cc of c.consumers) set.add(branchGroupKey(cc.appBranch));
+    return [...set].sort();
+  }, [index]);
+
+  // Defaults to the mainline group (develop/dev) — corrected only when the
+  // current value isn't valid for this index (unset yet, or an FF-branch
+  // switch dropped the group entirely); never touched by a symbol/app switch.
+  useEffect(() => {
+    if (allBranchGroups.length === 0) return;
+    const fallback = allBranchGroups.includes('develop') ? 'develop' : 'all';
+    setSymbolBranchFilter((current) =>
+      current !== null &&
+      (current === 'all' || allBranchGroups.includes(current))
+        ? current
+        : fallback,
+    );
+    setAppBranchFilter((current) =>
+      current !== null &&
+      (current === 'all' || allBranchGroups.includes(current))
+        ? current
+        : fallback,
+    );
+  }, [allBranchGroups]);
+
   const appNames = useMemo(() => {
     if (!index) return [];
     const names = new Set<string>();
@@ -180,24 +223,6 @@ function AppContent() {
           <h1>
             Impact <span>Analyzer</span>
           </h1>
-          {/* Selects which branch's INDEX feeds the Symboles/Apps tabs — it
-              has no effect on the Diff tab (which has its own report
-              selector), so it's hidden there rather than shown as a
-              confusing dead control. */}
-          {branches.length > 0 && tab !== 'diff' && (
-            <select
-              className="branch-select"
-              aria-label="Branche du framework"
-              value={branch ?? ''}
-              onChange={(e) => setBranch(e.target.value)}
-            >
-              {branches.map((b) => (
-                <option key={b} value={b}>
-                  {b}
-                </option>
-              ))}
-            </select>
-          )}
           <nav className="tabs" role="tablist" aria-label="Vues">
             <button
               id="tab-diff"
@@ -278,6 +303,58 @@ function AppContent() {
                 ` — ${index.scanErrors.length} scanError(s)`}
             </p>
 
+            {/* Both branch filters together, explicitly labeled: "Branche du
+                FF" (which index — packages/exports — is loaded, moved here
+                from the header) is a different axis from "Branche de l'app"
+                (which of a consuming app's own branches to look at within
+                that index) — grouping them side by side with real labels is
+                the whole point, they were easy to mistake for duplicates. */}
+            <div className="filters-bar">
+              {branches.length > 0 && (
+                <label className="filter-field">
+                  <span>Branche du FF</span>
+                  <select
+                    className="diff-select"
+                    value={branch ?? ''}
+                    onChange={(e) => setBranch(e.target.value)}
+                  >
+                    {branches.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              {allBranchGroups.length > 1 && (
+                <label className="filter-field">
+                  <span>Branche de l'app</span>
+                  <select
+                    className="diff-select"
+                    value={
+                      (tab === 'symbols'
+                        ? symbolBranchFilter
+                        : appBranchFilter) ?? 'all'
+                    }
+                    onChange={(e) =>
+                      tab === 'symbols'
+                        ? setSymbolBranchFilter(e.target.value)
+                        : setAppBranchFilter(e.target.value)
+                    }
+                  >
+                    <option value="all">
+                      Toutes les branches ({allBranchGroups.length})
+                    </option>
+                    {allBranchGroups.map((g) => (
+                      <option key={g} value={g}>
+                        {branchGroupLabel(g)}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </div>
+
             <div className="layout">
               {tab === 'symbols' ? (
                 <>
@@ -286,7 +363,10 @@ function AppContent() {
                     selected={selectedSymbol}
                     onSelect={setSelectedSymbol}
                   />
-                  <WhoUses symbol={selectedSymbol} />
+                  <WhoUses
+                    symbol={selectedSymbol}
+                    branchFilter={symbolBranchFilter ?? 'all'}
+                  />
                 </>
               ) : (
                 <>
@@ -295,7 +375,11 @@ function AppContent() {
                     selected={selectedApp}
                     onSelect={setSelectedApp}
                   />
-                  <AppConsumes appName={selectedApp} index={index} />
+                  <AppConsumes
+                    appName={selectedApp}
+                    index={index}
+                    branchFilter={appBranchFilter ?? 'all'}
+                  />
                 </>
               )}
             </div>

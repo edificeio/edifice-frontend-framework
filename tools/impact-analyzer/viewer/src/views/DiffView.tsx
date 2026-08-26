@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState, type ReactNode } from 'react';
 import type { DiffReport } from '@edifice.io/impact-analyzer';
+import { DiffReportPicker } from '../components/DiffReportPicker.js';
 import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { RiskBadge } from '../components/RiskBadge.js';
@@ -8,6 +9,7 @@ import type { DiffManifestEntry } from '../data/loadIndex.js';
 import { DataUnavailableError, loadDiffReport } from '../data/loadIndex.js';
 import { githubPrFileAnchorUrl } from '../lib/github-link.js';
 import { formatEntry, symbolKey } from '../lib/symbol-display.js';
+import { buildVerifyPrompt } from '../lib/verify-prompt.js';
 
 export interface DiffViewProps {
   diffs: DiffManifestEntry[];
@@ -161,8 +163,29 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
   const [prAnchors, setPrAnchors] = useState<Map<string, string>>(new Map());
   // (row key)|(app)|(branch) -> the app's files sub-row is open.
   const [expandedApps, setExpandedApps] = useState<Set<string>>(new Set());
+  // Which control just had something copied — clears itself after the toast
+  // window, and on any report change so a stale confirmation never lingers
+  // on the wrong control.
+  const [copied, setCopied] = useState<'base' | 'head' | 'prompt' | null>(null);
 
   useEffect(() => setExpandedApps(new Set()), [report]);
+  useEffect(() => setCopied(null), [report]);
+
+  function copyText(text: string, which: 'base' | 'head' | 'prompt'): void {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopied(which);
+        setTimeout(
+          () => setCopied((current) => (current === which ? null : current)),
+          1500,
+        );
+      })
+      .catch(() => {
+        // Clipboard API unavailable/denied (insecure context, permissions) —
+        // no worse than the control not being clickable at all.
+      });
+  }
 
   function toggleApp(key: string): void {
     setExpandedApps((prev) => {
@@ -232,21 +255,63 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
 
   return (
     <div>
-      {/* Always rendered (even when the current report failed to load):
-          it's the only way to reach the other reports. */}
-      {diffs.length > 1 && (
-        <select
-          className="diff-select"
-          value={selectedFile ?? ''}
-          onChange={(e) => onSelectFile(e.target.value)}
-        >
-          {diffs.map((d) => (
-            <option key={d.file} value={d.file}>
-              {d.base} → {d.head}
-            </option>
-          ))}
-        </select>
-      )}
+      <div className="diff-toolbar">
+        {/* Always rendered (even when the current report failed to load):
+            it's the only way to reach the other reports. */}
+        {diffs.length > 1 && (
+          <DiffReportPicker
+            diffs={diffs}
+            selectedFile={selectedFile}
+            onSelectFile={onSelectFile}
+          />
+        )}
+
+        {/* SHA-only chips: the branch names are already in the select above
+            it'd be redundant to repeat them here. The arrow keeps the
+            base -> head reading order. Each chip doubles as a
+            copy-to-clipboard button for its commit SHA. */}
+        {report && (
+          <div className="diff-refs">
+            <button
+              type="button"
+              className="ref-chip ref-chip-copyable"
+              onClick={() => copyText(report.base.commit, 'base')}
+              aria-label={`Copier le SHA de base @${report.base.commit.slice(0, 7)}`}
+              title="Copier le SHA"
+            >
+              {copied === 'base' ? (
+                <span className="ref-chip-copied" role="status">
+                  ✓ Copié
+                </span>
+              ) : (
+                <span className="ref-chip-commit">
+                  @{report.base.commit.slice(0, 7)}
+                </span>
+              )}
+            </button>
+            <span className="diff-arrow" aria-label="vers">
+              →
+            </span>
+            <button
+              type="button"
+              className="ref-chip ref-chip-copyable"
+              onClick={() => copyText(report.head.commit, 'head')}
+              aria-label={`Copier le SHA de tête @${report.head.commit.slice(0, 7)}`}
+              title="Copier le SHA"
+            >
+              {copied === 'head' ? (
+                <span className="ref-chip-copied" role="status">
+                  ✓ Copié
+                </span>
+              ) : (
+                <span className="ref-chip-commit">
+                  @{report.head.commit.slice(0, 7)}
+                </span>
+              )}
+            </button>
+          </div>
+        )}
+      </div>
 
       {error ? (
         <p className="error">{error}</p>
@@ -259,24 +324,25 @@ export function DiffView({ diffs, selectedFile, onSelectFile }: DiffViewProps) {
         <p className="hint">Chargement du diff...</p>
       ) : (
         <>
-          {/* base → head as chips: the arrow reads as "what changed between
-              the released base and this head", where ".." read as nothing. */}
           <div className="diff-meta">
-            <span className="ref-chip">
-              {report.base.ref}
-              <span className="ref-chip-commit">
-                @{report.base.commit.slice(0, 7)}
-              </span>
-            </span>
-            <span className="diff-arrow" aria-label="vers">
-              →
-            </span>
-            <span className="ref-chip">
-              {report.head.ref}
-              <span className="ref-chip-commit">
-                @{report.head.commit.slice(0, 7)}
-              </span>
-            </span>
+            {/* Copies a pointer (data repo + report file name), not the
+                report itself — the verify-impact-finding skill (this repo's
+                .claude/skills/) fetches and reasons over the full report on
+                its own, scoped to the squad it infers from the current FF
+                branch. */}
+            {selectedFile && (
+              <button
+                type="button"
+                className="verify-prompt-button"
+                onClick={() =>
+                  copyText(buildVerifyPrompt(selectedFile), 'prompt')
+                }
+              >
+                {copied === 'prompt'
+                  ? '✓ Copié'
+                  : 'Copier le prompt de vérification'}
+              </button>
+            )}
             {report.source && (
               <a
                 className="pr-chip"

@@ -91,7 +91,7 @@ describe('buildCiIndex', () => {
     });
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
 
-    vi.mocked(cloneTargetSparse).mockImplementation(() => {
+    vi.mocked(cloneTargetSparse).mockImplementation(async () => {
       const dir = makeFakeClone();
       fakeCloneDirs.push(dir);
       return { repoPath: dir };
@@ -346,7 +346,7 @@ describe('buildCiIndex', () => {
   });
 
   it('e2e monorepo case: an entcore-style app (path) produces repo-relative files prefixed by its subdir', async () => {
-    vi.mocked(cloneTargetSparse).mockImplementation((opts) => {
+    vi.mocked(cloneTargetSparse).mockImplementation(async (opts) => {
       const dir = makeFakeMonorepoClone('conversation');
       fakeCloneDirs.push(dir);
       // Real remote-clone.ts uses opts.sparsePath for `git sparse-checkout

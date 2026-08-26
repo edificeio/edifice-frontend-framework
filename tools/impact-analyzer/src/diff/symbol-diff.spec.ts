@@ -5,6 +5,7 @@ import { Project } from 'ts-morph';
 import { afterEach, describe, expect, it } from 'vitest';
 import { extractSymbolsWithDeclarations } from '../ff-map/symbol-extractor.js';
 import type { ImpactIndex, SymbolEntry } from '../types/index-schema.js';
+import { computeRiskScore } from './risk-score.js';
 import { diffSymbols } from './symbol-diff.js';
 
 function makeSymbols(
@@ -129,7 +130,7 @@ describe('diffSymbols', () => {
         files: [],
       }),
     ]);
-    expect(entry.riskScore).toBe(Math.round(10 * Math.log2(5 + 2) * (1 + 1)));
+    expect(entry.riskScore).toBe(computeRiskScore('likely-breaking', 5, 1));
   });
 
   it('produces no entry for a cosmetic-only change (comment added)', () => {

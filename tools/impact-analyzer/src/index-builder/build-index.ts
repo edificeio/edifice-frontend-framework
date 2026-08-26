@@ -30,6 +30,15 @@ export interface BuildIndexOptions {
   ffPackages?: FfPackageSpec[];
   ffEntryMap?: FfEntryMap;
   bootstrapSrcDir?: string;
+  /**
+   * Precomputed FF symbol table — skips this function's own buildFfMap call
+   * when given. Lets build-diff-report.ts reuse the buildFfDeclarationsMap
+   * pass it already ran for head instead of a second full ts-morph
+   * traversal of the same repoRoot/commit (P4.4 follow-up,
+   * REVIEW-impact-analyzer.md §2.4 "trois passes ts-morph FF complètes par
+   * diff"). Mutated in place (consumers attached) — pass a fresh array.
+   */
+  ffSymbols?: SymbolEntry[];
 }
 
 /**
@@ -48,11 +57,9 @@ export function buildLocalIndex(
 
   const { discovered, scanErrors: discoveryErrors } = discoverApps(apps);
 
-  const symbols = buildFfMap(
-    repoRoot,
-    options.ffPackages ?? FF_PACKAGES,
-    options.ffEntryMap,
-  );
+  const symbols =
+    options.ffSymbols ??
+    buildFfMap(repoRoot, options.ffPackages ?? FF_PACKAGES, options.ffEntryMap);
   const knownEntries = [
     ...new Set(symbols.map((s) => `${s.package}|${s.entry}`)),
   ].map((key) => {
@@ -68,6 +75,14 @@ export function buildLocalIndex(
 
   const scanErrors: ScanError[] = [...discoveryErrors];
   const outOfContractImports: OutOfContractImport[] = [];
+  // Keyed by app name — lets the CSS pass below reuse each app's file
+  // contents from its JS analysis instead of reading them from disk again
+  // (P4.3). Absent for an app whose JS analysis failed (no result to reuse);
+  // buildCssMap falls back to reading srcRoot itself for those.
+  const fileContentsByApp = new Map<
+    string,
+    { path: string; content: string }[]
+  >();
 
   for (const app of discovered) {
     const appDir = dirname(app.layout.packageJsonPath);
@@ -92,6 +107,7 @@ export function buildLocalIndex(
       });
       continue;
     }
+    fileContentsByApp.set(app.app.name, result.fileContents);
 
     for (const usage of result.usages) {
       const symbol = symbolByKey.get(
@@ -137,6 +153,7 @@ export function buildLocalIndex(
     repoRoot: app.repoPath,
     pinsBootstrap: app.pins.some((p) => p.package === '@edifice.io/bootstrap'),
     srcRoot: app.layout.srcRoot,
+    fileContents: fileContentsByApp.get(app.app.name),
   }));
   const bootstrapSrcDir =
     options.bootstrapSrcDir ?? join(repoRoot, 'packages', 'bootstrap', 'src');

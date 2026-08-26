@@ -114,6 +114,48 @@ describe('buildCssMap', () => {
     );
   });
 
+  it('uses provided fileContents instead of reading srcRoot from disk again', () => {
+    // Deliberately different from what's really on disk at srcRoot — proves
+    // buildCssMap actually prefers the provided fileContents (P4.3) rather
+    // than silently re-reading the app's files itself.
+    const { cssComponents } = buildCssMap(
+      bootstrapSrcDir,
+      [],
+      [
+        {
+          appName: 'fixture-app',
+          appBranch: 'develop',
+          org: 'edificeio',
+          repo: 'test-app',
+          appCommit: 'abc1234',
+          repoRoot: `${appDir}/src`,
+          pinsBootstrap: true,
+          srcRoot: `${appDir}/src`,
+          fileContents: [
+            {
+              path: `${appDir}/src/Fake.tsx`,
+              content: `<div className="dropdown" />`,
+            },
+          ],
+        },
+      ],
+    );
+
+    const dropdownEntry = cssComponents.find((c) =>
+      c.file.endsWith('_dropdown.scss'),
+    );
+    expect(dropdownEntry?.consumers).toEqual([
+      expect.objectContaining({ app: 'fixture-app', files: ['Fake.tsx'] }),
+    ]);
+    // The real _button.scss usage on disk (Widget.tsx) is invisible here —
+    // only the provided fileContents were searched, confirming disk wasn't
+    // read as a fallback when fileContents is present.
+    const buttonEntry = cssComponents.find((c) =>
+      c.file.endsWith('_button.scss'),
+    );
+    expect(buttonEntry?.consumers).toEqual([]);
+  });
+
   it('excludes an app from cssGlobalRisks.affectedApps when it does not pin bootstrap', () => {
     const { cssGlobalRisks } = buildCssMap(
       bootstrapSrcDir,

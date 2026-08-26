@@ -14,7 +14,14 @@ export function classifyDataFileNames(fileNames) {
   return { indexFiles, diffFiles };
 }
 
-export function buildManifest(fileNames) {
+/**
+ * `diffGeneratedAt`: filename -> the report's own `generatedAt` (ISO
+ * string), when the caller could read it — callers already download/read
+ * every diff file's content, so this costs no extra I/O. Missing entries
+ * (malformed file, or no map passed at all) get `null` and sort last in the
+ * viewer rather than blocking the whole manifest.
+ */
+export function buildManifest(fileNames, diffGeneratedAt = new Map()) {
   const { indexFiles, diffFiles } = classifyDataFileNames(fileNames);
 
   const branches = indexFiles.map((name) =>
@@ -27,6 +34,7 @@ export function buildManifest(fileNames) {
       base: label.slice(0, separatorIndex),
       head: label.slice(separatorIndex + 2),
       file: name,
+      generatedAt: diffGeneratedAt.get(name) ?? null,
     };
   });
 

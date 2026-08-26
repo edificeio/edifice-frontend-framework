@@ -3,87 +3,120 @@
     "name": "blog",
     "org": "edificeio",
     "repo": "blog",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "collaborative-wall",
     "org": "OPEN-ENT-NG",
     "repo": "collaborative-wall",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "collect",
     "org": "edificeio",
     "repo": "collect",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "communities",
     "org": "edificeio",
     "repo": "communities",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "explorer",
     "org": "edificeio",
     "repo": "explorer",
-    "branches": ["develop", "develop-enabling"]
+    "branches": [
+      "develop",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-integration"
+    ]
   },
   {
     "name": "mindmap",
     "org": "OPEN-ENT-NG",
     "repo": "mindmap",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "wiki",
     "org": "OPEN-ENT-NG",
     "repo": "wiki",
-    "branches": ["develop", "develop-enabling"]
+    "branches": ["develop", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "actualites",
     "org": "OPEN-ENT-NG",
     "repo": "actualites",
-    "branches": ["dev", "develop-enabling"]
+    "branches": [
+      "dev",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-b2school"
+    ]
   },
   {
     "name": "conversation",
     "org": "edificeio",
     "repo": "entcore",
     "path": "conversation",
-    "branches": ["dev", "develop-enabling"]
+    "branches": [
+      "dev",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-b2school",
+      "develop-integration"
+    ]
   },
   {
     "name": "homeworks",
     "org": "edificeio",
     "repo": "homeworks",
-    "branches": ["dev"]
+    "branches": ["dev", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "portal",
     "org": "edificeio",
     "repo": "entcore",
     "path": "portal",
-    "branches": ["dev", "develop-enabling"]
+    "branches": [
+      "dev",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-b2school",
+      "develop-integration"
+    ]
   },
   {
     "name": "rack",
     "org": "edificeio",
     "repo": "rack",
-    "branches": ["dev", "develop-enabling"]
+    "branches": ["dev", "develop-enabling", "develop-pedago"]
   },
   {
     "name": "support",
     "org": "OPEN-ENT-NG",
     "repo": "support",
-    "branches": ["dev", "develop-enabling"]
+    "branches": [
+      "dev",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-integration"
+    ]
   },
   {
     "name": "timeline",
     "org": "edificeio",
     "repo": "entcore",
     "path": "timeline",
-    "branches": ["dev", "develop-enabling"]
+    "branches": [
+      "dev",
+      "develop-enabling",
+      "develop-pedago",
+      "develop-b2school",
+      "develop-integration"
+    ]
   }
 ]

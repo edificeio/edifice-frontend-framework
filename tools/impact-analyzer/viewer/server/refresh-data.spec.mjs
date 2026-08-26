@@ -65,4 +65,81 @@ describe('refreshOnce', () => {
       JSON.parse(readFileSync(join(dataDir, 'manifest.json'), 'utf-8')),
     ).toEqual({ branches: ['develop'], diffs: [] });
   });
+
+  it("reads a diff file's own generatedAt into the manifest, without a second request", async () => {
+    const diffReport = JSON.stringify({
+      schemaVersion: 1,
+      generatedAt: '2026-08-20T10:00:00.000Z',
+      base: { ref: 'develop', commit: 'abc' },
+      head: { ref: 'feat-x', commit: 'def' },
+    });
+    const fetchMock = vi.fn(async (url, options) => {
+      if (url.includes('/contents?')) {
+        return {
+          ok: true,
+          json: async () => [
+            { type: 'file', name: 'diff.develop..feat-x.json' },
+          ],
+        };
+      }
+      expect(options.headers.Accept).toBe('application/vnd.github.raw');
+      return { ok: true, text: async () => diffReport };
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await refreshOnce({
+      owner: 'edificeio',
+      repo: 'impact-analyzer-data',
+      ref: 'main',
+      token: 'test-token',
+      dataDir,
+    });
+
+    // One request for the directory listing, one for the diff file's
+    // content — no extra round trip to learn its date.
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({ indexCount: 0, diffCount: 1 });
+    expect(
+      JSON.parse(readFileSync(join(dataDir, 'manifest.json'), 'utf-8')),
+    ).toEqual({
+      branches: [],
+      diffs: [
+        {
+          base: 'develop',
+          head: 'feat-x',
+          file: 'diff.develop..feat-x.json',
+          generatedAt: '2026-08-20T10:00:00.000Z',
+        },
+      ],
+    });
+  });
+
+  it('keeps generatedAt null for a diff file whose content is unparsable, without failing the whole refresh', async () => {
+    const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/contents?')) {
+        return {
+          ok: true,
+          json: async () => [
+            { type: 'file', name: 'diff.develop..feat-x.json' },
+          ],
+        };
+      }
+      return { ok: true, text: async () => 'not json' };
+    });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await refreshOnce({
+      owner: 'edificeio',
+      repo: 'impact-analyzer-data',
+      ref: 'main',
+      token: 'test-token',
+      dataDir,
+    });
+
+    expect(result).toEqual({ indexCount: 0, diffCount: 1 });
+    const manifest = JSON.parse(
+      readFileSync(join(dataDir, 'manifest.json'), 'utf-8'),
+    );
+    expect(manifest.diffs[0].generatedAt).toBeNull();
+  });
 });

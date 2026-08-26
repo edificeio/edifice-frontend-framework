@@ -4,9 +4,22 @@ import { FileGridPanel } from '../components/FileGridPanel.js';
 import { FileToggle } from '../components/FileToggle.js';
 import { UsageBadge } from '../components/UsageBadge.js';
 import { formatEntry } from '../lib/symbol-display.js';
-import { branchGroupKey, branchGroupLabel } from '../lib/branch-group.js';
+import { branchGroupKey } from '../lib/branch-group.js';
 
-export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
+const MAX_ROWS = 200;
+
+export function WhoUses({
+  symbol,
+  branchFilter,
+}: {
+  symbol: SymbolEntry | null;
+  /**
+   * Owned by App.tsx (spans every symbol, unlike the per-symbol data below)
+   * so switching symbols never resets it — see the branch-filter select
+   * next to the tab layout, not rendered in here.
+   */
+  branchFilter: string;
+}) {
   // Hooks must run unconditionally, before the early return below.
   const sortedConsumers = useMemo(
     () =>
@@ -15,18 +28,6 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       ),
     [symbol],
   );
-
-  // Grouped by role (develop/dev vs develop-enabling), not by raw branch
-  // name — spans every consuming app, unlike the per-app Apps tab, so the
-  // naming mismatch across repos (apps.json) actually shows up here.
-  const branchGroups = useMemo(() => {
-    const set = new Set<string>();
-    for (const c of sortedConsumers) set.add(branchGroupKey(c.appBranch));
-    return [...set].sort();
-  }, [sortedConsumers]);
-
-  const [branchFilter, setBranchFilter] = useState<string>('all');
-  useEffect(() => setBranchFilter('all'), [symbol]);
 
   const filteredConsumers = useMemo(
     () =>
@@ -63,23 +64,6 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
       <h2>
         {symbol.name} <UsageBadge label={symbol.kind} />
       </h2>
-      {branchGroups.length > 1 && (
-        <select
-          className="diff-select"
-          aria-label="Filtrer par branche"
-          value={branchFilter}
-          onChange={(e) => setBranchFilter(e.target.value)}
-        >
-          <option value="all">
-            Toutes les branches ({branchGroups.length})
-          </option>
-          {branchGroups.map((g) => (
-            <option key={g} value={g}>
-              {branchGroupLabel(g)}
-            </option>
-          ))}
-        </select>
-      )}
       <p className="hint">
         {symbol.package}
         {formatEntry(symbol.entry)} — {symbol.sourceFiles.length} fichier(s)
@@ -101,7 +85,7 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             </tr>
           </thead>
           <tbody>
-            {filteredConsumers.map((c) => {
+            {filteredConsumers.slice(0, MAX_ROWS).map((c) => {
               const key = `${c.app}-${c.appBranch}`;
               const isOpen = expanded.has(key);
               return (
@@ -141,6 +125,12 @@ export function WhoUses({ symbol }: { symbol: SymbolEntry | null }) {
             })}
           </tbody>
         </table>
+      )}
+      {filteredConsumers.length > MAX_ROWS && (
+        <p className="hint">
+          {filteredConsumers.length} résultats, {MAX_ROWS} affichés (triés par
+          sites d'usage).
+        </p>
       )}
 
       {/* Contextual legend — only when at least one row carries the badge. */}

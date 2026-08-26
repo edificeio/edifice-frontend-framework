@@ -1,5 +1,5 @@
 import {
-  SEVERITY_WEIGHT,
+  extractUsageMultiplier,
   type DiffSeverity,
 } from '@edifice.io/impact-analyzer';
 
@@ -24,8 +24,8 @@ const SEVERITY_TEXT_COLOR: Record<DiffSeverity, string> = {
 // max — otherwise a report with only one row always paints it as maximally
 // intense, regardless of how small that row actually is. Roughly "heavy
 // usage (~50 sites) across nearly this registry's whole app count (~11
-// today)". First-pass and deliberately generous, like SEVERITY_WEIGHT —
-// revisit as the app registry grows.
+// today)". First-pass and deliberately generous — revisit as the app
+// registry grows.
 const REFERENCE_MULTIPLIER = 60;
 
 /**
@@ -42,7 +42,7 @@ export function RiskBadge({
   severity: DiffSeverity;
   score: number;
 }) {
-  const multiplier = score / SEVERITY_WEIGHT[severity];
+  const multiplier = extractUsageMultiplier(severity, score);
   const intensity = Math.min(multiplier / REFERENCE_MULTIPLIER, 1);
   const hue = SEVERITY_HUE[severity];
   const lightness = 92 - 14 * intensity;
@@ -54,7 +54,7 @@ export function RiskBadge({
         background: `hsl(${hue}, 75%, ${lightness}%)`,
         color: SEVERITY_TEXT_COLOR[severity],
       }}
-      title="Score de risque = poids de sévérité × log2(sites d'usage + 2) × (apps touchées + 1) — la teinte suit la sévérité, sa saturation le nombre de sites d'usage et d'apps touchées. Aide à trier, ne certifie jamais qu'un changement est sans danger."
+      title="Score de risque = rang de sévérité (dominant — breaking > likely-breaking > needs-review, toujours) + log2(sites d'usage + 2) × (apps touchées + 1) au sein de cette sévérité — la teinte suit la sévérité, sa saturation le nombre de sites d'usage et d'apps touchées. Aide à trier, ne certifie jamais qu'un changement est sans danger."
     >
       {score}
     </span>

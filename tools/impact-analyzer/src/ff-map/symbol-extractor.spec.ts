@@ -3,7 +3,7 @@ import { Project, ts } from 'ts-morph';
 import { describe, expect, it } from 'vitest';
 import {
   createFfProject,
-  extractSymbolsFromEntry,
+  extractSymbolsWithDeclarations,
   inferSymbolKind,
 } from './symbol-extractor.js';
 
@@ -21,10 +21,10 @@ const fixtureDir = fileURLToPath(
 );
 const fixtureTsconfig = `${fixtureDir}/tsconfig.json`;
 
-describe('extractSymbolsFromEntry', () => {
+describe('extractSymbolsWithDeclarations', () => {
   it('resolves symbols through multi-level barrels and export renames', () => {
     const project = createFfProject(fixtureTsconfig);
-    const symbols = extractSymbolsFromEntry(
+    const symbols = extractSymbolsWithDeclarations(
       project,
       `${fixtureDir}/src/index.ts`,
     );
@@ -49,11 +49,12 @@ describe('extractSymbolsFromEntry', () => {
       `${fixtureDir}/src/thing.ts`,
     ]);
     expect(byName.RenamedThing.kind).toBe('const');
+    expect(byName.Button.declarations.length).toBeGreaterThan(0);
   });
 
   it('resolves the icons subpath to its individual icon components', () => {
     const project = createFfProject(fixtureTsconfig);
-    const symbols = extractSymbolsFromEntry(
+    const symbols = extractSymbolsWithDeclarations(
       project,
       `${fixtureDir}/src/icons/index.ts`,
     );
@@ -107,5 +108,31 @@ describe('inferSymbolKind', () => {
       'Config',
     );
     expect(inferSymbolKind('Config', declarations)).toBe('const');
+  });
+
+  it('classifies a generic function component as component, type parameters included', () => {
+    const declarations = declarationsFor(
+      `export function List<T>({ items }: { items: T[] }) {
+         return <ul>{items.length}</ul>;
+       }`,
+      'List',
+    );
+    expect(inferSymbolKind('List', declarations)).toBe('component');
+  });
+
+  it('classifies a generic type alias as type, not const', () => {
+    const declarations = declarationsFor(
+      `export type Box<T> = { value: T };`,
+      'Box',
+    );
+    expect(inferSymbolKind('Box', declarations)).toBe('type');
+  });
+
+  it('classifies a generic interface as type', () => {
+    const declarations = declarationsFor(
+      `export interface Pair<A, B> { first: A; second: B; }`,
+      'Pair',
+    );
+    expect(inferSymbolKind('Pair', declarations)).toBe('type');
   });
 });

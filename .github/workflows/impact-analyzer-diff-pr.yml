@@ -1,11 +1,19 @@
-name: "Impact Analyzer: diff (PR)"
+name: 'Impact Analyzer: diff (PR)'
 
 on:
   pull_request:
-    branches: [develop, develop-enabling]
+    branches:
+      [
+        develop,
+        develop-enabling,
+        develop-b2school,
+        develop-pedago,
+        develop-integration,
+        develop-orga,
+      ]
     # Only FF package changes can impact consumer apps — tools/docs/CI
     # changes never produce a meaningful diff report.
-    paths: ["packages/**"]
+    paths: ['packages/**']
 
 permissions:
   contents: read

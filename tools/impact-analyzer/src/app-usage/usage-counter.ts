@@ -16,14 +16,10 @@ export interface ResolvedUsage {
 }
 
 /**
- * `findReferencesAsNodes()` includes the declaration site itself (the
- * import specifier), and re-wraps AST nodes lazily — so `!==` identity
- * checks against the original identifier are unreliable. Filtering by
- * "is this reference part of an import declaration" excludes both the
- * binding's own import statement and, incidentally, any other file's
- * import of the same exported name (which findReferencesAsNodes also
- * surfaces, since it resolves through the original declaration) — neither
- * should ever count as a usage site.
+ * Excludes the binding's own import statement from its usage count — a
+ * re-declaration under the same local name in another import (unlikely,
+ * but not impossible with multiple import statements) would otherwise
+ * count as a usage of itself.
  */
 function isPartOfImportDeclaration(node: Node): boolean {
   return (
@@ -52,18 +48,60 @@ function isClosingJsxTagName(node: Node): boolean {
   return false;
 }
 
+/**
+ * Whether `candidate` resolves to the exact same binding as `identifier`
+ * (the import specifier) — comparing the checker's underlying `ts.Symbol`
+ * rather than ts-morph's `Symbol` wrapper, which isn't guaranteed to be the
+ * same instance across two `getSymbol()` calls for the same binding.
+ */
+function referencesSameBinding(candidate: Node, identifier: Node): boolean {
+  if (candidate === identifier || !Node.isIdentifier(candidate)) return false;
+  if (candidate.getText() !== identifier.getText()) return false;
+
+  const candidateSymbol = candidate.getSymbol();
+  const bindingSymbol = identifier.getSymbol();
+  return (
+    candidateSymbol !== undefined &&
+    bindingSymbol !== undefined &&
+    candidateSymbol.compilerSymbol === bindingSymbol.compilerSymbol
+  );
+}
+
+function isRealUsageSite(node: Node): boolean {
+  return !isPartOfImportDeclaration(node) && !isClosingJsxTagName(node);
+}
+
+/**
+ * Finds every reference to `identifier` (an import specifier) within its
+ * own `sourceFile` only — never `findReferencesAsNodes()`, which searches
+ * the *entire* project for a result this function then discards down to a
+ * single file anyway (REVIEW-impact-analyzer.md P4.2: measured ~15s for
+ * `analyzeAppUsage` on a 230-file real app, dominated by this call). A
+ * plain text-match walk over the file's own identifiers, narrowed by
+ * comparing each candidate's resolved symbol to the binding's, is
+ * file-scoped work the checker already has to do to answer "what does this
+ * identifier bind to" — it never needs to search other files the way a
+ * cross-file reference search does.
+ */
+function findReferencesInFile(
+  identifier: Node,
+  sourceFile: SourceFile,
+): Node[] {
+  const name = identifier.getText();
+  const references: Node[] = [];
+  sourceFile.forEachDescendant((node) => {
+    if (node.getText() !== name) return;
+    if (!referencesSameBinding(node, identifier)) return;
+    references.push(node);
+  });
+  return references.filter(isRealUsageSite);
+}
+
 function countReferencesInFile(
   identifier: Node,
   sourceFile: SourceFile,
 ): number {
-  return identifier
-    .findReferencesAsNodes()
-    .filter(
-      (node) =>
-        node.getSourceFile() === sourceFile &&
-        !isPartOfImportDeclaration(node) &&
-        !isClosingJsxTagName(node),
-    ).length;
+  return findReferencesInFile(identifier, sourceFile).length;
 }
 
 function countNamedUsage(
@@ -91,15 +129,7 @@ function countNamespaceUsage(
   sourceFile: SourceFile,
 ): ResolvedUsage[] {
   const propertyCounts = new Map<string, number>();
-
-  const refs = binding.identifier
-    .findReferencesAsNodes()
-    .filter(
-      (node) =>
-        node.getSourceFile() === sourceFile &&
-        !isPartOfImportDeclaration(node) &&
-        !isClosingJsxTagName(node),
-    );
+  const refs = findReferencesInFile(binding.identifier, sourceFile);
 
   for (const ref of refs) {
     const parent = ref.getParent();

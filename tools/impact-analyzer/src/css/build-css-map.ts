@@ -40,6 +40,14 @@ export interface CssAppContext {
   repoRoot: string;
   pinsBootstrap: boolean;
   srcRoot: string;
+  /**
+   * Already-read file contents from this app's JS usage analysis
+   * (analyzeAppUsage) — reused here instead of reading the same files from
+   * disk a second time (REVIEW-impact-analyzer.md P4.3). Falls back to
+   * reading `srcRoot` when absent (e.g. an app whose JS analysis failed but
+   * CSS grep should still run in local mode — see build-index.ts).
+   */
+  fileContents?: { path: string; content: string }[];
 }
 
 export interface BuildCssMapResult {
@@ -73,13 +81,17 @@ export function buildCssMap(
     join(bootstrapSrcDir, 'components'),
   );
 
-  // Read every app's source files once, reused across every component's grep pass.
+  // Reuses each app's file contents from the JS usage analysis pass when
+  // available — same file list (both read via listAppSourceFiles), so no
+  // need to read from disk again. Falls back to a fresh read otherwise.
   const appFiles = apps.map((app) => ({
     app,
-    files: listAppSourceFiles(app.srcRoot).map((path) => ({
-      path,
-      content: readFileSync(path, 'utf-8'),
-    })),
+    files:
+      app.fileContents ??
+      listAppSourceFiles(app.srcRoot).map((path) => ({
+        path,
+        content: readFileSync(path, 'utf-8'),
+      })),
   }));
 
   const cssComponents: CssComponentEntry[] = [];

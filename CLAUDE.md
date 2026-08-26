@@ -39,7 +39,7 @@ Monorepo publiant les **packages `@edifice.io/*`** consommés par les apps Edifi
 | Storybook (dev) | `pnpm docs` <!-- storybook dev -p 6006 --> |
 | Storybook (build) | `pnpm docs:build` |
 
-> Husky : pre-commit lance `lint && format` ; pre-push lance `test` (react + client). Cibler un package via le filtre Turbo (`--filter=./packages/<pkg>`).
+> Husky : pre-commit lance `lint && format`. Pas de hook pre-push (tests trop longs pour un push local, déjà couverts par la CI `tests.yml`) — penser à lancer `pnpm test` soi-même avant de pousser. Cibler un package via le filtre Turbo (`--filter=./packages/<pkg>`).
 
 ## Conventions
 
