@@ -748,7 +748,7 @@ a.file-link:focus-visible .file-link-ext {
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: 420px;
+  max-width: 640px;
   padding: 8px 12px;
   border: 1px solid var(--line-strong);
   border-radius: 8px;
@@ -760,10 +760,11 @@ a.file-link:focus-visible .file-link-ext {
   text-align: left;
 }
 
-.diff-picker-trigger > :first-child {
+.diff-picker-trigger-label {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .diff-picker-caret {

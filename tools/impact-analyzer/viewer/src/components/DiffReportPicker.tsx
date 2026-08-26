@@ -127,7 +127,9 @@ export function DiffReportPicker({
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
-        {selected ? diffLabel(selected) : 'Sélectionner un rapport'}
+        <span className="diff-picker-trigger-label">
+          {selected ? diffLabel(selected) : 'Sélectionner un rapport'}
+        </span>
         <span className="diff-picker-caret" aria-hidden="true" />
       </button>
 
