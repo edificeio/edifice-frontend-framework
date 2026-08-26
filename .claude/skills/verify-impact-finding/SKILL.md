@@ -47,9 +47,9 @@ Le rapport (`DiffReport`, cf. `tools/impact-analyzer/src/types/index-schema.ts` 
 ### 2. Déterminer la squad cible
 
 1. `git -C <racine de ce repo FF> rev-parse --abbrev-ref HEAD`.
-2. Si ce nom est déjà une branche de squad connue (`develop`, `develop-enabling`, `develop-b2school`, `develop-pedago`, `develop-integration`, `develop-orga` — liste faisant foi : la matrice `ff_branch` de `.github/workflows/impact-analyzer-generate.yml`), c'est la squad.
-3. Sinon (branche de travail du type `chore-ENABLING-1175-...`), calculer `git merge-base HEAD <branche>` pour chaque branche de squad connue, puis retenir celle dont le merge-base est **le commit le plus récent** parmi tous les candidats (`git log -1 --format=%ct <sha>`) — c'est l'ancêtre commun le plus proche, donc la squad la plus probable.
-4. Si aucune branche ne matche clairement ou si deux candidats sont à égalité, **demander explicitement** plutôt que deviner — une mauvaise squad fait vérifier les mauvaises apps pour rien.
+2. Si ce nom est déjà une branche de squad connue (`develop`, `develop-enabling`, `develop-b2school`, `develop-pedago`, `develop-integration`, `develop-orga` — liste faisant foi : la matrice `ff_branch` de `.github/workflows/impact-analyzer-generate.yml`), c'est la squad. **Ne pas essayer de déduire la squad du nom d'une branche de travail** (préfixe de ticket Jira type `ENABLING-`/`PEDAGO-`/`IMPULS-`/`INTEG-`/`ORGA-`) : la correspondance entre projet Jira et branche de squad n'est ni garantie ni connue de cette skill (`INTEG` ne matche même pas `develop-integration` en substring, `IMPULS` ne correspond à aucune branche de squad connue) — deviner à partir de ça produirait un résultat faux avec confiance.
+3. Sinon (branche de travail du type `chore-ENABLING-1175-...`), calculer `git merge-base HEAD <branche>` pour chaque branche de squad connue à partir des refs **déjà présentes localement** (`origin/<branche>`) — **ne pas `git fetch` avant cette étape**, la fraîcheur ne compte pas pour cette déduction grossière (elle compte à l'étape 5, sur le contenu réellement lu). Retenir la branche dont le merge-base est **le commit le plus récent** parmi tous les candidats (`git log -1 --format=%ct <sha>`) — c'est l'ancêtre commun le plus proche, donc la squad la plus probable.
+4. Si aucune branche ne matche clairement ou si plusieurs candidats sont à égalité, **demander explicitement** plutôt que deviner — une mauvaise squad fait vérifier les mauvaises apps pour rien. Une égalité n'est pas un échec de l'heuristique à corriger : quand deux branches de squad partagent le même point de fork (branches peu divergées, ou rebase récent de l'une sur l'autre), rien dans l'historique git ne permet de les distinguer — c'est une ambiguïté réelle, pas un bug.
 
 `develop`/`dev` sont la squad "mainline" — traiter les deux noms comme équivalents (convention déjà en place dans le viewer, cf. `branchGroupKey` dans `tools/impact-analyzer/viewer/src/lib/branch-group.ts`).
 
@@ -77,6 +77,7 @@ Pour chaque app retenue, l'org/repo/path viennent de `tools/impact-analyzer/apps
 **Fichier consommateur** :
 - Si le repo est résolu en local (étape 4) : `git -C <chemin> fetch origin <appBranch> --quiet` (lecture seule, ne touche jamais au working tree ni à la branche courante de l'utilisateur — juste la ref distante), puis `git -C <chemin> show origin/<appBranch>:<fichier>`. Ça garantit de lire l'état réel de la branche même si le clone local est resté sur une autre branche ou est en retard.
 - Sinon : `gh api -H "Accept: application/vnd.github.raw" "repos/<org>/<repo>/contents/<fichier>?ref=<appBranch>"` — uniquement les fichiers réellement flaggés, jamais un dump du repo entier.
+- **Plusieurs repos consommateurs à fetch : les lancer en parallèle**, jamais en boucle séquentielle — ils sont indépendants (ex. `for r in ...; do git -C "$r" fetch origin "$branche" --quiet & done; wait`). Un fetch réseau par repo l'un après l'autre n'a aucune justification ici.
 
 ### 6. Juger
 
