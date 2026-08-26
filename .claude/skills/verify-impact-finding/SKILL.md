@@ -59,7 +59,9 @@ Ne garder, dans `symbolDiffs[].consumers`/`cssDiffs[].consumers`, que les entré
 
 Prioriser par défaut : `breaking` et `likely-breaking` d'abord (le tool y attache déjà le risque réel), `needs-review` en second (corps changé, signature identique — souvent un non-événement, à survoler plutôt qu'creuser en profondeur sauf demande explicite).
 
-Si le nombre de (app, fichier) à vérifier après filtrage est important (au-delà d'une quinzaine), ne pas foncer tête baissée : proposer un périmètre réduit (les N plus gros risques, ou une app précise) et laisser l'utilisateur trancher.
+**`cssDiffs` de type risque global** (`CssGlobalRisk` : un champ `affectedApps` en liste plate, pas de `consumers[]`/`appBranch`) échappent à ce filtrage par squad — pas de granularité par branche possible, ils s'appliquent à tout le monde par nature (fichier de thème compilé globalement). Toujours les regarder au moins une fois, quelle que soit la squad résolue.
+
+Si le nombre de (app, fichier) à vérifier après filtrage reste important une fois l'étape 6 appliquée (au-delà d'une quinzaine), ne pas foncer tête baissée : proposer un périmètre réduit (les N plus gros risques, ou une app précise) et laisser l'utilisateur trancher.
 
 ### 4. Résoudre les repos locaux
 
@@ -81,16 +83,20 @@ Pour chaque app retenue, l'org/repo/path viennent de `tools/impact-analyzer/apps
 
 ### 6. Juger
 
-Pour chaque (app, fichier, symbole) : comparer précisément ce qui a changé côté FF (signature, export, comportement documenté) avec l'usage réel dans le fichier consommateur. Trancher :
-- 🔴 **casse** — l'usage est incompatible avec le nouvel état, citer les lignes concernées des deux côtés.
-- 🟢 **ne casse pas** — l'usage reste valide malgré le changement, expliquer pourquoi (ex. un paramètre optionnel ajouté).
-- 🟡 **à vérifier manuellement** — l'analyse statique ne peut pas trancher avec certitude (ex. usage dynamique, comportement runtime) ; dire précisément quoi vérifier à la main.
+**Toujours commencer par le diff FF** (`git show base.commit:fichier` vs `git show head.commit:fichier`) **avant de lire un seul fichier consommateur** — pour chaque symbole, pas seulement quand le volume est gros. Un changement `needs-review`/`body-changed` a par construction une signature identique : si le diff FF ne montre aucun changement de contrat (paramètres, valeur de retour, comportement documenté) qu'un appelant normal pourrait observer, la vérification exhaustive fichier par fichier est souvent inutile et peut être court-circuitée directement à partir de cette lecture. Ne descendre au niveau des fichiers consommateurs que pour un point précis que le diff FF laisse en doute (ex. une classe CSS ou un attribut supprimé — vérifier par un grep ciblé si un consommateur en dépend, pas par une lecture exhaustive), ou quand le diff FF lui-même ne permet pas de trancher.
 
-Ne jamais rendre un verdict sans avoir réellement lu le fichier consommateur — un verdict basé uniquement sur `changeKind`/`severity` du rapport n'apporte rien de plus que le rapport lui-même.
+Pour chaque (app, fichier, symbole) [ou le point ciblé identifié ci-dessus] : comparer précisément ce qui a changé côté FF avec l'usage réel. Trancher :
+- 🔴 **casse** — l'usage est incompatible avec le nouvel état, citer les lignes concernées des deux côtés.
+- 🟢 **ne casse pas** — l'usage reste valide malgré le changement, expliquer pourquoi (ex. un paramètre optionnel ajouté, ou directement établi par la lecture du diff FF sans avoir eu besoin d'ouvrir le fichier consommateur).
+- 🟡 **à vérifier manuellement** — l'analyse ne peut pas trancher avec certitude (ex. usage dynamique, comportement runtime, changement hors du périmètre annoncé de la PR type palette de couleur) ; dire précisément quoi vérifier et par qui (dev, PM, QA — pas toujours du code).
+
+Ne jamais rendre un verdict sans base réelle (diff FF lu à minima, fichier consommateur si le diff FF ne suffit pas) — un verdict basé uniquement sur `changeKind`/`severity` du rapport n'apporte rien de plus que le rapport lui-même.
 
 ## Restitution
 
 Un résumé groupé par app, puis par fichier, avec le verdict, la citation du code pertinent (avant/après si utile) et le raisonnement. Terminer par un décompte (X casse, Y à vérifier, Z ok) pour une lecture rapide.
+
+Toujours clore par un **court paragraphe à destination de la QA**, distinct du bilan technique et écrit sans jargon de code : quoi tester manuellement, quoi vérifier visuellement, points d'attention — y compris quand le bilan technique conclut "ne casse pas" (un changement peut être correct techniquement et mériter un contrôle visuel/fonctionnel quand même, ex. un composant visuel modifié, un timing à observer). Mettre en avant en premier tout point resté 🟡 nécessitant une confirmation humaine.
 
 ## Pièges connus
 
