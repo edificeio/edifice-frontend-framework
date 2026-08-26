@@ -1,5 +1,5 @@
 import type { DiffReport } from '@edifice.io/impact-analyzer';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { DiffView } from './DiffView.js';
 import { loadDiffReport } from '../data/loadIndex.js';
@@ -98,6 +98,35 @@ describe('DiffView', () => {
     await waitFor(() =>
       expect(screen.getByText(/aucun changement risqué détecté/i)).toBeTruthy(),
     );
+  });
+
+  it("copies a chip's commit SHA to the clipboard and shows a temporary confirmation", async () => {
+    vi.mocked(loadDiffReport).mockResolvedValue(makeReport());
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.assign(navigator, { clipboard: { writeText } });
+
+    render(
+      <DiffView
+        diffs={[{ base: 'develop', head: 'feat-x', file: 'diff.a.json' }]}
+        selectedFile="diff.a.json"
+        onSelectFile={vi.fn()}
+      />,
+    );
+
+    const baseButton = await screen.findByRole('button', {
+      name: /copier le sha de base/i,
+    });
+    fireEvent.click(baseButton);
+
+    expect(writeText).toHaveBeenCalledWith('abc1234');
+    await waitFor(() => expect(screen.getByText('✓ Copié')).toBeTruthy());
+
+    // Each chip copies its own SHA, independently of the other's state.
+    const headButton = screen.getByRole('button', {
+      name: /copier le sha de tête/i,
+    });
+    fireEvent.click(headButton);
+    expect(writeText).toHaveBeenCalledWith('def5678');
   });
 
   it('renders symbol diffs sorted by risk with severity and change kind', async () => {
