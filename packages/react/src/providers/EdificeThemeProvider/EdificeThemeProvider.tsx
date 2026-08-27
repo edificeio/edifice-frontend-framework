@@ -44,9 +44,10 @@ export function EdificeThemeProvider({
     ];
 
     attributes.forEach((attribute) => {
-      return document
+      if (attribute.value === undefined) return;
+      document
         .querySelector('html')
-        ?.setAttribute(attribute.data, attribute.value as string);
+        ?.setAttribute(attribute.data, attribute.value);
     });
   }, [confQuery?.data, defaultTheme]);
 
