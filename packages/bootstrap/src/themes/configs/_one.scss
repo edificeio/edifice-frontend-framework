@@ -65,6 +65,17 @@ $one: (
       light: $neo-blue-300,
       default: $neo-blue-500,
       dark: $neo-blue-700,
+      feather: $neo-blue-200,
+    ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: $one-orange-500,
+      produce: $one-blue-500,
+      organise: $one-green-500,
+      admin: $one-yellow-500,
+      special: $one-purple-500,
     ),
     profil: (
       guest: $one-red-500,
@@ -75,28 +86,28 @@ $one: (
     ),
     support: (
       danger: (
-        700: $danger-700,
-        500: $danger-500,
-        300: $danger-300,
-        200: $danger-200,
+        700: $legacy-danger-700,
+        500: $legacy-danger-500,
+        300: $legacy-danger-300,
+        200: $legacy-danger-200,
       ),
       success: (
-        700: $success-700,
-        500: $success-500,
-        300: $success-300,
-        200: $success-200,
+        700: $legacy-success-700,
+        500: $legacy-success-500,
+        300: $legacy-success-300,
+        200: $legacy-success-200,
       ),
       info: (
-        700: $info-700,
-        500: $info-500,
-        300: $info-300,
-        200: $info-200,
+        700: $legacy-info-700,
+        500: $legacy-info-500,
+        300: $legacy-info-300,
+        200: $legacy-info-200,
       ),
       warning: (
-        700: $warning-700,
-        500: $warning-500,
-        300: $warning-300,
-        200: $warning-200,
+        700: $legacy-warning-700,
+        500: $legacy-warning-500,
+        300: $legacy-warning-300,
+        200: $legacy-warning-200,
       ),
     ),
   ),
@@ -106,7 +117,7 @@ $one: (
       body: $font-family-arimo,
     ),
     weight: (
-      bold: $font-weight-bold,
+      bold: $font-weight-medium,
       regular: $font-weight-regular,
     ),
     button: (
@@ -122,5 +133,6 @@ $one: (
   ),
   radius: (
     button: $border-radius-lg,
+    maincontainer: $border-radius-xl,
   ),
 );

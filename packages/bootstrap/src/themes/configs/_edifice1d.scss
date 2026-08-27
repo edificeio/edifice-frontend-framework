@@ -1,6 +1,7 @@
 // Configuration du thème edifice1d.
 
 @use 'primitives' as *;
+@use 'primitives-legacy' as legacy;
 
 $edifice1d: (
   name: 'edifice1d',
@@ -64,6 +65,17 @@ $edifice1d: (
       light: $orange-300,
       default: $orange-500,
       dark: $orange-700,
+      feather: $orange-100,
+    ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: legacy.$one-orange-500,
+      produce: legacy.$one-blue-500,
+      organise: legacy.$one-green-500,
+      admin: legacy.$one-yellow-500,
+      special: legacy.$one-purple-500,
     ),
     profil: (
       guest: $yellow-700,
@@ -105,7 +117,7 @@ $edifice1d: (
       body: $font-family-arimo,
     ),
     weight: (
-      bold: $font-weight-medium,
+      bold: $font-weight-bold,
       regular: $font-weight-regular,
     ),
     button: (
@@ -121,5 +133,6 @@ $edifice1d: (
   ),
   radius: (
     button: $border-radius-lg,
+    maincontainer: $border-radius-xl,
   ),
 );
