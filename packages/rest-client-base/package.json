@@ -37,7 +37,7 @@
     "clean": "rm -rf dist node_modules",
     "format": "prettier --check src",
     "format:write": "prettier --write src",
-    "lint": "eslint src",
+    "lint": "eslint src --max-warnings 0",
     "lint:fix": "eslint src --fix",
     "build": "pnpm run build:node && pnpm run build:browser && pnpm run build:react-native",
     "build:node": "vite build --config vite.config.node.ts && tsc src/bin/cli.ts --outDir dist/node --module commonjs --target ES2020 && mv dist/node/cli.js dist/node/cli.cjs",

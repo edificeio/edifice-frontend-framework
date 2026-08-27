@@ -22,6 +22,8 @@ const CantooAdaptTextBoxView = ({
         inline: 'nearest',
       });
     }
+    // Run only on mount: scroll the box into view once when it opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

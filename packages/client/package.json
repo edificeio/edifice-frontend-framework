@@ -39,7 +39,7 @@
     "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --check \"src/ts/**/*.ts\"",
     "format:write": "prettier --write \"src/ts/**/*.ts\"",
-    "lint": "eslint",
+    "lint": "eslint --max-warnings 0",
     "test": "vitest",
     "test:coverage": "vitest run --coverage"
   },

@@ -67,7 +67,7 @@ const useUploadFiles = ({
         }
       });
     },
-    [uploadAlternateFile, uploadFile, replaceFileAt],
+    [uploadAlternateFile, uploadFile, replaceFileAt, resetInputValue],
   );
 
   /* Try to upload more files when 
