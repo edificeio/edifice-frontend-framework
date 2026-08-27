@@ -201,7 +201,8 @@ describe('useShareBookmark', () => {
         error,
       );
       expect(toast.custom).toHaveBeenCalled();
-      const [element] = toast.custom.mock.calls[0];
+      const [renderToast] = toast.custom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
       expect(element.props.type).toBe('danger');
       expect(shareDispatch).not.toHaveBeenCalled();
     });

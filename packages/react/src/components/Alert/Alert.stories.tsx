@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Button } from '../Button';
+import { ButtonBeta as Button } from '../ButtonBeta';
 import Alert, { AlertRef } from './Alert';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
@@ -143,6 +143,19 @@ export const Error: Story = {
   },
 };
 
+export const ToastAutoClose: Story = {
+  render: (args) => <Template {...args} />,
+
+  args: {
+    type: 'success',
+    isToast: true,
+    autoClose: true,
+    autoCloseDelay: 5000,
+    children:
+      'Ce toast se ferme automatiquement, avec la barre de progression du minuteur. Survolez-le pour mettre le minuteur en pause.',
+  },
+};
+
 export const Confirm: Story = {
   render: (args) => <Template {...args} />,
 
@@ -151,7 +164,7 @@ export const Confirm: Story = {
     isConfirm: true,
     position: 'bottom-right',
     button: (
-      <Button type="button" variant="ghost" color="tertiary">
+      <Button type="button" variant="outline">
         Consulter
       </Button>
     ),

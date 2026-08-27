@@ -1,5 +1,6 @@
 import {
   ComponentPropsWithRef,
+  CSSProperties,
   forwardRef,
   ReactNode,
   Ref,
@@ -15,12 +16,13 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
 import {
-  IconAlertCircle,
+  IconAlertTriangle,
+  IconClose,
   IconError,
   IconInfoCircle,
   IconSuccessOutline,
 } from '../../modules/icons/components';
-import { Button } from '../Button';
+import { ButtonBeta as Button } from '../ButtonBeta';
 
 export interface AlertRef {
   show: () => void;
@@ -143,13 +145,57 @@ const Alert = forwardRef(
       onVisibilityChange?.(isVisible);
     }, [isVisible, onVisibilityChange]);
 
-    useEffect(() => {
-      if (autoClose && isVisible) {
-        setTimeout(() => {
-          hide();
-        }, autoCloseDelay);
+    const shouldAutoClose = autoClose && isVisible;
+    const showProgress = autoClose && isToast && !isDismissible;
+
+    // Remaining delay and pause/resume bookkeeping for the auto-close timer,
+    // kept in refs so mouseenter/mouseleave don't need to re-run the effect below
+    const remainingRef = useRef(autoCloseDelay);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+    const startedAtRef = useRef(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    const clearAutoCloseTimeout = useCallback(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
       }
-    }, [autoClose, autoCloseDelay, hide, isVisible]);
+    }, []);
+
+    useEffect(() => {
+      if (!shouldAutoClose) {
+        return;
+      }
+
+      remainingRef.current = autoCloseDelay;
+      startedAtRef.current = Date.now();
+      timeoutRef.current = setTimeout(hide, autoCloseDelay);
+
+      return clearAutoCloseTimeout;
+    }, [shouldAutoClose, autoCloseDelay, hide, clearAutoCloseTimeout]);
+
+    // Pausing on hover mirrors the pause-on-hover behavior react-hot-toast used to provide;
+    // now that Alert owns the auto-close timer, it must reimplement it itself
+    const handleMouseEnter = () => {
+      if (!shouldAutoClose || isPaused) {
+        return;
+      }
+      clearAutoCloseTimeout();
+      remainingRef.current = Math.max(
+        remainingRef.current - (Date.now() - startedAtRef.current),
+        0,
+      );
+      setIsPaused(true);
+    };
+
+    const handleMouseLeave = () => {
+      if (!shouldAutoClose || !isPaused) {
+        return;
+      }
+      startedAtRef.current = Date.now();
+      timeoutRef.current = setTimeout(hide, remainingRef.current);
+      setIsPaused(false);
+    };
 
     // Method to show alert
     const show = () => {
@@ -160,7 +206,7 @@ const Alert = forwardRef(
     // https://getbootstrap.com/docs/5.2/components/alerts/
     const mapping = {
       success: { icon: <IconSuccessOutline />, classModifier: 'alert-success' },
-      warning: { icon: <IconAlertCircle />, classModifier: 'alert-warning' },
+      warning: { icon: <IconAlertTriangle />, classModifier: 'alert-warning' },
       info: { icon: <IconInfoCircle />, classModifier: 'alert-info' },
       danger: { icon: <IconError />, classModifier: 'alert-danger' },
     };
@@ -168,7 +214,7 @@ const Alert = forwardRef(
     // Create className Attribute from component parameters
     const toastClasses = {
       'is-dismissible': isDismissible,
-      'is-toast ': isToast,
+      'is-toast': isToast,
     };
     // class for Confirm box style
     const confirmClasses = {
@@ -187,33 +233,42 @@ const Alert = forwardRef(
     return (
       <>
         {isVisible ? (
-          <div ref={refAlert} className={divContainerClasses} role="alert">
+          <div
+            ref={refAlert}
+            className={divContainerClasses}
+            role="alert"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
             {!isConfirm && mapping[type].icon}
             <div className="alert-content small flex-grow-1">{children}</div>
             {button && (
-              <div className="ms-12">
-                {button}{' '}
+              <div className="alert-actions">
+                {button}
                 {isConfirm && <Button onClick={hide}>{t('close')}</Button>}
               </div>
             )}
             {(isDismissible || isConfirm) && (
               <div className="btn-close-container">
-                <button
+                <Button
                   type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
+                  leftIcon={<IconClose />}
+                  variant="ghost"
+                  color="tertiary"
                   aria-label={t('close')}
+                  title={t('close')}
                   onClick={hide}
-                ></button>
+                />
               </div>
             )}
-            {/* Waiting animation library */}
-            {autoClose && (
+            {showProgress && (
               <div
-                className="alert-progress"
-                style={{
-                  transform: `scaleX(0)`,
-                }}
+                className={clsx('alert-progress', { 'is-paused': isPaused })}
+                style={
+                  {
+                    '--alert-progress-duration': `${autoCloseDelay}ms`,
+                  } as CSSProperties
+                }
               ></div>
             )}
           </div>
