@@ -18,3 +18,8 @@ CVE-2026-28388
 CVE-2026-28389
 CVE-2026-28390
 CVE-2026-45447
+
+# Added 2026-08-27 — same root cause as above (confirmed: the base image is
+# still pinned to Debian 12.13, same libssl3 build, no fixed version
+# published). Newly disclosed after the 2026-07-06 batch.
+CVE-2026-14456
