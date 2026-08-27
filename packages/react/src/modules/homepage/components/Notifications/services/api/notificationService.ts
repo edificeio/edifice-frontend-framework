@@ -29,7 +29,7 @@ export const createNotificationService = (baseURL: string) => ({
       }>(`${baseURL}/timeline/lastNotifications?${searchParams.toString()}`)
       .then((response): Array<NotificationModel> => {
         if (response.status !== 'ok') {
-          //TODO notify error
+          //TODO(ENABLING-1153): notify error
           return [];
         }
 

@@ -241,7 +241,7 @@ export default function useShare({
     });
 
     try {
-      //TODO move this logic into services
+      //TODO(ENABLING-1154): move this logic into services
       // add my rights if needed (because visible api does not return my rights)
       const myRights = resourceRights
         .filter((right) => user && right.includes(`user:${user.userId}`))

@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import todoPlz from 'eslint-plugin-todo-plz';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -14,6 +15,9 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      'todo-plz': todoPlz,
+    },
     rules: {
       '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-vars': ['warn'],
@@ -22,6 +26,10 @@ export default tseslint.config(
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/ban-types': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      'todo-plz/ticket-ref': [
+        'warn',
+        { terms: ['TODO', 'FIXME'], pattern: 'ENABLING-\\d+' },
+      ],
     },
   },
 );
