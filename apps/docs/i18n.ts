@@ -322,6 +322,44 @@ i18n.use(initReactI18next).init({
         'date.format.currentWeek': 'dddd',
         'date.format.currentYear': 'D MMM',
         'date.format.previousYear': 'D MMM YYYY',
+        //----------------- useDate (date format spec) -----------------
+        // Friendly - with time
+        'date.friendly.datetime.yesterday': '[Yesterday at] h:mma',
+        'date.friendly.datetime.tomorrow': '[Tomorrow at] h:mma',
+        'date.friendly.datetime.weekday': 'dddd [at] h:mma',
+        'date.friendly.datetime.currentYear': 'MMMM D [at] h:mma',
+        'date.friendly.datetime.otherYear': 'MMMM D, YYYY [at] h:mma',
+        // Friendly - without time
+        'date.friendly.date.yesterday': '[Yesterday]',
+        'date.friendly.date.tomorrow': '[Tomorrow]',
+        'date.friendly.date.weekday': 'dddd',
+        'date.friendly.date.currentYear': 'MMM D',
+        'date.friendly.date.otherYear': 'MMM D, YYYY',
+        // Simple & textual
+        'date.long.datetime': 'MMMM D, YYYY [at] HH:mm',
+        'date.long.date': 'MMMM D, YYYY',
+        // Raw
+        'date.raw.date': 'MM/DD/YYYY',
+        'date.raw.datetime': 'MM/DD/YYYY HH:mm',
+        // Calendar
+        'date.calendar.today': 'Today',
+        'date.calendar.yesterday': 'Yesterday',
+        'date.calendar.tomorrow': 'Tomorrow',
+        'date.calendar.full.currentYear': 'dddd MMMM D',
+        'date.calendar.full.otherYear': 'dddd MMMM D, YYYY',
+        'date.calendar.short.currentYear': 'dddd MMM D',
+        'date.calendar.short.otherYear': 'dddd MMM D, YYYY',
+        'date.calendar.abbr.currentYear': 'MM/DD',
+        'date.calendar.abbr.otherYear': 'MM/DD/YY',
+        // Week
+        'date.week.current': 'This week',
+        'date.week.last': 'Last week (from [[start]] to [[end]])',
+        'date.week.next': 'Next week (from [[start]] to [[end]])',
+        'date.week.other.currentYear': 'Week of [[start]] to [[end]]',
+        'date.week.other.otherYear': 'Week of [[start]] to [[end]] [[year]]',
+        'date.week.boundary.short': 'MMM D',
+        'date.week.boundary.day': 'D',
+        'date.week.boundary.dayMonth': 'MMMM D',
         //------------------------------------------------------
       },
     },
