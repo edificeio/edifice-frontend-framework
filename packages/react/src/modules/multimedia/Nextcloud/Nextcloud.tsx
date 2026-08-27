@@ -211,15 +211,12 @@ const Nextcloud = ({
         <Flex direction="column" gap="8" justify="center" align="center">
           <EmptyScreen imageSrc={illuNoContentInFolder} />
           <h2 className="h2 text-secondary mb-8">
-            Connectez vos Documents Synchronisés
+            {t('nextcloud.auth.title')}
           </h2>
-          <div className="text">
-            Connectez-vous pour parcourir vos Documents Synchronisés et les
-            insérer ici.
-          </div>
+          <div className="text">{t('nextcloud.auth.description')}</div>
         </Flex>
 
-        <Button onClick={openLoginPopup}>Se connecter</Button>
+        <Button onClick={openLoginPopup}>{t('nextcloud.auth.connect')}</Button>
       </Flex>
     );
   }
