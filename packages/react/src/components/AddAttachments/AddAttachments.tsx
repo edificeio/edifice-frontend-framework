@@ -7,7 +7,9 @@ import {
   IconFolderAdd,
   IconPlus,
 } from '../../modules/icons/components';
-import { Button, Flex, IconButton } from '../index';
+import Button from '../Button/Button';
+import Flex from '../Flex/Flex';
+import IconButton from '../Button/IconButton';
 import { AddAttachmentToWorkspaceModal } from './components/AddAttachmentToWorkspaceModal';
 import { SingleAttachment } from './components/SingleAttachment';
 import { useFileToAttachment } from './hooks/useFileToAttachment';
