@@ -9,7 +9,29 @@ on:
       - develop
       - develop*
       - epic-*
+    # Only run Chromatic when a change can actually affect the Storybook build.
+    # apps/docs (Storybook) depends on: react -> bootstrap, extensions, utilities, client, config.
+    # packages/cli and packages/rest-client-base are NOT part of that dependency graph.
+    # If a new workspace package joins that graph, add its path here too.
+    paths:
+      - "apps/docs/**"
+      - "packages/react/**"
+      - "packages/bootstrap/**"
+      - "packages/extensions/**"
+      - "packages/client/**"
+      - "packages/utilities/**"
+      - "packages/config/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "turbo.json"
+      - ".github/workflows/chromatic.yml"
   workflow_dispatch:
+
+concurrency:
+  # Cancel a build made obsolete by a newer push on the same PR/branch while it's still running.
+  group: chromatic-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   chromatic:
