@@ -151,12 +151,12 @@ export function findItemIndexInTree(
     }
     if (node.children && node.children.length > 0) {
       const result = findItemIndexInTree(node.children, itemId);
-      if (result) {
+      if (result !== null) {
         return result;
       }
     }
   }
-  return 0;
+  return null;
 }
 
 export function generateUpdateData(
@@ -276,11 +276,6 @@ export function getProjection(
       return previousItem.id;
     }
 
-    const newParent = newItems
-      .slice(0, overItemIndex)
-      .reverse()
-      .find((item) => item.depth === depth)?.parentId;
-
-    return newParent ?? null;
+    return null;
   }
 }

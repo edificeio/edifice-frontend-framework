@@ -60,12 +60,19 @@ export const useTree = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draggedNode]);
 
+  // expandAllNodes only reads the top-level node ids, so a content-based key
+  // is enough to detect a relevant change without re-running on every render
+  // when the caller passes an unmemoized `data` array/object.
+  const topLevelNodeIdsKey = Array.isArray(data)
+    ? data.map((node) => node.id).join(',')
+    : (data?.id ?? '');
+
   useEffect(() => {
     if (shouldExpandAllNodes) {
       expandAllNodes(shouldExpandAllNodes);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, shouldExpandAllNodes]);
+  }, [topLevelNodeIdsKey, shouldExpandAllNodes]);
 
   /**
    * Effect runs only when controlling treeview with selectedNodeId props
