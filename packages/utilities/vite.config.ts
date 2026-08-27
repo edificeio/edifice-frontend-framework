@@ -13,7 +13,7 @@ export default defineConfig({
       fileName: 'index',
       formats: ['cjs', 'es'],
     },
-    rollupOptions: {
+    rolldownOptions: {
       output: [
         {
           preserveModules: true,
