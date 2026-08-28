@@ -10,6 +10,7 @@ import {
 } from 'react';
 
 import {
+  NextcloudDocument,
   WorkspaceElement,
   WorkspaceVisibility,
   odeServices,
@@ -23,12 +24,17 @@ import {
   Tabs,
   TabsItemProps,
 } from '../../../components';
-import { useHasWorkflow, useHttpErrorToast } from '../../../hooks';
+import {
+  useHasWorkflow,
+  useHttpErrorToast,
+  usePublicConf,
+} from '../../../hooks';
 import {
   IconApplications,
   IconCode,
   IconFolder,
   IconGlobe,
+  IconGlobe2,
   IconMic,
   IconRecordVideo,
   IconSmartphone,
@@ -53,6 +59,7 @@ const orderedTabs = [
   'iframe', // Framed website
   'upload', // Filesystem browser + drag'n'drop of files
   'workspace', // Media browser
+  'nextcloud', // Nextcloud media browser
   'video-embedder', // Link to a hosted video
 ];
 
@@ -157,6 +164,7 @@ const mediaLibraryTypes: { none: null } & {
 export type MediaLibraryResult =
   | WorkspaceElement[] // Workspace result
   | WorkspaceElement // Workspace result
+  | NextcloudDocument[] // Nextcloud result
   | InternalLinkTabResult // Linker result
   | string
   | /*TODO type des autres résultats ?*/ any;
@@ -227,6 +235,15 @@ const MediaLibrary = forwardRef(
     const videoCaptureWorkflow = useHasWorkflow(
       'com.opendigitaleducation.video.controllers.VideoController|capture',
     );
+    const nextcloudViewWorkflow = useHasWorkflow(
+      'fr.openent.nextcloud.controller.NextcloudController|view',
+    );
+    const { data: workspacePublicConf } = usePublicConf<{
+      'folder-service'?: [string];
+    }>('workspace');
+    const enableNextcloudTab =
+      workspacePublicConf?.['folder-service']?.includes('nextcloud') &&
+      nextcloudViewWorkflow;
 
     const [type, setType] = useState<MediaLibraryType | null>(null);
 
@@ -247,6 +264,14 @@ const MediaLibrary = forwardRef(
         content: <InnerTabs.Workspace />,
         availableFor: ['audio', 'video', 'image', 'attachment'],
         isEnable: null,
+      },
+      'nextcloud': {
+        id: 'nextcloud',
+        icon: <IconGlobe2 />,
+        label: t('bbm.nextcloud'),
+        content: <InnerTabs.Nextcloud />,
+        availableFor: ['audio', 'video', 'image', 'attachment'],
+        isEnable: () => (enableNextcloudTab ? true : false),
       },
       'upload': {
         id: 'upload',

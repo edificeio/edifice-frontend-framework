@@ -5,6 +5,7 @@ export * from './directory/interface';
 export * from './embedder/interface';
 export * from './globals';
 export * from './notify/interfaces';
+export * from './nextcloud/interface';
 export * from './services';
 export * from './session/interfaces';
 export * from './transport/interfaces';
