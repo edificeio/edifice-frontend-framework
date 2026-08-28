@@ -34,8 +34,9 @@ import { Button, Flex } from '../../../components';
 const ROOT_ID = 'root';
 
 function compare(a?: string, b?: string) {
-  if (!a) return -1;
-  if (!b) return 1;
+  if (a === b) return 0;
+  if (a === undefined) return -1;
+  if (b === undefined) return 1;
   return a.localeCompare(b);
 }
 
