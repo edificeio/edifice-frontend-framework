@@ -55,6 +55,12 @@ export const Base: Story = {
       </Dropdown>
     );
   },
+  parameters: {
+    // Same closed-state trigger ("Dropdown", no icon/badge) as Hover and
+    // MenuGroup below; isTriggerHovered has no static visual effect without
+    // an actual pointer interaction.
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const Hover: Story = {
@@ -74,6 +80,12 @@ export const Hover: Story = {
         </Dropdown.Menu>
       </Dropdown>
     );
+  },
+  parameters: {
+    // isTriggerHovered only wires a mouse interaction handler; without an
+    // actual pointer event the closed trigger is identical to Base/MenuGroup
+    // ("Dropdown", no icon/badge).
+    chromatic: { disableSnapshot: true },
   },
 };
 
@@ -201,9 +213,22 @@ export const CheckboxGroup: Story = {
       </Dropdown>
     );
   },
+  parameters: {
+    // Same closed-state trigger ("Dropdown" + IconFilter, no badge shown
+    // since the initial count is 0) as RadioGroup and Stack below; the menu
+    // content differs but is not rendered (Dropdown.Menu is closed by
+    // default).
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const RadioGroup: Story = {
+  parameters: {
+    // Same closed-state trigger ("Dropdown" + IconFilter, no badge) as
+    // CheckboxGroup above and Stack below; the menu content differs but is
+    // not rendered (Dropdown.Menu is closed by default).
+    chromatic: { disableSnapshot: true },
+  },
   render: () => {
     const [value, setValue] = useState<string>('');
 
@@ -443,6 +468,10 @@ export const CustomMenu: Story = {
     );
   },
   parameters: {
+    // Same closed-state custom trigger (ghost IconButton, IconEdit) as
+    // CustomTrigger above; the distinguishing ColorPicker menu content is
+    // not rendered (Dropdown.Menu is closed by default).
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

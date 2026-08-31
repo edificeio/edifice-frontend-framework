@@ -91,6 +91,8 @@ export const UpdateComment: Story = {
 };
 
 export const DeleteComment: Story = {
+  // Same initial render as UpdateComment (identical props, no play function to show the delete interaction).
+  parameters: { chromatic: { disableSnapshot: true } },
   render: (_args) => {
     const [comments, setComments] = useState<CommentProps[]>([defaultComment]);
 

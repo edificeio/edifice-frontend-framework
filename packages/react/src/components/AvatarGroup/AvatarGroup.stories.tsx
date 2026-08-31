@@ -98,6 +98,9 @@ export const Base: Story = {
         story: 'Example of a base avatar group with default settings.',
       },
     },
+    // Identical to the "md" entry in Sizes below (and the "circle" entry in
+    // Variants): default circle variant, size md, overlap 20, maxAvatars 3.
+    chromatic: { disableSnapshot: true },
   },
 };
 

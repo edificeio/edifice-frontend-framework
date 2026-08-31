@@ -135,6 +135,9 @@ export const SyncTreeView: Story = {
   },
 };
 
+// Same trigger buttons ("Open node 7" / "Open node 2") and same collapsed initial
+// TreeView state as SyncTreeView; only the imperative ref API differs, which is not
+// visible before interaction. Already covered by SyncTreeView.
 export const SyncTreeViewWithRef: Story = {
   render: (args) => {
     const treeViewRef = useRef<TreeViewHandlers_V1>(null);
@@ -154,6 +157,7 @@ export const SyncTreeViewWithRef: Story = {
     );
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

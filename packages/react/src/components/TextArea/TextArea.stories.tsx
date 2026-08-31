@@ -49,6 +49,12 @@ export const Base: Story = {
     size: 'md',
     placeholder: 'Edifice',
   },
+
+  // Same args (size: 'md', placeholder: 'Edifice') and render as the "Medium" story below,
+  // which already covers this exact visual and has a documented description.
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const Small: Story = {

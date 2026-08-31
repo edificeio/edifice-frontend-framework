@@ -32,6 +32,7 @@ export default meta;
 
 type Story = StoryObj<typeof Loading>;
 
+// Visually identical to `LoadingWithText` (same args, same decorator) — covered there.
 export const Base: Story = {
   args: {
     loadingPosition: 'left',
@@ -48,6 +49,10 @@ export const Base: Story = {
       </div>
     ),
   ],
+
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const LoadingWithCustomColor: Story = {
