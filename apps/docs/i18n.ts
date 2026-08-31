@@ -205,6 +205,7 @@ i18n.use(initReactI18next).init({
         'bbm.linker.int': 'Internal link',
         'bbm.linker.ext': 'External link',
         'cancel': 'Cancel',
+        'close': 'Close',
         'workspace.tree.owner': 'My folder',
         'workspace.tree.shared': 'Shared',
         'workspace.tree.protected': 'Private',
