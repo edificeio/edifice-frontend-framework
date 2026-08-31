@@ -1,25 +1,26 @@
 import { UsefulLink } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { UsefulLinksModal } from './UsefulLinksModal';
+import { ButtonBeta } from '../../../../../components';
+import useToggle from '../../../../../hooks/useToggle/useToggle';
+import { UsefulLinksModal } from '../UsefulLinksModal';
 
 const meta: Meta<typeof UsefulLinksModal> = {
-  title: 'Modules/Homepage/UsefulLinksModal',
+  title: 'Modules/Homepage/UsefulLinks/Modal',
   component: UsefulLinksModal,
   args: {
-    isOpen: true,
     onClose: () => {},
     onAddClick: () => alert('Ajouter un lien'),
     onEditLink: (link: UsefulLink) => alert(`Modifier ${link.name}`),
     onDeleteLink: (id: string) => alert(`Supprimer ${id}`),
   },
   parameters: {
-    // ModalBeta locks page scroll while open. All the stories in this file
-    // render it open by default for full Chromatic coverage — embedding
-    // several of them together in an auto-generated Docs page would make
-    // that page itself unscrollable, so the whole Docs page is disabled
-    // here. Visit each story individually via the sidebar.
-    docs: { disable: true },
+    docs: {
+      description: {
+        component:
+          '« Gérer les liens utiles » — modale de gestion (tableau Nom/Adresse/Actions), avec la limite de 10 liens et un état vide dédié.',
+      },
+    },
   },
 };
 
@@ -42,20 +43,57 @@ const fullLinks: UsefulLink[] = Array.from({ length: 10 }, (_, i) => ({
   url: `https://example.com/${i + 1}`,
 }));
 
-export const WithLinks: Story = {
+// Closed by default: safe to embed in the auto-generated Docs page (an
+// always-open ModalBeta locks page scroll — see the sized stories below).
+export const Interactive: Story = {
   args: {
     links: mockLinks,
     canAddLink: true,
+  },
+  render: (args) => {
+    const [isOpen, toggle] = useToggle(false);
+
+    return (
+      <>
+        <ButtonBeta type="button" onClick={() => toggle(true)}>
+          Ouvrir la modale
+        </ButtonBeta>
+        <UsefulLinksModal
+          {...args}
+          isOpen={isOpen}
+          onClose={() => toggle(false)}
+        />
+      </>
+    );
+  },
+};
+
+// The stories below render the modal open by default, for full Chromatic
+// coverage. They are excluded from the Docs page (`docs.disable`): several
+// always-open ModalBeta instances embedded together would make that page
+// itself unscrollable (ModalBeta locks page scroll while open). Visit them
+// individually via the sidebar.
+
+export const WithLinks: Story = {
+  args: {
+    isOpen: true,
+    links: mockLinks,
+    canAddLink: true,
+  },
+  parameters: {
+    docs: { disable: true },
   },
 };
 
 export const Empty: Story = {
   args: {
+    isOpen: true,
     links: [],
     canAddLink: true,
   },
   parameters: {
     docs: {
+      disable: true,
       description: {
         story: "État vide — aucun lien enregistré par l'utilisateur.",
       },
@@ -65,11 +103,13 @@ export const Empty: Story = {
 
 export const LimitReached: Story = {
   args: {
+    isOpen: true,
     links: fullLinks,
     canAddLink: false,
   },
   parameters: {
     docs: {
+      disable: true,
       description: {
         story:
           'Limite de 10 liens atteinte — le bouton "Ajouter un lien" est désactivé.',

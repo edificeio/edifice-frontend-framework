@@ -1,10 +1,10 @@
 import { UsefulLink } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { UsefulLinks } from './UsefulLinks';
+import { UsefulLinks } from '../UsefulLinks';
 
 const meta: Meta<typeof UsefulLinks> = {
-  title: 'Modules/Homepage/UsefulLinks',
+  title: 'Modules/Homepage/UsefulLinks/Widget',
   component: UsefulLinks,
   decorators: [
     (Story) => <div style={{ maxWidth: 400, width: '100%' }}>{Story()}</div>,
