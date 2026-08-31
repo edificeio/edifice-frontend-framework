@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { UsefulLinksContainer } from './UsefulLinksContainer';
+import { UsefulLinksContainer } from '../UsefulLinksContainer';
 
 const meta: Meta<typeof UsefulLinksContainer> = {
-  title: 'Modules/Homepage/UsefulLinksContainer',
+  title: 'Modules/Homepage/UsefulLinks/Container',
   component: UsefulLinksContainer,
   decorators: [
     (Story) => <div style={{ maxWidth: 400, width: '100%' }}>{Story()}</div>,
