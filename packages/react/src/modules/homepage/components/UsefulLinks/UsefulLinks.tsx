@@ -2,7 +2,7 @@ import { UsefulLink } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyUsefulLinks from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-useful-links.png';
-import { Flex, LinkPill } from '../../../../components';
+import { Flex, Image, LinkPill } from '../../../../components';
 import { IconEdit } from '../../../icons/components';
 import HomeCard from '../HomeCard/HomeCard';
 
@@ -24,12 +24,20 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
       />
       <HomeCard.Content>
         {links.length === 0 ? (
-          <Flex align="center" gap="12">
-            <img src={illuEmptyUsefulLinks} alt="" width={50} height={50} />
-            <span className="useful-links-empty-text">
-              {t('homepage.usefulLinks.empty', 'Aucun lien enregistré')}
-            </span>
-          </Flex>
+          <div className="useful-links-widget-empty">
+            <Image
+              src={illuEmptyUsefulLinks}
+              alt=""
+              aria-hidden="true"
+              style={{ width: 160, height: 87 }}
+            />
+            <p className="useful-links-widget-empty-text">
+              {t(
+                'homepage.usefulLinks.empty',
+                'Gardez à portée de main les sites web que vous utilisez souvent !',
+              )}
+            </p>
+          </div>
         ) : (
           <Flex direction="column" gap="8">
             {links.map((link) => (

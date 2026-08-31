@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import illuEmptyUsefulLinks from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-useful-links.png';
 import {
   ButtonBeta,
-  EmptyScreen,
   Flex,
+  Image,
   ModalBeta,
   Table,
 } from '../../../../components';
@@ -56,18 +56,26 @@ export function UsefulLinksModal({
         </Flex>
 
         {links.length === 0 ? (
-          <EmptyScreen
-            imageSrc={illuEmptyUsefulLinks}
-            size={135}
-            title={t(
-              'homepage.usefulLinks.modal.empty.title',
-              'Pas encore de liens ajoutés',
-            )}
-            text={t(
-              'homepage.usefulLinks.modal.empty.text',
-              'Gardez à portée de main les sites web que vous utilisez souvent !',
-            )}
-          />
+          <div className="useful-links-modal-empty">
+            <Image
+              src={illuEmptyUsefulLinks}
+              alt=""
+              aria-hidden="true"
+              style={{ width: 200, height: 109 }}
+            />
+            <p className="useful-links-modal-empty-title">
+              {t(
+                'homepage.usefulLinks.modal.empty.title',
+                'Pas encore de liens ajoutés',
+              )}
+            </p>
+            <p className="useful-links-modal-empty-text">
+              {t(
+                'homepage.usefulLinks.modal.empty.text',
+                'Gardez à portée de main les sites web que vous utilisez souvent !',
+              )}
+            </p>
+          </div>
         ) : (
           <div className="useful-links-table">
             <Table>
