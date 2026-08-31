@@ -18,7 +18,11 @@ describe('UsefulLinks', () => {
   it('shows the empty message when there are no links', () => {
     render(<UsefulLinks links={[]} onEditClick={vi.fn()} />);
 
-    expect(screen.getByText('Aucun lien enregistré')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Gardez à portée de main les sites web que vous utilisez souvent !',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('calls onEditClick when the header action is clicked', async () => {
