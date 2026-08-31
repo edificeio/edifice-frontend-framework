@@ -70,6 +70,7 @@ const Template: StoryFn<typeof Input> = (args) => {
   );
 };
 
+// Visually identical to `Medium` (same md size, same placeholder) — covered there.
 export const Base: Story = {
   render: Template,
 
@@ -77,6 +78,10 @@ export const Base: Story = {
     type: 'text',
     size: 'md',
     placeholder: 'Edifice',
+  },
+
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 

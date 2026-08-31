@@ -83,6 +83,12 @@ export const FilterActions: Story = {
 };
 
 export const DefaultActions: Story = {
+  // `defaultActions` only changes the rights applied to a NEW row added via
+  // search (see useSearch's handleSearchResultsChange); it has no effect on
+  // the initial render, which is otherwise identical to `Default`.
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
   args: {
     shareOptions: {
       ...mockShareOptions,

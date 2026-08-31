@@ -40,7 +40,10 @@ type Story = StoryObj<typeof ImagePicker>;
 export const Base: Story = {};
 
 export const DisabledButton: Story = {
+  // Same args as `Base` (no override): this story only re-documents the
+  // already-default "no image uploaded" state, so it renders identically.
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story: 'When no image is uploaded, the delete button is disabled.',

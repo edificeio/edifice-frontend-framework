@@ -36,6 +36,7 @@ const menuItem = {
   selected: false,
 };
 
+// Visually identical to `Label` (the `label` prop only sets aria-label, not visible text) — covered there.
 export const Base: Story = {
   render: (args) => {
     return (
@@ -52,6 +53,10 @@ export const Base: Story = {
         </Menu.Item>
       </Menu>
     );
+  },
+
+  parameters: {
+    chromatic: { disableSnapshot: true },
   },
 };
 

@@ -44,6 +44,11 @@ type Story = StoryObj<typeof Avatar>;
 
 export const Base: Story = {
   render: (args) => <Avatar {...args} />,
+  parameters: {
+    // Identical to the "md" entry already rendered in AvatarSizes below
+    // (default square variant, size md, no src -> same fallback image).
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const AvatarSizes: Story = {
@@ -116,6 +121,10 @@ export const AvatarFallback: Story = {
           'If `src` is undefined or on error, we use the placeholder image as a fallback.',
       },
     },
+    // Renders the exact same pixels as the "md" entry in AvatarSizes above:
+    // explicit src={noAvatar} is the same image Avatar falls back to when no
+    // src is provided (square variant, size md).
+    chromatic: { disableSnapshot: true },
   },
 };
 

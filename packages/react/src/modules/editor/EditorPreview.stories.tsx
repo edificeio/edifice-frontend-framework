@@ -36,6 +36,8 @@ export default meta;
 type Story = StoryObj<typeof EditorPreview>;
 
 export const OutlinePreviewVariant: Story = {
+  // Same visual as ClickablePreviewVariant: default variant is 'outline' and click handlers add no visible styling.
+  parameters: { chromatic: { disableSnapshot: true } },
   args: {
     variant: 'outline',
     content: defaultContent,

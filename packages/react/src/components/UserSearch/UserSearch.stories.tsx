@@ -79,6 +79,8 @@ type Story = StoryObj<typeof UserSearch>;
 
 export const Default: Story = {};
 
+// getSearchResults only affects results shown after typing (debounced, no play() here);
+// the closed Combobox at rest is identical to Default. Already covered by Default.
 export const SlowSearch: Story = {
   args: {
     getSearchResults: (searchInputValue: string) =>
@@ -95,6 +97,7 @@ export const SlowSearch: Story = {
       }),
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:
@@ -111,6 +114,8 @@ export const AdmlcOrAdmc: Story = {
   },
 };
 
+// initialSharings only filters what appears once a search is typed; the Combobox
+// dropdown is closed at rest, so this renders identically to Default. Already covered.
 export const WithInitialSharings: Story = {
   args: {
     initialSharings: [
@@ -123,6 +128,7 @@ export const WithInitialSharings: Story = {
     ],
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

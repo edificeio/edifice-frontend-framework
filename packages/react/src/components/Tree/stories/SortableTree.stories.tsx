@@ -111,6 +111,8 @@ export const ExpandedNodes: Story = {
   },
 };
 
+// isDisabled only toggles dnd-kit drag listeners, it adds no CSS class or style to the node,
+// so the initial render is visually identical to Base: covered there already.
 export const DisabledNodes: Story = {
   render: (args) => (
     <SortableTree
@@ -131,9 +133,12 @@ export const DisabledNodes: Story = {
         code: ` <SortableTree isDisabled={(node) => node === '3' || node === '6'} />`,
       },
     },
+    chromatic: { disableSnapshot: true },
   },
 };
 
+// Same reasoning as DisabledNodes: isDisabled has no visual effect on the initial render,
+// this is visually identical to Base and already covered there.
 export const DisabledAllNodes: Story = {
   render: (args) => <SortableTree {...args} isDisabled={() => true} />,
   args: {
@@ -149,6 +154,7 @@ export const DisabledAllNodes: Story = {
         code: `<SortableTree isDisabled={() => true} />`,
       },
     },
+    chromatic: { disableSnapshot: true },
   },
 };
 
@@ -201,6 +207,8 @@ const fakePUTRequest = (nodes: UpdateTreeData[]) => {
   });
 };
 
+// onSortable only runs on drag-drop completion, it does not change the initial render,
+// which is visually identical to Base and already covered there.
 export const UpdatePagesOnSortable: Story = {
   render: (args) => (
     <SortableTree
@@ -215,6 +223,7 @@ export const UpdatePagesOnSortable: Story = {
     ...meta.args,
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

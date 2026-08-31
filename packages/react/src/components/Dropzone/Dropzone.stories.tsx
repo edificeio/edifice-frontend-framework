@@ -88,6 +88,10 @@ export const SingleFile: Story = {
     );
   },
   parameters: {
+    // With no files added, this renders identically to Base: the
+    // multiple-dependent "Ajouter plus" button lives inside the file list,
+    // which stays d-none until a file exists.
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

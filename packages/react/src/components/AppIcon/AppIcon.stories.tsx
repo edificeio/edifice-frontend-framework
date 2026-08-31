@@ -62,7 +62,13 @@ const meta: Meta<typeof AppIcon> = {
 export default meta;
 type Story = StoryObj<typeof AppIcon>;
 
-export const Base: Story = {};
+export const Base: Story = {
+  parameters: {
+    // Identical to the 40px entry already rendered in AppIconSizes below
+    // (same undefined app, default square/contain).
+    chromatic: { disableSnapshot: true },
+  },
+};
 
 export const AppIconSizes: Story = {
   render: (args: AppIconProps) => {
@@ -107,6 +113,9 @@ export const AppIconAsImage: Story = {
           'If the `icon` property is a `url`, AppIcon displays the image instead of an svg icon.',
       },
     },
+    // Identical to the 40px entry already rendered in AppIconImageSizes below
+    // (same image app, default square/contain).
+    chromatic: { disableSnapshot: true },
   },
 };
 
@@ -249,6 +258,9 @@ export const AppIconRounded: Story = {
           'Using the `variant` attribute with the `rounded` value will change the shape of AppIcon. Default value is `square`',
       },
     },
+    // Identical to the 40px entry already rendered in AppIconRoundedSizes
+    // below (same blog app, rounded/ratio).
+    chromatic: { disableSnapshot: true },
   },
 };
 
