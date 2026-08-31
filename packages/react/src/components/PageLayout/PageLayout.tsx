@@ -8,6 +8,7 @@ import {
 
 import clsx from 'clsx';
 
+import { useZendeskGuide } from '../../hooks';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -101,6 +102,8 @@ const Root = ({
     () => ({ variant, scrollMode, noPadding }),
     [variant, scrollMode, noPadding],
   );
+
+  useZendeskGuide();
 
   const {
     hasLeftSidebar,

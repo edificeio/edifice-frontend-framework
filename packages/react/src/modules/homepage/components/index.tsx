@@ -1,3 +1,4 @@
+export * from './Communities';
 export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';

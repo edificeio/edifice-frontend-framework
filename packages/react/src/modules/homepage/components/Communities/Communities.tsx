@@ -22,12 +22,15 @@ const Communities = ({
       <HomeCard.Header
         actionLabel={
           communitiesList.length > 0
-            ? t('homepage.widget.communities.actionLabel.seeMore')
-            : t('homepage.widget.communities.actionLabel.create')
+            ? t('homepage.widget.communities.actionLabel.seeMore', 'Voir plus')
+            : t(
+                'homepage.widget.communities.actionLabel.create',
+                'Créer une communauté',
+              )
         }
         actionRightIcon={<IconArrowRight />}
         onActionClick={handleActionClick}
-        title={t('homepage.widget.communities.title')}
+        title={t('homepage.widget.communities.title', 'Communautés')}
       />
       <HomeCard.Content>
         <Flex gap="16">

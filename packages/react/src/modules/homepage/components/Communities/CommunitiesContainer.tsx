@@ -19,8 +19,7 @@ export function CommunitiesContainer({
       () =>
         communities.map((community) => ({
           title: community.title,
-          communityImage: community.communityImage ?? community.icon ?? '',
-          nbNotifications: community.nbNotifications ?? community.notifications,
+          communityImage: community.image ?? '',
           onActionClick: () => onCommunityClick?.(community),
         })),
       [communities, onCommunityClick],
