@@ -61,6 +61,11 @@ export const WithLabel: Story = {
       </FormControl>
     );
   },
+  parameters: {
+    // Same rendered output as Base above (isOptional/isRequired/isReadOnly
+    // default to falsy either way, and `id` is not visible).
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const WithLabelAndIcon: Story = {

@@ -53,6 +53,11 @@ export const Base = {
     'disabled': false,
     'icon': <IconAddUser />,
   },
+  parameters: {
+    // Identical to IconWithAriaLabel below: the only difference is the icon's
+    // `title` prop, which renders an invisible SVG <title> (a11y tooltip only).
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const IconWithAriaLabel = {

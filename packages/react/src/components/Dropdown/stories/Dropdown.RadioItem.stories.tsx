@@ -64,6 +64,12 @@ export const WithSearch: Story = {
 };
 
 export const RadioGroup: Story = {
+  parameters: {
+    // Same closed-state trigger ("Dropdown" + IconFilter, no badge) as
+    // WithSearch above; the menu content differs but is not rendered
+    // (Dropdown.Menu is closed by default).
+    chromatic: { disableSnapshot: true },
+  },
   render: () => {
     const [value, setValue] = useState<string>('');
 

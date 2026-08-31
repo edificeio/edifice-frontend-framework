@@ -153,6 +153,11 @@ export const Base: Story = {
     children: 'Badge',
     variant: { type: 'content', level: 'success', background: true },
   },
+  parameters: {
+    // Same variant (content/success/background) as BadgeContent below, just
+    // a different label — no distinct visual state to regression-test.
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const BadgeContent: Story = {

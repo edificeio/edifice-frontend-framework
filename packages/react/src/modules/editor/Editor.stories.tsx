@@ -169,6 +169,7 @@ export const EditorVisibilityProp: Story = {
 };
 
 export const EditorFocusProp: Story = {
+  // Same args as EditorVisibilityProp (focus is not visible in a static screenshot).
   args: {
     ...allArgs,
     mode: 'edit',
@@ -179,6 +180,7 @@ export const EditorFocusProp: Story = {
   },
   name: 'Edit Mode with focus props',
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:

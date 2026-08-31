@@ -53,6 +53,12 @@ export const Base: Story = {
       </Dropdown>
     );
   },
+  parameters: {
+    // Same closed-state trigger ("Action menu", no icon/badge) as
+    // WithTypeAction below; the menu content differs but is not rendered
+    // (Dropdown.Menu is closed by default).
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const WithTypeAction: Story = {
