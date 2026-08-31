@@ -1,0 +1,130 @@
+// ModalBeta implements the "↪︎ Modals" design system component (Figma
+// EdificeLibrary_Web, node 1055-2208). It intentionally does not share
+// tokens/markup with the legacy .modal — see ModalBeta.tsx doc comment.
+.modal-beta {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  overflow: hidden auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-block: var(--primitive-spacer-32);
+  padding-inline: var(--primitive-spacer-16);
+
+  &-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1049;
+    background-color: var(--primitive-grey-900);
+    opacity: 0.65;
+  }
+
+  &-dialog {
+    position: relative;
+    z-index: 1050;
+    width: 100%;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-12);
+    width: 100%;
+    background-color: var(--primitive-white);
+    box-shadow: var(--primitive-box-shadow);
+  }
+
+  &-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-4);
+    width: 100%;
+  }
+
+  &-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+  }
+
+  &-title {
+    flex: 1 0 0;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-m);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-m);
+    color: var(--primitive-text-color-default);
+    overflow-wrap: anywhere;
+  }
+
+  &-subtitle {
+    margin: 0;
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-subtext);
+  }
+
+  &-body {
+    flex: 1;
+  }
+
+  &-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--primitive-spacer-12);
+    width: 100%;
+  }
+
+  // Size variants — width/padding/radius per the design system spec.
+  &--s {
+    .modal-beta-dialog {
+      max-width: min(34rem, calc(100vw - var(--primitive-spacer-32)));
+    }
+
+    .modal-beta-content {
+      padding: var(--primitive-spacer-16);
+      border-radius: var(--primitive-border-radius-xl);
+    }
+  }
+
+  &--m {
+    .modal-beta-dialog {
+      max-width: min(45.3333rem, calc(100vw - var(--primitive-spacer-32)));
+    }
+
+    .modal-beta-content {
+      padding: var(--primitive-spacer-24);
+      border-radius: var(--primitive-border-radius-2xl);
+    }
+  }
+
+  &--l {
+    .modal-beta-dialog {
+      max-width: min(81.6rem, calc(100vw - var(--primitive-spacer-32)));
+    }
+
+    .modal-beta-content {
+      padding: var(--primitive-spacer-32);
+      border-radius: var(--primitive-border-radius-3xl);
+    }
+  }
+
+  &--xl {
+    .modal-beta-dialog {
+      max-width: min(108.8rem, calc(100vw - var(--primitive-spacer-32)));
+    }
+
+    .modal-beta-content {
+      padding: var(--primitive-spacer-32);
+      border-radius: var(--primitive-border-radius-3xl);
+    }
+  }
+}
