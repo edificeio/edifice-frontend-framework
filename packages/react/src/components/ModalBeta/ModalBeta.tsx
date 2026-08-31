@@ -12,7 +12,7 @@
  *
  * @see WAI-ARIA https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/
  */
-import { forwardRef, Ref, useEffect } from 'react';
+import { forwardRef, Ref, useCallback, useEffect } from 'react';
 
 import { animated, useTransition } from '@react-spring/web';
 import clsx from 'clsx';
@@ -83,8 +83,32 @@ const Root = forwardRef(
     const ariaLabelId = `aria_label_${id}`;
     const ariaDescriptionId = `aria_desc_${id}`;
 
-    const modalRef = useClickOutside(onModalClose);
+    // Disabled while closed: a ModalBeta instance stays mounted during its
+    // react-spring leave transition after `isOpen` turns false (e.g. a
+    // consumer keeps it rendered and just flips `isOpen` to switch to a
+    // different modal, as UsefulLinksModal/LinkForm do). Without this guard,
+    // its click-outside listener stays active during that transition and
+    // treats any click inside the newly-opened modal as "outside itself",
+    // closing both.
+    const modalRef = useClickOutside(
+      onModalClose,
+      undefined,
+      undefined,
+      isOpen,
+    );
     const trapRef = useTrapFocus(isOpen);
+    // Stable across re-renders (unlike an inline arrow function): an inline
+    // callback ref is recreated every render, which makes React detach then
+    // reattach it on each one, including while the modal's own content
+    // re-renders (e.g. typing into a form field triggers validation state
+    // updates).
+    const setDialogRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        modalRef.current = node;
+        trapRef.current = node;
+      },
+      [modalRef, trapRef],
+    );
 
     useKeyPress(onModalClose, ['Escape']);
 
@@ -138,10 +162,7 @@ const Root = forwardRef(
               >
                 <div
                   id={`${id}_ref`}
-                  ref={(node) => {
-                    modalRef.current = node;
-                    if (isOpen) trapRef.current = node;
-                  }}
+                  ref={setDialogRef}
                   className="modal-beta-dialog"
                 >
                   <div className="modal-beta-content">{children}</div>
