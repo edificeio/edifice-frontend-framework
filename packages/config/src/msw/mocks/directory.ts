@@ -1,6 +1,18 @@
 import { http, HttpResponse } from 'msw';
 import { mockChildrenByStructure } from '../data';
 
+// In-memory store for the "Liens utiles" homepage widget mocks.
+// IMPULS-6167 (backend CRUD) is not implemented yet: this stands in for it.
+let usefulLinks = [
+  { id: '1', name: 'Lumni', url: 'https://www.lumni.fr' },
+  {
+    id: '2',
+    name: "Ministère de l'Éducation Nationale",
+    url: 'https://www.education.gouv.fr',
+  },
+  { id: '3', name: 'ONISEP', url: 'https://www.onisep.fr' },
+];
+
 export const handlers = [
   http.get('/directory/user/:userId/children', () => {
     return HttpResponse.json(mockChildrenByStructure);
@@ -49,5 +61,24 @@ export const handlers = [
         },
       ],
     });
+  }),
+  http.get('/directory/user/link', () => {
+    return HttpResponse.json(usefulLinks);
+  }),
+  http.post('/directory/user/link', async ({ request }) => {
+    const payload = (await request.json()) as { name: string; url: string };
+    const link = { id: `${Date.now()}`, ...payload };
+    usefulLinks = [...usefulLinks, link];
+    return HttpResponse.json(link, { status: 201 });
+  }),
+  http.put('/directory/user/link/:id', async ({ params, request }) => {
+    const payload = (await request.json()) as { name: string; url: string };
+    const link = { id: params.id as string, ...payload };
+    usefulLinks = usefulLinks.map((l) => (l.id === params.id ? link : l));
+    return HttpResponse.json(link);
+  }),
+  http.delete('/directory/user/link/:id', ({ params }) => {
+    usefulLinks = usefulLinks.filter((l) => l.id !== params.id);
+    return new HttpResponse(null, { status: 204 });
   }),
 ];
