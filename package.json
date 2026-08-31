@@ -85,8 +85,10 @@
     "katex": "0.16.33"
   },
   "pnpm": {
+    "//overrides": "FIXME(ENABLING-1183): nwsapi >=2.2.25 (2026-08-27) added :popover-open/:modal/:fullscreen pseudo-class matching with a catastrophic recursive performance bug under jsdom (Element.matches(':fullscreen') was measured at 144M+ recursive calls for a single click) — floating-ui's isTopLayer() check (used by the flip/size middleware behind Dropdown/Combobox/Select/Toolbar/EditorToolbar/TableToolbar/...) calls matches(':modal')/':popover-open', blowing vitest's test timeout. Pinned to the last known-good release; remove once nwsapi ships a fix upstream.",
     "overrides": {
-      "@rushstack/terminal": "0.22.3"
+      "@rushstack/terminal": "0.22.3",
+      "nwsapi": "2.2.24"
     }
   },
   "packageManager": "pnpm@9.12.2",

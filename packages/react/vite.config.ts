@@ -98,7 +98,7 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       globals: true,
       include: ['src/**/*.spec.{ts,tsx}'],
-      setupFiles: ['./vitest.setup.jsdom-shims.ts', './vitest.setup.ts'],
+      setupFiles: ['./vitest.setup.ts'],
       watch: false,
       clearMocks: true,
       restoreMocks: true,
