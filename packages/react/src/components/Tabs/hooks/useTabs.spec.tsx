@@ -156,26 +156,28 @@ describe('useTabs', () => {
       button.remove();
     });
 
-    // Focusing a tab while typing in an input would close the mobile keyboard.
-    it('leaves an input alone when it holds the focus', async () => {
-      const { result } = setup();
+    it.each(['input', 'textarea'])(
+      'leaves a focused %s alone when repositioning tabs',
+      async (tagName) => {
+        const { result } = setup();
 
-      const input = document.createElement('input');
-      document.body.appendChild(input);
-      input.focus();
+        const editable = document.createElement(tagName);
+        document.body.appendChild(editable);
+        editable.focus();
 
-      const button = document.createElement('button');
-      document.body.appendChild(button);
+        const button = document.createElement('button');
+        document.body.appendChild(button);
 
-      await act(() => {
-        result.current.tabsRef.current[1] = button;
-        result.current.setSelectedTab('second');
-      });
+        await act(() => {
+          result.current.tabsRef.current[1] = button;
+          result.current.setSelectedTab('second');
+        });
 
-      expect(input).toHaveFocus();
+        expect(editable).toHaveFocus();
 
-      input.remove();
-      button.remove();
-    });
+        editable.remove();
+        button.remove();
+      },
+    );
   });
 });

@@ -26,12 +26,13 @@ export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
 
   useEffect(() => {
     function setTabPosition() {
-      /**
-       * If the active element is not an input, then focus on the current tab.
-       * The focus on input element with a reponse device will cause the keyboard to be displayed and trigger the resize event.
-       * Which will cause the tab to be focused again and the keyboard to be closed. #WB-2841
-       */
-      if (document?.activeElement?.tagName !== 'INPUT') {
+      const activeElement = document.activeElement as HTMLElement | null;
+      const isEditing =
+        activeElement?.tagName === 'INPUT' ||
+        activeElement?.tagName === 'TEXTAREA' ||
+        activeElement?.isContentEditable;
+
+      if (!isEditing) {
         const currentTabIndex = items.findIndex(
           (item) => item.id === activeTab,
         );
