@@ -62,10 +62,28 @@ export class ConfService {
     return undefined;
   }
 
-  async savePreference<T>(key: string, value: T) {
-    this.http.putJson(`/userbook/preference/${key}`, value);
+  /** New-gen API to get all of the user's preferences at once. */
+  async getUserPreferences<
+    T extends Record<string, any> = Record<string, any>,
+  >(): Promise<T> {
+    const res = await this.http.get<T>('/userbook/api/preferences');
+    if (this.http.isResponseError() || typeof res === 'string') {
+      return {} as T;
+    }
+    return res as T;
   }
 
+  /**
+   * New-gen API to set all of the user's preferences at once.
+   * Warning : every missing preference will be erased in the backend. Set them all !!
+   */
+  async saveUserPreferences<T extends Record<string, any>>(
+    preferences: T,
+  ): Promise<void> {
+    await this.http.putJson('/userbook/api/preferences', preferences);
+  }
+
+  /** Legacy API to get the user's preferences for a given key. */
   async getPreference<T>(key: string): Promise<T> {
     const res = await this.http.get<{ preference: string }>(
       `/userbook/preference/${key}`,
@@ -75,6 +93,11 @@ export class ConfService {
       return {} as T;
     }
     return JSON.parse(res.preference) as T;
+  }
+
+  /** Legacy API to set the user's preferences for a given key. */
+  async savePreference<T>(key: string, value: T) {
+    this.http.putJson(`/userbook/preference/${key}`, value);
   }
 
   private async getThemeConf(version?: string): Promise<IThemeConf> {
