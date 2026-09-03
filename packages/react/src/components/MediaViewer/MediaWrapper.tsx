@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import IconTextPage from '../../modules/icons/components/IconTextPage';
 import IconLink from '../../modules/icons/components/IconLink';
 import IconHeadphone from '../../modules/icons/components/IconHeadphone';
@@ -6,9 +7,11 @@ import IconExternalLink from '../../modules/icons/components/IconExternalLink';
 import { Flex } from '../Flex';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../Button';
-import PdfViewer from './PdfViewer';
+import { LoadingScreen } from '../LoadingScreen';
 import { MediaLibraryType } from 'src/modules/multimedia';
 import { Image } from '../Image';
+
+const PdfViewer = lazy(() => import('./PdfViewer'));
 
 export const MediaWrapper = ({
   mediaUrl,
@@ -100,7 +103,9 @@ export const MediaWrapper = ({
     case 'hyperlink':
     case 'attachment':
       return mimeType && mimeType === 'application/pdf' ? (
-        <PdfViewer mediaUrl={mediaUrl} scale={scale} />
+        <Suspense fallback={<LoadingScreen />}>
+          <PdfViewer mediaUrl={mediaUrl} scale={scale} />
+        </Suspense>
       ) : (
         <Flex direction="column" align="center">
           <Flex
