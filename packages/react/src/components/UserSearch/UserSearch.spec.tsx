@@ -33,6 +33,10 @@ function getInput() {
 }
 
 describe('UserSearch', () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   describe('Initial render', () => {
     it('displays the default placeholder', () => {
       const getSearchResults = vi.fn().mockResolvedValue({ results: [] });

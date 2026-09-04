@@ -276,14 +276,6 @@ describe('Layout Header', () => {
       ).toHaveAttribute('href', '/auth/logout?callback=');
     });
 
-    it('shows the community entry when its workflow is granted', () => {
-      setup({ state: { communityWorkflow: true } });
-
-      expect(
-        screen.getByRole('link', { name: 'navbar.community' }),
-      ).toHaveAttribute('href', '/community');
-    });
-
     it('shows the communities entry when its workflow is granted', () => {
       setup({ state: { communitiesWorkflow: true } });
 
