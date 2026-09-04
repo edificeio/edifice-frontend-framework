@@ -50,10 +50,37 @@
   color: var(--primitive-text-color-subtext);
 }
 
+// Overrides the generic Table's older bootstrap-ish tokens (radius, border
+// and zebra colors) with the "Modals" design system's own tokens, to match
+// the modal spec exactly (Figma EdificeLibrary_Web, node 8389-191565): no
+// visible column headers, the "Ajouter un lien" action folded into the
+// table as its first row, and per-row bottom borders instead of the
+// generic component's outer-border-only look.
 .useful-links-table {
-  table {
+  .table {
+    margin-bottom: 0;
+    color: var(--primitive-text-color-default);
+    border-color: var(--primitive-grey-300);
+    border-radius: var(--primitive-border-radius-lg);
     table-layout: fixed;
   }
+
+  tr > * {
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-16);
+    border-bottom: 1px solid var(--primitive-grey-300);
+  }
+
+  tbody > tr:nth-of-type(even) > * {
+    background-color: var(--primitive-grey-100);
+  }
+
+  tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--primitive-white);
+  }
+}
+
+.useful-links-table-action-row > * {
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
 }
 
 .useful-links-table-name,
@@ -63,10 +90,10 @@
   white-space: nowrap;
 }
 
-.useful-links-table-name {
-  width: 40%;
+.useful-links-table-url {
+  width: 24rem;
 }
 
-.useful-links-table-url {
-  width: 45%;
+.useful-links-table-actions {
+  width: 8rem;
 }
