@@ -51,6 +51,7 @@ describe('useUserPreferences', () => {
 
   it('saves the whole preferences payload', async () => {
     const preferences = { language: 'fr', apps: { bookmarks: ['news'] } };
+    getUserPreferences.mockResolvedValue(preferences);
     saveUserPreferences.mockResolvedValue(undefined);
 
     const { result } = renderHook(
