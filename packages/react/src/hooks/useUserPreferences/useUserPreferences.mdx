@@ -1,0 +1,86 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useUserPreferences" />
+
+# useUserPreferences
+
+The `useUserPreferences` hook loads and saves the current user's preferences
+using the `odeServices` client.
+
+It is backed by `@tanstack/react-query`: preferences are cached under the
+`['user', 'preferences']` query key, and saves update the cache optimistically
+before invalidating it.
+
+## Usage
+
+```tsx
+import { useUserPreferences } from '@edifice.io/react';
+
+type UserPreferences = {
+  language: string;
+  theme: string;
+};
+
+function PreferencesPanel() {
+  const { preferences, isLoading, isError, savePreferences } =
+    useUserPreferences<UserPreferences>();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Unable to load preferences.</div>;
+
+  const updateLanguage = async () => {
+    if (!preferences) return;
+
+    await savePreferences({
+      ...preferences,
+      language: { 'default-domain': 'fr' },
+    });
+  };
+
+  return <button onClick={updateLanguage}>Use French</button>;
+}
+```
+
+## API
+
+### `useUserPreferences<T>()`
+
+#### Type Parameters
+
+- `T` (`Record<string, any>`): The shape of the user preferences object.
+
+#### Returns
+
+- `preferences` (`T | undefined`): The current user preferences.
+- `isLoading` (`boolean`): Whether the preferences query is loading.
+- `isError` (`boolean`): Whether the preferences query failed.
+- `refetch` (`function`): Refetches the user preferences query.
+- `savePreferences` (`function`): Saves the full preferences payload.
+
+### `savePreferences(preferences: T): Promise<void>`
+
+Saves the whole preferences object with `odeServices.conf().saveUserPreferences`.
+The local React Query cache is updated immediately, then invalidated after the
+mutation succeeds or fails so consumers receive the server state.
+
+## Query Key
+
+The query key used for this hook is `['user', 'preferences']`.
+
+## Example
+
+```tsx
+type Preferences = {
+  apps: {
+    bookmarks: string[];
+  };
+};
+
+const { preferences, savePreferences } = useUserPreferences<Preferences>();
+
+await savePreferences({
+  apps: {
+    bookmarks: [...(preferences?.apps.bookmarks ?? []), 'news'],
+  },
+});
+```
