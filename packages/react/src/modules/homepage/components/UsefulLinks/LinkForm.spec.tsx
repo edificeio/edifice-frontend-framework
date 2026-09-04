@@ -2,7 +2,7 @@ import { fireEvent, render, screen, waitFor } from '~/setup';
 import { LinkForm } from './LinkForm';
 
 describe('LinkForm', () => {
-  it('prefills the URL field with https:// in add mode', () => {
+  it('shows an https:// example as a placeholder, unfilled, in add mode', () => {
     render(
       <LinkForm
         mode="add"
@@ -13,7 +13,53 @@ describe('LinkForm', () => {
       />,
     );
 
-    expect(screen.getByLabelText(/^Lien/)).toHaveValue('https://');
+    const urlInput = screen.getByLabelText(/^Lien/);
+    expect(urlInput).toHaveValue('');
+    expect(urlInput).toHaveAttribute('placeholder', 'https://example.fr');
+  });
+
+  it('rejects a URL without an http(s):// scheme', async () => {
+    const { user } = render(
+      <LinkForm
+        mode="add"
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
+    const urlInput = screen.getByLabelText(/^Lien/);
+    await user.clear(urlInput);
+    await user.type(urlInput, 'lumni.fr');
+
+    expect(
+      await screen.findByText(
+        "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Enregistrer').closest('button')).toBeDisabled();
+  });
+
+  it('accepts an http:// URL', async () => {
+    const { user } = render(
+      <LinkForm
+        mode="add"
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
+    const urlInput = screen.getByLabelText(/^Lien/);
+    await user.clear(urlInput);
+    await user.type(urlInput, 'http://lumni.fr');
+
+    const save = screen.getByText('Enregistrer').closest('button')!;
+    await waitFor(() => expect(save).not.toBeDisabled());
   });
 
   it('prefills the fields with the link being edited', () => {
