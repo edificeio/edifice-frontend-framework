@@ -11,7 +11,7 @@ import {
 } from '../../../../components';
 
 const NAME_MAX_LENGTH = 80;
-const DEFAULT_URL_VALUE = 'https://';
+const URL_PLACEHOLDER = 'https://example.fr';
 const URL_PATTERN = /^https?:\/\/.+/i;
 
 export interface LinkFormProps {
@@ -45,7 +45,7 @@ export function LinkForm({
     mode: 'onChange',
     defaultValues: {
       name: link?.name ?? '',
-      url: link?.url ?? DEFAULT_URL_VALUE,
+      url: link?.url ?? '',
     },
   });
 
@@ -87,7 +87,7 @@ export function LinkForm({
               size="md"
               placeholder={t(
                 'homepage.usefulLinks.form.url.placeholder',
-                'Collez votre adresse ici',
+                URL_PLACEHOLDER,
               )}
               {...register('url', {
                 required: true,
