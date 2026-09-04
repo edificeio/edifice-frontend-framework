@@ -33,7 +33,10 @@ describe('useUserPreferences', () => {
   });
 
   it('loads user preferences once and exposes them', async () => {
-    const preferences = { language: 'fr', theme: 'default' };
+    const preferences = {
+      language: { 'default-domain': 'fr' },
+      background: 'default',
+    };
     getUserPreferences.mockResolvedValue(preferences);
 
     const { result } = renderHook(
@@ -50,7 +53,10 @@ describe('useUserPreferences', () => {
   });
 
   it('saves the whole preferences payload', async () => {
-    const preferences = { language: 'fr', apps: { bookmarks: ['news'] } };
+    const preferences = {
+      language: { 'default-domain': 'fr' },
+      apps: { bookmarks: ['news'] },
+    };
     getUserPreferences.mockResolvedValue(preferences);
     saveUserPreferences.mockResolvedValue(undefined);
 
