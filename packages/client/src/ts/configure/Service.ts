@@ -68,7 +68,7 @@ export class ConfService {
   >(): Promise<T> {
     const res = await this.http.get<T>('/userbook/api/preferences');
     if (this.http.isResponseError() || typeof res === 'string') {
-      return {} as T;
+      throw ERROR_CODE.NOT_LOGGED_IN;
     }
     return res as T;
   }
