@@ -9,14 +9,14 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('@edifice.io/client', () => ({
-  WIDGET_NAME: { SCHOOL: 'school-widget' },
+  WIDGET_NAME: { SCHOOL: 'school-widget', UNIVERSALIS: 'universalis-widget' },
 }));
 
 vi.mock('src/hooks/useSession', () => ({
   useSession: mocks.useSession,
 }));
 
-vi.mock('../../hooks/useWidget', () => ({
+vi.mock('./useWidget', () => ({
   default: mocks.useWidget,
 }));
 
@@ -113,5 +113,11 @@ describe('useUserSchools', () => {
 
     expect(result.current.selectedSchool?.id).toBe('s1');
     expect(mocks.savePreference).not.toHaveBeenCalled();
+  });
+
+  it('passes the given widget name through to useWidget', () => {
+    renderHook(() => useUserSchools('universalis-widget' as any));
+
+    expect(mocks.useWidget).toHaveBeenCalledWith('universalis-widget');
   });
 });
