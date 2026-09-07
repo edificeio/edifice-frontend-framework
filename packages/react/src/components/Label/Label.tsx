@@ -49,9 +49,9 @@ const Label = forwardRef(
     const { t } = useTranslation();
 
     const classes = clsx(
-      'form-label',
+      'input-label',
       {
-        'has-icon': leftIcon,
+        'input-label--has-icon': leftIcon,
       },
       className,
     );
