@@ -150,19 +150,21 @@ describe('LinkForm', () => {
       />,
     );
 
-    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
+    await user.type(screen.getByLabelText(/^Nom/), '  Lumni  ');
     await user.clear(screen.getByLabelText(/^Lien/));
-    await user.type(screen.getByLabelText(/^Lien/), 'https://lumni.fr');
+    // No leading whitespace here: the URL pattern requires the field to
+    // start with http(s):// to stay valid (and the save button enabled).
+    await user.type(screen.getByLabelText(/^Lien/), 'https://lumni.fr  ');
 
     const save = screen.getByText('Enregistrer').closest('button')!;
     await waitFor(() => expect(save).not.toBeDisabled());
     fireEvent.submit(document.getElementById('useful-link-form')!);
 
     await waitFor(() =>
-      expect(onSubmit).toHaveBeenCalledWith(
-        { name: 'Lumni', url: 'https://lumni.fr' },
-        expect.anything(),
-      ),
+      expect(onSubmit).toHaveBeenCalledWith({
+        name: 'Lumni',
+        url: 'https://lumni.fr',
+      }),
     );
   });
 });

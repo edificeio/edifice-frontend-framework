@@ -54,11 +54,15 @@ export function LinkForm({
       ? t('homepage.usefulLinks.form.addTitle', 'Ajouter un lien')
       : t('homepage.usefulLinks.form.editTitle', 'Modifier un lien');
 
+  const handleFormSubmit = (data: UsefulLinkPayload) => {
+    onSubmit({ name: data.name.trim(), url: data.url.trim() });
+  };
+
   return (
     <ModalBeta id="useful-link-modal" isOpen size="l" onModalClose={onClose}>
       <ModalBeta.Header onModalClose={onClose}>{title}</ModalBeta.Header>
       <ModalBeta.Body>
-        <form id={formId} onSubmit={handleSubmit(onSubmit)}>
+        <form id={formId} onSubmit={handleSubmit(handleFormSubmit)}>
           <FormControl id="useful-link-name" className="mb-16" isRequired>
             <Label>{t('homepage.usefulLinks.form.name', 'Nom')}</Label>
             <Input
@@ -67,6 +71,7 @@ export function LinkForm({
               maxLength={NAME_MAX_LENGTH}
               showCounter
               clearable
+              data-testid="usefullinks-input-name"
               placeholder={t(
                 'homepage.usefulLinks.form.name.placeholder',
                 'Nom du lien utile',
@@ -86,6 +91,7 @@ export function LinkForm({
             <Input
               type="text"
               size="md"
+              data-testid="usefullinks-input-url"
               placeholder={t(
                 'homepage.usefulLinks.form.url.placeholder',
                 URL_PLACEHOLDER,
@@ -111,6 +117,7 @@ export function LinkForm({
           type="button"
           variant="ghost"
           color="tertiary"
+          data-testid="usefullinks-button-cancel"
           onClick={onCancel}
         >
           {t('homepage.usefulLinks.form.cancel', 'Annuler')}
@@ -120,6 +127,7 @@ export function LinkForm({
           type="submit"
           isLoading={isSubmitting}
           disabled={!isValid || !isDirty || isSubmitting}
+          data-testid="usefullinks-button-save"
         >
           {t('homepage.usefulLinks.form.save', 'Enregistrer')}
         </ButtonBeta>
