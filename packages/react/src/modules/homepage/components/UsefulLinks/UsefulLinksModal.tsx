@@ -39,6 +39,7 @@ export function UsefulLinksModal({
       leftIcon={<IconPlus />}
       onClick={onAddClick}
       disabled={!canAddLink}
+      data-testid="usefullinks-button-add"
     >
       {t('homepage.usefulLinks.modal.add', 'Ajouter un lien')}
     </ButtonBeta>
@@ -104,7 +105,10 @@ export function UsefulLinksModal({
                   </Table.Td>
                 </Table.Tr>
                 {links.map((link) => (
-                  <Table.Tr key={link.id}>
+                  <Table.Tr
+                    key={link.id}
+                    data-testid={`usefullinks-row-${link.id}`}
+                  >
                     <Table.Td className="useful-links-table-name">
                       {link.name}
                     </Table.Td>
@@ -124,6 +128,7 @@ export function UsefulLinksModal({
                             'Modifier [[name]]',
                             { name: link.name },
                           )}
+                          data-testid={`usefullinks-button-edit-${link.id}`}
                           onClick={() => onEditLink(link)}
                         />
                         <ButtonBeta
@@ -137,6 +142,7 @@ export function UsefulLinksModal({
                             'Supprimer [[name]]',
                             { name: link.name },
                           )}
+                          data-testid={`usefullinks-button-delete-${link.id}`}
                           onClick={() => onDeleteLink(link.id)}
                         />
                       </Flex>
