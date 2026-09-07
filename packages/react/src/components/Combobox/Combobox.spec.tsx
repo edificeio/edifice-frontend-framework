@@ -207,7 +207,7 @@ describe('Combobox', () => {
         />,
       );
 
-      expect(getInput()).toHaveClass('border-0');
+      expect(getInput().parentElement).toHaveClass('border-0');
     });
   });
 

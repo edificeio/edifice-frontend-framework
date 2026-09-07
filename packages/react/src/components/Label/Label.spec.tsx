@@ -45,6 +45,8 @@ describe('Label', () => {
     );
 
     expect(screen.getByText('icon')).toBeInTheDocument();
-    expect(screen.getByText('Email').closest('label')).toHaveClass('has-icon');
+    expect(screen.getByText('Email').closest('label')).toHaveClass(
+      'input-label--has-icon',
+    );
   });
 });
