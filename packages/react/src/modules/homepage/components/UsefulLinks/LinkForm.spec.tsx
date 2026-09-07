@@ -18,6 +18,26 @@ describe('LinkForm', () => {
     expect(urlInput).toHaveAttribute('placeholder', 'https://example.fr');
   });
 
+  it('clears the name field via the clear (×) button', async () => {
+    const { user } = render(
+      <LinkForm
+        mode="add"
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    const nameInput = screen.getByLabelText(/^Nom/);
+    await user.type(nameInput, 'Lumni');
+    expect(nameInput).toHaveValue('Lumni');
+
+    await user.click(screen.getByLabelText('clear'));
+
+    expect(nameInput).toHaveValue('');
+  });
+
   it('rejects a URL without an http(s):// scheme', async () => {
     const { user } = render(
       <LinkForm
