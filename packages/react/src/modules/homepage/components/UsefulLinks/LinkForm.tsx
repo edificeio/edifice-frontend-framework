@@ -66,6 +66,7 @@ export function LinkForm({
               size="md"
               maxLength={NAME_MAX_LENGTH}
               showCounter
+              clearable
               placeholder={t(
                 'homepage.usefulLinks.form.name.placeholder',
                 'Nom du lien utile',
