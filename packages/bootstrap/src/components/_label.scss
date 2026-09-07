@@ -1,0 +1,34 @@
+// "Label" — Figma EdificeLibrary_Web, node 159-648 ("Text field" title row).
+// Independent from Bootstrap's `.form-label` (left untouched in
+// `_form-label.scss` for its other raw consumers) — only `var(--primitive-*)`/
+// `var(--color-*)` custom properties, no SASS variable.
+.input-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-spacer-4);
+  margin-bottom: var(--primitive-spacer-4);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--primitive-font-size-small);
+  line-height: var(--primitive-font-lineheight-2xs);
+  color: var(--primitive-text-color-default);
+  cursor: pointer;
+
+  &--has-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .optional {
+    font-style: italic;
+    color: var(--primitive-text-color-subtext);
+  }
+
+  .required {
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--color-support-danger-700);
+  }
+}

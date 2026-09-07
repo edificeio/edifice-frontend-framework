@@ -1,0 +1,140 @@
+// "Input" — Figma EdificeLibrary_Web, node 159-648 ("Text field").
+// Intentionally independent from Bootstrap: no shared class name with
+// `.form-control` (styled natively by `forms.scss`, imported in
+// vendors/_bootstrap.scss), no SASS variable, only `var(--primitive-*)`/
+// `var(--color-*)` custom properties. `.form-control` itself is left
+// untouched in `_form-control.scss` — it keeps serving its other raw
+// consumers (TextArea, Comment/CommentForm, PublishModal, and apps that
+// apply it directly); this file only styles the `Input` React component.
+// Sizes: `sm` and `md` (the default) share this base style ("Medium" in
+// Figma); only `lg` gets the `--lg` modifier ("Big"). Figma actually nests
+// two padding layers (a uniform 4px on the bordered box, then 8/4 or 12/8
+// on an inner content row) — folded here into a single layer (+4px on top
+// of the inner values) rather than reproducing the extra nested box, per
+// INPUT-MIGRATION-PLAN.md §06. This also makes Medium/Big match today's
+// `md`/`lg` padding exactly, so `md` (the most common size) doesn't shrink.
+.input {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacer-8);
+  width: 100%;
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  background-color: var(--primitive-white);
+  border: 1px solid var(--primitive-grey-300);
+  border-radius: var(--primitive-border-radius-lg);
+  transition:
+    border-color 150ms ease-in-out,
+    box-shadow 150ms ease-in-out;
+
+  // `:where()` keeps these two selectors at the specificity of `.input`
+  // alone — `:has()` would otherwise inherit its argument's specificity
+  // and outrank `--invalid`/`--valid`/`:focus-within` below regardless of
+  // source order (e.g. a filled + invalid field would show grey, not red).
+  &:where(:has(.input-field:not(:placeholder-shown))) {
+    border-color: var(--primitive-grey-500);
+  }
+
+  &:where(:has(.input-field:disabled)) {
+    background-color: var(--primitive-grey-200);
+    border-color: var(--primitive-grey-500);
+    cursor: not-allowed;
+  }
+
+  &:focus-within {
+    border-color: var(--color-buttons-primary-default);
+    box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+  }
+
+  // Only once there's something to clear — not on an empty, freshly
+  // focused field.
+  &:focus-within:has(.input-field:not(:placeholder-shown)) .input-clear {
+    display: inline-flex;
+  }
+
+  &--lg {
+    padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
+  }
+
+  &--invalid {
+    border-color: var(--color-support-danger-500);
+
+    &:focus-within {
+      border-color: var(--color-support-danger-500);
+      box-shadow: 0 0 0 2px var(--color-support-danger-300);
+    }
+  }
+
+  &--valid {
+    border-color: var(--color-support-success-500);
+
+    &:focus-within {
+      border-color: var(--color-support-success-500);
+      box-shadow: 0 0 0 2px var(--color-support-success-300);
+    }
+  }
+
+  &--plaintext {
+    padding: 0;
+    background-color: transparent;
+    border-color: transparent;
+  }
+}
+
+.input-field {
+  flex: 1 0 0;
+  min-width: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--primitive-font-size-default);
+  line-height: var(--primitive-font-lineheight-xs);
+  color: var(--primitive-text-color-default);
+
+  &::placeholder {
+    font-style: italic;
+    color: var(--primitive-text-color-subtext);
+  }
+
+  &:disabled {
+    color: var(--primitive-grey-700);
+    cursor: not-allowed;
+  }
+}
+
+.input-counter {
+  flex: none;
+  font-family: var(--font-family-body);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--primitive-font-size-caption);
+  line-height: var(--primitive-font-lineheight-3xs);
+  color: var(--primitive-text-color-subtext);
+  white-space: nowrap;
+
+  &--max {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-support-danger-700);
+  }
+}
+
+.input-clear {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--primitive-text-color-subtext);
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
