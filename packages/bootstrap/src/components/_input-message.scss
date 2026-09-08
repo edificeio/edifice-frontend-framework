@@ -1,6 +1,5 @@
-// "Input message" — Figma EdificeLibrary_Web, node 159-648 ("Informative
-// message" row). Independent from Bootstrap's `.form-text` (left untouched
-// in `_form-text.scss` for its other raw consumers) — only
+// Independent from Bootstrap's `.form-text` (left untouched in
+// `_form-text.scss` for its other raw consumers) — only
 // `var(--primitive-*)`/`var(--color-*)` custom properties, no SASS variable.
 .input-message {
   display: flex;
@@ -22,10 +21,10 @@
   &--valid {
     color: var(--color-support-success-700);
   }
-}
 
-.input-message-icon {
-  flex: none;
-  width: 20px;
-  height: 20px;
+  &__icon {
+    flex: none;
+    width: 20px;
+    height: 20px;
+  }
 }

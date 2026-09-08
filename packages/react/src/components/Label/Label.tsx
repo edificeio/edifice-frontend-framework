@@ -70,11 +70,13 @@ const Label = forwardRef(
         {leftIcon}
         {children}
         {optionalState && (
-          <em className="optional">
+          <em className="input-label__optional">
             - {optionalText ?? t('explorer.optional')}
           </em>
         )}
-        {requiredState && <em className="required">{requiredText}</em>}
+        {requiredState && (
+          <em className="input-label__required">{requiredText}</em>
+        )}
       </label>
     );
   },

@@ -138,7 +138,7 @@ const Input = forwardRef(
         <input
           ref={setRefs}
           id={id}
-          className="input-field"
+          className="input__field"
           type={type}
           placeholder={placeholder}
           required={isRequired}
@@ -150,7 +150,7 @@ const Input = forwardRef(
         {clearable && !isReadOnly && (
           <button
             type="button"
-            className="input-clear"
+            className="input__clear"
             onClick={handleClear}
             aria-label={t('clear')}
           >
@@ -159,8 +159,8 @@ const Input = forwardRef(
         )}
         {showCounter && (
           <span
-            className={clsx('input-counter', {
-              'input-counter--max': currentLength === maxLength,
+            className={clsx('input__counter', {
+              'input__counter--max': currentLength === maxLength,
             })}
           >
             {currentLength} / {maxLength}
