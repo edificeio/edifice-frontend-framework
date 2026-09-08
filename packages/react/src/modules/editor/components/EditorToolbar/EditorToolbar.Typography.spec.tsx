@@ -126,21 +126,19 @@ describe('EditorToolbarTypography', () => {
     ).toHaveAttribute('aria-checked', 'false');
   });
 
-  it('marks the trigger as selected once a custom fontFamily is applied', async () => {
+  it('marks the trigger as selected once the menu is opened', async () => {
     editor = buildEditor();
-    editor.commands.selectAll();
     const { user } = renderTypography(editor);
 
     await user.click(getTrigger());
-    await user.click(screen.getByRole('menuitemradio', { name: 'Serif' }));
 
     expect(getTrigger()).toHaveClass('is-selected');
   });
 
-  it('does not mark the trigger as selected from an active color alone', () => {
+  it('does not mark the trigger as selected when the menu is closed, even with a custom fontFamily applied', () => {
     editor = buildEditor();
     editor.commands.selectAll();
-    editor.chain().setColor('#4A4A4A').run();
+    editor.chain().setFontFamily('Lora').run();
 
     renderTypography(editor);
 
