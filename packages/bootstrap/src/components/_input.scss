@@ -1,4 +1,3 @@
-// "Input" — Figma EdificeLibrary_Web, node 159-648 ("Text field").
 // Intentionally independent from Bootstrap: no shared class name with
 // `.form-control` (styled natively by `forms.scss`, imported in
 // vendors/_bootstrap.scss), no SASS variable, only `var(--primitive-*)`/
@@ -6,13 +5,12 @@
 // untouched in `_form-control.scss` — it keeps serving its other raw
 // consumers (TextArea, Comment/CommentForm, PublishModal, and apps that
 // apply it directly); this file only styles the `Input` React component.
-// Sizes: `sm` and `md` (the default) share this base style ("Medium" in
-// Figma); only `lg` gets the `--lg` modifier ("Big"). Figma actually nests
-// two padding layers (a uniform 4px on the bordered box, then 8/4 or 12/8
-// on an inner content row) — folded here into a single layer (+4px on top
-// of the inner values) rather than reproducing the extra nested box, per
-// INPUT-MIGRATION-PLAN.md §06. This also makes Medium/Big match today's
-// `md`/`lg` padding exactly, so `md` (the most common size) doesn't shrink.
+// Sizes: `sm` and `md` (the default) share this base style ("Medium");
+// only `lg` gets the `--lg` modifier ("Big"). Padding folds two design
+// layers into one (+4px on top of the inner values) rather than
+// reproducing an extra nested box, per INPUT-MIGRATION-PLAN.md §06. This
+// also makes Medium/Big match today's `md`/`lg` padding exactly, so `md`
+// (the most common size) doesn't shrink.
 .input {
   display: flex;
   align-items: center;
@@ -30,11 +28,11 @@
   // alone — `:has()` would otherwise inherit its argument's specificity
   // and outrank `--invalid`/`--valid`/`:focus-within` below regardless of
   // source order (e.g. a filled + invalid field would show grey, not red).
-  &:where(:has(.input-field:not(:placeholder-shown))) {
+  &:where(:has(.input__field:not(:placeholder-shown))) {
     border-color: var(--primitive-grey-500);
   }
 
-  &:where(:has(.input-field:disabled)) {
+  &:where(:has(.input__field:disabled)) {
     background-color: var(--primitive-grey-200);
     border-color: var(--primitive-grey-500);
     cursor: not-allowed;
@@ -47,7 +45,7 @@
 
   // Only once there's something to clear — not on an empty, freshly
   // focused field.
-  &:focus-within:has(.input-field:not(:placeholder-shown)) .input-clear {
+  &:focus-within:has(.input__field:not(:placeholder-shown)) .input__clear {
     display: inline-flex;
   }
 
@@ -78,63 +76,63 @@
     background-color: transparent;
     border-color: transparent;
   }
-}
 
-.input-field {
-  flex: 1 0 0;
-  min-width: 0;
-  padding: 0;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  font-family: var(--font-family-body);
-  font-weight: var(--font-weight-regular);
-  font-size: var(--primitive-font-size-default);
-  line-height: var(--primitive-font-lineheight-xs);
-  color: var(--primitive-text-color-default);
+  &__field {
+    flex: 1 0 0;
+    min-width: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-default);
 
-  &::placeholder {
+    &::placeholder {
+      font-style: italic;
+      color: var(--primitive-text-color-subtext);
+    }
+
+    &:disabled {
+      color: var(--primitive-grey-700);
+      cursor: not-allowed;
+    }
+  }
+
+  &__counter {
+    flex: none;
+    font-family: var(--font-family-body);
     font-style: italic;
+    font-weight: var(--font-weight-regular);
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
     color: var(--primitive-text-color-subtext);
+    white-space: nowrap;
+
+    &--max {
+      font-weight: var(--font-weight-bold);
+      color: var(--color-support-danger-700);
+    }
   }
 
-  &:disabled {
-    color: var(--primitive-grey-700);
-    cursor: not-allowed;
-  }
-}
+  &__clear {
+    display: none;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--primitive-text-color-subtext);
+    cursor: pointer;
 
-.input-counter {
-  flex: none;
-  font-family: var(--font-family-body);
-  font-style: italic;
-  font-weight: var(--font-weight-regular);
-  font-size: var(--primitive-font-size-caption);
-  line-height: var(--primitive-font-lineheight-3xs);
-  color: var(--primitive-text-color-subtext);
-  white-space: nowrap;
-
-  &--max {
-    font-weight: var(--font-weight-bold);
-    color: var(--color-support-danger-700);
-  }
-}
-
-.input-clear {
-  display: none;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  background: none;
-  border: none;
-  color: var(--primitive-text-color-subtext);
-  cursor: pointer;
-
-  svg {
-    width: 100%;
-    height: 100%;
+    svg {
+      width: 100%;
+      height: 100%;
+    }
   }
 }

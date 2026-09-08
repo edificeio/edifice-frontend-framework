@@ -1,4 +1,3 @@
-// "Label" — Figma EdificeLibrary_Web, node 159-648 ("Text field" title row).
 // Independent from Bootstrap's `.form-label` (left untouched in
 // `_form-label.scss` for its other raw consumers) — only `var(--primitive-*)`/
 // `var(--color-*)` custom properties, no SASS variable.
@@ -19,12 +18,12 @@
     height: 18px;
   }
 
-  .optional {
+  &__optional {
     font-style: italic;
     color: var(--primitive-text-color-subtext);
   }
 
-  .required {
+  &__required {
     font-family: var(--font-family-body);
     font-weight: var(--font-weight-regular);
     font-size: var(--primitive-font-size-default);

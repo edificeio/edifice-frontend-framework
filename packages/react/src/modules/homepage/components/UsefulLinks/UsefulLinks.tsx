@@ -24,14 +24,14 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
       />
       <HomeCard.Content>
         {links.length === 0 ? (
-          <div className="useful-links-widget-empty">
+          <div className="useful-links-widget__empty">
             <Image
               src={illuEmptyUsefulLinks}
               alt=""
               aria-hidden="true"
               style={{ width: 160, height: 87 }}
             />
-            <p className="useful-links-widget-empty-text">
+            <p className="useful-links-widget__empty-text">
               {t(
                 'homepage.usefulLinks.empty',
                 'Gardez à portée de main les sites web que vous utilisez souvent !',

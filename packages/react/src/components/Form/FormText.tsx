@@ -20,7 +20,7 @@ const FormText = ({ children }: { children: ReactNode }) => {
 
   return (
     <p className={classes}>
-      {Icon && <Icon className="input-message-icon" aria-hidden="true" />}
+      {Icon && <Icon className="input-message__icon" aria-hidden="true" />}
       {children}
     </p>
   );

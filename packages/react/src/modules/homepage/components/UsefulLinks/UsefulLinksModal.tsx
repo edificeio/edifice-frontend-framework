@@ -61,20 +61,20 @@ export function UsefulLinksModal({
             <Flex justify="end" className="mb-16">
               {addLinkButton}
             </Flex>
-            <div className="useful-links-modal-empty">
+            <div className="useful-links-modal__empty">
               <Image
                 src={illuEmptyUsefulLinks}
                 alt=""
                 aria-hidden="true"
                 style={{ width: 200, height: 109 }}
               />
-              <p className="useful-links-modal-empty-title">
+              <p className="useful-links-modal__empty-title">
                 {t(
                   'homepage.usefulLinks.modal.empty.title',
                   'Pas encore de liens ajoutés',
                 )}
               </p>
-              <p className="useful-links-modal-empty-text">
+              <p className="useful-links-modal__empty-text">
                 {t(
                   'homepage.usefulLinks.modal.empty.text',
                   'Gardez à portée de main les sites web que vous utilisez souvent !',
@@ -99,7 +99,7 @@ export function UsefulLinksModal({
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                <Table.Tr className="useful-links-table-action-row">
+                <Table.Tr className="useful-links-table__action-row">
                   <Table.Td colSpan={3}>
                     <Flex justify="end">{addLinkButton}</Flex>
                   </Table.Td>
@@ -109,13 +109,13 @@ export function UsefulLinksModal({
                     key={link.id}
                     data-testid={`usefullinks-row-${link.id}`}
                   >
-                    <Table.Td className="useful-links-table-name">
+                    <Table.Td className="useful-links-table__name">
                       {link.name}
                     </Table.Td>
-                    <Table.Td className="useful-links-table-url">
+                    <Table.Td className="useful-links-table__url">
                       {link.url}
                     </Table.Td>
-                    <Table.Td className="useful-links-table-actions">
+                    <Table.Td className="useful-links-table__actions">
                       <Flex gap="4" justify="end">
                         <ButtonBeta
                           type="button"

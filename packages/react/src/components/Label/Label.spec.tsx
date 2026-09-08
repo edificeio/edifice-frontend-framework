@@ -24,7 +24,7 @@ describe('Label', () => {
     );
 
     const indicator = screen.getByText('*');
-    expect(indicator).toHaveClass('required');
+    expect(indicator).toHaveClass('input-label__required');
   });
 
   it('renders the optional indicator when the field is optional', () => {
@@ -34,7 +34,7 @@ describe('Label', () => {
       </FormControl>,
     );
 
-    expect(screen.getByText('- optional')).toHaveClass('optional');
+    expect(screen.getByText('- optional')).toHaveClass('input-label__optional');
   });
 
   it('renders a left icon when provided', () => {
