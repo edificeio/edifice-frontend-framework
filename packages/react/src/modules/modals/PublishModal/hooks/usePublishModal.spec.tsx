@@ -175,7 +175,8 @@ describe('usePublishModal', () => {
       expect(publish).toHaveBeenCalled();
       expect(onSuccess).toHaveBeenCalled();
 
-      const [element] = toastCustom.mock.calls[0];
+      const [renderToast] = toastCustom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
       expect(element.props.type).toBe('success');
     });
 
@@ -243,7 +244,8 @@ describe('usePublishModal', () => {
         await result.current.handlePublish(baseFormData);
       });
 
-      const [element] = toastCustom.mock.calls[0];
+      const [renderToast] = toastCustom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
       expect(element.props.type).toBe('danger');
       expect(element.props.children.props.errorMessage).toBe(
         'CONTENT_TOO_LARGE',
@@ -268,7 +270,8 @@ describe('usePublishModal', () => {
         await result.current.handlePublish(baseFormData);
       });
 
-      const [element] = toastCustom.mock.calls[0];
+      const [renderToast] = toastCustom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
       expect(element.props.type).toBe('danger');
       expect(element.props.children.props.formData).toEqual(baseFormData);
       expect(onSuccess).toHaveBeenCalled();
@@ -292,7 +295,8 @@ describe('usePublishModal', () => {
       });
 
       expect(consoleError).toHaveBeenCalled();
-      const [element] = toastCustom.mock.calls[0];
+      const [renderToast] = toastCustom.mock.calls[0];
+      const element = renderToast({ id: 'toast-id' });
       expect(element.props.type).toBe('danger');
       expect(onSuccess).not.toHaveBeenCalled();
 
