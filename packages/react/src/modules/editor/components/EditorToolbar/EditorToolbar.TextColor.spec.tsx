@@ -94,22 +94,23 @@ describe('EditorToolbarTextColor', () => {
     expect(editor.getAttributes('textStyle').color).toBeFalsy();
   });
 
-  it('marks the trigger as selected once a hex color is active on mount', () => {
+  it('does not mark the trigger as selected when the menu is closed, even with an active color', () => {
     editor = buildEditor();
     editor.commands.selectAll();
     editor.chain().setColor('#005A8A').run();
 
     renderTextColor(editor);
 
-    expect(getTrigger()).toHaveClass('is-selected');
+    expect(getTrigger()).not.toHaveClass('is-selected');
   });
 
-  it('does not mark the trigger as selected when no color is active', () => {
+  it('marks the trigger as selected once the menu is opened', async () => {
     editor = buildEditor();
+    const { user } = renderTextColor(editor);
 
-    renderTextColor(editor);
+    await user.click(getTrigger());
 
-    expect(getTrigger()).not.toHaveClass('is-selected');
+    expect(getTrigger()).toHaveClass('is-selected');
   });
 
   it('does not throw when the editor is null', async () => {
