@@ -55,19 +55,7 @@ describe('EditorToolbarHighlightColor', () => {
     ).toBeInTheDocument();
   });
 
-  it('does not mark the trigger as selected when there is no active highlight', () => {
-    editor = createTestEditor({
-      extensions: [CustomHighlight],
-      content: '<p>Hello</p>',
-    });
-    renderHighlightColor(editor);
-
-    expect(
-      screen.getByRole('button', { name: 'Highlight color' }),
-    ).not.toHaveClass('is-selected');
-  });
-
-  it('marks the trigger as selected when the selection carries a hex-colored highlight', () => {
+  it('does not mark the trigger as selected when the menu is closed, even with an active highlight', () => {
     editor = createTestEditor({
       extensions: [CustomHighlight],
       content: '<p>Hello</p>',
@@ -76,6 +64,20 @@ describe('EditorToolbarHighlightColor', () => {
     editor.chain().setHighlight({ color: '#005A8A' }).run();
 
     renderHighlightColor(editor);
+
+    expect(
+      screen.getByRole('button', { name: 'Highlight color' }),
+    ).not.toHaveClass('is-selected');
+  });
+
+  it('marks the trigger as selected once the menu is opened', async () => {
+    editor = createTestEditor({
+      extensions: [CustomHighlight],
+      content: '<p>Hello</p>',
+    });
+    const { user } = renderHighlightColor(editor);
+
+    await user.click(screen.getByRole('button', { name: 'Highlight color' }));
 
     expect(screen.getByRole('button', { name: 'Highlight color' })).toHaveClass(
       'is-selected',

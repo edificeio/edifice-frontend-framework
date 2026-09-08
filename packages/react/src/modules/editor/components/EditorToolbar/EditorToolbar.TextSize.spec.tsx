@@ -168,36 +168,21 @@ describe('EditorToolbarTextSize', () => {
     expect(getTrigger()).not.toHaveClass('is-selected');
   });
 
-  it('marks the trigger as selected once "Heading 1" is applied', async () => {
+  it('marks the trigger as selected once the menu is opened', async () => {
+    editor = buildEditor(fullExtensions);
+    const { user } = renderTextSize(editor);
+
+    await user.click(getTrigger());
+
+    expect(getTrigger()).toHaveClass('is-selected');
+  });
+
+  it('does not mark the trigger as selected when the menu is closed, even with a heading applied', async () => {
     editor = buildEditor(fullExtensions);
     const { user } = renderTextSize(editor);
 
     await user.click(getTrigger());
     await user.click(screen.getByText('Heading 1'));
-
-    expect(getTrigger()).toHaveClass('is-selected');
-  });
-
-  it('marks the trigger as selected once "Big text" is applied', async () => {
-    editor = buildEditor(fullExtensions);
-    const { user } = renderTextSize(editor);
-
-    await user.click(getTrigger());
-    await user.click(screen.getByText('Big text'));
-
-    expect(getTrigger()).toHaveClass('is-selected');
-  });
-
-  it('does not mark the trigger as selected once "Normal text" is applied', async () => {
-    editor = buildEditor(fullExtensions);
-    const { user } = renderTextSize(editor);
-
-    await user.click(getTrigger());
-    await user.click(screen.getByText('Big text'));
-    expect(getTrigger()).toHaveClass('is-selected');
-
-    await user.click(getTrigger());
-    await user.click(screen.getByText('Normal text'));
 
     expect(getTrigger()).not.toHaveClass('is-selected');
   });
