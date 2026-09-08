@@ -103,7 +103,7 @@ const Root = ({
     [variant, scrollMode, noPadding],
   );
 
-  useZendeskGuide();
+  const renderZendeskGuide = useZendeskGuide();
 
   const {
     hasLeftSidebar,
@@ -149,6 +149,7 @@ const Root = ({
         </div>
 
         {overlay}
+        {renderZendeskGuide}
       </div>
     </PageLayoutContext.Provider>
   );

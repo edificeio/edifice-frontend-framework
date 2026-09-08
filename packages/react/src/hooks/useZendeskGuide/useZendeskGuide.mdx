@@ -12,9 +12,14 @@ The `useZendeskGuide` hook integrates the Zendesk Guide widget into your applica
 import useZendeskGuide from './useZendeskGuide';
 
 const MyComponent = () => {
-  useZendeskGuide();
+  const renderZendeskGuide = useZendeskGuide();
 
-  return <div>My Component</div>;
+  return (
+    <div>
+      My Component
+      {renderZendeskGuide}
+    </div>
+  );
 };
 ```
 
@@ -22,7 +27,8 @@ const MyComponent = () => {
 
 ### Returns
 
-- `null`
+- `null` while the widget isn't ready yet, or while it's hidden for the current page (e.g. the collaborative wall on mobile).
+- An `<EdificeAssistanceButton />` element once the widget is ready. The native Zendesk launcher is hidden (see `_edifice-assistance-button.scss`); this button drives the widget instead via `zE('webWidget', 'toggle')`, and collapses to the compact Edifice mark once the page is scrolled.
 
 ### Dependencies
 
@@ -45,9 +51,14 @@ import React from 'react';
 import useZendeskGuide from './useZendeskGuide';
 
 const ExampleComponent = () => {
-  useZendeskGuide();
+  const renderZendeskGuide = useZendeskGuide();
 
-  return <div>Example Component with Zendesk Guide</div>;
+  return (
+    <div>
+      Example Component with Zendesk Guide
+      {renderZendeskGuide}
+    </div>
+  );
 };
 
 export default ExampleComponent;

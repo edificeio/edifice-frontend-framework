@@ -19,6 +19,7 @@ export * from './DatePicker';
 export * from './Divider';
 export * from './Dropdown';
 export * from './Dropzone';
+export * from './EdificeAssistanceButton';
 export * from './EmptyScreen';
 export * from './Flex';
 export * from './Form';

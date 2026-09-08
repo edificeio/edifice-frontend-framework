@@ -1,4 +1,5 @@
 import { act, renderHook, waitFor } from '~/setup';
+import EdificeAssistanceButton from '../../components/EdificeAssistanceButton/EdificeAssistanceButton';
 import useZendeskGuide from './useZendeskGuide';
 
 const {
@@ -88,7 +89,7 @@ async function mountAndLoad({
   get.mockResolvedValue(response);
   window.history.pushState({}, '', pathname);
 
-  renderHook(() => useZendeskGuide());
+  const result = renderHook(() => useZendeskGuide());
 
   const script = await waitFor(() => {
     const element = snippet();
@@ -100,7 +101,7 @@ async function mountAndLoad({
     script.onload?.(new Event('load'));
   });
 
-  return script;
+  return { script, result: result.result };
 }
 
 describe('useZendeskGuide', () => {
@@ -136,7 +137,7 @@ describe('useZendeskGuide', () => {
     });
 
     it('injects the snippet built from the configuration key', async () => {
-      const script = await mountAndLoad();
+      const { script } = await mountAndLoad();
 
       expect(get).toHaveBeenCalledWith('/zendeskGuide/config');
       expect(script.src).toBe(
@@ -212,19 +213,14 @@ describe('useZendeskGuide', () => {
       expect(zE.setLocale).toHaveBeenCalledWith('es-419');
     });
 
-    it('applies the configured theme color', async () => {
-      await mountAndLoad();
+    it('always themes the widget window with the launcher blue and a light blue header', async () => {
+      await mountAndLoad({ response: config({ color: '#123456' }) });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#123456' }, zIndex: 3 },
-      });
-    });
-
-    it('falls back to the Edifice yellow when no color is configured', async () => {
-      await mountAndLoad({ response: config({ color: undefined }) });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#ffc400' } },
+        webWidget: {
+          color: { theme: '#3030d1', header: '#738efc' },
+          zIndex: 3,
+        },
       });
     });
 
@@ -265,20 +261,32 @@ describe('useZendeskGuide', () => {
     });
   });
 
-  describe('widget events', () => {
-    it('hides the mobile launcher label once the page is scrolled', async () => {
-      await mountAndLoad();
-      const before = settings().length;
+  describe('launcher button', () => {
+    it('renders the launcher expanded once the widget is ready', async () => {
+      const { result } = await mountAndLoad();
+
+      expect(result.current?.type).toBe(EdificeAssistanceButton);
+      expect(result.current?.props).toMatchObject({ collapsed: false });
+    });
+
+    it('toggles the widget when the launcher is clicked', async () => {
+      const { result } = await mountAndLoad();
+
+      result.current?.props.onClick();
+
+      expect(zE).toHaveBeenCalledWith('webWidget', 'toggle');
+    });
+
+    it('collapses the launcher once the page is scrolled', async () => {
+      const { result } = await mountAndLoad();
 
       Object.defineProperty(window, 'scrollY', {
         value: 40,
         configurable: true,
       });
-      window.dispatchEvent(new Event('scroll'));
+      act(() => window.dispatchEvent(new Event('scroll')));
 
-      expect(settings()[before]).toMatchObject({
-        webWidget: { launcher: { mobile: { labelVisible: false } } },
-      });
+      expect(result.current?.props).toMatchObject({ collapsed: true });
 
       Object.defineProperty(window, 'scrollY', {
         value: 0,
@@ -286,6 +294,23 @@ describe('useZendeskGuide', () => {
       });
     });
 
+    it('collapses the launcher when a nested container scrolls (eg. PageLayout columns mode)', async () => {
+      const { result } = await mountAndLoad();
+
+      const scrollContainer = document.createElement('div');
+      Object.defineProperty(scrollContainer, 'scrollTop', {
+        value: 40,
+        configurable: true,
+      });
+      document.body.appendChild(scrollContainer);
+
+      act(() => scrollContainer.dispatchEvent(new Event('scroll')));
+
+      expect(result.current?.props).toMatchObject({ collapsed: true });
+    });
+  });
+
+  describe('widget events', () => {
     it('re-opens the contact form when the widget opens with the workflow', async () => {
       await mountAndLoad();
       const before = settings().length;
@@ -456,10 +481,10 @@ describe('useZendeskGuide', () => {
       expect(suggestions()[0]).toEqual({ labels: ['blog/1D'] });
     });
 
-    it('hides the widget on a collaborative wall opened on a small screen', async () => {
+    it('hides the launcher on a collaborative wall opened on a small screen', async () => {
       window.innerWidth = 500;
 
-      await mountAndLoad({
+      const { result } = await mountAndLoad({
         response: config({
           module: {
             labels: { 'collaborativewall/id': 'cw-help' },
@@ -471,12 +496,13 @@ describe('useZendeskGuide', () => {
 
       expect(zE).toHaveBeenCalledWith('webWidget', 'hide');
       expect(suggestions()[0]).toEqual({ labels: ['cw-help'] });
+      expect(result.current).toBeNull();
     });
 
-    it('keeps the widget visible on a collaborative wall on a desktop screen', async () => {
+    it('keeps the launcher visible on a collaborative wall on a desktop screen', async () => {
       window.innerWidth = 1440;
 
-      await mountAndLoad({
+      const { result } = await mountAndLoad({
         response: config({
           module: {
             labels: { 'collaborativewall/id': 'cw-help' },
@@ -487,6 +513,7 @@ describe('useZendeskGuide', () => {
       });
 
       expect(zE).not.toHaveBeenCalledWith('webWidget', 'hide');
+      expect(result.current).not.toBeNull();
     });
   });
 });

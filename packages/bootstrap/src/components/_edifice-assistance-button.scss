@@ -1,0 +1,56 @@
+// Zendesk injects its own launcher button (#launcher). This app renders its
+// own launcher instead (see EdificeAssistanceButton), so hide the native one.
+#launcher {
+  display: none !important;
+}
+
+.edifice-assistance-button {
+  position: fixed;
+  right: var(--primitive-spacer-24);
+  bottom: var(--primitive-spacer-24);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacer-8);
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-8)
+    var(--primitive-spacer-8) var(--primitive-spacer-12);
+  color: var(--primitive-white);
+  cursor: pointer;
+  background-color: var(--primitive-blue-700);
+  border: none;
+  border-radius: var(--primitive-border-radius-pill);
+  box-shadow: 0 4px 5px rgb(0 0 0 / 18%);
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: var(--primitive-box-shadow);
+  }
+
+  &-logo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 1.8rem;
+
+    svg {
+      display: block;
+      height: 1.8rem;
+      width: auto;
+    }
+  }
+
+  &-divider {
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 1px;
+    background-color: var(--primitive-white);
+    border-radius: 20px;
+  }
+
+  &-question {
+    display: flex;
+    flex-shrink: 0;
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+}

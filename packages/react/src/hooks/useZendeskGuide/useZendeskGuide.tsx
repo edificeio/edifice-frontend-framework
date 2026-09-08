@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { UserProfile, odeServices } from '@edifice.io/client';
 
 import { useIsAdml, useUser } from '..';
+import EdificeAssistanceButton from '../../components/EdificeAssistanceButton/EdificeAssistanceButton';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { useHasWorkflow } from '../useHasWorkflow';
@@ -31,6 +32,9 @@ export default function useZendeskGuide() {
 
   const [locationPathname, setLocationPathname] = useState('');
   const [dataModule, setDataModule] = useState<DataModel>(undefined);
+  const [isWidgetReady, setIsWidgetReady] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
 
   const setZendeskGuideLabels = () => {
     // Split the location pathname to get the module label
@@ -74,13 +78,15 @@ export default function useZendeskGuide() {
     }
 
     // Exception for the collaborative wall
-    if (
+    const isCollaborativeWallMobile =
       modulePathnameSplit.includes('collaborativewall') &&
       modulePathnameSplit.includes('id') &&
-      isMobileView
-    ) {
+      isMobileView;
+
+    if (isCollaborativeWallMobile) {
       (window as any).zE('webWidget', 'hide');
     }
+    setIsHidden(isCollaborativeWallMobile);
 
     // Check if label has tag ${adml} and replace it with the user role
     if (labels.includes('${adml}')) {
@@ -169,13 +175,9 @@ export default function useZendeskGuide() {
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: { theme: zendeskGuideConfig.color || '#ffc400' },
+              // Always blue/700, matching EdificeAssistanceButton's background.
+              color: { theme: '#3030d1', header: '#738efc' },
               zIndex: 3,
-              launcher: {
-                mobile: {
-                  labelVisible: true,
-                },
-              },
               contactForm: {
                 suppress: !hasSupportWorkflow,
               },
@@ -190,17 +192,9 @@ export default function useZendeskGuide() {
             },
           });
 
-          window.addEventListener('scroll', () => {
-            (window as any).zE('webWidget', 'updateSettings', {
-              webWidget: {
-                launcher: {
-                  mobile: {
-                    labelVisible: window.scrollY <= 5,
-                  },
-                },
-              },
-            });
-          });
+          // The native Zendesk launcher is hidden (see _edifice-assistance-button.scss):
+          // EdificeAssistanceButton is rendered instead and drives the widget via 'toggle'.
+          setIsWidgetReady(true);
 
           (window as any).zE('webWidget:on', 'open', function () {
             if (hasSupportWorkflow) {
@@ -247,5 +241,35 @@ export default function useZendeskGuide() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSupportWorkflow]);
 
-  return null;
+  useEffect(() => {
+    if (!isWidgetReady) {
+      return;
+    }
+
+    // Some layouts (eg. PageLayout's "columns" scroll mode) scroll an inner
+    // container instead of the window. Scroll events don't bubble, but a
+    // capture-phase listener on window still sees them from any descendant,
+    // so read the scrollTop off whichever element actually scrolled.
+    const getScrollTop = (target: EventTarget | null) =>
+      target instanceof HTMLElement ? target.scrollTop : window.scrollY;
+
+    const handleScroll = (event: Event) =>
+      setIsCollapsed(getScrollTop(event.target) > 5);
+
+    setIsCollapsed(window.scrollY > 5);
+    window.addEventListener('scroll', handleScroll, true);
+
+    return () => window.removeEventListener('scroll', handleScroll, true);
+  }, [isWidgetReady]);
+
+  if (!isWidgetReady || isHidden) {
+    return null;
+  }
+
+  return (
+    <EdificeAssistanceButton
+      collapsed={isCollapsed}
+      onClick={() => (window as any).zE('webWidget', 'toggle')}
+    />
+  );
 }

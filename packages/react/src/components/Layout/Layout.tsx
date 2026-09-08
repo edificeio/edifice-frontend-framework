@@ -54,7 +54,7 @@ export const Layout = ({
     handleCloseCookiesConsent,
   } = useCookiesConsent();
 
-  useZendeskGuide();
+  const renderZendeskGuide = useZendeskGuide();
 
   useCantoo();
 
@@ -129,6 +129,7 @@ export const Layout = ({
 
       {renderToaster}
       {renderCookies}
+      {renderZendeskGuide}
     </div>
   );
 };
