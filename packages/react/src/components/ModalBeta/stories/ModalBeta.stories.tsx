@@ -25,7 +25,7 @@ const meta: Meta<typeof ModalBeta> = {
     docs: {
       description: {
         component:
-          'ModalBeta is the next-generation modal following the new Figma design system, the same way ButtonBeta follows the new button design system. It will eventually replace Modal entirely.\n\nModalBeta locks page scroll while open (like Modal). The size stories below are open by default for full Chromatic coverage, but excluded from this Docs page (`docs.disable`) so browsing it stays scrollable — visit them individually via the sidebar, or use the Interactive story below.',
+          'ModalBeta is the next-generation modal following the new design system, the same way ButtonBeta follows the new button design system. It will eventually replace Modal entirely.\n\nModalBeta locks page scroll while open (like Modal). The size stories below are open by default for full Chromatic coverage, but excluded from this Docs page (`docs.disable`) so browsing it stays scrollable — visit them individually via the sidebar, or use the Interactive story below.',
       },
     },
   },

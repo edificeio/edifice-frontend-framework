@@ -42,8 +42,8 @@ export interface LinkPillProps {
 }
 
 /**
- * LinkPill – design system component (Figma EdificeLibrary_Web, node 1625-533)
- * used to display a link to an external resource as a small rounded pill.
+ * LinkPill – design system component used to display a link to an
+ * external resource as a small rounded pill.
  */
 const LinkPill = ({
   href,
