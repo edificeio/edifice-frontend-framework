@@ -96,7 +96,7 @@ describe('useUsefulLinksContainer', () => {
       await result.current.createLink({ name: 'New', url: 'https://new.fr' });
     });
 
-    expect(postJson).toHaveBeenCalledWith('/directory/user/link', {
+    expect(postJson).toHaveBeenCalledWith('/directory/user-links', {
       name: 'New',
       url: 'https://new.fr',
     });
@@ -119,7 +119,7 @@ describe('useUsefulLinksContainer', () => {
       });
     });
 
-    expect(putJson).toHaveBeenCalledWith('/directory/user/link/1', {
+    expect(putJson).toHaveBeenCalledWith('/directory/user-links/1', {
       name: 'Updated',
       url: 'https://lumni.fr',
     });
@@ -140,7 +140,7 @@ describe('useUsefulLinksContainer', () => {
     });
 
     await waitFor(() =>
-      expect(del).toHaveBeenCalledWith('/directory/user/link/1'),
+      expect(del).toHaveBeenCalledWith('/directory/user-links/1'),
     );
   });
 });
