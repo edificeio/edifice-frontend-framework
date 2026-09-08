@@ -14,7 +14,10 @@ const UploadFiles = ({
   onFilesChange,
   visibility = 'protected',
 }: {
-  onFilesChange: (uploadedFiles: WorkspaceElement[]) => void;
+  onFilesChange: (
+    uploadedFiles: WorkspaceElement[],
+    sourceFiles: File[],
+  ) => void;
   visibility?: WorkspaceVisibility;
 }) => {
   const {

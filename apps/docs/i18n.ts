@@ -197,8 +197,9 @@ i18n.use(initReactI18next).init({
         'bbm.studio.modal.title': 'Studio',
         'bbm.audio.modal.title': 'Add an audio',
         'bbm.image.modal.title': 'Add an image',
-        'bbm.upload.alert':
-          'The media are imported in the chronological order of their creation. You will be able to change the order once the import is complete',
+        'bbm.upload.sort.title': 'Sort files by',
+        'bbm.upload.sort.alpha': 'Sort files alphabetically',
+        'bbm.upload.sort.date': 'Sort files by modification date',
         'bbm.attachment.modal.title': 'Add an attachment',
         'bbm.embed.modal.title': 'Add embed or iframe',
         'bbm.link.modal.title': 'Add a link',

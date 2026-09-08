@@ -131,16 +131,24 @@ describe('MediaLibrary innertabs', () => {
       expect(childProps.Dropzone.accept).toEqual([]);
     });
 
-    it('warns the user when several files can be uploaded at once', () => {
+    it('offers sort radios when several files can be uploaded at once', () => {
       renderTab(<Upload />, { multiple: true });
 
-      expect(document.querySelector('.alert')).not.toBeNull();
+      expect(
+        screen.queryByTestId('media-library-upload-sort-alpha'),
+      ).not.toBeNull();
+      expect(
+        screen.queryByTestId('media-library-upload-sort-date'),
+      ).not.toBeNull();
     });
 
-    it('stays quiet on a single-file upload', () => {
+    it('hides the sort radios on a single-file upload', () => {
       renderTab(<Upload />, { multiple: false });
 
-      expect(document.querySelector('.alert')).toBeNull();
+      expect(
+        screen.queryByTestId('media-library-upload-sort-alpha'),
+      ).toBeNull();
+      expect(screen.queryByTestId('media-library-upload-sort-date')).toBeNull();
     });
 
     it('passes the visibility down to the uploader', () => {
@@ -155,7 +163,7 @@ describe('MediaLibrary innertabs', () => {
       );
       const files = [{ _id: 'a' }, { _id: 'b' }] as WorkspaceElement[];
 
-      childProps.UploadFiles.onFilesChange(files);
+      act(() => childProps.UploadFiles.onFilesChange(files, []));
 
       expect(setCancellable).toHaveBeenCalledWith(files);
       expect(setResultCounter).toHaveBeenCalledWith(2);
@@ -167,11 +175,73 @@ describe('MediaLibrary innertabs', () => {
         <Upload />,
       );
 
-      childProps.UploadFiles.onFilesChange([]);
+      act(() => childProps.UploadFiles.onFilesChange([], []));
 
       expect(setCancellable).toHaveBeenCalledWith([]);
       expect(setResultCounter).toHaveBeenCalledWith(undefined);
       expect(setResult).toHaveBeenCalledWith(undefined);
+    });
+
+    // The ordering choice is deferred: it is applied by the pre-success action,
+    // right before the uploaded files are handed over to the editor.
+    const uploaded = [
+      { _id: '1', name: 'b.png' },
+      { _id: '2', name: 'a.png' },
+      { _id: '3', name: 'c.png' },
+    ] as WorkspaceElement[];
+    const sources = [
+      new File([''], 'b.png', { lastModified: 30 }),
+      new File([''], 'a.png', { lastModified: 10 }),
+      new File([''], 'c.png', { lastModified: 20 }),
+    ];
+
+    /** Resolve the currently registered pre-success result. */
+    const runPreSuccess = (setPreSuccess: ReturnType<typeof vi.fn>) =>
+      setPreSuccess.mock.calls.at(-1)![0]()();
+
+    it('orders alphabetically by default', async () => {
+      const { setPreSuccess } = renderTab(<Upload />, { multiple: true });
+
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
+
+      await expect(runPreSuccess(setPreSuccess)).resolves.toEqual([
+        uploaded[1], // a.png
+        uploaded[0], // b.png
+        uploaded[2], // c.png
+      ]);
+    });
+
+    it('orders by source last modification date (most recent first) once the date radio is selected', async () => {
+      const { setPreSuccess, user } = renderTab(<Upload />, { multiple: true });
+
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
+      await user.click(screen.getByTestId('media-library-upload-sort-date'));
+
+      await expect(runPreSuccess(setPreSuccess)).resolves.toEqual([
+        uploaded[0], // b.png, 30
+        uploaded[2], // c.png, 20
+        uploaded[1], // a.png, 10
+      ]);
+    });
+
+    it('selects the alpha radio by default, exclusive of the date radio', () => {
+      renderTab(<Upload />, { multiple: true });
+
+      expect(
+        screen.getByTestId('media-library-upload-sort-alpha'),
+      ).toBeChecked();
+      expect(
+        screen.getByTestId('media-library-upload-sort-date'),
+      ).not.toBeChecked();
+    });
+
+    it('clears the pre-success action when the upload list is emptied', async () => {
+      const { setPreSuccess } = renderTab(<Upload />, { multiple: true });
+
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
+      act(() => childProps.UploadFiles.onFilesChange([], []));
+
+      expect(setPreSuccess).toHaveBeenLastCalledWith(undefined);
     });
   });
 

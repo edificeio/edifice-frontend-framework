@@ -81,7 +81,7 @@ describe('useUploadFiles', () => {
   it('notifies with an empty list when there are no files', async () => {
     const { handleOnChange } = setup([]);
 
-    await waitFor(() => expect(handleOnChange).toHaveBeenCalledWith([]));
+    await waitFor(() => expect(handleOnChange).toHaveBeenCalledWith([], []));
   });
 
   it('resizes and uploads an image via uploadAlternateFile', async () => {
@@ -98,7 +98,10 @@ describe('useUploadFiles', () => {
     );
     expect(replaceFileAt).toHaveBeenCalledWith(0, replacement);
     await waitFor(() =>
-      expect(handleOnChange).toHaveBeenCalledWith([resource]),
+      expect(handleOnChange).toHaveBeenLastCalledWith(
+        [resource],
+        expect.any(Array),
+      ),
     );
   });
 
@@ -112,7 +115,22 @@ describe('useUploadFiles', () => {
     await waitFor(() => expect(uploadFile).toHaveBeenCalledWith(file));
     expect(uploadAlternateFile).not.toHaveBeenCalled();
     await waitFor(() =>
-      expect(handleOnChange).toHaveBeenCalledWith([resource]),
+      expect(handleOnChange).toHaveBeenLastCalledWith(
+        [resource],
+        expect.any(Array),
+      ),
+    );
+  });
+
+  it('hands the source files over alongside the uploaded ones', async () => {
+    const file = createFile('doc.pdf', 'application/pdf');
+    const resource = { _id: 'res-2', name: 'doc.pdf' };
+    uploadFile.mockResolvedValue(resource);
+
+    const { handleOnChange } = setup([file]);
+
+    await waitFor(() =>
+      expect(handleOnChange).toHaveBeenLastCalledWith([resource], [file]),
     );
   });
 
@@ -161,7 +179,10 @@ describe('useUploadFiles', () => {
 
     // Wait for the file to be uploaded first.
     await waitFor(() =>
-      expect(handleOnChange).toHaveBeenCalledWith([resource]),
+      expect(handleOnChange).toHaveBeenLastCalledWith(
+        [resource],
+        expect.any(Array),
+      ),
     );
 
     await act(async () => {

@@ -12,7 +12,10 @@ const useUploadFiles = ({
   visibility,
   application,
 }: {
-  handleOnChange: (uploadedFiles: WorkspaceElement[]) => void;
+  handleOnChange: (
+    uploadedFiles: WorkspaceElement[],
+    sourceFiles: File[],
+  ) => void;
   visibility?: WorkspaceVisibility;
   application?: string;
 }) => {
@@ -100,7 +103,9 @@ const useUploadFiles = ({
   /** When file finished being uploaded, sort and handle the result. */
   useEffect(() => {
     const sortedUploadedFiles = sortUploadedFiles(files, uploadedFiles);
-    handleOnChange(sortedUploadedFiles);
+    // Also hand over the source files, so the caller can re-order the result
+    // later on (e.g. by name or last modification date) if needed.
+    handleOnChange(sortedUploadedFiles, files);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadedFiles]);
 
