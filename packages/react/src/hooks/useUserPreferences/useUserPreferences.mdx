@@ -60,8 +60,9 @@ function PreferencesPanel() {
 ### `savePreferences(preferences: T): Promise<void>`
 
 Saves the whole preferences object with `odeServices.conf().saveUserPreferences`.
-The local React Query cache is updated immediately, then invalidated after the
-mutation succeeds or fails so consumers receive the server state.
+The local React Query cache is updated immediately, then replaced with the
+preferences returned by the server when the mutation succeeds. It is invalidated
+only if the mutation fails.
 
 ## Query Key
 

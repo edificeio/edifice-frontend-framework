@@ -75,12 +75,12 @@ export class ConfService {
 
   /**
    * New-gen API to set all of the user's preferences at once.
-   * Warning : every missing preference will be erased in the backend. Set them all !!
+   * @return the latest exhaustive preferences, updated.
    */
   async saveUserPreferences<T extends Record<string, any>>(
     preferences: T,
-  ): Promise<void> {
-    await this.http.putJson('/userbook/api/preferences', preferences);
+  ): Promise<T> {
+    return this.http.putJson<T>('/userbook/api/preferences', preferences);
   }
 
   /** Legacy API to get the user's preferences for a given key. */

@@ -52,13 +52,17 @@ describe('useUserPreferences', () => {
     expect(getUserPreferences).toHaveBeenCalledTimes(1);
   });
 
-  it('saves the whole preferences payload', async () => {
+  it('caches the preferences returned when saving the whole payload', async () => {
     const preferences = {
       language: { 'default-domain': 'fr' },
       apps: { bookmarks: ['news'] },
     };
+    const savedPreferences = {
+      ...preferences,
+      background: 'default',
+    };
     getUserPreferences.mockResolvedValue(preferences);
-    saveUserPreferences.mockResolvedValue(undefined);
+    saveUserPreferences.mockResolvedValue(savedPreferences);
 
     const { result } = renderHook(
       () => useUserPreferences<typeof preferences>(),
@@ -67,8 +71,15 @@ describe('useUserPreferences', () => {
       },
     );
 
+    await waitFor(() =>
+      expect(result.current.preferences).toEqual(preferences),
+    );
     await result.current.savePreferences(preferences);
 
     expect(saveUserPreferences).toHaveBeenCalledWith(preferences);
+    await waitFor(() =>
+      expect(result.current.preferences).toEqual(savedPreferences),
+    );
+    expect(getUserPreferences).toHaveBeenCalledTimes(1);
   });
 });

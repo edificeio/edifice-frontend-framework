@@ -35,8 +35,8 @@ export function useUserPreferences<
     onError: () => {
       queryClient.invalidateQueries({ queryKey: USER_PREFERENCES_QUERY_KEY });
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: USER_PREFERENCES_QUERY_KEY });
+    onSuccess: (preferences) => {
+      queryClient.setQueryData(USER_PREFERENCES_QUERY_KEY, preferences);
     },
   });
 
