@@ -12,7 +12,7 @@ const meta: Meta<typeof UsefulLinksContainer> = {
     docs: {
       description: {
         component:
-          "UsefulLinksContainer connecte le widget « Liens utiles » à l'API directory (mockée ici via MSW — IMPULS-6167, le CRUD backend, n'est pas encore livré). Ouvrez « Éditer » pour tester le CRUD complet (ajout, modification, suppression).",
+          "UsefulLinksContainer connecte le widget « Liens utiles » à l'API directory (mockée ici via MSW). Ouvrez « Éditer » pour tester le CRUD complet (ajout, modification, suppression).",
       },
     },
     // Interaction demo: no visual regression value beyond what
