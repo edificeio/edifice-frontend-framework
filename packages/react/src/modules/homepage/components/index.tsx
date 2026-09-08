@@ -1,4 +1,5 @@
 export * from './Favorites';
+export * from './GenerationHdf';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';

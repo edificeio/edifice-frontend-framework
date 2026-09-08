@@ -1,0 +1,110 @@
+.generation-hdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--primitive-spacer-8);
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+    padding-left: var(--primitive-spacer-8);
+  }
+
+  &__title {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  &__logo {
+    width: 198px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  &__description {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+    text-align: center;
+  }
+
+  &__account {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+  }
+
+  &__account-title {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  &__wallets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-4);
+    margin: 0;
+    padding: 0 var(--primitive-spacer-16);
+    list-style: none;
+  }
+
+  &__wallet {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+    color: var(--primitive-grey-900);
+    font-size: var(--primitive-font-size-small);
+  }
+
+  &__form {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--primitive-spacer-16);
+    width: 100%;
+
+    .btn-beta {
+      flex-shrink: 0;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-4);
+    flex: 1 0 0;
+    min-width: 0;
+  }
+
+  &__input-wrapper {
+    position: relative;
+    width: 100%;
+
+    &--clearable {
+      .form-control {
+        padding-right: 32px;
+      }
+    }
+  }
+
+  &__input-clear {
+    position: absolute;
+    top: 50%;
+    right: var(--primitive-spacer-4);
+    transform: translateY(-50%);
+  }
+}
