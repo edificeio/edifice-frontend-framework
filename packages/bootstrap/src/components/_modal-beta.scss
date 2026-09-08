@@ -1,10 +1,12 @@
 // ModalBeta implements the "↪︎ Modals" design system component. It
 // intentionally does not share tokens/markup with the legacy .modal —
 // see ModalBeta.tsx doc comment.
+// Above .pagelayout-header (z-index: 1060): a ModalBeta must always sit
+// on top of the fixed app header, not behind it.
 .modal-beta {
   position: fixed;
   inset: 0;
-  z-index: 1050;
+  z-index: 1070;
   overflow: hidden auto;
   display: flex;
   align-items: flex-start;
@@ -15,14 +17,14 @@
   &-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 1049;
+    z-index: 1069;
     background-color: var(--primitive-grey-900);
     opacity: 0.65;
   }
 
   &-dialog {
     position: relative;
-    z-index: 1050;
+    z-index: 1070;
     width: 100%;
   }
 
