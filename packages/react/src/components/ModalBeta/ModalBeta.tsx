@@ -1,9 +1,8 @@
 /**
  * ModalBeta Component
  *
- * Next-generation modal following the new Figma design system
- * ("↪︎ Modals" — EdificeLibrary_Web, node 1055-2208), the same way
- * `ButtonBeta` follows the new button design system.
+ * Next-generation modal following the new design system ("↪︎ Modals"),
+ * the same way `ButtonBeta` follows the new button design system.
  *
  * This intentionally duplicates a small amount of behaviour from `Modal`
  * (focus trap, escape-to-close, click-outside, backdrop) rather than
