@@ -26,6 +26,13 @@ const meta: Meta<typeof Alert> = {
     isDismissible: {
       control: { type: 'boolean' },
     },
+    isToast: {
+      control: { type: 'boolean' },
+    },
+    position: {
+      options: ['none', 'top-left', 'top-right', 'bottom-left', 'bottom-right'],
+      control: { type: 'select' },
+    },
     onClose: {
       control: {
         type: undefined,
@@ -153,6 +160,27 @@ export const ToastAutoClose: Story = {
     autoCloseDelay: 5000,
     children:
       'Ce toast se ferme automatiquement, avec la barre de progression du minuteur. Survolez-le pour mettre le minuteur en pause.',
+  },
+};
+
+export const ToastPositioned: Story = {
+  render: (args) => <Template {...args} />,
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Le toast glisse depuis/vers le bord auquel il est ancré (`slideLeft`/`slideRight`), ou un simple fondu quand `position` vaut `none`. Cliquer n'importe où sur le toast (hors actions) le referme.",
+      },
+    },
+  },
+
+  args: {
+    type: 'info',
+    isToast: true,
+    position: 'top-right',
+    children:
+      "Cliquez n'importe où sur ce toast pour le fermer. Changez la position dans les contrôles pour voir l'animation d'entrée/sortie s'adapter.",
   },
 };
 
