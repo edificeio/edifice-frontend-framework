@@ -10,6 +10,74 @@
   }
 }
 
+@keyframes alert-slide-in-left {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes alert-slide-out-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes alert-slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes alert-slide-out-right {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes alert-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes alert-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 .alert {
   --alert-border-left-color: var(--primitive-grey-800);
   --alert-box-shadow: 0 4px 10px rgb(0 0 0 / 18%);
@@ -68,6 +136,36 @@
     max-width: calc(402px - 2rem);
     box-shadow: var(--alert-box-shadow);
     width: 100%;
+    // Clicking anywhere on a toast dismisses it (see Alert's handleToastClick)
+
+    cursor: pointer;
+    animation-duration: 240ms;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+
+    &.alert-slide-in-left {
+      animation-name: alert-slide-in-left;
+    }
+
+    &.alert-slide-out-left {
+      animation-name: alert-slide-out-left;
+    }
+
+    &.alert-slide-in-right {
+      animation-name: alert-slide-in-right;
+    }
+
+    &.alert-slide-out-right {
+      animation-name: alert-slide-out-right;
+    }
+
+    &.alert-fade-in {
+      animation-name: alert-fade-in;
+    }
+
+    &.alert-fade-out {
+      animation-name: alert-fade-out;
+    }
   }
 
   &.is-confirm {
@@ -102,22 +200,29 @@
     }
   }
 
+  // is-confirm already sets position: fixed on itself; declaring it here too
+  // lets a plain is-toast alert anchor itself to a viewport corner on its own,
+  // without relying on an external portal/container for positioning
   &.top-left {
+    position: fixed;
     top: var(--primitive-spacer-0);
     left: var(--primitive-spacer-0);
   }
 
   &.top-right {
+    position: fixed;
     top: var(--primitive-spacer-0);
     right: var(--primitive-spacer-0);
   }
 
   &.bottom-left {
+    position: fixed;
     bottom: var(--primitive-spacer-0);
     left: var(--primitive-spacer-0);
   }
 
   &.bottom-right {
+    position: fixed;
     bottom: var(--primitive-spacer-0);
     right: var(--primitive-spacer-0);
   }
