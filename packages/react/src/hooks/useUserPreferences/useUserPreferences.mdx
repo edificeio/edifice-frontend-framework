@@ -9,7 +9,7 @@ using the `odeServices` client.
 
 It is backed by `@tanstack/react-query`: preferences are cached under the
 `['user', 'preferences']` query key, and saves update the cache optimistically
-before invalidating it.
+before replacing it with the preferences returned by the server.
 
 ## Usage
 
@@ -55,9 +55,10 @@ function PreferencesPanel() {
 - `isLoading` (`boolean`): Whether the preferences query is loading.
 - `isError` (`boolean`): Whether the preferences query failed.
 - `refetch` (`function`): Refetches the user preferences query.
-- `savePreferences` (`function`): Saves the full preferences payload.
+- `savePreferences` (`(preferences: T) => Promise<T>`): Saves the full
+  preferences payload and returns the preferences stored by the server.
 
-### `savePreferences(preferences: T): Promise<void>`
+### `savePreferences(preferences: T): Promise<T>`
 
 Saves the whole preferences object with `odeServices.conf().saveUserPreferences`.
 The local React Query cache is updated immediately, then replaced with the
