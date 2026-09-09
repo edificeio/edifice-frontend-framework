@@ -163,7 +163,7 @@ describe('MediaLibrary innertabs', () => {
       );
       const files = [{ _id: 'a' }, { _id: 'b' }] as WorkspaceElement[];
 
-      act(() => childProps.UploadFiles.onFilesChange(files, []));
+      act(() => childProps.UploadFiles.onFilesChange(files, {}));
 
       expect(setCancellable).toHaveBeenCalledWith(files);
       expect(setResultCounter).toHaveBeenCalledWith(2);
@@ -175,7 +175,7 @@ describe('MediaLibrary innertabs', () => {
         <Upload />,
       );
 
-      act(() => childProps.UploadFiles.onFilesChange([], []));
+      act(() => childProps.UploadFiles.onFilesChange([], {}));
 
       expect(setCancellable).toHaveBeenCalledWith([]);
       expect(setResultCounter).toHaveBeenCalledWith(undefined);
@@ -183,17 +183,20 @@ describe('MediaLibrary innertabs', () => {
     });
 
     // The ordering choice is deferred: it is applied by the pre-success action,
-    // right before the uploaded files are handed over to the editor.
+    // right before the uploaded files are handed over to the editor. The
+    // uploaded elements are given names different from their source files, so
+    // the tests check that sorting keys off the source file info.
     const uploaded = [
-      { _id: '1', name: 'b.png' },
-      { _id: '2', name: 'a.png' },
-      { _id: '3', name: 'c.png' },
+      { _id: '1', name: 'b.webp' },
+      { _id: '2', name: 'a.webp' },
+      { _id: '3', name: 'c.webp' },
     ] as WorkspaceElement[];
-    const sources = [
-      new File([''], 'b.png', { lastModified: 30 }),
-      new File([''], 'a.png', { lastModified: 10 }),
-      new File([''], 'c.png', { lastModified: 20 }),
-    ];
+    const sourcesInfo: Record<string, { name: string; lastModified: number }> =
+      {
+        '1': { name: 'b.png', lastModified: 30 },
+        '2': { name: 'a.png', lastModified: 10 },
+        '3': { name: 'c.png', lastModified: 20 },
+      };
 
     /** Resolve the currently registered pre-success result. */
     const runPreSuccess = (setPreSuccess: ReturnType<typeof vi.fn>) =>
@@ -202,7 +205,7 @@ describe('MediaLibrary innertabs', () => {
     it('orders alphabetically by default', async () => {
       const { setPreSuccess } = renderTab(<Upload />, { multiple: true });
 
-      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sourcesInfo));
 
       await expect(runPreSuccess(setPreSuccess)).resolves.toEqual([
         uploaded[1], // a.png
@@ -211,16 +214,16 @@ describe('MediaLibrary innertabs', () => {
       ]);
     });
 
-    it('orders by source last modification date (most recent first) once the date radio is selected', async () => {
+    it('orders by source last modification date (oldest first) once the date radio is selected', async () => {
       const { setPreSuccess, user } = renderTab(<Upload />, { multiple: true });
 
-      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sourcesInfo));
       await user.click(screen.getByTestId('media-library-upload-sort-date'));
 
       await expect(runPreSuccess(setPreSuccess)).resolves.toEqual([
-        uploaded[0], // b.png, 30
-        uploaded[2], // c.png, 20
         uploaded[1], // a.png, 10
+        uploaded[2], // c.png, 20
+        uploaded[0], // b.png, 30
       ]);
     });
 
@@ -238,10 +241,50 @@ describe('MediaLibrary innertabs', () => {
     it('clears the pre-success action when the upload list is emptied', async () => {
       const { setPreSuccess } = renderTab(<Upload />, { multiple: true });
 
-      act(() => childProps.UploadFiles.onFilesChange(uploaded, sources));
-      act(() => childProps.UploadFiles.onFilesChange([], []));
+      act(() => childProps.UploadFiles.onFilesChange(uploaded, sourcesInfo));
+      act(() => childProps.UploadFiles.onFilesChange([], {}));
 
       expect(setPreSuccess).toHaveBeenLastCalledWith(undefined);
+    });
+
+    it('keeps a large out-of-order batch correctly sorted by date', async () => {
+      const many = Array.from(
+        { length: 11 },
+        (_, i) => ({ _id: `${i}`, name: `f-${i}.webp` }) as WorkspaceElement,
+      );
+      const info = Object.fromEntries(
+        many.map((el, i) => [
+          el._id,
+          { name: `f-${i}.png`, lastModified: (i * 7) % 11 },
+        ]),
+      );
+      const { setPreSuccess, user } = renderTab(<Upload />, { multiple: true });
+
+      act(() => childProps.UploadFiles.onFilesChange(many, info));
+      await user.click(screen.getByTestId('media-library-upload-sort-date'));
+
+      const ordered: WorkspaceElement[] = await runPreSuccess(setPreSuccess);
+      const dates = ordered.map((el) => info[el._id!].lastModified);
+      expect(dates).toEqual([...dates].sort((a, b) => a - b));
+    });
+
+    it('falls back to the element name when a source file is missing', async () => {
+      const { setPreSuccess } = renderTab(<Upload />, { multiple: true });
+
+      act(() =>
+        childProps.UploadFiles.onFilesChange(
+          [
+            { _id: '1', name: 'b.webp' },
+            { _id: '2', name: 'a.webp' },
+          ] as WorkspaceElement[],
+          {},
+        ),
+      );
+
+      await expect(runPreSuccess(setPreSuccess)).resolves.toEqual([
+        { _id: '2', name: 'a.webp' },
+        { _id: '1', name: 'b.webp' },
+      ]);
     });
   });
 

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { ImageResizer, addTimestampToImageUrl } from '@edifice.io/utilities';
@@ -7,6 +7,17 @@ import { useDropzoneContext } from '../../components';
 import { useUpload } from '../useUpload';
 import { useWorkspaceFile } from '../useWorkspaceFile';
 
+/**
+ * Snapshot of a source file taken at upload time, so the upload result can be
+ * re-ordered later on against the original file metadata.
+ */
+export interface UploadSourceFileInfo {
+  /** Original file name. */
+  name: string;
+  /** `File.lastModified` of the source file (ms since epoch). */
+  lastModified: number;
+}
+
 const useUploadFiles = ({
   handleOnChange,
   visibility,
@@ -14,12 +25,17 @@ const useUploadFiles = ({
 }: {
   handleOnChange: (
     uploadedFiles: WorkspaceElement[],
-    sourceFiles: File[],
+    sourceFilesInfo: Record<string, UploadSourceFileInfo>,
   ) => void;
   visibility?: WorkspaceVisibility;
   application?: string;
 }) => {
   const [uploadedFiles, setUploadedFiles] = useState<WorkspaceElement[]>([]);
+  // Snapshot of each source file (name + last modification date), keyed by the
+  // id of the workspace element it produced, so `handleOnChange` consumers can
+  // re-order the result by the original file metadata. Kept in a ref: read only
+  // when notifying, it never drives rendering.
+  const sourceFilesInfoRef = useRef<Record<string, UploadSourceFileInfo>>({});
   const [editingImage, setEditingImage] = useState<
     WorkspaceElement | undefined
   >(undefined);
@@ -61,6 +77,14 @@ const useUploadFiles = ({
         }
 
         if (resource) {
+          // `file` still refers to the source file here: the dropzone entry may
+          // be swapped (via `replaceFileAt`), but not this reference.
+          if (resource._id) {
+            sourceFilesInfoRef.current[resource._id] = {
+              name: file.name,
+              lastModified: file.lastModified,
+            };
+          }
           setUploadedFiles((prevFiles: WorkspaceElement[]) => [
             ...prevFiles,
             resource,
@@ -103,9 +127,11 @@ const useUploadFiles = ({
   /** When file finished being uploaded, sort and handle the result. */
   useEffect(() => {
     const sortedUploadedFiles = sortUploadedFiles(files, uploadedFiles);
-    // Also hand over the source files, so the caller can re-order the result
-    // later on (e.g. by name or last modification date) if needed.
-    handleOnChange(sortedUploadedFiles, files);
+    // Also hand over a snapshot of the source files (keyed by uploaded element
+    // id), so the caller can re-order the result later on (e.g. by name or last
+    // modification date) without depending on the File objects still held by
+    // the dropzone, which may have been replaced.
+    handleOnChange(sortedUploadedFiles, { ...sourceFilesInfoRef.current });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadedFiles]);
 
@@ -113,16 +139,21 @@ const useUploadFiles = ({
     filesArray: File[],
     uploadedFilesArray: WorkspaceElement[],
   ) => {
-    const orderMap = filesArray.reduce(
-      (acc: any, item: File, index: number) => {
-        acc[item.name] = index;
+    const orderMap = filesArray.reduce<Record<string, number>>(
+      (acc, item, index) => {
+        // Keep the first slot seen for a given name (names may repeat once a
+        // file has been renamed during upload).
+        if (!(item.name in acc)) acc[item.name] = index;
         return acc;
       },
       {},
     );
-    return uploadedFilesArray.sort(
-      (a: WorkspaceElement, b: WorkspaceElement) =>
-        orderMap[a.name] - orderMap[b.name],
+    // Copy before sorting (don't mutate the state array); unknown names sort
+    // last instead of producing a NaN comparator.
+    return [...uploadedFilesArray].sort(
+      (a, b) =>
+        (orderMap[a.name] ?? Number.MAX_SAFE_INTEGER) -
+        (orderMap[b.name] ?? Number.MAX_SAFE_INTEGER),
     );
   };
 
@@ -136,6 +167,7 @@ const useUploadFiles = ({
     if (resource) {
       await remove(resource);
       clearUploadStatus(file);
+      if (resource._id) delete sourceFilesInfoRef.current[resource._id];
       setUploadedFiles((prevFiles: WorkspaceElement[]) => {
         return prevFiles.filter((prevFile) => prevFile.name !== resource?.name);
       });

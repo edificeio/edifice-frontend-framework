@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Dropzone } from '../../../../components/Dropzone';
 import { Flex } from '../../../../components/Flex';
 import { Radio } from '../../../../components/Radio';
+import { UploadSourceFileInfo } from '../../../../hooks';
 import { UploadFiles } from '../../UploadFiles';
 import { MediaLibraryType } from '../MediaLibrary';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
@@ -43,31 +44,38 @@ const acceptedTypes = (type: MediaLibraryType) => {
 /**
  * Re-order uploaded elements just before they are handed over to the editor.
  * @param uploadedFiles workspace elements resulting from the upload
- * @param sourceFiles the device files they were uploaded from
- * @param byAlpha `true` to sort by file name, `false` to sort by the source
- * file's last modification date (most recent first)
+ * @param sourceFilesInfo snapshot of the source files they came from, keyed by
+ * uploaded element id (see `useUploadFiles`)
+ * @param byAlpha `true` to sort by the source file name, `false` to sort by the
+ * source file's last modification date (oldest first)
  */
 const orderUploadedFiles = (
   uploadedFiles: WorkspaceElement[],
-  sourceFiles: File[],
+  sourceFilesInfo: Record<string, UploadSourceFileInfo>,
   byAlpha: boolean,
 ): WorkspaceElement[] => {
+  // Sort against the original source file: the uploaded element may have been
+  // renamed during upload, and its own dates all sit at upload time. Fall back
+  // to the element's own name / epoch 0 when the source file can no longer be
+  // found — should not happen in the normal upload flow.
+  const infoOf = (element: WorkspaceElement) =>
+    element._id ? sourceFilesInfo[element._id] : undefined;
+  const nameOf = (element: WorkspaceElement) =>
+    infoOf(element)?.name ?? element.name;
+  const lastModifiedOf = (element: WorkspaceElement) =>
+    infoOf(element)?.lastModified ?? 0;
+
   if (byAlpha) {
     return [...uploadedFiles].sort((a, b) =>
-      a.name.localeCompare(b.name, undefined, { numeric: true }),
+      nameOf(a).localeCompare(nameOf(b), undefined, { numeric: true }),
     );
   }
 
-  // Source files are matched by name (names are unique in the upload flow).
-  // Elements whose source can no longer be found keep their relative order.
-  const lastModifiedByName = new Map(
-    sourceFiles.map((file) => [file.name, file.lastModified]),
-  );
-  return [...uploadedFiles].sort(
-    (a, b) =>
-      (lastModifiedByName.get(b.name) ?? 0) -
-      (lastModifiedByName.get(a.name) ?? 0),
-  );
+  // Sort "most recent first" (the order that has proven reliable), then flip it
+  // to hand the editor an "oldest first" list.
+  return [...uploadedFiles]
+    .sort((a, b) => lastModifiedOf(b) - lastModifiedOf(a))
+    .reverse();
 };
 
 export const Upload = () => {
@@ -88,13 +96,13 @@ export const Upload = () => {
   const [sortByAlpha, setSortByAlpha] = useState(true);
   const [uploadedFiles, setUploadedFiles] = useState<WorkspaceElement[]>([]);
   // Kept in a ref: only read when the pre-success action runs, not on render.
-  const sourceFilesRef = useRef<File[]>([]);
+  const sourceFilesInfoRef = useRef<Record<string, UploadSourceFileInfo>>({});
 
   const handleOnFilesChange = (
     uploadedFiles: WorkspaceElement[],
-    sourceFiles: File[],
+    sourceFilesInfo: Record<string, UploadSourceFileInfo>,
   ) => {
-    sourceFilesRef.current = sourceFiles;
+    sourceFilesInfoRef.current = sourceFilesInfo;
     setUploadedFiles(uploadedFiles);
 
     if (uploadedFiles.length) {
@@ -123,7 +131,7 @@ export const Upload = () => {
         Promise.resolve(
           orderUploadedFiles(
             uploadedFiles,
-            sourceFilesRef.current,
+            sourceFilesInfoRef.current,
             sortByAlpha,
           ),
         ),

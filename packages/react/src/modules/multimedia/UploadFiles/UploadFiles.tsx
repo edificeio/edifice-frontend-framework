@@ -3,7 +3,7 @@ import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { customSize } from '@edifice.io/utilities';
 import { Suspense, lazy, useEffect, useRef } from 'react';
 import { LoadingScreen } from '../../../components';
-import { useUploadFiles } from '../../../hooks';
+import { UploadSourceFileInfo, useUploadFiles } from '../../../hooks';
 import { UploadCard } from '../UploadCard';
 
 const ImageEditor = lazy(
@@ -16,7 +16,7 @@ const UploadFiles = ({
 }: {
   onFilesChange: (
     uploadedFiles: WorkspaceElement[],
-    sourceFiles: File[],
+    sourceFilesInfo: Record<string, UploadSourceFileInfo>,
   ) => void;
   visibility?: WorkspaceVisibility;
 }) => {

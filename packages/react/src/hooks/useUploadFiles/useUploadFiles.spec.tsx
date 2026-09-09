@@ -81,7 +81,7 @@ describe('useUploadFiles', () => {
   it('notifies with an empty list when there are no files', async () => {
     const { handleOnChange } = setup([]);
 
-    await waitFor(() => expect(handleOnChange).toHaveBeenCalledWith([], []));
+    await waitFor(() => expect(handleOnChange).toHaveBeenCalledWith([], {}));
   });
 
   it('resizes and uploads an image via uploadAlternateFile', async () => {
@@ -100,7 +100,7 @@ describe('useUploadFiles', () => {
     await waitFor(() =>
       expect(handleOnChange).toHaveBeenLastCalledWith(
         [resource],
-        expect.any(Array),
+        expect.any(Object),
       ),
     );
   });
@@ -117,12 +117,12 @@ describe('useUploadFiles', () => {
     await waitFor(() =>
       expect(handleOnChange).toHaveBeenLastCalledWith(
         [resource],
-        expect.any(Array),
+        expect.any(Object),
       ),
     );
   });
 
-  it('hands the source files over alongside the uploaded ones', async () => {
+  it('hands a snapshot of the source files over, keyed by uploaded element id', async () => {
     const file = createFile('doc.pdf', 'application/pdf');
     const resource = { _id: 'res-2', name: 'doc.pdf' };
     uploadFile.mockResolvedValue(resource);
@@ -130,7 +130,33 @@ describe('useUploadFiles', () => {
     const { handleOnChange } = setup([file]);
 
     await waitFor(() =>
-      expect(handleOnChange).toHaveBeenLastCalledWith([resource], [file]),
+      expect(handleOnChange).toHaveBeenLastCalledWith([resource], {
+        'res-2': { name: 'doc.pdf', lastModified: file.lastModified },
+      }),
+    );
+  });
+
+  it('snapshots the original image file, not its resized replacement', async () => {
+    // The resize step replaces the picked file with a new one (renamed, with
+    // lastModified reset); the snapshot must keep the file the user picked.
+    const file = new File(['x'], 'photo.png', {
+      type: 'image/png',
+      lastModified: 111,
+    });
+    const replacement = new File(['x'], 'photo.jpeg', {
+      type: 'image/jpeg',
+      lastModified: 999,
+    });
+    const resource = { _id: 'res-1', name: 'photo.jpeg' };
+    resizeImageFile.mockResolvedValue(replacement);
+    uploadAlternateFile.mockResolvedValue(resource);
+
+    const { handleOnChange } = setup([file]);
+
+    await waitFor(() =>
+      expect(handleOnChange).toHaveBeenLastCalledWith([resource], {
+        'res-1': { name: 'photo.png', lastModified: 111 },
+      }),
     );
   });
 
@@ -181,7 +207,7 @@ describe('useUploadFiles', () => {
     await waitFor(() =>
       expect(handleOnChange).toHaveBeenLastCalledWith(
         [resource],
-        expect.any(Array),
+        expect.any(Object),
       ),
     );
 
