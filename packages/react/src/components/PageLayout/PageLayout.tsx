@@ -8,7 +8,7 @@ import {
 
 import clsx from 'clsx';
 
-import { useZendeskGuide } from '../../hooks';
+import { useCantoo, useZendeskGuide } from '../../hooks';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -104,6 +104,7 @@ const Root = ({
   );
 
   const renderZendeskGuide = useZendeskGuide();
+  useCantoo();
 
   const {
     hasLeftSidebar,
