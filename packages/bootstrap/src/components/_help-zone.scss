@@ -1,0 +1,12 @@
+.help-zone {
+  position: fixed;
+  right: var(--primitive-spacer-16);
+  bottom: var(--primitive-spacer-16);
+  z-index: 3;
+}
+
+// Hides the native support widget launcher while HelpZone is mounted,
+// so it never flashes alongside the custom button above.
+body.help-zone-active iframe#launcher {
+  display: none;
+}

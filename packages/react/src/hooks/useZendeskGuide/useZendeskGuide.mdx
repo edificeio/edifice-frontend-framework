@@ -22,7 +22,12 @@ const MyComponent = () => {
 
 ### Returns
 
-- `null`
+An object:
+
+- `isReady`: `boolean` — `true` once the widget script is loaded and configured.
+- `isOpen`: `boolean` — `true` while the widget panel is open.
+- `open`: `() => void` — opens the widget panel.
+- `close`: `() => void` — closes the widget panel.
 
 ### Dependencies
 

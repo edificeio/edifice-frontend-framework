@@ -11,3 +11,4 @@ export { handlers as timelineHandlers } from './timeline';
 export { handlers as userbookHandlers } from './userbook';
 export { handlers as wikiHandlers } from './wiki';
 export { handlers as workspaceHandlers } from './workspace';
+export { handlers as zendeskGuideHandlers } from './zendeskGuide';

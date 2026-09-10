@@ -172,12 +172,121 @@ describe('useZendeskGuide', () => {
       expect(get).not.toHaveBeenCalled();
     });
 
-    it('returns nothing to render', () => {
+    it('returns a not-ready, closed API when the support workflow is unresolved', () => {
       useHasWorkflow.mockReturnValue(undefined);
 
       const { result } = renderHook(() => useZendeskGuide());
 
-      expect(result.current).toBeNull();
+      expect(result.current.isReady).toBe(false);
+      expect(result.current.isOpen).toBe(false);
+      expect(typeof result.current.open).toBe('function');
+      expect(typeof result.current.close).toBe('function');
+    });
+
+    it('marks the widget ready once the snippet has loaded', async () => {
+      get.mockResolvedValue(config());
+      const { result } = renderHook(() => useZendeskGuide());
+
+      expect(result.current.isReady).toBe(false);
+
+      const script = await waitFor(() => {
+        const element = snippet();
+        expect(element).not.toBeNull();
+        return element as HTMLScriptElement;
+      });
+
+      await act(async () => {
+        script.onload?.(new Event('load'));
+      });
+
+      expect(result.current.isReady).toBe(true);
+    });
+
+    it('marks the widget ready immediately when the snippet is already there', () => {
+      const existing = document.createElement('script');
+      existing.id = 'ze-snippet';
+      document.body.appendChild(existing);
+
+      const { result } = renderHook(() => useZendeskGuide());
+
+      expect(result.current.isReady).toBe(true);
+    });
+  });
+
+  describe('open/close API', () => {
+    /** Renders the hook and plays the snippet load, returning the hook's `result`. */
+    async function mountAndLoadResult() {
+      get.mockResolvedValue(config());
+      const { result } = renderHook(() => useZendeskGuide());
+
+      const script = await waitFor(() => {
+        const element = snippet();
+        expect(element).not.toBeNull();
+        return element as HTMLScriptElement;
+      });
+
+      await act(async () => {
+        script.onload?.(new Event('load'));
+      });
+
+      return result;
+    }
+
+    it('opens the widget through zE', async () => {
+      const result = await mountAndLoadResult();
+
+      act(() => {
+        result.current.open();
+      });
+
+      expect(zE).toHaveBeenCalledWith('webWidget', 'open');
+    });
+
+    it('closes the widget through zE', async () => {
+      const result = await mountAndLoadResult();
+
+      act(() => {
+        result.current.close();
+      });
+
+      expect(zE).toHaveBeenCalledWith('webWidget', 'close');
+    });
+
+    it('tracks isOpen through the widget open/close events', async () => {
+      const result = await mountAndLoadResult();
+
+      expect(result.current.isOpen).toBe(false);
+
+      act(() => {
+        widgetHandler('open')?.();
+      });
+      expect(result.current.isOpen).toBe(true);
+
+      act(() => {
+        widgetHandler('close')?.();
+      });
+      expect(result.current.isOpen).toBe(false);
+    });
+
+    it('tracks isOpen on a second mount reusing an already-bootstrapped widget', () => {
+      const existing = document.createElement('script');
+      existing.id = 'ze-snippet';
+      document.body.appendChild(existing);
+
+      const { result } = renderHook(() => useZendeskGuide());
+
+      expect(result.current.isReady).toBe(true);
+      expect(result.current.isOpen).toBe(false);
+
+      act(() => {
+        widgetHandler('open')?.();
+      });
+      expect(result.current.isOpen).toBe(true);
+
+      act(() => {
+        widgetHandler('close')?.();
+      });
+      expect(result.current.isOpen).toBe(false);
     });
   });
 
@@ -290,7 +399,9 @@ describe('useZendeskGuide', () => {
       await mountAndLoad();
       const before = settings().length;
 
-      widgetHandler('open')?.();
+      act(() => {
+        widgetHandler('open')?.();
+      });
 
       expect(settings()[before]).toMatchObject({
         webWidget: { contactForm: { suppress: false } },
@@ -302,7 +413,9 @@ describe('useZendeskGuide', () => {
       await mountAndLoad();
       const before = settings().length;
 
-      widgetHandler('open')?.();
+      act(() => {
+        widgetHandler('open')?.();
+      });
 
       expect(settings()).toHaveLength(before);
     });

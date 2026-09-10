@@ -8,6 +8,7 @@ import {
 
 import clsx from 'clsx';
 
+import { HelpZoneContainer } from '../HelpZone/HelpZoneContainer';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -147,6 +148,8 @@ const Root = ({
 
         {overlay}
       </div>
+
+      <HelpZoneContainer />
     </PageLayoutContext.Provider>
   );
 };
