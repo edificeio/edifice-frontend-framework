@@ -3,6 +3,7 @@ import { render, screen } from '~/setup';
 import { MediaWrapper } from './MediaWrapper';
 
 // The PDF viewer relies on react-pdf, already neutralised by the test setup.
+// MediaWrapper loads it through React.lazy, so it resolves asynchronously here.
 vi.mock('./PdfViewer', () => ({
   default: ({ mediaUrl }: { mediaUrl: string }) => (
     <div data-testid="pdf-viewer">{mediaUrl}</div>
@@ -32,10 +33,12 @@ describe('MediaWrapper', () => {
   });
 
   describe('attachment', () => {
-    it('delegates a PDF to the dedicated viewer', () => {
+    it('delegates a PDF to the dedicated viewer', async () => {
       renderMedia('attachment', { mimeType: 'application/pdf' });
 
-      expect(screen.getByTestId('pdf-viewer')).toHaveTextContent('/media/file');
+      expect(await screen.findByTestId('pdf-viewer')).toHaveTextContent(
+        '/media/file',
+      );
     });
 
     it('offers a download link for any other mime type', () => {
@@ -64,10 +67,10 @@ describe('MediaWrapper', () => {
       expect(screen.getByText('Open link')).toBeInTheDocument();
     });
 
-    it('delegates a PDF hyperlink to the dedicated viewer', () => {
+    it('delegates a PDF hyperlink to the dedicated viewer', async () => {
       renderMedia('hyperlink', { mimeType: 'application/pdf' });
 
-      expect(screen.getByTestId('pdf-viewer')).toBeInTheDocument();
+      expect(await screen.findByTestId('pdf-viewer')).toBeInTheDocument();
     });
   });
 

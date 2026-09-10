@@ -1,6 +1,7 @@
 import { ComponentType, useEffect, useRef, useState } from 'react';
 import type { DocumentProps, PageProps } from 'react-pdf';
 import { LoadingScreen } from '../LoadingScreen';
+import { pdfWorkerSrc } from '../../pdfWorkerSrc';
 
 export default function PdfViewer({
   mediaUrl,
@@ -19,10 +20,10 @@ export default function PdfViewer({
   const pagesRef = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    // Dynamic import of react-pdf to avoid DOMMatrix issues in test environments
     const loadReactPdf = async () => {
       try {
         const reactPdf = await import('react-pdf');
+        reactPdf.pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerSrc;
         setDocument(() => reactPdf.Document);
         setPage(() => reactPdf.Page);
         setIsLoading(false);
