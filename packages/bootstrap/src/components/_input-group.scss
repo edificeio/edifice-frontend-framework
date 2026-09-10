@@ -33,4 +33,27 @@
       }
     }
   }
+
+  // Same adjustments as `.form-control` above, for the `Input` component's
+  // own `.input` wrapper (see components/_input.scss) — `Input` no longer
+  // renders a bare `.form-control`, so `SearchBar` (which composes `Input`
+  // with `.btn-search` inside `.input-group`) needs its own selectors here.
+  .input {
+    & + .btn-search {
+      padding: $spacer-8 $spacer-12;
+    }
+
+    &.input--lg {
+      & + .btn-search {
+        padding: $spacer-12;
+      }
+    }
+
+    &:not(:focus-within, :has(.input-field:placeholder-shown)) {
+      & + .input-group-text,
+      & + .btn-search {
+        border-color: var(--#{$prefix}input-filled-border-color);
+      }
+    }
+  }
 }

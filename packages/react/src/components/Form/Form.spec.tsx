@@ -21,10 +21,12 @@ describe('FormControl', () => {
     const input = screen.getByLabelText(/Email/);
     expect(input).toHaveAttribute('id', 'email');
     expect(input).toBeRequired();
-    expect(input).toHaveClass('is-invalid');
+    expect(input.parentElement).toHaveClass('input--invalid');
 
     const helpText = screen.getByText('Required field');
-    expect(helpText.closest('.form-text')).toHaveClass('is-invalid');
+    expect(helpText.closest('.input-message')).toHaveClass(
+      'input-message--invalid',
+    );
   });
 
   it('forwards extra props to the wrapping div', () => {

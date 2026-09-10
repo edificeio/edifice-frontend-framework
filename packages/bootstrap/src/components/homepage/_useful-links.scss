@@ -1,0 +1,102 @@
+// Neither empty state uses the generic EmptyScreen component: its image
+// sizing is square-only, and the illustration's ~1.84:1 ratio would be
+// visibly distorted. EmptyScreen's title styling (Heading h2,
+// text-secondary color) would also be oversized for the modal's compact
+// title. Both follow Communities' convention instead — local markup with
+// compact typography rather than the generic component.
+.useful-links-widget {
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--primitive-spacer-8);
+    text-align: center;
+  }
+
+  &__empty-text {
+    margin: 0;
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-2xs);
+    color: var(--primitive-text-color-default);
+  }
+}
+
+.useful-links-modal {
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--primitive-spacer-8);
+    padding: var(--primitive-spacer-16);
+    text-align: center;
+  }
+
+  &__empty-title {
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-m);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-m);
+    color: var(--primitive-text-color-default);
+  }
+
+  &__empty-text {
+    margin: 0;
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-subtext);
+  }
+}
+
+// Overrides the generic Table's older bootstrap-ish tokens (radius, border
+// and zebra colors) with the "Modals" design system's own tokens: no
+// visible column headers, the "Ajouter un lien" action folded into the
+// table as its first row, and per-row bottom borders instead of the
+// generic component's outer-border-only look.
+.useful-links-table {
+  .table {
+    margin-bottom: 0;
+    color: var(--primitive-text-color-default);
+    border-color: var(--primitive-grey-300);
+    border-radius: var(--primitive-border-radius-lg);
+    table-layout: fixed;
+  }
+
+  tr > * {
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-16);
+    border-bottom: 1px solid var(--primitive-grey-300);
+  }
+
+  tbody > tr:nth-of-type(even) > * {
+    background-color: var(--primitive-grey-100);
+  }
+
+  tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--primitive-white);
+  }
+
+  &__action-row > * {
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  }
+
+  &__name,
+  &__url {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__url {
+    width: 24rem;
+  }
+
+  &__actions {
+    width: 8rem;
+  }
+}
