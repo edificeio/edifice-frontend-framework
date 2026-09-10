@@ -43,6 +43,10 @@ An object:
 - Configures the widget based on the current language, user roles, profiles, and theme.
 - Updates the widget's settings dynamically based on the current page and user interactions.
 
+### Local dev requirement
+
+The hook fetches its config from `/zendeskGuide/config`. In production/recette this is same-origin, but on a local Vite dev server it needs to be proxied to the backend like any other API route — otherwise the fetch fails, `isReady` stays `false` forever, and the widget (and `HelpZone`'s button) never shows up. If you see this happen, check your app's Vite dev proxy config includes `zendeskGuide` alongside the other proxied route prefixes (`auth`, `workspace`, `userbook`…) — a console warning from this hook will confirm that's the cause.
+
 ### Example
 
 ```tsx
