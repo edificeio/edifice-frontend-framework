@@ -10,6 +10,7 @@ import { EmbedderService } from '../embedder/Service';
 import { App, ResourceType } from '../globals';
 import { IdiomService } from '../idiom/Service';
 import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
+import { NextcloudService } from '../nextcloud/Service';
 import { ResourceService } from '../resources/ResourceService';
 import { SnipletsService } from '../resources/SnipletsService';
 import {
@@ -34,6 +35,7 @@ export interface IOdeServices {
   directory(): DirectoryService;
   http(): HttpService;
   idiom(): IdiomService;
+  nextcloud(): NextcloudService;
   notify(): INotifyFramework;
   resource(
     application: App,
@@ -57,6 +59,7 @@ export class OdeServices implements IOdeServices {
   private _directory: DirectoryService;
   private _http: HttpService;
   private _idiom: IdiomService;
+  private _nextcloud: NextcloudService;
   private _notify: INotifyFramework;
   private _rights: RightService;
   private _session: SessionService;
@@ -74,6 +77,7 @@ export class OdeServices implements IOdeServices {
     this._directory = new DirectoryService(this);
     this._http = new HttpService(this);
     this._idiom = new IdiomService(this);
+    this._nextcloud = new NextcloudService(this);
     this._notify = NotifyFrameworkFactory.instance();
     this._rights = new RightService(this);
     this._session = new SessionService(this);
@@ -119,6 +123,10 @@ export class OdeServices implements IOdeServices {
 
   idiom() {
     return this._idiom;
+  }
+
+  nextcloud() {
+    return this._nextcloud;
   }
 
   notify() {
