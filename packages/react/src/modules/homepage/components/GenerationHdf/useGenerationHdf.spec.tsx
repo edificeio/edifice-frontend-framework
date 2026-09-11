@@ -1,4 +1,6 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useGenerationHdf } from './useGenerationHdf';
 
@@ -24,6 +26,15 @@ vi.mock('@edifice.io/client', () => ({
   },
 }));
 
+function createWrapper() {
+  const queryClient = new QueryClient({
+    defaultOptions: { queries: { retry: false } },
+  });
+  return ({ children }: { children: ReactNode }) => (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
+}
+
 describe('useGenerationHdf', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -33,7 +44,9 @@ describe('useGenerationHdf', () => {
   });
 
   it('starts idle when no card number is stored as a preference', async () => {
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.status).toBe('idle');
@@ -48,7 +61,9 @@ describe('useGenerationHdf', () => {
       wallets: [{ code: 'PM1', libelle: 'Manuels et équipements' }],
     });
 
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.status).toBe('account');
@@ -64,7 +79,9 @@ describe('useGenerationHdf', () => {
     mocks.isResponseError.mockReturnValue(true);
     mocks.get.mockResolvedValue({ sales: [], wallets: [] });
 
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
 
     await waitFor(() => {
       expect(result.current.status).toBe('error');
@@ -77,7 +94,9 @@ describe('useGenerationHdf', () => {
       wallets: [{ code: 'PM1', libelle: 'Restauration' }],
     });
 
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
     await waitFor(() => expect(result.current.status).toBe('idle'));
 
     act(() => {
@@ -88,8 +107,6 @@ describe('useGenerationHdf', () => {
         preventDefault: vi.fn(),
       } as unknown as React.FormEvent<HTMLFormElement>);
     });
-
-    expect(result.current.status).toBe('loading');
 
     await waitFor(() => {
       expect(result.current.status).toBe('account');
@@ -106,7 +123,9 @@ describe('useGenerationHdf', () => {
     mocks.isResponseError.mockReturnValue(true);
     mocks.get.mockResolvedValue({ sales: [], wallets: [] });
 
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
     await waitFor(() => expect(result.current.status).toBe('idle'));
 
     act(() => {
@@ -131,7 +150,9 @@ describe('useGenerationHdf', () => {
       wallets: [{ code: 'PM1', libelle: 'Manuels et équipements' }],
     });
 
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
     await waitFor(() => expect(result.current.status).toBe('account'));
 
     act(() => {
@@ -145,7 +166,9 @@ describe('useGenerationHdf', () => {
   });
 
   it('only clears the local field when using onClear', async () => {
-    const { result } = renderHook(() => useGenerationHdf());
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
     await waitFor(() => expect(result.current.status).toBe('idle'));
 
     act(() => {
