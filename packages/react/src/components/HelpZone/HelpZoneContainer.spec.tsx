@@ -1,5 +1,5 @@
 import { render, screen } from '~/setup';
-import { HelpButtonContainer } from './HelpButtonContainer';
+import { HelpZoneContainer } from './HelpZoneContainer';
 
 const { useZendeskGuide } = vi.hoisted(() => ({
   useZendeskGuide: vi.fn(),
@@ -7,7 +7,7 @@ const { useZendeskGuide } = vi.hoisted(() => ({
 
 vi.mock('../../hooks', () => ({ useZendeskGuide }));
 
-describe('HelpButtonContainer', () => {
+describe('HelpZoneContainer', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="portal"></div>';
   });
@@ -24,7 +24,7 @@ describe('HelpButtonContainer', () => {
       close: vi.fn(),
     });
 
-    render(<HelpButtonContainer />);
+    render(<HelpZoneContainer />);
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
@@ -38,7 +38,7 @@ describe('HelpButtonContainer', () => {
       close: vi.fn(),
     });
 
-    const { user } = render(<HelpButtonContainer />);
+    const { user } = render(<HelpZoneContainer />);
     await user.click(screen.getByRole('button'));
 
     expect(open).toHaveBeenCalledTimes(1);
@@ -53,7 +53,7 @@ describe('HelpButtonContainer', () => {
       close,
     });
 
-    const { user } = render(<HelpButtonContainer />);
+    const { user } = render(<HelpZoneContainer />);
     await user.click(screen.getByRole('button'));
 
     expect(close).toHaveBeenCalledTimes(1);

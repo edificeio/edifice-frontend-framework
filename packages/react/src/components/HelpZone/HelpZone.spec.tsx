@@ -1,9 +1,9 @@
 import { fireEvent, render, screen } from '~/setup';
-import HelpButton, { HelpButtonProps } from './HelpButton';
+import HelpZone, { HelpZoneProps } from './HelpZone';
 
-function renderHelpButton(props: Partial<HelpButtonProps> = {}) {
+function renderHelpZone(props: Partial<HelpZoneProps> = {}) {
   return render(
-    <HelpButton
+    <HelpZone
       isReady={true}
       isOpen={false}
       onOpen={vi.fn()}
@@ -16,7 +16,7 @@ function renderHelpButton(props: Partial<HelpButtonProps> = {}) {
 const fullLogo = () => document.querySelector('svg[width="81"]');
 const compactLogo = () => document.querySelector('svg[width="18"]');
 
-describe('HelpButton', () => {
+describe('HelpZone', () => {
   beforeEach(() => {
     document.body.innerHTML = '<div id="portal"></div>';
   });
@@ -26,55 +26,85 @@ describe('HelpButton', () => {
   });
 
   it('renders nothing while the widget is not ready', () => {
-    renderHelpButton({ isReady: false });
+    renderHelpZone({ isReady: false });
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
   });
 
   it('renders a button once ready', () => {
-    renderHelpButton();
+    renderHelpZone();
 
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'homepage.help-zone.open' }),
+    ).toBeInTheDocument();
   });
 
   it('calls onOpen when closed and clicked', async () => {
     const onOpen = vi.fn();
-    const { user } = renderHelpButton({ onOpen });
+    const { user } = renderHelpZone({ onOpen });
 
-    await user.click(screen.getByRole('button'));
+    await user.click(
+      screen.getByRole('button', { name: 'homepage.help-zone.open' }),
+    );
 
     expect(onOpen).toHaveBeenCalledTimes(1);
   });
 
   it('calls onClose when open and clicked', async () => {
     const onClose = vi.fn();
-    const { user } = renderHelpButton({ isOpen: true, onClose });
+    const { user } = renderHelpZone({ isOpen: true, onClose });
 
-    await user.click(screen.getByRole('button'));
+    await user.click(
+      screen.getByRole('button', { name: 'homepage.help-zone.close' }),
+    );
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
-  it('marks the page as having an active help zone while mounted', () => {
-    const { unmount } = renderHelpButton();
+  describe('Edifice badge', () => {
+    it('is a link to the platform release notes, opened in a new tab', () => {
+      renderHelpZone();
 
-    expect(document.body.classList.contains('help-button-active')).toBe(true);
+      const badge = screen.getByRole('link');
+
+      expect(badge).toHaveAttribute('href', 'https://edifice.io/releases/');
+      expect(badge).toHaveAttribute('target', '_blank');
+      expect(badge.getAttribute('rel')).toContain('noopener');
+    });
+
+    it('does not open or close the support widget when clicked', async () => {
+      const onOpen = vi.fn();
+      const onClose = vi.fn();
+      const { user } = renderHelpZone({ onOpen, onClose });
+
+      await user.click(screen.getByRole('link'));
+
+      expect(onOpen).not.toHaveBeenCalled();
+      expect(onClose).not.toHaveBeenCalled();
+    });
+  });
+
+  it('marks the page as having an active help zone while mounted', () => {
+    const { unmount } = renderHelpZone();
+
+    expect(document.body.classList.contains('help-zone-active')).toBe(true);
 
     unmount();
 
-    expect(document.body.classList.contains('help-button-active')).toBe(false);
+    expect(document.body.classList.contains('help-zone-active')).toBe(false);
   });
 
   describe('full logo / compact logo switch', () => {
     it('shows the full logo by default', () => {
-      renderHelpButton();
+      renderHelpZone();
 
       expect(fullLogo()).toBeInTheDocument();
       expect(compactLogo()).not.toBeInTheDocument();
     });
 
     it('switches to the compact logo on any page scroll', () => {
-      renderHelpButton();
+      renderHelpZone();
 
       fireEvent.scroll(document);
 
@@ -86,7 +116,7 @@ describe('HelpButton', () => {
       // Regression check: `scroll` doesn't bubble, so a container scrolling
       // (e.g. PageLayout's main area) rather than the page itself must still
       // be caught — this only works via a capture-phase listener.
-      renderHelpButton();
+      renderHelpZone();
       const nestedScrollArea = document.body.appendChild(
         document.createElement('div'),
       );
@@ -98,7 +128,7 @@ describe('HelpButton', () => {
     });
 
     it('switches to the compact logo on a click anywhere on the page', async () => {
-      const { user } = renderHelpButton();
+      const { user } = renderHelpZone();
 
       await user.click(document.body);
 
@@ -107,7 +137,7 @@ describe('HelpButton', () => {
     });
 
     it('stays compact after the initial trigger, regardless of further scrolls or clicks', () => {
-      renderHelpButton();
+      renderHelpZone();
 
       fireEvent.scroll(document);
       fireEvent.scroll(document);

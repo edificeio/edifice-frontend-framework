@@ -13,10 +13,10 @@ vi.mock('../../modules/homepage/components/Header/Header', () => ({
   default: () => <div data-testid="default-header" />,
 }));
 
-// HelpButtonContainer pulls in useZendeskGuide (network call, several
+// HelpZoneContainer pulls in useZendeskGuide (network call, several
 // providers); the layout itself is what is under test here.
-vi.mock('../HelpButton/HelpButtonContainer', () => ({
-  HelpButtonContainer: () => null,
+vi.mock('../HelpZone/HelpZoneContainer', () => ({
+  HelpZoneContainer: () => null,
 }));
 
 const root = () => document.querySelector('.pagelayout');

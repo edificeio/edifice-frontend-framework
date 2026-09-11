@@ -1,31 +1,44 @@
-.help-button {
+.help-zone {
   position: fixed;
   right: var(--primitive-spacer-24);
   bottom: var(--primitive-spacer-24);
   z-index: 3;
+  display: flex;
+  align-items: center;
   padding: var(--primitive-spacer-8) var(--primitive-spacer-8)
     var(--primitive-spacer-8) var(--primitive-spacer-12);
+  border-radius: var(--radius-button);
+  background-color: var(--primitive-blue-700);
   box-shadow: 0 4px 5px rgb(0 0 0 / 18%);
   transition: box-shadow 300ms ease;
+  gap: var(--primitive-spacer-8);
+}
 
-  --btn-beta-bg: #3030d1;
-  --btn-beta-bg-hover: #3030d1;
-  --btn-beta-bg-pressed: #3030d1;
+.help-zone-badge {
+  display: inline-flex;
+  color: inherit;
+  transition: transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-  // `.btn-beta` forces all icons to 2rem — override to let each logo/icon
-  // keep the width/height it's given (81x18, 18x18, 24x24).
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-0.2rem);
+  }
+}
+
+.help-zone-question {
+  --btn-beta-bg: transparent;
+  --btn-beta-bg-hover: transparent;
+  --btn-beta-bg-pressed: transparent;
+  padding: 0;
+
   svg {
     width: auto;
     height: auto;
     min-width: 0;
   }
-
-  &:hover {
-    box-shadow: 0 4px 10px rgb(0 0 0 / 18%);
-  }
 }
 
-.help-button-logo {
+.help-zone-logo {
   transition: width 250ms ease;
   // width is defined to allow smooth transitions between full and compact states.
   &--full {
@@ -37,14 +50,14 @@
   }
 }
 
-.help-button-divider {
+.help-zone-divider {
   align-self: stretch;
   width: 1px;
   background-color: var(--primitive-white);
 }
 
-// Hides the native support widget launcher while HelpButton is mounted,
+// Hides the native support widget launcher while HelpZone is mounted,
 // so it never flashes alongside the custom button above.
-body.help-button-active iframe#launcher {
+body.help-zone-active iframe#launcher {
   display: none;
 }

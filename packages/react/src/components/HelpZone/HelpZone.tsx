@@ -21,8 +21,10 @@ export interface HelpZoneProps {
 }
 
 /**
- * Floating help button, agnostic of the support widget it drives.
- * Portal-mounted into `#portal`, like `Layout/components/Help.tsx`.
+ * Floating help zone: an Edifice badge (link to the platform release notes)
+ * next to a help button driving the support widget, agnostic of which
+ * provider that is. Portal-mounted into `#portal`, like
+ * `Layout/components/Help.tsx`.
  */
 const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const { t } = useTranslation();
@@ -33,14 +35,14 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
     // Hides the underlying support widget's native launcher while this
     // custom button is mounted (see `_help-zone.scss`), without touching
     // pages that never render HelpZone.
-    document.body.classList.add('help-button-active');
+    document.body.classList.add('help-zone-active');
 
     // Resolved in an effect (after commit) rather than during render, since
     // `#portal` may not exist in the DOM yet on the very first render.
     setPortalRoot(document.getElementById('portal'));
 
     return () => {
-      document.body.classList.remove('help-button-active');
+      document.body.classList.remove('help-zone-active');
     };
   }, []);
 
@@ -80,30 +82,40 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const handleClick = () => (isOpen ? onClose() : onOpen());
 
   return createPortal(
-    <ButtonBeta
-      className="help-button"
-      aria-label={t(
-        isOpen ? 'homepage.help-button.close' : 'homepage.help-button.open',
-      )}
-      color="tertiary"
-      variant="ghost"
-      onClick={handleClick}
-    >
-      <span
-        className={clsx('help-button-logo', {
-          'help-button-logo--compact': isCompact,
-          'help-button-logo--full': !isCompact,
-        })}
+    <div className="help-zone">
+      <a
+        className="help-zone-badge"
+        href="https://edifice.io/releases/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={t('portal.header.navigation.whatsnew')}
       >
-        {isCompact ? (
-          <IconLogoEdificeSmall width={18} height={18} />
-        ) : (
-          <IconLogoEdificeFull width={81} height={18} />
+        <span
+          className={clsx('help-zone-logo', {
+            'help-zone-logo--compact': isCompact,
+            'help-zone-logo--full': !isCompact,
+          })}
+        >
+          {isCompact ? (
+            <IconLogoEdificeSmall width={18} height={18} />
+          ) : (
+            <IconLogoEdificeFull width={81} height={18} />
+          )}
+        </span>
+      </a>
+      <span className="help-zone-divider" />
+      <ButtonBeta
+        className="help-zone-question"
+        aria-label={t(
+          isOpen ? 'homepage.help-zone.close' : 'homepage.help-zone.open',
         )}
-      </span>
-      <span className="help-button-divider" />
-      <IconQuestion width={24} height={24} color="white" />
-    </ButtonBeta>,
+        color="tertiary"
+        variant="ghost"
+        onClick={handleClick}
+      >
+        <IconQuestion width={24} height={24} color="white" />
+      </ButtonBeta>
+    </div>,
     portalRoot,
   );
 };

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { HelpButtonContainer } from './HelpButtonContainer';
+import { HelpZoneContainer } from './HelpZoneContainer';
 
-const meta: Meta<typeof HelpButtonContainer> = {
-  title: 'Modules/Homepage/HelpButtonContainer',
-  component: HelpButtonContainer,
+const meta: Meta<typeof HelpZoneContainer> = {
+  title: 'Modules/Homepage/HelpZoneContainer',
+  component: HelpZoneContainer,
   decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   // `#zendeskGuide/config` + the fake snippet are mocked globally
   // (`apps/docs/.storybook/preview.tsx`, `help: zendeskGuideHandlers`);
@@ -18,6 +18,6 @@ const meta: Meta<typeof HelpButtonContainer> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof HelpButtonContainer>;
+type Story = StoryObj<typeof HelpZoneContainer>;
 
 export const Default: Story = {};
