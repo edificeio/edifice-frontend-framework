@@ -2,13 +2,13 @@ import { useZendeskGuide } from '../../hooks';
 
 import HelpZone from './HelpZone';
 
-function getZendeskThemeColor() {
+function getHeaderColor() {
   return getComputedStyle(document.documentElement)
     .getPropertyValue('--primitive-blue-400')
     .trim();
 }
 export function HelpZoneContainer() {
-  const headerColor = getZendeskThemeColor();
+  const headerColor = getHeaderColor();
   const { isReady, isOpen, open, close } = useZendeskGuide(headerColor);
 
   return (
