@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-
-import { ButtonBeta } from '../../components/ButtonBeta';
+import { ButtonBeta, Tooltip } from '../../components';
 import { IconQuestion } from '../icons/components';
 import {
   IconLogoEdificeFull,
@@ -74,18 +73,23 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
         rel="noopener noreferrer"
         aria-label={t('help-zone.edifice-releases-notes')}
       >
-        <span
-          className={clsx('help-zone-logo', {
-            'help-zone-logo--compact': isCompact,
-            'help-zone-logo--full': !isCompact,
-          })}
+        <Tooltip
+          message={t('help-zone.edifice-releases-notes')}
+          placement="top"
         >
-          {isCompact ? (
-            <IconLogoEdificeSmall width={18} height={18} />
-          ) : (
-            <IconLogoEdificeFull width={81} height={18} />
-          )}
-        </span>
+          <span
+            className={clsx('help-zone-logo', {
+              'help-zone-logo--compact': isCompact,
+              'help-zone-logo--full': !isCompact,
+            })}
+          >
+            {isCompact ? (
+              <IconLogoEdificeSmall width={18} height={18} />
+            ) : (
+              <IconLogoEdificeFull width={81} height={18} />
+            )}
+          </span>
+        </Tooltip>
       </a>
       <span className="help-zone-divider" />
       <ButtonBeta
@@ -95,7 +99,9 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
         variant="ghost"
         onClick={handleClick}
       >
-        <IconQuestion width={24} height={24} color="white" />
+        <Tooltip message={t('help-zone.support.open')} placement="top">
+          <IconQuestion width={24} height={24} color="white" />
+        </Tooltip>
       </ButtonBeta>
     </div>,
     portalRoot,

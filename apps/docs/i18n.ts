@@ -312,8 +312,8 @@ i18n.use(initReactI18next).init({
 
         //------------------------------------------------------
         //------------------ Help Zone -----------------
-        'help-zone.support.open': "Ouvrir l'assistance",
-        'help-zone.edifice-releases-notes': "Notes de version d'Edifice",
+        'help-zone.support.open': 'Aide',
+        'help-zone.edifice-releases-notes': 'Notes de version',
 
         //------------------------------------------------------
         //------------------ App names -------------------------

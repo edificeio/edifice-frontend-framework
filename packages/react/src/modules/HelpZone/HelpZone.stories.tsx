@@ -4,7 +4,7 @@ import HelpZone from './HelpZone';
 const meta: Meta<typeof HelpZone> = {
   title: 'Modules/HelpZone/HelpZone',
   component: HelpZone,
-  decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
+  decorators: [(Story) => <div style={{ minHeight: '100px' }}>{Story()}</div>],
   parameters: {
     docs: {
       description: {
