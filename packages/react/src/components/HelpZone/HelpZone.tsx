@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 
+import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-import { Button } from '../Button';
+import { IconQuestion } from '../../modules/icons/components';
+import {
+  IconLogoEdificeFull,
+  IconLogoEdificeSmall,
+} from '../../modules/icons/components/logo';
+import { ButtonBeta } from '../ButtonBeta';
 
 export interface HelpZoneProps {
   /** True once the support widget is loaded and can be opened. */
@@ -21,6 +27,7 @@ export interface HelpZoneProps {
 const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const { t } = useTranslation();
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
+  const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     // Hides the underlying support widget's native launcher while this
@@ -37,6 +44,35 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
     };
   }, []);
 
+  useEffect(() => {
+    // Once compact, stay compact: no listener left to re-run, no reverting
+    // back to the full logo on scroll-up.
+    if (isCompact) {
+      return;
+    }
+
+    const goCompact = () => setIsCompact(true);
+
+    // `scroll` doesn't bubble, so a listener on `window`/`document` in the
+    // (default) bubble phase only ever sees the page's own scroll — never a
+    // scroll happening inside a nested `overflow: auto` container, which is
+    // the *actual* scrollable region in many app layouts (e.g. PageLayout's
+    // main area) rather than the document itself. The capture phase, unlike
+    // bubbling, still traverses down through `document` on its way to any
+    // descendant target regardless of that target's own bubbling behavior —
+    // listening there catches a scroll anywhere on the page.
+    document.addEventListener('scroll', goCompact, {
+      capture: true,
+      passive: true,
+    });
+    document.addEventListener('click', goCompact);
+
+    return () => {
+      document.removeEventListener('scroll', goCompact, { capture: true });
+      document.removeEventListener('click', goCompact);
+    };
+  }, [isCompact]);
+
   if (!isReady || !portalRoot) {
     return null;
   }
@@ -44,7 +80,7 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const handleClick = () => (isOpen ? onClose() : onOpen());
 
   return createPortal(
-    <Button
+    <ButtonBeta
       className="help-zone"
       aria-label={t(
         isOpen ? 'homepage.help-zone.close' : 'homepage.help-zone.open',
@@ -53,8 +89,21 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
       variant="ghost"
       onClick={handleClick}
     >
-      Edifice
-    </Button>,
+      <span
+        className={clsx('help-zone-logo', {
+          'help-zone-logo--compact': isCompact,
+          'help-zone-logo--full': !isCompact,
+        })}
+      >
+        {isCompact ? (
+          <IconLogoEdificeSmall width={18} height={18} />
+        ) : (
+          <IconLogoEdificeFull width={81} height={18} />
+        )}
+      </span>
+      <span className="help-zone-divider" />
+      <IconQuestion width={24} height={24} color="white" />
+    </ButtonBeta>,
     portalRoot,
   );
 };

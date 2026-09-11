@@ -4,9 +4,9 @@ import { HelpZoneContainer } from './HelpZoneContainer';
 const meta: Meta<typeof HelpZoneContainer> = {
   title: 'Modules/Homepage/HelpZoneContainer',
   component: HelpZoneContainer,
+  decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   // `#zendeskGuide/config` + the fake snippet are mocked globally
-  // (`apps/docs/.storybook/preview.tsx`, `help: zendeskGuideHandlers`); no
-  // `#portal` decorator needed either, the global preview already renders one.
+  // (`apps/docs/.storybook/preview.tsx`, `help: zendeskGuideHandlers`);
   parameters: {
     docs: {
       description: {

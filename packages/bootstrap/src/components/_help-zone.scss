@@ -1,8 +1,46 @@
 .help-zone {
   position: fixed;
-  right: var(--primitive-spacer-16);
-  bottom: var(--primitive-spacer-16);
+  right: var(--primitive-spacer-24);
+  bottom: var(--primitive-spacer-24);
   z-index: 3;
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-8)
+    var(--primitive-spacer-8) var(--primitive-spacer-12);
+  box-shadow: 0 4px 5px rgb(0 0 0 / 18%);
+  transition: box-shadow 300ms ease;
+
+  --btn-beta-bg: #3030d1;
+  --btn-beta-bg-hover: #3030d1;
+  --btn-beta-bg-pressed: #3030d1;
+
+  // `.btn-beta` forces all icons to 2rem — override to let each logo/icon
+  // keep the width/height it's given (81x18, 18x18, 24x24).
+  svg {
+    width: auto;
+    height: auto;
+    min-width: 0;
+  }
+
+  &:hover {
+    box-shadow: 0 4px 10px rgb(0 0 0 / 18%);
+  }
+}
+
+.help-zone-logo {
+  transition: width 250ms ease;
+  // width is defined to allow smooth transitions between full and compact states.
+  &--full {
+    width: 81px;
+  }
+
+  &--compact {
+    width: 18px;
+  }
+}
+
+.help-zone-divider {
+  align-self: stretch;
+  width: 1px;
+  background-color: var(--primitive-white);
 }
 
 // Hides the native support widget launcher while HelpZone is mounted,

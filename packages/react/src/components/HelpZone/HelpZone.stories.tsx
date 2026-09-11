@@ -4,8 +4,7 @@ import HelpZone from './HelpZone';
 const meta: Meta<typeof HelpZone> = {
   title: 'Modules/Homepage/HelpZone',
   component: HelpZone,
-  // No local `#portal` decorator: the global preview already renders one
-  // (apps/docs/.storybook/preview.tsx) — a second one would duplicate the id.
+  decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   parameters: {
     docs: {
       description: {
@@ -18,15 +17,6 @@ const meta: Meta<typeof HelpZone> = {
 
 export default meta;
 type Story = StoryObj<typeof HelpZone>;
-
-export const Closed: Story = {
-  args: {
-    isReady: true,
-    isOpen: false,
-    onOpen: () => {},
-    onClose: () => {},
-  },
-};
 
 export const Open: Story = {
   args: {

@@ -1,4 +1,4 @@
-import { render, screen } from '~/setup';
+import { fireEvent, render, screen } from '~/setup';
 import HelpZone, { HelpZoneProps } from './HelpZone';
 
 function renderHelpZone(props: Partial<HelpZoneProps> = {}) {
@@ -12,6 +12,9 @@ function renderHelpZone(props: Partial<HelpZoneProps> = {}) {
     />,
   );
 }
+
+const fullLogo = () => document.querySelector('svg[width="81"]');
+const compactLogo = () => document.querySelector('svg[width="18"]');
 
 describe('HelpZone', () => {
   beforeEach(() => {
@@ -60,5 +63,58 @@ describe('HelpZone', () => {
     unmount();
 
     expect(document.body.classList.contains('help-zone-active')).toBe(false);
+  });
+
+  describe('full logo / compact logo switch', () => {
+    it('shows the full logo by default', () => {
+      renderHelpZone();
+
+      expect(fullLogo()).toBeInTheDocument();
+      expect(compactLogo()).not.toBeInTheDocument();
+    });
+
+    it('switches to the compact logo on any page scroll', () => {
+      renderHelpZone();
+
+      fireEvent.scroll(document);
+
+      expect(compactLogo()).toBeInTheDocument();
+      expect(fullLogo()).not.toBeInTheDocument();
+    });
+
+    it('switches to the compact logo on a scroll inside a nested scrollable container', () => {
+      // Regression check: `scroll` doesn't bubble, so a container scrolling
+      // (e.g. PageLayout's main area) rather than the page itself must still
+      // be caught — this only works via a capture-phase listener.
+      renderHelpZone();
+      const nestedScrollArea = document.body.appendChild(
+        document.createElement('div'),
+      );
+
+      fireEvent.scroll(nestedScrollArea);
+
+      expect(compactLogo()).toBeInTheDocument();
+      expect(fullLogo()).not.toBeInTheDocument();
+    });
+
+    it('switches to the compact logo on a click anywhere on the page', async () => {
+      const { user } = renderHelpZone();
+
+      await user.click(document.body);
+
+      expect(compactLogo()).toBeInTheDocument();
+      expect(fullLogo()).not.toBeInTheDocument();
+    });
+
+    it('stays compact after the initial trigger, regardless of further scrolls or clicks', () => {
+      renderHelpZone();
+
+      fireEvent.scroll(document);
+      fireEvent.scroll(document);
+      fireEvent.click(document.body);
+
+      expect(compactLogo()).toBeInTheDocument();
+      expect(fullLogo()).not.toBeInTheDocument();
+    });
   });
 });
