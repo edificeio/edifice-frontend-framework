@@ -1,4 +1,4 @@
-.help-zone {
+.help-button {
   position: fixed;
   right: var(--primitive-spacer-24);
   bottom: var(--primitive-spacer-24);
@@ -25,7 +25,7 @@
   }
 }
 
-.help-zone-logo {
+.help-button-logo {
   transition: width 250ms ease;
   // width is defined to allow smooth transitions between full and compact states.
   &--full {
@@ -37,14 +37,14 @@
   }
 }
 
-.help-zone-divider {
+.help-button-divider {
   align-self: stretch;
   width: 1px;
   background-color: var(--primitive-white);
 }
 
-// Hides the native support widget launcher while HelpZone is mounted,
+// Hides the native support widget launcher while HelpButton is mounted,
 // so it never flashes alongside the custom button above.
-body.help-zone-active iframe#launcher {
+body.help-button-active iframe#launcher {
   display: none;
 }

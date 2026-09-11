@@ -24,7 +24,7 @@ export * from './Flex';
 export * from './Form';
 export * from './Grid';
 export * from './Heading';
-export * from './HelpZone';
+export * from './HelpButton';
 export * from './Image';
 export * from './Input';
 export * from './Label';

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import HelpZone from './HelpZone';
+import HelpButton from './HelpButton';
 
-const meta: Meta<typeof HelpZone> = {
-  title: 'Modules/Homepage/HelpZone',
-  component: HelpZone,
+const meta: Meta<typeof HelpButton> = {
+  title: 'Modules/Homepage/HelpButton',
+  component: HelpButton,
   decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   parameters: {
     docs: {
@@ -16,9 +16,9 @@ const meta: Meta<typeof HelpZone> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof HelpZone>;
+type Story = StoryObj<typeof HelpButton>;
 
-export const Open: Story = {
+export const Ready: Story = {
   args: {
     isReady: true,
     isOpen: true,

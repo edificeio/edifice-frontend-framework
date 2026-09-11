@@ -11,7 +11,7 @@ import {
 } from '../../modules/icons/components/logo';
 import { ButtonBeta } from '../ButtonBeta';
 
-export interface HelpZoneProps {
+export interface HelpButtonProps {
   /** True once the support widget is loaded and can be opened. */
   isReady: boolean;
   /** True while the support panel is open. */
@@ -24,15 +24,15 @@ export interface HelpZoneProps {
  * Floating help button, agnostic of the support widget it drives.
  * Portal-mounted into `#portal`, like `Layout/components/Help.tsx`.
  */
-const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
+const HelpButton = ({ isReady, isOpen, onOpen, onClose }: HelpButtonProps) => {
   const { t } = useTranslation();
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [isCompact, setIsCompact] = useState(false);
 
   useEffect(() => {
     // Hides the underlying support widget's native launcher while this
-    // custom button is mounted (see `_help-zone.scss`), without touching
-    // pages that never render HelpZone.
+    // custom button is mounted (see `_help-button.scss`), without touching
+    // pages that never render HelpButton.
     document.body.classList.add('help-button-active');
 
     // Resolved in an effect (after commit) rather than during render, since
@@ -108,6 +108,6 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   );
 };
 
-HelpZone.displayName = 'HelpZone';
+HelpButton.displayName = 'HelpButton';
 
-export default HelpZone;
+export default HelpButton;

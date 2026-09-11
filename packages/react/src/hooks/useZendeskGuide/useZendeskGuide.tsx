@@ -224,10 +224,10 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
       } catch (error) {
         // Left uncaught, a failure here (e.g. `/zendeskGuide` not proxied by
         // a consuming app's local dev server) silently keeps `isReady` at
-        // `false` forever, with nothing to explain why HelpZone never shows up.
+        // `false` forever, with nothing to explain why HelpButton never shows up.
         console.warn(
           '[useZendeskGuide] Failed to fetch the support widget config from ' +
-            "`/zendeskGuide/config` — the widget (and HelpZone's button) " +
+            "`/zendeskGuide/config` — the widget (and HelpButton's button) " +
             "won't show up. If you're running a local dev server, check " +
             "that `/zendeskGuide` is proxied to your backend in your app's " +
             'Vite dev proxy config.',
