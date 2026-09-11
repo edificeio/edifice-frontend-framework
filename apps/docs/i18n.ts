@@ -309,6 +309,11 @@ i18n.use(initReactI18next).init({
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
         'portal.header.navigation.classMembers': 'La classe',
         'portal.header.navigation.myapps': 'Mes applis',
+
+        //------------------------------------------------------
+        //------------------ Help Zone -----------------
+        'help-zone.support.open': "Ouvrir l'assistance",
+
         //------------------------------------------------------
         //------------------ App names -------------------------
         'collaborative-wall': 'Mur collaboratif',

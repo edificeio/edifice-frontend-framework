@@ -24,8 +24,16 @@ export interface UseZendeskGuideAPI {
   close: () => void;
 }
 
-/** Add Zendesk Guide  */
-export default function useZendeskGuide(): UseZendeskGuideAPI {
+/**
+ * Add Zendesk Guide
+ *
+ * @param headerColor Overrides the widget panel's theme color. Falls back to
+ * the backend-configured color (`zendeskGuideConfig.color`), then to
+ * Zendesk's own default yellow if neither is set.
+ */
+export default function useZendeskGuide(
+  headerColor?: string,
+): UseZendeskGuideAPI {
   const { currentLanguage } = useEdificeClient();
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
@@ -224,10 +232,10 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
       } catch (error) {
         // Left uncaught, a failure here (e.g. `/zendeskGuide` not proxied by
         // a consuming app's local dev server) silently keeps `isReady` at
-        // `false` forever, with nothing to explain why HelpButton never shows up.
+        // `false` forever, with nothing to explain why HelpZone never shows up.
         console.warn(
           '[useZendeskGuide] Failed to fetch the support widget config from ' +
-            "`/zendeskGuide/config` — the widget (and HelpButton's button) " +
+            "`/zendeskGuide/config` — the widget (and HelpZone's button) " +
             "won't show up. If you're running a local dev server, check " +
             "that `/zendeskGuide` is proxied to your backend in your app's " +
             'Vite dev proxy config.',
@@ -264,7 +272,10 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: { theme: zendeskGuideConfig.color || '#ffc400' },
+              color: {
+                theme: zendeskGuideConfig.color || '#ffc400',
+                header: headerColor,
+              },
               zIndex: 3,
               launcher: {
                 mobile: {

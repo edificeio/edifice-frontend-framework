@@ -56,7 +56,7 @@ describe('HelpZone', () => {
     const { user } = renderHelpZone({ isOpen: true, onClose });
 
     await user.click(
-      screen.getByRole('button', { name: 'homepage.help-zone.close' }),
+      screen.getByRole('button', { name: 'help-zone.support.open' }),
     );
 
     expect(onClose).toHaveBeenCalledTimes(1);

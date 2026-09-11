@@ -20,12 +20,6 @@ export interface HelpZoneProps {
   onClose: () => void;
 }
 
-/**
- * Floating help zone: an Edifice badge (link to the platform release notes)
- * next to a help button driving the support widget, agnostic of which
- * provider that is. Portal-mounted into `#portal`, like
- * `Layout/components/Help.tsx`.
- */
 const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const { t } = useTranslation();
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
@@ -47,22 +41,12 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   }, []);
 
   useEffect(() => {
-    // Once compact, stay compact: no listener left to re-run, no reverting
-    // back to the full logo on scroll-up.
     if (isCompact) {
       return;
     }
 
     const goCompact = () => setIsCompact(true);
 
-    // `scroll` doesn't bubble, so a listener on `window`/`document` in the
-    // (default) bubble phase only ever sees the page's own scroll — never a
-    // scroll happening inside a nested `overflow: auto` container, which is
-    // the *actual* scrollable region in many app layouts (e.g. PageLayout's
-    // main area) rather than the document itself. The capture phase, unlike
-    // bubbling, still traverses down through `document` on its way to any
-    // descendant target regardless of that target's own bubbling behavior —
-    // listening there catches a scroll anywhere on the page.
     document.addEventListener('scroll', goCompact, {
       capture: true,
       passive: true,
@@ -88,7 +72,7 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
         href="https://edifice.io/releases/"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={t('portal.header.navigation.whatsnew')}
+        aria-label={t('help-zone.edifice-releases-notes')}
       >
         <span
           className={clsx('help-zone-logo', {
@@ -106,9 +90,7 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
       <span className="help-zone-divider" />
       <ButtonBeta
         className="help-zone-question"
-        aria-label={t(
-          isOpen ? 'homepage.help-zone.close' : 'homepage.help-zone.open',
-        )}
+        aria-label={t('help-zone.support.open')}
         color="tertiary"
         variant="ghost"
         onClick={handleClick}

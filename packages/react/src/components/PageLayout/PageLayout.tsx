@@ -8,10 +8,10 @@ import {
 
 import clsx from 'clsx';
 
-import { HelpZoneContainer } from '../HelpZone/HelpZoneContainer';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
+import PageLayoutHelpZone from './components/PageLayoutHelpZone';
 import PageLayoutOverlay from './components/PageLayoutOverlay';
 import PageLayoutSidebarLeft from './components/PageLayoutSidebarLeft';
 import PageLayoutSidebarRight from './components/PageLayoutSidebarRight';
@@ -44,6 +44,7 @@ function analyzeChildren(children: ReactNode) {
   let hasRightSidebar = false;
   let breadcrumb: ReactNode = null;
   let overlay: ReactNode = null;
+  let helpZone: ReactNode = null;
   const headerChildren: ReactNode[] = [];
   const mainChildren: ReactNode[] = [];
 
@@ -61,6 +62,9 @@ function analyzeChildren(children: ReactNode) {
         break;
       case PageLayoutOverlay:
         overlay = child;
+        break;
+      case PageLayoutHelpZone:
+        helpZone = child;
         break;
       case PageLayoutSidebarLeft:
         hasLeftSidebar = true;
@@ -84,6 +88,7 @@ function analyzeChildren(children: ReactNode) {
     hasRightSidebar,
     breadcrumb,
     overlay,
+    helpZone,
     headerChildren,
     mainChildren,
   };
@@ -108,6 +113,7 @@ const Root = ({
     hasRightSidebar,
     breadcrumb,
     overlay,
+    helpZone,
     headerChildren,
     mainChildren,
   } = analyzeChildren(children);
@@ -149,7 +155,7 @@ const Root = ({
         {overlay}
       </div>
 
-      <HelpZoneContainer />
+      {helpZone}
     </PageLayoutContext.Provider>
   );
 };
@@ -163,6 +169,7 @@ const PageLayout = Object.assign(Root, {
   Content: PageLayoutContent,
   SidebarRight: PageLayoutSidebarRight,
   Overlay: PageLayoutOverlay,
+  HelpZone: PageLayoutHelpZone,
 });
 
 export default PageLayout;

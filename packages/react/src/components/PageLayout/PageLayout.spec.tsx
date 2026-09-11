@@ -2,6 +2,10 @@ import { act, render, screen } from '~/setup';
 import PageLayout from './PageLayout';
 import { useOverlayStore } from './store/overlayStore';
 
+const { HelpZoneContainer } = vi.hoisted(() => ({
+  HelpZoneContainer: vi.fn(() => null),
+}));
+
 vi.mock(
   '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook',
   () => ({ useEdificeTheme: () => ({ theme: { basePath: '/assets' } }) }),
@@ -15,9 +19,7 @@ vi.mock('../../modules/homepage/components/Header/Header', () => ({
 
 // HelpZoneContainer pulls in useZendeskGuide (network call, several
 // providers); the layout itself is what is under test here.
-vi.mock('../HelpZone/HelpZoneContainer', () => ({
-  HelpZoneContainer: () => null,
-}));
+vi.mock('../HelpZone/HelpZoneContainer', () => ({ HelpZoneContainer }));
 
 const root = () => document.querySelector('.pagelayout');
 const mainArea = () => document.querySelector('.pagelayout-mainarea');
@@ -421,5 +423,33 @@ describe('PageLayout', () => {
     expect(PageLayout.displayName).toBe('PageLayout');
     expect(PageLayout.Content.displayName).toBe('PageLayout.Content');
     expect(PageLayout.Overlay.displayName).toBe('PageLayout.Overlay');
+    expect(PageLayout.HelpZone.displayName).toBe('PageLayout.HelpZone');
+  });
+
+  describe('HelpZone slot', () => {
+    it('renders nothing and does not crash without EdificeClientProvider when opted out', () => {
+      // No mock for useEdificeClient/useUser in this file: if HelpZoneContainer
+      // were rendered unconditionally, this would throw ("Cannot be used
+      // outside of EdificeClientProvider").
+      render(
+        <PageLayout>
+          <PageLayout.Content>content</PageLayout.Content>
+        </PageLayout>,
+      );
+
+      expect(root()).toBeInTheDocument();
+      expect(HelpZoneContainer).not.toHaveBeenCalled();
+    });
+
+    it('renders the help zone when opted in via PageLayout.HelpZone', () => {
+      render(
+        <PageLayout>
+          <PageLayout.Content>content</PageLayout.Content>
+          <PageLayout.HelpZone />
+        </PageLayout>,
+      );
+
+      expect(HelpZoneContainer).toHaveBeenCalled();
+    });
   });
 });

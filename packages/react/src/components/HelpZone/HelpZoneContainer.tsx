@@ -1,6 +1,6 @@
 import { useZendeskGuide } from '../../hooks';
-import HelpZone from './HelpZone';
 
+import HelpZone from './HelpZone';
 // Edifice blue — `support.info.700` in the theme configs (e.g.
 // `packages/bootstrap/src/themes/configs/_edifice2d.scss`) resolves to
 // `$info-700`/`$blue-700` the same way across every theme, so it stays the
@@ -9,14 +9,12 @@ import HelpZone from './HelpZone';
 // can't silently drift from the design tokens.
 function getZendeskThemeColor() {
   return getComputedStyle(document.documentElement)
-    .getPropertyValue('--color-support-info-700')
+    .getPropertyValue('--primitive-blue-400')
     .trim();
 }
-
 export function HelpZoneContainer() {
-  const { isReady, isOpen, open, close } = useZendeskGuide(
-    getZendeskThemeColor(),
-  );
+  const headerColor = getZendeskThemeColor();
+  const { isReady, isOpen, open, close } = useZendeskGuide(headerColor);
 
   return (
     <HelpZone isReady={isReady} isOpen={isOpen} onOpen={open} onClose={close} />

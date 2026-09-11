@@ -20,6 +20,10 @@ const MyComponent = () => {
 
 ## Hook Details
 
+### Parameters
+
+- `themeColor` (optional): `string` — overrides the widget panel's theme color (any CSS color string). Falls back to the backend-configured `zendeskGuideConfig.color`, then to Zendesk's own default yellow if neither is set.
+
 ### Returns
 
 An object:
@@ -45,7 +49,7 @@ An object:
 
 ### Local dev requirement
 
-The hook fetches its config from `/zendeskGuide/config`. In production/recette this is same-origin, but on a local Vite dev server it needs to be proxied to the backend like any other API route — otherwise the fetch fails, `isReady` stays `false` forever, and the widget (and `HelpButton`'s button) never shows up. If you see this happen, check your app's Vite dev proxy config includes `zendeskGuide` alongside the other proxied route prefixes (`auth`, `workspace`, `userbook`…) — a console warning from this hook will confirm that's the cause.
+The hook fetches its config from `/zendeskGuide/config`. In production/recette this is same-origin, but on a local Vite dev server it needs to be proxied to the backend like any other API route — otherwise the fetch fails, `isReady` stays `false` forever, and the widget (and `HelpZone`'s button) never shows up. If you see this happen, check your app's Vite dev proxy config includes `zendeskGuide` alongside the other proxied route prefixes (`auth`, `workspace`, `userbook`…) — a console warning from this hook will confirm that's the cause.
 
 ### Example
 
