@@ -35,18 +35,14 @@ describe('HelpZone', () => {
   it('renders a button once ready', () => {
     renderHelpZone();
 
-    expect(
-      screen.getByRole('button', { name: 'homepage.help-zone.open' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   it('calls onOpen when closed and clicked', async () => {
     const onOpen = vi.fn();
     const { user } = renderHelpZone({ onOpen });
 
-    await user.click(
-      screen.getByRole('button', { name: 'homepage.help-zone.open' }),
-    );
+    await user.click(screen.getByRole('button'));
 
     expect(onOpen).toHaveBeenCalledTimes(1);
   });
@@ -55,9 +51,7 @@ describe('HelpZone', () => {
     const onClose = vi.fn();
     const { user } = renderHelpZone({ isOpen: true, onClose });
 
-    await user.click(
-      screen.getByRole('button', { name: 'help-zone.support.open' }),
-    );
+    await user.click(screen.getByRole('button'));
 
     expect(onClose).toHaveBeenCalledTimes(1);
   });

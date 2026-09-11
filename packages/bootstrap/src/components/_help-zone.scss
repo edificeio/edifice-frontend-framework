@@ -43,11 +43,11 @@
   transition: width 250ms ease;
   // width is defined to allow smooth transitions between full and compact states.
   &--full {
-    width: 0.81rem;
+    width: 8.1rem;
   }
 
   &--compact {
-    width: 0.18rem;
+    width: 1.8rem;
   }
 }
 

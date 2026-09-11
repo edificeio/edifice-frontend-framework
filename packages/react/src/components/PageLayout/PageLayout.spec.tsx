@@ -19,7 +19,9 @@ vi.mock('../../modules/homepage/components/Header/Header', () => ({
 
 // HelpZoneContainer pulls in useZendeskGuide (network call, several
 // providers); the layout itself is what is under test here.
-vi.mock('../HelpZone/HelpZoneContainer', () => ({ HelpZoneContainer }));
+vi.mock('../../modules/HelpZone/HelpZoneContainer', () => ({
+  HelpZoneContainer,
+}));
 
 const root = () => document.querySelector('.pagelayout');
 const mainArea = () => document.querySelector('.pagelayout-mainarea');

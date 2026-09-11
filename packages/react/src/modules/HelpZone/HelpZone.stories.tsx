@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import HelpZone from './HelpZone';
 
 const meta: Meta<typeof HelpZone> = {
-  title: 'Modules/Homepage/HelpZone',
+  title: 'Modules/HelpZone/HelpZone',
   component: HelpZone,
   decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   parameters: {

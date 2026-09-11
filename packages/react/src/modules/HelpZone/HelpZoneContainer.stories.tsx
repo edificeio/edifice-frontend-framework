@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { HelpZoneContainer } from './HelpZoneContainer';
 
 const meta: Meta<typeof HelpZoneContainer> = {
-  title: 'Modules/Homepage/HelpZoneContainer',
+  title: 'Modules/HelpZone/HelpZoneContainer',
   component: HelpZoneContainer,
   decorators: [(Story) => <div style={{ minHeight: '50px' }}>{Story()}</div>],
   // `#zendeskGuide/config` + the fake snippet are mocked globally

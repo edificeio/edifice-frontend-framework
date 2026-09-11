@@ -1,4 +1,3 @@
-export * from '../modules/widgets/HelpZone';
 export * from './ActionBar';
 export * from './AddAttachments';
 export * from './Alert';
