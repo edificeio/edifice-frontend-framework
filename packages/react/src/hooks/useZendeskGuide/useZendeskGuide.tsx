@@ -27,9 +27,7 @@ export interface UseZendeskGuideAPI {
 /**
  * Add Zendesk Guide
  *
- * @param headerColor Overrides the widget panel's theme color. Falls back to
- * the backend-configured color (`zendeskGuideConfig.color`), then to
- * Zendesk's own default yellow if neither is set.
+ * @param headerColor Overrides the widget panel's theme color.
  */
 export default function useZendeskGuide(
   headerColor?: string,
