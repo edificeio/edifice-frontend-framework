@@ -1,4 +1,4 @@
-import { useZendeskGuide } from '../../hooks';
+import { useZendeskGuide } from '../../../hooks';
 
 import HelpZone from './HelpZone';
 // Edifice blue — `support.info.700` in the theme configs (e.g.

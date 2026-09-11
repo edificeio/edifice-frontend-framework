@@ -4,12 +4,12 @@ import clsx from 'clsx';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
-import { IconQuestion } from '../../modules/icons/components';
+import { ButtonBeta } from '../../../components/ButtonBeta';
+import { IconQuestion } from '../../icons/components';
 import {
   IconLogoEdificeFull,
   IconLogoEdificeSmall,
-} from '../../modules/icons/components/logo';
-import { ButtonBeta } from '../ButtonBeta';
+} from '../../icons/components/logo';
 
 export interface HelpZoneProps {
   /** True once the support widget is loaded and can be opened. */

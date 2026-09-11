@@ -1,3 +1,4 @@
+export * from '../modules/widgets/HelpZone';
 export * from './ActionBar';
 export * from './AddAttachments';
 export * from './Alert';
@@ -24,7 +25,6 @@ export * from './Flex';
 export * from './Form';
 export * from './Grid';
 export * from './Heading';
-export * from './HelpZone';
 export * from './Image';
 export * from './Input';
 export * from './Label';

@@ -1,4 +1,4 @@
-import { HelpZoneContainer } from '../../HelpZone/HelpZoneContainer';
+import { HelpZoneContainer } from '../../../modules/widgets/HelpZone/HelpZoneContainer';
 
 /**
  * Opt-in slot: renders the floating Edifice help zone (badge + support

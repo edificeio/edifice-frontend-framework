@@ -9,7 +9,7 @@
     var(--primitive-spacer-8) var(--primitive-spacer-12);
   border-radius: var(--radius-button);
   background-color: var(--primitive-blue-700);
-  box-shadow: 0 4px 5px rgb(0 0 0 / 18%);
+  box-shadow: var(--primitive-box-shadow);
   transition: box-shadow 300ms ease;
   gap: var(--primitive-spacer-8);
 }
@@ -43,11 +43,11 @@
   transition: width 250ms ease;
   // width is defined to allow smooth transitions between full and compact states.
   &--full {
-    width: 81px;
+    width: 0.81rem;
   }
 
   &--compact {
-    width: 18px;
+    width: 0.18rem;
   }
 }
 
