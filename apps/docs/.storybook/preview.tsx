@@ -26,6 +26,7 @@ import {
   userbookHandlers,
   wikiHandlers,
   workspaceHandlers,
+  zendeskGuideHandlers,
 } from '@edifice.io/config';
 
 const queryClient = new QueryClient({
@@ -109,6 +110,7 @@ const preview: Preview = {
         share: shareHandlers,
         actualites: actualitesHandlers,
         timeline: timelineHandlers,
+        help: zendeskGuideHandlers,
       },
     },
   },
