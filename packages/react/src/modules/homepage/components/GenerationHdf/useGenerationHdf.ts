@@ -1,5 +1,6 @@
 import { odeServices, USER_PREFS } from '@edifice.io/client';
-import { FormEvent, useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { formatSolde } from './formatSolde';
 import { GenerationHdfStatus, GenerationHdfWallet } from './GenerationHdf';
 
@@ -44,66 +45,70 @@ async function fetchSales(cardNb: string): Promise<CursusSalesResponse> {
 }
 
 export function useGenerationHdf() {
-  const [status, setStatus] = useState<GenerationHdfStatus>('loading');
   const [cardNumber, setCardNumber] = useState('');
-  const [wallets, setWallets] = useState<GenerationHdfWallet[]>([]);
+  const autoLoadTriggered = useRef(false);
+
+  const preferenceQuery = useQuery({
+    queryKey: ['cursus', 'preference'],
+    queryFn: () =>
+      odeServices.conf().getPreference<CursusPreference>(USER_PREFS.CURSUS),
+  });
+
+  const salesMutation = useMutation({
+    mutationFn: async ({
+      cardNb,
+      persist,
+    }: {
+      cardNb: string;
+      persist: boolean;
+    }) => {
+      const data = await fetchSales(cardNb);
+      if (persist) {
+        await odeServices.conf().savePreference(USER_PREFS.CURSUS, { cardNb });
+      }
+      return data;
+    },
+  });
 
   useEffect(() => {
-    let cancelled = false;
+    if (autoLoadTriggered.current || !preferenceQuery.data) return;
+    autoLoadTriggered.current = true;
 
-    (async () => {
-      const preference = await odeServices
-        .conf()
-        .getPreference<CursusPreference>(USER_PREFS.CURSUS);
+    const storedCardNb = preferenceQuery.data.cardNb;
+    if (storedCardNb) {
+      setCardNumber(storedCardNb);
+      salesMutation.mutate({ cardNb: storedCardNb, persist: false });
+    }
+  }, [preferenceQuery.data, salesMutation]);
 
-      if (!preference?.cardNb) {
-        if (!cancelled) setStatus('idle');
-        return;
-      }
+  const status: GenerationHdfStatus = !preferenceQuery.data
+    ? 'loading'
+    : salesMutation.isPending
+      ? 'loading'
+      : salesMutation.isError
+        ? 'error'
+        : salesMutation.isSuccess
+          ? 'account'
+          : 'idle';
 
-      if (!cancelled) setCardNumber(preference.cardNb);
-      try {
-        const data = await fetchSales(preference.cardNb);
-        if (cancelled) return;
-        setWallets(mapSalesToWallets(data));
-        setStatus('account');
-      } catch {
-        if (!cancelled) setStatus('error');
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const wallets = salesMutation.data
+    ? mapSalesToWallets(salesMutation.data)
+    : [];
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setStatus('loading');
-
-    fetchSales(cardNumber)
-      .then((data) => {
-        setWallets(mapSalesToWallets(data));
-        setStatus('account');
-        return odeServices
-          .conf()
-          .savePreference(USER_PREFS.CURSUS, { cardNb: cardNumber });
-      })
-      .catch(() => {
-        setStatus('error');
-      });
+    salesMutation.mutate({ cardNb: cardNumber, persist: true });
   };
 
   const onClear = () => {
     setCardNumber('');
-    setStatus('idle');
+    salesMutation.reset();
   };
 
   const onEdit = () => {
     odeServices.conf().savePreference(USER_PREFS.CURSUS, {});
     setCardNumber('');
-    setWallets([]);
-    setStatus('idle');
+    salesMutation.reset();
   };
 
   return {
