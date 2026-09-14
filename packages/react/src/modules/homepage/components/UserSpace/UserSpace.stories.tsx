@@ -59,3 +59,23 @@ export const DefaultUserSpace: Story = {
     },
   },
 };
+
+export const WithCustomizeWidgetsButton: Story = {
+  args: {
+    name: 'Marc',
+    profile: 'Teacher',
+    avatar: USER_AVATAR,
+    onCustomizeWidgetsClick: () => alert('Ouvre le volet de personnalisation'),
+  },
+  render: (args) => (
+    <UserSpace {...args}>On peut insérer ici d'autres widgets.</UserSpace>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Quand `onCustomizeWidgetsClick` est fourni, un bouton apparaît en haut à droite pour ouvrir le volet de personnalisation des widgets.',
+      },
+    },
+  },
+};
