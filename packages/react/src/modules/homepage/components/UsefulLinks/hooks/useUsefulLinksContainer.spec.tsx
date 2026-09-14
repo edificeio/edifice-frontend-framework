@@ -39,13 +39,21 @@ const links: UsefulLink[] = [
   { id: '2', name: 'ONISEP', url: 'https://onisep.fr' },
 ];
 
+const bookmarksResponse = {
+  _id: 'owner-doc-1',
+  owner: { userId: 'u1', displayName: 'User' },
+  bookmarks: links.map(({ id, name, url }) => ({ _id: id, name, url })),
+  created: { $date: '2026-09-09T09:59:26.347Z' },
+  modified: { $date: '2026-09-09T09:59:26.347Z' },
+};
+
 describe('useUsefulLinksContainer', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   it('exposes the fetched links', async () => {
-    get.mockResolvedValue(links);
+    get.mockResolvedValue(bookmarksResponse);
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -56,7 +64,7 @@ describe('useUsefulLinksContainer', () => {
   });
 
   it('allows adding a link while under the limit', async () => {
-    get.mockResolvedValue(links);
+    get.mockResolvedValue(bookmarksResponse);
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -68,11 +76,11 @@ describe('useUsefulLinksContainer', () => {
 
   it('disallows adding a link once MAX_USEFUL_LINKS is reached', async () => {
     const fullList = Array.from({ length: MAX_USEFUL_LINKS }, (_, i) => ({
-      id: `${i}`,
+      _id: `${i}`,
       name: `Link ${i}`,
       url: `https://example.com/${i}`,
     }));
-    get.mockResolvedValue(fullList);
+    get.mockResolvedValue({ ...bookmarksResponse, bookmarks: fullList });
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -83,8 +91,8 @@ describe('useUsefulLinksContainer', () => {
   });
 
   it('creates a link through the service', async () => {
-    get.mockResolvedValue(links);
-    postJson.mockResolvedValue({ id: '3', name: 'New', url: 'https://new.fr' });
+    get.mockResolvedValue(bookmarksResponse);
+    postJson.mockResolvedValue({ _id: '3' });
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -96,15 +104,15 @@ describe('useUsefulLinksContainer', () => {
       await result.current.createLink({ name: 'New', url: 'https://new.fr' });
     });
 
-    expect(postJson).toHaveBeenCalledWith('/directory/user-links', {
+    expect(postJson).toHaveBeenCalledWith('/bookmark/api/v2/bookmarks', {
       name: 'New',
       url: 'https://new.fr',
     });
   });
 
   it('updates a link through the service', async () => {
-    get.mockResolvedValue(links);
-    putJson.mockResolvedValue({ ...links[0], name: 'Updated' });
+    get.mockResolvedValue(bookmarksResponse);
+    putJson.mockResolvedValue({ _id: '1' });
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -119,15 +127,15 @@ describe('useUsefulLinksContainer', () => {
       });
     });
 
-    expect(putJson).toHaveBeenCalledWith('/directory/user-links/1', {
+    expect(putJson).toHaveBeenCalledWith('/bookmark/api/v2/bookmarks/1', {
       name: 'Updated',
       url: 'https://lumni.fr',
     });
   });
 
   it('deletes a link through the service', async () => {
-    get.mockResolvedValue(links);
-    del.mockResolvedValue(undefined);
+    get.mockResolvedValue(bookmarksResponse);
+    del.mockResolvedValue({ number: 1 });
 
     const { result } = renderHook(() => useUsefulLinksContainer(), {
       wrapper: createWrapper(),
@@ -140,7 +148,7 @@ describe('useUsefulLinksContainer', () => {
     });
 
     await waitFor(() =>
-      expect(del).toHaveBeenCalledWith('/directory/user-links/1'),
+      expect(del).toHaveBeenCalledWith('/bookmark/api/v2/bookmarks/1'),
     );
   });
 });

@@ -2,19 +2,19 @@ import { http, HttpResponse } from 'msw';
 import { mockChildrenByStructure } from '../data';
 
 // In-memory store for the "Liens utiles" homepage widget mocks, mirroring
-// the real backend contract (GET/POST/PUT/DELETE /directory/user-links,
-// including its error codes/statuses).
-const USEFUL_LINKS_NAME_MAX_LENGTH = 80;
+// the real backend contract (GET/POST/PUT/DELETE
+// /bookmark/api/v2/bookmarks, including its error codes/statuses — see
+// IMPULS-6167).
 const USEFUL_LINKS_LIMIT = 10;
 
 let usefulLinks = [
-  { id: '1', name: 'Lumni', url: 'https://www.lumni.fr' },
+  { _id: '1', name: 'Lumni', url: 'https://www.lumni.fr' },
   {
-    id: '2',
+    _id: '2',
     name: "Ministère de l'Éducation Nationale",
     url: 'https://www.education.gouv.fr',
   },
-  { id: '3', name: 'ONISEP', url: 'https://www.onisep.fr' },
+  { _id: '3', name: 'ONISEP', url: 'https://www.onisep.fr' },
 ];
 
 export const handlers = [
@@ -66,53 +66,42 @@ export const handlers = [
       ],
     });
   }),
-  http.get('/directory/user-links', () => {
-    return HttpResponse.json(usefulLinks);
+  http.get('/bookmark/api/v2/bookmarks', () => {
+    return HttpResponse.json({
+      _id: 'owner-doc',
+      owner: { userId: '91c22b66-ba1b-4fde-a3fe-95219cc18d4a', displayName: 'User' },
+      bookmarks: usefulLinks,
+      created: { $date: '2026-09-09T09:59:26.347Z' },
+      modified: { $date: '2026-09-09T09:59:26.347Z' },
+    });
   }),
-  http.post('/directory/user-links', async ({ request }) => {
+  http.post('/bookmark/api/v2/bookmarks', async ({ request }) => {
     const payload = (await request.json()) as { name: string; url: string };
-    if (payload.name.length > USEFUL_LINKS_NAME_MAX_LENGTH) {
-      return HttpResponse.json(
-        { error: 'directory.user.link.name.too.long' },
-        { status: 400 },
-      );
-    }
     if (usefulLinks.length >= USEFUL_LINKS_LIMIT) {
       return HttpResponse.json(
-        { error: 'directory.user.link.limit.reached' },
-        { status: 409 },
+        { error: 'bookmark.widget.bad.request.limit.reached' },
+        { status: 400 },
       );
     }
-    const link = { id: `${Date.now()}`, ...payload };
+    const link = { _id: `${Date.now()}`, ...payload };
     usefulLinks = [...usefulLinks, link];
-    return HttpResponse.json(link, { status: 200 });
+    return HttpResponse.json({ _id: link._id }, { status: 200 });
   }),
-  http.put('/directory/user-links/:id', async ({ params, request }) => {
+  http.put('/bookmark/api/v2/bookmarks/:id', async ({ params, request }) => {
     const payload = (await request.json()) as { name: string; url: string };
-    if (payload.name.length > USEFUL_LINKS_NAME_MAX_LENGTH) {
-      return HttpResponse.json(
-        { error: 'directory.user.link.name.too.long' },
-        { status: 400 },
-      );
+    if (!usefulLinks.some((l) => l._id === params.id)) {
+      return new HttpResponse(null, { status: 401 });
     }
-    if (!usefulLinks.some((l) => l.id === params.id)) {
-      return HttpResponse.json(
-        { error: 'directory.user.link.not.found' },
-        { status: 400 },
-      );
-    }
-    const link = { id: params.id as string, ...payload };
-    usefulLinks = usefulLinks.map((l) => (l.id === params.id ? link : l));
-    return HttpResponse.json(link, { status: 200 });
+    usefulLinks = usefulLinks.map((l) =>
+      l._id === params.id ? { _id: l._id, ...payload } : l,
+    );
+    return HttpResponse.json({ _id: params.id }, { status: 200 });
   }),
-  http.delete('/directory/user-links/:id', ({ params }) => {
-    if (!usefulLinks.some((l) => l.id === params.id)) {
-      return HttpResponse.json(
-        { error: 'directory.user.link.not.found' },
-        { status: 400 },
-      );
+  http.delete('/bookmark/api/v2/bookmarks/:id', ({ params }) => {
+    if (!usefulLinks.some((l) => l._id === params.id)) {
+      return new HttpResponse(null, { status: 404 });
     }
-    usefulLinks = usefulLinks.filter((l) => l.id !== params.id);
-    return new HttpResponse(null, { status: 200 });
+    usefulLinks = usefulLinks.filter((l) => l._id !== params.id);
+    return HttpResponse.json({ number: 1 }, { status: 200 });
   }),
 ];
