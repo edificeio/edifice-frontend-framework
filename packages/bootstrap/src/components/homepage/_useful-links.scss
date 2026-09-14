@@ -1,3 +1,5 @@
+@use '../../themes/configs/breakpoints' as medias;
+
 // Neither empty state uses the generic EmptyScreen component: its image
 // sizing is square-only, and the illustration's ~1.84:1 ratio would be
 // visibly distorted. EmptyScreen's title styling (Heading h2,
@@ -98,5 +100,14 @@
 
   &__actions {
     width: 8rem;
+  }
+}
+
+@include medias.respond-below('tablet') {
+  .useful-links-table {
+    &__url {
+      display: none;
+      width: auto;
+    }
   }
 }

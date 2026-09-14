@@ -9,6 +9,7 @@ import {
   ModalBeta,
   Table,
 } from '../../../../components';
+import { useBreakpoint } from '../../../../hooks';
 import { IconClose, IconEdit, IconPlus } from '../../../icons/components';
 
 export interface UsefulLinksModalProps {
@@ -31,6 +32,7 @@ export function UsefulLinksModal({
   onDeleteLink,
 }: UsefulLinksModalProps) {
   const { t } = useTranslation();
+  const { md } = useBreakpoint();
 
   const addLinkButton = (
     <ButtonBeta
@@ -100,7 +102,7 @@ export function UsefulLinksModal({
               </Table.Thead>
               <Table.Tbody>
                 <Table.Tr className="useful-links-table__action-row">
-                  <Table.Td colSpan={3}>
+                  <Table.Td colSpan={md ? 3 : 2}>
                     <Flex justify="end">{addLinkButton}</Flex>
                   </Table.Td>
                 </Table.Tr>
