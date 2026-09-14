@@ -1,0 +1,30 @@
+// Independent from Bootstrap's `.form-text` (left untouched in
+// `_form-text.scss` for its other raw consumers) — only
+// `var(--primitive-*)`/`var(--color-*)` custom properties, no SASS variable.
+.input-message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--primitive-spacer-8);
+  margin: 0;
+  margin-top: var(--primitive-spacer-4);
+  font-family: var(--font-family-body);
+  font-style: italic;
+  font-weight: var(--font-weight-regular);
+  font-size: var(--primitive-font-size-small);
+  line-height: var(--primitive-font-lineheight-2xs);
+  color: var(--primitive-text-color-subtext);
+
+  &--invalid {
+    color: var(--color-support-danger-700);
+  }
+
+  &--valid {
+    color: var(--color-support-success-700);
+  }
+
+  &__icon {
+    flex: none;
+    width: 20px;
+    height: 20px;
+  }
+}
