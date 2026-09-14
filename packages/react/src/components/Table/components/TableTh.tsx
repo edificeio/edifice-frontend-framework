@@ -1,4 +1,6 @@
-export const TableTh = (props: React.HTMLAttributes<HTMLTableCellElement>) => {
+export const TableTh = (
+  props: React.ThHTMLAttributes<HTMLTableCellElement>,
+) => {
   const { children, ...restProps } = props;
 
   return <th {...restProps}>{children}</th>;
