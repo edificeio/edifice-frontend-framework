@@ -7,10 +7,13 @@ export default function useClickOutside<T extends HTMLElement = any>(
   handler: () => void,
   events?: string[] | null,
   nodes?: Array<HTMLElement | null>,
+  enabled: boolean = true,
 ) {
   const ref = useRef<T | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+
     const listener = (event: any) => {
       const { target } = event ?? {};
       if (Array.isArray(nodes)) {
@@ -35,7 +38,7 @@ export default function useClickOutside<T extends HTMLElement = any>(
         document.removeEventListener(fn, listener);
       });
     };
-  }, [ref, handler, nodes, events]);
+  }, [ref, handler, nodes, events, enabled]);
 
   return ref;
 }

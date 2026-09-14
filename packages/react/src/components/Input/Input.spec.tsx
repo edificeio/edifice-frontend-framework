@@ -57,23 +57,27 @@ describe('Input', () => {
     );
     const input = screen.getByRole('textbox');
     expect(input).toHaveAttribute('readonly');
-    expect(input).toHaveClass('form-control-plaintext');
+    expect(input.parentElement).toHaveClass('input--plaintext');
   });
 
-  it('reflects the validation status through CSS classes', () => {
+  it('reflects the validation status through CSS classes on the wrapper', () => {
     const { rerender } = render(
       <FormControl id="firstname" status="invalid">
         <Input type="text" size="md" />
       </FormControl>,
     );
-    expect(screen.getByRole('textbox')).toHaveClass('is-invalid');
+    expect(screen.getByRole('textbox').parentElement).toHaveClass(
+      'input--invalid',
+    );
 
     rerender(
       <FormControl id="firstname" status="valid">
         <Input type="text" size="md" />
       </FormControl>,
     );
-    expect(screen.getByRole('textbox')).toHaveClass('is-valid');
+    expect(screen.getByRole('textbox').parentElement).toHaveClass(
+      'input--valid',
+    );
   });
 
   it('shows a character counter when showCounter is set', () => {

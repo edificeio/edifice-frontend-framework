@@ -6,7 +6,8 @@
 
   &.input-group {
     input,
-    > .form-control {
+    > .form-control,
+    > .input {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
