@@ -64,6 +64,18 @@ export interface BookmarkGetResponse {
 }
 
 /**
+ * A user's personal "useful link" (external bookmark), managed from the
+ * homepage "Liens utiles" widget.
+ */
+export interface UsefulLink {
+  id: string;
+  name: string;
+  url: string;
+}
+
+export type UsefulLinkPayload = Pick<UsefulLink, 'name' | 'url'>;
+
+/**
  * Class a child belongs to, as returned by the /children endpoint.
  */
 export interface ChildClass {
