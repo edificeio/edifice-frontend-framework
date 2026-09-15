@@ -10,12 +10,17 @@ import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, Button } from '..';
-import { useCantoo, useUiOverride, useZendeskGuide } from '../../hooks';
+import {
+  useBackground,
+  useCantoo,
+  useUiOverride,
+  useZendeskGuide,
+} from '../../hooks';
 import { useCookiesConsent } from '../../hooks/useCookiesConsent';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import { useOverlay } from '../PageLayout/hook/useOverlay';
 import Header from './components/Header';
 import HeaderNotificationsOverlay from './components/HeaderNotificationsOverlay';
-import { useOverlay } from '../PageLayout/hook/useOverlay';
 
 const HeaderV2 = lazy(
   () => import('../../modules/homepage/components/Header/Header'),
@@ -42,8 +47,8 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
-  const backgroundOverride = useUiOverride('layout.background');
-  const hasBackgroundImage = backgroundOverride?.variant === 'image';
+  const { productOverride, background, isBackgroundImageOverriden } =
+    useBackground();
   const { toggleOverlay } = useOverlay();
 
   const { t } = useTranslation();
@@ -115,10 +120,11 @@ export const Layout = ({
 
   return (
     <div
+      data-product={productOverride}
+      data-background={background}
       className={clsx('layout', {
-        'layout-has-background-image': hasBackgroundImage,
+        'layout-has-background-image': isBackgroundImageOverriden,
       })}
-      data-product={hasBackgroundImage ? backgroundOverride?.theme : undefined}
     >
       {renderHeader}
       {renderNotificationsOverlay}
