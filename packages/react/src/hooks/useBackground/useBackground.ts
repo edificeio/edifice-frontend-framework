@@ -23,7 +23,9 @@ export default () => {
   return {
     /* Actual background is either : user's prefered value, theme-conf overriden value or 'default' */
     background:
-      preferences?.background ?? backgroundDefault?.variant ?? 'default',
+      preferences?.background ??
+      (backgroundDefault?.variant as Background) ??
+      'default',
     isBackgroundImageOverridden,
     productOverride: backgroundOverride?.theme,
   };
