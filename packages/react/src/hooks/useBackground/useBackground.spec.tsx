@@ -10,7 +10,7 @@ const { preferences, uiOverrides } = vi.hoisted(() => ({
 }));
 
 vi.mock('../useUiOverride', () => ({
-  default: (key: string) => uiOverrides.current[key],
+  useUiOverride: (key: string) => uiOverrides.current[key],
 }));
 
 vi.mock('../useUserPreferences', () => ({
