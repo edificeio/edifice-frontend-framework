@@ -1,0 +1,32 @@
+[data-background] {
+  background-image: var(--background-image-url, none);
+  background-size: var(--background-size, cover);
+  background-position: var(--background-position, center);
+  background-repeat: var(--background-repeat, no-repeat);
+  background-color: var(--background-color, transparent);
+  background-attachment: var(--background-attachment, fixed);
+}
+
+[data-background='default'] {
+  --background-image-url: url('./images/backgrounds/default.png');
+}
+
+[data-background='blue-200'] {
+  --background-image-url: url('./images/backgrounds/blue-200.png');
+}
+
+[data-background='green-200'] {
+  --background-image-url: url('./images/backgrounds/green-200.png');
+}
+
+[data-background='orange-200'] {
+  --background-image-url: url('./images/backgrounds/orange-200.png');
+}
+
+[data-background='pink-200'] {
+  --background-image-url: url('./images/backgrounds/pink-200.png');
+}
+
+[data-background='yellow-200'] {
+  --background-image-url: url('./images/backgrounds/yellow-200.png');
+}
