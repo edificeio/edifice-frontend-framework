@@ -15,8 +15,23 @@ type DataModel =
     }
   | undefined;
 
-/** Add Zendesk Guide  */
-export default function useZendeskGuide() {
+export interface UseZendeskGuideAPI {
+  /** True once the widget script is loaded and configured. */
+  isReady: boolean;
+  /** True while the widget panel is open. */
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+}
+
+/**
+ * Add Zendesk Guide
+ *
+ * @param headerColor Overrides the widget panel's theme color.
+ */
+export default function useZendeskGuide(
+  headerColor?: string,
+): UseZendeskGuideAPI {
   const { currentLanguage } = useEdificeClient();
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
@@ -31,6 +46,16 @@ export default function useZendeskGuide() {
 
   const [locationPathname, setLocationPathname] = useState('');
   const [dataModule, setDataModule] = useState<DataModel>(undefined);
+  const [isReady, setIsReady] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const open = () => {
+    (window as any).zE?.('webWidget', 'open');
+  };
+
+  const close = () => {
+    (window as any).zE?.('webWidget', 'close');
+  };
 
   const setZendeskGuideLabels = () => {
     // Split the location pathname to get the module label
@@ -129,17 +154,93 @@ export default function useZendeskGuide() {
   }, [window.location.pathname, dataModule]);
 
   useEffect(() => {
-    if (
-      document.getElementById('ze-snippet') ||
-      hasSupportWorkflow === undefined
-    ) {
+    // Zendesk only allows a single handler per event, so whichever instance
+    // of this hook is currently mounted must (re-)register its own closures
+    // — otherwise a later mount reusing an already-bootstrapped widget (e.g.
+    // PageLayout remounting on a route change) would never see isOpen change,
+    // since only the first-ever mount's setIsOpen would still be wired up.
+    const registerWidgetHandlers = () => {
+      (window as any).zE('webWidget:on', 'open', function () {
+        setIsOpen(true);
+
+        if (hasSupportWorkflow) {
+          (window as any).zE('webWidget', 'updateSettings', {
+            webWidget: {
+              contactForm: {
+                suppress: false,
+              },
+            },
+          });
+        }
+      });
+
+      (window as any).zE('webWidget:on', 'close', function () {
+        setIsOpen(false);
+      });
+
+      (window as any).zE(
+        'webWidget:on',
+        'userEvent',
+        function (ref: { category: any; action: any; properties: any }) {
+          const category = ref.category;
+          const action = ref.action;
+          const properties = ref.properties;
+          if (
+            action === 'Contact Form Shown' &&
+            category === 'Zendesk Web Widget' &&
+            properties &&
+            properties.name === 'contact-form' &&
+            hasSupportWorkflow
+          ) {
+            (window as any).zE('webWidget', 'updateSettings', {
+              webWidget: {
+                contactForm: {
+                  suppress: true,
+                },
+              },
+            });
+            (window as any).zE('webWidget', 'close');
+            window.open('/support/tickets/new', '_blank');
+          }
+        },
+      );
+    };
+
+    if (document.getElementById('ze-snippet')) {
+      // The widget script was already bootstrapped by another instance of
+      // this hook — still re-register this instance's own handlers.
+      if ((window as any).zE) {
+        registerWidgetHandlers();
+        setIsReady(true);
+      }
+      return;
+    }
+
+    if (hasSupportWorkflow === undefined) {
       return;
     }
 
     (async () => {
-      const zendeskGuideConfig = await odeServices
-        .http()
-        .get('/zendeskGuide/config');
+      let zendeskGuideConfig;
+
+      try {
+        zendeskGuideConfig = await odeServices
+          .http()
+          .get('/zendeskGuide/config');
+      } catch (error) {
+        // Left uncaught, a failure here (e.g. `/zendeskGuide` not proxied by
+        // a consuming app's local dev server) silently keeps `isReady` at
+        // `false` forever, with nothing to explain why HelpZone never shows up.
+        console.warn(
+          '[useZendeskGuide] Failed to fetch the support widget config from ' +
+            "`/zendeskGuide/config` — the widget (and HelpZone's button) " +
+            "won't show up. If you're running a local dev server, check " +
+            "that `/zendeskGuide` is proxied to your backend in your app's " +
+            'Vite dev proxy config.',
+          error,
+        );
+        return;
+      }
 
       if (
         zendeskGuideConfig &&
@@ -169,7 +270,10 @@ export default function useZendeskGuide() {
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: { theme: zendeskGuideConfig.color || '#ffc400' },
+              color: {
+                theme: zendeskGuideConfig.color || '#ffc400',
+                header: headerColor,
+              },
               zIndex: 3,
               launcher: {
                 mobile: {
@@ -202,44 +306,9 @@ export default function useZendeskGuide() {
             });
           });
 
-          (window as any).zE('webWidget:on', 'open', function () {
-            if (hasSupportWorkflow) {
-              (window as any).zE('webWidget', 'updateSettings', {
-                webWidget: {
-                  contactForm: {
-                    suppress: false,
-                  },
-                },
-              });
-            }
-          });
+          registerWidgetHandlers();
 
-          (window as any).zE(
-            'webWidget:on',
-            'userEvent',
-            function (ref: { category: any; action: any; properties: any }) {
-              const category = ref.category;
-              const action = ref.action;
-              const properties = ref.properties;
-              if (
-                action === 'Contact Form Shown' &&
-                category === 'Zendesk Web Widget' &&
-                properties &&
-                properties.name === 'contact-form' &&
-                hasSupportWorkflow
-              ) {
-                (window as any).zE('webWidget', 'updateSettings', {
-                  webWidget: {
-                    contactForm: {
-                      suppress: true,
-                    },
-                  },
-                });
-                (window as any).zE('webWidget', 'close');
-                window.open('/support/tickets/new', '_blank');
-              }
-            },
-          );
+          setIsReady(true);
         };
       }
     })();
@@ -247,5 +316,5 @@ export default function useZendeskGuide() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSupportWorkflow]);
 
-  return null;
+  return { isReady, isOpen, open, close };
 }

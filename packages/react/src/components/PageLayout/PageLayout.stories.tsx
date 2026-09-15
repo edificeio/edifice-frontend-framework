@@ -123,6 +123,18 @@ export const Base: Story = {
   ),
 };
 
+export const BaseWithHelpZone: Story = {
+  render: (args) => (
+    <PageLayout {...args}>
+      <PageLayout.Header />
+      <PageLayout.Content style={colStyle('content')}>
+        <div style={innerStyle('content')}>Content only</div>
+      </PageLayout.Content>
+      <PageLayout.HelpZone />
+    </PageLayout>
+  ),
+};
+
 export const WithBreadcrumb: Story = {
   render: (args) => (
     <PageLayout {...args}>
