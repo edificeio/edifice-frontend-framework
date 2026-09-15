@@ -47,7 +47,7 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
-  const { productOverride, background, isBackgroundImageOverriden } =
+  const { productOverride, background, isBackgroundImageOverridden } =
     useBackground();
   const { toggleOverlay } = useOverlay();
 
@@ -123,7 +123,7 @@ export const Layout = ({
       data-product={productOverride}
       data-background={background}
       className={clsx('layout', {
-        'layout-has-background-image': isBackgroundImageOverriden,
+        'layout-has-background-image': isBackgroundImageOverridden,
       })}
     >
       {renderHeader}

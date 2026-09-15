@@ -18,13 +18,13 @@ export default () => {
   const backgroundDefault = useUiOverride('background.default');
   const { preferences } = useUserPreferences<BackgroundPreferences>();
 
-  const isBackgroundImageOverriden = backgroundOverride?.variant === 'image';
+  const isBackgroundImageOverridden = backgroundOverride?.variant === 'image';
 
   return {
     /* Actual background is either : user's prefered value, theme-conf overriden value or 'default' */
     background:
       preferences?.background ?? backgroundDefault?.variant ?? 'default',
-    isBackgroundImageOverriden,
+    isBackgroundImageOverridden,
     productOverride: backgroundOverride?.theme,
   };
 };
