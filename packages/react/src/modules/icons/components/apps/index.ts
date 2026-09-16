@@ -113,6 +113,7 @@ export { default as IconScrapbook } from './IconScrapbook';
 export { default as IconSearchengine } from './IconSearchengine';
 export { default as IconSettingsClass } from './IconSettingsClass';
 export { default as IconSharebigfiles } from './IconSharebigfiles';
+export { default as IconStage } from './IconStage';
 export { default as IconStatistics } from './IconStatistics';
 export { default as IconStats } from './IconStats';
 export { default as IconSuitcase } from './IconSuitcase';

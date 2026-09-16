@@ -65,8 +65,7 @@ export default function useEdificeIcons() {
         appCode = 'collaborative-wall';
         break;
       case 'communautés':
-        appCode = 'community';
-        break;
+        appCode = 'communities';
         break;
       case 'directory.user':
         appCode = 'userbook';
