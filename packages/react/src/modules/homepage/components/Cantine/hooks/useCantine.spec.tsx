@@ -2,9 +2,10 @@ import { School } from '@edifice.io/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { ReactNode } from 'react';
-import { MockedProvider } from '../../../../providers/MockedProvider/MockedProvider';
+import { MockedProvider } from '../../../../../providers/MockedProvider/MockedProvider';
 import { renderHook, waitFor } from '~/setup';
-import { CantineMenuItem, useCantine } from './useCantine';
+import { useCantine } from './useCantine';
+import { CantineMenuItem } from './useCantineMenu';
 
 const { get, isResponseError, latestResponse, useUserSchools } = vi.hoisted(
   () => ({
@@ -22,7 +23,7 @@ vi.mock('@edifice.io/client', async (importOriginal) => ({
   },
 }));
 
-vi.mock('../SchoolSpace/useUserSchools', () => ({ useUserSchools }));
+vi.mock('../../SchoolSpace/useUserSchools', () => ({ useUserSchools }));
 
 const school = {
   id: 'school-1',

@@ -7,17 +7,15 @@ import labelBio from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine
 import labelFaitmaison from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-faitmaison.png';
 import labelLocal from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-local.png';
 import labelVegetarien from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-vegetarien.png';
-import { useTranslation } from 'react-i18next';
-import { Image } from '../../../../components';
-import { CantineCategory, CantineDish } from './useCantine';
+import { CantineCategory } from '../hooks/useCantineMenu';
 
-interface IllustratedLabel {
+export interface IllustratedLabel {
   icon: string;
   i18nKey: string;
   defaultLabel: string;
 }
 
-const CATEGORY_CONFIG: Record<CantineCategory, IllustratedLabel> = {
+export const CATEGORY_CONFIG: Record<CantineCategory, IllustratedLabel> = {
   entree: {
     icon: illuEntree,
     i18nKey: 'homepage.widget.cantine.category.entree',
@@ -46,9 +44,9 @@ const CATEGORY_CONFIG: Record<CantineCategory, IllustratedLabel> = {
 };
 
 /** Boolean quality flags of a dish */
-type DishFlag = 'vegetarien' | 'faitmaison' | 'bio' | 'local';
+export type DishFlag = 'vegetarien' | 'faitmaison' | 'bio' | 'local';
 
-const DISH_TAGS: (IllustratedLabel & { flag: DishFlag })[] = [
+export const DISH_TAGS: (IllustratedLabel & { flag: DishFlag })[] = [
   {
     flag: 'vegetarien',
     icon: labelVegetarien,
@@ -74,53 +72,3 @@ const DISH_TAGS: (IllustratedLabel & { flag: DishFlag })[] = [
     defaultLabel: 'Produit local',
   },
 ];
-
-export interface CantineMenuSectionProps {
-  category: CantineCategory;
-  items: CantineDish[];
-}
-
-export default function CantineMenuSection({
-  category,
-  items,
-}: CantineMenuSectionProps) {
-  const { t } = useTranslation();
-  const config = CATEGORY_CONFIG[category];
-
-  return (
-    <li className={`cantine__section cantine__section-${category}`}>
-      <div className="cantine__section-header">
-        <span className="cantine__section-icon">
-          <Image src={config.icon} alt="" />
-        </span>
-        <h4 className="cantine__section-title">
-          {t(config.i18nKey, config.defaultLabel)}
-        </h4>
-      </div>
-      <ul className="cantine__items">
-        {items.map((item) => (
-          <li className="cantine__item" key={item.id}>
-            <div className="cantine__item-text">
-              <p className="cantine__item-label">{item.label}</p>
-              {item.allergens.length > 0 && (
-                <p className="cantine__item-allergens">
-                  {item.allergens.join(', ')}
-                </p>
-              )}
-            </div>
-            <div className="cantine__item-tags">
-              {DISH_TAGS.filter((tag) => item[tag.flag]).map((tag) => (
-                <Image
-                  key={tag.flag}
-                  src={tag.icon}
-                  alt={t(tag.i18nKey, tag.defaultLabel)}
-                  className="cantine__item-tag"
-                />
-              ))}
-            </div>
-          </li>
-        ))}
-      </ul>
-    </li>
-  );
-}
