@@ -1,6 +1,6 @@
 import { render, screen } from '~/setup';
 import Cantine from './Cantine';
-import { CantineDish, CantineSection } from './useCantine';
+import { CantineDish, CantineSection } from './hooks/useCantineMenu';
 
 function makeDish(overrides: Partial<CantineDish> = {}): CantineDish {
   return {

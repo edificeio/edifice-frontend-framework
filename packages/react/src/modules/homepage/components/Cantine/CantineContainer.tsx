@@ -1,20 +1,23 @@
+import { useState } from 'react';
 import Cantine from './Cantine';
-import { useCantine } from './useCantine';
+import { CantineModalContainer } from './CantineModalContainer';
+import { useCantine } from './hooks/useCantine';
 
 export function CantineContainer() {
   const { sections, status } = useCantine();
-
-  const handleFullScreenClick = (): void => {
-    // The full-screen modal is not part of this iteration; the button is
-    // kept visible (per design) but currently inert.
-  };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <Cantine
-      status={status}
-      sections={sections}
-      handleFullScreenClick={handleFullScreenClick}
-    />
+    <>
+      <Cantine
+        status={status}
+        sections={sections}
+        handleFullScreenClick={() => setIsModalOpen(true)}
+      />
+      {isModalOpen && (
+        <CantineModalContainer onClose={() => setIsModalOpen(false)} />
+      )}
+    </>
   );
 }
 
