@@ -1,8 +1,6 @@
 import { odeServices } from '@edifice.io/client';
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { useUserSchools } from '../SchoolSpace/useUserSchools';
 
 export type CantineCategory =
   | 'entree'
@@ -61,6 +59,16 @@ export interface CantineSection {
   items: CantineDish[];
 }
 
+/** Both services of a given day, as exposed by app-registry. */
+export interface CantineMenus {
+  lunch: CantineMenuItem[];
+  dinner: CantineMenuItem[];
+  /** True when the school also serves a dinner menu that day. */
+  dinnerAvailable: boolean;
+}
+
+export type CantineMenuType = 'lunch' | 'dinner';
+
 /**
  * Allergen keys are dynamic (`allerg_gluten`, `allerg_fruits_a_coque`…), so
  * this builds the list from the item's own keys instead of a fixed schema.
@@ -89,7 +97,7 @@ function normalizeDish(item: CantineMenuItem, index: number): CantineDish {
   };
 }
 
-function buildSections(menu: CantineMenuItem[]): CantineSection[] {
+export function buildSections(menu: CantineMenuItem[]): CantineSection[] {
   return CANTINE_CATEGORIES.map((category) => ({
     category,
     items: menu
@@ -105,9 +113,8 @@ export function cantineMenuQueryOptions(uai: string, date: string) {
     // The menu is keyed by day and proxied from a slow upstream service, so
     // this caches it for 5 minutes instead of refetching on every remount.
     staleTime: 5 * 60 * 1000, // 5 minutes
-    queryFn: async () => {
+    queryFn: async (): Promise<CantineMenus> => {
       const http = odeServices.http();
-      uai = '0770038Y';
       const body = await http.get<CantineMenuResponse>(
         `/appregistry/${encodeURIComponent(uai)}/cantine/menu?date=${date}`,
       );
@@ -119,53 +126,53 @@ export function cantineMenuQueryOptions(uai: string, date: string) {
       // envelope ({error, nbObjet, contenu}) instead of the normal
       // {menu, dinnerAvailable, …} shape, so this checks `menu` is actually
       // an array before returning it.
-      return Array.isArray(body?.menu) ? body.menu : [];
+      const lunch = Array.isArray(body?.menu) ? body.menu : [];
+      const dinner = Array.isArray(body?.dinnerMenu) ? body.dinnerMenu : [];
+
+      return {
+        lunch,
+        dinner,
+        dinnerAvailable: body?.dinnerAvailable === true && dinner.length > 0,
+      };
     },
   });
 }
 
 /**
- * `loading` also covers "no school selected yet". The school comes from the
- * session, so an absent UAI leaves `enabled: false` and the query never
- * starts.
- */
-function getStatus({
-  hasError,
-  isReady,
-  hasSections,
-}: {
-  hasError: boolean;
-  isReady: boolean;
-  hasSections: boolean;
-}): CantineStatus {
-  if (hasError) return 'error';
-  if (!isReady) return 'loading';
-  return hasSections ? 'default' : 'empty';
-}
-
-/**
- * Loads today's canteen menu for the school currently selected by the user
- * (see `useUserSchools`), and groups its dishes by category.
+ * Loads one day's menu for one school and groups the requested service's
+ * dishes by category. Shared by the widget and its full-screen modal.
  *
- * Only lunch is exposed. The design has no lunch/dinner toggle, unlike the
- * legacy AngularJS widget.
+ * `loading` also covers "no school selected yet": an absent UAI leaves
+ * `enabled: false`, so the query never starts.
+ *
+ * When the day or the school has no dinner service, the returned `menuType`
+ * falls back on lunch: the caller keeps its own request untouched and simply
+ * renders what is actually served.
  */
-export function useCantine() {
-  const { selectedSchool } = useUserSchools();
-  const uai = selectedSchool?.UAI ?? '';
-  const date = dayjs().format('YYYY-MM-DD');
-
+export function useCantineMenu(
+  uai: string,
+  date: string,
+  requestedMenuType: CantineMenuType = 'lunch',
+) {
   const { data, isPending, error } = useQuery(
     cantineMenuQueryOptions(uai, date),
   );
 
-  const sections = useMemo(() => buildSections(data ?? []), [data]);
+  const dinnerAvailable = data?.dinnerAvailable === true;
+  const menuType: CantineMenuType =
+    requestedMenuType === 'dinner' && dinnerAvailable ? 'dinner' : 'lunch';
 
-  const status = getStatus({
-    hasError: Boolean(error),
-    isReady: Boolean(uai) && !isPending,
-    hasSections: sections.length > 0,
-  });
+  const sections = useMemo(
+    () =>
+      buildSections((menuType === 'lunch' ? data?.lunch : data?.dinner) ?? []),
+    [data, menuType],
+  );
 
-  return { sections, status };
+  const getStatus = (): CantineStatus => {
+    if (error) return 'error';
+    if (!uai || isPending) return 'loading';
+    return sections.length > 0 ? 'default' : 'empty';
+  };
+
+  return { sections, dinnerAvailable, menuType, status: getStatus() };
 }

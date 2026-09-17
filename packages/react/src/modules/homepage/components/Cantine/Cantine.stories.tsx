@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import Cantine from './Cantine';
-import { CantineDish, CantineSection } from './useCantine';
+import { CantineDish, CantineSection } from './hooks/useCantineMenu';
 
 const meta: Meta<typeof Cantine> = {
   title: 'Modules/Homepage/Cantine',
