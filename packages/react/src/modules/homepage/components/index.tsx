@@ -1,3 +1,4 @@
+export * from './Cantine';
 export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';
