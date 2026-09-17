@@ -1,3 +1,4 @@
+export * from './useBackground';
 export * from './useBookmark';
 export * from './useBreakpoint';
 export * from './useBrowserInfo';
