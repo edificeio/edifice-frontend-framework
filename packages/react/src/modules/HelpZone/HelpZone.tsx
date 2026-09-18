@@ -76,6 +76,7 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
         <Tooltip
           message={t('help-zone.edifice-releases-notes')}
           placement="top"
+          className="help-zone-tooltip"
         >
           <span
             className={clsx('help-zone-logo', {
