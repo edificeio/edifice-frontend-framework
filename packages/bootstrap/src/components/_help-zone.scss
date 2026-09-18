@@ -10,8 +10,19 @@
   border-radius: var(--radius-button);
   background-color: var(--primitive-blue-700);
   box-shadow: var(--primitive-box-shadow);
-  transition: box-shadow 300ms ease;
   gap: var(--primitive-spacer-8);
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    box-shadow 300ms ease,
+    opacity 300ms ease,
+    transform 300ms ease;
+
+  &--open {
+    opacity: 0;
+    transform: translateY(2rem);
+    pointer-events: none;
+  }
 }
 
 .help-zone-badge {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { createPortal } from 'react-dom';
@@ -23,6 +23,7 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
   const { t } = useTranslation();
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
   const [isCompact, setIsCompact] = useState(false);
+  const questionButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     // Hides the underlying support widget's native launcher while this
@@ -46,15 +47,30 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
 
     const goCompact = () => setIsCompact(true);
 
+    // The "?" button's own click shouldn't trigger this — it already has
+    // its own effect (opening the panel, which fades the whole zone out),
+    // snapping to compact at the same time would just be visual noise.
+    const handleClick = (event: MouseEvent) => {
+      if (
+        questionButtonRef.current &&
+        event.target instanceof Node &&
+        questionButtonRef.current.contains(event.target)
+      ) {
+        return;
+      }
+
+      goCompact();
+    };
+
     document.addEventListener('scroll', goCompact, {
       capture: true,
       passive: true,
     });
-    document.addEventListener('click', goCompact);
+    document.addEventListener('click', handleClick);
 
     return () => {
       document.removeEventListener('scroll', goCompact, { capture: true });
-      document.removeEventListener('click', goCompact);
+      document.removeEventListener('click', handleClick);
     };
   }, [isCompact]);
 
@@ -62,10 +78,13 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
     return null;
   }
 
-  const handleClick = () => (isOpen ? onClose() : onOpen());
+  const handleOpenHelpZone = () => (isOpen ? onClose() : onOpen());
 
   return createPortal(
-    <div className="help-zone">
+    <div
+      className={clsx('help-zone', { 'help-zone--open': isOpen })}
+      aria-hidden={isOpen}
+    >
       <a
         className="help-zone-badge"
         href="https://edifice.io/releases/"
@@ -94,11 +113,12 @@ const HelpZone = ({ isReady, isOpen, onOpen, onClose }: HelpZoneProps) => {
       </a>
       <span className="help-zone-divider" />
       <ButtonBeta
+        ref={questionButtonRef}
         className="help-zone-question"
         aria-label={t('help-zone.support.open')}
         color="tertiary"
         variant="ghost"
-        onClick={handleClick}
+        onClick={handleOpenHelpZone}
       >
         <Tooltip message={t('help-zone.support.open')} placement="top">
           <IconQuestion width={24} height={24} color="white" />
