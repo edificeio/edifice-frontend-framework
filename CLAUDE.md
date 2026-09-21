@@ -44,6 +44,7 @@ Monorepo publiant les **packages `@edifice.io/*`** consommés par les apps Edifi
 ## Conventions
 
 - **Tous les commentaires dans le code doivent être écrits en anglais.**
+- **Tout `TODO`/`FIXME` doit référencer un ticket** : `// TODO(ENABLING-XXXX): ...` (règle ESLint `todo-plz/ticket-ref`, `warn`).
 - Scope npm **`@edifice.io/`**, packages en **kebab-case**, **versions synchronisées** entre packages.
 - Publication sur le **registre npm public**. Pas de changesets : **semver manuel**.
 - ESLint **flat config**, Prettier (`singleQuote: true`, `printWidth: 80`, `tabWidth: 2`, `trailingComma: all`).
