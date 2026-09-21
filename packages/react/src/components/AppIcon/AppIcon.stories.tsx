@@ -53,8 +53,7 @@ const meta: Meta<typeof AppIcon> = {
       control: { type: 'inline-radio' },
     },
     size: {
-      options: ['24', '40', '48', '80', '160'],
-      control: { type: 'inline-radio' },
+      control: { type: 'text' },
     },
   },
 };
@@ -185,6 +184,41 @@ export const AppIconRatioSizes: Story = {
   args: {
     iconFit: 'ratio',
     variant: 'rounded',
+  },
+};
+
+export const AppIconCustomSizes: Story = {
+  render: (args: AppIconProps) => {
+    return (
+      <div className="d-flex align-items-center gap-8">
+        <AppIcon app={args.app} size="16" variant="rounded" iconFit="ratio" />
+        <AppIcon app={args.app} size="20" variant="rounded" iconFit="ratio" />
+        <AppIcon app={args.app} size="32" variant="rounded" iconFit="ratio" />
+        <AppIcon app={args.app} size="56" variant="rounded" iconFit="ratio" />
+        <AppIcon app={args.app} size="100" variant="rounded" iconFit="ratio" />
+      </div>
+    );
+  },
+
+  args: {
+    app: {
+      icon: 'blog',
+      address: '',
+      display: false,
+      displayName: '',
+      isExternal: false,
+      name: 'Blog',
+      scope: [],
+    },
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The `size` prop also accepts custom values (e.g. `16`, `20`, `32`, `56`, `100`). In `iconFit="ratio"` mode, the inner padding is computed automatically from the size, so no CSS override is needed.',
+      },
+    },
   },
 };
 
