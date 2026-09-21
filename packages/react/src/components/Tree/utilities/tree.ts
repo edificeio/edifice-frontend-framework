@@ -116,7 +116,9 @@ export function hasChildren(folderId: string, data: TreeItem): boolean {
   }
 
   if (data.children) {
-    return data.children.some((child: TreeItem) => hasChildren(data.id, child));
+    return data.children.some((child: TreeItem) =>
+      hasChildren(folderId, child),
+    );
   }
   return false;
 }
@@ -153,6 +155,7 @@ export function moveNode(
   node: TreeItem,
   { destinationId, folders }: { destinationId: string; folders: string[] },
 ): TreeItem {
+  const root = node;
   return modifyNode(node, (node, parent) => {
     if (destinationId === node.id) {
       const parentAncestors = [
@@ -165,7 +168,7 @@ export function moveNode(
       for (const folder of folders) {
         // if not in children yet => move on it
         if (!childrenIds.includes(folder)) {
-          const item = findNodeById(node, folder);
+          const item = findNodeById(root, folder);
 
           item &&
             newChildren.push({

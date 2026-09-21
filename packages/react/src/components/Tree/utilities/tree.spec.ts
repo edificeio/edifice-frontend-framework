@@ -206,10 +206,8 @@ describe('Tree utilities', () => {
       expect(hasChildren('leaf', { id: 'leaf', name: 'Leaf' })).toBe(false);
     });
 
-    // The recursive branch forwards the parent id instead of the searched one,
-    // so only a node passed as the root of the traversal can answer true.
-    it('is false for a nested id, because the lookup only matches the traversal root', () => {
-      expect(hasChildren('a', makeTree())).toBe(false);
+    it('is true for a nested id holding children', () => {
+      expect(hasChildren('a', makeTree())).toBe(true);
     });
   });
 
@@ -276,17 +274,19 @@ describe('Tree utilities', () => {
       expect(b?.children?.[1].folder.ancestors).toEqual(['root', 'b']);
     });
 
-    // The destination lookup is scoped to the destination subtree, so a node
-    // living elsewhere is removed from its original position without being
-    // re-attached.
-    it('removes a node moved from outside the destination subtree', () => {
+    it('re-attaches a node moved from outside the destination subtree', () => {
       const result = moveNode(makeTree(), {
         destinationId: 'b',
         folders: ['a1'],
       });
 
-      expect(findNodeById(result, 'a1')).toBeUndefined();
-      expect(findNodeById(result, 'b')?.children ?? []).toEqual([]);
+      expect(findNodeById(result, 'b')?.children?.map(({ id }) => id)).toEqual([
+        'a1',
+      ]);
+      expect(findNodeById(result, 'b')?.children?.[0].folder.ancestors).toEqual(
+        ['b'],
+      );
+      expect(findNodeById(result, 'a')?.children ?? []).toEqual([]);
     });
 
     it('keeps a node already sitting in the destination children', () => {
