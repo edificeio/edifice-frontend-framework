@@ -8,6 +8,7 @@ import {
   IconButtonProps,
   Tooltip,
 } from '../../../../components';
+import { useDropdownContext } from '../../../../components/Dropdown/DropdownContext';
 import { IconTextSize } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
 import { hasExtension } from '../../utilities/has-extension';
@@ -24,6 +25,7 @@ interface Props {
 export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
   const { t } = useTranslation();
   const { editor } = useEditorContext();
+  const { visible } = useDropdownContext();
 
   const textOptions = [
     {
@@ -89,6 +91,7 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
           color="tertiary"
           icon={<IconTextSize />}
           aria-label={t('tiptap.toolbar.size.choice')}
+          className={visible ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>
