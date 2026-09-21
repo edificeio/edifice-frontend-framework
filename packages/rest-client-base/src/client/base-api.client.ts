@@ -239,11 +239,12 @@ export abstract class BaseApiClient {
    * @throws {URIError} if the baseUrl attribute is not parsable
    */
   protected buildUrl(endpoint: string, queryParams?: URLSearchParams): string {
-    const isRelative = !URL.canParse(this.baseUrl);
+    // Fix #PEDAGO-4313: URL.canParse is not supported by older Browser on iOS (iPad 9 & iOS 15.3 / iPad10 & iOS 16)
+    const isRelative = !canParseUrl(this.baseUrl);
     const origin = globalThis.location?.origin ?? '';
     const rawUrl = isRelative ? `${origin}${this.baseUrl}` : this.baseUrl;
     // Fail explicitely if base url is not correct
-    if (!URL.canParse(rawUrl)) {
+    if (!canParseUrl(rawUrl)) {
       throw new URIError(`{baseUrl: ${this.baseUrl}} is not a parsable URL.`);
     }
     // Parse base url with MDN-defined rules
@@ -274,6 +275,16 @@ export abstract class BaseApiClient {
     };
   }
 }
+
+// Fix #PEDAGO-4313: URL.canParse is not supported by older Browser on iOS (iPad 9 & iOS 15.3 / iPad10 & iOS 16)
+const canParseUrl = (url: string): boolean => {
+  try {
+    new URL(url);
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 const joinPaths = (base: string, path: string) =>
   `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
