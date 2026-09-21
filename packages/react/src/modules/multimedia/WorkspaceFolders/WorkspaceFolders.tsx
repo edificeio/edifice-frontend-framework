@@ -48,6 +48,9 @@ export default function WorkspaceFolders({
 
       onFolderSelected(selectedFolderIdForAPI, canCopyFileInto);
     }
+    // Intentionally react only to a change of the selected folder. The callback
+    // and helper below are merely invoked here, not meant to re-trigger it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFolderId]);
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
