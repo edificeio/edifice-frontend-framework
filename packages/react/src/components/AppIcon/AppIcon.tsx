@@ -1,4 +1,4 @@
-import { forwardRef, Ref } from 'react';
+import { CSSProperties, forwardRef, Ref } from 'react';
 
 import { IWebApp } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -23,6 +23,10 @@ export interface BaseProps {
    * Custom class name
    */
   className?: string;
+  /**
+   * Custom inline style, merged over the size-derived defaults
+   */
+  style?: CSSProperties;
 }
 
 type AppVariants = 'square' | 'circle' | 'rounded';
@@ -64,6 +68,7 @@ const AppIcon = forwardRef(
       iconFit = 'contain',
       variant = 'square',
       className = '',
+      style,
     }: AppIconProps,
     ref: Ref<HTMLDivElement>,
   ) => {
@@ -142,7 +147,7 @@ const AppIcon = forwardRef(
           width={size}
           height={size}
           className={classes}
-          style={{ minWidth: size + 'px' }}
+          style={{ minWidth: size + 'px', ...style }}
         />
       );
     }
@@ -151,7 +156,7 @@ const AppIcon = forwardRef(
       <div
         ref={ref}
         className={classes}
-        style={{ width: size + 'px', height: size + 'px' }}
+        style={{ width: size + 'px', height: size + 'px', ...style }}
       >
         <IconComponent width={size} height={size} />
       </div>
