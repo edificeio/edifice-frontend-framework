@@ -1,5 +1,6 @@
 import {
   ComponentPropsWithRef,
+  CSSProperties,
   forwardRef,
   ReactNode,
   Ref,
@@ -15,12 +16,13 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
 import {
-  IconAlertCircle,
+  IconAlertTriangle,
+  IconClose,
   IconError,
   IconInfoCircle,
   IconSuccessOutline,
 } from '../../modules/icons/components';
-import { Button } from '../Button';
+import { ButtonBeta as Button } from '../ButtonBeta';
 
 export interface AlertRef {
   show: () => void;
@@ -35,6 +37,24 @@ export type AlertPosition =
   | 'top-right'
   | 'bottom-left'
   | 'bottom-right';
+
+// Kept in sync with the animation-duration set on .is-toast in _alert.scss:
+// the exit animation must finish playing before the toast actually unmounts
+const TOAST_EXIT_ANIMATION_DURATION = 240;
+
+// A toast slides in/out from the side it's anchored to, and simply fades otherwise
+const getToastAnimationClass = (
+  position: AlertPosition,
+  isClosing: boolean,
+) => {
+  if (position === 'top-left' || position === 'bottom-left') {
+    return isClosing ? 'alert-slide-out-left' : 'alert-slide-in-left';
+  }
+  if (position === 'top-right' || position === 'bottom-right') {
+    return isClosing ? 'alert-slide-out-right' : 'alert-slide-in-right';
+  }
+  return isClosing ? 'alert-fade-out' : 'alert-fade-in';
+};
 
 export interface AlertProps extends ComponentPropsWithRef<'div'> {
   /**
@@ -118,6 +138,8 @@ const Alert = forwardRef(
     ref: Ref<AlertRef>,
   ) => {
     const [isVisible, setVisibleStatus] = useState<boolean>(true);
+    // Toasts stay mounted while their exit animation plays; other alerts close immediately
+    const [isClosing, setIsClosing] = useState<boolean>(false);
 
     // Local ref will be merged with forwardRef in useImperativeHandle below
     const refAlert = useRef<HTMLDivElement>(null);
@@ -126,10 +148,36 @@ const Alert = forwardRef(
 
     // Method to hide alert
     const hide = useCallback(() => {
+      if (isToast) {
+        setIsClosing(true);
+        return;
+      }
       setVisibleStatus(false);
       // The parent component can execute function when alert is closed
       onClose?.();
-    }, [onClose]);
+    }, [isToast, onClose]);
+
+    // Keep the toast mounted for as long as its exit animation plays, then unmount it.
+    // A timer is used rather than the animationend event so this stays reliable
+    // regardless of reduced-motion settings or the test environment.
+    useEffect(() => {
+      if (!isClosing) {
+        return;
+      }
+      const timeoutId = setTimeout(() => {
+        setVisibleStatus(false);
+        onClose?.();
+      }, TOAST_EXIT_ANIMATION_DURATION);
+
+      return () => clearTimeout(timeoutId);
+    }, [isClosing, onClose]);
+
+    // Toasts can be dismissed by clicking anywhere on them, except on their actions
+    const handleToastClick = () => {
+      if (isToast && !isConfirm) {
+        hide();
+      }
+    };
 
     // We add two methods to control the alert from parent component
     useImperativeHandle(ref, () => ({
@@ -143,16 +191,63 @@ const Alert = forwardRef(
       onVisibilityChange?.(isVisible);
     }, [isVisible, onVisibilityChange]);
 
-    useEffect(() => {
-      if (autoClose && isVisible) {
-        setTimeout(() => {
-          hide();
-        }, autoCloseDelay);
+    const shouldAutoClose = autoClose && isVisible && !isClosing;
+    const showProgress = autoClose && isToast && !isDismissible && !isClosing;
+
+    // Remaining delay and pause/resume bookkeeping for the auto-close timer,
+    // kept in refs so mouseenter/mouseleave don't need to re-run the effect below
+    const remainingRef = useRef(autoCloseDelay);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+    const startedAtRef = useRef(0);
+    const [isPaused, setIsPaused] = useState(false);
+
+    const clearAutoCloseTimeout = useCallback(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
       }
-    }, [autoClose, autoCloseDelay, hide, isVisible]);
+    }, []);
+
+    useEffect(() => {
+      if (!shouldAutoClose) {
+        return;
+      }
+
+      remainingRef.current = autoCloseDelay;
+      startedAtRef.current = Date.now();
+      timeoutRef.current = setTimeout(hide, autoCloseDelay);
+
+      return clearAutoCloseTimeout;
+    }, [shouldAutoClose, autoCloseDelay, hide, clearAutoCloseTimeout]);
+
+    // Pausing on hover mirrors the pause-on-hover behavior react-hot-toast used to provide;
+    // now that Alert owns the auto-close timer, it must reimplement it itself
+    const handleMouseEnter = () => {
+      if (!shouldAutoClose || isPaused) {
+        return;
+      }
+      clearAutoCloseTimeout();
+      remainingRef.current = Math.max(
+        remainingRef.current - (Date.now() - startedAtRef.current),
+        0,
+      );
+      setIsPaused(true);
+    };
+
+    const handleMouseLeave = () => {
+      if (!shouldAutoClose || !isPaused) {
+        return;
+      }
+      startedAtRef.current = Date.now();
+      timeoutRef.current = setTimeout(hide, remainingRef.current);
+      setIsPaused(false);
+    };
 
     // Method to show alert
     const show = () => {
+      // Reset the leftover closing state from a previous dismissal, otherwise
+      // the toast would re-mount playing its exit animation instead of entering
+      setIsClosing(false);
       setVisibleStatus(true);
     };
 
@@ -160,7 +255,7 @@ const Alert = forwardRef(
     // https://getbootstrap.com/docs/5.2/components/alerts/
     const mapping = {
       success: { icon: <IconSuccessOutline />, classModifier: 'alert-success' },
-      warning: { icon: <IconAlertCircle />, classModifier: 'alert-warning' },
+      warning: { icon: <IconAlertTriangle />, classModifier: 'alert-warning' },
       info: { icon: <IconInfoCircle />, classModifier: 'alert-info' },
       danger: { icon: <IconError />, classModifier: 'alert-danger' },
     };
@@ -168,7 +263,7 @@ const Alert = forwardRef(
     // Create className Attribute from component parameters
     const toastClasses = {
       'is-dismissible': isDismissible,
-      'is-toast ': isToast,
+      'is-toast': isToast,
     };
     // class for Confirm box style
     const confirmClasses = {
@@ -181,39 +276,56 @@ const Alert = forwardRef(
       toastClasses,
       confirmClasses,
       position,
+      isToast && getToastAnimationClass(position, isClosing),
       className,
     );
 
     return (
       <>
         {isVisible ? (
-          <div ref={refAlert} className={divContainerClasses} role="alert">
+          <div
+            ref={refAlert}
+            className={divContainerClasses}
+            role="alert"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleToastClick}
+          >
             {!isConfirm && mapping[type].icon}
             <div className="alert-content small flex-grow-1">{children}</div>
             {button && (
-              <div className="ms-12">
-                {button}{' '}
+              <div
+                className="alert-actions"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {button}
                 {isConfirm && <Button onClick={hide}>{t('close')}</Button>}
               </div>
             )}
             {(isDismissible || isConfirm) && (
-              <div className="btn-close-container">
-                <button
+              <div
+                className="btn-close-container"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button
                   type="button"
-                  className="btn-close"
-                  data-bs-dismiss="alert"
+                  leftIcon={<IconClose />}
+                  variant="ghost"
+                  color="tertiary"
                   aria-label={t('close')}
+                  title={t('close')}
                   onClick={hide}
-                ></button>
+                />
               </div>
             )}
-            {/* Waiting animation library */}
-            {autoClose && (
+            {showProgress && (
               <div
-                className="alert-progress"
-                style={{
-                  transform: `scaleX(0)`,
-                }}
+                className={clsx('alert-progress', { 'is-paused': isPaused })}
+                style={
+                  {
+                    '--alert-progress-duration': `${autoCloseDelay}ms`,
+                  } as CSSProperties
+                }
               ></div>
             )}
           </div>
