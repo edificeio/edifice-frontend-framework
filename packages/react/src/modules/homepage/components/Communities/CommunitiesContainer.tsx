@@ -1,18 +1,34 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import Communities, { CommunitiesProps } from './Communities';
 import CommunitiesSkeleton from './CommunitiesSkeleton';
 import { CommunitiesModel, useCommunities } from './useCommunities';
 
 export type CommunitiesContainerProps = {
+  /** Handle a click on a community. If undefined, the community's home page will be opened. */
   onCommunityClick?: (community: CommunitiesModel) => void;
-  onHeaderActionClick: () => void;
+  /** Handle a click on the header action button. If undefined, communities (or the community creation flow) will be opened. */
+  onHeaderActionClick?: () => void;
 };
 
 export function CommunitiesContainer({
-  onCommunityClick,
-  onHeaderActionClick,
+  onCommunityClick: handleCommunityClick = (community: CommunitiesModel) => {
+    window.open(`/communities/id/${community.id}/home`, '_self');
+  },
+  onHeaderActionClick: handleHeaderActionClick,
 }: CommunitiesContainerProps) {
   const { communities, isLoading, error } = useCommunities();
+
+  const handleActionClick = useCallback(() => {
+    if (handleHeaderActionClick) {
+      handleHeaderActionClick();
+      return;
+    }
+
+    window.open(
+      communities.length > 0 ? '/communities' : '/communities/create/step-type',
+      '_self',
+    );
+  }, [handleHeaderActionClick, communities.length]);
 
   const mappedCommunities: NonNullable<CommunitiesProps['communitiesList']> =
     useMemo(
@@ -20,9 +36,9 @@ export function CommunitiesContainer({
         communities.map((community) => ({
           title: community.title,
           communityImage: community.image ?? '',
-          onActionClick: () => onCommunityClick?.(community),
+          onActionClick: () => handleCommunityClick(community),
         })),
-      [communities, onCommunityClick],
+      [communities, handleCommunityClick],
     );
 
   if (isLoading) {
@@ -36,7 +52,7 @@ export function CommunitiesContainer({
   return (
     <Communities
       communitiesList={mappedCommunities}
-      handleActionClick={onHeaderActionClick}
+      handleActionClick={handleActionClick}
     />
   );
 }

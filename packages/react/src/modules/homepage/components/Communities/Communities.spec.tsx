@@ -5,6 +5,18 @@ import Communities from './Communities';
 import CommunityItem from './CommunityItem';
 
 describe('Communities', () => {
+  beforeAll(() => {
+    // Communities relies on useMeasure (ResizeObserver), absent from jsdom.
+    vi.stubGlobal(
+      'ResizeObserver',
+      class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    );
+  });
+
   it('renders the header action button for both populated and empty states', () => {
     const handleActionClick = vi.fn();
     const { rerender } = render(

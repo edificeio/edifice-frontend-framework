@@ -7,6 +7,7 @@ export interface CommunityItemProps {
   communityImage: string;
   onActionClick: () => void;
   nbNotifications?: number;
+  width?: string;
 }
 
 const CommunityItem = ({
@@ -14,6 +15,7 @@ const CommunityItem = ({
   communityImage,
   nbNotifications,
   onActionClick,
+  width = '25%',
 }: CommunityItemProps) => {
   const hasNotifications = (nbNotifications ?? 0) > 0;
 
@@ -25,7 +27,7 @@ const CommunityItem = ({
       className={clsx('communities-item', {
         'communities-item-has-notifications': hasNotifications,
       })}
-      style={{ width: '25%' }}
+      style={{ width }}
     >
       {hasNotifications && (
         <Badge
