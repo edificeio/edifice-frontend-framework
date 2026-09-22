@@ -54,7 +54,10 @@ describe('HelpZoneContainer', () => {
     });
 
     const { user } = render(<HelpZoneContainer />);
-    await user.click(screen.getByRole('button'));
+    // `aria-hidden` while open takes the button out of the accessibility
+    // tree — `{ hidden: true }` queries the DOM directly, since this test
+    // targets the click wiring, not the visual/a11y-hidden state.
+    await user.click(screen.getByRole('button', { hidden: true }));
 
     expect(close).toHaveBeenCalledTimes(1);
   });

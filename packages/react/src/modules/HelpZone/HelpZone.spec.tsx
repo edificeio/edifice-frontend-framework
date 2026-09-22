@@ -51,9 +51,25 @@ describe('HelpZone', () => {
     const onClose = vi.fn();
     const { user } = renderHelpZone({ isOpen: true, onClose });
 
-    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button', { hidden: true }));
 
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('fades out and moves down while the support panel is open', () => {
+    const { rerender } = renderHelpZone({ isOpen: false });
+
+    const container = () => document.querySelector('.help-zone');
+
+    expect(container()).not.toHaveClass('help-zone--open');
+    expect(container()).not.toHaveAttribute('aria-hidden', 'true');
+
+    rerender(
+      <HelpZone isReady isOpen={true} onOpen={vi.fn()} onClose={vi.fn()} />,
+    );
+
+    expect(container()).toHaveClass('help-zone--open');
+    expect(container()).toHaveAttribute('aria-hidden', 'true');
   });
 
   describe('Edifice badge', () => {
@@ -128,6 +144,15 @@ describe('HelpZone', () => {
 
       expect(compactLogo()).toBeInTheDocument();
       expect(fullLogo()).not.toBeInTheDocument();
+    });
+
+    it('does not switch to the compact logo when clicking the "?" button itself', async () => {
+      const { user } = renderHelpZone();
+
+      await user.click(screen.getByRole('button'));
+
+      expect(fullLogo()).toBeInTheDocument();
+      expect(compactLogo()).not.toBeInTheDocument();
     });
 
     it('stays compact after the initial trigger, regardless of further scrolls or clicks', () => {
