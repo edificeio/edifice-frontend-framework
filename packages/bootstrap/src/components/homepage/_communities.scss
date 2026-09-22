@@ -38,10 +38,11 @@
     border-radius: var(--primitive-border-radius-lg);
     height: 42px;
     width: 100%;
+    object-fit: cover;
   }
 
   &-item-title {
-    padding: var(--primitive-spacer-8);
+    margin: var(--primitive-spacer-8);
     font-family: var(--font-family-title);
     font-weight: var(--font-weight-bold);
     font-size: var(--primitive-font-size-small);

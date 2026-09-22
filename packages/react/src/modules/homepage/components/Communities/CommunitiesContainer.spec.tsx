@@ -30,8 +30,7 @@ describe('CommunitiesContainer', () => {
         {
           id: 1,
           title: 'My community',
-          communityImage: '/community.png',
-          nbNotifications: 2,
+          image: '/community.png',
         },
       ],
       isLoading: false,
@@ -41,6 +40,5 @@ describe('CommunitiesContainer', () => {
     render(<CommunitiesContainer onHeaderActionClick={vi.fn()} />);
 
     expect(screen.getByText('My community')).toBeInTheDocument();
-    expect(screen.getByText('2')).toBeInTheDocument();
   });
 });
