@@ -8,6 +8,7 @@ import {
 
 import clsx from 'clsx';
 
+import { Toaster } from 'react-hot-toast';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -16,8 +17,8 @@ import PageLayoutOverlay from './components/PageLayoutOverlay';
 import PageLayoutSidebarLeft from './components/PageLayoutSidebarLeft';
 import PageLayoutSidebarRight from './components/PageLayoutSidebarRight';
 import {
-  PageLayoutContext,
   type NoPaddingConfig,
+  PageLayoutContext,
   type PageLayoutScrollMode,
   type PageLayoutVariant,
 } from './PageLayoutContext';
@@ -156,6 +157,8 @@ const Root = ({
       </div>
 
       {helpZone}
+
+      <Toaster />
     </PageLayoutContext.Provider>
   );
 };

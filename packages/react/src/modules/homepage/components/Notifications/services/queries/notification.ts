@@ -8,6 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { useToast } from '../../../../../../hooks';
 import { notificationService } from '../api';
 
@@ -113,6 +114,7 @@ export const useReportNotification = () => {
 };
 
 export const useDeleteNotification = () => {
+  const { t } = useTranslation();
   const toast = useToast();
   const queryClient = useQueryClient();
   return useMutation({
@@ -128,10 +130,10 @@ export const useDeleteNotification = () => {
             ),
           },
       );
-      toast.success('homepage.notifications.options.delete.success');
+      toast.success(t('homepage.notifications.options.delete.success'));
     },
     onError: () => {
-      toast.error('homepage.notifications.options.delete.error');
+      toast.error(t('homepage.notifications.options.delete.error'));
     },
   });
 };
