@@ -8,6 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useToast } from '../../../../../../hooks';
 import { notificationService } from '../api';
 
 /** Shape of the `timeline` userbook preference (only `type` is read/written here). */
@@ -112,6 +113,7 @@ export const useReportNotification = () => {
 };
 
 export const useDeleteNotification = () => {
+  const toast = useToast();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => notificationService.deleteNotification(id),
@@ -126,6 +128,10 @@ export const useDeleteNotification = () => {
             ),
           },
       );
+      toast.success('homepage.notifications.options.delete.success');
+    },
+    onError: () => {
+      toast.error('homepage.notifications.options.delete.error');
     },
   });
 };
