@@ -1,4 +1,5 @@
 import illuCommunities from '@edifice.io/bootstrap/dist/images/homepage/illu-communities.svg';
+import { useMeasure } from '@uidotdev/usehooks';
 import { useTranslation } from 'react-i18next';
 import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
@@ -11,11 +12,24 @@ export interface CommunitiesProps {
   handleActionClick: () => void;
 }
 
+/** Below this container width, only 3 items fit without crowding. */
+const NARROW_CONTAINER_WIDTH = 800;
+const MAX_ITEMS = 4;
+const MAX_ITEMS_NARROW = 3;
+
 const Communities = ({
   communitiesList = [],
   handleActionClick,
 }: CommunitiesProps) => {
   const { t } = useTranslation();
+  const [containerRef, { width }] = useMeasure<HTMLDivElement>();
+
+  const maxItems =
+    width !== null && width < NARROW_CONTAINER_WIDTH
+      ? MAX_ITEMS_NARROW
+      : MAX_ITEMS;
+  const visibleCommunities = communitiesList.slice(0, maxItems);
+  const itemWidth = `${100 / maxItems}%`;
 
   return (
     <HomeCard variant="primary">
@@ -30,15 +44,16 @@ const Communities = ({
         title={t('homepage.communities.title')}
       />
       <HomeCard.Content>
-        <Flex gap="16">
-          {communitiesList.length > 0 ? (
-            communitiesList.map((community, index) => (
+        <Flex ref={containerRef} gap="16">
+          {visibleCommunities.length > 0 ? (
+            visibleCommunities.map((community, index) => (
               <CommunityItem
                 key={index}
                 title={community.title}
                 communityImage={community.communityImage}
                 onActionClick={community.onActionClick}
                 nbNotifications={community.nbNotifications}
+                width={itemWidth}
               />
             ))
           ) : (
