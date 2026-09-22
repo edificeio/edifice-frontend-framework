@@ -4,10 +4,11 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 export interface CommunitiesModel {
   id: number | string;
   title: string;
-  communityImage?: string;
-  icon?: string;
-  nbNotifications?: number;
-  notifications?: number;
+  image?: string;
+}
+
+interface CommunitiesSearchResponse {
+  items: CommunitiesModel[];
 }
 
 export function useCommunities() {
@@ -16,15 +17,15 @@ export function useCommunities() {
       queryKey: ['communities', 'preview'],
       queryFn: async () => {
         const http = odeServices.http();
-        const communities = await http.get<CommunitiesModel[]>(
-          '/community/api/v1/communities',
+        const response = await http.get<CommunitiesSearchResponse>(
+          '/communities/api/communities?page=1&size=4',
         );
 
         if (http.isResponseError()) {
           throw new Error(http.latestResponse.statusText);
         }
 
-        return communities;
+        return response.items;
       },
     }),
   );
