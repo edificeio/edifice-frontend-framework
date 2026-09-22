@@ -6,3 +6,4 @@ export * from './MessageFlashList';
 export * from './Notifications';
 export * from './SchoolSpace';
 export * from './UserSpace';
+export * from './Communities';
