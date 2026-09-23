@@ -48,9 +48,9 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
       className: 'ff-script',
     },
     {
-      value: 'Ecriture A',
-      label: t('tiptap.toolbar.typo.cursive'),
-      className: 'ff-cursive',
+      value: 'Marelle',
+      label: t('tiptap.toolbar.typo.marelle'),
+      className: 'ff-marelle',
     },
     {
       value: 'OpenDyslexic',
