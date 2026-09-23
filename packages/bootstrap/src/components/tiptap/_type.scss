@@ -7,12 +7,10 @@
 @import "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap";
 
 @font-face {
-    font-family: "Ecriture A";
+    font-family: "Marelle";
     font-style: normal;
     font-weight: 400;
-    /* This font looks natively small and needs a size-adjustment to look like others. */
-    size-adjust: 187.5%;
-    src: url(#{$fonts-path}/ecriture-a/EcritureA-Romain-Orne.woff2) format("woff");
+    src: url(#{$fonts-path}/marelle/Marelle-Regular.ttf) format("truetype");
     font-display: swap;
 }
 
@@ -20,7 +18,7 @@
 [data-product] {
     --#{$prefix}font-serif: "Lora", serif;
     --#{$prefix}font-script: "IBM Plex Mono", monospace;
-    --#{$prefix}font-cursive: "Ecriture A", cursive;
+    --#{$prefix}font-marelle: "Marelle", marelle;
     --#{$prefix}font-dyslexic: OpenDyslexic, sans-serif;
 
     .ff-serif {
@@ -31,8 +29,8 @@
         font-family: var(--#{$prefix}font-script);
     }
 
-    .ff-cursive {
-        font-family: var(--#{$prefix}font-cursive);
+    .ff-marelle {
+        font-family: var(--#{$prefix}font-marelle);
     }
 
     .ff-dyslexic {
