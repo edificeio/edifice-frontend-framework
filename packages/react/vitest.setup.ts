@@ -17,6 +17,9 @@ import { MockedProvider } from './src/providers/MockedProvider/MockedProvider';
 vi.mock('react-pdf', () => ({
   Document: () => null,
   Page: () => null,
+  pdfjs: {
+    GlobalWorkerOptions: {},
+  },
 }));
 
 const server = setupServer(...handlers);
