@@ -105,7 +105,7 @@ describe('EditorToolbarTypography', () => {
 
     await user.click(getTrigger());
     await user.click(screen.getByRole('menuitemradio', { name: 'Cursive' }));
-    expect(editor.getAttributes('textStyle').fontFamily).toBe('Ecriture A');
+    expect(editor.getAttributes('textStyle').fontFamily).toBe('Marelle');
 
     await user.click(screen.getByRole('menuitemradio', { name: 'Sans-serif' }));
 
