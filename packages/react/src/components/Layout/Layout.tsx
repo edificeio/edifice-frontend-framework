@@ -6,13 +6,13 @@ import {
 } from 'react';
 
 import clsx from 'clsx';
-import { Toaster } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, Button } from '..';
 import {
   useBackground,
   useCantoo,
+  useToast,
   useUiOverride,
   useZendeskGuide,
 } from '../../hooks';
@@ -50,6 +50,8 @@ export const Layout = ({
   const { productOverride, background, isBackgroundImageOverridden } =
     useBackground();
   const { toggleOverlay } = useOverlay();
+
+  const toast = useToast();
 
   const { t } = useTranslation();
 
@@ -109,14 +111,7 @@ export const Layout = ({
     </Alert>
   );
 
-  const renderToaster = (
-    <Toaster
-      containerClassName="toaster-container"
-      toastOptions={{
-        position: 'top-right',
-      }}
-    />
-  );
+  const renderToaster = toast.renderToaster();
 
   return (
     <div
