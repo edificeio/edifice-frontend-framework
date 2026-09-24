@@ -3,6 +3,16 @@
 .app-icon {
   flex-shrink: 0;
 
+  .app-icon-letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--primitive-black);
+    font-weight: var(--primitive-font-weight-bold);
+  }
+
   &.icon-ratio {
     &.square,
     &.rounded,

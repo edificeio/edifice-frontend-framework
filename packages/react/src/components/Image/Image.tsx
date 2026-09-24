@@ -5,7 +5,10 @@ import clsx from 'clsx';
 import commonPlaceholder from '@edifice.io/bootstrap/dist/images/common/image-placeholder.png';
 import useImage from '../../hooks/useImage/useImage';
 
-export interface ImageProps extends React.ComponentPropsWithRef<'img'> {
+export interface ImageProps extends Omit<
+  React.ComponentPropsWithRef<'img'>,
+  'onError'
+> {
   /**
    * Image URL
    */
@@ -30,6 +33,10 @@ export interface ImageProps extends React.ComponentPropsWithRef<'img'> {
    * Optional class for styling purpose
    */
   className?: string;
+  /**
+   * Called when the image fails to load, in addition to falling back to the placeholder
+   */
+  onError?: () => void;
 }
 
 const Image = forwardRef(
@@ -41,6 +48,7 @@ const Image = forwardRef(
       ratio,
       objectFit,
       className,
+      onError: onErrorProp,
       ...restProps
     }: ImageProps,
     ref: Ref<HTMLImageElement>,
@@ -48,6 +56,11 @@ const Image = forwardRef(
     const placeholder = imgPlaceholder ?? commonPlaceholder;
 
     const { imgSrc, onError } = useImage({ src, placeholder });
+
+    const handleError = () => {
+      onError();
+      onErrorProp?.();
+    };
 
     const ratioImage = {
       'ratio ratio-1x1': ratio === '1',
@@ -78,7 +91,7 @@ const Image = forwardRef(
     const renderImage = (
       <img
         alt={alt}
-        onError={onError}
+        onError={handleError}
         ref={ref}
         src={imgSrc}
         className={classes}
