@@ -145,6 +145,29 @@ export const AppIconImageSizes: Story = {
   },
 };
 
+export const AppIconBrokenImageFallback: Story = {
+  args: {
+    app: {
+      address: 'https://connecteur-externe.example/app',
+      icon: 'https://connecteur-externe.example/does-not-exist/icon.png',
+      name: 'connecteur-externe',
+      scope: [],
+      display: true,
+      displayName: 'Connecteur Externe',
+      isExternal: true,
+    },
+  },
+
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When the `icon` URL fails to load (e.g. an unreachable connector icon), AppIcon falls back to a letter avatar showing the first letter of `displayName` instead of a broken image.',
+      },
+    },
+  },
+};
+
 export const AppIconWithRatio: Story = {
   args: {
     app: {
