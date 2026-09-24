@@ -86,14 +86,14 @@ export default function Universalis({
                     type="button"
                     aria-expanded={isExpanded}
                     className={clsx('universalis__school-selector', {
-                      'universalis__school-selector-open': isExpanded,
+                      'universalis__school-selector--open': isExpanded,
                     })}
                   >
                     <span className="universalis__school-selector-label">
                       {selectedSchool?.name}
                     </span>
                     <IconRafterDown
-                      className="w-16 min-w-0"
+                      className="universalis__school-selector-icon"
                       style={getRotateTransitionStyle(isExpanded, {
                         degrees: 180,
                       })}
