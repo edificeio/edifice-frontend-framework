@@ -21,7 +21,7 @@ const ReportNotificationModal = ({
   return (
     <Modal
       id="report-notification-modal"
-      size="lg"
+      size="sm"
       isOpen={isOpen}
       onModalClose={onCancel}
     >
