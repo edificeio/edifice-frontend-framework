@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import toast, { ToastPosition } from 'react-hot-toast';
+import toast, { Toaster, ToastPosition } from 'react-hot-toast';
 
 import Alert from '../../components/Alert/Alert';
 
@@ -16,6 +16,14 @@ const DEFAULT_DURATION = 5000;
 
 export default function useToast() {
   const toasts = {
+    renderToaster: () => (
+      <Toaster
+        containerClassName="toaster-container"
+        toastOptions={{
+          position: 'top-right',
+        }}
+      />
+    ),
     success: (message: string | ReactNode, options?: CustomToastOptions) =>
       toast.custom(
         <Alert

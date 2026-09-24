@@ -8,7 +8,7 @@ import {
 
 import clsx from 'clsx';
 
-import { Toaster } from 'react-hot-toast';
+import { useToast } from 'src/hooks';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -108,6 +108,8 @@ const Root = ({
     () => ({ variant, scrollMode, noPadding }),
     [variant, scrollMode, noPadding],
   );
+  const toast = useToast();
+  const renderToaster = toast.renderToaster();
 
   const {
     hasLeftSidebar,
@@ -157,8 +159,7 @@ const Root = ({
       </div>
 
       {helpZone}
-
-      <Toaster />
+      {renderToaster}
     </PageLayoutContext.Provider>
   );
 };
