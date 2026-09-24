@@ -8,7 +8,7 @@ import {
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import { Alert, Button } from '..';
+import { Alert } from '..';
 import {
   useBackground,
   useCantoo,
@@ -18,6 +18,7 @@ import {
 } from '../../hooks';
 import { useCookiesConsent } from '../../hooks/useCookiesConsent';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
+import { ButtonBeta as Button } from '../ButtonBeta';
 import { useOverlay } from '../PageLayout/hook/useOverlay';
 import Header from './components/Header';
 import HeaderNotificationsOverlay from './components/HeaderNotificationsOverlay';
@@ -101,7 +102,7 @@ export const Layout = ({
       isConfirm={true}
       position="bottom-right"
       button={
-        <Button color="tertiary" variant="ghost" onClick={handleConsultCookies}>
+        <Button variant="outline" onClick={handleConsultCookies}>
           {t('rgpd.cookies.banner.button.consult')}
         </Button>
       }

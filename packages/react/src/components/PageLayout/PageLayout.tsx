@@ -8,7 +8,11 @@ import {
 
 import clsx from 'clsx';
 
-import { useToast } from 'src/hooks';
+import { useTranslation } from 'react-i18next';
+import { Alert } from '../../components/Alert';
+import { useCookiesConsent } from '../../hooks/useCookiesConsent';
+import { useToast } from '../../hooks/useToast';
+import { ButtonBeta as Button } from '../ButtonBeta';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -104,6 +108,13 @@ const Root = ({
   className,
   ...props
 }: PageLayoutProps) => {
+  const { t } = useTranslation();
+  const {
+    showCookiesConsent,
+    handleConsultCookies,
+    handleCloseCookiesConsent,
+  } = useCookiesConsent();
+
   const contextValue = useMemo(
     () => ({ variant, scrollMode, noPadding }),
     [variant, scrollMode, noPadding],
@@ -156,6 +167,22 @@ const Root = ({
         </div>
 
         {overlay}
+
+        {showCookiesConsent && (
+          <Alert
+            type="info"
+            isConfirm={true}
+            position="bottom-right"
+            button={
+              <Button variant="outline" onClick={handleConsultCookies}>
+                {t('rgpd.cookies.banner.button.consult')}
+              </Button>
+            }
+            onClose={handleCloseCookiesConsent}
+          >
+            {t('rgpd.cookies.banner.text1')}
+          </Alert>
+        )}
       </div>
 
       {helpZone}
