@@ -1,7 +1,7 @@
 import illuQwant from '@edifice.io/bootstrap/dist/images/homepage/illu-qwant.png';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { FormControl, IconButton, Image, Input } from '../../../../components';
+import { ButtonBeta, FormControl, Image, Input } from '../../../../components';
 import { IconSearch } from '../../../../modules/icons/components';
 import SvgIconExternalLink from '../../../../modules/icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
@@ -24,11 +24,11 @@ export default function Qwant({ handleActionClick }: QwantProps) {
         <h3 className="qwant__title">
           {t('homepage.widget.qwant.title', 'Qwant')}
         </h3>
-        <IconButton
+        <ButtonBeta
           className="qwant__header-button"
           aria-label={t('homepage.widget.qwant.open', 'Ouvrir')}
           onClick={handleActionClick}
-          icon={<SvgIconExternalLink />}
+          leftIcon={<SvgIconExternalLink />}
           variant="ghost"
           color="tertiary"
         />
@@ -64,12 +64,12 @@ export default function Qwant({ handleActionClick }: QwantProps) {
                 {...register('q')}
               />
               <input type="hidden" name="l" value="fr" />
-              <IconButton
-                aria-label={t('search')}
+              <ButtonBeta
+                leftIcon={<IconSearch />}
                 type="submit"
-                color="primary"
-                icon={<IconSearch />}
+                aria-label={t('search')}
                 variant="filled"
+                color="secondary"
               />
             </FormControl>
           </form>
