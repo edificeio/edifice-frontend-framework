@@ -61,7 +61,7 @@
     max-width: 100%;
     width: 208px;
 
-    &-open {
+    &--open {
       border-color: var(--color-primary-default);
       background: var(--color-primary-pale);
     }
@@ -72,6 +72,11 @@
     min-width: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  &__school-selector-icon {
+    width: var(--primitive-spacer-16);
+    min-width: 0;
   }
 
   &__search {
