@@ -2,13 +2,7 @@ import illuGenerationHdf from '@edifice.io/bootstrap/dist/images/homepage/illu-g
 import clsx from 'clsx';
 import { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ButtonBeta,
-  FormControl,
-  IconButton,
-  Image,
-  Input,
-} from '../../../../components';
+import { ButtonBeta, FormControl, Image, Input } from '../../../../components';
 import { IconClose } from '../../../icons/components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
@@ -54,10 +48,10 @@ export default function GenerationHdf({
         <h3 className="generation-hdf__title">
           {t('homepage.widget.generation-hdf.title', 'Génération HDF')}
         </h3>
-        <IconButton
+        <ButtonBeta
           aria-label={t('homepage.widget.generation-hdf.open', 'Ouvrir')}
           onClick={handleActionClick}
-          icon={<SvgIconExternalLink />}
+          leftIcon={<SvgIconExternalLink />}
           variant="ghost"
           color="tertiary"
         />
@@ -126,14 +120,14 @@ export default function GenerationHdf({
                   noValidationIcon
                 />
                 {canClear && (
-                  <IconButton
+                  <ButtonBeta
                     type="button"
                     aria-label={t(
                       'homepage.widget.generation-hdf.clear',
                       'Effacer',
                     )}
                     onClick={onClear}
-                    icon={<IconClose />}
+                    leftIcon={<IconClose />}
                     variant="ghost"
                     color="tertiary"
                     className="generation-hdf__input-clear"
