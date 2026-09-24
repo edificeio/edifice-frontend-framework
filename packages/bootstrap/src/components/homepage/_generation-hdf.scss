@@ -96,7 +96,7 @@
 
     &--clearable {
       .form-control {
-        padding-right: 32px;
+        padding-right: var(--primitive-spacer-32);
       }
     }
   }
