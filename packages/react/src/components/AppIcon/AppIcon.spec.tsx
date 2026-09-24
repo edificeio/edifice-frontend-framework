@@ -50,15 +50,16 @@ describe('AppIcon', () => {
     expect(screen.getByText('C')).toBeInTheDocument();
   });
 
-  it('falls back to the sprite placeholder when the connector image fails and no name is available', () => {
-    const { container } = render(
-      <AppIcon app={{ ...connectorApp, displayName: '' }} />,
+  it('falls back to app.name for the letter when displayName is empty', () => {
+    render(
+      <AppIcon
+        app={{ ...connectorApp, displayName: '', name: 'Formulaire' }}
+      />,
     );
 
-    fireEvent.error(screen.getByAltText(''));
+    fireEvent.error(screen.getByAltText('Formulaire'));
 
-    expect(container.querySelector('.app-icon-letter')).not.toBeInTheDocument();
-    expect(container.querySelector('svg')).toBeInTheDocument();
+    expect(screen.getByText('F')).toBeInTheDocument();
   });
 
   it('retries loading the image when the icon prop changes after a failure', () => {

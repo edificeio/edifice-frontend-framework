@@ -103,9 +103,7 @@ const AppIcon = forwardRef(
           ? app.icon
           : 'placeholder';
     const displayName =
-      typeof app !== 'string' && app?.displayName !== undefined
-        ? app.displayName
-        : '';
+      typeof app !== 'string' ? app?.displayName || app?.name || '' : '';
     const code = app ? getIconCode(app) : '';
     const iconIsUrl = !!isIconUrl(icon);
     const isIconURL = iconIsUrl && !imageLoadFailed;
