@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
+  ButtonBeta,
   Dropdown,
   FormControl,
-  IconButton,
   Image,
   Input,
 } from '../../../../components';
@@ -51,11 +51,11 @@ export default function Universalis({
         <h3 className="universalis__title">
           {t('homepage.widget.universalis.title', 'Universalis Éducation')}
         </h3>
-        <IconButton
+        <ButtonBeta
           className="universalis__header-button"
           aria-label={t('homepage.widget.universalis.open', 'Ouvrir')}
           onClick={handleActionClick}
-          icon={<SvgIconExternalLink />}
+          leftIcon={<SvgIconExternalLink />}
           variant="ghost"
           color="tertiary"
         />
@@ -137,12 +137,12 @@ export default function Universalis({
               />
               <input type="hidden" name="r" value={UNIVERSALIS_ENGINE_PARAM} />
               <input type="hidden" name="uai" value={selectedSchool?.UAI} />
-              <IconButton
-                aria-label={searchLabel}
+              <ButtonBeta
+                leftIcon={<IconSearch />}
                 type="submit"
-                color="primary"
-                icon={<IconSearch />}
+                aria-label={searchLabel}
                 variant="filled"
+                color="secondary"
                 disabled={!hasUai}
               />
             </FormControl>
