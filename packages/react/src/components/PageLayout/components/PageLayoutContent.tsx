@@ -2,7 +2,7 @@ import { type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
 import clsx from 'clsx';
 
-import { useBackground } from 'src/hooks';
+import { useBackground } from '../../../hooks';
 import { usePageLayout } from '../PageLayoutContext';
 
 export interface PageLayoutContentProps extends ComponentPropsWithoutRef<'main'> {

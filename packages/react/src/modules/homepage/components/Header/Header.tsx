@@ -203,7 +203,12 @@ const Header = ({
             >
               <PopoverBody>
                 <a
-                  href="/timeline/customize"
+                  href={
+                    '/timeline/customize?callback=' +
+                    encodeURIComponent(
+                      `${window.location.pathname}${window.location.search}`,
+                    )
+                  }
                   className="nav-link customize d-flex align-items-center gap-8"
                   data-testid="header-customize-button"
                 >
