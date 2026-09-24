@@ -279,6 +279,10 @@ i18n.use(initReactI18next).init({
         'homepage.notifications.options.label': 'Options de la notification',
         'homepage.notifications.options.report': 'Signaler',
         'homepage.notifications.options.delete': 'Supprimer',
+        'homepage.notifications.options.delete.success':
+          'La notification a bien été supprimée de votre fil',
+        'homepage.notifications.options.delete.error':
+          'Erreur lors de la suppression de la notification',
         'homepage.notifications.report-modal.title':
           'Signaler une notification',
         'homepage.notifications.report-modal.body':

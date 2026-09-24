@@ -8,6 +8,7 @@ import {
 
 import clsx from 'clsx';
 
+import { useToast } from 'src/hooks';
 import PageLayoutBreadcrumb from './components/PageLayoutBreadcrumb';
 import PageLayoutContent from './components/PageLayoutContent';
 import PageLayoutHeader from './components/PageLayoutHeader';
@@ -16,8 +17,8 @@ import PageLayoutOverlay from './components/PageLayoutOverlay';
 import PageLayoutSidebarLeft from './components/PageLayoutSidebarLeft';
 import PageLayoutSidebarRight from './components/PageLayoutSidebarRight';
 import {
-  PageLayoutContext,
   type NoPaddingConfig,
+  PageLayoutContext,
   type PageLayoutScrollMode,
   type PageLayoutVariant,
 } from './PageLayoutContext';
@@ -107,6 +108,8 @@ const Root = ({
     () => ({ variant, scrollMode, noPadding }),
     [variant, scrollMode, noPadding],
   );
+  const toast = useToast();
+  const renderToaster = toast.renderToaster();
 
   const {
     hasLeftSidebar,
@@ -156,6 +159,7 @@ const Root = ({
       </div>
 
       {helpZone}
+      {renderToaster}
     </PageLayoutContext.Provider>
   );
 };
