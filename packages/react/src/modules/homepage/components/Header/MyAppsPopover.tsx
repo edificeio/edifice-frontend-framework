@@ -14,10 +14,10 @@ export const MyAppsPopoverFooter = () => {
   return (
     <a
       href="/welcome"
-      className="link"
+      className="btn-beta btn-beta-tertiary btn-beta--ghost btn-beta--small"
       data-testid="header-my-apps-popover-more"
     >
-      {t('plus')}
+      <span>{t('homepage.header.myapps.seeMore')}</span>
     </a>
   );
 };
@@ -39,10 +39,7 @@ export const MyAppsPopoverBody = ({
       <Flex direction="column" align="center" gap="8">
         <img src={illuEmptyFavorite} alt="" width={50} height={50} />
         <span className="my-apps-popover-empty-text text-center">
-          {t(
-            'homepage.header.myapps.empty',
-            'Ajoutez et retrouvez ici vos apps favorites !',
-          )}
+          {t('homepage.header.myapps.empty')}
         </span>
       </Flex>
     );
