@@ -75,7 +75,8 @@ const Input = forwardRef(
       showCounter = false,
       autoComplete = 'off',
       clearable = false,
-      noValidationIcon: _noValidationIcon,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      noValidationIcon,
       ...restProps
     }: InputProps,
     forwardedRef: Ref<HTMLInputElement>,

@@ -49,7 +49,7 @@ const LinkPill = ({
   illustrationType = 'icon',
   illustrationPosition = 'left',
   className,
-  ...rest
+  ...restProps
 }: LinkPillProps) => {
   const illustrationNode =
     illustrationType === 'icon' ? (
@@ -82,7 +82,7 @@ const LinkPill = ({
         `link-pill--illustration-${illustrationPosition}`,
         className,
       )}
-      {...rest}
+      {...restProps}
     >
       {illustrationPosition === 'left' ? (
         <>
