@@ -52,7 +52,6 @@ function setup({
   dataProduct,
   onNotificationsClick,
   bookmarkedApps = [],
-  isAppsHovered = false,
   isDesktop = true,
 }: {
   messages?: number;
@@ -63,7 +62,6 @@ function setup({
   dataProduct?: string;
   onNotificationsClick?: () => void;
   bookmarkedApps?: unknown[];
-  isAppsHovered?: boolean;
   isDesktop?: boolean;
 } = {}) {
   useConversation.mockReturnValue({ messages });
@@ -80,8 +78,6 @@ function setup({
     communitiesWorkflow,
     conversationWorflow,
     bookmarkedApps,
-    appsRef: { current: null },
-    isAppsHovered,
   });
 
   return render(
@@ -263,22 +259,23 @@ describe('homepage Header', () => {
   });
 
   describe('my apps popover', () => {
-    it('opens when hovered on desktop', () => {
-      setup({ isDesktop: true, isAppsHovered: true });
+    it('opens when hovered on desktop', async () => {
+      const { user } = setup({ isDesktop: true });
+      const trigger = screen.getByTestId('header-my-apps-trigger');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
 
-      expect(screen.getByTestId('header-my-apps-trigger')).toHaveAttribute(
-        'aria-expanded',
-        'true',
-      );
+      await user.hover(trigger);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
     });
 
-    it('does not open on hover on mobile/tablet', () => {
-      setup({ isDesktop: false, isAppsHovered: true });
+    it('does not open on hover on mobile/tablet', async () => {
+      const { user } = setup({ isDesktop: false });
+      const trigger = screen.getByTestId('header-my-apps-trigger');
 
-      expect(screen.getByTestId('header-my-apps-trigger')).toHaveAttribute(
-        'aria-expanded',
-        'false',
-      );
+      await user.hover(trigger);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
 
     it('opens on click on mobile/tablet, without navigating', () => {
@@ -303,13 +300,13 @@ describe('homepage Header', () => {
       expect(dispatched).toBe(true); // preventDefault() was not called
     });
 
-    it('closes when clicking outside, on mobile/tablet', () => {
+    it('closes when clicking outside, on mobile/tablet', async () => {
       setup({ isDesktop: false });
       const trigger = screen.getByTestId('header-my-apps-trigger');
       fireEvent.click(screen.getByTestId('header-my-apps-button'));
       expect(trigger).toHaveAttribute('aria-expanded', 'true');
 
-      fireEvent.mouseDown(document.body);
+      fireEvent.pointerDown(document.body);
 
       expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
