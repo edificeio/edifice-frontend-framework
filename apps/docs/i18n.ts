@@ -355,6 +355,14 @@ i18n.use(initReactI18next).init({
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
         'portal.header.navigation.classMembers': 'La classe',
         'portal.header.navigation.myapps': 'Mes applis',
+        'navbar.customize': 'Personnalisation',
+        'navbar.applications': 'Mes applis',
+        'navbar.myaccount': 'Mon compte',
+        'navbar.community': 'Communauté',
+        'navbar.disconnect': 'Déconnexion',
+        'homepage.header.myapps.empty':
+          'Ajoutez et retrouvez ici vos apps favorites !',
+        'homepage.header.myapps.seeMore': 'Voir plus',
 
         //------------------------------------------------------
         //------------------ Help Zone -----------------
