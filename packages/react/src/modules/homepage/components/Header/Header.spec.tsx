@@ -1,4 +1,4 @@
-import { render, screen } from '~/setup';
+import { fireEvent, render, screen } from '~/setup';
 
 import Header from './Header';
 
@@ -10,20 +10,28 @@ vi.mock('../Notifications/hooks/useNotificationList', () => ({
   useHasNotificationToday: useHasNotificationTodayMock,
 }));
 
-const { useConversation, useHasWorkflow, useUser, useHeader, useEdificeTheme } =
-  vi.hoisted(() => ({
-    useConversation: vi.fn(),
-    useHasWorkflow: vi.fn(),
-    useUser: vi.fn(),
-    useHeader: vi.fn(),
-    useEdificeTheme: vi.fn(),
-  }));
+const {
+  useConversation,
+  useHasWorkflow,
+  useUser,
+  useHeader,
+  useEdificeTheme,
+  useBreakpoint,
+} = vi.hoisted(() => ({
+  useConversation: vi.fn(),
+  useHasWorkflow: vi.fn(),
+  useUser: vi.fn(),
+  useHeader: vi.fn(),
+  useEdificeTheme: vi.fn(),
+  useBreakpoint: vi.fn(),
+}));
 
 vi.mock('../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../hooks')>()),
   useConversation,
   useHasWorkflow,
   useUser,
+  useBreakpoint,
 }));
 
 vi.mock('../../../../components/Layout/hooks/useHeader', () => ({
@@ -43,6 +51,9 @@ function setup({
   theme = { logoutCallback: '/portal' },
   dataProduct,
   onNotificationsClick,
+  bookmarkedApps = [],
+  isAppsHovered = false,
+  isDesktop = true,
 }: {
   messages?: number;
   workflows?: Record<string, boolean>;
@@ -51,6 +62,9 @@ function setup({
   theme?: { logoutCallback?: string };
   dataProduct?: string;
   onNotificationsClick?: () => void;
+  bookmarkedApps?: unknown[];
+  isAppsHovered?: boolean;
+  isDesktop?: boolean;
 } = {}) {
   useConversation.mockReturnValue({ messages });
   useUser.mockReturnValue({
@@ -59,11 +73,15 @@ function setup({
   });
   useHasWorkflow.mockImplementation((workflow: string) => workflows[workflow]);
   useEdificeTheme.mockReturnValue({ theme });
+  useBreakpoint.mockReturnValue({ md: isDesktop });
   useHeader.mockReturnValue({
     userAvatar: '/avatar.png',
     userName: 'Pascal',
     communitiesWorkflow,
     conversationWorflow,
+    bookmarkedApps,
+    appsRef: { current: null },
+    isAppsHovered,
   });
 
   return render(
@@ -241,6 +259,59 @@ describe('homepage Header', () => {
       await user.hover(item);
 
       expect(item).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
+  describe('my apps popover', () => {
+    it('opens when hovered on desktop', () => {
+      setup({ isDesktop: true, isAppsHovered: true });
+
+      expect(screen.getByTestId('header-my-apps-trigger')).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+    });
+
+    it('does not open on hover on mobile/tablet', () => {
+      setup({ isDesktop: false, isAppsHovered: true });
+
+      expect(screen.getByTestId('header-my-apps-trigger')).toHaveAttribute(
+        'aria-expanded',
+        'false',
+      );
+    });
+
+    it('opens on click on mobile/tablet, without navigating', () => {
+      setup({ isDesktop: false });
+      const link = screen.getByTestId('header-my-apps-button');
+
+      const dispatched = fireEvent.click(link);
+
+      expect(dispatched).toBe(false); // preventDefault() was called
+      expect(screen.getByTestId('header-my-apps-trigger')).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+    });
+
+    it('navigates on click on desktop', () => {
+      setup({ isDesktop: true });
+      const link = screen.getByTestId('header-my-apps-button');
+
+      const dispatched = fireEvent.click(link);
+
+      expect(dispatched).toBe(true); // preventDefault() was not called
+    });
+
+    it('closes when clicking outside, on mobile/tablet', () => {
+      setup({ isDesktop: false });
+      const trigger = screen.getByTestId('header-my-apps-trigger');
+      fireEvent.click(screen.getByTestId('header-my-apps-button'));
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+      fireEvent.mouseDown(document.body);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
   });
 });
