@@ -55,10 +55,11 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
-  // `edifice-in-product` platform override — rollout flag for the new
-  // in-product help widget (`HelpZone`), replacing the legacy raw Zendesk
-  // widget launcher until the platform opts in (see `useUiOverride`).
-  const isEdificeInProductHelp = useUiOverride('edifice-in-product') === true;
+  // `global` platform override — rollout flag for the new in-product help
+  // widget (`HelpZone`), replacing the legacy raw Zendesk widget launcher
+  // until the platform opts in (see `useUiOverride`).
+  const isEdificeInProductHelp =
+    useUiOverride('global')?.variant === 'edifice-in-product';
   const { productOverride, background, isBackgroundImageOverridden } =
     useBackground();
   const { toggleOverlay } = useOverlay();

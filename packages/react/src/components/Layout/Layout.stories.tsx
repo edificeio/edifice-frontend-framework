@@ -93,7 +93,7 @@ export const HeaderV2: Story = {
 };
 
 /**
- * `theme-conf.js` registers `uiOverrides: { 'edifice-in-product': true }`
+ * `theme-conf.js` registers `uiOverrides: { global: 'edifice-in-product' }`
  * on the matching platform entry: `Layout` switches from the legacy raw
  * Zendesk widget (no visible custom UI) to the new `HelpZone` badge — same
  * `useUiOverride` rollout mechanism as `HeaderV2` above. `useZendeskGuide`
@@ -104,7 +104,7 @@ export const HelpZoneEdificeInProduct: Story = {
   parameters: {
     msw: {
       handlers: mockThemeConfWithUiOverrides({
-        'edifice-in-product': true,
+        global: 'edifice-in-product',
       }),
     },
   },

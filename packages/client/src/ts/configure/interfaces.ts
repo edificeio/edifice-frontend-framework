@@ -176,8 +176,8 @@ export interface IThemeConf {
   overriding: Array<IThemeConfOverriding>;
 }
 
-/** A UI override is a plain boolean flag, a variant name, or an object enriching a variant with a scoped theme. */
-export type UiOverride = boolean | string | { variant: string; theme?: string };
+/** A UI override is either a plain variant name, or an object enriching it with a scoped theme. */
+export type UiOverride = string | { variant: string; theme?: string };
 
 //-------------------------------------
 export interface IThemeConfOverriding {

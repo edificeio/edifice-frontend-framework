@@ -41,12 +41,4 @@ describe('useUiOverride', () => {
 
     expect(result.current).toEqual({ variant: 'v2', theme: 'crna' });
   });
-
-  it('passes through a boolean flag untouched', () => {
-    const { result } = renderHook(() => useUiOverride('edifice-in-product'), {
-      wrapper: themeWrapper({ 'edifice-in-product': true }),
-    });
-
-    expect(result.current).toBe(true);
-  });
 });
