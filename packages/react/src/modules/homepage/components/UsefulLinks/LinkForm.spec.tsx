@@ -13,7 +13,7 @@ describe('LinkForm', () => {
       />,
     );
 
-    const urlInput = screen.getByLabelText(/^Lien/);
+    const urlInput = screen.getByTestId('usefullinks-input-url');
     expect(urlInput).toHaveValue('');
     expect(urlInput).toHaveAttribute('placeholder', 'https://example.fr');
   });
@@ -29,7 +29,7 @@ describe('LinkForm', () => {
       />,
     );
 
-    const nameInput = screen.getByLabelText(/^Nom/);
+    const nameInput = screen.getByTestId('usefullinks-input-name');
     await user.type(nameInput, 'Lumni');
     expect(nameInput).toHaveValue('Lumni');
 
@@ -49,8 +49,8 @@ describe('LinkForm', () => {
       />,
     );
 
-    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
-    const urlInput = screen.getByLabelText(/^Lien/);
+    await user.type(screen.getByTestId('usefullinks-input-name'), 'Lumni');
+    const urlInput = screen.getByTestId('usefullinks-input-url');
     await user.clear(urlInput);
     await user.type(urlInput, 'lumni.fr');
 
@@ -59,7 +59,7 @@ describe('LinkForm', () => {
         "L'adresse doit être une URL valide (ex. https://exemple.fr)",
       ),
     ).toBeInTheDocument();
-    expect(screen.getByText('Enregistrer').closest('button')).toBeDisabled();
+    expect(screen.getByTestId('usefullinks-button-save')).toBeDisabled();
   });
 
   it('accepts an http:// URL', async () => {
@@ -73,12 +73,12 @@ describe('LinkForm', () => {
       />,
     );
 
-    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
-    const urlInput = screen.getByLabelText(/^Lien/);
+    await user.type(screen.getByTestId('usefullinks-input-name'), 'Lumni');
+    const urlInput = screen.getByTestId('usefullinks-input-url');
     await user.clear(urlInput);
     await user.type(urlInput, 'http://lumni.fr');
 
-    const save = screen.getByText('Enregistrer').closest('button')!;
+    const save = screen.getByTestId('usefullinks-button-save');
     await waitFor(() => expect(save).not.toBeDisabled());
   });
 
@@ -94,8 +94,10 @@ describe('LinkForm', () => {
       />,
     );
 
-    expect(screen.getByLabelText(/^Nom/)).toHaveValue('Lumni');
-    expect(screen.getByLabelText(/^Lien/)).toHaveValue('https://lumni.fr');
+    expect(screen.getByTestId('usefullinks-input-name')).toHaveValue('Lumni');
+    expect(screen.getByTestId('usefullinks-input-url')).toHaveValue(
+      'https://lumni.fr',
+    );
   });
 
   it('disables save until the form is dirty and valid', async () => {
@@ -109,12 +111,15 @@ describe('LinkForm', () => {
       />,
     );
 
-    const save = screen.getByText('Enregistrer').closest('button')!;
+    const save = screen.getByTestId('usefullinks-button-save');
     expect(save).toBeDisabled();
 
-    await user.type(screen.getByLabelText(/^Nom/), 'Lumni');
-    await user.clear(screen.getByLabelText(/^Lien/));
-    await user.type(screen.getByLabelText(/^Lien/), 'https://lumni.fr');
+    await user.type(screen.getByTestId('usefullinks-input-name'), 'Lumni');
+    await user.clear(screen.getByTestId('usefullinks-input-url'));
+    await user.type(
+      screen.getByTestId('usefullinks-input-url'),
+      'https://lumni.fr',
+    );
 
     await waitFor(() => expect(save).not.toBeDisabled());
   });
@@ -132,7 +137,7 @@ describe('LinkForm', () => {
       />,
     );
 
-    await user.click(screen.getByText('Annuler'));
+    await user.click(screen.getByTestId('usefullinks-button-cancel'));
 
     expect(onCancel).toHaveBeenCalledTimes(1);
     expect(onSubmit).not.toHaveBeenCalled();
@@ -150,13 +155,16 @@ describe('LinkForm', () => {
       />,
     );
 
-    await user.type(screen.getByLabelText(/^Nom/), '  Lumni  ');
-    await user.clear(screen.getByLabelText(/^Lien/));
+    await user.type(screen.getByTestId('usefullinks-input-name'), '  Lumni  ');
+    await user.clear(screen.getByTestId('usefullinks-input-url'));
     // No leading whitespace here: the URL pattern requires the field to
     // start with http(s):// to stay valid (and the save button enabled).
-    await user.type(screen.getByLabelText(/^Lien/), 'https://lumni.fr  ');
+    await user.type(
+      screen.getByTestId('usefullinks-input-url'),
+      'https://lumni.fr  ',
+    );
 
-    const save = screen.getByText('Enregistrer').closest('button')!;
+    const save = screen.getByTestId('usefullinks-button-save');
     await waitFor(() => expect(save).not.toBeDisabled());
     fireEvent.submit(document.getElementById('useful-link-form')!);
 

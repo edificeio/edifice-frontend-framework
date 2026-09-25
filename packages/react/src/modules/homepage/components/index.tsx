@@ -7,3 +7,4 @@ export * from './Notifications';
 export * from './SchoolSpace';
 export * from './UsefulLinks';
 export * from './UserSpace';
+export * from './WidgetsPersonalizationPanel';

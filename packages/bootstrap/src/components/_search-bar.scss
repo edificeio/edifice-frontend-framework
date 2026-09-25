@@ -1,4 +1,8 @@
-.searchbar-hide-native-clear::-webkit-search-cancel-button {
+// `::-webkit-search-cancel-button` only applies to the actual
+// `input[type="search"]` element — `searchbar-hide-native-clear` itself
+// lands on `Input`'s wrapper `<div>` (see components/_input.scss), so the
+// selector has to reach through to `.input__field`.
+.searchbar-hide-native-clear .input__field::-webkit-search-cancel-button {
   appearance: none !important;
   display: none !important;
 }

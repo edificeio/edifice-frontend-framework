@@ -9,9 +9,33 @@
   }
 
   &:focus-within {
+    // One continuous halo around the whole joined group, matching Input's
+    // own accent/radius (see components/_input.scss) instead of drawing it
+    // per child — a box-shadow on `.input`/`.btn-search` individually would
+    // still wrap each one's own box, showing as a doubled sliver of color
+    // right at the seam between them.
+
+    border-radius: var(--primitive-border-radius-lg);
+    box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+
+    .input {
+      box-shadow: none;
+    }
+
     .input-group-text,
     .btn-search {
-      border-color: var(--#{$prefix}secondary-300);
+      // Match Input's own focus border instead of the legacy
+      // `--#{$prefix}secondary-300`, which isn't related to it and can
+      // resolve to a clashing color per theme (e.g. an orange input focus
+      // ring next to a blue search button).
+
+      border-color: var(--color-buttons-primary-default);
+    }
+
+    // Only `.btn-search` gets a background fill on focus — `.input-group-text`
+    // (e.g. Combobox's leading label) stays transparent, matching prod.
+    .btn-search {
+      background-color: var(--color-buttons-primary-pale);
     }
   }
 
@@ -39,6 +63,15 @@
   // renders a bare `.form-control`, so `SearchBar` (which composes `Input`
   // with `.btn-search` inside `.input-group`) needs its own selectors here.
   .input {
+    // Mirrors Bootstrap's own `.input-group > .form-control` sizing rule —
+    // without it, `.input`'s own `width: 100%` (see components/_input.scss)
+    // wins as flex-basis and leaves no room for `.btn-search`, which wraps
+    // to a new line.
+
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+
     & + .btn-search {
       padding: $spacer-8 $spacer-12;
     }
@@ -49,10 +82,20 @@
       }
     }
 
-    &:not(:focus-within, :has(.input-field:placeholder-shown)) {
+    // `.input__field` (BEM), not `.form-control`'s `.input-field` typo this
+    // was copied from — otherwise `:has()` never matches, the "and filled"
+    // condition silently drops out, and `.btn-search`/`.input-group-text`
+    // get the filled border color whenever unfocused (even empty),
+    // clashing with `.input`'s own lighter default border in that case.
+    &:not(:focus-within, :has(.input__field:placeholder-shown)) {
       & + .input-group-text,
       & + .btn-search {
-        border-color: var(--#{$prefix}input-filled-border-color);
+        // Match `.input`'s own filled-state indicator (see
+        // `--primitive-grey-500` in components/_input.scss) instead of the
+        // legacy `--#{$prefix}input-filled-border-color` — a different
+        // token that isn't guaranteed to resolve to the same color.
+
+        border-color: var(--primitive-grey-500);
       }
     }
   }
