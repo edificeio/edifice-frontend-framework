@@ -13,15 +13,14 @@ import {
 } from '../../../../components';
 import {
   useBreakpoint,
-  useClickOutside,
   useConversation,
   useHasWorkflow,
-  useHover,
   useUser,
 } from '../../../../hooks';
 
-import { useId, useState, type MouseEvent } from 'react';
+import { useId, type MouseEvent } from 'react';
 import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
+import { useSafeHoverPopover } from './useSafeHoverPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
 import { NavItem } from '../../../../components/Layout/components/NavItem';
 import { NavLink } from '../../../../components/Layout/components/NavLink';
@@ -67,18 +66,11 @@ const Header = ({
     communitiesWorkflow,
     conversationWorflow,
     bookmarkedApps,
-    appsRef,
-    isAppsHovered,
   } = useHeader({ user, avatar });
   const { theme } = useEdificeTheme();
 
   const hasMessages = messages > 0;
   const hasNotificationToday = useHasNotificationToday();
-
-  /**
-   * useHover hook
-   */
-  const [userRef, isUserHovered] = useHover<HTMLLIElement>();
 
   /**
    * IDs for Popover Component
@@ -89,17 +81,22 @@ const Header = ({
   /**
    * "Mes applis" popover: opens on hover on desktop, on click on mobile/tablet
    * (below the 'tablet' breakpoint, same threshold as this header's own responsive
-   * layout), and closes on an outside click/tap in both cases.
+   * layout), and closes on an outside click/tap in both cases. `safePolygon()`
+   * keeps it open while the pointer moves diagonally from the trigger towards
+   * the (wider) popover instead of closing as soon as it leaves the trigger.
    */
   const { md: isDesktop } = useBreakpoint();
-  const [isAppsClicked, setIsAppsClicked] = useState(false);
-  const isAppsOpen = isAppsClicked || (isDesktop && isAppsHovered);
-  useClickOutside(() => setIsAppsClicked(false), undefined, [appsRef?.current]);
+  const myApps = useSafeHoverPopover({
+    hoverEnabled: isDesktop,
+    clickEnabled: !isDesktop,
+  });
+  const userMenu = useSafeHoverPopover();
 
+  // On mobile/tablet, the trigger only opens the popover — it must not also
+  // navigate to /welcome (desktop keeps navigating on click, as before).
   const handleMyAppsClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!isDesktop) {
       event.preventDefault();
-      setIsAppsClicked((clicked) => !clicked);
     }
   };
 
@@ -167,11 +164,12 @@ const Header = ({
           )}
           <NavItem
             className="position-relative"
-            ref={appsRef}
+            ref={myApps.setReference}
             id={popoverAppsId}
             aria-haspopup="true"
-            aria-expanded={isAppsOpen}
+            aria-expanded={myApps.open}
             data-testid="header-my-apps-trigger"
+            {...myApps.getReferenceProps()}
           >
             <NavLink
               link="/welcome"
@@ -182,9 +180,11 @@ const Header = ({
               <IconMyAppsBeta />
             </NavLink>
             <Popover
+              ref={myApps.setFloating}
               className="my-apps-popover"
               id={popoverAppsId}
-              isVisible={isAppsOpen}
+              isVisible={myApps.open}
+              {...myApps.getFloatingProps()}
             >
               <PopoverBody>
                 <MyAppsPopoverBody bookmarkedApps={bookmarkedApps} />
@@ -223,11 +223,12 @@ const Header = ({
           </NavItem>
           <NavItem
             className="position-relative"
-            ref={userRef}
+            ref={userMenu.setReference}
             id={popoverUserId}
             aria-haspopup="true"
-            aria-expanded={isUserHovered}
+            aria-expanded={userMenu.open}
             data-testid="header-user-menu-button"
+            {...userMenu.getReferenceProps()}
           >
             <NavLink
               link="/userbook/mon-compte"
@@ -245,10 +246,12 @@ const Header = ({
               />
             </NavLink>
             <Popover
+              ref={userMenu.setFloating}
               align="end"
               className="widget"
               id={popoverUserId}
-              isVisible={isUserHovered}
+              isVisible={userMenu.open}
+              {...userMenu.getFloatingProps()}
             >
               <PopoverBody>
                 <a
