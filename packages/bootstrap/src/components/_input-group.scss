@@ -9,9 +9,28 @@
   }
 
   &:focus-within {
+    // One continuous halo around the whole joined group, matching Input's
+    // own accent/radius (see components/_input.scss) instead of drawing it
+    // per child — a box-shadow on `.input`/`.btn-search` individually would
+    // still wrap each one's own box, showing as a doubled sliver of color
+    // right at the seam between them.
+
+    border-radius: var(--primitive-border-radius-lg);
+    box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+
+    .input {
+      box-shadow: none;
+    }
+
     .input-group-text,
     .btn-search {
-      border-color: var(--#{$prefix}secondary-300);
+      // Match Input's own focus border/background instead of the legacy
+      // `--#{$prefix}secondary-300`, which isn't related to it and can
+      // resolve to a clashing color per theme (e.g. an orange input focus
+      // ring next to a blue search button).
+
+      border-color: var(--color-buttons-primary-default);
+      background-color: var(--color-buttons-primary-pale);
     }
   }
 
@@ -58,7 +77,12 @@
       }
     }
 
-    &:not(:focus-within, :has(.input-field:placeholder-shown)) {
+    // `.input__field` (BEM), not `.form-control`'s `.input-field` typo this
+    // was copied from — otherwise `:has()` never matches, the "and filled"
+    // condition silently drops out, and `.btn-search`/`.input-group-text`
+    // get `--input-filled-border-color` whenever unfocused (even empty),
+    // clashing with `.input`'s own lighter default border in that case.
+    &:not(:focus-within, :has(.input__field:placeholder-shown)) {
       & + .input-group-text,
       & + .btn-search {
         border-color: var(--#{$prefix}input-filled-border-color);
