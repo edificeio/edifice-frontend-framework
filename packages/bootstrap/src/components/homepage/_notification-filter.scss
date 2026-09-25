@@ -13,6 +13,16 @@
   padding: var(--primitive-spacer-4) var(--primitive-spacer-12);
 }
 
+.notification-filter-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-spacer-8);
+  border-radius: var(--border-radius-md, 8px);
+  border: 1px solid var(--color-primary-default, #ffd357);
+  background: var(--color-primary-feather, #fefaec);
+  accent-color: var(--color-primary-default, #ffd357);
+}
+
 .notification-filter-count {
   font-size: var(--primitive-font-size-small);
   color: var(--primitive-text-color-subtext);
