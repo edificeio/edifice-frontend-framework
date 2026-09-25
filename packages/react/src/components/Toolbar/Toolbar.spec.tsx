@@ -9,21 +9,6 @@ function getButtons(container: HTMLElement) {
 }
 
 describe('Toolbar', () => {
-  beforeAll(() => {
-    // Toolbar unconditionally calls useBreakpoint, which relies on
-    // window.matchMedia, absent from jsdom.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   it('renders a divider as a plain, non-interactive element', () => {
     const items: ToolbarItem[] = [{ type: 'divider' }];
     const { container } = render(<Toolbar items={items} />);

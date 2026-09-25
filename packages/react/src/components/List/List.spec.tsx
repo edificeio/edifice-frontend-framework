@@ -20,20 +20,6 @@ function renderNode(node: Item, checkbox?: JSX.Element) {
 }
 
 describe('List', () => {
-  beforeAll(() => {
-    // useBreakpoint relies on window.matchMedia, absent from jsdom.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   it('renders every item via renderNode, without a header toolbar by default', () => {
     render(<List data={data} renderNode={renderNode} />);
 

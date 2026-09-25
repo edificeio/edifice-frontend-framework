@@ -53,20 +53,6 @@ const resetButton = () => screen.getByRole('button', { name: 'Reset' });
 const saveButton = () => screen.queryByRole('button', { name: 'Save' });
 
 describe('AudioRecorder', () => {
-  beforeAll(() => {
-    // <Toolbar> calls useBreakpoint, which needs window.matchMedia.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   describe('naming the record', () => {
     it('prefills a name built from the current date', () => {
       setup();

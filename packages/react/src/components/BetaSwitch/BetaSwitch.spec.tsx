@@ -2,20 +2,6 @@ import { render, screen } from '~/setup';
 import { BetaSwitch } from './BetaSwitch';
 
 describe('BetaSwitch', () => {
-  beforeAll(() => {
-    // useBreakpoint relies on window.matchMedia, absent from jsdom.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   it('renders the opt-out call-to-action button', () => {
     render(<BetaSwitch />);
 
