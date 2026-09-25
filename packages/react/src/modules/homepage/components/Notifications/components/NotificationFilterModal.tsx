@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AppIcon, ButtonBeta, Checkbox, Flex, Modal } from '../../../../..';
 import { IconCheck } from '../../../../icons/components';
@@ -26,7 +26,7 @@ const NotificationFilterModal = ({
   onCancel,
   onApply,
 }: NotificationFilterModalProps) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selected, setSelected] = useState<string[]>(appliedTypes);
 
   const toggleType = (type: string) => {
@@ -40,6 +40,22 @@ const NotificationFilterModal = ({
   const toggleAll = () => {
     setSelected(selected.length === allTypes.length ? [] : allTypes);
   };
+
+  const allTypesSorted = useMemo(
+    () =>
+      allTypes
+        .map((type) => {
+          const [appCode, appI18nKey] = getAppCodeAndI18nKey(type);
+          const label = t(appI18nKey, { defaultValue: appCode });
+          return { type, appCode, appI18nKey, label };
+        })
+        .sort((a, b) =>
+          a.label.localeCompare(b.label, i18n.language, {
+            sensitivity: 'base',
+          }),
+        ),
+    [allTypes, t, i18n.language],
+  );
 
   return (
     <Modal
@@ -83,8 +99,7 @@ const NotificationFilterModal = ({
           </span>
         </Flex>
         <Flex wrap="wrap" gap="8" className="notification-filter-options">
-          {allTypes.map((type) => {
-            const [appCode, appI18nKey] = getAppCodeAndI18nKey(type);
+          {allTypesSorted.map(({ type, label, appCode }) => {
             const checked = selected.includes(type);
             return (
               <label
@@ -94,7 +109,7 @@ const NotificationFilterModal = ({
                 })}
               >
                 <AppIcon app={appCode} size="24" iconFit="contain" />
-                <span>{t(appI18nKey, { defaultValue: appCode })}</span>
+                <span>{label}</span>
                 <input
                   type="checkbox"
                   className="form-check-input"
