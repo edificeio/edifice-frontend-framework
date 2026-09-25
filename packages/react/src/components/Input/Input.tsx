@@ -1,4 +1,4 @@
-import { forwardRef, Ref, useRef, useState } from 'react';
+import { forwardRef, Ref, useLayoutEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
@@ -86,6 +86,17 @@ const Input = forwardRef(
     const [currentLength, setCurrentLength] = useState(
       restProps.defaultValue?.toString().length || 0,
     );
+
+    // Uncontrolled consumers (e.g. react-hook-form's `register()`) set the
+    // field's initial value imperatively through `ref`, bypassing the
+    // `defaultValue` prop above and React's `onChange` — without this, the
+    // counter stays stuck at 0 until the user types.
+    useLayoutEffect(() => {
+      if (inputRef.current) {
+        setCurrentLength(inputRef.current.value.length);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const setRefs = (node: HTMLInputElement | null) => {
       inputRef.current = node;
