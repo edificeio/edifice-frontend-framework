@@ -8,16 +8,20 @@ import {
   LogoBeta,
   Popover,
   PopoverBody,
+  PopoverFooter,
   VisuallyHidden,
 } from '../../../../components';
 import {
+  useBreakpoint,
+  useClickOutside,
   useConversation,
   useHasWorkflow,
   useHover,
   useUser,
 } from '../../../../hooks';
 
-import { useId } from 'react';
+import { useId, useState, type MouseEvent } from 'react';
+import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
 import { NavItem } from '../../../../components/Layout/components/NavItem';
 import { NavLink } from '../../../../components/Layout/components/NavLink';
@@ -57,8 +61,15 @@ const Header = ({
 
   const classes = clsx('header-beta d-print-none no-2d no-1d');
 
-  const { userAvatar, userName, communitiesWorkflow, conversationWorflow } =
-    useHeader({ user, avatar });
+  const {
+    userAvatar,
+    userName,
+    communitiesWorkflow,
+    conversationWorflow,
+    bookmarkedApps,
+    appsRef,
+    isAppsHovered,
+  } = useHeader({ user, avatar });
   const { theme } = useEdificeTheme();
 
   const hasMessages = messages > 0;
@@ -73,6 +84,24 @@ const Header = ({
    * IDs for Popover Component
    */
   const popoverUserId = useId();
+  const popoverAppsId = useId();
+
+  /**
+   * "Mes applis" popover: opens on hover on desktop, on click on mobile/tablet
+   * (below the 'tablet' breakpoint, same threshold as this header's own responsive
+   * layout), and closes on an outside click/tap in both cases.
+   */
+  const { md: isDesktop } = useBreakpoint();
+  const [isAppsClicked, setIsAppsClicked] = useState(false);
+  const isAppsOpen = isAppsClicked || (isDesktop && isAppsHovered);
+  useClickOutside(() => setIsAppsClicked(false), undefined, [appsRef?.current]);
+
+  const handleMyAppsClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!isDesktop) {
+      event.preventDefault();
+      setIsAppsClicked((clicked) => !clicked);
+    }
+  };
 
   const handleNotificationsClick = () => {
     onNotificationsClick?.();
@@ -136,14 +165,34 @@ const Header = ({
               </a>
             </NavItem>
           )}
-          <NavItem>
+          <NavItem
+            className="position-relative"
+            ref={appsRef}
+            id={popoverAppsId}
+            aria-haspopup="true"
+            aria-expanded={isAppsOpen}
+            data-testid="header-my-apps-trigger"
+          >
             <NavLink
               link="/welcome"
               translate={t('navbar.applications')}
               data-testid="header-my-apps-button"
+              onClick={handleMyAppsClick}
             >
               <IconMyAppsBeta />
             </NavLink>
+            <Popover
+              className="my-apps-popover"
+              id={popoverAppsId}
+              isVisible={isAppsOpen}
+            >
+              <PopoverBody>
+                <MyAppsPopoverBody bookmarkedApps={bookmarkedApps} />
+              </PopoverBody>
+              <PopoverFooter>
+                <MyAppsPopoverFooter />
+              </PopoverFooter>
+            </Popover>
           </NavItem>
           <NavItem className="position-relative">
             <ButtonBeta

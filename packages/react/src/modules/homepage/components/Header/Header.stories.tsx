@@ -100,3 +100,28 @@ export const WithMessages: Story = {
     },
   },
 };
+
+/**
+ * Header with favorite applications bookmarked (App1 and App2, from the
+ * default `userInfo` fixture) — hover the "Mes applis" icon to open the
+ * popover. The `Default` story above already covers the empty state, since
+ * the global `userbook` handler bookmarks no app.
+ */
+export const WithBookmarkedApps: Story = {
+  parameters: {
+    msw: {
+      // Use the keyed object form (see `WithMessages` above) so the global
+      // `auth`/`conversation` handlers, which the session/workflows rely on,
+      // stay in place.
+      handlers: {
+        userbook: [
+          http.get('/userbook/preference/apps', () =>
+            HttpResponse.json({
+              preference: '{"bookmarks":["App1","App2"],"applications":[]}',
+            }),
+          ),
+        ],
+      },
+    },
+  },
+};
