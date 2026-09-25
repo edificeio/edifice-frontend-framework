@@ -7,7 +7,13 @@
   &.input-group {
     input,
     > .form-control,
-    > .input {
+    // Not `> .input`: Input's own bordered box sits two levels deep here
+    // (inside the pre-existing `.d-flex` layout wrapper used for
+    // `renderSelectedItems`), not as a direct child — unlike `.form-control`
+    // before it, the actual `<input>` tag no longer carries the visible
+    // border/radius itself (see components/_input.scss), so this has to
+    // reach the wrapper regardless of nesting depth.
+    .input {
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
