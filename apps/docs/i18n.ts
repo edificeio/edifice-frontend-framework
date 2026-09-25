@@ -321,8 +321,7 @@ i18n.use(initReactI18next).init({
           'Gardez à portée de main les sites web que vous utilisez souvent !',
         'homepage.usefulLinks.modal.add': 'Ajouter un lien',
         'homepage.usefulLinks.modal.title': 'Gérer les liens utiles',
-        'homepage.usefulLinks.modal.empty.title':
-          'Pas encore de liens ajoutés',
+        'homepage.usefulLinks.modal.empty.title': 'Pas encore de liens ajoutés',
         'homepage.usefulLinks.modal.empty.text':
           'Gardez à portée de main les sites web que vous utilisez souvent !',
         'homepage.usefulLinks.modal.table.name': 'Nom',
@@ -341,22 +340,28 @@ i18n.use(initReactI18next).init({
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
         //------------------ WidgetsPersonalizationPanel ----------
-        'homepage.widgetsPersonalization.title':
-          'Personnalisation des widgets',
+        'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
           "Choisissez les widgets visibles sur votre page d'accueil",
         'homepage.widgetsPersonalization.empty':
           'Aucun widget disponible pour votre établissement.',
         'homepage.widgetsPersonalization.locked':
           'Imposé par votre établissement',
-        'homepage.widgetsPersonalization.toggle':
-          'Activer le widget [[label]]',
+        'homepage.widgetsPersonalization.toggle': 'Activer le widget [[label]]',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
         'portal.header.navigation.classMembers': 'La classe',
         'portal.header.navigation.myapps': 'Mes applis',
+        'navbar.customize': 'Personnalisation',
+        'navbar.applications': 'Mes applis',
+        'navbar.myaccount': 'Mon compte',
+        'navbar.community': 'Communauté',
+        'navbar.disconnect': 'Déconnexion',
+        'homepage.header.myapps.empty':
+          'Ajoutez et retrouvez ici vos apps favorites !',
+        'homepage.header.myapps.seeMore': 'Voir plus',
 
         //------------------------------------------------------
         //------------------ Help Zone -----------------
