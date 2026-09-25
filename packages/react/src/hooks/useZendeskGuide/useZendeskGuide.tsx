@@ -271,8 +271,7 @@ export default function useZendeskGuide(
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
               color: {
-                theme: zendeskGuideConfig.color || '#ffc400',
-                header: headerColor,
+                theme: headerColor || zendeskGuideConfig.color || '#ffc400',
               },
               zIndex: 3,
               launcher: {
