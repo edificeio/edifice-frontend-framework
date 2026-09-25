@@ -23,19 +23,20 @@ describe('UsefulLinksContainer', () => {
     const { user } = render(<UsefulLinksContainer />);
 
     const manageModal = await openManageModal(user);
-    await user.click(
-      within(manageModal).getByRole('button', { name: 'Ajouter un lien' }),
-    );
+    await user.click(within(manageModal).getByTestId('usefullinks-button-add'));
 
     await screen.findByRole('dialog', {
       name: 'Ajouter un lien',
     });
-    await user.type(screen.getByLabelText(/^Nom/), 'Nouveau lien E2E');
-    const urlInput = screen.getByLabelText(/^Lien/);
+    await user.type(
+      screen.getByTestId('usefullinks-input-name'),
+      'Nouveau lien E2E',
+    );
+    const urlInput = screen.getByTestId('usefullinks-input-url');
     await user.clear(urlInput);
     await user.type(urlInput, 'https://nouveau-lien.example.com');
 
-    const save = screen.getByText('Enregistrer').closest('button')!;
+    const save = screen.getByTestId('usefullinks-button-save');
     await waitFor(() => expect(save).not.toBeDisabled());
     await user.click(save);
 
@@ -54,16 +55,18 @@ describe('UsefulLinksContainer', () => {
     const { user } = render(<UsefulLinksContainer />);
 
     const manageModal = await openManageModal(user);
-    await user.click(within(manageModal).getByLabelText('Modifier ONISEP'));
+    await user.click(
+      within(manageModal).getByTestId('usefullinks-button-edit-3'),
+    );
 
     await screen.findByRole('dialog', {
       name: 'Modifier un lien',
     });
-    const nameInput = screen.getByLabelText(/^Nom/);
+    const nameInput = screen.getByTestId('usefullinks-input-name');
     await user.clear(nameInput);
     await user.type(nameInput, 'ONISEP modifié');
 
-    const save = screen.getByText('Enregistrer').closest('button')!;
+    const save = screen.getByTestId('usefullinks-button-save');
     await waitFor(() => expect(save).not.toBeDisabled());
     await user.click(save);
 
@@ -83,7 +86,7 @@ describe('UsefulLinksContainer', () => {
     expect(within(manageModal).getByText(targetName)).toBeInTheDocument();
 
     await user.click(
-      within(manageModal).getByLabelText(`Supprimer ${targetName}`),
+      within(manageModal).getByTestId('usefullinks-button-delete-2'),
     );
 
     expect(within(manageModal).queryByText(targetName)).not.toBeInTheDocument();
@@ -93,14 +96,12 @@ describe('UsefulLinksContainer', () => {
     const { user } = render(<UsefulLinksContainer />);
 
     const manageModal = await openManageModal(user);
-    await user.click(
-      within(manageModal).getByRole('button', { name: 'Ajouter un lien' }),
-    );
+    await user.click(within(manageModal).getByTestId('usefullinks-button-add'));
 
     await screen.findByRole('dialog', {
       name: 'Ajouter un lien',
     });
-    await user.click(screen.getByText('Annuler'));
+    await user.click(screen.getByTestId('usefullinks-button-cancel'));
 
     expect(
       await screen.findByRole('dialog', { name: 'Gérer les liens utiles' }),

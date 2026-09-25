@@ -254,6 +254,11 @@ i18n.use(initReactI18next).init({
           'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
         'betaSwitch.error': 'Erreur de paramétrage.',
         //----------------- HOMEPAGE -----------------
+        //----------------- Favorites -----------------
+        'homepage.favorites.title': 'Favoris',
+        'homepage.favorites.all': 'Mes applis',
+        'homepage.favorites.empty':
+          'Ajouter des applications à vos favoris pour les retrouver ici et y accéder rapidement !',
         //----------------- Communities -----------------
         'homepage.widget.communities.title': 'Communautés',
         'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
@@ -309,6 +314,43 @@ i18n.use(initReactI18next).init({
           'La classe de [[childName]]',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
+        //------------------ UsefulLinks -------------------------
+        'homepage.usefulLinks.title': 'Liens utiles',
+        'homepage.usefulLinks.edit': 'Éditer',
+        'homepage.usefulLinks.empty':
+          'Gardez à portée de main les sites web que vous utilisez souvent !',
+        'homepage.usefulLinks.modal.add': 'Ajouter un lien',
+        'homepage.usefulLinks.modal.title': 'Gérer les liens utiles',
+        'homepage.usefulLinks.modal.empty.title':
+          'Pas encore de liens ajoutés',
+        'homepage.usefulLinks.modal.empty.text':
+          'Gardez à portée de main les sites web que vous utilisez souvent !',
+        'homepage.usefulLinks.modal.table.name': 'Nom',
+        'homepage.usefulLinks.modal.table.url': 'Adresse URL',
+        'homepage.usefulLinks.modal.table.actions': 'Actions',
+        'homepage.usefulLinks.modal.table.edit': 'Modifier [[name]]',
+        'homepage.usefulLinks.modal.table.delete': 'Supprimer [[name]]',
+        'homepage.usefulLinks.form.addTitle': 'Ajouter un lien',
+        'homepage.usefulLinks.form.editTitle': 'Modifier un lien',
+        'homepage.usefulLinks.form.name': 'Nom',
+        'homepage.usefulLinks.form.name.placeholder': 'Nom du lien utile',
+        'homepage.usefulLinks.form.url': 'Lien',
+        'homepage.usefulLinks.form.url.placeholder': 'https://example.fr',
+        'homepage.usefulLinks.form.url.error':
+          "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+        'homepage.usefulLinks.form.cancel': 'Annuler',
+        'homepage.usefulLinks.form.save': 'Enregistrer',
+        //------------------ WidgetsPersonalizationPanel ----------
+        'homepage.widgetsPersonalization.title':
+          'Personnalisation des widgets',
+        'homepage.widgetsPersonalization.description':
+          "Choisissez les widgets visibles sur votre page d'accueil",
+        'homepage.widgetsPersonalization.empty':
+          'Aucun widget disponible pour votre établissement.',
+        'homepage.widgetsPersonalization.locked':
+          'Imposé par votre établissement',
+        'homepage.widgetsPersonalization.toggle':
+          'Activer le widget [[label]]',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

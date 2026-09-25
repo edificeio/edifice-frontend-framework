@@ -11,7 +11,6 @@ import {
 } from '../../../../components';
 
 const NAME_MAX_LENGTH = 80;
-const URL_PLACEHOLDER = 'https://example.fr';
 const URL_PATTERN = /^https?:\/\/.+/i;
 
 export interface LinkFormProps {
@@ -51,8 +50,8 @@ export function LinkForm({
 
   const title =
     mode === 'add'
-      ? t('homepage.usefulLinks.form.addTitle', 'Ajouter un lien')
-      : t('homepage.usefulLinks.form.editTitle', 'Modifier un lien');
+      ? t('homepage.usefulLinks.form.addTitle')
+      : t('homepage.usefulLinks.form.editTitle');
 
   const handleFormSubmit = (data: UsefulLinkPayload) => {
     onSubmit({ name: data.name.trim(), url: data.url.trim() });
@@ -64,7 +63,7 @@ export function LinkForm({
       <ModalBeta.Body>
         <form id={formId} onSubmit={handleSubmit(handleFormSubmit)}>
           <FormControl id="useful-link-name" className="mb-16" isRequired>
-            <Label>{t('homepage.usefulLinks.form.name', 'Nom')}</Label>
+            <Label>{t('homepage.usefulLinks.form.name')}</Label>
             <Input
               type="text"
               size="md"
@@ -72,10 +71,7 @@ export function LinkForm({
               showCounter
               clearable
               data-testid="usefullinks-input-name"
-              placeholder={t(
-                'homepage.usefulLinks.form.name.placeholder',
-                'Nom du lien utile',
-              )}
+              placeholder={t('homepage.usefulLinks.form.name.placeholder')}
               {...register('name', {
                 required: true,
                 maxLength: NAME_MAX_LENGTH,
@@ -87,15 +83,12 @@ export function LinkForm({
             isRequired
             status={errors.url ? 'invalid' : undefined}
           >
-            <Label>{t('homepage.usefulLinks.form.url', 'Lien')}</Label>
+            <Label>{t('homepage.usefulLinks.form.url')}</Label>
             <Input
               type="text"
               size="md"
               data-testid="usefullinks-input-url"
-              placeholder={t(
-                'homepage.usefulLinks.form.url.placeholder',
-                URL_PLACEHOLDER,
-              )}
+              placeholder={t('homepage.usefulLinks.form.url.placeholder')}
               {...register('url', {
                 required: true,
                 pattern: URL_PATTERN,
@@ -103,10 +96,7 @@ export function LinkForm({
             />
             {errors.url && (
               <FormControl.Text>
-                {t(
-                  'homepage.usefulLinks.form.url.error',
-                  "L'adresse doit être une URL valide (ex. https://exemple.fr)",
-                )}
+                {t('homepage.usefulLinks.form.url.error')}
               </FormControl.Text>
             )}
           </FormControl>
@@ -120,7 +110,7 @@ export function LinkForm({
           data-testid="usefullinks-button-cancel"
           onClick={onCancel}
         >
-          {t('homepage.usefulLinks.form.cancel', 'Annuler')}
+          {t('homepage.usefulLinks.form.cancel')}
         </ButtonBeta>
         <ButtonBeta
           form={formId}
@@ -129,7 +119,7 @@ export function LinkForm({
           disabled={!isValid || !isDirty || isSubmitting}
           data-testid="usefullinks-button-save"
         >
-          {t('homepage.usefulLinks.form.save', 'Enregistrer')}
+          {t('homepage.usefulLinks.form.save')}
         </ButtonBeta>
       </ModalBeta.Footer>
     </ModalBeta>

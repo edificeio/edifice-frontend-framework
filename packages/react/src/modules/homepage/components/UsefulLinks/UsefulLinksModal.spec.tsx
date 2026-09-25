@@ -55,9 +55,7 @@ describe('UsefulLinksModal', () => {
       />,
     );
 
-    expect(
-      screen.getByText('Ajouter un lien').closest('button'),
-    ).toBeDisabled();
+    expect(screen.getByTestId('usefullinks-button-add')).toBeDisabled();
   });
 
   it('calls onDeleteLink immediately when the delete action is clicked', async () => {
@@ -74,7 +72,7 @@ describe('UsefulLinksModal', () => {
       />,
     );
 
-    await user.click(screen.getByLabelText('Supprimer Lumni'));
+    await user.click(screen.getByTestId('usefullinks-button-delete-1'));
 
     expect(onDeleteLink).toHaveBeenCalledWith('1');
   });
@@ -93,7 +91,7 @@ describe('UsefulLinksModal', () => {
       />,
     );
 
-    await user.click(screen.getByLabelText('Modifier Lumni'));
+    await user.click(screen.getByTestId('usefullinks-button-edit-1'));
 
     expect(onEditLink).toHaveBeenCalledWith(links[0]);
   });

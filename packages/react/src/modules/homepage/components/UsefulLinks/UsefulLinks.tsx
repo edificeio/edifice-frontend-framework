@@ -17,8 +17,8 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
   return (
     <HomeCard variant="primary">
       <HomeCard.Header
-        title={t('homepage.usefulLinks.title', 'Liens utiles')}
-        actionLabel={t('homepage.usefulLinks.edit', 'Éditer')}
+        title={t('homepage.usefulLinks.title')}
+        actionLabel={t('homepage.usefulLinks.edit')}
         actionLeftIcon={<IconEdit />}
         onActionClick={onEditClick}
         actionProps={{ 'data-testid': 'usefullinks-button-edit' }}
@@ -33,10 +33,7 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
               style={{ width: 160, height: 87 }}
             />
             <p className="useful-links-widget__empty-text">
-              {t(
-                'homepage.usefulLinks.empty',
-                'Gardez à portée de main les sites web que vous utilisez souvent !',
-              )}
+              {t('homepage.usefulLinks.empty')}
             </p>
           </div>
         ) : (

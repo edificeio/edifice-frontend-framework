@@ -45,28 +45,20 @@ export function WidgetsPersonalizationPanel({
           headingStyle="h5"
           className="widgets-personalization-panel__title"
         >
-          {title ??
-            t(
-              'homepage.widgetsPersonalization.title',
-              'Personnalisation des widgets',
-            )}
+          {title ?? t('homepage.widgetsPersonalization.title')}
         </Heading>
         <IconButton
           icon={<IconClose />}
           variant="ghost"
           color="tertiary"
-          aria-label={t('close', 'Fermer')}
+          aria-label={t('close')}
           onClick={onClose}
           data-testid="widgetspersonalization-button-close"
         />
       </div>
 
       <p className="widgets-personalization-panel__description">
-        {description ??
-          t(
-            'homepage.widgetsPersonalization.description',
-            'Choisissez les widgets visibles sur votre page d’accueil',
-          )}
+        {description ?? t('homepage.widgetsPersonalization.description')}
       </p>
 
       {isLoading ? (
@@ -84,10 +76,7 @@ export function WidgetsPersonalizationPanel({
       ) : items.length === 0 ? (
         <div className="widgets-personalization-panel__empty">
           <p className="widgets-personalization-panel__empty-text">
-            {t(
-              'homepage.widgetsPersonalization.empty',
-              'Aucun widget disponible pour votre établissement.',
-            )}
+            {t('homepage.widgetsPersonalization.empty')}
           </p>
         </div>
       ) : (
@@ -115,10 +104,7 @@ export function WidgetsPersonalizationPanel({
                 <span
                   className="widgets-personalization-panel__item-lock"
                   role="img"
-                  aria-label={t(
-                    'homepage.widgetsPersonalization.locked',
-                    'Imposé par votre établissement',
-                  )}
+                  aria-label={t('homepage.widgetsPersonalization.locked')}
                   data-testid={`widgetspersonalization-lock-${item.id}`}
                 >
                   <IconLock />
@@ -128,7 +114,6 @@ export function WidgetsPersonalizationPanel({
                   checked={item.checked}
                   onChange={() => onToggle(item.id)}
                   aria-label={t('homepage.widgetsPersonalization.toggle', {
-                    defaultValue: 'Activer le widget [[label]]',
                     label: item.label,
                   })}
                   data-testid={`widgetspersonalization-toggle-${item.id}`}
