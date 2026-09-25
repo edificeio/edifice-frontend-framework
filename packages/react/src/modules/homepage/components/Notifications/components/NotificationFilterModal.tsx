@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppIcon, ButtonBeta, Checkbox, Flex, Modal } from '../../../../..';
+import { AppIcon, ButtonBeta, Flex, Modal } from '../../../../..';
 import { IconCheck } from '../../../../icons/components';
 import { getAppCodeAndI18nKey } from './notificationAdapter';
 
@@ -29,17 +29,7 @@ const NotificationFilterModal = ({
   const { t, i18n } = useTranslation();
   const [selected, setSelected] = useState<string[]>(appliedTypes);
 
-  const toggleType = (type: string) => {
-    setSelected((current) =>
-      current.includes(type)
-        ? current.filter((value) => value !== type)
-        : [...current, type],
-    );
-  };
-
-  const toggleAll = () => {
-    setSelected(selected.length === allTypes.length ? [] : allTypes);
-  };
+  const refSelectAllCheckbox = useRef<HTMLInputElement>(null);
 
   const allTypesSorted = useMemo(
     () =>
@@ -56,6 +46,25 @@ const NotificationFilterModal = ({
         ),
     [allTypes, t, i18n.language],
   );
+
+  const toggleType = (type: string) => {
+    setSelected((current) =>
+      current.includes(type)
+        ? current.filter((value) => value !== type)
+        : [...current, type],
+    );
+  };
+
+  const toggleAll = () => {
+    setSelected(selected.length === allTypes.length ? [] : allTypes);
+  };
+
+  useEffect(() => {
+    if (refSelectAllCheckbox.current) {
+      refSelectAllCheckbox.current!.indeterminate =
+        selected.length > 0 && selected.length < allTypes.length;
+    }
+  }, [refSelectAllCheckbox, selected]);
 
   return (
     <Modal
@@ -77,19 +86,21 @@ const NotificationFilterModal = ({
         })}
       </Modal.Subtitle>
       <Modal.Body>
-        <Flex align="center" gap="8" className="mb-16">
-          <div className="notification-filter-select-all">
-            <Checkbox
-              label={t('homepage.notifications.filter-modal.select-all', {
+        <Flex align="center" gap="8" className="mb-24">
+          <label className="notification-filter-select-all notification-filter-chip">
+            <span>
+              {t('homepage.notifications.filter-modal.select-all', {
                 defaultValue: 'Tout sélectionner',
               })}
+            </span>
+            <input
+              type="checkbox"
+              ref={refSelectAllCheckbox}
               checked={selected.length === allTypes.length}
-              indeterminate={
-                selected.length > 0 && selected.length < allTypes.length
-              }
+              className="notification-filter-checkbox"
               onChange={toggleAll}
             />
-          </div>
+          </label>
           <span className="notification-filter-count">
             {t('homepage.notifications.filter-modal.count', {
               selected: selected.length,
@@ -112,7 +123,7 @@ const NotificationFilterModal = ({
                 <span>{label}</span>
                 <input
                   type="checkbox"
-                  className="form-check-input"
+                  className="notification-filter-checkbox"
                   checked={checked}
                   onChange={() => toggleType(type)}
                 />
