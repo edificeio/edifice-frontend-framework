@@ -84,12 +84,11 @@ function config(overrides: Record<string, unknown> = {}) {
 async function mountAndLoad({
   response = config(),
   pathname = '/',
-  headerColor,
-}: { response?: unknown; pathname?: string; headerColor?: string } = {}) {
+}: { response?: unknown; pathname?: string } = {}) {
   get.mockResolvedValue(response);
   window.history.pushState({}, '', pathname);
 
-  renderHook(() => useZendeskGuide(headerColor));
+  renderHook(() => useZendeskGuide());
 
   const script = await waitFor(() => {
     const element = snippet();
@@ -334,23 +333,7 @@ describe('useZendeskGuide', () => {
       await mountAndLoad({ response: config({ color: undefined }) });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#ffc400' } },
-      });
-    });
-
-    it('applies the caller color to the widget header', async () => {
-      await mountAndLoad({ headerColor: '#3030d1' });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { header: '#3030d1' } },
-      });
-    });
-
-    it('keeps the configured theme color when the caller sets a header color', async () => {
-      await mountAndLoad({ headerColor: '#3030d1' });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#123456' } },
+        webWidget: { color: { theme: '#3030D1' } },
       });
     });
 
