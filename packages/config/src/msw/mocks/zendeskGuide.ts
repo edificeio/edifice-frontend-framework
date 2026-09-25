@@ -32,7 +32,7 @@ export const handlers = [
   http.get('/zendeskGuide/config', () =>
     HttpResponse.json({
       key: 'storybook-demo-key',
-      color: '#ffc400',
+      color: '#3030D1',
       module: {},
     }),
   ),

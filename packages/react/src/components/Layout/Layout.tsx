@@ -17,6 +17,7 @@ import {
   useZendeskGuide,
 } from '../../hooks';
 import { useCookiesConsent } from '../../hooks/useCookiesConsent';
+import { HelpZone } from '../../modules/HelpZone';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { ButtonBeta as Button } from '../ButtonBeta';
 import { useOverlay } from '../PageLayout/hook/useOverlay';
@@ -48,6 +49,12 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
+  // `global` platform override — rollout flag for the new in-product help
+  // widget (`HelpZone`), replacing the legacy raw Zendesk widget launcher
+  // until the platform opts in (see `useUiOverride`).
+  // TODO #IMPULS-6352 :  inverser le feature flag pour que par defaut il est ce look "edifice-in-product" mais que l’override { ‘layout.helpzone': 'hide-edifice-logo' } puisse etre possible
+  const isEdificeInProductHelp =
+    useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const {
     productOverride,
     background,
@@ -66,7 +73,22 @@ export const Layout = ({
     handleCloseCookiesConsent,
   } = useCookiesConsent();
 
-  useZendeskGuide();
+  // Single hook instance shared by both paths — mounting a second instance
+  // (e.g. via `HelpZoneContainer`, which calls this hook itself) races
+  // against this one on the widget script bootstrap and can leave the
+  // second instance's `isReady` stuck at `false`.
+  //
+  // TODO(#IMPULS-6330): once the flag is removed and this always renders
+  // the new widget, drop this raw call + the `<HelpZone>` below and render
+  // `<HelpZoneContainer />` instead — it owns the same hook call
+  // internally. There will be only one `useZendeskGuide` instance left at
+  // that point, so the race this comment warns about no longer applies.
+  const {
+    isReady: isHelpZoneReady,
+    isOpen: isHelpZoneOpen,
+    open: openHelpZone,
+    close: closeHelpZone,
+  } = useZendeskGuide();
 
   useCantoo();
 
@@ -136,6 +158,14 @@ export const Layout = ({
 
       {renderToaster}
       {renderCookies}
+      {isEdificeInProductHelp && (
+        <HelpZone
+          isReady={isHelpZoneReady}
+          isOpen={isHelpZoneOpen}
+          onOpen={openHelpZone}
+          onClose={closeHelpZone}
+        />
+      )}
     </div>
   );
 };
