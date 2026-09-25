@@ -24,12 +24,17 @@
 
     .input-group-text,
     .btn-search {
-      // Match Input's own focus border/background instead of the legacy
+      // Match Input's own focus border instead of the legacy
       // `--#{$prefix}secondary-300`, which isn't related to it and can
       // resolve to a clashing color per theme (e.g. an orange input focus
       // ring next to a blue search button).
 
       border-color: var(--color-buttons-primary-default);
+    }
+
+    // Only `.btn-search` gets a background fill on focus — `.input-group-text`
+    // (e.g. Combobox's leading label) stays transparent, matching prod.
+    .btn-search {
       background-color: var(--color-buttons-primary-pale);
     }
   }
