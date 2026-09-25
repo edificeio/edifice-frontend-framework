@@ -79,21 +79,6 @@ function insertAndSelectHyperlink(editor: Editor, href: string) {
 describe('LinkToolbar', () => {
   let editor: Editor;
 
-  beforeAll(() => {
-    // Toolbar unconditionally calls useBreakpoint, which relies on
-    // window.matchMedia, absent from jsdom.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   beforeEach(() => {
     editor = createTestEditor();
   });

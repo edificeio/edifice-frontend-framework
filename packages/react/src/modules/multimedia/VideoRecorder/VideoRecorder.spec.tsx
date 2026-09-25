@@ -98,19 +98,6 @@ async function record(
 }
 
 describe('VideoRecorder', () => {
-  beforeAll(() => {
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   beforeEach(() => {
     getVideoConf.mockResolvedValue({ maxDuration: 3 });
     uploadBlob.mockResolvedValue({ _id: 'video-id' } as WorkspaceElement);

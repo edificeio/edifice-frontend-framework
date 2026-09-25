@@ -42,20 +42,6 @@ const resetButton = () => screen.getByRole('button', { name: 'Reset' });
 const saveButton = () => screen.queryByRole('button', { name: 'Save' });
 
 describe('VideoRecorderToolbar', () => {
-  beforeAll(() => {
-    // <Toolbar> calls useBreakpoint, which needs window.matchMedia.
-    vi.stubGlobal('matchMedia', (query: string) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    }));
-  });
-
   describe('idle', () => {
     it('only offers to start recording', () => {
       setup();

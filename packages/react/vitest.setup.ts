@@ -19,6 +19,22 @@ vi.mock('react-pdf', () => ({
   Page: () => null,
 }));
 
+// jsdom doesn't implement window.matchMedia — needed by useBreakpoint
+// (@uidotdev/usehooks' useMediaQuery), itself used by Toolbar, List,
+// BetaSwitch, MessageFlash, UsefulLinksModal and their consumers. Global so
+// any test exercising one of them works without repeating this stub itself
+// (as ~12 spec files already did, individually, before this).
+vi.stubGlobal('matchMedia', (query: string) => ({
+  matches: false,
+  media: query,
+  onchange: null,
+  addEventListener: vi.fn(),
+  removeEventListener: vi.fn(),
+  addListener: vi.fn(),
+  removeListener: vi.fn(),
+  dispatchEvent: vi.fn(),
+}));
+
 const server = setupServer(...handlers);
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
