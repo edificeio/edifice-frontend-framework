@@ -40,8 +40,12 @@ const queryClient = new QueryClient({
 
 const preview: Preview = {
   beforeAll: async () => {
-    // Initialize MSW
-    initialize({
+    // Awaiting initialize() is the documented msw-storybook-addon usage: it
+    // resolves once the service worker is registered and controlling the
+    // page, avoiding a (rare, hard to reproduce) race where a very first
+    // cold load's requests could otherwise reach the real network before
+    // the worker is ready.
+    await initialize({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
         url: './mockServiceWorker.js',

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { userbookHandlers } from '@edifice.io/config';
 import { http, HttpResponse } from 'msw';
 
 import Header from './Header';
@@ -110,16 +111,19 @@ export const WithMessages: Story = {
 export const WithBookmarkedApps: Story = {
   parameters: {
     msw: {
-      // Use the keyed object form (see `WithMessages` above) so the global
-      // `auth`/`conversation` handlers, which the session/workflows rely on,
-      // stay in place.
       handlers: {
+        // Storybook's parameter merge REPLACES the `userbook` array wholesale
+        // rather than merging its contents — an override here must spread the
+        // original `userbookHandlers` (ours first, so it wins on the shared
+        // path) or every other handler in that group, e.g. `/userbook/api/person`,
+        // silently 404s and the whole session query errors out.
         userbook: [
           http.get('/userbook/preference/apps', () =>
             HttpResponse.json({
               preference: '{"bookmarks":["App1","App2"],"applications":[]}',
             }),
           ),
+          ...userbookHandlers,
         ],
       },
     },
