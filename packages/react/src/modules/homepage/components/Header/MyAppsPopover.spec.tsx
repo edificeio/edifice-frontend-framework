@@ -20,7 +20,7 @@ describe('MyAppsPopoverFooter', () => {
   it('links to the whole application list', () => {
     render(<MyAppsPopoverFooter />);
 
-    expect(screen.getByRole('link', { name: 'plus' })).toHaveAttribute(
+    expect(screen.getByTestId('header-my-apps-popover-more')).toHaveAttribute(
       'href',
       '/welcome',
     );
