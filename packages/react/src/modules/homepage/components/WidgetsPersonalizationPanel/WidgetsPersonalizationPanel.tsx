@@ -57,6 +57,7 @@ export function WidgetsPersonalizationPanel({
           color="tertiary"
           aria-label={t('close', 'Fermer')}
           onClick={onClose}
+          data-testid="widgetspersonalization-button-close"
         />
       </div>
 
@@ -99,6 +100,7 @@ export function WidgetsPersonalizationPanel({
                   item.checked && !item.locked,
                 'widgets-personalization-panel__item--locked': item.locked,
               })}
+              data-testid={`widgetspersonalization-item-${item.id}`}
             >
               <span
                 className="widgets-personalization-panel__item-icon"
@@ -117,6 +119,7 @@ export function WidgetsPersonalizationPanel({
                     'homepage.widgetsPersonalization.locked',
                     'Imposé par votre établissement',
                   )}
+                  data-testid={`widgetspersonalization-lock-${item.id}`}
                 >
                   <IconLock />
                 </span>
@@ -128,6 +131,7 @@ export function WidgetsPersonalizationPanel({
                     defaultValue: 'Activer le widget [[label]]',
                     label: item.label,
                   })}
+                  data-testid={`widgetspersonalization-toggle-${item.id}`}
                 />
               )}
             </li>

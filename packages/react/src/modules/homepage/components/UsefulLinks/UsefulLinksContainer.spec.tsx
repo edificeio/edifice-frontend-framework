@@ -7,7 +7,7 @@ import { UsefulLinksContainer } from './UsefulLinksContainer';
 // distinct seed item to mutate/delete so tests stay order-independent.
 
 const openManageModal = async (user: ReturnType<typeof render>['user']) => {
-  const editButton = await screen.findByTestId('home-card-header-action');
+  const editButton = await screen.findByTestId('usefullinks-button-edit');
   await user.click(editButton);
   return screen.findByRole('dialog', { name: 'Gérer les liens utiles' });
 };

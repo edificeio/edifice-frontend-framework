@@ -1,10 +1,14 @@
+import { ComponentPropsWithoutRef } from 'react';
+
 import clsx from 'clsx';
 
-export interface WidgetToggleProps {
+export interface WidgetToggleProps extends Omit<
+  ComponentPropsWithoutRef<'button'>,
+  'onClick' | 'type' | 'role' | 'aria-checked'
+> {
   'checked': boolean;
   'onChange': () => void;
   'aria-label': string;
-  'disabled'?: boolean;
 }
 
 /**

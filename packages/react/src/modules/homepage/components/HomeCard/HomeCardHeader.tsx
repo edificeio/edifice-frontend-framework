@@ -18,6 +18,13 @@ export interface HomeCardHeaderProps extends Omit<
   actionLeftIcon?: ReactNode;
   /** Optional right icon of the action button. */
   actionRightIcon?: ReactNode;
+  /**
+   * Extra props spread onto the action button (e.g. `data-testid`) — its
+   * default `data-testid` (`home-card-header-action`) isn't unique across
+   * the several `HomeCard`s a page can render, so consumers doing that
+   * should override it here.
+   */
+  actionProps?: ComponentPropsWithoutRef<typeof ButtonBeta>;
 }
 
 const HomeCardHeader = ({
@@ -26,6 +33,7 @@ const HomeCardHeader = ({
   onActionClick,
   actionLeftIcon,
   actionRightIcon,
+  actionProps,
   className,
   ...rest
 }: HomeCardHeaderProps) => {
@@ -49,6 +57,7 @@ const HomeCardHeader = ({
           leftIcon={actionLeftIcon}
           rightIcon={actionRightIcon}
           data-testid="home-card-header-action"
+          {...actionProps}
         >
           {actionLabel}
         </ButtonBeta>

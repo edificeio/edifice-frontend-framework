@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 import clsx from 'clsx';
 
@@ -7,7 +7,7 @@ import { IconLink } from '../../modules/icons/components';
 export type LinkPillIllustrationType = 'icon' | 'img';
 export type LinkPillIllustrationPosition = 'left' | 'right';
 
-export interface LinkPillProps {
+export interface LinkPillProps extends ComponentPropsWithoutRef<'a'> {
   /**
    * URL opened in a new tab when the pill is clicked.
    */
@@ -35,10 +35,6 @@ export interface LinkPillProps {
    * Side the illustration is displayed on.
    */
   illustrationPosition?: LinkPillIllustrationPosition;
-  /**
-   * Optional class for styling purpose
-   */
-  className?: string;
 }
 
 /**
@@ -53,6 +49,7 @@ const LinkPill = ({
   illustrationType = 'icon',
   illustrationPosition = 'left',
   className,
+  ...rest
 }: LinkPillProps) => {
   const illustrationNode =
     illustrationType === 'icon' ? (
@@ -85,6 +82,7 @@ const LinkPill = ({
         `link-pill--illustration-${illustrationPosition}`,
         className,
       )}
+      {...rest}
     >
       {illustrationPosition === 'left' ? (
         <>

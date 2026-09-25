@@ -21,6 +21,7 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
         actionLabel={t('homepage.usefulLinks.edit', 'Éditer')}
         actionLeftIcon={<IconEdit />}
         onActionClick={onEditClick}
+        actionProps={{ 'data-testid': 'usefullinks-button-edit' }}
       />
       <HomeCard.Content>
         {links.length === 0 ? (
@@ -41,7 +42,12 @@ export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
         ) : (
           <Flex direction="column" gap="8">
             {links.map((link) => (
-              <LinkPill key={link.id} href={link.url} label={link.name} />
+              <LinkPill
+                key={link.id}
+                href={link.url}
+                label={link.name}
+                data-testid={`usefullinks-link-${link.id}`}
+              />
             ))}
           </Flex>
         )}
