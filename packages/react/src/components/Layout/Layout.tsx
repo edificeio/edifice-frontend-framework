@@ -78,6 +78,12 @@ export const Layout = ({
   // (e.g. via `HelpZoneContainer`, which calls this hook itself) races
   // against this one on the widget script bootstrap and can leave the
   // second instance's `isReady` stuck at `false`.
+  //
+  // TODO(#IMPULS-6330): once the flag is removed and this always renders
+  // the new widget, drop this raw call + the `<HelpZone>` below and render
+  // `<HelpZoneContainer />` instead — it owns the same hook call
+  // internally. There will be only one `useZendeskGuide` instance left at
+  // that point, so the race this comment warns about no longer applies.
   const {
     isReady: isHelpZoneReady,
     isOpen: isHelpZoneOpen,
