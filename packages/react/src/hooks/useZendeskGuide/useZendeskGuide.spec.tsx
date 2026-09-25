@@ -84,12 +84,11 @@ function config(overrides: Record<string, unknown> = {}) {
 async function mountAndLoad({
   response = config(),
   pathname = '/',
-  headerColor,
-}: { response?: unknown; pathname?: string; headerColor?: string } = {}) {
+}: { response?: unknown; pathname?: string } = {}) {
   get.mockResolvedValue(response);
   window.history.pushState({}, '', pathname);
 
-  renderHook(() => useZendeskGuide(headerColor));
+  renderHook(() => useZendeskGuide());
 
   const script = await waitFor(() => {
     const element = snippet();
@@ -334,15 +333,7 @@ describe('useZendeskGuide', () => {
       await mountAndLoad({ response: config({ color: undefined }) });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#ffc400' } },
-      });
-    });
-
-    it('lets the caller override the theme color regardless of the configured one', async () => {
-      await mountAndLoad({ headerColor: '#3030d1' });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#3030d1' } },
+        webWidget: { color: { theme: '#3030D1' } },
       });
     });
 
