@@ -98,7 +98,7 @@ const NotificationFilterModal = ({
             })}
           </span>
         </Flex>
-        <Flex wrap="wrap" gap="8" className="notification-filter-options">
+        <Flex wrap="wrap" gap="16" className="notification-filter-options">
           {allTypesSorted.map(({ type, label, appCode }) => {
             const checked = selected.includes(type);
             return (
