@@ -1,4 +1,4 @@
-import { forwardRef, Ref } from 'react';
+import { forwardRef, Ref, useEffect, useState } from 'react';
 
 import { IWebApp } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -69,6 +69,8 @@ const AppIcon = forwardRef(
   ) => {
     const { isIconUrl, getIconCode } = useEdificeIcons();
 
+    const [imageLoadFailed, setImageLoadFailed] = useState(false);
+
     const isSquare = variant === 'square';
     const isRounded = variant === 'rounded';
     const isCircle = variant === 'circle';
@@ -101,13 +103,19 @@ const AppIcon = forwardRef(
           ? app.icon
           : 'placeholder';
     const displayName =
-      typeof app !== 'string' && app?.displayName !== undefined
-        ? app.displayName
-        : '';
+      typeof app !== 'string' ? app?.displayName || app?.name || '' : '';
     const code = app ? getIconCode(app) : '';
-    const isIconURL = isIconUrl(icon);
+    const iconIsUrl = !!isIconUrl(icon);
+    const isIconURL = iconIsUrl && !imageLoadFailed;
+    // A connector's icon that failed to load falls back to a letter avatar, not the sprite placeholder
+    const showLetterFallback = iconIsUrl && imageLoadFailed && !!displayName;
 
-    const appCode = code || 'placeholder';
+    useEffect(() => {
+      setImageLoadFailed(false);
+    }, [icon]);
+
+    // `code` is the raw icon URL for connectors, which isn't a usable app code
+    const appCode = iconIsUrl ? 'placeholder' : code || 'placeholder';
 
     const classes = clsx(
       'app-icon',
@@ -143,6 +151,7 @@ const AppIcon = forwardRef(
           height={size}
           className={classes}
           style={{ minWidth: size + 'px' }}
+          onError={() => setImageLoadFailed(true)}
         />
       );
     }
@@ -153,7 +162,13 @@ const AppIcon = forwardRef(
         className={classes}
         style={{ width: size + 'px', height: size + 'px' }}
       >
-        <IconComponent width={size} height={size} />
+        {showLetterFallback ? (
+          <span className="app-icon-letter" style={{ fontSize: size + 'px' }}>
+            {displayName.charAt(0).toUpperCase()}
+          </span>
+        ) : (
+          <IconComponent width={size} height={size} />
+        )}
       </div>
     );
   },
