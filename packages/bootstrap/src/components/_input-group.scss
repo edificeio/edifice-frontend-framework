@@ -39,6 +39,15 @@
   // renders a bare `.form-control`, so `SearchBar` (which composes `Input`
   // with `.btn-search` inside `.input-group`) needs its own selectors here.
   .input {
+    // Mirrors Bootstrap's own `.input-group > .form-control` sizing rule —
+    // without it, `.input`'s own `width: 100%` (see components/_input.scss)
+    // wins as flex-basis and leaves no room for `.btn-search`, which wraps
+    // to a new line.
+
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+
     & + .btn-search {
       padding: $spacer-8 $spacer-12;
     }
