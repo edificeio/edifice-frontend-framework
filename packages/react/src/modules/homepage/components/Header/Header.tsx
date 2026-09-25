@@ -189,7 +189,7 @@ const Header = ({
               <PopoverBody>
                 <MyAppsPopoverBody bookmarkedApps={bookmarkedApps} />
               </PopoverBody>
-              <PopoverFooter>
+              <PopoverFooter className="d-flex justify-content-center">
                 <MyAppsPopoverFooter />
               </PopoverFooter>
             </Popover>
