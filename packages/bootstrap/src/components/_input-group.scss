@@ -80,12 +80,17 @@
     // `.input__field` (BEM), not `.form-control`'s `.input-field` typo this
     // was copied from — otherwise `:has()` never matches, the "and filled"
     // condition silently drops out, and `.btn-search`/`.input-group-text`
-    // get `--input-filled-border-color` whenever unfocused (even empty),
+    // get the filled border color whenever unfocused (even empty),
     // clashing with `.input`'s own lighter default border in that case.
     &:not(:focus-within, :has(.input__field:placeholder-shown)) {
       & + .input-group-text,
       & + .btn-search {
-        border-color: var(--#{$prefix}input-filled-border-color);
+        // Match `.input`'s own filled-state indicator (see
+        // `--primitive-grey-500` in components/_input.scss) instead of the
+        // legacy `--#{$prefix}input-filled-border-color` — a different
+        // token that isn't guaranteed to resolve to the same color.
+
+        border-color: var(--primitive-grey-500);
       }
     }
   }
