@@ -17,7 +17,7 @@ import {
   TreeViewHandlers_V1,
 } from '../../../components';
 import { findTreeNode } from '../../../components/TreeView/utilities';
-import { useWorkspaceSearch } from '../../../hooks';
+import { useHasWorkflow, useWorkspaceSearch } from '../../../hooks';
 import { FolderNode } from '../../../hooks/useWorkspaceSearch/useWorkspaceSearch';
 import {
   IconSortAscendingLetters,
@@ -27,6 +27,9 @@ import {
 import { FileCard } from '../FileCard';
 
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
+
+const WORKSPACE_VIEW_WORKFLOW =
+  'org.entcore.workspace.controllers.WorkspaceController|view';
 
 /**
  * MediaLibrary component properties
@@ -68,6 +71,11 @@ const Workspace = ({
   showPublicFolder,
 }: WorkspaceProps) => {
   const { t } = useTranslation();
+
+  // Hidden by default until confirmed, mirroring MediaLibrary's Nextcloud
+  // tab gating: a workflow right check resolves asynchronously.
+  const hasWorkspaceViewRight = useHasWorkflow(WORKSPACE_VIEW_WORKFLOW);
+  const canViewPersonalFolders = !!hasWorkspaceViewRight;
 
   const { root: ownerRoot, loadContent: loadOwnerDocs } = useWorkspaceSearch(
     'root',
@@ -235,6 +243,21 @@ const Workspace = ({
     ref?.current?.select('root');
   }, [currentFilter]);
 
+  /**
+   * Redirect away from a personal folder (owner/shared) once the workspace
+   * view right resolves to false, whether it was the default selection or
+   * an explicit `defaultFolder`.
+   */
+  useEffect(() => {
+    if (
+      hasWorkspaceViewRight === false &&
+      (currentFilter === 'owner' || currentFilter === 'shared')
+    ) {
+      selectAndLoadContent('protected', 'root');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasWorkspaceViewRight]);
+
   /** Load content when the callback is updated. */
   useEffect(loadContent, [loadContent]);
 
@@ -315,20 +338,30 @@ const Workspace = ({
         className="workspace-folders p-12 pt-0 gap-12"
       >
         <div style={{ position: 'sticky', top: 0, paddingTop: '1.2rem' }}>
-          <TreeView
-            ref={ownerRef}
-            data={ownerRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent('owner', nodeId)}
-            onTreeItemUnfold={(nodeId) => selectAndLoadContent('owner', nodeId)}
-          />
-          <TreeView
-            ref={sharedRef}
-            data={sharedRoot}
-            onTreeItemClick={(nodeId) => selectAndLoadContent('shared', nodeId)}
-            onTreeItemUnfold={(nodeId) =>
-              selectAndLoadContent('shared', nodeId)
-            }
-          />
+          {canViewPersonalFolders && (
+            <TreeView
+              ref={ownerRef}
+              data={ownerRoot}
+              onTreeItemClick={(nodeId) =>
+                selectAndLoadContent('owner', nodeId)
+              }
+              onTreeItemUnfold={(nodeId) =>
+                selectAndLoadContent('owner', nodeId)
+              }
+            />
+          )}
+          {canViewPersonalFolders && (
+            <TreeView
+              ref={sharedRef}
+              data={sharedRoot}
+              onTreeItemClick={(nodeId) =>
+                selectAndLoadContent('shared', nodeId)
+              }
+              onTreeItemUnfold={(nodeId) =>
+                selectAndLoadContent('shared', nodeId)
+              }
+            />
+          )}
           <TreeView
             ref={protectRef}
             data={protectRoot}

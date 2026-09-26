@@ -9,6 +9,7 @@ import { Audio } from './Audio';
 import { ExternalLink } from './ExternalLink';
 import { Iframe } from './Iframe';
 import { InternalLink } from './InternalLink';
+import { Nextcloud } from './Nextcloud';
 import { Upload } from './Upload';
 import { Video } from './Video';
 import { VideoEmbedder } from './VideoEmbedder';
@@ -42,6 +43,22 @@ vi.mock('../../VideoEmbed/VideoEmbed', () => ({
   default: capture('VideoEmbed'),
 }));
 vi.mock('../../Workspace', () => ({ Workspace: capture('Workspace') }));
+vi.mock('../../Nextcloud', () => ({ Nextcloud: capture('Nextcloud') }));
+
+// The Nextcloud tab is the only one talking to the services directly: it
+// copies the picked documents into the workspace before the modal succeeds.
+const { copyDocumentToWorkspace } = vi.hoisted(() => ({
+  copyDocumentToWorkspace: vi.fn(),
+}));
+vi.mock('@edifice.io/client', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@edifice.io/client')>()),
+  odeServices: {
+    nextcloud: () => ({ copyDocumentToWorkspace }),
+  },
+}));
+vi.mock('../../../../hooks/useUser', () => ({
+  useUser: () => ({ user: { userId: 'user-1' } }),
+}));
 vi.mock('../../UploadFiles', () => ({ UploadFiles: capture('UploadFiles') }));
 vi.mock('../../../../components/Dropzone', () => ({
   Dropzone: ({ children, ...props }: { children?: ReactNode }) => {
@@ -451,6 +468,40 @@ describe('MediaLibrary innertabs', () => {
       childProps.VideoRecorder.onError('NotAllowedError');
 
       expect(error).toHaveBeenCalledWith('NotAllowedError');
+    });
+  });
+
+  describe('Nextcloud', () => {
+    const appDocument = { _id: 'app-1' } as WorkspaceElement;
+
+    beforeEach(() => {
+      copyDocumentToWorkspace.mockReset().mockResolvedValue([appDocument]);
+    });
+
+    it('copies the picked documents straight to the application folder', async () => {
+      const { setPreSuccess } = renderTab(<Nextcloud />, {
+        visibility: 'protected',
+      });
+
+      childProps.Nextcloud.onSelect([{ path: '/budget.xlsx' }]);
+      const copied = await setPreSuccess.mock.calls[0][0]()();
+
+      expect(copyDocumentToWorkspace).toHaveBeenCalledWith(
+        'user-1',
+        ['/budget.xlsx'],
+        undefined,
+        { application: 'blog', visibility: 'protected' },
+      );
+      expect(copied).toEqual([appDocument]);
+    });
+
+    it('clears the result when nothing is selected', () => {
+      const { setResult, setPreSuccess } = renderTab(<Nextcloud />);
+
+      childProps.Nextcloud.onSelect([]);
+
+      expect(setResult).toHaveBeenCalledWith();
+      expect(setPreSuccess).toHaveBeenCalledWith(undefined);
     });
   });
 });
