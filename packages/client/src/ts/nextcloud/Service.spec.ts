@@ -113,8 +113,34 @@ describe('NextcloudService', () => {
       expect(httpMock.put).toHaveBeenCalledWith(
         `/nextcloud/files/user/${userId}/copy/workspace?path=%2Fa.txt&path=%2Fb%20c.txt`,
         undefined,
-        { queryParams: undefined },
+        { queryParams: {} },
       );
+    });
+
+    it('files the documents under the documents added from applications', async () => {
+      httpMock.put.mockResolvedValue({ data: [] });
+
+      await service.copyDocumentToWorkspace(userId, ['/a.txt'], undefined, {
+        application: 'blog',
+        visibility: 'protected',
+      });
+
+      expect(httpMock.put).toHaveBeenCalledWith(expect.any(String), undefined, {
+        queryParams: { application: 'blog', protected: true },
+      });
+    });
+
+    it('leaves the documents in the user own documents for any other visibility', async () => {
+      httpMock.put.mockResolvedValue({ data: [] });
+
+      await service.copyDocumentToWorkspace(userId, ['/a.txt'], undefined, {
+        application: 'blog',
+        visibility: 'public',
+      });
+
+      expect(httpMock.put).toHaveBeenCalledWith(expect.any(String), undefined, {
+        queryParams: { application: 'blog' },
+      });
     });
 
     it('filters out null results and forwards parentId', async () => {

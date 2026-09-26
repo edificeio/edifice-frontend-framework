@@ -1,5 +1,5 @@
 import { IOdeServices } from '../services/OdeServices';
-import { WorkspaceElement } from '../workspace/interface';
+import { WorkspaceElement, WorkspaceVisibility } from '../workspace/interface';
 import { NextcloudDocument, NextcloudDocumentResponse } from './interface';
 
 /**
@@ -10,12 +10,21 @@ import { NextcloudDocument, NextcloudDocumentResponse } from './interface';
  * consistent for both directions.
  */
 
+/** Strip the `/remote.php/dav/files/{userId}` webdav prefix from a raw path. */
+function toRelativePath(rawPath: string, userId: string): string {
+  const prefix = `/remote.php/dav/files/${userId}`;
+  const relative = rawPath.startsWith(prefix)
+    ? rawPath.slice(prefix.length)
+    : rawPath;
+  return decodeURIComponent(relative || '/');
+}
+
 function toNextcloudDocument(
   raw: NextcloudDocumentResponse,
   userId: string,
 ): NextcloudDocument {
   return {
-    path: decodeURIComponent(raw.path.split(userId).pop() ?? raw.path),
+    path: toRelativePath(raw.path, userId),
     name: decodeURIComponent(raw.displayname),
     ownerDisplayName: raw.ownerDisplayName,
     contentType: raw.contentType,
@@ -55,11 +64,18 @@ export class NextcloudService {
    * @param userId - the id of the user whose files are copied.
    * @param paths - paths of the documents to copy, relative to the user's Nextcloud root.
    * @param parentId - the workspace folder to copy into; user's root when omitted.
+   * @param params.application - the application the documents are added from.
+   * @param params.visibility - "protected" files the documents under the
+   * documents added from applications, the way an upload does.
    */
   async copyDocumentToWorkspace(
     userId: string,
     paths: string[],
     parentId?: string,
+    params?: {
+      application?: string;
+      visibility?: WorkspaceVisibility;
+    },
   ): Promise<WorkspaceElement[]> {
     // Build the `path` query param manually: the backend reads repeated bare
     // `path=` keys (request.params().getAll("path")), but axios's default
@@ -71,7 +87,13 @@ export class NextcloudService {
     const res = await this.http.put<{ data: (WorkspaceElement | null)[] }>(
       `/nextcloud/files/user/${userId}/copy/workspace?${pathQuery}`,
       undefined,
-      { queryParams: parentId ? { parentId } : undefined },
+      {
+        queryParams: {
+          ...(parentId ? { parentId } : {}),
+          ...(params?.application ? { application: params.application } : {}),
+          ...(params?.visibility === 'protected' ? { protected: true } : {}),
+        },
+      },
     );
     return res.data.filter((doc): doc is WorkspaceElement => !!doc?._id);
   }

@@ -10,8 +10,15 @@ import { Nextcloud as Component } from '../../Nextcloud';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const Nextcloud = () => {
-  const { type, setResultCounter, setResult, setPreSuccess, multiple } =
-    useMediaLibraryContext();
+  const {
+    appCode,
+    visibility,
+    type,
+    setResultCounter,
+    setResult,
+    setPreSuccess,
+    multiple,
+  } = useMediaLibraryContext();
   const { user } = useUser();
 
   function getDocumentRoleFilter(): Role | Role[] | null {
@@ -39,6 +46,11 @@ export const Nextcloud = () => {
             ? odeServices.nextcloud().copyDocumentToWorkspace(
                 user.userId,
                 result.map((doc) => doc.path),
+                undefined,
+                // Copy the documents straight to their final place, the way an
+                // upload does, instead of leaving a copy in the user's own
+                // documents for the modal to transfer afterwards.
+                { application: appCode, visibility },
               )
             : Promise.resolve([]),
       );
