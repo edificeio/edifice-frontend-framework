@@ -18,7 +18,7 @@ import { LoadingScreen } from '../../../components/LoadingScreen';
 import { SearchBar } from '../../../components/SearchBar';
 import { Tree } from '../../../components/Tree';
 import { findNodeById } from '../../../components/Tree/utilities/tree';
-import { useNextcloudSearch, useUser } from '../../../hooks';
+import { useNextcloudSearch, useToast, useUser } from '../../../hooks';
 import { NextcloudFolderNode } from '../../../hooks/useNextcloudSearch/useNextcloudSearch';
 import {
   IconSortAscendingLetters,
@@ -27,6 +27,7 @@ import {
 } from '../../icons/components';
 import { NextcloudFileCard } from '../FileCard';
 
+import illuError from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-error.svg';
 import illuNoContentInFolder from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-no-content-in-folder.svg';
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 import { Button, Flex } from '../../../components';
@@ -70,9 +71,17 @@ const Nextcloud = ({
 }: NextcloudProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
+  const toast = useToast();
 
-  const { root, needsAuth, isCheckingAuth, refetchAuthStatus, loadContent } =
-    useNextcloudSearch(ROOT_ID, t('nextcloud'), user?.userId);
+  const {
+    root,
+    needsAuth,
+    isCheckingAuth,
+    isAuthError,
+    refetchAuthStatus,
+    loadContent,
+    loadError,
+  } = useNextcloudSearch(ROOT_ID, t('nextcloud'), user?.userId);
 
   const popupRef = useRef<Window | null>(null);
 
@@ -81,7 +90,7 @@ const Nextcloud = ({
   const currentNode: NextcloudFolderNode =
     (findNodeById(root, currentNodeId) as NextcloudFolderNode) ?? root;
 
-  const [searchTerm, setSearchTerm] = useState<string | undefined>(null!);
+  const [searchTerm, setSearchTerm] = useState<string | undefined>(undefined);
 
   const [sortOrder, setSortOrder] = useState<[string, string]>([
     'modified',
@@ -117,8 +126,12 @@ const Nextcloud = ({
         : roles === role;
     };
 
+    const normalizedSearchTerm = searchTerm?.toLowerCase();
     const list = currentNode.files.filter(
-      (f) => (!searchTerm || f.name.indexOf(searchTerm) >= 0) && matchesRole(f),
+      (f) =>
+        (!normalizedSearchTerm ||
+          f.name.toLowerCase().includes(normalizedSearchTerm)) &&
+        matchesRole(f),
     );
 
     let sortFunction: (a: NextcloudDocument, b: NextcloudDocument) => number;
@@ -158,7 +171,11 @@ const Nextcloud = ({
     let currentDocuments = [...selectedDocuments];
     if (!multiple) {
       currentDocuments = [doc];
-    } else if (currentDocuments.includes(doc)) {
+    } else if (
+      currentDocuments.some(
+        (selectedDocument) => selectedDocument.path === doc.path,
+      )
+    ) {
       currentDocuments = currentDocuments.filter(
         (selectedDocument) => selectedDocument.path !== doc.path,
       );
@@ -177,6 +194,9 @@ const Nextcloud = ({
       '',
       'popup, height=600, width=400',
     );
+    if (!popupRef.current) {
+      toast.error(t('nextcloud.auth.popupBlocked'));
+    }
   };
 
   useEffect(() => {
@@ -198,6 +218,25 @@ const Nextcloud = ({
 
   if (isCheckingAuth) {
     return <LoadingScreen />;
+  }
+
+  if (isAuthError) {
+    return (
+      <Flex
+        direction="column"
+        gap="12"
+        className="h-full w-100"
+        justify="center"
+        align="center"
+      >
+        <EmptyScreen
+          imageSrc={illuError}
+          title={t('nextcloud.error.title')}
+          text={t('nextcloud.error.description')}
+        />
+        <Button onClick={() => refetchAuthStatus()}>{t('retry')}</Button>
+      </Flex>
+    );
   }
 
   if (needsAuth) {
@@ -284,7 +323,24 @@ const Nextcloud = ({
             </Flex>
           </Grid.Col>
           <Grid.Col sm="4" md="8" xl="12" className="p-8 gap-8">
-            {!documents ? (
+            {loadError ? (
+              <Flex
+                direction="column"
+                gap="12"
+                className="h-full w-100"
+                justify="center"
+                align="center"
+              >
+                <EmptyScreen
+                  imageSrc={illuError}
+                  title={t('nextcloud.error.title')}
+                  text={t('nextcloud.error.description')}
+                />
+                <Button onClick={() => loadContent(currentNodeId)}>
+                  {t('retry')}
+                </Button>
+              </Flex>
+            ) : !documents ? (
               <LoadingScreen />
             ) : documents.length !== 0 ? (
               <div className="grid grid-workspace">

@@ -373,6 +373,7 @@ const MediaLibrary = forwardRef(
     >([]);
     const [onSuccessAction, setPreSuccess] =
       useState<() => Promise<MediaLibraryResult>>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     function setVisibleTab(tab: AvailableTab) {
       const index = tabs.findIndex((t) => t.id === tab);
@@ -434,6 +435,8 @@ const MediaLibrary = forwardRef(
     };
 
     const handleOnSuccess = useCallback(() => {
+      if (isSubmitting) return;
+
       const triggerSuccess = async (result: MediaLibraryResult) => {
         // Copy WorkspaceElement from shared/owner folder to protected/public folder
         if (
@@ -447,16 +450,26 @@ const MediaLibrary = forwardRef(
         onSuccess(result);
       };
 
-      if (onSuccessAction) {
-        // First execute the pre-success action, then trigger the onSuccess callback.
-        onSuccessAction().then((result) => {
-          triggerSuccess(result);
-        });
-      } else if (result) {
-        triggerSuccess(result);
-      }
-      resetState();
-    }, [onSuccessAction, result, onSuccess, visibility, appCode]);
+      const run = async () => {
+        setIsSubmitting(true);
+        try {
+          if (onSuccessAction) {
+            // First execute the pre-success action, then trigger the onSuccess callback.
+            const asyncResult = await onSuccessAction();
+            await triggerSuccess(asyncResult);
+          } else if (result) {
+            await triggerSuccess(result);
+          }
+          resetState();
+        } catch {
+          // Keep the current selection so the user can retry; the failure
+          // itself is already surfaced by the useHttpErrorToast subscription above.
+        } finally {
+          setIsSubmitting(false);
+        }
+      };
+      run();
+    }, [isSubmitting, onSuccessAction, result, onSuccess, visibility, appCode]);
 
     const handleOnCancel = () => {
       onCancel(deletionsOnCancel);
@@ -520,7 +533,7 @@ const MediaLibrary = forwardRef(
                 type="button"
                 color="primary"
                 variant="filled"
-                disabled={typeof result === 'undefined'}
+                disabled={typeof result === 'undefined' || isSubmitting}
                 onClick={handleOnSuccess}
               >
                 {resultCounter && resultCounter > 1

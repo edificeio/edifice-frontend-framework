@@ -61,34 +61,41 @@ export default function useNextcloudSearch(
 
   const needsAuth = !oauth2StatusQuery.data?.connected;
 
+  const [loadError, setLoadError] = useState<unknown>(null);
+
   const loadContent = useCallback(
     async (folderId?: ID) => {
       if (!userId) return;
       const path = folderId === rootId ? undefined : (folderId as string);
-      // Dedupe concurrent requests for the same folder (TreeView can fire
-      // onTreeItemClick and onTreeItemUnfold for the same node on one click)
-      // and cache results so revisiting a folder doesn't reload/flicker.
-      const payload = await queryClient.fetchQuery({
-        queryKey: ['nextcloud', 'documents', userId, path ?? '/'],
-        queryFn: () => odeServices.nextcloud().listDocuments(userId, path),
-        staleTime: 60_000,
-      });
-
-      const subfolders: NextcloudDocument[] = [];
-      const files: NextcloudDocument[] = [];
-
-      // The backend includes the queried folder itself in the payload; skip it.
-      const currentPath = path ?? '/';
-      payload
-        .filter((doc) => doc.path !== currentPath)
-        .forEach((doc) => {
-          if (doc.isFolder) {
-            subfolders.push(doc);
-          } else {
-            files.push(doc);
-          }
+      try {
+        // Dedupe concurrent requests for the same folder (TreeView can fire
+        // onTreeItemClick and onTreeItemUnfold for the same node on one click)
+        // and cache results so revisiting a folder doesn't reload/flicker.
+        const payload = await queryClient.fetchQuery({
+          queryKey: ['nextcloud', 'documents', userId, path ?? '/'],
+          queryFn: () => odeServices.nextcloud().listDocuments(userId, path),
+          staleTime: 60_000,
         });
-      updateFolder(folderId, subfolders, files);
+
+        const subfolders: NextcloudDocument[] = [];
+        const files: NextcloudDocument[] = [];
+
+        // The backend includes the queried folder itself in the payload; skip it.
+        const currentPath = path ?? '/';
+        payload
+          .filter((doc) => doc.path !== currentPath)
+          .forEach((doc) => {
+            if (doc.isFolder) {
+              subfolders.push(doc);
+            } else {
+              files.push(doc);
+            }
+          });
+        setLoadError(null);
+        updateFolder(folderId, subfolders, files);
+      } catch (error) {
+        setLoadError(error);
+      }
     },
     [rootId, userId, queryClient, updateFolder],
   );
@@ -97,13 +104,17 @@ export default function useNextcloudSearch(
     root,
     needsAuth,
     isCheckingAuth: oauth2StatusQuery.isLoading,
+    isAuthError: oauth2StatusQuery.isError,
     refetchAuthStatus: oauth2StatusQuery.refetch,
     loadContent,
+    loadError,
   } as {
     root: NextcloudFolderNode;
     needsAuth: boolean;
     isCheckingAuth: boolean;
+    isAuthError: boolean;
     refetchAuthStatus: () => void;
     loadContent: (folderId?: ID) => void;
+    loadError: unknown;
   };
 }
