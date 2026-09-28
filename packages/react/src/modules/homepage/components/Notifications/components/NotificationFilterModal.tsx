@@ -64,7 +64,7 @@ const NotificationFilterModal = ({
       refSelectAllCheckbox.current!.indeterminate =
         selected.length > 0 && selected.length < allTypes.length;
     }
-  }, [refSelectAllCheckbox, selected]);
+  }, [selected.length, allTypes.length]);
 
   return (
     <Modal
