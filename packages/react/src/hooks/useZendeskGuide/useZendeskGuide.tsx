@@ -27,7 +27,9 @@ export interface UseZendeskGuideAPI {
 /**
  * Add Zendesk Guide
  *
- * @param headerColor Overrides the widget panel's theme color.
+ * @param headerColor Overrides the widget panel's theme color. Can change
+ * across renders (e.g. once resolved from async platform config) — the
+ * widget is updated in place, no need to keep it stable.
  */
 export default function useZendeskGuide(
   headerColor?: string,
@@ -314,6 +316,23 @@ export default function useZendeskGuide(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSupportWorkflow]);
+
+  useEffect(() => {
+    // `headerColor` can legitimately change after mount (e.g. it depends on
+    // platform config that resolves asynchronously) — the bootstrap effect
+    // above only reacts to `hasSupportWorkflow` and closes over whatever
+    // `headerColor` was at that time, so a later value would otherwise
+    // never reach the widget. Re-applying it here (without touching the
+    // snippet) keeps the panel color in sync regardless of which async
+    // value resolves first.
+    if (!isReady || headerColor === undefined) {
+      return;
+    }
+
+    (window as any).zE('webWidget', 'updateSettings', {
+      webWidget: { color: { theme: headerColor } },
+    });
+  }, [headerColor, isReady]);
 
   return { isReady, isOpen, open, close };
 }
