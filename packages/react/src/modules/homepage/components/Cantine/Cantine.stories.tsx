@@ -1,6 +1,14 @@
+import { School } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import Cantine from './Cantine';
-import { CantineDish, CantineSection } from './hooks/useCantineMenu';
+import { useState } from 'react';
+import { mockSchools } from '../../../../../../config/src/msw/data/schoolSpace';
+import Cantine, { CantineProps } from './Cantine';
+import CantineModal from './CantineModal';
+import {
+  CantineDish,
+  CantineMenuType,
+  CantineSection,
+} from './hooks/useCantineMenu';
 
 const meta: Meta<typeof Cantine> = {
   title: 'Modules/Homepage/Cantine',
@@ -15,14 +23,14 @@ const meta: Meta<typeof Cantine> = {
   parameters: {
     docs: {
       description: {
-        component: 'Menu de la cantine',
+        component:
+          'Menu de la cantine. Le bouton plein écran ouvre la modale de navigation par jour, avec sélection de l’établissement et du service.',
       },
     },
   },
 };
 
 export default meta;
-type Story = StoryObj<typeof Cantine>;
 
 function dish(overrides: Partial<CantineDish>): CantineDish {
   return {
@@ -109,34 +117,134 @@ const mockSections: CantineSection[] = [
   },
 ];
 
+interface CantineWithModalProps extends Omit<
+  CantineProps,
+  'handleFullScreenClick'
+> {
+  schools: School[];
+  hasDinner: boolean;
+}
+
+/**
+ * Story-only wrapper: mounts the widget together with the modal it opens,
+ * so a click on the full-screen button shows the real `CantineModal` instead
+ * of leaving it as a separate, disconnected story.
+ */
+function CantineWithModal({
+  schools,
+  hasDinner,
+  ...cantineProps
+}: CantineWithModalProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [schoolId, setSchoolId] = useState(schools[0]?.id);
+  const [menuType, setMenuType] = useState<CantineMenuType>('lunch');
+
+  const selectedSchool = schools.find((school) => school.id === schoolId);
+
+  return (
+    <>
+      <Cantine
+        {...cantineProps}
+        handleFullScreenClick={() => setIsOpen(true)}
+      />
+      <CantineModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        schools={schools}
+        selectedSchool={selectedSchool}
+        onSchoolChange={setSchoolId}
+        hasDinner={hasDinner}
+        menuType={menuType}
+        onMenuTypeChange={setMenuType}
+        date="2026-06-18"
+        canGoPrevious
+        canGoNext
+        onPreviousDay={() => {}}
+        onNextDay={() => {}}
+        sections={cantineProps.sections}
+        status={cantineProps.status}
+      />
+    </>
+  );
+}
+
+type Story = StoryObj<typeof CantineWithModal>;
+
+const baseArgs = {
+  status: 'default' as const,
+  sections: mockSections,
+  schools: mockSchools,
+  hasDinner: true,
+};
+
 export const Default: Story = {
+  render: (args) => <CantineWithModal {...args} />,
+  args: baseArgs,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Plusieurs établissements et déjeuner + dîner : la modale affiche les deux sélections.',
+      },
+    },
+  },
+};
+
+export const UnSeulEtablissement: Story = {
+  render: (args) => <CantineWithModal {...args} />,
   args: {
-    status: 'default',
-    sections: mockSections,
-    handleFullScreenClick: () => {},
+    ...baseArgs,
+    schools: [mockSchools[0]],
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Un seul établissement : la modale n’affiche pas de sélection d’établissement.',
+      },
+    },
+  },
+};
+
+export const UnMenu: Story = {
+  render: (args) => <CantineWithModal {...args} />,
+  args: {
+    ...baseArgs,
+    hasDinner: false,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Seul le déjeuner est proposé : la modale n’affiche pas de sélection du service.',
+      },
+    },
   },
 };
 
 export const Chargement: Story = {
+  render: (args) => <CantineWithModal {...args} />,
   args: {
+    ...baseArgs,
     status: 'loading',
     sections: [],
-    handleFullScreenClick: () => {},
   },
 };
 
 export const Vide: Story = {
+  render: (args) => <CantineWithModal {...args} />,
   args: {
+    ...baseArgs,
     status: 'empty',
     sections: [],
-    handleFullScreenClick: () => {},
   },
 };
 
 export const Erreur: Story = {
+  render: (args) => <CantineWithModal {...args} />,
   args: {
+    ...baseArgs,
     status: 'error',
     sections: [],
-    handleFullScreenClick: () => {},
   },
 };
