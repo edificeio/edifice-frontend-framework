@@ -59,7 +59,7 @@ export const Layout = ({
   // widget (`HelpZone`), replacing the legacy raw Zendesk widget launcher
   // until the platform opts in (see `useUiOverride`).
   const isEdificeInProductHelp =
-    useUiOverride('global')?.variant === 'edifice-in-product';
+    useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const { productOverride, background, isBackgroundImageOverridden } =
     useBackground();
   const { toggleOverlay } = useOverlay();
