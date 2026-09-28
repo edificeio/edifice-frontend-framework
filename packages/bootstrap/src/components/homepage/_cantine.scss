@@ -144,6 +144,11 @@ $cantine-category-colors: (
       font-size: var(--primitive-font-size-small);
       line-height: var(--primitive-font-lineheight-2xs);
       text-overflow: ellipsis;
+      text-transform: lowercase;
+
+      &::first-letter {
+          text-transform: uppercase;
+      }
     }
 
     &-allergens {
