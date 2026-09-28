@@ -75,24 +75,15 @@ const NotificationFilterModal = ({
       onModalClose={onCancel}
     >
       <Modal.Header onModalClose={onCancel}>
-        {t('homepage.notifications.filter-modal.title', {
-          defaultValue: 'Filtrer les notifications',
-        })}
+        {t('homepage.notifications.filter-modal.title')}
       </Modal.Header>
       <Modal.Subtitle>
-        {t('homepage.notifications.filter-modal.subtitle', {
-          defaultValue:
-            'Sélectionnez seulement les notifications importantes pour vous',
-        })}
+        {t('homepage.notifications.filter-modal.subtitle')}
       </Modal.Subtitle>
       <Modal.Body>
         <Flex align="center" gap="8" className="mb-24">
           <label className="notification-filter-select-all notification-filter-chip">
-            <span>
-              {t('homepage.notifications.filter-modal.select-all', {
-                defaultValue: 'Tout sélectionner',
-              })}
-            </span>
+            <span>{t('homepage.notifications.filter-modal.select-all')}</span>
             <input
               type="checkbox"
               ref={refSelectAllCheckbox}
@@ -105,7 +96,6 @@ const NotificationFilterModal = ({
             {t('homepage.notifications.filter-modal.count', {
               selected: selected.length,
               total: allTypes.length,
-              defaultValue: '[[selected]] / [[total]] sélectionnées',
             })}
           </span>
         </Flex>
@@ -148,9 +138,7 @@ const NotificationFilterModal = ({
           variant="filled"
           rightIcon={<IconCheck />}
         >
-          {t('homepage.notifications.filter-modal.confirm', {
-            defaultValue: 'Enregistrer',
-          })}
+          {t('homepage.notifications.filter-modal.confirm')}
         </ButtonBeta>
       </Modal.Footer>
     </Modal>
