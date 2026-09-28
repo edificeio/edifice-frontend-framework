@@ -1,0 +1,74 @@
+.agenda-day-group {
+  align-items: center;
+  width: 100%;
+  padding: var(--primitive-spacer-12);
+  border: 1px solid var(--primitive-yellow-300);
+  border-radius: var(--primitive-border-radius-xl);
+  background-color: var(--primitive-yellow-100);
+
+  &-date {
+    flex-shrink: 0;
+    padding: 0 var(--primitive-spacer-4);
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-s);
+    text-align: center;
+    white-space: nowrap;
+
+    &-number {
+      font-size: var(--primitive-font-size-l);
+      line-height: var(--primitive-font-lineheight-l);
+    }
+  }
+
+  &-events {
+    min-width: 0;
+    flex: 1 0 0;
+  }
+}
+
+.agenda-event-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-4);
+  width: 100%;
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  border: 1px solid var(--primitive-yellow-300);
+  border-radius: 12px;
+  background-color: var(--primitive-white);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &-time {
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  &-title {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+}
+
+.agenda-empty {
+  padding: var(--primitive-spacer-12);
+  text-align: center;
+
+  &-text {
+    color: var(--primitive-text-color-default);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+}
