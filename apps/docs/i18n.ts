@@ -260,10 +260,9 @@ i18n.use(initReactI18next).init({
         'homepage.favorites.empty':
           'Ajouter des applications à vos favoris pour les retrouver ici et y accéder rapidement !',
         //----------------- Communities -----------------
-        'homepage.widget.communities.title': 'Communautés',
-        'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
-        'homepage.widget.communities.actionLabel.create':
-          'Créer une communauté',
+        'homepage.communities.title': 'Communautés',
+        'homepage.communities.actionLabel.seeMore': 'Voir plus',
+        'homepage.communities.actionLabel.create': 'Créer une communauté',
         'homepage.communities.description':
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
         'homepage.communities.subtitle':
@@ -321,8 +320,7 @@ i18n.use(initReactI18next).init({
           'Gardez à portée de main les sites web que vous utilisez souvent !',
         'homepage.usefulLinks.modal.add': 'Ajouter un lien',
         'homepage.usefulLinks.modal.title': 'Gérer les liens utiles',
-        'homepage.usefulLinks.modal.empty.title':
-          'Pas encore de liens ajoutés',
+        'homepage.usefulLinks.modal.empty.title': 'Pas encore de liens ajoutés',
         'homepage.usefulLinks.modal.empty.text':
           'Gardez à portée de main les sites web que vous utilisez souvent !',
         'homepage.usefulLinks.modal.table.name': 'Nom',
@@ -341,16 +339,14 @@ i18n.use(initReactI18next).init({
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
         //------------------ WidgetsPersonalizationPanel ----------
-        'homepage.widgetsPersonalization.title':
-          'Personnalisation des widgets',
+        'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
           "Choisissez les widgets visibles sur votre page d'accueil",
         'homepage.widgetsPersonalization.empty':
           'Aucun widget disponible pour votre établissement.',
         'homepage.widgetsPersonalization.locked':
           'Imposé par votre établissement',
-        'homepage.widgetsPersonalization.toggle':
-          'Activer le widget [[label]]',
+        'homepage.widgetsPersonalization.toggle': 'Activer le widget [[label]]',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------
