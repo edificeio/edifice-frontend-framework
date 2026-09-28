@@ -18,9 +18,9 @@
   align-items: center;
   gap: var(--primitive-spacer-8);
   border-radius: var(--border-radius-md, 8px);
-  border: 1px solid var(--color-primary-default, #ffd357);
-  background: var(--color-primary-feather, #fefaec);
-  accent-color: var(--color-primary-default, #ffd357);
+  border: 1px solid var(--color-primary-default);
+  background: var(--color-primary-feather);
+  accent-color: var(--color-primary-default);
 }
 
 .notification-filter-count {
