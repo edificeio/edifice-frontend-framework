@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useState } from 'react';
+import { FormEvent, ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { App, odeServices } from '@edifice.io/client';
 /*
@@ -60,6 +60,11 @@ export interface InternalLinkerProps {
   applicationList?: ApplicationOption[];
   /** Whether to show the application selector */
   showApplicationSelector?: boolean;
+  /**
+   * Rendered on the search row, where the application selector sits, for
+   * consumers that hide that selector but still need a filter of their own.
+   */
+  searchFilter?: ReactNode;
   /** Disable application selecetor */
   disableApplicationSelector?: boolean;
   /** Optional callback to filter resources after loading. Applied in addition to search filters. */
@@ -91,6 +96,7 @@ export const InternalLinker = ({
   resourceList,
   applicationList,
   showApplicationSelector = true,
+  searchFilter,
   disableApplicationSelector = false,
   resourceFilter,
   onSearch,
@@ -391,6 +397,11 @@ export const InternalLinker = ({
                 ))}
               </Dropdown.Menu>
             </Dropdown>
+          </div>
+        )}
+        {!showApplicationSelector && searchFilter && (
+          <div className="flex-shrink-1 px-8 py-12 border-end align-self-center">
+            {searchFilter}
           </div>
         )}
         <div className="flex-grow-1 align-self-center">
