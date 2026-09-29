@@ -1,4 +1,4 @@
-import { mergeAttributes, Node } from '@tiptap/core';
+import { Editor, mergeAttributes, Node } from '@tiptap/core';
 
 /**
  * Accepted activity id: a UUID and nothing else. The node carries no other data, so it
@@ -12,10 +12,11 @@ export const isH5PContentId = (value: unknown): value is string =>
 
 export interface H5POptions {
   /**
-   * Opens the host application's activity editor: without an id to create one, with the
-   * id to edit it. When undefined, the toolbar button is hidden.
+   * Opens the host application's activity editor: without `contentId` to create one
+   * (then insert it with `editor.commands.insertH5P`), with it to edit an existing one.
+   * When undefined, the toolbar button is hidden.
    */
-  onRequestEdit?: (contentId?: string) => void;
+  onRequestEdit?: (request: { editor: Editor; contentId?: string }) => void;
   /** Label of the fallback link, for readers that do not render the block. */
   fallbackLabel: string;
   HTMLAttributes: Record<string, unknown>;
