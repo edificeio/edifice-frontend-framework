@@ -322,6 +322,25 @@
     width: 100%;
   }
 
+  // The overlay covers the whole viewport on mobile while the page scrolls
+  // normally: lock the page scroll behind it and keep scroll chaining inside.
+  :root:has(.pagelayout-overlay-open),
+  body:has(.pagelayout-overlay-open) {
+    overflow: hidden;
+  }
+
+  // Full-height overlay above the fixed header (z-index 1060) on mobile
+  .pagelayout-overlaybackdrop {
+    inset: 0;
+    z-index: 1065;
+  }
+
+  .pagelayout-overlay {
+    top: 0;
+    z-index: 1070;
+    overscroll-behavior: contain;
+  }
+
   // scroll-columns: revert to normal page scroll on mobile
   .pagelayout-scroll-columns {
     height: auto;
