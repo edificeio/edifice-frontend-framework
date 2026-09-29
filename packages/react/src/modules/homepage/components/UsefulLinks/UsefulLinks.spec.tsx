@@ -31,7 +31,7 @@ describe('UsefulLinks', () => {
       <UsefulLinks links={links} onEditClick={onEditClick} />,
     );
 
-    await user.click(screen.getByTestId('home-card-header-action'));
+    await user.click(screen.getByTestId('usefullinks-button-edit'));
 
     expect(onEditClick).toHaveBeenCalledTimes(1);
   });

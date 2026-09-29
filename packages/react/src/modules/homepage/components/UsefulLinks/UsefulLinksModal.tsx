@@ -43,7 +43,7 @@ export function UsefulLinksModal({
       disabled={!canAddLink}
       data-testid="usefullinks-button-add"
     >
-      {t('homepage.usefulLinks.modal.add', 'Ajouter un lien')}
+      {t('homepage.usefulLinks.modal.add')}
     </ButtonBeta>
   );
 
@@ -55,7 +55,7 @@ export function UsefulLinksModal({
       onModalClose={onClose}
     >
       <ModalBeta.Header onModalClose={onClose}>
-        {t('homepage.usefulLinks.modal.title', 'Gérer les liens utiles')}
+        {t('homepage.usefulLinks.modal.title')}
       </ModalBeta.Header>
       <ModalBeta.Body>
         {links.length === 0 ? (
@@ -71,16 +71,10 @@ export function UsefulLinksModal({
                 style={{ width: 200, height: 109 }}
               />
               <p className="useful-links-modal__empty-title">
-                {t(
-                  'homepage.usefulLinks.modal.empty.title',
-                  'Pas encore de liens ajoutés',
-                )}
+                {t('homepage.usefulLinks.modal.empty.title')}
               </p>
               <p className="useful-links-modal__empty-text">
-                {t(
-                  'homepage.usefulLinks.modal.empty.text',
-                  'Gardez à portée de main les sites web que vous utilisez souvent !',
-                )}
+                {t('homepage.usefulLinks.modal.empty.text')}
               </p>
             </div>
           </>
@@ -90,13 +84,13 @@ export function UsefulLinksModal({
               <Table.Thead>
                 <Table.Tr>
                   <Table.Th className="visually-hidden">
-                    {t('homepage.usefulLinks.modal.table.name', 'Nom')}
+                    {t('homepage.usefulLinks.modal.table.name')}
                   </Table.Th>
                   <Table.Th className="visually-hidden">
-                    {t('homepage.usefulLinks.modal.table.url', 'Adresse URL')}
+                    {t('homepage.usefulLinks.modal.table.url')}
                   </Table.Th>
                   <Table.Th className="visually-hidden">
-                    {t('homepage.usefulLinks.modal.table.actions', 'Actions')}
+                    {t('homepage.usefulLinks.modal.table.actions')}
                   </Table.Th>
                 </Table.Tr>
               </Table.Thead>
@@ -127,7 +121,6 @@ export function UsefulLinksModal({
                           leftIcon={<IconEdit />}
                           aria-label={t(
                             'homepage.usefulLinks.modal.table.edit',
-                            'Modifier [[name]]',
                             { name: link.name },
                           )}
                           data-testid={`usefullinks-button-edit-${link.id}`}
@@ -141,7 +134,6 @@ export function UsefulLinksModal({
                           leftIcon={<IconClose />}
                           aria-label={t(
                             'homepage.usefulLinks.modal.table.delete',
-                            'Supprimer [[name]]',
                             { name: link.name },
                           )}
                           data-testid={`usefullinks-button-delete-${link.id}`}
