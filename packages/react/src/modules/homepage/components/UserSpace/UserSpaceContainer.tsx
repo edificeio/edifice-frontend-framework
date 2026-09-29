@@ -2,7 +2,15 @@ import { ReactNode } from 'react';
 import { useUser } from '../../../..';
 import UserSpace from './UserSpace';
 
-export function UserSpaceContainer({ children }: { children?: ReactNode }) {
+export interface UserSpaceContainerProps {
+  children?: ReactNode;
+  onCustomizeWidgetsClick?: () => void;
+}
+
+export function UserSpaceContainer({
+  children,
+  onCustomizeWidgetsClick,
+}: UserSpaceContainerProps) {
   const { user, avatar, userDescription } = useUser();
 
   if (!user || !userDescription) return null;
@@ -11,7 +19,12 @@ export function UserSpaceContainer({ children }: { children?: ReactNode }) {
   const profile = userDescription.profiles?.[0] || 'Guest';
 
   return (
-    <UserSpace name={name} profile={profile} avatar={avatar}>
+    <UserSpace
+      name={name}
+      profile={profile}
+      avatar={avatar}
+      onCustomizeWidgetsClick={onCustomizeWidgetsClick}
+    >
       {children}
     </UserSpace>
   );
