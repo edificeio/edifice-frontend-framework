@@ -8,6 +8,7 @@ import { IDataService } from '../data/interface';
 import { DirectoryService } from '../directory/Service';
 import { EmbedderService } from '../embedder/Service';
 import { App, ResourceType } from '../globals';
+import { GoogleDriveService } from '../googledrive/Service';
 import { IdiomService } from '../idiom/Service';
 import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
 import { NextcloudService } from '../nextcloud/Service';
@@ -33,6 +34,7 @@ export interface IOdeServices {
   conf(): ConfService;
   data(): IDataService;
   directory(): DirectoryService;
+  googledrive(): GoogleDriveService;
   http(): HttpService;
   idiom(): IdiomService;
   nextcloud(): NextcloudService;
@@ -57,6 +59,7 @@ export class OdeServices implements IOdeServices {
   private _conf: ConfService;
   private _data: DataService;
   private _directory: DirectoryService;
+  private _googledrive: GoogleDriveService;
   private _http: HttpService;
   private _idiom: IdiomService;
   private _nextcloud: NextcloudService;
@@ -75,6 +78,7 @@ export class OdeServices implements IOdeServices {
     this._conf = new ConfService(this);
     this._data = new DataService(this);
     this._directory = new DirectoryService(this);
+    this._googledrive = new GoogleDriveService(this);
     this._http = new HttpService(this);
     this._idiom = new IdiomService(this);
     this._nextcloud = new NextcloudService(this);
@@ -115,6 +119,10 @@ export class OdeServices implements IOdeServices {
 
   directory(): DirectoryService {
     return this._directory;
+  }
+
+  googledrive() {
+    return this._googledrive;
   }
 
   http() {

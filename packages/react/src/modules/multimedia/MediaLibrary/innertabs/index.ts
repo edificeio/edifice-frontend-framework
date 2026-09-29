@@ -1,5 +1,6 @@
 import { Audio } from './Audio';
 import { ExternalLink } from './ExternalLink';
+import { GoogleDrive } from './GoogleDrive';
 import { Iframe } from './Iframe';
 import { InternalLink } from './InternalLink';
 import { Nextcloud } from './Nextcloud';
@@ -15,6 +16,7 @@ export const InnerTabs = {
   ExternalLink,
   Workspace,
   Nextcloud,
+  GoogleDrive,
   InternalLink,
   Iframe,
   VideoEmbedder,
