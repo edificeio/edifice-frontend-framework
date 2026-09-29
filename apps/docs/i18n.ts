@@ -340,6 +340,17 @@ i18n.use(initReactI18next).init({
           "L'adresse doit être une URL valide (ex. https://exemple.fr)",
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
+        //------------------ WidgetsPersonalizationPanel ----------
+        'homepage.widgetsPersonalization.title':
+          'Personnalisation des widgets',
+        'homepage.widgetsPersonalization.description':
+          "Choisissez les widgets visibles sur votre page d'accueil",
+        'homepage.widgetsPersonalization.empty':
+          'Aucun widget disponible pour votre établissement.',
+        'homepage.widgetsPersonalization.locked':
+          'Imposé par votre établissement',
+        'homepage.widgetsPersonalization.toggle':
+          'Activer le widget [[label]]',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------
