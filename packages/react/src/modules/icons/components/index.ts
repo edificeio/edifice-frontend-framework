@@ -1,4 +1,5 @@
 export { default as IconAddUser } from './IconAddUser';
+export { default as IconAddWidget } from './IconAddWidget';
 export { default as IconAdd } from './IconAdd';
 export { default as IconAdjustSettings } from './IconAdjustSettings';
 export { default as IconAiFill } from './IconAiFill';
