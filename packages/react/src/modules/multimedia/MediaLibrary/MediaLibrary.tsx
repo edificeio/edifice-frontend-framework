@@ -60,8 +60,16 @@ const orderedTabs = [
   'upload', // Filesystem browser + drag'n'drop of files
   'workspace', // Media browser
   'nextcloud', // Nextcloud media browser
+  'google-drive', // Google Drive media browser
   'video-embedder', // Link to a hosted video
 ];
+
+/**
+ * Workflow right gating the Google Drive tab, declared by the `view` method of
+ * the Google Drive backend module (`googledrive.view` in the admin console).
+ */
+const GOOGLE_DRIVE_VIEW_WORKFLOW =
+  'io.edifice.google.drive.controller.GoogleDriveController|view';
 
 /**
  * Available features exposed by tabs :
@@ -238,12 +246,16 @@ const MediaLibrary = forwardRef(
     const nextcloudViewWorkflow = useHasWorkflow(
       'fr.openent.nextcloud.controller.NextcloudController|view',
     );
+    const googleDriveViewWorkflow = useHasWorkflow(GOOGLE_DRIVE_VIEW_WORKFLOW);
     const { data: workspacePublicConf } = usePublicConf<{
       'folder-service'?: [string];
     }>('workspace');
     const enableNextcloudTab =
       workspacePublicConf?.['folder-service']?.includes('nextcloud') &&
       nextcloudViewWorkflow;
+    const enableGoogleDriveTab =
+      workspacePublicConf?.['folder-service']?.includes('google-drive') &&
+      googleDriveViewWorkflow;
 
     const [type, setType] = useState<MediaLibraryType | null>(null);
 
@@ -272,6 +284,15 @@ const MediaLibrary = forwardRef(
         content: <InnerTabs.Nextcloud />,
         availableFor: ['audio', 'video', 'image', 'attachment'],
         isEnable: () => (enableNextcloudTab ? true : false),
+      },
+      'google-drive': {
+        id: 'google-drive',
+        // FIXME No Google Drive icon in the pack yet; reusing the generic one.
+        icon: <IconGlobe2 />,
+        label: t('bbm.google-drive'),
+        content: <InnerTabs.GoogleDrive />,
+        availableFor: ['audio', 'video', 'image', 'attachment'],
+        isEnable: () => (enableGoogleDriveTab ? true : false),
       },
       'upload': {
         id: 'upload',

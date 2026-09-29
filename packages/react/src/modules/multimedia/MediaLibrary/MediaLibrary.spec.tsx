@@ -139,6 +139,7 @@ vi.mock('./innertabs', async () => {
       Audio: () => <Probe name="audio" />,
       Video: () => <Probe name="video" />,
       ExternalLink: () => <Probe name="external" />,
+      GoogleDrive: () => <Probe name="google-drive" />,
       InternalLink: () => <Probe name="internal" />,
       Iframe: () => <Probe name="iframe" />,
       VideoEmbedder: () => <Probe name="video-embedder" />,
@@ -153,6 +154,8 @@ const VIDEO_CAPTURE =
   'com.opendigitaleducation.video.controllers.VideoController|capture';
 const NEXTCLOUD_VIEW =
   'fr.openent.nextcloud.controller.NextcloudController|view';
+const GOOGLE_DRIVE_VIEW =
+  'io.edifice.google.drive.controller.GoogleDriveController|view';
 
 function setup({
   visibility = 'protected' as 'protected' | 'public' | 'external',
@@ -322,6 +325,51 @@ describe('MediaLibrary', () => {
       await waitFor(() => ref.current?.show('image'));
 
       await waitFor(() => expect(tabIds()).not.toContain('nextcloud'));
+    });
+
+    it('offers the google drive tab when the folder-service config and workflow are both enabled', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [GOOGLE_DRIVE_VIEW]: true,
+        },
+        folderServices: ['google-drive'],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).toContain('google-drive'));
+    });
+
+    it('hides the google drive tab without the folder-service config, even with the workflow', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [GOOGLE_DRIVE_VIEW]: true,
+        },
+        folderServices: [],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).not.toContain('google-drive'));
+    });
+
+    it('hides the google drive tab without the workflow, even with the folder-service config', async () => {
+      const { ref } = setup({
+        workflows: {
+          [WORKSPACE_CREATE]: true,
+          [VIDEO_CAPTURE]: true,
+          [GOOGLE_DRIVE_VIEW]: false,
+        },
+        folderServices: ['google-drive'],
+      });
+
+      await waitFor(() => ref.current?.show('image'));
+
+      await waitFor(() => expect(tabIds()).not.toContain('google-drive'));
     });
 
     it('hides the video capture without its workflow', async () => {
