@@ -54,6 +54,10 @@
       "import": "./dist/font-size/font-size.js",
       "require": "./dist/font-size/font-size.cjs"
     },
+    "./h5p": {
+      "import": "./dist/h5p/h5p.js",
+      "require": "./dist/h5p/h5p.cjs"
+    },
     "./heading": {
       "import": "./dist/heading/heading.js",
       "require": "./dist/heading/heading.cjs"

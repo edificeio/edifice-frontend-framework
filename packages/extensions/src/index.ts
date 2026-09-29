@@ -5,6 +5,7 @@ export * from './audio';
 export * from './conversation-history';
 export * from './conversation-history-body';
 export * from './font-size';
+export * from './h5p';
 export * from './heading';
 export * from './highlight';
 export * from './hyperlink';

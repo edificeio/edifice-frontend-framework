@@ -1,3 +1,5 @@
+import type { H5POptions } from '@edifice.io/tiptap-extensions/h5p';
+import type { Editor } from '@tiptap/react';
 import { RefAttributes, RefObject, useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
@@ -17,6 +19,7 @@ import {
   IconLink,
   IconMic,
   IconPaperclip,
+  IconQuestion,
   IconRecordVideo,
   IconRedo,
   IconSpeechToText,
@@ -37,6 +40,12 @@ import { EditorToolbarTextColor } from './EditorToolbar.TextColor';
 import { EditorToolbarTextSize } from './EditorToolbar.TextSize';
 import { EditorToolbarTypography } from './EditorToolbar.Typography';
 import { EditorToolbarCantoo } from './EditorToolbar.Cantoo.tsx';
+
+/** Options of the editor's H5P node, when enabled (see H5PNodeView). */
+const getH5POptions = (editor: Editor | null) =>
+  editor?.extensionManager.extensions.find(
+    (extension) => extension.name === 'h5p',
+  )?.options as H5POptions | undefined;
 
 interface Props {
   /** Ref to a MediaLibrary instance */
@@ -165,6 +174,20 @@ export const EditorToolbar = ({
         },
         name: 'attachment',
         tooltip: t('tiptap.toolbar.attachment'),
+      },
+      //--------------- H5P ---------------//
+      // Only shown when the application enabled H5PNodeView with onRequestEdit.
+      {
+        type: 'icon',
+        props: {
+          'icon': <IconQuestion />,
+          'className': 'bg-orange-200',
+          'aria-label': t('tiptap.toolbar.h5p', 'Activité interactive (H5P)'),
+          'onClick': () => getH5POptions(editor)?.onRequestEdit?.(),
+        },
+        name: 'h5p',
+        tooltip: t('tiptap.toolbar.h5p', 'Activité interactive (H5P)'),
+        visibility: showIf(!!getH5POptions(editor)?.onRequestEdit),
       },
       {
         type: 'divider',
