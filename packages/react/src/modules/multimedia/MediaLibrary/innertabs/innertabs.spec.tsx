@@ -1,12 +1,13 @@
 import { Ref, ReactNode } from 'react';
 
-import { WorkspaceElement } from '@edifice.io/client';
+import { GoogleDriveCopyError, WorkspaceElement } from '@edifice.io/client';
 
 import { act, render, screen } from '~/setup';
 
 import { MediaLibraryContext } from '../MediaLibraryContext';
 import { Audio } from './Audio';
 import { ExternalLink } from './ExternalLink';
+import { GoogleDrive } from './GoogleDrive';
 import { Iframe } from './Iframe';
 import { InternalLink } from './InternalLink';
 import { Nextcloud } from './Nextcloud';
@@ -44,17 +45,28 @@ vi.mock('../../VideoEmbed/VideoEmbed', () => ({
 }));
 vi.mock('../../Workspace', () => ({ Workspace: capture('Workspace') }));
 vi.mock('../../Nextcloud', () => ({ Nextcloud: capture('Nextcloud') }));
+vi.mock('../../GoogleDrive', () => ({ GoogleDrive: capture('GoogleDrive') }));
 
-// The Nextcloud tab is the only one talking to the services directly: it
-// copies the picked documents into the workspace before the modal succeeds.
-const { copyDocumentToWorkspace } = vi.hoisted(() => ({
-  copyDocumentToWorkspace: vi.fn(),
-}));
+// The Nextcloud and Google Drive tabs are the only ones talking to the services
+// directly: they copy the picked documents into the workspace before the modal
+// succeeds.
+const { copyDocumentToWorkspace, copyDriveDocumentToWorkspace, toastWarning } =
+  vi.hoisted(() => ({
+    copyDocumentToWorkspace: vi.fn(),
+    copyDriveDocumentToWorkspace: vi.fn(),
+    toastWarning: vi.fn(),
+  }));
 vi.mock('@edifice.io/client', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@edifice.io/client')>()),
   odeServices: {
     nextcloud: () => ({ copyDocumentToWorkspace }),
+    googledrive: () => ({
+      copyDocumentToWorkspace: copyDriveDocumentToWorkspace,
+    }),
   },
+}));
+vi.mock('../../../../hooks/useToast', () => ({
+  useToast: () => ({ warning: toastWarning }),
 }));
 vi.mock('../../../../hooks/useUser', () => ({
   useUser: () => ({ user: { userId: 'user-1' } }),
@@ -612,6 +624,66 @@ describe('MediaLibrary innertabs', () => {
       const { setResult, setPreSuccess } = renderTab(<Nextcloud />);
 
       childProps.Nextcloud.onSelect([]);
+
+      expect(setResult).toHaveBeenCalledWith();
+      expect(setPreSuccess).toHaveBeenCalledWith(undefined);
+    });
+  });
+
+  describe('GoogleDrive', () => {
+    const appDocument = { _id: 'app-1' } as WorkspaceElement;
+
+    beforeEach(() => {
+      copyDriveDocumentToWorkspace.mockReset().mockResolvedValue([appDocument]);
+      toastWarning.mockReset();
+    });
+
+    it('copies the picked documents by id, straight to the application folder', async () => {
+      const { setPreSuccess } = renderTab(<GoogleDrive />, {
+        visibility: 'protected',
+      });
+
+      childProps.GoogleDrive.onSelect([{ id: 'drive-1' }]);
+      const copied = await setPreSuccess.mock.calls[0][0]()();
+
+      expect(copyDriveDocumentToWorkspace).toHaveBeenCalledWith(
+        'user-1',
+        ['drive-1'],
+        undefined,
+        { application: 'blog', visibility: 'protected' },
+      );
+      expect(copied).toEqual([appDocument]);
+    });
+
+    it('keeps the documents that were copied when others failed, and warns', async () => {
+      copyDriveDocumentToWorkspace.mockRejectedValue(
+        new GoogleDriveCopyError('partial', [appDocument], [{ id: 'drive-2' }]),
+      );
+      const { setPreSuccess } = renderTab(<GoogleDrive />);
+
+      childProps.GoogleDrive.onSelect([{ id: 'drive-1' }, { id: 'drive-2' }]);
+      const copied = await setPreSuccess.mock.calls[0][0]()();
+
+      expect(copied).toEqual([appDocument]);
+      expect(toastWarning).toHaveBeenCalled();
+    });
+
+    it('propagates the error when nothing could be copied', async () => {
+      copyDriveDocumentToWorkspace.mockRejectedValue(
+        new GoogleDriveCopyError('total', [], [{ id: 'drive-1' }]),
+      );
+      const { setPreSuccess } = renderTab(<GoogleDrive />);
+
+      childProps.GoogleDrive.onSelect([{ id: 'drive-1' }]);
+
+      await expect(setPreSuccess.mock.calls[0][0]()()).rejects.toThrow('total');
+      expect(toastWarning).not.toHaveBeenCalled();
+    });
+
+    it('clears the result when nothing is selected', () => {
+      const { setResult, setPreSuccess } = renderTab(<GoogleDrive />);
+
+      childProps.GoogleDrive.onSelect([]);
 
       expect(setResult).toHaveBeenCalledWith();
       expect(setPreSuccess).toHaveBeenCalledWith(undefined);
