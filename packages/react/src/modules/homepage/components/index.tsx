@@ -1,3 +1,4 @@
+export * from './Communities';
 export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';
@@ -9,3 +10,4 @@ export * from './UsefulLinks';
 export * from './UserSpace';
 export * from './Communities';
 export * from './AlloRegion';
+export * from './WidgetsPersonalizationPanel';
