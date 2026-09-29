@@ -4,6 +4,10 @@ export * from './configure/interfaces';
 export * from './directory/interface';
 export * from './embedder/interface';
 export * from './globals';
+export * from './googledrive/interface';
+// Exported as a value: consumers need it for `instanceof` when a copy
+// partially fails.
+export { GoogleDriveCopyError } from './googledrive/Service';
 export * from './notify/interfaces';
 export * from './nextcloud/interface';
 export * from './services';
