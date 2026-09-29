@@ -12,6 +12,7 @@ export * from './useDirectory';
 export * from './useDropdown';
 export * from './useDropzone';
 export * from './useEdificeIcons';
+export * from './useGoogleDriveSearch';
 export * from './useHasWorkflow';
 export * from './useHover';
 export * from './useHttpErrorToast';
