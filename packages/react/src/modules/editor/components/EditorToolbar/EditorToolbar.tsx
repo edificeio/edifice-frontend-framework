@@ -183,7 +183,8 @@ export const EditorToolbar = ({
           'icon': <IconQuestion />,
           'className': 'bg-orange-200',
           'aria-label': t('tiptap.toolbar.h5p', 'Activité interactive (H5P)'),
-          'onClick': () => getH5POptions(editor)?.onRequestEdit?.(),
+          'onClick': () =>
+            editor && getH5POptions(editor)?.onRequestEdit?.({ editor }),
         },
         name: 'h5p',
         tooltip: t('tiptap.toolbar.h5p', 'Activité interactive (H5P)'),
