@@ -36,6 +36,11 @@ describe('Communities', () => {
     expect(screen.getByText('Voir plus')).toBeInTheDocument();
 
     rerender(<Communities handleActionClick={handleActionClick} />);
+    expect(screen.getByText('Voir plus')).toBeInTheDocument();
+
+    rerender(
+      <Communities handleActionClick={handleActionClick} canCreateCommunity />,
+    );
     expect(screen.getByTestId('home-card-header-action')).toBeInTheDocument();
     expect(screen.getByText('Créer une communauté')).toBeInTheDocument();
   });

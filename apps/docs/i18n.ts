@@ -258,10 +258,13 @@ i18n.use(initReactI18next).init({
         'homepage.widget.communities.actionLabel.seeMore': 'Voir plus',
         'homepage.widget.communities.actionLabel.create':
           'Créer une communauté',
-        'homepage.communities.description':
-          'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
-        'homepage.communities.subtitle':
-          'Créez votre première communauté pour animez votre classe!',
+        'homepage.communities.description.teacher':
+          `Centralisez et organisez les documents et les ressources pour vos groupes d'élèves.`,
+        'homepage.communities.subtitle.teacher':
+          'Réunissez vos élèves avec Communautés !',
+        'homepage.communities.description.student': `Consultez l'onglet "Nouveaux partages" pour découvrir si vous avez été ajouté à une nouvelle communauté.`,
+        'homepage.communities.subtitle.student':
+          'Retrouvez toutes vos communautés ici !',
         //----------------- LastInfosList -----------------
         'homepage.last-infos-list.empty':
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',

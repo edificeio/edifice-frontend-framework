@@ -36,6 +36,7 @@ const HomeCardHeader = ({
       align="center"
       justify="between"
       gap="8"
+      wrap="wrap"
       className={clsx('home-card-header', className)}
       {...rest}
     >
@@ -46,6 +47,7 @@ const HomeCardHeader = ({
           size="sm"
           variant="ghost"
           onClick={onActionClick}
+          className="home-card-header-action"
           leftIcon={actionLeftIcon}
           rightIcon={actionRightIcon}
           data-testid="home-card-header-action"

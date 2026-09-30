@@ -2,9 +2,15 @@ import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '~/setup';
 import { CommunitiesContainer } from './CommunitiesContainer';
 import { useCommunities } from './useCommunities';
+import { useHasWorkflow } from 'src/hooks';
 
 vi.mock('./useCommunities', () => ({
   useCommunities: vi.fn(),
+}));
+
+vi.mock('src/hooks', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('src/hooks')>()),
+  useHasWorkflow: vi.fn(),
 }));
 
 describe('CommunitiesContainer', () => {
@@ -22,6 +28,10 @@ describe('CommunitiesContainer', () => {
 
   beforeEach(() => {
     vi.mocked(useCommunities).mockReset();
+    vi.mocked(useHasWorkflow).mockReturnValue({
+      'community.access': true,
+      'community.create': true,
+    });
   });
 
   it('renders the skeleton while communities are loading', () => {
@@ -109,5 +119,54 @@ describe('CommunitiesContainer', () => {
       '/communities/create/step-type',
       '_self',
     );
+  });
+
+  it('opens the communities list when there are no communities and the user cannot create one', () => {
+    vi.mocked(useCommunities).mockReturnValue({
+      communities: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useHasWorkflow).mockReturnValue({
+      'community.access': true,
+      'community.create': false,
+    });
+    const windowOpen = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(<CommunitiesContainer />);
+    screen.getByTestId('home-card-header-action').click();
+
+    expect(screen.getByText('Voir plus')).toBeInTheDocument();
+    expect(windowOpen).toHaveBeenCalledWith('/communities', '_self');
+  });
+
+  it('renders the skeleton while the creation right is loading', () => {
+    vi.mocked(useCommunities).mockReturnValue({
+      communities: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useHasWorkflow).mockReturnValue(undefined);
+
+    render(<CommunitiesContainer onHeaderActionClick={vi.fn()} />);
+
+    expect(screen.getByTestId('communities-skeleton')).toBeInTheDocument();
+  });
+
+  it('renders nothing when the user has neither the access nor the creation right', () => {
+    vi.mocked(useCommunities).mockReturnValue({
+      communities: [],
+      isLoading: false,
+      error: null,
+    });
+    vi.mocked(useHasWorkflow).mockReturnValue({
+      'community.access': false,
+      'community.create': false,
+    });
+
+    const { container } = render(<CommunitiesContainer />);
+
+    expect(container).toBeEmptyDOMElement();
+    expect(useCommunities).toHaveBeenCalledWith({ enabled: false });
   });
 });

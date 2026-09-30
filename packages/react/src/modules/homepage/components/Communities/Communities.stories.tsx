@@ -68,8 +68,20 @@ export const Default: Story = {
   },
 };
 
-export const WithoutCommunities: Story = {
+export const WithoutCommunitiesReadOnly: Story = {
   render: () => <Communities handleActionClick={() => {}} />,
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Affichage sans passer la prop communities (fallback par défaut à une liste vide).',
+      },
+    },
+  },
+};
+
+export const WithoutCommunitiesCanCreate: Story = {
+  render: () => <Communities handleActionClick={() => {}} canCreateCommunity />,
   parameters: {
     docs: {
       description: {

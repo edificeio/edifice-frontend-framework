@@ -11,7 +11,7 @@ interface CommunitiesSearchResponse {
   items: CommunitiesModel[];
 }
 
-export function useCommunities() {
+export function useCommunities({ enabled = true }: { enabled?: boolean } = {}) {
   const { data, isLoading, error } = useQuery(
     queryOptions({
       queryKey: ['communities', 'preview'],
@@ -27,6 +27,7 @@ export function useCommunities() {
 
         return response.items;
       },
+      enabled,
     }),
   );
 
