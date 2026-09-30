@@ -35,6 +35,20 @@ const meta: Meta<typeof Communities> = {
         onActionClick: () => {},
         nbNotifications: 0,
       },
+      {
+        title: 'Club Theatre',
+        communityImage:
+          'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
+        onActionClick: () => {},
+        nbNotifications: 0,
+      },
+      {
+        title: 'Seconde Anglais',
+        communityImage:
+          'https://media.istockphoto.com/id/1322277517/fr/photo/herbe-sauvage-dans-les-montagnes-au-coucher-du-soleil.jpg?s=612x612&w=0&k=20&c=tQ19uZQLlIFy8J6QWMyOL6lPt3pdSHBSDFHoXr1K_g0=',
+        onActionClick: () => {},
+        nbNotifications: 0,
+      },
     ],
   },
   decorators: [
