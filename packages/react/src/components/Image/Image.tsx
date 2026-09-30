@@ -41,6 +41,7 @@ const Image = forwardRef(
       ratio,
       objectFit,
       className,
+      onError: onErrorProp,
       ...restProps
     }: ImageProps,
     ref: Ref<HTMLImageElement>,
@@ -48,6 +49,11 @@ const Image = forwardRef(
     const placeholder = imgPlaceholder ?? commonPlaceholder;
 
     const { imgSrc, onError } = useImage({ src, placeholder });
+
+    const handleError: React.ReactEventHandler<HTMLImageElement> = (event) => {
+      onError();
+      onErrorProp?.(event);
+    };
 
     const ratioImage = {
       'ratio ratio-1x1': ratio === '1',
@@ -78,7 +84,7 @@ const Image = forwardRef(
     const renderImage = (
       <img
         alt={alt}
-        onError={onError}
+        onError={handleError}
         ref={ref}
         src={imgSrc}
         className={classes}
