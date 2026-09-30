@@ -42,6 +42,10 @@
     line-height: var(--primitive-font-lineheight-s);
   }
 
+  &-header-action {
+    margin-left: auto;
+  }
+
   // Title style override for the "secondary" variant
   &--secondary & {
     &-header-title {

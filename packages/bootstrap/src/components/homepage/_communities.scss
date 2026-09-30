@@ -2,11 +2,17 @@
   &-empty {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     padding: 0px var(--primitive-spacer-16) 0px var(--primitive-spacer-16);
     gap: var(--primitive-spacer-16);
   }
 
   &-empty-content {
+    flex: 1 0 0;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,6 +25,21 @@
 
   &-empty-description {
     font-size: var(--primitive-font-size-small);
+  }
+  
+  &-content {
+    container-type: inline-size;
+  }
+
+  &-list {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--primitive-spacer-16);
+    width: 100%;
+
+    @container (max-width: 425px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   &-item {
