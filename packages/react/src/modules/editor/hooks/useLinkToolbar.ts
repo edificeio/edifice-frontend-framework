@@ -18,7 +18,9 @@ export const useLinkToolbar = (
   mediaLibraryRef: RefObject<MediaLibraryRef>,
 ) => {
   const onEdit = useCallback(
-    (attrs: LinkerAttributes | HyperlinkAttributes) => {
+    (attrs: LinkerAttributes | HyperlinkAttributes | undefined) => {
+      if (!attrs) return;
+
       // If a link is active, select it.
       // see https://github.com/ProseMirror/prosemirror-state/blob/88e2a24104481098f0f660e74240c0f846e7fd6e/src/selection.ts#L320
       // Edit: 2024-01-08 when this function is called, the linker node is already selected !
@@ -51,8 +53,10 @@ export const useLinkToolbar = (
     [editor, mediaLibraryRef],
   );
 
-  const onOpen = (attrs: LinkerAttributes) => {
-    window.open(attrs.href || 'about:blank', '_blank');
+  const onOpen = (
+    attrs: LinkerAttributes | HyperlinkAttributes | undefined,
+  ) => {
+    window.open(attrs?.href || 'about:blank', '_blank');
   };
 
   const onUnlink = (/*attrs: LinkerAttributes*/) => {

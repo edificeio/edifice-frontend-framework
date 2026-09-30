@@ -5,7 +5,11 @@ import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
-import { offset } from '@floating-ui/dom';
+import {
+  FLOATING_MENU_Z_INDEX,
+  getFloatingMenuOptions,
+  useReferencedVirtualElement,
+} from '../Toolbar/FloatingMenuOptions';
 import {
   IconImageSizeLarge,
   IconImageSizeMedium,
@@ -39,12 +43,15 @@ const BubbleMenuEditImage = ({
     const { selection } = editor.view.state;
     const selectedNode = editor.view.state.doc.nodeAt(selection.anchor);
 
-    setCurrentSize(selectedNode?.attrs?.size || null);
-    setCurrentWidth(selectedNode?.attrs?.width || null);
+    setCurrentSize(selectedNode?.attrs?.size ?? null);
+    setCurrentWidth(selectedNode?.attrs?.width ?? null);
   }, [editor, editorState]);
 
   const handleButtonClick = useCallback(
     (buttonSize: ButtonSize) => {
+      // `updateAttributes` patches the node's attrs in place, without
+      // replacing it (and losing the selection) like `setNode`-based
+      // commands would.
       editor
         .chain()
         .focus()
@@ -188,23 +195,36 @@ const BubbleMenuEditImage = ({
     };
   }, [editor]);
 
-  const floatingOptions = useMemo(() => {
-    return {
-      placement: 'bottom-start' as const,
-      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
-      strategy: 'absolute' as const,
-    };
-  }, []);
+  const floatingOptions = useMemo(
+    () =>
+      getFloatingMenuOptions({
+        placement: 'bottom-start',
+        offset: { mainAxis: 0, crossAxis: 0 },
+      }),
+    [],
+  );
+
+  const getReferencedVirtualElement = useReferencedVirtualElement(reference);
+
+  // Memoized: an identity change on `shouldShow`/`getReferencedVirtualElement`
+  // makes v3's BubbleMenu re-run a `dispatch` effect, which combined with
+  // `useEditorState` above (re-renders on every transaction) caused an
+  // infinite render loop.
+  const handleShouldShow = useCallback(
+    ({ editor }: { editor: Editor }) =>
+      editor.isActive('custom-image') && !openEditImage,
+    [openEditImage],
+  );
 
   return (
     <BubbleMenu
       className={openEditImage ? 'd-none' : ''}
-      shouldShow={({ editor }) => {
-        return editor.isActive('custom-image') && !openEditImage;
-      }}
+      shouldShow={handleShouldShow}
       editor={editor}
       options={floatingOptions}
-      getReferencedVirtualElement={() => reference}
+      getReferencedVirtualElement={getReferencedVirtualElement}
+      // v3's `options` has no `zIndex` field - set via style instead.
+      style={{ zIndex: FLOATING_MENU_Z_INDEX }}
     >
       {editable && (
         <Toolbar

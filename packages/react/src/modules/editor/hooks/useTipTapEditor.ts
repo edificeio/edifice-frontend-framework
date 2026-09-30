@@ -18,7 +18,13 @@ import Superscript from '@tiptap/extension-superscript';
 import { Table, TableHeader, TableRow } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import Typography from '@tiptap/extension-typography';
-import { Content, Extensions, FocusPosition, useEditor } from '@tiptap/react';
+import {
+  Content,
+  Editor,
+  Extensions,
+  FocusPosition,
+  useEditor,
+} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import { useTranslation } from 'react-i18next';
@@ -58,7 +64,7 @@ export const useTipTapEditor = (
   content: Content,
   focus?: FocusPosition,
   placeholder?: string,
-  onContentChange?: ({ editor }: { editor: any }) => void,
+  onContentChange?: ({ editor }: { editor: Editor }) => void,
   visibility: WorkspaceVisibility = 'protected',
   extensions?: Extensions,
 ) => {
@@ -72,7 +78,14 @@ export const useTipTapEditor = (
     // It will then be set in the correct editable mode, by a useEffect below.
     editable: true,
     extensions: [
-      StarterKit,
+      // v3's StarterKit bundles its own heading/link nodes, which would compete with
+      // CustomHeading/Hyperlink below for the same HTML tags. Disabled.
+      // `underline` stays enabled (default) - same as the explicit Underline
+      // extension it replaces, no custom one added below.
+      StarterKit.configure({
+        heading: false,
+        link: false,
+      }),
       Focus.configure({
         className: 'has-focus',
         mode: 'all',
@@ -83,7 +96,19 @@ export const useTipTapEditor = (
       CustomHighlight.configure({
         multicolor: true,
       }),
-      TextStyleKit,
+      // v3's TextStyleKit bundles its own color/fontFamily/fontSize, which would
+      // duplicate the Color/FontFamily/FontSize added below. Disabled.
+      // backgroundColor/lineHeight are also disabled: they're new in v3 (v2
+      // stripped these inline styles), and lineHeight would otherwise collide
+      // with our own @edifice.io/tiptap-extensions/line-height by name for
+      // any caller that adds it via this hook's `extensions` param.
+      TextStyleKit.configure({
+        color: false,
+        fontFamily: false,
+        fontSize: false,
+        backgroundColor: false,
+        lineHeight: false,
+      }),
       Color,
       Subscript,
       Superscript,
@@ -135,7 +160,10 @@ export const useTipTapEditor = (
   }, [editor, editable]);
 
   useEffect(() => {
-    editor?.commands.setContent(content);
+    // v3's setContent emits the 'update' event by default (v2 didn't), which
+    // would call onContentChange for this programmatic sync, not just real
+    // user edits. Keep it silent, like setEditable above.
+    editor?.commands.setContent(content, { emitUpdate: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 

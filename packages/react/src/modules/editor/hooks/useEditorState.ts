@@ -30,11 +30,13 @@ export const useEditorState = (editor: Editor | null | undefined): number => {
       setUpdateCount((prev) => prev + 1);
     };
 
-    // Listen to both selection changes and content updates
-    editor.on('update', handleUpdate);
+    // Listen to both selection changes and content updates. 'update' alone
+    // only fires when the document content changes, not on a pure selection
+    // move (e.g. clicking into a different cell) - 'transaction' covers both.
+    editor.on('transaction', handleUpdate);
 
     return () => {
-      editor.off('update', handleUpdate);
+      editor.off('transaction', handleUpdate);
     };
   }, [editor]);
 

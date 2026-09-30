@@ -1,11 +1,15 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
-import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
+import {
+  FLOATING_MENU_Z_INDEX,
+  getFloatingMenuOptions,
+  useReferencedVirtualElement,
+} from '../Toolbar/FloatingMenuOptions';
 import {
   IconAlertTriangle,
   IconDelete,
@@ -35,7 +39,7 @@ const BubbleMenuEditInformationPane = ({
         break;
       }
     }
-    setCurrentType(selectedNode?.attrs?.type || null);
+    setCurrentType(selectedNode?.attrs?.type ?? null);
   }, [editor, editorState]);
 
   const InformationPaneTypeItems: ToolbarItem[] = useMemo(() => {
@@ -183,22 +187,34 @@ const BubbleMenuEditInformationPane = ({
     };
   }, [editor]);
 
-  const floatingOptions = useMemo(() => {
-    return {
-      placement: 'bottom' as const,
-      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
-      strategy: 'absolute' as const,
-    };
-  }, []);
+  const floatingOptions = useMemo(
+    () =>
+      getFloatingMenuOptions({
+        placement: 'bottom',
+        offset: { mainAxis: 0, crossAxis: 0 },
+      }),
+    [],
+  );
+
+  const getReferencedVirtualElement = useReferencedVirtualElement(reference);
+
+  // Memoized: an identity change on `shouldShow`/`getReferencedVirtualElement`
+  // makes v3's BubbleMenu re-run a `dispatch` effect, which combined with
+  // `useEditorState` above (re-renders on every transaction) caused an
+  // infinite render loop.
+  const handleShouldShow = useCallback(
+    ({ editor }: { editor: Editor }) => editor.isActive('information-pane'),
+    [],
+  );
 
   return (
     <BubbleMenu
-      shouldShow={({ editor }: { editor: Editor }) => {
-        return editor.isActive('information-pane');
-      }}
+      shouldShow={handleShouldShow}
       editor={editor}
       options={floatingOptions}
-      getReferencedVirtualElement={() => reference}
+      getReferencedVirtualElement={getReferencedVirtualElement}
+      // v3's `options` has no `zIndex` field - set via style instead.
+      style={{ zIndex: FLOATING_MENU_Z_INDEX }}
     >
       {editable && <Toolbar className="p-8" items={InformationPaneTypeItems} />}
     </BubbleMenu>

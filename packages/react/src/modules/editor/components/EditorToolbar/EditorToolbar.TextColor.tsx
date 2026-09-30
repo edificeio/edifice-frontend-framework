@@ -20,6 +20,7 @@ import {
 } from '../../../../components';
 import { IconTextColor } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
+import { useEditorState } from '../../hooks/useEditorState';
 
 interface Props {
   /**
@@ -40,14 +41,16 @@ export const EditorToolbarTextColor = ({ triggerProps, itemRefs }: Props) => {
 
   // Manage text and background colors.
   const [color, setColor] = useState<string>('#4A4A4A');
+  // editor?.state alone doesn't trigger a re-render on a pure selection move
+  // (no content edit, e.g. clicking into differently-colored text).
+  const editorState = useEditorState(editor);
 
   const isActive = useMemo(
     () =>
       editor?.isActive('textStyle', {
         color: /^#([0-9a-f]{3}){1,2}$/i,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [editor, editor?.state],
+    [editor, editorState],
   );
 
   // Triggered when the user chooses a color for cells background.
@@ -69,7 +72,7 @@ export const EditorToolbarTextColor = ({ triggerProps, itemRefs }: Props) => {
   useEffect(() => {
     const textStyle = editor?.getAttributes('textStyle');
     setColor(textStyle?.color ?? '#4A4A4A');
-  }, [editor, editor?.state]);
+  }, [editor, editorState]);
 
   // Palettes of available colors to choose from.
   const palettes: ColorPalette[] = [

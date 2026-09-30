@@ -46,7 +46,6 @@ export const Linker = Node.create({
   allowGapCursor: false,
 
   priority: 1100,
-  keepOnSplit: false,
 
   addOptions() {
     return {

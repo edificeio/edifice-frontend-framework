@@ -1,9 +1,10 @@
 import { Editor } from '@tiptap/core';
 import Color from '@tiptap/extension-color';
 import FontFamily from '@tiptap/extension-font-family';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { TextSelection } from '@tiptap/pm/state';
 
-import { render, screen } from '~/setup';
+import { act, render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
 import { EditorContext } from '../../hooks/useEditorContext';
 import { createTestEditor } from '../../test-utils/createTestEditor';
@@ -37,6 +38,30 @@ function renderTypography(editor: Editor | null) {
 
 function getTrigger() {
   return screen.getByRole('button', { name: 'Font' });
+}
+
+// Returns the doc position of the start of the given text node (so
+// `[pos, pos + text.length]` is exactly that word's range).
+function posInText(editor: Editor, text: string) {
+  let pos: number | undefined;
+  editor.state.doc.descendants((node, nodePos) => {
+    if (node.isText && node.text === text) {
+      pos = nodePos;
+    }
+  });
+  return pos as number;
+}
+
+// Moves the text selection to the given position, wrapped in `act` so the
+// resulting transaction-driven re-render is flushed before the next
+// assertion, like a real user click would be.
+function moveSelectionTo(editor: Editor, pos: number) {
+  act(() => {
+    const tr = editor.state.tr.setSelection(
+      TextSelection.near(editor.state.doc.resolve(pos)),
+    );
+    editor.view.dispatch(tr);
+  });
 }
 
 describe('EditorToolbarTypography', () => {
@@ -151,6 +176,34 @@ describe('EditorToolbarTypography', () => {
     renderTypography(editor);
 
     expect(getTrigger()).toHaveClass('selected');
+  });
+
+  it('checks the right option on a pure selection move, with no content change and no manual re-render', async () => {
+    editor = buildEditor('<p>Lora</p><p>Default</p>');
+    const loraPos = posInText(editor, 'Lora');
+    const defaultPos = posInText(editor, 'Default');
+
+    editor.commands.setTextSelection({ from: loraPos, to: loraPos + 4 });
+    editor.chain().setFontFamily('Lora').run();
+    // Selection starts in the plain paragraph, before the dropdown even
+    // opens - no re-render from clicking the trigger should be needed later.
+    moveSelectionTo(editor, defaultPos + 2);
+
+    const { user } = renderTypography(editor);
+    // Open the dropdown once and leave it open: clicking the trigger again
+    // would itself cause a re-render, masking the bug this test guards
+    // against (the component never updating on a pure selection move alone).
+    await user.click(getTrigger());
+    expect(
+      screen.getByRole('menuitemradio', { name: 'Sans-serif' }),
+    ).toHaveAttribute('aria-checked', 'true');
+
+    // Moving into the "Lora" text - no content edit, dropdown stays open, no
+    // manual re-render - must check Serif instead.
+    moveSelectionTo(editor, loraPos + 2);
+    expect(
+      screen.getByRole('menuitemradio', { name: 'Serif' }),
+    ).toHaveAttribute('aria-checked', 'true');
   });
 
   it('still renders all options and does not throw when the editor is null', async () => {
