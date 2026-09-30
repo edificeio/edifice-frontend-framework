@@ -1,5 +1,4 @@
 import illuCommunities from '@edifice.io/bootstrap/dist/images/homepage/illu-communities.svg';
-import { useMeasure } from '@uidotdev/usehooks';
 import { useTranslation } from 'react-i18next';
 import { Flex } from '../../../../components/Flex/index';
 import { Image } from '../../../../components/Image/index';
@@ -10,52 +9,46 @@ import CommunityItem, { CommunityItemProps } from './CommunityItem';
 export interface CommunitiesProps {
   communitiesList?: CommunityItemProps[];
   handleActionClick: () => void;
+  canCreateCommunity?: boolean;
 }
-
-/** Below this container width, only 3 items fit without crowding. */
-const NARROW_CONTAINER_WIDTH = 800;
-const MAX_ITEMS = 4;
-const MAX_ITEMS_NARROW = 3;
 
 const Communities = ({
   communitiesList = [],
   handleActionClick,
+  canCreateCommunity = false,
 }: CommunitiesProps) => {
   const { t } = useTranslation();
-  const [containerRef, { width }] = useMeasure<HTMLDivElement>();
-
-  const maxItems =
-    width !== null && width < NARROW_CONTAINER_WIDTH
-      ? MAX_ITEMS_NARROW
-      : MAX_ITEMS;
-  const visibleCommunities = communitiesList.slice(0, maxItems);
-  const itemWidth = `${100 / maxItems}%`;
 
   return (
     <HomeCard variant="primary">
       <HomeCard.Header
         actionLabel={
-          communitiesList.length > 0
-            ? t('homepage.communities.actionLabel.seeMore')
-            : t('homepage.communities.actionLabel.create')
+          communitiesList.length > 0 || !canCreateCommunity
+            ? t('homepage.communities.actionLabel.seeMore', 'Voir plus')
+            : t(
+                'homepage.communities.actionLabel.create',
+                'Créer une communauté',
+              )
         }
         actionRightIcon={<IconArrowRight />}
         onActionClick={handleActionClick}
-        title={t('homepage.communities.title')}
+        title={t('homepage.communities.title', 'Mes communautés')}
       />
-      <HomeCard.Content>
-        <Flex ref={containerRef} gap="16">
-          {visibleCommunities.length > 0 ? (
-            visibleCommunities.map((community, index) => (
-              <CommunityItem
-                key={index}
-                title={community.title}
-                communityImage={community.communityImage}
-                onActionClick={community.onActionClick}
-                nbNotifications={community.nbNotifications}
-                width={itemWidth}
-              />
-            ))
+      <HomeCard.Content className="communities-content">
+        <Flex gap="16">
+          {communitiesList.length > 0 ? (
+            <div className="communities-list">
+              {communitiesList.map((community, index) => (
+                <CommunityItem
+                  key={index}
+                  title={community.title}
+                  communityImage={community.communityImage}
+                  onActionClick={community.onActionClick}
+                  nbNotifications={community.nbNotifications}
+                  width="auto"
+                />
+              ))}
+            </div>
           ) : (
             <div className="communities-empty">
               <Image
@@ -65,18 +58,37 @@ const Communities = ({
                 style={{ width: 80, height: 80 }}
               />
               <div className="communities-empty-content">
-                <p className="communities-empty-title">
-                  {t(
-                    'homepage.communities.subtitle',
-                    'Créez votre première communauté pour animer votre classe !',
-                  )}
-                </p>
-                <p className="communities-empty-description">
-                  {t(
-                    'homepage.communities.description',
-                    'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
-                  )}
-                </p>
+                {!canCreateCommunity ? (
+                  <>
+                    <p className="communities-empty-title">
+                      {t(
+                        'homepage.communities.subtitle.student',
+                        'Retrouvez toutes vos communautés ici ! ',
+                      )}
+                    </p>
+                    <p className="communities-empty-description">
+                      {t(
+                        'homepage.communities.description.student',
+                        `Consultez l'onglet "Nouveaux partages" pour découvrir si vous avez été ajouté à une nouvelle communauté.`,
+                      )}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="communities-empty-title">
+                      {t(
+                        'homepage.communities.subtitle.teacher',
+                        'Réunissez vos élèves avec Communautés !',
+                      )}
+                    </p>
+                    <p className="communities-empty-description">
+                      {t(
+                        'homepage.communities.description.teacher',
+                        `Centralisez et organisez les documents et les ressources pour vos groupes d'élèves.`,
+                      )}
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           )}
