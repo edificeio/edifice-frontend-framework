@@ -100,10 +100,14 @@ const LinkToolbar = ({
   return (
     <>
       {editor && (
+        // BubbleMenu, not FloatingMenu: `shouldShow` below overrides visibility
+        // either way, this only changes the default position reference.
         <BubbleMenu
           editor={editor}
           options={floatingOptions}
           shouldShow={handleShouldShow}
+          // v3's `options` has no `zIndex` field - set via style instead.
+          style={{ zIndex: 999 }}
         >
           <Toolbar className="p-4" items={LinkToolbarItems} />
         </BubbleMenu>

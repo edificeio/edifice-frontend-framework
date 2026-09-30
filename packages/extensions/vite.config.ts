@@ -1,7 +1,7 @@
 import { resolve } from "path";
 
-import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { defineConfig } from "vitest/config";
 
 import { dependencies } from "./package.json";
 
@@ -42,4 +42,9 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.json",
     }),
   ],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    include: ["src/**/*.spec.ts"],
+  },
 });

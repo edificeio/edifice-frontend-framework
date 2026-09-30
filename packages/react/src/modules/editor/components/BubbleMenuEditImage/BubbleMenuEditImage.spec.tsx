@@ -1,8 +1,14 @@
 import { Editor } from '@tiptap/core';
 import { NodeSelection } from '@tiptap/pm/state';
+import type { BubbleMenuProps } from '@tiptap/react/menus';
 import { render, screen } from '~/setup';
 import { createTestEditor } from '../../test-utils/createTestEditor';
 import BubbleMenuEditImage from './BubbleMenuEditImage';
+
+// Captured from the mocked BubbleMenu below, to check what BubbleMenuEditImage
+// actually passes it (see the dedicated test further down).
+let capturedOptions: BubbleMenuProps['options'];
+let capturedStyle: BubbleMenuProps['style'];
 
 // `@tiptap/react`'s real BubbleMenu depends on tippy.js, whose CJS build
 // does not interop cleanly with Vitest's ESM loader in this monorepo (a
@@ -14,12 +20,23 @@ import BubbleMenuEditImage from './BubbleMenuEditImage';
 // `className`, e.g. the `d-none` class the component applies while
 // `openEditImage` is true) and shows its children only when `shouldShow`
 // returns true, keeping everything in the normal React tree so RTL can
-// query it.
-vi.mock('@tiptap/react', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@tiptap/react')>();
+// query it. v3 moved Floating/BubbleMenu out of `@tiptap/react` into
+// `@tiptap/react/menus` (see BubbleMenuEditImage.tsx's own import) - mock
+// that subpath instead.
+vi.mock('@tiptap/react/menus', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@tiptap/react/menus')>();
   return {
     ...actual,
-    BubbleMenu: ({ editor, shouldShow, children, className }: any) => {
+    BubbleMenu: ({
+      editor,
+      shouldShow,
+      children,
+      className,
+      options,
+      style,
+    }: any) => {
+      capturedOptions = options;
+      capturedStyle = style;
       const visible = shouldShow
         ? shouldShow({ editor, view: editor?.view, state: editor?.state })
         : true;
@@ -91,6 +108,26 @@ describe('BubbleMenuEditImage', () => {
     );
 
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('configures a real offset middleware and a z-index, not a dead middleware array', () => {
+    render(
+      <BubbleMenuEditImage
+        editor={editor}
+        onEditImage={vi.fn()}
+        openEditImage={false}
+        editable={true}
+      />,
+    );
+
+    // tiptap only reads a named `offset` field to build its middleware array -
+    // `middleware: [offset(...)]` is silently ignored (not this key).
+    expect(capturedOptions).toMatchObject({
+      offset: { mainAxis: 0, crossAxis: 0 },
+    });
+    expect(capturedOptions).not.toHaveProperty('middleware');
+    // v3's `options` has no `zIndex` field - must be set via `style` instead.
+    expect(capturedStyle).toMatchObject({ zIndex: 999 });
   });
 
   it('is hidden (d-none) while the edit-image panel is open', () => {

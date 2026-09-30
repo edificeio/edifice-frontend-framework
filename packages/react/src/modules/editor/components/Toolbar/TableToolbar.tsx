@@ -2,11 +2,11 @@ import { RefAttributes, useEffect, useMemo, useState } from 'react';
 
 import { Editor, findParentNodeClosestToPos } from '@tiptap/react';
 import { FloatingMenu } from '@tiptap/react/menus';
-import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
 
 import { IconButtonProps, Toolbar } from '../../../../components';
 import { IconMergeCells, IconSplitCells } from '../../../icons/components';
+import { useEditorState } from '../../hooks/useEditorState';
 import { TableToolbarAddMenu } from './TableToolbar.AddMenu';
 import { TableToolbarCellColor } from './TableToolbar.CellColor';
 import { TableToolbarDelMenu } from './TableToolbar.DelMenu';
@@ -23,6 +23,10 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
 
   // Display the Split action when truthy, and Merge action when falsy.
   const [isSpan, setSpan] = useState<boolean | undefined>(undefined);
+  // isSpan depends on the selected cell's attrs, which can change on a pure
+  // selection move (no content edit, e.g. clicking into a different cell) -
+  // `editor?.state` alone doesn't trigger a re-render for that.
+  const editorState = useEditorState(editor);
 
   // Options need some computing
   const floatingOptions = useMemo(() => {
@@ -41,10 +45,12 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
 
     return {
       placement: 'bottom' as const,
-      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      // tiptap builds its middleware array from named fields only - a raw
+      // `middleware: [offset(...)]` key is silently ignored.
+      offset: { mainAxis: 0, crossAxis: 0 },
       strategy: 'absolute' as const,
-      // popperOptions: {modifiers: [ /*see popper v2 modifiers*/ ]},
-      // Try to get the bounding rect of the table.
+      // Dead in v3: FloatingMenu has no reference-rect override (unlike
+      // BubbleMenu's getReferencedVirtualElement), so this never runs.
       getReferenceClientRect: () => {
         const parentDiv = editor?.isActive('table')
           ? findParentNodeClosestToPos(
@@ -85,7 +91,7 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
     } else {
       isSpan && setSpan(undefined);
     }
-  }, [editor, editor?.state, isSpan]);
+  }, [editor, editorState, isSpan]);
 
   const handleShouldShow = () =>
     (editor?.isEditable && editor.isActive('table')) || false;
@@ -97,6 +103,8 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
           editor={editor}
           options={floatingOptions}
           shouldShow={handleShouldShow}
+          // v3's `options` has no `zIndex` field - set via style instead.
+          style={{ zIndex: 999 }}
         >
           <Toolbar
             className="p-4"

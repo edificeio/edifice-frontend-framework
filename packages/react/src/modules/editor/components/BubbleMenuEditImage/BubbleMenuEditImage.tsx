@@ -5,7 +5,6 @@ import { Editor } from '@tiptap/react';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
-import { offset } from '@floating-ui/dom';
 import {
   IconImageSizeLarge,
   IconImageSizeMedium,
@@ -45,6 +44,8 @@ const BubbleMenuEditImage = ({
 
   const handleButtonClick = useCallback(
     (buttonSize: ButtonSize) => {
+      // `updateAttributes` patches in place; custom-image's own `setAttributes`
+      // replaces the whole node and loses the selection - this is more robust.
       editor
         .chain()
         .focus()
@@ -191,7 +192,9 @@ const BubbleMenuEditImage = ({
   const floatingOptions = useMemo(() => {
     return {
       placement: 'bottom-start' as const,
-      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      // tiptap builds its middleware array from named fields only - a raw
+      // `middleware: [offset(...)]` key is silently ignored.
+      offset: { mainAxis: 0, crossAxis: 0 },
       strategy: 'absolute' as const,
     };
   }, []);
@@ -205,6 +208,8 @@ const BubbleMenuEditImage = ({
       editor={editor}
       options={floatingOptions}
       getReferencedVirtualElement={() => reference}
+      // v3's `options` has no `zIndex` field - set via style instead.
+      style={{ zIndex: 999 }}
     >
       {editable && (
         <Toolbar

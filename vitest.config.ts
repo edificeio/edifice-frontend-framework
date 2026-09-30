@@ -10,6 +10,7 @@ export default defineConfig({
     projects: [
       'packages/react/vite.config.ts',
       'packages/client/vite.config.ts',
+      'packages/extensions/vite.config.ts',
       {
         plugins: [storybookTest({ configDir: resolve(__dirname, 'apps/docs/.storybook') })],
         test: {

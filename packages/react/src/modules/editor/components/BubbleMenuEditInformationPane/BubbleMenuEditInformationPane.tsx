@@ -2,7 +2,6 @@ import { useMemo, useState, useEffect } from 'react';
 
 import { BubbleMenu } from '@tiptap/react/menus';
 import { Editor } from '@tiptap/react';
-import { offset } from '@floating-ui/dom';
 import { useTranslation } from 'react-i18next';
 import { useEditorState } from '../../hooks/useEditorState';
 import Toolbar, { ToolbarItem } from '../../../../components/Toolbar/Toolbar';
@@ -186,7 +185,9 @@ const BubbleMenuEditInformationPane = ({
   const floatingOptions = useMemo(() => {
     return {
       placement: 'bottom' as const,
-      middleware: [offset({ mainAxis: 0, crossAxis: 0 })],
+      // tiptap builds its middleware array from named fields only - a raw
+      // `middleware: [offset(...)]` key is silently ignored.
+      offset: { mainAxis: 0, crossAxis: 0 },
       strategy: 'absolute' as const,
     };
   }, []);
@@ -199,6 +200,8 @@ const BubbleMenuEditInformationPane = ({
       editor={editor}
       options={floatingOptions}
       getReferencedVirtualElement={() => reference}
+      // v3's `options` has no `zIndex` field - set via style instead.
+      style={{ zIndex: 999 }}
     >
       {editable && <Toolbar className="p-8" items={InformationPaneTypeItems} />}
     </BubbleMenu>

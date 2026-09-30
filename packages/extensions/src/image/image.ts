@@ -2,7 +2,7 @@ import { WorkspaceElement } from '@edifice.io/client';
 import { ImageResizer } from '@edifice.io/utilities';
 import { mergeAttributes, nodeInputRule } from '@tiptap/core';
 import TiptapImage from '@tiptap/extension-image';
-import { Plugin } from 'prosemirror-state';
+import { Plugin } from '@tiptap/pm/state';
 
 export const IMAGE_INPUT_REGEX =
   /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
@@ -208,6 +208,7 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
 
           return true;
         },
+      // Unused by the UI: BubbleMenuEditImage now resizes via `updateAttributes`.
       setAttributes:
         (attributes) =>
         ({ tr, dispatch }) => {

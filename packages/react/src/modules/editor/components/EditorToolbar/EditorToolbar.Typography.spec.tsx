@@ -1,7 +1,7 @@
 import { Editor } from '@tiptap/core';
 import Color from '@tiptap/extension-color';
 import FontFamily from '@tiptap/extension-font-family';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 import { render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
@@ -56,7 +56,7 @@ describe('EditorToolbarTypography', () => {
       'Sans-serif',
       'Serif',
       'Monoscript',
-      'Cursive',
+      'Marelle',
       'OpenDyslexic',
     ];
     labels.forEach((label) => {
@@ -104,7 +104,7 @@ describe('EditorToolbarTypography', () => {
     const { user } = renderTypography(editor);
 
     await user.click(getTrigger());
-    await user.click(screen.getByRole('menuitemradio', { name: 'Cursive' }));
+    await user.click(screen.getByRole('menuitemradio', { name: 'Marelle' }));
     expect(editor.getAttributes('textStyle').fontFamily).toBe('Marelle');
 
     await user.click(screen.getByRole('menuitemradio', { name: 'Sans-serif' }));

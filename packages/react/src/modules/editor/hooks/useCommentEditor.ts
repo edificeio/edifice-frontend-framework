@@ -21,7 +21,11 @@ export const useCommentEditor = (
   const editor = useEditor({
     editable,
     extensions: [
-      StarterKit,
+      // v3's StarterKit bundles its own 'link' mark, which would compete with
+      // Hyperlink below for the same <a> tags. Disabled.
+      StarterKit.configure({
+        link: false,
+      }),
       Hyperlink,
       CharacterCount.configure({ limit: maxLength }),
     ],
