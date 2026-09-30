@@ -26,19 +26,51 @@
   &-empty-description {
     font-size: var(--primitive-font-size-small);
   }
-  
+
   &-content {
     container-type: inline-size;
   }
 
+  // Single row of items, never fewer than the min column count (items may
+  // then be narrower than the max width). A new column (and item) appears as
+  // soon as the current ones would exceed the max width, up to the max column
+  // count, and only if there is an item to fill it. Past that count, items are
+  // allowed to grow beyond the max width.
   &-list {
+    $item-max-width: 240px;
+    $min-columns: 4;
+    $max-columns: 6;
+    // Must match the `gap` below (--primitive-spacer-16).
+    $gap: 16px;
+
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat($min-columns, minmax(0, 1fr));
     gap: var(--primitive-spacer-16);
     width: 100%;
 
-    @container (max-width: 425px) {
+    > :nth-child(n + #{$min-columns + 1}) {
+      display: none;
+    }
+
+    // Narrow container: the min items wrap into a 2x2 grid.
+    @container (max-width: 735px) {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @for $columns from $min-columns + 1 through $max-columns {
+      // Widest container where (columns - 1) items still fit within the max width.
+      $threshold: ($columns - 1) * $item-max-width + ($columns - 2) * $gap;
+
+      @container (min-width: #{$threshold + 1px}) {
+        // Only add this column when there is an item to fill it.
+        &:has(> :nth-child(#{$columns})) {
+          grid-template-columns: repeat($columns, minmax(0, 1fr));
+        }
+
+        > :nth-child(#{$columns}) {
+          display: block;
+        }
+      }
     }
   }
 

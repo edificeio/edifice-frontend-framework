@@ -1,8 +1,8 @@
 import { ButtonSkeleton, Flex, TextSkeleton } from '../../../../components';
 import { HomeCard } from '../HomeCard';
 
-const primaryTitleWidths = ['80%', '64%', '88%', '72%'];
-const secondaryTitleWidths = ['56%', '44%', '60%', '48%'];
+const primaryTitleWidths = ['80%', '64%', '88%', '72%', '76%', '68%'];
+const secondaryTitleWidths = ['56%', '44%', '60%', '48%', '52%', '40%'];
 
 const CommunitiesSkeleton = () => {
   return (
@@ -21,34 +21,35 @@ const CommunitiesSkeleton = () => {
           color="tertiary"
         />
       </Flex>
-      <HomeCard.Content>
+      <HomeCard.Content className="communities-content">
         <Flex gap="16">
-          {primaryTitleWidths.map((primaryWidth, index) => (
-            <div
-              key={primaryWidth}
-              className="communities-item"
-              style={{ width: '25%' }}
-              aria-hidden="true"
-            >
+          <div className="communities-list">
+            {primaryTitleWidths.map((primaryWidth, index) => (
               <div
-                className="communities-item-image placeholder rounded"
-                style={{ display: 'block', aspectRatio: '1 / 1' }}
-              />
-              <Flex direction="column" gap="4" className="mt-8">
-                <div style={{ width: primaryWidth, alignSelf: 'center' }}>
-                  <TextSkeleton className="col-12" size="sm" />
-                </div>
+                key={primaryWidth}
+                className="communities-item"
+                aria-hidden="true"
+              >
                 <div
-                  style={{
-                    width: secondaryTitleWidths[index],
-                    alignSelf: 'center',
-                  }}
-                >
-                  <TextSkeleton className="col-12" size="sm" />
-                </div>
-              </Flex>
-            </div>
-          ))}
+                  className="communities-item-image placeholder rounded"
+                  style={{ display: 'block' }}
+                />
+                <Flex direction="column" gap="4" className="mt-8">
+                  <div style={{ width: primaryWidth, alignSelf: 'center' }}>
+                    <TextSkeleton className="col-12" size="sm" />
+                  </div>
+                  <div
+                    style={{
+                      width: secondaryTitleWidths[index],
+                      alignSelf: 'center',
+                    }}
+                  >
+                    <TextSkeleton className="col-12" size="sm" />
+                  </div>
+                </Flex>
+              </div>
+            ))}
+          </div>
         </Flex>
       </HomeCard.Content>
     </HomeCard>
