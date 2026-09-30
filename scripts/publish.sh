@@ -50,8 +50,8 @@ build () {
 
 publish () {
   echo "[publish] Publish packages..."
-  # Récupération de la branche locale
-  LOCAL_BRANCH=`echo $GIT_BRANCH | sed -e "s|origin/||g"`
+  # Récupération de la branche locale (les "/" sont invalides dans un tag npm
+  LOCAL_BRANCH=`echo $GIT_BRANCH | sed -e "s|origin/||g" | sed -e "s|/|-|g"`
   # Récupération de la date et du timestamp
   TIMESTAMP=`date +%Y%m%d%H%M%S`
   # Récupération du dernier tag stable
