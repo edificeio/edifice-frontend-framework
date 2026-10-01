@@ -50,6 +50,7 @@ export default function useZendeskGuide(
   const [dataModule, setDataModule] = useState<DataModel>(undefined);
   const [isReady, setIsReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [configColor, setConfigColor] = useState<string | undefined>();
 
   const open = () => {
     (window as any).zE?.('webWidget', 'open');
@@ -272,9 +273,6 @@ export default function useZendeskGuide(
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: {
-                theme: headerColor || zendeskGuideConfig.color || '#ffc400',
-              },
               zIndex: 3,
               launcher: {
                 mobile: {
@@ -309,6 +307,7 @@ export default function useZendeskGuide(
 
           registerWidgetHandlers();
 
+          setConfigColor(zendeskGuideConfig.color);
           setIsReady(true);
         };
       }
@@ -318,21 +317,22 @@ export default function useZendeskGuide(
   }, [hasSupportWorkflow]);
 
   useEffect(() => {
-    // `headerColor` can legitimately change after mount (e.g. it depends on
-    // platform config that resolves asynchronously) — the bootstrap effect
-    // above only reacts to `hasSupportWorkflow` and closes over whatever
-    // `headerColor` was at that time, so a later value would otherwise
-    // never reach the widget. Re-applying it here (without touching the
-    // snippet) keeps the panel color in sync regardless of which async
-    // value resolves first.
-    if (!isReady || headerColor === undefined) {
+    // Single place where the panel color is written, so the caller's
+    // `headerColor`, the platform config color and the default can never
+    // override each other. `headerColor` can legitimately change after mount
+    // (e.g. it depends on a stylesheet or platform config that resolves
+    // asynchronously) while the bootstrap effect above only reacts to
+    // `hasSupportWorkflow` — hence the color lives here, not there.
+    if (!isReady) {
       return;
     }
 
     (window as any).zE('webWidget', 'updateSettings', {
-      webWidget: { color: { theme: headerColor } },
+      webWidget: {
+        color: { theme: headerColor || configColor || '#ffc400' },
+      },
     });
-  }, [headerColor, isReady]);
+  }, [headerColor, configColor, isReady]);
 
   return { isReady, isOpen, open, close };
 }

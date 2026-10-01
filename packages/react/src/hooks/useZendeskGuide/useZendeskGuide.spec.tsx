@@ -325,15 +325,16 @@ describe('useZendeskGuide', () => {
     it('applies the configured theme color', async () => {
       await mountAndLoad();
 
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#123456' }, zIndex: 3 },
+      expect(settings()).toContainEqual({
+        webWidget: { color: { theme: '#123456' } },
       });
+      expect(settings()[0]).toMatchObject({ webWidget: { zIndex: 3 } });
     });
 
     it('falls back to the Edifice yellow when no color is configured', async () => {
       await mountAndLoad({ response: config({ color: undefined }) });
 
-      expect(settings()[0]).toMatchObject({
+      expect(settings()).toContainEqual({
         webWidget: { color: { theme: '#ffc400' } },
       });
     });
@@ -341,7 +342,7 @@ describe('useZendeskGuide', () => {
     it('lets the caller override the theme color regardless of the configured one', async () => {
       await mountAndLoad({ headerColor: '#3030d1' });
 
-      expect(settings()[0]).toMatchObject({
+      expect(settings()).toContainEqual({
         webWidget: { color: { theme: '#3030d1' } },
       });
     });
@@ -368,7 +369,7 @@ describe('useZendeskGuide', () => {
         script.onload?.(new Event('load'));
       });
 
-      expect(settings()[0]).toMatchObject({
+      expect(settings()).toContainEqual({
         webWidget: { color: { theme: '#123456' } },
       });
       const before = settings().length;
