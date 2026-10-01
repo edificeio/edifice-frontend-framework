@@ -137,30 +137,21 @@ describe('HelpZone', () => {
       expect(fullLogo()).not.toBeInTheDocument();
     });
 
-    it('switches to the compact logo on a click anywhere on the page', async () => {
+    it('does not switch to the compact logo on a click', async () => {
       const { user } = renderHelpZone();
 
       await user.click(document.body);
-
-      expect(compactLogo()).toBeInTheDocument();
-      expect(fullLogo()).not.toBeInTheDocument();
-    });
-
-    it('does not switch to the compact logo when clicking the "?" button itself', async () => {
-      const { user } = renderHelpZone();
-
       await user.click(screen.getByRole('button'));
 
       expect(fullLogo()).toBeInTheDocument();
       expect(compactLogo()).not.toBeInTheDocument();
     });
 
-    it('stays compact after the initial trigger, regardless of further scrolls or clicks', () => {
+    it('stays compact after the initial trigger, regardless of further scrolls', () => {
       renderHelpZone();
 
       fireEvent.scroll(document);
       fireEvent.scroll(document);
-      fireEvent.click(document.body);
 
       expect(compactLogo()).toBeInTheDocument();
       expect(fullLogo()).not.toBeInTheDocument();
