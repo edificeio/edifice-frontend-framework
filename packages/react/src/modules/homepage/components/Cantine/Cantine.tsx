@@ -1,6 +1,10 @@
 import illuCantineEmpty from '@edifice.io/bootstrap/dist/images/homepage/cantine/illu-cantine-empty.svg';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Image, TextSkeleton } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Image,
+  TextSkeleton,
+} from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import CantineMenuSection from './components/CantineMenuSection';
@@ -26,7 +30,7 @@ export default function Cantine({
           {t('homepage.widget.cantine.title', 'Menu de la cantine')}
         </h3>
         {status !== 'error' && (
-          <ButtonBeta
+          <Button
             aria-label={t(
               'homepage.widget.cantine.open',
               'Ouvrir en plein écran',
@@ -77,13 +81,13 @@ export default function Cantine({
                 'Le menu n’est pas disponible pour ce jour',
               )}
             </p>
-            <ButtonBeta
+            <Button
               variant="outline"
               rightIcon={<IconFullScreen />}
               onClick={handleFullScreenClick}
             >
               {t('homepage.widget.cantine.seeMore', 'voir plus')}
-            </ButtonBeta>
+            </Button>
           </div>
         )}
 
