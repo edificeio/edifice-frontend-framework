@@ -2,7 +2,7 @@ import illuCantineEmpty from '@edifice.io/bootstrap/dist/images/homepage/cantine
 import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import {
-  ButtonBeta,
+  ButtonBeta as Button,
   FormControl,
   Image,
   Label,
@@ -159,7 +159,7 @@ const CantineModal = ({
 
         <div className="cantine-modal__panel">
           <div className="cantine-modal__nav">
-            <ButtonBeta
+            <Button
               aria-label={t(
                 'homepage.widget.cantine.previousDay',
                 'Jour précédent',
@@ -173,7 +173,7 @@ const CantineModal = ({
             <p className="cantine-modal__date">
               {formatDate(date, 'dddd D MMMM')}
             </p>
-            <ButtonBeta
+            <Button
               aria-label={t('homepage.widget.cantine.nextDay', 'Jour suivant')}
               leftIcon={<IconRafterRight />}
               variant="ghost"
