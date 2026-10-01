@@ -23,8 +23,9 @@ La branche de référence n'a pas le même nom partout :
 
 Cas particuliers :
 
-- **`explorer/frontend/package.json` est un artefact généré et commité** : la source de vérité est
-  `package.json.template`.
+- **`explorer/frontend/package.json`** : depuis ENABLING-1158 (`ode-explorer@2.6.12`), c'est la source de
+  vérité. Avant, c'était un artefact généré depuis `package.json.template` (supprimé), dont les mesures du
+  28/07/2026 tiennent compte.
 - `entcore/portal` et `entcore/conversation` existent dans certains clones locaux mais sur aucune branche
   distante d'`entcore` : hors périmètre.
 

@@ -5,7 +5,9 @@
 > **Périmètre** : 14 fronts React (13 apps + 1 lib partagée), dont **3 publiés sur npm**.
 > Un nom en texte simple désigne un **repo**, un nom en code un **package npm** — voir
 > [la correspondance](docs/enabling-1099/1-constats.md#repo-ou-package-npm).
-> **Statut** : analyse et norme. Aucun code applicatif modifié.
+> **Statut** : analyse et norme. **Mise à jour du 01/10/2026** : N9, N10 et N4 sont appliqués sur `explorer`
+> (ENABLING-1158, `ode-explorer@2.6.12` publié sur `latest` et `develop`). Les mesures ci-dessous sont celles
+> **d'avant** cette publication : à remesurer.
 
 | Document | Contenu |
 | --- | --- |
@@ -66,7 +68,7 @@ mais son override racine l'impose aussi à `ode-explorer` — une seule copie.
 | Défaut | Où | Nature |
 | --- | --- | --- |
 | `@edifice.io/collect-frontend` est publié avec un spec `workspace:*` → **package ininstallable** hors workspace, sur `latest` et `develop`. Cause : `npm publish` au lieu de `pnpm publish`. | `collect` | Bug bloquant |
-| `ode-explorer`, `@edifice.io/collect-frontend` et `@edifice.io/wiki` — les **3 seuls fronts publiés sur npm** — déclarent le socle en `dependencies` au lieu de `peerDependencies` → pnpm leur installe leur propre copie. | repos `explorer`, `collect`, `wiki` | Cause structurelle de la duplication |
+| `ode-explorer`, `@edifice.io/collect-frontend` et `@edifice.io/wiki` — les **3 seuls fronts publiés sur npm** — déclaraient le socle en `dependencies` au lieu de `peerDependencies` → pnpm leur installe leur propre copie. **`ode-explorer` est corrigé** (ENABLING-1158) ; reste `collect` et `wiki`. | repos `collect`, `wiki` | Cause structurelle de la duplication |
 | `rack`, `collect` et `boilerplate` déclarent `ode-explorer` **sans jamais l'importer** — déclaration héritée du boilerplate. Retirer la ligne fait passer `collect` et `boilerplate` de 2 à 1 copie. | 3 fronts | Duplication gratuite |
 
 → [tous les constats mesurés](docs/enabling-1099/1-constats.md)
@@ -92,10 +94,10 @@ Une app doit garantir qu'il n'en existe qu'une copie physique.**
 | **N11** | Retirer les dépendances `ode-explorer` **inutilisées** — `rack`, `collect`, `boilerplate` ne l'importent jamais | 3 `package.json` | 3 lignes | **Élevée, coût nul** : mesuré, `collect` et `boilerplate` passent de 2 à 1 copie. |
 | **N6** | `pnpm publish`, jamais `npm publish`, dans un workspace | `collect/package.json:50` | 1 ligne | **Bloquant** : un package publié est ininstallable. Prérequis de N9 sur `collect`. |
 | **N5** | Check CI « une seule copie physique » des singletons, dans le pipeline qui livre | `@edifice.io/cli` + 10 Jenkinsfile | ~½ j | **Élevée** : c'est le seul garde-fou automatique, et il fournit la mesure avant/après N9. |
-| **N9** | `peerDependencies` au lieu de `dependencies` dans tout package publié qui consomme le socle | 3 `package.json` + republication | ~2 j | **Élevée** : supprime la cause structurelle. Se propage seule aux 8 fronts consommateurs. |
-| **N4** | `resolve.dedupe` dans chaque `vite.config` | 14 `vite.config.ts` | 7 lignes | Moyenne : filet bundler, défense en profondeur. |
+| **N9** | `peerDependencies` au lieu de `dependencies` dans tout package publié qui consomme le socle — ✅ `explorer` fait, reste `collect` et `wiki` | 3 `package.json` + republication | ~2 j | **Élevée** : supprime la cause structurelle. Se propage seule aux 8 fronts consommateurs. |
+| **N4** | `resolve.dedupe` dans chaque `vite.config` — ✅ `explorer` fait | 14 `vite.config.ts` | 7 lignes | Moyenne : filet bundler, défense en profondeur. |
 | **N3** | Supprimer les `resolutions` placés dans un membre de workspace — ignorés par pnpm | 3 `package.json` | 1 h | Moyenne : supprime une configuration trompeuse. |
-| **N10** | Ne pas committer d'artefact de build généré (`explorer/frontend/package.json`) | 1 `.gitignore` | 1 h | Moyenne : le fichier commité contredit le train de sa branche. |
+| **N10** | ~~Ne pas committer d'artefact de build généré~~ — ✅ **réglé** : le template d'`explorer` est supprimé | — | — | `frontend/package.json` est la source de vérité. |
 | **N8** | Retirer `sync:lockfile` (`pnpm update`) de `install:prod` | 3 `package.json` | ½ j | Moyenne : supprime une re-résolution non contrôlée au build de prod. |
 | **N2** | Un seul train (tag) par app | Règle de revue | — | Préventive : aucune occurrence aujourd'hui, risque mesuré. |
 | **N7** | Aligner la toolchain, en priorité l'écart intra-repo (`pnpm@10.x` racine vs `9.12.2` front) | 14 + 4 `package.json` | ~2 j | Faible : aucun incident constaté. |
@@ -112,8 +114,8 @@ Deux faits mesurés le permettent :
 2. 13 des 14 `frontend/build.sh` font `rm -f pnpm-lock.yaml` dans `clean()`, appelée par Jenkins avant
    l'install : chaque build de CI re-résout tout.
 
-Republier `ode-explorer@develop` avec des `peerDependencies` suffit donc : le tag bouge et les 8 fronts
-consommateurs récupèrent la correction au build suivant. **Aucune squad n'a de configuration à écrire.**
+Republier `ode-explorer@develop` avec des `peerDependencies` suffisait donc (fait le 01/10/2026) : le tag bouge et
+les 8 fronts consommateurs récupèrent la correction au build suivant. **Aucune squad n'a de configuration à écrire.**
 Seul le train de release (`master`/`latest`) demande un bump explicite ; `rack` y a déjà un override.
 
 ### Risque à couvrir pendant N9
@@ -142,7 +144,7 @@ Configuration lue sur la branche d'intégration de référence de chaque repo.
 | support | `dev` | standalone | `develop` | 5.90.21 | — | non | – | non | 1 |
 | entcore/auth | `dev` | standalone | `develop-enabling` | 5.90.21 | — | non | – | non | 1 |
 | entcore/timeline | `dev` | standalone | `develop-b2school` | 5.90.21 | — | non | – | non | 1 |
-| explorer *(lib partagée)* | `develop` | standalone | template | 5.62.7 | — | non | – | non | 1 |
+| explorer *(lib partagée)* | `develop` | standalone | peers (tag) | 5.62.7 | — | non | – | non | 1 |
 | homeworks | `dev` | ws | `develop` | 5.90.21 | ode-explorer | **oui** | – | **oui** | **1** |
 
 Les 4 fronts dupliqués sont exactement ceux qui **composent** un package Edifice tiers **et** dont le pin
@@ -160,7 +162,7 @@ consommées séparément : aucun scénario où l'une casse l'autre.
 | 1 | **N11** — retirer `ode-explorer` de `rack`, `collect` et `boilerplate` (+ du boilerplate lui-même, pour ne plus propager) | ~1 h |
 | 2 | **N6** sur `collect` + republication de `collect-frontend` — corrige aussi `rack` et `communities`, qui héritaient de son `ode-explorer` | ~1 h |
 | 3 | **N5** dans `@edifice.io/cli`, branché sur `collect` et `rack` — remesure après les étapes 1 et 2 | ~½ j |
-| 4 | **N9 sur `ode-explorer`** (dans `package.json.template`) + **N10** + republication + validation sur `wiki` ou `blog` | ~1 j |
+| 4 | ✅ **Fait** — N9 sur `ode-explorer` + N10 + N4 (ENABLING-1158, `2.6.12`). Reste la validation sur `wiki` ou `blog` | — |
 | 5 | **N9 sur `@edifice.io/wiki`** puis **`@edifice.io/collect-frontend`**, un package à la fois | ~1 j |
 | 6 | **N4** généralisé | ~½ j |
 | 7 | **N3** — suppression des 3 blocs ignorés | ~1 h |
@@ -170,16 +172,16 @@ consommées séparément : aucun scénario où l'une casse l'autre.
 Les étapes 1 et 2 coûtent deux heures et retirent la duplication de `collect` et `boilerplate` — la moitié
 des fronts concernés — sans toucher au socle ni republier `ode-explorer`.
 
-Les étapes 1 à 4 se font dans `collect` et `explorer` et couvrent l'essentiel : elles ne demandent
+Les étapes 1 à 4 se font dans `collect` et `explorer` (étape 4 déjà faite) et couvrent l'essentiel : elles ne demandent
 aucune coordination inter-squads.
 
 **Actions par repo :**
 
 | Repo | À faire |
 | --- | --- |
-| **explorer** | N9 sur `explorer/frontend` (publié sous `ode-explorer`), dans le `.template` · N10 · N4 · N5 |
+| **explorer** | ✅ N9 · N10 · N4 faits (ENABLING-1158) · reste N5 |
 | **collect** | **N11** (retirer `ode-explorer` inutilisé) · **N6** + republication · N9 sur `collect/frontend`, publié sous `@edifice.io/collect-frontend` · N3 · N4 · N5 · N8 · N7 |
-| **wiki** | N9 sur `wiki/frontend`, publié sous `@edifice.io/wiki` |
+| **wiki** | N9 sur `wiki/frontend`, publié sous `@edifice.io/wiki` (prérequis `ode-explorer` satisfait) |
 | **socle** | script N5 dans `@edifice.io/cli` |
 | rack | **N11** (retirer `ode-explorer` inutilisé) · N3 · N4 · N5 · N8 · N7 |
 | communities | N3 · N4 · N5 · N8 · N7 |

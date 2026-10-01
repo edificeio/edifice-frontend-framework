@@ -100,27 +100,38 @@ app, et se propage seule aux 8 fronts consommateurs.
 > `@tanstack/react-query` doit les déclarer en **`peerDependencies`**, jamais en `dependencies`. Cela vaut
 > pour la lib partagée `ode-explorer` comme pour toute app publiant son front pour être embarquée.
 
-| Package | Consommé par | Ordre |
+| Package | Consommé par | Statut |
 | --- | --- | --- |
-| `ode-explorer` | **8 fronts** | 1 |
-| `@edifice.io/collect-frontend` | rack, communities | 2 |
-| `@edifice.io/wiki` | communities | 3 |
+| `ode-explorer` | **8 fronts** | ✅ **Fait** — ENABLING-1158, `2.6.12` sur `latest` et `develop` (vérifié le 01/10/2026) |
+| `@edifice.io/collect-frontend` | rack, communities | À faire |
+| `@edifice.io/wiki` | communities | À faire — prérequis `ode-explorer` satisfait |
+
+Valeurs de référence : celles publiées par `ode-explorer@2.6.12`. Les trois `@edifice.io/*` valent le **tag
+de la branche publiante** (`develop` sur `develop`, la version exacte du socle sur `main`, ex. `2.6.7`).
 
 ```json
 {
   "peerDependencies": {
-    "@edifice.io/react": "*",
-    "@edifice.io/client": "*",
-    "@edifice.io/bootstrap": "*",
+    "@edifice.io/bootstrap": "develop",
+    "@edifice.io/client": "develop",
+    "@edifice.io/react": "develop",
     "@tanstack/react-query": "^5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-i18next": "^14"
   },
   "devDependencies": {
+    "@edifice.io/bootstrap": "develop",
+    "@edifice.io/client": "develop",
     "@edifice.io/react": "develop"
   }
 }
 ```
+
+**Ajouter aussi `peerDependencies` à `rollupOptions.external` dans `vite.config.ts`.** Le build `lib` de
+`collect` et `wiki` ne marque comme `external` que les `dependencies` : sans cet ajout, le socle déplacé en
+peers serait embarqué dans le bundle publié, ce qui recrée une copie. `ode-explorer` l'a fait dans le même
+commit.
 
 ### Pourquoi les mêmes clés dans `peerDependencies` et `devDependencies`
 
@@ -151,10 +162,10 @@ C'est déjà le motif du socle : `packages/react/package.json` déclare ses 6 pe
 
 - `@tanstack/react-query` est **indispensable** dans la liste : c'est le second singleton dupliqué.
 - `ode-explorer` **n'a pas besoin d'y figurer** : `collect-frontend` ne l'importe pas (retiré par N11), et
-  `@edifice.io/wiki` l'importe réellement — une fois `ode-explorer` lui-même passé en `peerDependencies`,
-  il n'apporte plus sa propre copie du socle.
-- Pour `ode-explorer`, la modification va dans **`package.json.template`**, pas dans le `package.json`
-  généré.
+  `@edifice.io/wiki` l'importe réellement — `ode-explorer` étant passé en `peerDependencies`, il n'apporte
+  plus sa propre copie du socle.
+- `react-i18next` est déclaré en peer, comme dans `ode-explorer`, pour ne pas dupliquer un troisième
+  singleton à contexte.
 
 ### Propagation
 
@@ -164,19 +175,19 @@ Deux faits la rendent automatique :
    jamais par une version exacte.
 2. 13 des 14 `frontend/build.sh` suppriment le lockfile avant l'install CI : chaque build re-résout tout.
 
-Republier `ode-explorer@develop` suffit donc : le tag bouge, les 8 fronts consommateurs récupèrent la
-correction au build suivant. **Aucune squad n'a de configuration à écrire.** Seul le train de release
+Republier `ode-explorer@develop` suffisait donc : le tag a bougé, les 8 fronts consommateurs récupèrent la
+correction au build suivant (publié le 01/10/2026 ; à remesurer). **Aucune squad n'a de configuration à écrire.** Seul le train de release
 (`master`/`latest`), en versions exactes, demande un bump explicite.
 
 ### Inconvénients
 
 | Inconvénient | Détail |
 | --- | --- |
-| `"*"` est laxiste : aucune incompatibilité n'est détectée par pnpm. | Un range strict (`">=2.6.0 <3"`) est inutilisable : une prerelease `2.6.0-develop.20260727123808` ne satisfait pas `>=2.6.0` en semver. Le contrôle de version reste du ressort de l'app. |
+| Le tag (`develop`) ou la version exacte en peer ne fait pas de contrôle de range : aucune incompatibilité n'est détectée par pnpm. | Un range strict (`">=2.6.0 <3"`) est inutilisable : une prerelease `2.6.0-develop.20260727123808` ne satisfait pas `>=2.6.0` en semver. Le contrôle de version reste du ressort de l'app. |
 | **La copie privée du socle masque aujourd'hui les incompatibilités de version.** En passant au socle fourni par l'hôte, une incompatibilité réelle se manifestera par une erreur d'export manquant. | C'est le risque principal. Dérouler **un package à la fois, avec validation d'une app pilote** — jamais les trois d'un coup. |
 | Une app qui ne déclarerait pas le socle se le verrait installé par `auto-install-peers`, sans contrôle de version. | Sans danger côté duplication (mesuré), et les 13 apps le déclarent déjà. Couvert par N5. |
 
-**Impact** : 3 `package.json` + une campagne de republication et de validation. Aucun `.npmrc` à modifier,
+**Impact** : 3 `package.json` (1 sur 3 fait) + une campagne de republication et de validation. Aucun `.npmrc` à modifier,
 aucune convergence de peers à négocier.
 
 ---
@@ -195,7 +206,7 @@ resolve: {
 }
 ```
 
-**Impact** : 14 `vite.config.ts`, 7 lignes chacun. 13 sur 14 n'en ont pas.
+**Impact** : 14 `vite.config.ts`, 7 lignes chacun. Fait sur `explorer` ; 12 sur 14 n'en ont pas (`homeworks` a un `dedupe` partiel).
 **Inconvénient** : fait disparaître le symptôme dans le bundle sans corriger le `node_modules`, ce qui peut
 retarder la détection d'un problème de graphe. À poser **en plus** de N9, jamais à la place. Ne protège pas
 de façon identique le mode dev (`optimizeDeps`).
@@ -220,20 +231,12 @@ de façon identique le mode dev (`optimizeDeps`).
 
 ## N10 — Ne pas committer d'artefact de build généré
 
-**Importance : moyenne.** `explorer/frontend/package.json` est généré depuis `package.json.template` et
-pourtant commité, avec des valeurs qui contredisent le train de sa branche. Il fausse toute lecture du
-graphe de dépendances, humaine ou outillée.
+**Importance : moyenne.** ✅ **Réglé sur `explorer`** (ENABLING-1158) : `package.json.template` et
+`scripts/package.cjs` sont supprimés, `frontend/package.json` est désormais la source de vérité, éditée à la
+main. Il n'y a plus d'artefact généré à ignorer ni de hook à écrire. La version exacte est calculée à la
+publication par `build.sh` (`npm version … --no-git-tag-version` hors `main`).
 
-Deux options, aucune parfaite :
-
-| Option | Inconvénient |
-| --- | --- |
-| Gitignorer `frontend/package.json` | Inhabituel, déroute les outils (IDE, Dependabot, audits de dépendances) |
-| Hook pre-commit qui régénère depuis le template | Bruit de diff à chaque changement de branche |
-
-Trancher et documenter le choix dans le README d'`explorer`.
-
-**Impact** : 1 `.gitignore` ou 1 hook + 1 note.
+À retenir pour un futur package publié : préférer un `package.json` unique, sans template.
 
 ---
 
