@@ -4,6 +4,10 @@
 
 Mesures du 28/07/2026. Méthode de mesure : [3 — Méthode](3-methode.md).
 
+> **Mise à jour du 01/10/2026** : `ode-explorer@2.6.12` (ENABLING-1158) est publié avec le socle en
+> `peerDependencies`, `package.json.template` supprimé et `resolve.dedupe` posé. Les sections ci-dessous
+> décrivent l'état **d'avant** cette publication ; les copies par front sont à remesurer.
+
 ---
 
 ## Vocabulaire

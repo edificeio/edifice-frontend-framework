@@ -35,21 +35,27 @@ npm view @edifice.io/collect-frontend@develop dependencies --json | grep workspa
 
 ### 3. Un package publié ne doit pas embarquer sa copie du socle
 
-Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
+Convention identique à `ode-explorer@2.6.12` (ENABLING-1158, déjà publié). Les mêmes clés apparaissent
+dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
 [pourquoi](2-actions.md#pourquoi-les-mêmes-clés-dans-peerdependencies-et-devdependencies).
 
-`frontend/package.json` — retirer ces 6 clés des `dependencies`, et ajouter ce bloc :
+`frontend/package.json` — retirer `@edifice.io/bootstrap|client|react`, `@tanstack/react-query`, `react`,
+`react-dom` et `react-i18next` des `dependencies`, et ajouter ce bloc :
 
 ```json
   "peerDependencies": {
-    "@edifice.io/bootstrap": "*",
-    "@edifice.io/client": "*",
-    "@edifice.io/react": "*",
+    "@edifice.io/bootstrap": "develop",
+    "@edifice.io/client": "develop",
+    "@edifice.io/react": "develop",
     "@tanstack/react-query": "^5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-i18next": "^14"
   },
 ```
+
+Les trois `@edifice.io/*` valent le **tag de la branche publiante** : `develop` sur `develop`, la version
+exacte du socle sur `main` (ex. `2.6.7` pour `ode-explorer@latest`). Pas de `"*"`.
 
 `frontend/package.json` — fusionner dans les `devDependencies` existantes, pour que le repo builde seul :
 
@@ -60,6 +66,20 @@ Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte
     "@tanstack/react-query": "5.81.5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "14.1.0",
+```
+
+`frontend/vite.config.ts` — **indispensable** : le build `lib` ne marque comme `external` que les
+`dependencies`. Sans cette modification, le socle déplacé en peers serait **embarqué dans le bundle publié**.
+
+```ts
+import { dependencies, peerDependencies } from "./package.json";
+// ...
+external: [
+  ...Object.keys(dependencies || {}),
+  ...Object.keys(peerDependencies || {}),
+  // keep the existing entries (e.g. 'react/jsx-runtime')
+],
 ```
 
 ### 4. `resolutions` dans un membre de workspace est ignoré par pnpm
@@ -139,129 +159,52 @@ chmod +x scripts/check-singletons.sh
 
 # `explorer` → publie `ode-explorer`
 
-*Consommée par 8 fronts. Sa dépendance au socle en `dependencies` est la cause structurelle de la duplication.*
+*✅ **Fait** — ENABLING-1158, publié en `2.6.12` sur `latest` et `develop` (vérifié sur npm le 01/10/2026).*
 
-### 1. La source de vérité est le template, pas le `package.json` généré
+Ce qui a été appliqué, et qui sert de **référence** pour `collect` et `wiki` :
 
-Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
-[pourquoi](2-actions.md#pourquoi-les-mêmes-clés-dans-peerdependencies-et-devdependencies).
+- Le socle (`@edifice.io/bootstrap|client|react`), `@tanstack/react-query`, `react`, `react-dom` et
+  `react-i18next` sont en `peerDependencies` **et** en `devDependencies`, plus en `dependencies`.
+- Les trois `@edifice.io/*` valent le tag de la branche publiante (`develop`) ou la version exacte du socle
+  sur `main` (`2.6.7`). `react-query` vaut `^5`, `react-i18next` `^14`, `react`/`react-dom` `18.3.1`.
+- `frontend/package.json.template` et `scripts/package.cjs` sont supprimés : `frontend/package.json` est la
+  source de vérité (N10 réglé, plus d'artefact généré à ignorer).
+- `vite.config.ts` : `peerDependencies` ajoutés à `rollupOptions.external`, et `resolve.dedupe` posé (N4).
+- `build.sh` publie avec `pnpm publish` ; la version exacte est calculée à la publication sur les branches
+  autres que `main`.
 
-`frontend/package.json.template` — retirer ces 6 clés des `dependencies`, et ajouter ce bloc :
-
-```json
-  "peerDependencies": {
-    "@edifice.io/bootstrap": "*",
-    "@edifice.io/client": "*",
-    "@edifice.io/react": "*",
-    "@tanstack/react-query": "^5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-```
-
-`frontend/package.json.template` — fusionner dans les `devDependencies` :
-
-```json
-    "@edifice.io/bootstrap": "%packageVersion%",
-    "@edifice.io/client": "%packageVersion%",
-    "@edifice.io/react": "%packageVersion%",
-    "@tanstack/react-query": "5.62.7",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-```
-
-Republier, puis valider sur `blog` ou `wiki`.
-
-### 2. Le `package.json` commité est un artefact généré, aux valeurs obsolètes
-
-`frontend/.gitignore` — ajouter :
-
-```gitignore
-# Generated from package.json.template at build time — never commit it.
-package.json
-```
-
-Puis le désindexer :
-
-```sh
-git rm --cached frontend/package.json
-```
-
-### 3. Filet au niveau du bundler
-
-`frontend/vite.config.ts` — dans `resolve`, avant `alias` :
-
-```ts
-    resolve: {
-      dedupe: [
-        'react',
-        'react-dom',
-        '@edifice.io/react',
-        '@edifice.io/client',
-        '@tanstack/react-query',
-        'react-hook-form',
-        'react-i18next',
-      ],
-      alias: {
-```
-
-### 4. Garde-fou CI
-
-`scripts/check-singletons.sh` — nouveau fichier :
-
-```sh
-#!/bin/sh
-# Fails the build if an Edifice singleton is physically duplicated in node_modules.
-# Counts .pnpm directories rather than querying `pnpm why`: only this catches peer
-# variants, which `pnpm why` reports as a single version.
-set -u
-status=0
-for pkg in "@edifice.io+react" "@edifice.io+client" "@tanstack+react-query" "react" "react-dom"; do
-  n=$(ls -d node_modules/.pnpm/${pkg}@* 2>/dev/null | wc -l | tr -d ' ')
-  if [ "$n" -gt 1 ]; then
-    echo "FAIL: ${pkg} has ${n} physical copies:"
-    ls -d node_modules/.pnpm/${pkg}@* | sed 's|.*/|  |'
-    status=1
-  fi
-done
-[ "$status" -eq 0 ] && echo "OK: no duplicated singleton."
-exit $status
-```
-
-```sh
-chmod +x scripts/check-singletons.sh
-```
-
-`explorer` n'a pas de `Jenkinsfile` — le build passe par `frontend/build.sh`. Appeler le script depuis la
-fonction `build()` de `frontend/build.sh`, après l'install et avant `pnpm build` :
-
-```sh
-  ../scripts/check-singletons.sh || exit 1
-```
+**Reste à faire** : le garde-fou CI (N5), dans un ticket dédié.
 
 ---
 
 # `wiki` → publie `@edifice.io/wiki`
 
-*Embarqué par `communities`, où il introduit une troisième copie du socle. `ode-explorer` reste en `dependencies` : il est réellement importé.*
+*Embarqué par `communities`, où il introduit une troisième copie du socle. `ode-explorer` reste en `dependencies` : il est réellement importé, et il a déjà le socle en `peerDependencies`.*
 
 ### 1. Un package publié ne doit pas embarquer sa copie du socle
 
+Convention identique à `ode-explorer@2.6.12` (ENABLING-1158, déjà publié). **Prérequis satisfait** :
+`ode-explorer` a désormais le socle en `peerDependencies` et n'apporte plus sa propre copie à `wiki`.
 Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
 [pourquoi](2-actions.md#pourquoi-les-mêmes-clés-dans-peerdependencies-et-devdependencies).
 
-`frontend/package.json` — retirer ces 6 clés des `dependencies`, et ajouter ce bloc :
+`frontend/package.json` — retirer `@edifice.io/bootstrap|client|react`, `@tanstack/react-query`, `react`,
+`react-dom` et `react-i18next` des `dependencies`, et ajouter ce bloc :
 
 ```json
   "peerDependencies": {
-    "@edifice.io/bootstrap": "*",
-    "@edifice.io/client": "*",
-    "@edifice.io/react": "*",
+    "@edifice.io/bootstrap": "develop",
+    "@edifice.io/client": "develop",
+    "@edifice.io/react": "develop",
     "@tanstack/react-query": "^5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-i18next": "^14"
   },
 ```
+
+Les trois `@edifice.io/*` valent le **tag de la branche publiante** : `develop` sur `develop`, la version
+exacte du socle sur `main`. Pas de `"*"`.
 
 `frontend/package.json` — fusionner dans les `devDependencies` existantes :
 
@@ -272,6 +215,20 @@ Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte
     "@tanstack/react-query": "5.62.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-i18next": "14.1.0",
+```
+
+`frontend/vite.config.ts` — **indispensable** : le build `lib` ne marque comme `external` que les
+`dependencies`. Sans cette modification, le socle déplacé en peers serait **embarqué dans le bundle publié**.
+
+```ts
+import { dependencies, peerDependencies } from './package.json';
+// ...
+external: [
+  ...Object.keys(dependencies || {}),
+  ...Object.keys(peerDependencies || {}),
+  // keep the existing entries (e.g. 'react/jsx-runtime')
+],
 ```
 
 ### 2. Filet au niveau du bundler
