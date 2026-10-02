@@ -1,4 +1,4 @@
-import { School } from '@edifice.io/client';
+import type { School } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { mockSchools } from '../../../../../../config/src/msw/data/schoolSpace';

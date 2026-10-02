@@ -1,4 +1,4 @@
-import { School } from '@edifice.io/client';
+import type { School } from '@edifice.io/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { act, ReactNode } from 'react';
