@@ -4,11 +4,7 @@ import { useState } from 'react';
 import { mockSchools } from '../../../../../../config/src/msw/data/schoolSpace';
 import Cantine, { CantineProps } from './Cantine';
 import CantineModal from './CantineModal';
-import {
-  CantineDish,
-  CantineMenuType,
-  CantineSection,
-} from './hooks/useCantineMenu';
+import { CantineDish, CantineMenuType, CantineSection } from './types';
 
 const meta: Meta<typeof Cantine> = {
   title: 'Modules/Homepage/Cantine',

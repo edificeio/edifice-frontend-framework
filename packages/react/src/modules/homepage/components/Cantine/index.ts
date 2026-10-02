@@ -14,4 +14,4 @@ export type {
   CantineMenuType,
   CantineSection,
   CantineStatus,
-} from './hooks/useCantineMenu';
+} from './types';

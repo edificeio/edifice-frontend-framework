@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import { act, ReactNode } from 'react';
 import { MockedProvider } from '../../../../../providers/MockedProvider/MockedProvider';
 import { renderHook, waitFor } from '~/setup';
-import { CantineMenuItem } from './useCantineMenu';
+import { CantineMenuItem } from '../types';
 import { useCantineModal } from './useCantineModal';
 
 const { get, isResponseError, latestResponse, useUserSchools } = vi.hoisted(

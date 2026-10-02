@@ -7,7 +7,7 @@ import labelBio from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine
 import labelFaitmaison from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-faitmaison.png';
 import labelLocal from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-local.png';
 import labelVegetarien from '@edifice.io/bootstrap/dist/images/homepage/cantine/cantine-label-vegetarien.png';
-import { CantineCategory } from '../hooks/useCantineMenu';
+import { CantineCategory } from '../types';
 
 export interface IllustratedLabel {
   icon: string;
