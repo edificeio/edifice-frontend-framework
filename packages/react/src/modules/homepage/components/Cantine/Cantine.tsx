@@ -8,7 +8,7 @@ import {
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import CantineMenuSection from './components/CantineMenuSection';
-import { CantineSection, CantineStatus } from './hooks/useCantineMenu';
+import { CantineSection, CantineStatus } from './types';
 
 export interface CantineProps {
   status: CantineStatus;

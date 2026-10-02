@@ -5,7 +5,7 @@ import { ReactNode } from 'react';
 import { MockedProvider } from '../../../../../providers/MockedProvider/MockedProvider';
 import { renderHook, waitFor } from '~/setup';
 import { useCantine } from './useCantine';
-import { CantineMenuItem } from './useCantineMenu';
+import { CantineMenuItem } from '../types';
 
 const { get, isResponseError, latestResponse, useUserSchools } = vi.hoisted(
   () => ({

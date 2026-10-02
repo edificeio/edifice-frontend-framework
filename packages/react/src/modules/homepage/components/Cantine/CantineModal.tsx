@@ -14,11 +14,7 @@ import { useDate } from '../../../../hooks';
 import { IconRafterLeft, IconRafterRight } from '../../../icons/components';
 import CantineLegend from './components/CantineLegend';
 import CantineMenuSection from './components/CantineMenuSection';
-import {
-  CantineMenuType,
-  CantineSection,
-  CantineStatus,
-} from './hooks/useCantineMenu';
+import type { CantineMenuType, CantineSection, CantineStatus } from './types';
 
 export interface CantineModalProps {
   isOpen: boolean;

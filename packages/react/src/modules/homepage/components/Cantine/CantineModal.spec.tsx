@@ -1,7 +1,7 @@
 import { School } from '@edifice.io/client';
 import { render, screen } from '~/setup';
 import CantineModal, { CantineModalProps } from './CantineModal';
-import { CantineSection } from './hooks/useCantineMenu';
+import { CantineSection } from './types';
 
 function makeSchool(id: string, name: string): School {
   return { id, name, UAI: `UAI-${id}`, exports: [], classes: [] } as School;
