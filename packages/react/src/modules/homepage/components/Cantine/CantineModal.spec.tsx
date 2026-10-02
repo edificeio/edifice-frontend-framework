@@ -1,4 +1,4 @@
-import { School } from '@edifice.io/client';
+import type { School } from '@edifice.io/client';
 import { render, screen } from '~/setup';
 import CantineModal, { CantineModalProps } from './CantineModal';
 import { CantineSection } from './types';
