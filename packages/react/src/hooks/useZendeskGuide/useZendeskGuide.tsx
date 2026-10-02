@@ -24,16 +24,8 @@ export interface UseZendeskGuideAPI {
   close: () => void;
 }
 
-/**
- * Add Zendesk Guide
- *
- * @param headerColor Overrides the widget panel's theme color. Can change
- * across renders (e.g. once resolved from async platform config) — the
- * widget is updated in place, no need to keep it stable.
- */
-export default function useZendeskGuide(
-  headerColor?: string,
-): UseZendeskGuideAPI {
+/** Add Zendesk Guide */
+export default function useZendeskGuide(): UseZendeskGuideAPI {
   const { currentLanguage } = useEdificeClient();
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
@@ -50,7 +42,6 @@ export default function useZendeskGuide(
   const [dataModule, setDataModule] = useState<DataModel>(undefined);
   const [isReady, setIsReady] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [configColor, setConfigColor] = useState<string | undefined>();
 
   const open = () => {
     (window as any).zE?.('webWidget', 'open');
@@ -273,6 +264,7 @@ export default function useZendeskGuide(
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
+              color: { theme: zendeskGuideConfig.color || '#E6EBFE' },
               zIndex: 3,
               launcher: {
                 mobile: {
@@ -307,7 +299,6 @@ export default function useZendeskGuide(
 
           registerWidgetHandlers();
 
-          setConfigColor(zendeskGuideConfig.color);
           setIsReady(true);
         };
       }
@@ -315,24 +306,6 @@ export default function useZendeskGuide(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSupportWorkflow]);
-
-  useEffect(() => {
-    // Single place where the panel color is written, so the caller's
-    // `headerColor`, the platform config color and the default can never
-    // override each other. `headerColor` can legitimately change after mount
-    // (e.g. it depends on a stylesheet or platform config that resolves
-    // asynchronously) while the bootstrap effect above only reacts to
-    // `hasSupportWorkflow` — hence the color lives here, not there.
-    if (!isReady) {
-      return;
-    }
-
-    (window as any).zE('webWidget', 'updateSettings', {
-      webWidget: {
-        color: { theme: headerColor || configColor || '#ffc400' },
-      },
-    });
-  }, [headerColor, configColor, isReady]);
 
   return { isReady, isOpen, open, close };
 }
