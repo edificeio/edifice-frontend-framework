@@ -1,5 +1,5 @@
 import illuCantineEmpty from '@edifice.io/bootstrap/dist/images/homepage/cantine/illu-cantine-empty.svg';
-import { School } from '@edifice.io/client';
+import type { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta as Button,
