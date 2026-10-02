@@ -1,13 +1,16 @@
 import { odeServices } from '@edifice.io/client';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-
-export type CantineCategory =
-  | 'entree'
-  | 'plat'
-  | 'accompagnement'
-  | 'laitage'
-  | 'dessert';
+import {
+  CantineCategory,
+  CantineDish,
+  CantineMenuItem,
+  CantineMenuResponse,
+  CantineMenus,
+  CantineMenuType,
+  CantineSection,
+  CantineStatus,
+} from '../types';
 
 /**
  * Fixed rendering order for menu categories, matching the Figma design.
@@ -20,54 +23,6 @@ const CANTINE_CATEGORIES: CantineCategory[] = [
   'laitage',
   'dessert',
 ];
-
-export type CantineStatus = 'loading' | 'default' | 'empty' | 'error';
-
-/**
- * Raw dish shape returned by the Webgerest upstream API, forwarded unmapped by
- * app-registry. Everything besides `type` and `nom` is effectively optional.
- */
-export interface CantineMenuItem {
-  type: string;
-  nom: string;
-  designationMenu?: string;
-  vegetarien?: boolean;
-  faitmaison?: boolean;
-  bio?: boolean;
-  local?: boolean;
-  [key: string]: unknown; // allerg_gluten, allerg_fruits_a_coque…
-}
-
-interface CantineMenuResponse {
-  menu?: CantineMenuItem[];
-  dinnerAvailable?: boolean;
-  dinnerMenu?: CantineMenuItem[];
-}
-
-export interface CantineDish {
-  id: string;
-  label: string;
-  vegetarien: boolean;
-  faitmaison: boolean;
-  bio: boolean;
-  local: boolean;
-  allergens: string[];
-}
-
-export interface CantineSection {
-  category: CantineCategory;
-  items: CantineDish[];
-}
-
-/** Both services of a given day, as exposed by app-registry. */
-export interface CantineMenus {
-  lunch: CantineMenuItem[];
-  dinner: CantineMenuItem[];
-  /** True when the school also serves a dinner menu that day. */
-  dinnerAvailable: boolean;
-}
-
-export type CantineMenuType = 'lunch' | 'dinner';
 
 /**
  * Allergen keys are dynamic (`allerg_gluten`, `allerg_fruits_a_coque`…), so

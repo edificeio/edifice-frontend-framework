@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Image } from '../../../../../components';
 import { CATEGORY_CONFIG, DISH_TAGS } from './cantineLabels';
-import { CantineCategory, CantineDish } from '../hooks/useCantineMenu';
+import { CantineCategory, CantineDish } from '../types';
 
 export interface CantineMenuSectionProps {
   category: CantineCategory;

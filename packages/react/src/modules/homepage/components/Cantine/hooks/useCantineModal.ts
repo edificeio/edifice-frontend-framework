@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { useDate } from '../../../../../hooks';
 import { useUserSchools } from '../../SchoolSpace/useUserSchools';
-import { CantineMenuType, useCantineMenu } from './useCantineMenu';
+import { useCantineMenu } from './useCantineMenu';
+import { CantineMenuType } from '../types';
 
 /** How far the user may browse around today, in days. */
 const DATE_RANGE_IN_DAYS = 40;
