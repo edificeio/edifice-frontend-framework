@@ -26,15 +26,10 @@ export default function Cantine({
   return (
     <HomeCard variant="primary" className="cantine">
       <div className="cantine__header">
-        <h3 className="cantine__title">
-          {t('homepage.widget.cantine.title', 'Menu de la cantine')}
-        </h3>
+        <h3 className="cantine__title">{t('homepage.widget.cantine.title')}</h3>
         {status !== 'error' && (
           <Button
-            aria-label={t(
-              'homepage.widget.cantine.open',
-              'Ouvrir en plein écran',
-            )}
+            aria-label={t('homepage.widget.cantine.open')}
             onClick={handleFullScreenClick}
             leftIcon={<IconFullScreen />}
             variant="ghost"
@@ -60,10 +55,7 @@ export default function Cantine({
               className="cantine__error-illu"
             />
             <p className="cantine__error-message">
-              {t(
-                'homepage.widget.cantine.error',
-                'Problème de connexion avec le service de cantine. Si le problème persiste, contactez votre établissement.',
-              )}
+              {t('homepage.widget.cantine.error')}
             </p>
           </div>
         )}
@@ -76,17 +68,14 @@ export default function Cantine({
               className="cantine__empty-illu"
             />
             <p className="cantine__empty-message">
-              {t(
-                'homepage.widget.cantine.empty',
-                'Le menu n’est pas disponible pour ce jour',
-              )}
+              {t('homepage.widget.cantine.empty')}
             </p>
             <Button
               variant="outline"
               rightIcon={<IconFullScreen />}
               onClick={handleFullScreenClick}
             >
-              {t('homepage.widget.cantine.seeMore', 'voir plus')}
+              {t('homepage.widget.cantine.seeMore')}
             </Button>
           </div>
         )}
