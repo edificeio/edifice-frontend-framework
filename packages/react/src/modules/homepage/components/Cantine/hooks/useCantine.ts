@@ -1,6 +1,6 @@
-import dayjs from 'dayjs';
 import { useUserSchools } from '../../SchoolSpace/useUserSchools';
 import { useCantineMenu } from './useCantineMenu';
+import { useDate } from '../../../../../hooks';
 
 /**
  * Today's lunch menu for the school currently selected by the user (see
@@ -11,10 +11,11 @@ import { useCantineMenu } from './useCantineMenu';
  */
 export function useCantine() {
   const { selectedSchool } = useUserSchools();
+  const { formatDate } = useDate();
 
   const { sections, status } = useCantineMenu(
     selectedSchool?.UAI ?? '',
-    dayjs().format('YYYY-MM-DD'),
+    formatDate(new Date(), 'YYYY-MM-DD'),
   );
 
   return { sections, status };
