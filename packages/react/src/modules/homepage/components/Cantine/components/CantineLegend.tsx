@@ -13,7 +13,7 @@ export default function CantineLegend() {
     <div className="cantine-modal__legend">
       <div className="cantine-modal__legend-list">
         <h3 className="cantine-modal__legend-title">
-          {t('homepage.widget.cantine.legend.title', 'Légende')}
+          {t('homepage.widget.cantine.legend.title')}
         </h3>
         {DISH_TAGS.map((tag) => (
           <p className="cantine-modal__legend-item" key={tag.flag}>
@@ -27,10 +27,7 @@ export default function CantineLegend() {
         ))}
       </div>
       <p className="cantine-modal__notice">
-        {t(
-          'homepage.widget.cantine.legend.notice',
-          '"Les informations figurant dans ces menus peuvent être modifiées en fonction des approvisionnements ; les mises à jour seront effectuées en conséquence"',
-        )}
+        {t('homepage.widget.cantine.legend.notice')}
       </p>
     </div>
   );

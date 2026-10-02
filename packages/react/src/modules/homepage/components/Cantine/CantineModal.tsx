@@ -60,11 +60,11 @@ const CantineModal = ({
   const menuTypeOptions = [
     {
       value: 'lunch',
-      label: t('homepage.widget.cantine.lunch', 'Déjeuner'),
+      label: t('homepage.widget.cantine.lunch'),
     },
     {
       value: 'dinner',
-      label: t('homepage.widget.cantine.dinner', 'Dîner'),
+      label: t('homepage.widget.cantine.dinner'),
     },
   ];
 
@@ -77,7 +77,7 @@ const CantineModal = ({
       onModalClose={onClose}
     >
       <Modal.Header onModalClose={onClose}>
-        {t('homepage.widget.cantine.title', 'Menu de la cantine')}
+        {t('homepage.widget.cantine.title')}
       </Modal.Header>
 
       <Modal.Body className="cantine-modal">
@@ -91,14 +91,11 @@ const CantineModal = ({
                     className="cantine-modal__field"
                   >
                     <Label className="cantine-modal__label">
-                      {t('homepage.widget.cantine.school', 'Établissement')}
+                      {t('homepage.widget.cantine.school')}
                     </Label>
                     <Select
                       block
-                      placeholderOption={t(
-                        'homepage.widget.cantine.school',
-                        'Établissement',
-                      )}
+                      placeholderOption={t('homepage.widget.cantine.school')}
                       options={schools.map((school) => ({
                         value: school.id,
                         label: school.name,
@@ -124,14 +121,11 @@ const CantineModal = ({
                     className="cantine-modal__field"
                   >
                     <Label className="cantine-modal__label">
-                      {t('homepage.widget.cantine.menu', 'Menu')}
+                      {t('homepage.widget.cantine.menu')}
                     </Label>
                     <Select
                       block
-                      placeholderOption={t(
-                        'homepage.widget.cantine.lunch',
-                        'Déjeuner',
-                      )}
+                      placeholderOption={t('homepage.widget.cantine.lunch')}
                       options={menuTypeOptions}
                       selectedValue={menuTypeOptions.find(
                         (option) => option.value === menuType,
@@ -156,10 +150,7 @@ const CantineModal = ({
         <div className="cantine-modal__panel">
           <div className="cantine-modal__nav">
             <Button
-              aria-label={t(
-                'homepage.widget.cantine.previousDay',
-                'Jour précédent',
-              )}
+              aria-label={t('homepage.widget.cantine.previousDay')}
               leftIcon={<IconRafterLeft />}
               variant="ghost"
               color="tertiary"
@@ -170,7 +161,7 @@ const CantineModal = ({
               {formatDate(date, 'dddd D MMMM')}
             </p>
             <Button
-              aria-label={t('homepage.widget.cantine.nextDay', 'Jour suivant')}
+              aria-label={t('homepage.widget.cantine.nextDay')}
               leftIcon={<IconRafterRight />}
               variant="ghost"
               color="tertiary"
@@ -199,10 +190,7 @@ const CantineModal = ({
                 className="cantine-modal__empty-illu"
               />
               <p className="cantine-modal__empty-message">
-                {t(
-                  'homepage.widget.cantine.empty',
-                  'Le menu n’est pas disponible pour ce jour',
-                )}
+                {t('homepage.widget.cantine.empty')}
               </p>
             </div>
           )}
