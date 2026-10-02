@@ -186,7 +186,7 @@ const CantineModal = ({
             <div className="cantine-modal__empty">
               <Image
                 src={illuCantineEmpty}
-                alt=""
+                alt={t('homepage.widget.cantine.emptyIllustration')}
                 className="cantine-modal__empty-illu"
               />
               <p className="cantine-modal__empty-message">

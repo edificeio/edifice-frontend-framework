@@ -19,7 +19,10 @@ export default function CantineMenuSection({
     <li className={`cantine__section cantine__section-${category}`}>
       <div className="cantine__section-header">
         <span className="cantine__section-icon">
-          <Image src={config.icon} alt="" />
+          <Image
+            src={config.icon}
+            alt={t(config.i18nKey, config.defaultLabel)}
+          />
         </span>
         <h4 className="cantine__section-title">
           {t(config.i18nKey, config.defaultLabel)}
