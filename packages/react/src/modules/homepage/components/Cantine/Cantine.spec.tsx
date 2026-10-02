@@ -31,7 +31,7 @@ describe('Cantine', () => {
     );
 
     await user.click(
-      screen.getByRole('button', { name: 'Ouvrir en plein écran' }),
+      screen.getByRole('button', { name: 'homepage.widget.cantine.open' }),
     );
 
     expect(handleFullScreenClick).toHaveBeenCalledTimes(1);
@@ -43,7 +43,7 @@ describe('Cantine', () => {
     );
 
     expect(
-      screen.queryByRole('button', { name: 'Ouvrir en plein écran' }),
+      screen.queryByRole('button', { name: 'homepage.widget.cantine.open' }),
     ).not.toBeInTheDocument();
   });
 
@@ -57,7 +57,7 @@ describe('Cantine', () => {
     );
 
     expect(
-      screen.queryByRole('button', { name: 'voir plus' }),
+      screen.queryByRole('button', { name: 'homepage.widget.cantine.seeMore' }),
     ).not.toBeInTheDocument();
 
     rerender(
@@ -65,7 +65,7 @@ describe('Cantine', () => {
     );
 
     expect(
-      screen.getByRole('button', { name: 'voir plus' }),
+      screen.getByRole('button', { name: 'homepage.widget.cantine.seeMore' }),
     ).toBeInTheDocument();
   });
 
