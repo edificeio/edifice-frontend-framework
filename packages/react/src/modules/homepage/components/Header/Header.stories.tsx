@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { userbookHandlers } from '@edifice.io/config';
 import { http, HttpResponse } from 'msw';
 
 import Header from './Header';
@@ -95,6 +96,34 @@ export const WithMessages: Story = {
           http.get('/conversation/api/count/inbox', () =>
             HttpResponse.json({ count: 3 }),
           ),
+        ],
+      },
+    },
+  },
+};
+
+/**
+ * Header with favorite applications bookmarked (App1 and App2, from the
+ * default `userInfo` fixture) — hover the "Mes applis" icon to open the
+ * popover. The `Default` story above already covers the empty state, since
+ * the global `userbook` handler bookmarks no app.
+ */
+export const WithBookmarkedApps: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        // Storybook's parameter merge REPLACES the `userbook` array wholesale
+        // rather than merging its contents — an override here must spread the
+        // original `userbookHandlers` (ours first, so it wins on the shared
+        // path) or every other handler in that group, e.g. `/userbook/api/person`,
+        // silently 404s and the whole session query errors out.
+        userbook: [
+          http.get('/userbook/preference/apps', () =>
+            HttpResponse.json({
+              preference: '{"bookmarks":["App1","App2"],"applications":[]}',
+            }),
+          ),
+          ...userbookHandlers,
         ],
       },
     },
