@@ -19,7 +19,7 @@ export default function CantineLegend() {
           <p className="cantine-modal__legend-item" key={tag.flag}>
             <Image
               src={tag.icon}
-              alt=""
+              alt={t(tag.i18nKey, tag.defaultLabel)}
               className="cantine-modal__legend-icon"
             />
             {t(tag.i18nKey, tag.defaultLabel)}
