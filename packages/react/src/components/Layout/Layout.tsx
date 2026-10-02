@@ -48,8 +48,12 @@ export const Layout = ({
   const { theme } = useEdificeTheme();
   const override = useUiOverride('layout.header');
   const isHeaderV2 = override?.variant === 'v2';
-  const { productOverride, background, isBackgroundImageOverridden } =
-    useBackground();
+  const {
+    productOverride,
+    background,
+    isBackgroundImageOverridden,
+    betaEnabled,
+  } = useBackground();
   const { toggleOverlay } = useOverlay();
 
   const toast = useToast();
@@ -113,11 +117,12 @@ export const Layout = ({
   );
 
   const renderToaster = toast.renderToaster();
+  const isBackgroundHidden = theme?.is1d || !betaEnabled ? true : false;
 
   return (
     <div
       data-product={productOverride}
-      data-background={theme?.is1d ? undefined : background}
+      data-background={isBackgroundHidden ? undefined : background}
       className={clsx('layout', {
         'layout-has-background-image': isBackgroundImageOverridden,
       })}
