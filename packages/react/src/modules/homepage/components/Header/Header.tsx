@@ -80,12 +80,13 @@ const Header = ({
 
   /**
    * "Mes applis" popover: opens on hover on desktop, on click on mobile/tablet
-   * (below the 'tablet' breakpoint, same threshold as this header's own responsive
-   * layout), and closes on an outside click/tap in both cases. `safePolygon()`
-   * keeps it open while the pointer moves diagonally from the trigger towards
-   * the (wider) popover instead of closing as soon as it leaves the trigger.
+   * (below the 'desktop-small' breakpoint, so real tablets — up to 1024px —
+   * get click like phones instead of being mistaken for desktop), and closes
+   * on an outside click/tap in both cases. `safePolygon()` keeps it open
+   * while the pointer moves diagonally from the trigger towards the (wider)
+   * popover instead of closing as soon as it leaves the trigger.
    */
-  const { md: isDesktop } = useBreakpoint();
+  const { lg: isDesktop } = useBreakpoint();
   const myApps = useSafeHoverPopover({
     hoverEnabled: isDesktop,
     clickEnabled: !isDesktop,
@@ -162,20 +163,16 @@ const Header = ({
               </a>
             </NavItem>
           )}
-          <NavItem
-            className="position-relative"
-            ref={myApps.setReference}
-            id={popoverAppsId}
-            aria-haspopup="true"
-            aria-expanded={myApps.open}
-            data-testid="header-my-apps-trigger"
-            {...myApps.getReferenceProps()}
-          >
+          <NavItem className="position-relative">
             <NavLink
+              ref={myApps.setReference}
               link="/welcome"
               translate={t('navbar.applications')}
+              id={popoverAppsId}
+              aria-haspopup="true"
+              aria-expanded={myApps.open}
               data-testid="header-my-apps-button"
-              onClick={handleMyAppsClick}
+              {...myApps.getReferenceProps({ onClick: handleMyAppsClick })}
             >
               <IconMyAppsBeta />
             </NavLink>
@@ -221,19 +218,16 @@ const Header = ({
               />
             )}
           </NavItem>
-          <NavItem
-            className="position-relative"
-            ref={userMenu.setReference}
-            id={popoverUserId}
-            aria-haspopup="true"
-            aria-expanded={userMenu.open}
-            data-testid="header-user-menu-button"
-            {...userMenu.getReferenceProps()}
-          >
+          <NavItem className="position-relative">
             <NavLink
+              ref={userMenu.setReference}
               link="/userbook/mon-compte"
               translate={t('navbar.myaccount')}
+              id={popoverUserId}
+              aria-haspopup="true"
+              aria-expanded={userMenu.open}
               data-testid="header-user-profile-button"
+              {...userMenu.getReferenceProps()}
             >
               <Avatar
                 alt={userName}

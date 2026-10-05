@@ -5,6 +5,7 @@ import {
   useClick,
   useDismiss,
   useFloating,
+  useFocus,
   useHover,
   useInteractions,
 } from '@floating-ui/react';
@@ -41,11 +42,15 @@ export function useSafeHoverPopover({
   });
   const click = useClick(context, { enabled: clickEnabled });
   const dismiss = useDismiss(context);
+  // Keyboard focus must open the popover independently of hover/click: a
+  // keyboard or screen-reader user tabbing to the trigger never fires either.
+  const focus = useFocus(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     click,
     dismiss,
+    focus,
   ]);
 
   return {
