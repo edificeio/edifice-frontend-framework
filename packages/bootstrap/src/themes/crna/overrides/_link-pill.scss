@@ -1,0 +1,11 @@
+// Brand the LinkPill with the crna primary color instead of the shared yellow.
+[data-product='crna'] .link-pill {
+  border-color: var(--color-primary-light);
+  background-color: var(--color-primary-pale);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--color-primary-default);
+    background-color: var(--color-primary-light);
+  }
+}
