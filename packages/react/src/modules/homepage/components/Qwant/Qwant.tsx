@@ -74,7 +74,7 @@ export default function Qwant({ handleActionClick }: QwantProps) {
                 type="submit"
                 aria-label={t('search')}
                 variant="filled"
-                color="secondary"
+                color="default"
               />
             </FormControl>
           </form>
