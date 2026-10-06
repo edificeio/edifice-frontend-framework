@@ -113,10 +113,10 @@
       }
     }
 
-    .btn-icon {
-      background: var(--color-primary-light);
-      border-radius: var(--primitive-border-radius-pill);
-      border: none;
+    .btn-beta {
+      --btn-beta-bg: var(--color-primary-light);
+      --btn-beta-bg-hover: var(--color-primary-light);
+      --btn-beta-color: var(--primitive-white);
     }
   }
 }

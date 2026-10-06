@@ -142,7 +142,7 @@ export default function Universalis({
                 type="submit"
                 aria-label={searchLabel}
                 variant="filled"
-                color="secondary"
+                color="default"
                 disabled={!hasUai}
               />
             </FormControl>
