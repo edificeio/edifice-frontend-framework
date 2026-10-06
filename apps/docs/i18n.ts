@@ -313,6 +313,11 @@ i18n.use(initReactI18next).init({
           'La classe de [[childName]]',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
+        //------------------ Qwant -------------------------
+        'homepage.widget.qwant.title': 'Qwant',
+        'homepage.widget.qwant.open': 'Ouvrir',
+        'homepage.widget.qwant.description':
+          'Le moteur de recherche européen qui respecte votre vie privée',
         //------------------ UsefulLinks -------------------------
         'homepage.usefulLinks.title': 'Liens utiles',
         'homepage.usefulLinks.edit': 'Éditer',

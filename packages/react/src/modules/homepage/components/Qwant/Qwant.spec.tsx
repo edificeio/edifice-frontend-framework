@@ -6,7 +6,7 @@ describe('Qwant', () => {
     const handleActionClick = vi.fn();
     const { user } = render(<Qwant handleActionClick={handleActionClick} />);
 
-    await user.click(screen.getByRole('button', { name: 'Ouvrir' }));
+    await user.click(screen.getByTestId('qwant-button-open'));
 
     expect(handleActionClick).toHaveBeenCalledTimes(1);
   });
