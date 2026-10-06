@@ -26,12 +26,11 @@ export default function Qwant({ handleActionClick }: QwantProps) {
   return (
     <HomeCard variant="primary">
       <div className="qwant__header">
-        <h3 className="qwant__title">
-          {t('homepage.widget.qwant.title', 'Qwant')}
-        </h3>
+        <h3 className="qwant__title">{t('homepage.widget.qwant.title')}</h3>
         <Button
           className="qwant__header-button"
-          aria-label={t('homepage.widget.qwant.open', 'Ouvrir')}
+          data-testid="qwant-button-open"
+          aria-label={t('homepage.widget.qwant.open')}
           onClick={handleActionClick}
           leftIcon={<SvgIconExternalLink />}
           variant="ghost"
@@ -44,10 +43,7 @@ export default function Qwant({ handleActionClick }: QwantProps) {
           <div className="qwant__intro">
             <Image src={illuQwant} alt="Qwant" className="qwant__logo" />
             <p className="qwant__description">
-              {t(
-                'homepage.widget.qwant.description',
-                'Le moteur de recherche européen qui respecte votre vie privée',
-              )}
+              {t('homepage.widget.qwant.description')}
             </p>
           </div>
           <form
@@ -62,7 +58,7 @@ export default function Qwant({ handleActionClick }: QwantProps) {
               </FormControl.Label>
               <Input
                 data-testid="qwant-search-input"
-                placeholder={(t('search'), 'Rechercher')}
+                placeholder={t('search')}
                 size="md"
                 type="text"
                 maxLength={255}
