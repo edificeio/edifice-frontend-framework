@@ -25,7 +25,7 @@ describe('Universalis', () => {
       <Universalis handleActionClick={handleActionClick} />,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Ouvrir' }));
+    await user.click(screen.getByTestId('universalis-button-open'));
 
     expect(handleActionClick).toHaveBeenCalledTimes(1);
   });

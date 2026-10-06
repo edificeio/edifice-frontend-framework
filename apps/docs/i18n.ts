@@ -368,6 +368,12 @@ i18n.use(initReactI18next).init({
         'homepage.widget.qwant.open': 'Ouvrir',
         'homepage.widget.qwant.description':
           'Le moteur de recherche européen qui respecte votre vie privée',
+        //------------------ Universalis -------------------------
+        'homepage.widget.universalis.title': 'Universalis Éducation',
+        'homepage.widget.universalis.open': 'Ouvrir',
+        'homepage.widget.universalis.description':
+          "L'encyclopédie de référence pour réussir vos recherches scolaires",
+        'homepage.widget.universalis.noUai': 'UAI non renseigné',
         //------------------ UsefulLinks -------------------------
         'homepage.usefulLinks.title': 'Liens utiles',
         'homepage.usefulLinks.edit': 'Éditer',
