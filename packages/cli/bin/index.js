@@ -10,6 +10,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import v8flags from "v8flags";
 import { publish } from "../src/publish/index.js";
+import { checkSingletons } from "../src/check-singletons/index.js";
 
 const args = process.argv.slice(2);
 const argv = minimist(args);
@@ -109,6 +110,19 @@ Config.prepare(
                 tag: opts._optionValues.tag ?? process.env.TAG,
                 ghToken: process.env.GH_TOKEN,
               });
+            });
+
+          program
+            .command("check-singletons")
+            .description(
+              "Fails if an Edifice singleton package (socle, react-query) is physically duplicated in node_modules",
+            )
+            .option("--cwd <dir>", "Directory containing node_modules to check")
+            .action((_str, opts) => {
+              const code = checkSingletons({
+                cwd: opts._optionValues.cwd,
+              });
+              process.exit(code);
             });
 
           program.parseAsync().catch((error) => {
