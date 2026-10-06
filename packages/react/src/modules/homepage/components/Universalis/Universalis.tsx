@@ -43,17 +43,18 @@ export default function Universalis({
   const hasUai = Boolean(selectedSchool?.UAI);
   const searchLabel = hasUai
     ? t('search')
-    : t('homepage.widget.universalis.noUai', 'UAI non renseigné');
+    : t('homepage.widget.universalis.noUai');
 
   return (
     <HomeCard variant="primary">
       <div className="universalis__header">
         <h3 className="universalis__title">
-          {t('homepage.widget.universalis.title', 'Universalis Éducation')}
+          {t('homepage.widget.universalis.title')}
         </h3>
         <Button
           className="universalis__header-button"
-          aria-label={t('homepage.widget.universalis.open', 'Ouvrir')}
+          data-testid="universalis-button-open"
+          aria-label={t('homepage.widget.universalis.open')}
           onClick={handleActionClick}
           leftIcon={<SvgIconExternalLink />}
           variant="ghost"
@@ -70,10 +71,7 @@ export default function Universalis({
               className="universalis__logo"
             />
             <p className="universalis__description">
-              {t(
-                'homepage.widget.universalis.description',
-                "L'encyclopédie de référence pour réussir vos recherches scolaires",
-              )}
+              {t('homepage.widget.universalis.description')}
             </p>
           </div>
 
