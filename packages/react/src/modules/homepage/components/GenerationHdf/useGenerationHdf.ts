@@ -97,6 +97,9 @@ export function useGenerationHdf() {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // The submit button stays enabled while loading (design), so pressing
+    // Enter in the field must not send a second request.
+    if (salesMutation.isPending) return;
     salesMutation.mutate({ cardNb: cardNumber, persist: true });
   };
 

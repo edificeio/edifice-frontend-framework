@@ -143,6 +143,32 @@ describe('useGenerationHdf', () => {
     expect(mocks.savePreference).not.toHaveBeenCalled();
   });
 
+  it('ignores a new submit while a request is pending', async () => {
+    mocks.get.mockReturnValue(new Promise(() => {}));
+
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
+    await waitFor(() => expect(result.current.status).toBe('idle'));
+
+    const submitEvent = {
+      preventDefault: vi.fn(),
+    } as unknown as React.FormEvent<HTMLFormElement>;
+    act(() => {
+      result.current.onCardNumberChange('123456');
+    });
+    act(() => {
+      result.current.onSubmit(submitEvent);
+    });
+    await waitFor(() => expect(mocks.get).toHaveBeenCalledTimes(1));
+    // The mutation function runs asynchronously: flush it before asserting.
+    await act(async () => {
+      result.current.onSubmit(submitEvent);
+    });
+
+    expect(mocks.get).toHaveBeenCalledTimes(1);
+  });
+
   it('clears the stored preference and resets state when editing', async () => {
     mocks.getPreference.mockResolvedValue({ cardNb: '475948' });
     mocks.get.mockResolvedValue({

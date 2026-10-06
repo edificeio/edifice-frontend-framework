@@ -42,6 +42,7 @@
     flex-direction: column;
     gap: var(--primitive-spacer-8);
     width: 100%;
+    padding: 0 var(--primitive-spacer-16);
   }
 
   &__account-title {
@@ -56,9 +57,9 @@
   &__wallets {
     display: flex;
     flex-direction: column;
-    gap: var(--primitive-spacer-4);
+    gap: var(--primitive-spacer-8);
     margin: 0;
-    padding: 0 var(--primitive-spacer-16);
+    padding: 0 0 0 var(--primitive-spacer-16);
     list-style: none;
   }
 
@@ -69,6 +70,7 @@
     gap: var(--primitive-spacer-8);
     color: var(--primitive-grey-900);
     font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
   }
 
   &__form {
@@ -76,16 +78,9 @@
     align-items: flex-start;
     gap: var(--primitive-spacer-16);
     width: 100%;
-
-    .btn-beta {
-      flex-shrink: 0;
-    }
   }
 
   &__field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--primitive-spacer-4);
     flex: 1 0 0;
     min-width: 0;
   }
