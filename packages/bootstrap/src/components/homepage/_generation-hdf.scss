@@ -89,22 +89,4 @@
     flex: 1 0 0;
     min-width: 0;
   }
-
-  &__input-wrapper {
-    position: relative;
-    width: 100%;
-
-    &--clearable {
-      .form-control {
-        padding-right: var(--primitive-spacer-32);
-      }
-    }
-  }
-
-  &__input-clear {
-    position: absolute;
-    top: 50%;
-    right: var(--primitive-spacer-4);
-    transform: translateY(-50%);
-  }
 }
