@@ -313,6 +313,16 @@ i18n.use(initReactI18next).init({
           'La classe de [[childName]]',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
+        //------------------ GenerationHdf -------------------------
+        'homepage.widget.generation-hdf.title': 'Génération HDF',
+        'homepage.widget.generation-hdf.open': 'Ouvrir',
+        'homepage.widget.generation-hdf.wallets-title': 'Mes porte-monnaies',
+        'homepage.widget.generation-hdf.description':
+          'Toutes les aides de la Région pour réussir votre année',
+        'homepage.widget.generation-hdf.placeholder': 'Numéro de carte',
+        'homepage.widget.generation-hdf.error': 'Numéro de carte incorrect',
+        'homepage.widget.generation-hdf.edit': 'Modifier',
+        'homepage.widget.generation-hdf.submit': 'Valider',
         //------------------ UsefulLinks -------------------------
         'homepage.usefulLinks.title': 'Liens utiles',
         'homepage.usefulLinks.edit': 'Éditer',

@@ -41,10 +41,11 @@ export default function GenerationHdf({
     <HomeCard variant="primary">
       <div className="generation-hdf__header">
         <h3 className="generation-hdf__title">
-          {t('homepage.widget.generation-hdf.title', 'Génération HDF')}
+          {t('homepage.widget.generation-hdf.title')}
         </h3>
         <ButtonBeta
-          aria-label={t('homepage.widget.generation-hdf.open', 'Ouvrir')}
+          data-testid="generation-hdf-button-open"
+          aria-label={t('homepage.widget.generation-hdf.open')}
           onClick={handleActionClick}
           leftIcon={<SvgIconExternalLink />}
           variant="ghost"
@@ -63,10 +64,7 @@ export default function GenerationHdf({
           {isAccount ? (
             <div className="generation-hdf__account">
               <h4 className="generation-hdf__account-title">
-                {t(
-                  'homepage.widget.generation-hdf.wallets-title',
-                  'Mes porte-monnaies',
-                )}
+                {t('homepage.widget.generation-hdf.wallets-title')}
               </h4>
               <ul className="generation-hdf__wallets">
                 {wallets.map((wallet, index) => (
@@ -83,10 +81,7 @@ export default function GenerationHdf({
             </div>
           ) : (
             <p className="generation-hdf__description">
-              {t(
-                'homepage.widget.generation-hdf.description',
-                'Toutes les aides de la Région pour réussir votre année',
-              )}
+              {t('homepage.widget.generation-hdf.description')}
             </p>
           )}
 
@@ -100,10 +95,7 @@ export default function GenerationHdf({
                 size="md"
                 type="text"
                 inputMode="numeric"
-                placeholder={t(
-                  'homepage.widget.generation-hdf.placeholder',
-                  'Numéro de carte',
-                )}
+                placeholder={t('homepage.widget.generation-hdf.placeholder')}
                 value={cardNumber}
                 onChange={(event) => onCardNumberChange(event.target.value)}
                 disabled={isAccount}
@@ -112,10 +104,7 @@ export default function GenerationHdf({
               />
               {isError && (
                 <FormControl.Text>
-                  {t(
-                    'homepage.widget.generation-hdf.error',
-                    'Numéro de carte incorrect',
-                  )}
+                  {t('homepage.widget.generation-hdf.error')}
                 </FormControl.Text>
               )}
             </FormControl>
@@ -127,7 +116,7 @@ export default function GenerationHdf({
                 color="default"
                 onClick={onEdit}
               >
-                {t('homepage.widget.generation-hdf.edit', 'Modifier')}
+                {t('homepage.widget.generation-hdf.edit')}
               </ButtonBeta>
             ) : (
               <ButtonBeta
@@ -137,7 +126,7 @@ export default function GenerationHdf({
                 isLoading={isLoading}
                 disabled={!cardNumber.trim()}
               >
-                {t('homepage.widget.generation-hdf.submit', 'Valider')}
+                {t('homepage.widget.generation-hdf.submit')}
               </ButtonBeta>
             )}
           </form>

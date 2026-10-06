@@ -16,7 +16,7 @@ describe('GenerationHdf', () => {
       />,
     );
 
-    await user.click(screen.getByRole('button', { name: 'Ouvrir' }));
+    await user.click(screen.getByTestId('generation-hdf-button-open'));
 
     expect(handleActionClick).toHaveBeenCalledTimes(1);
   });
