@@ -107,7 +107,8 @@ export default function GenerationHdf({
                 value={cardNumber}
                 onChange={(event) => onCardNumberChange(event.target.value)}
                 disabled={isAccount}
-                noValidationIcon
+                showCounter
+                maxLength={50}
               />
               {isError && (
                 <FormControl.Text>
@@ -134,7 +135,7 @@ export default function GenerationHdf({
                 variant="outline"
                 color="default"
                 isLoading={isLoading}
-                disabled={!cardNumber.trim() || isLoading}
+                disabled={!cardNumber.trim()}
               >
                 {t('homepage.widget.generation-hdf.submit', 'Valider')}
               </ButtonBeta>
