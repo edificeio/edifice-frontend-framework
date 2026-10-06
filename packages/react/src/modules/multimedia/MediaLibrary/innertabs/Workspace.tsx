@@ -4,7 +4,7 @@ import { Workspace as Component } from '../../Workspace';
 import { useMediaLibraryContext } from '../MediaLibraryContext';
 
 export const Workspace = () => {
-  const { type, setResultCounter, setResult, multiple, visibility } =
+  const { type, pdfOnly, setResultCounter, setResult, multiple, visibility } =
     useMediaLibraryContext();
 
   function getDocumentRoleFilter(): Role | Role[] | null {
@@ -15,6 +15,8 @@ export const Workspace = () => {
         return 'audio';
       case 'video':
         return 'video';
+      case 'attachment':
+        return pdfOnly ? 'pdf' : null;
       default:
         return null; // = all document roles
     }
