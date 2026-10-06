@@ -92,10 +92,25 @@
     border-radius: var(--primitive-border-radius-pill);
     background: var(--primitive-white);
     overflow: hidden;
+    transition:
+      border-color 150ms ease-in-out,
+      box-shadow 150ms ease-in-out;
 
-    input {
-      border: none;
+    &:has(.input:focus-within) {
+      border-color: var(--color-buttons-primary-default);
+      box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+    }
+
+    .input {
+      flex: 1 0 0;
+      min-width: 0;
+      border: 0;
+      border-radius: 0;
       background: transparent;
+
+      &:focus-within {
+        box-shadow: none;
+      }
     }
 
     .btn-icon {
