@@ -1,9 +1,7 @@
 import illuGenerationHdf from '@edifice.io/bootstrap/dist/images/homepage/illu-generation-hdf.svg';
-import clsx from 'clsx';
 import { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonBeta, FormControl, Image, Input } from '../../../../components';
-import { IconClose } from '../../../icons/components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
 
@@ -19,7 +17,6 @@ export interface GenerationHdfProps {
   status: GenerationHdfStatus;
   cardNumber: string;
   onCardNumberChange: (value: string) => void;
-  onClear: () => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onEdit: () => void;
   wallets: GenerationHdfWallet[];
@@ -30,7 +27,6 @@ export default function GenerationHdf({
   status,
   cardNumber,
   onCardNumberChange,
-  onClear,
   onSubmit,
   onEdit,
   wallets,
@@ -40,7 +36,6 @@ export default function GenerationHdf({
   const isAccount = status === 'account';
   const isLoading = status === 'loading';
   const isError = status === 'error';
-  const canClear = cardNumber.length > 0 && !isAccount;
 
   return (
     <HomeCard variant="primary">
@@ -101,39 +96,19 @@ export default function GenerationHdf({
               className="generation-hdf__field"
               status={isError ? 'invalid' : undefined}
             >
-              <div
-                className={clsx('generation-hdf__input-wrapper', {
-                  'generation-hdf__input-wrapper--clearable': canClear,
-                })}
-              >
-                <Input
-                  size="md"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder={t(
-                    'homepage.widget.generation-hdf.placeholder',
-                    'Numéro de carte',
-                  )}
-                  value={cardNumber}
-                  onChange={(event) => onCardNumberChange(event.target.value)}
-                  disabled={isAccount}
-                  noValidationIcon
-                />
-                {canClear && (
-                  <ButtonBeta
-                    type="button"
-                    aria-label={t(
-                      'homepage.widget.generation-hdf.clear',
-                      'Effacer',
-                    )}
-                    onClick={onClear}
-                    leftIcon={<IconClose />}
-                    variant="ghost"
-                    color="tertiary"
-                    className="generation-hdf__input-clear"
-                  />
+              <Input
+                size="md"
+                type="text"
+                inputMode="numeric"
+                placeholder={t(
+                  'homepage.widget.generation-hdf.placeholder',
+                  'Numéro de carte',
                 )}
-              </div>
+                value={cardNumber}
+                onChange={(event) => onCardNumberChange(event.target.value)}
+                disabled={isAccount}
+                noValidationIcon
+              />
               {isError && (
                 <FormControl.Text>
                   {t(

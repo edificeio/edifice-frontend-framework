@@ -57,11 +57,6 @@ function GenerationHdfDemo({
     }, 600);
   };
 
-  const handleClear = () => {
-    setCardNumber('');
-    setStatus('idle');
-  };
-
   const handleEdit = () => {
     setCardNumber('');
     setWallets([]);
@@ -81,7 +76,6 @@ function GenerationHdfDemo({
         status={status}
         cardNumber={cardNumber}
         onCardNumberChange={setCardNumber}
-        onClear={handleClear}
         onSubmit={handleSubmit}
         onEdit={handleEdit}
         wallets={wallets}

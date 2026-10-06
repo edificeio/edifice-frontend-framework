@@ -10,7 +10,6 @@ describe('GenerationHdf', () => {
         status="idle"
         cardNumber=""
         onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
         onSubmit={vi.fn()}
         onEdit={vi.fn()}
         wallets={[]}
@@ -30,7 +29,6 @@ describe('GenerationHdf', () => {
         status="idle"
         cardNumber="475948"
         onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
         onSubmit={onSubmit}
         onEdit={vi.fn()}
         wallets={[]}
@@ -45,45 +43,6 @@ describe('GenerationHdf', () => {
     expect(onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  it('does not render a clear button when the card number field is empty', () => {
-    render(
-      <GenerationHdf
-        handleActionClick={vi.fn()}
-        status="idle"
-        cardNumber=""
-        onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
-        onSubmit={vi.fn()}
-        onEdit={vi.fn()}
-        wallets={[]}
-      />,
-    );
-
-    expect(
-      screen.queryByRole('button', { name: 'Effacer' }),
-    ).not.toBeInTheDocument();
-  });
-
-  it('calls onClear when the clear button is clicked', async () => {
-    const onClear = vi.fn();
-    const { user } = render(
-      <GenerationHdf
-        handleActionClick={vi.fn()}
-        status="error"
-        cardNumber="475948"
-        onCardNumberChange={vi.fn()}
-        onClear={onClear}
-        onSubmit={vi.fn()}
-        onEdit={vi.fn()}
-        wallets={[]}
-      />,
-    );
-
-    await user.click(screen.getByRole('button', { name: 'Effacer' }));
-
-    expect(onClear).toHaveBeenCalledTimes(1);
-  });
-
   it('does not show an error message outside of the error status', () => {
     render(
       <GenerationHdf
@@ -91,7 +50,6 @@ describe('GenerationHdf', () => {
         status="idle"
         cardNumber=""
         onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
         onSubmit={vi.fn()}
         onEdit={vi.fn()}
         wallets={[]}
@@ -110,7 +68,6 @@ describe('GenerationHdf', () => {
         status="error"
         cardNumber="475948"
         onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
         onSubmit={vi.fn()}
         onEdit={vi.fn()}
         wallets={[]}
@@ -128,7 +85,6 @@ describe('GenerationHdf', () => {
         status="account"
         cardNumber="475948"
         onCardNumberChange={vi.fn()}
-        onClear={vi.fn()}
         onSubmit={vi.fn()}
         onEdit={onEdit}
         wallets={[{ label: 'Manuels et équipements', amount: '100,00 €' }]}

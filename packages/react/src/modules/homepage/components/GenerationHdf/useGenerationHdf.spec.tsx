@@ -164,22 +164,4 @@ describe('useGenerationHdf', () => {
     expect(result.current.wallets).toEqual([]);
     expect(mocks.savePreference).toHaveBeenCalledWith('cursus', {});
   });
-
-  it('only clears the local field when using onClear', async () => {
-    const { result } = renderHook(() => useGenerationHdf(), {
-      wrapper: createWrapper(),
-    });
-    await waitFor(() => expect(result.current.status).toBe('idle'));
-
-    act(() => {
-      result.current.onCardNumberChange('123456');
-    });
-    act(() => {
-      result.current.onClear();
-    });
-
-    expect(result.current.cardNumber).toBe('');
-    expect(result.current.status).toBe('idle');
-    expect(mocks.savePreference).not.toHaveBeenCalled();
-  });
 });
