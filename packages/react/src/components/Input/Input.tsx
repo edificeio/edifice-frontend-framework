@@ -144,6 +144,12 @@ const Input = forwardRef(
     };
 
     const maxLength = restProps.maxLength ?? 0;
+    // A controlled `value` can change without any user input (reset, value
+    // loaded later…), so the counter reads it directly when it's provided.
+    const length =
+      restProps.value !== undefined
+        ? String(restProps.value).length
+        : currentLength;
 
     return (
       <div className={wrapperClasses}>
@@ -172,10 +178,10 @@ const Input = forwardRef(
         {showCounter && (
           <span
             className={clsx('input__counter', {
-              'input__counter--max': currentLength === maxLength,
+              'input__counter--max': length === maxLength,
             })}
           >
-            {currentLength} / {maxLength}
+            {length} / {maxLength}
           </span>
         )}
       </div>

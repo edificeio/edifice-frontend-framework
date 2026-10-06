@@ -95,4 +95,36 @@ describe('Input', () => {
 
     expect(screen.getByText('2 / 10')).toBeInTheDocument();
   });
+
+  it('keeps the counter in sync with a controlled value changed without typing', () => {
+    const { rerender } = render(
+      <FormControl id="firstname">
+        <Input
+          type="text"
+          size="md"
+          showCounter
+          maxLength={10}
+          value="1234"
+          onChange={vi.fn()}
+        />
+      </FormControl>,
+    );
+
+    expect(screen.getByText('4 / 10')).toBeInTheDocument();
+
+    rerender(
+      <FormControl id="firstname">
+        <Input
+          type="text"
+          size="md"
+          showCounter
+          maxLength={10}
+          value=""
+          onChange={vi.fn()}
+        />
+      </FormControl>,
+    );
+
+    expect(screen.getByText('0 / 10')).toBeInTheDocument();
+  });
 });
