@@ -212,9 +212,7 @@ const Header = ({
                   zIndex: 1,
                   display: 'block',
                 }}
-                aria-label={t('homepage.notifications.new-badge', {
-                  defaultValue: 'Nouvelle notification',
-                })}
+                aria-label={t('homepage.notifications.new-badge')}
               />
             )}
           </NavItem>

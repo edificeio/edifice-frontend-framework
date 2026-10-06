@@ -167,16 +167,17 @@ describe('Layout Header', () => {
     it('links to the conversation when the workflow is granted', () => {
       setup({ state: { conversationWorflow: true } });
 
-      expect(
-        screen.getByRole('link', { name: 'conversation' }),
-      ).toHaveAttribute('href', '/conversation/conversation');
+      expect(screen.getByRole('link', { name: 'Messagerie' })).toHaveAttribute(
+        'href',
+        '/conversation/conversation',
+      );
     });
 
     it('hides the conversation without the workflow', () => {
       setup();
 
       expect(
-        screen.queryByRole('link', { name: 'conversation' }),
+        screen.queryByRole('link', { name: 'Messagerie' }),
       ).not.toBeInTheDocument();
     });
 
@@ -195,15 +196,16 @@ describe('Layout Header', () => {
     it('links to zimbra when that workflow is granted instead', () => {
       setup({ zimbraWorkflow: true });
 
-      expect(
-        screen.getByRole('link', { name: 'conversation' }),
-      ).toHaveAttribute('href', '/zimbra/zimbra');
+      expect(screen.getByRole('link', { name: 'Messagerie' })).toHaveAttribute(
+        'href',
+        '/zimbra/zimbra',
+      );
     });
 
     it('opens the carbonio preauth link in a new tab', () => {
       setup({ workflows: { [CARBONIO]: true } });
 
-      const link = screen.getByRole('link', { name: 'conversation' });
+      const link = screen.getByRole('link', { name: 'Messagerie' });
       expect(link).toHaveAttribute('href', '/auth/carbonio/preauth');
       expect(link).toHaveAttribute('target', '_blank');
     });

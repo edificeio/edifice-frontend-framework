@@ -127,7 +127,11 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
       <div
         className="message-flash-icon"
         role="img"
-        aria-label={message.color === 'red' ? t('warning') : t('information')}
+        aria-label={
+          message.color === 'red'
+            ? t('homepage.messageFlash.warning')
+            : t('homepage.messageFlash.information')
+        }
       >
         {message.color && message.color === 'red' ? (
           <IconAlertTriangle />

@@ -66,16 +66,10 @@ const Communities = ({
               />
               <div className="communities-empty-content">
                 <p className="communities-empty-title">
-                  {t(
-                    'homepage.communities.subtitle',
-                    'Créez votre première communauté pour animer votre classe !',
-                  )}
+                  {t('homepage.communities.subtitle')}
                 </p>
                 <p className="communities-empty-description">
-                  {t(
-                    'homepage.communities.description',
-                    'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
-                  )}
+                  {t('homepage.communities.description')}
                 </p>
               </div>
             </div>
