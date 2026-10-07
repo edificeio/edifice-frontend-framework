@@ -341,6 +341,7 @@ i18n.use(initReactI18next).init({
         //------------------ BriefMe -------------------------
         'homepage.briefme.title': 'Brief.me',
         'homepage.briefme.open': 'Ouvrir',
+        'homepage.briefme.categories': 'Catégories Brief.me',
         'homepage.briefme.category.briefme': 'Brief.me',
         'homepage.briefme.category.brief-eco': 'Brief.eco',
         'homepage.briefme.category.brief-science': 'Brief.science',

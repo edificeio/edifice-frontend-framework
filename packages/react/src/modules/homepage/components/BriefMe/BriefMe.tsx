@@ -69,6 +69,7 @@ export default function BriefMe({
       >
         {status !== 'error' && (
           <SegmentedControl
+            aria-label={t('homepage.briefme.categories')}
             options={categoryOptions}
             value={category}
             onChange={onCategoryChange}
