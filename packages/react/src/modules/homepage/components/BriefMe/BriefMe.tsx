@@ -38,18 +38,15 @@ export default function BriefMe({
 
   const categoryOptions = [
     {
-      label: t('homepage.widget.briefme.category.briefme', 'Brief.me'),
+      label: t('homepage.briefme.category.briefme'),
       value: 'briefme',
     },
     {
-      label: t('homepage.widget.briefme.category.brief-eco', 'Brief.eco'),
+      label: t('homepage.briefme.category.brief-eco'),
       value: 'brief-eco',
     },
     {
-      label: t(
-        'homepage.widget.briefme.category.brief-science',
-        'Brief.science',
-      ),
+      label: t('homepage.briefme.category.brief-science'),
       value: 'brief-science',
     },
   ];
@@ -57,11 +54,9 @@ export default function BriefMe({
   return (
     <HomeCard variant="primary" className="briefme">
       <div className="briefme__header">
-        <h3 className="briefme__title">
-          {t('homepage.widget.briefme.title', 'Brief.me')}
-        </h3>
+        <h3 className="briefme__title">{t('homepage.briefme.title')}</h3>
         <IconButton
-          aria-label={t('homepage.widget.briefme.open', 'Ouvrir')}
+          aria-label={t('homepage.briefme.open')}
           onClick={handleActionClick}
           icon={<SvgIconExternalLink />}
           variant="ghost"
@@ -98,28 +93,17 @@ export default function BriefMe({
             />
             <p className="briefme__error-message">
               <span className="briefme__error-line">
-                {t(
-                  'homepage.widget.briefme.error.connection',
-                  'Impossible d’établir une connexion avec Brief.me.',
-                )}
+                {t('homepage.briefme.error.connection')}
               </span>
               <span className="briefme__error-line">
-                {t(
-                  'homepage.widget.briefme.error.help',
-                  'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
-                )}
+                {t('homepage.briefme.error.help')}
               </span>
             </p>
           </div>
         )}
 
         {status === 'empty' && (
-          <p className="briefme__empty">
-            {t(
-              'homepage.widget.briefme.empty',
-              'Il n’y a pas d’articles à afficher.',
-            )}
-          </p>
+          <p className="briefme__empty">{t('homepage.briefme.empty')}</p>
         )}
 
         {status === 'default' && (
