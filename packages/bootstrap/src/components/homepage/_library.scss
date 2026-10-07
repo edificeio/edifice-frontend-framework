@@ -1,0 +1,194 @@
+@use '../../themes/configs/primitives' as *;
+
+.library-card {
+  &-content {
+    gap: var(--primitive-spacer-16);
+  }
+}
+
+// Shared style of the widget section titles ("Mes prêts", "Sélection du moment")
+%library-section-title {
+  margin: 0;
+  color: var(--primitive-text-color-default);
+  font-family: var(--font-family-body);
+  font-size: var(--primitive-font-size-small);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--primitive-font-lineheight-2xs);
+}
+
+// ---- "Mes prêts" section ----
+.library-loans {
+  --background-color: var(--primitive-grey-100);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-8);
+  background-color: var(--background-color);
+  border-radius: var(--primitive-border-radius-xl);
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12)
+    var(--primitive-spacer-12);
+
+  &-title {
+    @extend %library-section-title;
+  }
+
+  &-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.library-loan {
+  display: flex;
+  align-items: center;
+  gap: var(--primitive-spacer-12);
+  background-color: var(--primitive-white);
+  border-radius: var(--primitive-border-radius-lg);
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+
+  &-cover {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--primitive-border-radius-md);
+
+    &--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--primitive-grey-200);
+      color: var(--primitive-grey-700);
+    }
+  }
+
+  &-infos {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &-title {
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--primitive-font-weight-bold);
+    line-height: var(--primitive-font-lineheight-2xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &-due {
+    color: var(--primitive-text-color-subtext);
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+
+    &--overdue {
+      color: var(--primitive-danger-700);
+    }
+  }
+}
+
+// ---- "Sélection du moment" section ----
+.library-selection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-8);
+
+  &-title {
+    @extend %library-section-title;
+  }
+
+  &-scroller {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc(50% - var(--primitive-spacer-8));
+    gap: var(--primitive-spacer-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &-item {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+}
+
+.library-book-card {
+  --background-color: #{$yellow-100};
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--background-color);
+  border-radius: var(--primitive-border-radius-lg);
+  color: var(--primitive-text-color-default);
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    color: var(--primitive-text-color-default);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-default);
+    outline-offset: 2px;
+  }
+
+  &-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 3 / 4;
+    background-color: var(--primitive-grey-200);
+    color: var(--primitive-grey-700);
+
+    &-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &-caption {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-2);
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  }
+
+  &-title {
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--primitive-font-weight-bold);
+    line-height: var(--primitive-font-lineheight-2xs);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    word-break: break-word;
+  }
+
+  &-author {
+    color: var(--primitive-text-color-subtext);
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

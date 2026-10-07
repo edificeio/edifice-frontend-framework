@@ -2,6 +2,7 @@ export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';
+export * from './Library';
 export * from './MessageFlashList';
 export * from './Notifications';
 export * from './SchoolSpace';
