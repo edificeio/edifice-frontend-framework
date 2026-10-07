@@ -1,5 +1,6 @@
 import BriefMe from './BriefMe';
-import { BriefMeCategory, useBriefMe } from './useBriefMe';
+import { BriefMeCategory } from './types';
+import { useBriefMe } from './useBriefMe';
 
 export function BriefMeContainer() {
   const { category, setCategory, articles, status } = useBriefMe();

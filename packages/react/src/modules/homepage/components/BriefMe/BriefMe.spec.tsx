@@ -1,5 +1,6 @@
 import { render, screen } from '~/setup';
-import BriefMe, { BriefMeArticle } from './BriefMe';
+import BriefMe from './BriefMe';
+import { BriefMeArticle } from './types';
 
 const articles: BriefMeArticle[] = [
   {

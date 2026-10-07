@@ -3,31 +3,24 @@ import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import useDate from '../../../../hooks/useDate/useDate';
 import { useUserSchools } from '../SchoolSpace/useUserSchools';
-import { BriefMeArticle, BriefMeStatus } from './BriefMe';
+import {
+  BRIEFME_ENDPOINTS,
+  BriefMeArticle,
+  BriefMeCategory,
+  BriefMeStatus,
+} from './types';
 
-/**
- * Brief.me feeds are proxied and cached by app-registry, one endpoint per
- * category. Keys match the SegmentedControl option values of `BriefMe`.
- */
-const BRIEFME_ENDPOINTS = {
-  'briefme': '/appregistry/widget/cache/external/briefme',
-  'brief-eco': '/appregistry/widget/cache/external/briefeco',
-  'brief-science': '/appregistry/widget/cache/external/briefscience',
-} as const;
+const BRIEFME_DEFAULT_CATEGORY: BriefMeCategory = 'briefme';
 
-export type BriefMeCategory = keyof typeof BRIEFME_ENDPOINTS;
+const BRIEFME_MAX_ARTICLES = 5;
 
-export const BRIEFME_DEFAULT_CATEGORY: BriefMeCategory = 'briefme';
-
-export const BRIEFME_MAX_ARTICLES = 5;
-
-export interface BriefMeEntry {
+interface BriefMeEntry {
   title: string;
   published_at: string;
   url: string;
 }
 
-export interface BriefMeFeed {
+interface BriefMeFeed {
   results?: BriefMeEntry[];
   error?: string;
 }

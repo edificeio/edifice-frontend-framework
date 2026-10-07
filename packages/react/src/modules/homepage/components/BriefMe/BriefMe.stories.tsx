@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import BriefMe, { BriefMeArticle, BriefMeProps } from './BriefMe';
+import BriefMe, { BriefMeProps } from './BriefMe';
+import { BriefMeArticle } from './types';
 
 const meta: Meta<typeof BriefMe> = {
   title: 'Modules/Homepage/BriefMe',
