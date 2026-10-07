@@ -253,7 +253,44 @@ i18n.use(initReactI18next).init({
         'betaSwitch.description':
           'La version classique est toujours là. Revenez-y, vous pouvez repasser sur la bêta à tout moment.',
         'betaSwitch.error': 'Erreur de paramétrage.',
+        //--------------------------------------------
         //----------------- HOMEPAGE -----------------
+        //--------------------------------------------
+        //----------------- Notifications -----------------
+        'homepage.notification.type.archive': 'Mes données',
+        'homepage.notification.type.blog': 'Blog',
+        'homepage.notification.type.calendar': 'Agenda',
+        'homepage.notification.type.collaborativeeditor': 'Pad',
+        'homepage.notification.type.collaborativewall': 'Mur collaboratif',
+        'homepage.notification.type.collect': 'Collectes',
+        'homepage.notification.type.communities': 'Communautés',
+        'homepage.notification.type.community': 'Communautés',
+        'homepage.notification.type.exercizer': 'Exercices',
+        'homepage.notification.type.formulaire': 'Formulaire',
+        'homepage.notification.type.forum': 'Forum',
+        'homepage.notification.type.homeworks': "Carnet d'activités",
+        'homepage.notification.type.messagerie': 'Messagerie',
+        'homepage.notification.type.mindmap': 'Carte mentale',
+        'homepage.notification.type.news': 'Actualités',
+        'homepage.notification.type.pages': 'Pages',
+        'homepage.notification.type.poll': 'Sondage',
+        'homepage.notification.type.presences': 'Présences',
+        'homepage.notification.type.rack': 'Casier',
+        'homepage.notification.type.rbs': 'Réservation de ressources',
+        'homepage.notification.type.schoolbook': 'Carnet de liaison',
+        'homepage.notification.type.scrapbook': 'Cahier multimédia',
+        'homepage.notification.type.sharebigfiles': 'Poste-fichiers',
+        'homepage.notification.type.support': 'Aide et support',
+        'homepage.notification.type.timeline': 'Signalements',
+        'homepage.notification.type.timelinegenerator': 'Frise chronologique',
+        'homepage.notification.type.userbook': 'Annuaire',
+        'homepage.notification.type.userbook_mood': 'Humeurs',
+        'homepage.notification.type.userbook_motto': 'Devises',
+        'homepage.notification.type.userbook_discovervisiblegroups':
+          'Explorer le réseau',
+        'homepage.notification.type.viescolaire': 'Vie scolaire',
+        'homepage.notification.type.wiki': 'Cours et Wiki',
+        'homepage.notification.type.workspace': 'Espace documentaire',
         //----------------- Favorites -----------------
         'homepage.favorites.title': 'Favoris',
         'homepage.favorites.all': 'Mes applis',
@@ -339,16 +376,14 @@ i18n.use(initReactI18next).init({
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
         //------------------ WidgetsPersonalizationPanel ----------
-        'homepage.widgetsPersonalization.title':
-          'Personnalisation des widgets',
+        'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
           "Choisissez les widgets visibles sur votre page d'accueil",
         'homepage.widgetsPersonalization.empty':
           'Aucun widget disponible pour votre établissement.',
         'homepage.widgetsPersonalization.locked':
           'Imposé par votre établissement',
-        'homepage.widgetsPersonalization.toggle':
-          'Activer le widget [[label]]',
+        'homepage.widgetsPersonalization.toggle': 'Activer le widget [[label]]',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

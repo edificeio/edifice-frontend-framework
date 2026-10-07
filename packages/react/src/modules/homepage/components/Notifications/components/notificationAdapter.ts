@@ -70,40 +70,39 @@ const parseNotificationMessage = (message: string): string => {
 
 export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
   appCode = appCode.toLowerCase();
-  let appI18nKey: string = appCode;
+  const appI18nKey: string = `homepage.notification.type.${appCode}`;
 
-  // Some notification return the wrong appcode for historical reasons, we need to match the real application type to apply the correct color in the timeline.
+  // Some notification return the wrong appcode (therefore icon+color) for historical reasons,
+  // so we need to match the real application type to apply the correct color in the timeline.
   switch (appCode) {
+    case 'collaborativeeditor':
+      appCode = 'pad';
+      break;
     case 'collaborativewall':
       appCode = 'collaborative-wall';
       break;
     case 'formulaire':
-      appI18nKey = 'formulaire';
       appCode = 'forms';
       break;
     case 'messagerie':
-      appI18nKey = appCode = 'conversation';
+      appCode = 'conversation';
       break;
     case 'news':
-      appI18nKey = appCode = 'actualites';
+      appCode = 'actualites';
       break;
     case 'homeworks':
       appCode = 'cahier-de-texte';
       break;
     case 'userbook_motto':
-      appI18nKey = 'userbook_motto';
-      appCode = 'userbook';
-      break;
     case 'userbook_mood':
-      appI18nKey = 'userbook_mood';
+    case 'userbook_discovervisiblegroups':
       appCode = 'userbook';
       break;
-    case 'userbook_discovervisiblegroups':
-      appI18nKey = 'userbook_discovervisiblegroups';
-      appCode = 'userbook';
+    case 'viescolaire':
+      appCode = 'vie-scolaire';
       break;
     default:
-      appI18nKey = appCode = appCode.replace(/_/g, '-');
+      appCode = appCode.replace(/_/g, '-');
   }
 
   return [appCode, appI18nKey];
