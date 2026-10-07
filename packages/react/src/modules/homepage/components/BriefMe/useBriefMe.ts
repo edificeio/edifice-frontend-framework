@@ -19,6 +19,8 @@ export type BriefMeCategory = keyof typeof BRIEFME_ENDPOINTS;
 
 export const BRIEFME_DEFAULT_CATEGORY: BriefMeCategory = 'briefme';
 
+export const BRIEFME_MAX_ARTICLES = 5;
+
 export interface BriefMeEntry {
   title: string;
   published_at: string;
@@ -69,8 +71,9 @@ export function briefMeQueryOptions(category: BriefMeCategory) {
 }
 
 /**
- * Loads the Brief.me articles of the selected category, and resolves their
- * links against the school currently selected by the user.
+ * Loads the Brief.me articles of the selected category (most recent first,
+ * capped at `BRIEFME_MAX_ARTICLES`), and resolves their links against the
+ * school currently selected by the user.
  */
 export function useBriefMe() {
   const [category, setCategory] = useState<BriefMeCategory>(
@@ -83,12 +86,19 @@ export function useBriefMe() {
 
   const articles = useMemo<BriefMeArticle[]>(
     () =>
-      (data ?? []).map((entry) => ({
-        id: entry.url,
-        date: formatDate(entry.published_at, 'long'),
-        title: entry.title,
-        url: buildGarLink(entry.url, selectedSchool),
-      })),
+      [...(data ?? [])]
+        .sort(
+          (a, b) =>
+            new Date(b.published_at).getTime() -
+            new Date(a.published_at).getTime(),
+        )
+        .slice(0, BRIEFME_MAX_ARTICLES)
+        .map((entry) => ({
+          id: entry.url,
+          date: formatDate(entry.published_at, 'long'),
+          title: entry.title,
+          url: buildGarLink(entry.url, selectedSchool),
+        })),
     [data, selectedSchool, formatDate],
   );
 
