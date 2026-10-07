@@ -1,4 +1,5 @@
 import illuBriefMeError from '@edifice.io/bootstrap/dist/images/homepage/illu-briefme-error.svg';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import {
   IconButton,
@@ -54,7 +55,7 @@ export default function BriefMe({
   ];
 
   return (
-    <HomeCard variant="primary">
+    <HomeCard variant="primary" className="briefme">
       <div className="briefme__header">
         <h3 className="briefme__title">
           {t('homepage.widget.briefme.title', 'Brief.me')}
@@ -68,72 +69,76 @@ export default function BriefMe({
         />
       </div>
 
-      <HomeCard.Content>
-        <div className="briefme">
-          {status !== 'error' && (
-            <SegmentedControl
-              options={categoryOptions}
-              value={category}
-              onChange={onCategoryChange}
-              className="briefme__categories"
-            />
-          )}
+      <HomeCard.Content
+        className={clsx('briefme__body', `briefme__body-${status}`)}
+      >
+        {status !== 'error' && (
+          <SegmentedControl
+            options={categoryOptions}
+            value={category}
+            onChange={onCategoryChange}
+            className="briefme__categories"
+          />
+        )}
 
-          <div className="briefme__content">
-            {status === 'loading' && (
-              <div className="briefme__loading" data-testid="briefme-loading">
-                <TextSkeleton size="lg" className="briefme__loading-item" />
-                <TextSkeleton size="lg" className="briefme__loading-item" />
-                <TextSkeleton size="lg" className="briefme__loading-item" />
-              </div>
-            )}
-
-            {status === 'error' && (
-              <div className="briefme__error">
-                <Image
-                  src={illuBriefMeError}
-                  alt=""
-                  className="briefme__error-illu"
-                />
-                <p className="briefme__error-message">
-                  {t(
-                    'homepage.widget.briefme.error',
-                    'Impossible d’établir une connexion avec Brief.me. Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
-                  )}
-                </p>
-              </div>
-            )}
-
-            {status === 'empty' && (
-              <p className="briefme__empty">
-                {t(
-                  'homepage.widget.briefme.empty',
-                  'Il n’y a pas d’articles à afficher.',
-                )}
-              </p>
-            )}
-
-            {status === 'default' && (
-              <ul className="briefme__list">
-                {articles.map((article) => (
-                  <li className="briefme__article" key={article.id}>
-                    <span className="briefme__article-date">
-                      {article.date}
-                    </span>
-                    <a
-                      className="briefme__article-title"
-                      href={article.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {article.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
+        {status === 'loading' && (
+          <div className="briefme__loading" data-testid="briefme-loading">
+            <TextSkeleton size="lg" className="briefme__loading-item" />
+            <TextSkeleton size="lg" className="briefme__loading-item" />
+            <TextSkeleton size="lg" className="briefme__loading-item" />
           </div>
-        </div>
+        )}
+
+        {status === 'error' && (
+          <div className="briefme__error">
+            <Image
+              src={illuBriefMeError}
+              alt=""
+              className="briefme__error-illu"
+            />
+            <p className="briefme__error-message">
+              <span className="briefme__error-line">
+                {t(
+                  'homepage.widget.briefme.error.connection',
+                  'Impossible d’établir une connexion avec Brief.me.',
+                )}
+              </span>
+              <span className="briefme__error-line">
+                {t(
+                  'homepage.widget.briefme.error.help',
+                  'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
+                )}
+              </span>
+            </p>
+          </div>
+        )}
+
+        {status === 'empty' && (
+          <p className="briefme__empty">
+            {t(
+              'homepage.widget.briefme.empty',
+              'Il n’y a pas d’articles à afficher.',
+            )}
+          </p>
+        )}
+
+        {status === 'default' && (
+          <ul className="briefme__list">
+            {articles.map((article) => (
+              <li className="briefme__article" key={article.id}>
+                <span className="briefme__article-date">{article.date}</span>
+                <a
+                  className="briefme__article-title"
+                  href={article.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {article.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
       </HomeCard.Content>
     </HomeCard>
   );
