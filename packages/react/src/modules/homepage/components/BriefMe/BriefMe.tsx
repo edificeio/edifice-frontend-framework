@@ -9,15 +9,7 @@ import {
 } from '../../../../components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
-
-export type BriefMeStatus = 'loading' | 'default' | 'empty' | 'error';
-
-export interface BriefMeArticle {
-  id: string;
-  date: string;
-  title: string;
-  url: string;
-}
+import { BriefMeArticle, BriefMeStatus } from './types';
 
 export interface BriefMeProps {
   handleActionClick: () => void;
