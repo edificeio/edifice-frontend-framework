@@ -57,7 +57,7 @@ describe('BriefMe', () => {
     expect(onCategoryChange).toHaveBeenCalledWith('brief-eco');
   });
 
-  it('does not render the category selector in the error status', () => {
+  it('shows the error message without the category selector in the error status', () => {
     render(
       <BriefMe
         handleActionClick={vi.fn()}
@@ -71,6 +71,14 @@ describe('BriefMe', () => {
     expect(
       screen.queryByTestId('segmented-option-briefme'),
     ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('Impossible d’établir une connexion avec Brief.me.'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('renders the article list with a link per article in the default status', () => {
