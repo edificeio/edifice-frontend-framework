@@ -397,6 +397,17 @@ i18n.use(initReactI18next).init({
         'homepage.widgetsPersonalization.locked':
           'Imposé par votre établissement',
         'homepage.widgetsPersonalization.toggle': 'Activer le widget [[label]]',
+        //------------------ BriefMe -------------------------
+        'homepage.briefme.title': 'Brief.me',
+        'homepage.briefme.open': 'Ouvrir',
+        'homepage.briefme.category.briefme': 'Brief.me',
+        'homepage.briefme.category.brief-eco': 'Brief.eco',
+        'homepage.briefme.category.brief-science': 'Brief.science',
+        'homepage.briefme.empty': 'Il n’y a pas d’articles à afficher.',
+        'homepage.briefme.error.connection':
+          'Impossible d’établir une connexion avec Brief.me.',
+        'homepage.briefme.error.help':
+          'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------
