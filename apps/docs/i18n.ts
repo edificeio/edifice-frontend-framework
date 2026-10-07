@@ -313,6 +313,12 @@ i18n.use(initReactI18next).init({
           'La classe de [[childName]]',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
+        //------------------ Universalis -------------------------
+        'homepage.widget.universalis.title': 'Universalis Éducation',
+        'homepage.widget.universalis.open': 'Ouvrir',
+        'homepage.widget.universalis.description':
+          "L'encyclopédie de référence pour réussir vos recherches scolaires",
+        'homepage.widget.universalis.noUai': 'UAI non renseigné',
         //------------------ UsefulLinks -------------------------
         'homepage.usefulLinks.title': 'Liens utiles',
         'homepage.usefulLinks.edit': 'Éditer',
