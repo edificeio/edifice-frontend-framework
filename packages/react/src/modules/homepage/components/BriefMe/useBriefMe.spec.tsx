@@ -126,6 +126,35 @@ describe('useBriefMe', () => {
     ]);
   });
 
+  it('keeps the five most recent articles, most recent first', async () => {
+    const dates = [
+      '2026-06-02',
+      '2026-06-08',
+      '2026-06-01',
+      '2026-06-06',
+      '2026-06-05',
+      '2026-06-03',
+    ];
+    get.mockResolvedValue({
+      results: dates.map((date) => ({
+        title: date,
+        published_at: date,
+        url: `https://brief.me/${date}`,
+      })),
+    });
+
+    const { result } = renderHook(() => useBriefMe(), { wrapper });
+
+    await waitFor(() => expect(result.current.status).toBe('default'));
+    expect(result.current.articles.map((article) => article.title)).toEqual([
+      '2026-06-08',
+      '2026-06-06',
+      '2026-06-05',
+      '2026-06-03',
+      '2026-06-02',
+    ]);
+  });
+
   it('exposes the empty status when the feed has no article', async () => {
     get.mockResolvedValue({ results: [] });
 
