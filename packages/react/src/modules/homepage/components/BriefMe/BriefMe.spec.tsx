@@ -57,6 +57,22 @@ describe('BriefMe', () => {
     expect(onCategoryChange).toHaveBeenCalledWith('brief-eco');
   });
 
+  it('names the category selector for assistive technologies', () => {
+    render(
+      <BriefMe
+        handleActionClick={vi.fn()}
+        status="default"
+        category="briefme"
+        onCategoryChange={vi.fn()}
+        articles={articles}
+      />,
+    );
+
+    expect(
+      screen.getByRole('radiogroup', { name: 'Catégories Brief.me' }),
+    ).toBeInTheDocument();
+  });
+
   it('shows the error message without the category selector in the error status', () => {
     render(
       <BriefMe
