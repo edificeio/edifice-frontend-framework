@@ -151,7 +151,7 @@ export function extractSymbolsWithDeclarations(
     project.getSourceFile(entrySourceFile) ??
     project.addSourceFileAtPath(entrySourceFile);
 
-  const exported: Map<string, ExportedDeclarations[]> =
+  const exported: ReadonlyMap<string, ExportedDeclarations[]> =
     sourceFile.getExportedDeclarations();
 
   const symbols: ExtractedSymbolWithDeclarations[] = [];

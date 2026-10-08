@@ -18,9 +18,12 @@ export function useHelp(
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const helpPath = theme?.is1d ? '/help-1d' : '/help-2d';
+  // Only the truthiness matters here, so derive a stable primitive to avoid
+  // re-running the effect when an object prop is recreated on each render.
+  const isHelpEnabled = !!hasOldHelpEnableWorkflow;
 
   useEffect(() => {
-    if (!hasOldHelpEnableWorkflow) {
+    if (!isHelpEnabled) {
       return;
     }
 
@@ -61,7 +64,7 @@ export function useHelp(
         console.error(error);
       }
     })();
-  }, [appCode, helpPath]);
+  }, [appCode, helpPath, isHelpEnabled]);
 
   const options = {
     replace: (domNode: any) => {

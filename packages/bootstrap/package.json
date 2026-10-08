@@ -31,7 +31,7 @@
     "format": "prettier --check src/**/*.scss",
     "format:write": "prettier --write src/**/*.scss",
     "generate-commit-version": "node scripts/version.cjs",
-    "lint": "stylelint src/**/*.scss",
+    "lint": "stylelint src/**/*.scss --max-warnings 0",
     "watch": "sass --watch --load-path=node_modules/ --style=compressed --quiet-deps --silence-deprecation=import src/index.scss dist/index.css"
   },
   "dependencies": {

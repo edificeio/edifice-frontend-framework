@@ -83,7 +83,7 @@ const Input = forwardRef(
   ) => {
     const { id, isRequired, isReadOnly, status } = useFormControl();
     const { t } = useTranslation();
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const [currentLength, setCurrentLength] = useState(
       restProps.defaultValue?.toString().length || 0,
     );
@@ -96,7 +96,6 @@ const Input = forwardRef(
       if (inputRef.current) {
         setCurrentLength(inputRef.current.value.length);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const setRefs = (node: HTMLInputElement | null) => {
