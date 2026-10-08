@@ -11,6 +11,7 @@ jobs:
       react: ${{ steps.filter.outputs.react }}
       client: ${{ steps.filter.outputs.client }}
       extensions: ${{ steps.filter.outputs.extensions }}
+      vite-plugins: ${{ steps.filter.outputs.vite-plugins }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -25,6 +26,9 @@ jobs:
               - '.github/workflows/tests.yml'
             extensions:
               - 'packages/extensions/**'
+              - '.github/workflows/tests.yml'
+            vite-plugins:
+              - 'packages/vite-plugins/**'
               - '.github/workflows/tests.yml'
 
   test-react:
@@ -97,3 +101,21 @@ jobs:
           pnpm --filter @edifice.io/tiptap-extensions lint
           pnpm --filter @edifice.io/tiptap-extensions format
           pnpm --filter @edifice.io/tiptap-extensions test
+
+  test-vite-plugins:
+    name: '@edifice.io/vite-plugins — lint, format, test'
+    needs: changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Install, lint, format, test
+        if: needs.changes.outputs.vite-plugins == 'true'
+        run: |
+          pnpm install
+          pnpm --filter @edifice.io/vite-plugins lint
+          pnpm --filter @edifice.io/vite-plugins format
+          pnpm --filter @edifice.io/vite-plugins test
