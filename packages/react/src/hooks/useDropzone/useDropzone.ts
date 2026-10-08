@@ -66,23 +66,21 @@ const useDropzone = (props?: {
     const convertedFiles = await convertHEICImages(files);
 
     const sortedFiles = convertedFiles.sort(
-      (a, b) => b.lastModified - a.lastModified,
+      (a, b) => a.lastModified - b.lastModified,
     );
     let filesToAdd = sortedFiles.map(
       (file) =>
         // #WB-3377: Remove special characters from the file name. (it can cause issues with vertx which replace it or remove it)
         new File([file], file.name.replace(/[!:,;="']/g, ''), {
           type: file.type,
+          lastModified: file.lastModified,
         }),
     );
-    filesToAdd.reverse();
     if (props?.forceFilters) {
       filesToAdd = applyInputFiltersOn(filesToAdd);
-      if (filesToAdd && filesToAdd.length)
-        setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
-    } else {
-      setFiles((prevFiles) => [...prevFiles, ...files]);
     }
+    if (filesToAdd && filesToAdd.length)
+      setFiles((prevFiles) => [...prevFiles, ...filesToAdd]);
   };
 
   /**
@@ -116,7 +114,7 @@ const useDropzone = (props?: {
             const newFile = new File(
               [converted as Blob],
               file.name.replace(/\.(heic|heif)$/i, '.jpeg'),
-              { type: 'image/jpeg' },
+              { type: 'image/jpeg', lastModified: file.lastModified },
             );
             return newFile;
           } catch (error) {
