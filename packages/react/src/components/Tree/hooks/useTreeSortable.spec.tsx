@@ -1,4 +1,5 @@
 import {
+  DragCancelEvent,
   DragEndEvent,
   DragMoveEvent,
   DragOverEvent,
@@ -231,7 +232,7 @@ describe('useTreeSortable', () => {
       expect(
         result.current.announcements.onDragCancel?.({
           active: { id: 'b' },
-        } as unknown as DragStartEvent),
+        } as unknown as DragCancelEvent),
       ).toBe('Moving was cancelled. b was dropped in its original position.');
     });
 

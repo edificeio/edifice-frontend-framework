@@ -1,5 +1,5 @@
 import { type IWebApp } from '@edifice.io/client';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite.svg';
@@ -18,10 +18,13 @@ export function Favorites({
 }: FavoritesProps) {
   const { t } = useTranslation();
 
-  const getAppName = (app: IWebApp): string =>
-    app.prefix && app.prefix.length > 1
-      ? t(app.prefix.substring(1))
-      : t(app.displayName) || '';
+  const getAppName = useCallback(
+    (app: IWebApp): string =>
+      app.prefix && app.prefix.length > 1
+        ? t(app.prefix.substring(1))
+        : t(app.displayName) || '',
+    [t],
+  );
 
   const visibleApps = useMemo(
     () =>
@@ -32,7 +35,7 @@ export function Favorites({
             sensitivity: 'base',
           }),
         ),
-    [apps, t],
+    [apps, getAppName],
   );
 
   return (

@@ -20,7 +20,7 @@
     "dev": "vite",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
-    "lint": "eslint",
+    "lint": "eslint --max-warnings 0",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit"
   },
