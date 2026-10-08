@@ -131,7 +131,7 @@
   },
   "peerDependencies": {
     "@edifice.io/utilities": "workspace:*",
-    "@tiptap/core": "3.32.0",
+    "@tiptap/core": "catalog:",
     "@tiptap/extension-blockquote": "3.32.0",
     "@tiptap/extension-bold": "3.32.0",
     "@tiptap/extension-list": "3.32.0",
@@ -158,7 +158,7 @@
   "devDependencies": {
     "@edifice.io/client": "workspace:*",
     "@edifice.io/utilities": "workspace:*",
-    "@tiptap/core": "3.32.0",
+    "@tiptap/core": "catalog:",
     "@tiptap/extension-blockquote": "3.32.0",
     "@tiptap/extension-bold": "3.32.0",
     "@tiptap/extension-list": "3.32.0",
