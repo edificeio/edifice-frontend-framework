@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '~/setup';
 import { useEdificeTheme } from './EdificeThemeProvider.hook';
 import { EdificeThemeProvider } from './EdificeThemeProvider';
+import type { EdificeThemeProps } from './EdificeThemeProvider.context';
 
 const { useConf, useEdificeClient } = vi.hoisted(() => ({
   useConf: vi.fn(),
@@ -29,7 +30,7 @@ function mockConf(theme?: Record<string, unknown>) {
   useConf.mockReturnValue(theme ? { data: { theme } } : { data: undefined });
 }
 
-function renderProvider(defaultTheme?: string) {
+function renderProvider(defaultTheme?: EdificeThemeProps['defaultTheme']) {
   return render(
     <EdificeThemeProvider defaultTheme={defaultTheme}>
       <ThemeConsumer />

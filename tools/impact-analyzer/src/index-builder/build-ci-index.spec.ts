@@ -114,7 +114,8 @@ describe('buildCiIndex', () => {
   });
 
   function fetchImplFor(apps: string[]) {
-    return vi.fn(async (url: string) => {
+    return vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (apps.some((a) => url.includes(`/repos/edificeio/${a}/branches/`))) {
         return new Response(
           JSON.stringify({
@@ -356,7 +357,8 @@ describe('buildCiIndex', () => {
       return { repoPath: dir };
     });
 
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/repos/edificeio/entcore/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha-conv' } }));
       if (

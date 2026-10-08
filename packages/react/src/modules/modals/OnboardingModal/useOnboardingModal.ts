@@ -36,6 +36,9 @@ export const useOnboardingModal = <T>(
         state.current = undefined;
       }
     })();
+    // Run only on mount: read the stored preference once to decide whether to
+    // start the onboarding. Re-running on prop changes would re-open the modal.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSavePreference = useCallback(async () => {

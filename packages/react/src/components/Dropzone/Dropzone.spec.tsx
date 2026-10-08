@@ -139,7 +139,7 @@ describe('Dropzone', () => {
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 
-    expect(() => render(<Dropzone.File />)).toThrow(
+    expect(() => render(<Dropzone.File>content</Dropzone.File>)).toThrow(
       'Cannot be rendered outside Dropzone Provider',
     );
 

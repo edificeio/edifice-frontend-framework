@@ -93,7 +93,7 @@ export async function discoverAppsRemote(
         ];
 
         let layout: RemoteAppLayout | undefined;
-        let content: string | null = null;
+        let content: string | undefined;
         for (const candidate of candidates) {
           // Sequential by design: first hit wins, no need to fetch further candidates.
           content = await fetchFileContent(
