@@ -1,10 +1,4 @@
-import {
-  RefAttributes,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { RefAttributes, useCallback, useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -17,6 +11,7 @@ import {
   IconButtonProps,
   Tooltip,
 } from '../../../../components';
+import { useDropdownContext } from '../../../../components/Dropdown/DropdownContext';
 import { IconTextHighlight } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
 import { useEditorState } from '../../hooks/useEditorState';
@@ -40,20 +35,13 @@ export const EditorToolbarHighlightColor = ({
 }: Props) => {
   const { t } = useTranslation();
   const { editor } = useEditorContext();
+  const { visible } = useDropdownContext();
 
   // Manage text and background colors.
   const [color, setColor] = useState<string>('#4A4A4A');
   // editor?.state alone doesn't trigger a re-render on a pure selection move
   // (no content edit, e.g. clicking into differently-highlighted text).
   const editorState = useEditorState(editor);
-
-  const isActive = useMemo(
-    () =>
-      editor?.isActive('customHighlight', {
-        color: /^#([0-9a-f]{3}){1,2}$/i,
-      }),
-    [editor, editorState],
-  );
 
   // Triggered when the user chooses a highlighting color.
   const applyColor = useCallback(
@@ -96,7 +84,7 @@ export const EditorToolbarHighlightColor = ({
           color="tertiary"
           icon={<IconTextHighlight />}
           aria-label={t('tiptap.toolbar.highlight.back')}
-          className={isActive ? 'selected' : ''}
+          className={visible ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>
