@@ -246,6 +246,26 @@ describe('useDate hook', () => {
     });
   });
 
+  describe('locale of short ISO dates', () => {
+    // Short ISO dates (YYYY-MM-DD) go through a dedicated parsing branch: the
+    // formatting must still follow the current language, not dayjs' default.
+    it('formats a short ISO date in the current language', () => {
+      const { current } = renderUseDate();
+      expect(current.formatLongDate('2021-07-23')).toBe('23 juillet 2021');
+      expect(current.formatCalendarDate('2020-08-30', 'full')).toBe(
+        'dimanche 30 août 2020',
+      );
+      expect(current.formatRelativeDate('2025-11-25')).toBe('25 nov. 2025');
+    });
+
+    it('computes week boundaries with the current language', () => {
+      const { current } = renderUseDate();
+      // French weeks start on Monday: the week of Wednesday 2026-08-12 runs
+      // from the 10th to the 16th of August.
+      expect(current.formatWeek('2026-08-12')).toBe('Semaine du 10 au 16 août');
+    });
+  });
+
   describe('deprecated methods still work', () => {
     it('fromNow, formatDate and formatTimeAgo', () => {
       const { current } = renderUseDate();

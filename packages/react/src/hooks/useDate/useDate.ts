@@ -89,9 +89,11 @@ export type CoreDate = IsoDate | MongoDate | NumberDate | Date;
 export type CalendarDateVariant = 'full' | 'short' | 'abbr';
 
 /**
- * Beyond this duration (in hours), friendly formats stop using a relative
- * wording ("3 hours ago") and switch to a day-based wording ("yesterday",
- * weekday, date). Matches the date format spec.
+ * Maximum gap (in hours) for which friendly formats use a relative wording
+ * ("3 hours ago") on dates that are not today. Today's dates always use the
+ * relative wording, whatever the gap: the spec does not define another
+ * wording for them. Beyond, the day-based wording is used ("yesterday",
+ * weekday, date).
  */
 const FRIENDLY_RELATIVE_MAX_HOURS = 3;
 
@@ -123,7 +125,9 @@ export default function useDate() {
   /* Utility function */
   const parseDate = useCallback(
     (date: string, lang?: string): Dayjs => {
-      if (date.length < 11) return dayjs(date, ['YYYY-MM-DD'], lang);
+      if (date.length < 11) {
+        return dayjs(date, ['YYYY-MM-DD'], lang ?? (currentLanguage as string));
+      }
 
       // Check if the string is exclusively made of digits
       if (date.split('').findIndex((char) => '0' > char || char > '9') < 0) {
