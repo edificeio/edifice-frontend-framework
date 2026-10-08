@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { UserProfile, odeServices } from '@edifice.io/client';
 
-import { useIsAdml, useUser } from '..';
+import { useIsAdml, useUiOverride, useUser } from '..';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { useHasWorkflow } from '../useHasWorkflow';
@@ -30,6 +30,10 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
 
+  //TODO to delete with "edifice in product" generalization #IMPULS-6352
+  const isEdificeInProductHelp =
+    useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
+  console.log('isEdificeInProductHelp:', isEdificeInProductHelp);
   const { theme } = useEdificeTheme();
 
   const isMobileView = window.innerWidth <= 768;
@@ -264,7 +268,11 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
 
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
-              color: { theme: zendeskGuideConfig.color || '#E6EBFE' },
+              color: {
+                theme:
+                  zendeskGuideConfig.color ||
+                  (isEdificeInProductHelp ? '#3030D1' : '#ffc400'),
+              },
               zIndex: 3,
               launcher: {
                 mobile: {
