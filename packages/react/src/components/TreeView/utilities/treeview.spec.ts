@@ -196,9 +196,8 @@ describe('TreeView utilities', () => {
       ).toBe(false);
     });
 
-    // Same quirk as the Tree flavour: the recursive call forwards the parent id.
-    it('is false for a nested id, because the lookup only matches the traversal root', () => {
-      expect(hasChildren('a', makeTree())).toBe(false);
+    it('is true for a nested id holding children', () => {
+      expect(hasChildren('a', makeTree())).toBe(true);
     });
   });
 
@@ -253,14 +252,16 @@ describe('TreeView utilities', () => {
       expect(b?.children?.[1].folder.ancestors).toEqual(['root', 'b']);
     });
 
-    it('removes a node moved from outside the destination subtree', () => {
+    it('re-attaches a node moved from outside the destination subtree', () => {
       const result = moveNode(makeTree(), {
         destinationId: 'b',
         folders: ['a1'],
       });
 
-      expect(findNodeById(result, 'a1')).toBeUndefined();
-      expect(findNodeById(result, 'b')?.children ?? []).toEqual([]);
+      expect(findNodeById(result, 'b')?.children?.map(({ id }) => id)).toEqual([
+        'a1',
+      ]);
+      expect(findNodeById(result, 'a')?.children ?? []).toEqual([]);
     });
   });
 
