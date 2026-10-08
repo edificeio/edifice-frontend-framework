@@ -73,7 +73,10 @@ describe('useDropzone', () => {
     const { result } = renderHook(() => useDropzone());
 
     await act(async () => {
-      await result.current.addFiles([createFile('a.png'), createFile('b.png')]);
+      await result.current.addFiles([
+        createFile('a.png', 'image/png', 1),
+        createFile('b.png', 'image/png', 2),
+      ]);
     });
 
     const replacement = createFile('c.png');

@@ -66,7 +66,7 @@ const useDropzone = (props?: {
     const convertedFiles = await convertHEICImages(files);
 
     const sortedFiles = convertedFiles.sort(
-      (a, b) => a.lastModified - b.lastModified,
+      (a, b) => b.lastModified - a.lastModified,
     );
     let filesToAdd = sortedFiles.map(
       (file) =>
@@ -76,6 +76,7 @@ const useDropzone = (props?: {
           lastModified: file.lastModified,
         }),
     );
+    filesToAdd.reverse();
     if (props?.forceFilters) {
       filesToAdd = applyInputFiltersOn(filesToAdd);
     }
