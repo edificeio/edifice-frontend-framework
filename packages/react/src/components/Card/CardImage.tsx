@@ -15,14 +15,6 @@ const CardImage = ({
 }) => {
   const { app } = useCardContext();
 
-  const style =
-    variant === 'landscape'
-      ? {
-          width: '100%',
-          height: 'auto',
-        }
-      : null;
-
   return (
     <div className={clsx('card-image', variant)}>
       {imageSrc ? (
@@ -33,13 +25,7 @@ const CardImage = ({
           className={clsx('h-full w-100', className)}
         />
       ) : (
-        <AppIcon
-          app={app}
-          iconFit="ratio"
-          size="80"
-          variant="rounded"
-          {...style}
-        />
+        <AppIcon app={app} iconFit="ratio" size="80" variant="rounded" />
       )}
     </div>
   );
