@@ -144,6 +144,16 @@ describe('BubbleMenuEditInformationPane', () => {
     });
   });
 
+  it('renders the delete button in its small size', () => {
+    insertAndSelectInformationPane(editor, 'info');
+
+    render(<BubbleMenuEditInformationPane editor={editor} editable={true} />);
+
+    const deleteButton = screen.getByRole('button', { name: 'delete' });
+    expect(deleteButton).toHaveClass('btn-sm');
+    expect(deleteButton).not.toHaveClass('btn-lg');
+  });
+
   it('removes the information-pane node when clicking delete', async () => {
     insertAndSelectInformationPane(editor, 'info');
     expect(editor.isActive('information-pane')).toBe(true);
