@@ -110,7 +110,7 @@ export const useTipTapEditor = (
       SpeechSynthesis.configure({
         lang:
           currentLanguage?.length === 2
-            ? `${currentLanguage}-${currentLanguage.toUpperCase()}` // FIXME very dirty hack for demo
+            ? `${currentLanguage}-${currentLanguage.toUpperCase()}` // FIXME(ENABLING-1152): very dirty hack for demo
             : 'fr-FR',
       }),
       Hyperlink,
