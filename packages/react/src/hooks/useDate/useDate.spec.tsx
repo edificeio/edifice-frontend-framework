@@ -46,6 +46,36 @@ describe('useDate hook', () => {
       ).toBe('il y a 40 minutes');
     });
 
+    it.each([
+      // [offset in seconds from now, past wording, future wording]
+      [30, 'il y a quelques secondes', 'dans quelques secondes'],
+      [59, 'il y a quelques secondes', 'dans quelques secondes'],
+      [60, 'il y a une minute', 'dans une minute'],
+      [119, 'il y a une minute', 'dans une minute'],
+      [120, 'il y a 2 minutes', 'dans 2 minutes'],
+      [50 * 60, 'il y a 50 minutes', 'dans 50 minutes'],
+      [3599, 'il y a 59 minutes', 'dans 59 minutes'],
+      [3600, 'il y a une heure', 'dans une heure'],
+      [7199, 'il y a une heure', 'dans une heure'],
+      [7200, 'il y a 2 heures', 'dans 2 heures'],
+      [3 * 3600, 'il y a 3 heures', 'dans 3 heures'],
+    ])(
+      'follows the spec thresholds at %i seconds, past and future',
+      (seconds, past, future) => {
+        const { current } = renderUseDate();
+        expect(
+          current.formatRelativeDateTime(
+            new Date(NOW.getTime() - seconds * 1000),
+          ),
+        ).toBe(past);
+        expect(
+          current.formatRelativeDateTime(
+            new Date(NOW.getTime() + seconds * 1000),
+          ),
+        ).toBe(future);
+      },
+    );
+
     it('formats yesterday and tomorrow with time', () => {
       const { current } = renderUseDate();
       expect(

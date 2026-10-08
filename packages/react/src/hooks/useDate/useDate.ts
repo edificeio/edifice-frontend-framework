@@ -27,6 +27,54 @@ dayjs.extend(localizedFormat);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isToday);
 
+type RelativeTimeUnit = string | ((...args: unknown[]) => string);
+type RelativeTimeStrings = Record<string, RelativeTimeUnit | undefined>;
+
+/**
+ * Relative wording following the thresholds of the date format spec, which
+ * differ from the dayjs defaults (e.g. 50 minutes stay in minutes, 1h30 is
+ * still "an hour"). The localized strings come from the dayjs locale, so no
+ * wording is hardcoded and the thresholds do not depend on any global dayjs
+ * setting.
+ *
+ * - under 1 minute: "a few seconds"
+ * - from 1 to 2 minutes: "a minute"
+ * - from 2 minutes to 1 hour: "X minutes"
+ * - from 1 to 2 hours: "an hour"
+ * - from 2 hours: "X hours"
+ */
+function formatRelativeToNow(date: Dayjs, now: Dayjs): string {
+  const diffInSeconds = date.diff(now, 'second');
+  const isFuture = diffInSeconds > 0;
+  const seconds = Math.abs(diffInSeconds);
+
+  let key: string;
+  let count: number;
+  if (seconds < 60) {
+    key = 's';
+    count = seconds;
+  } else if (seconds < 3600) {
+    count = Math.floor(seconds / 60);
+    key = count < 2 ? 'm' : 'mm';
+  } else {
+    count = Math.floor(seconds / 3600);
+    key = count < 2 ? 'h' : 'hh';
+  }
+
+  const strings = (dayjs.Ls[date.locale()] ?? dayjs.Ls.en)
+    .relativeTime as RelativeTimeStrings;
+  const unit = strings[key];
+  const label =
+    typeof unit === 'function'
+      ? unit(count, false, key, isFuture)
+      : (unit ?? '').replace('%d', String(count));
+
+  const suffix = strings[isFuture ? 'future' : 'past'];
+  return typeof suffix === 'function'
+    ? suffix(label)
+    : (suffix ?? '%s').replace('%s', label);
+}
+
 export type MongoDate = {
   $date: number | string;
 };
@@ -138,13 +186,13 @@ export default function useDate() {
 
       const now = dayjs();
 
-      // Recent dates (same day, or within a few hours): relative wording.
-      // dayjs handles past ("3 hours ago") and future ("in 3 hours").
+      // Recent dates (same day, or within a few hours): relative wording,
+      // past ("3 hours ago") or future ("in 3 hours").
       if (
         computedDate.isToday() ||
         Math.abs(now.diff(computedDate, 'hour')) <= FRIENDLY_RELATIVE_MAX_HOURS
       ) {
-        return computedDate.fromNow();
+        return formatRelativeToNow(computedDate, now);
       }
 
       let patternKey: string;
