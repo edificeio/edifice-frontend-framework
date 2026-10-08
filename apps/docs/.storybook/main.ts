@@ -65,7 +65,7 @@ const config: StorybookConfig = {
           'msw-storybook-addon',
         ],
         rolldownOptions: {
-          sourcemap: false,
+          output: { sourcemap: false },
         },
       },
     });

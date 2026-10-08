@@ -21,7 +21,7 @@ export default defineConfig({
     rolldownOptions: {
       // Bundle all dependencies for react native and browser usage
       output: {
-        inlineDynamicImports: true
+        codeSplitting: false
       }
     }
   },
