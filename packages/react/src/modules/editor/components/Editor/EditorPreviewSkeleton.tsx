@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Image, TextSkeleton } from '../../../../components';
+import { Skeleton } from '../../../../components';
 
 /**
  * Editor component properties
@@ -16,28 +16,18 @@ const EditorPreview = ({ variant = 'outline' }: EditorPreviewSkeletonProps) => {
   return (
     <div className={borderClass} data-testid="editor-preview">
       <div className={contentClass}>
-        <TextSkeleton className="col-12"></TextSkeleton>
-        <TextSkeleton className="col-12"></TextSkeleton>
+        <Skeleton className="editor-preview-skeleton-line col-12" />
+        <Skeleton className="editor-preview-skeleton-line col-12" />
         <div className="d-flex justify-content-center gap-24 px-32 pt-16">
           <div style={{ maxWidth: '150px' }} className="col-12 col-md-4">
-            <Image
-              alt=""
-              objectFit="cover"
-              ratio="16"
-              className="rounded placeholder"
-              src={''}
-              sizes=""
-            />
+            <div className="ratio ratio-16x9">
+              <Skeleton variant="block" tone="strong" />
+            </div>
           </div>
           <div style={{ maxWidth: '150px' }} className="col-12 col-md-4">
-            <Image
-              alt=""
-              objectFit="cover"
-              ratio="16"
-              className="rounded placeholder"
-              src={''}
-              sizes=""
-            />
+            <div className="ratio ratio-16x9">
+              <Skeleton variant="block" tone="strong" />
+            </div>
           </div>
         </div>
       </div>
