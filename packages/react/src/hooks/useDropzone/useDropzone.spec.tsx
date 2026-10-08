@@ -10,8 +10,8 @@ const { isHeic, heicTo } = vi.hoisted(() => ({
 
 vi.mock('heic-to', () => ({ isHeic, heicTo }));
 
-function createFile(name: string, type = 'image/png') {
-  return new File(['content'], name, { type });
+function createFile(name: string, type = 'image/png', lastModified?: number) {
+  return new File(['content'], name, { type, lastModified });
 }
 
 function createDragEvent(files?: File[]) {
@@ -195,7 +195,31 @@ describe('useDropzone', () => {
     expect(result.current.files[0].name).toBe('photo.png');
   });
 
+  it('keeps the original lastModified date when renaming', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFile(createFile('photo!.png', 'image/png', 111));
+    });
+
+    expect(result.current.files[0].lastModified).toBe(111);
+  });
+
   describe('HEIC images', () => {
+    it('keeps the original lastModified date after the conversion', async () => {
+      isHeic.mockReturnValue(true);
+      heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
+      const { result } = renderHook(() => useDropzone());
+
+      await act(async () => {
+        await result.current.addFile(
+          createFile('photo.heic', 'image/heic', 222),
+        );
+      });
+
+      expect(result.current.files[0].lastModified).toBe(222);
+    });
+
     it('converts a HEIC image to JPEG when filters are forced', async () => {
       isHeic.mockReturnValue(true);
       heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
