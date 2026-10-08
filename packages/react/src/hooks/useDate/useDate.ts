@@ -1,13 +1,15 @@
 import { useCallback } from 'react';
 
 import dayjs, { Dayjs, OpUnitType } from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isToday from 'dayjs/plugin/isToday';
 
 /**
- * DO NOT REMOVE .js extensions from dayjs imports
+ * DO NOT REMOVE .js extensions from dayjs imports: the build externalizes
+ * dayjs plugins through the /^dayjs\/plugin\/.+\.js$/ pattern, so the
+ * extension is required to keep them as clean external imports.
  */
 import customParseFormat from 'dayjs/plugin/customParseFormat.js';
+import isSameOrAfter from 'dayjs/plugin/isSameOrAfter.js';
+import isToday from 'dayjs/plugin/isToday.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import relativeTime from 'dayjs/plugin/relativeTime.js';
 
@@ -25,6 +27,54 @@ dayjs.extend(localizedFormat);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isToday);
 
+type RelativeTimeUnit = string | ((...args: unknown[]) => string);
+type RelativeTimeStrings = Record<string, RelativeTimeUnit | undefined>;
+
+/**
+ * Relative wording following the thresholds of the date format spec, which
+ * differ from the dayjs defaults (e.g. 50 minutes stay in minutes, 1h30 is
+ * still "an hour"). The localized strings come from the dayjs locale, so no
+ * wording is hardcoded and the thresholds do not depend on any global dayjs
+ * setting.
+ *
+ * - under 1 minute: "a few seconds"
+ * - from 1 to 2 minutes: "a minute"
+ * - from 2 minutes to 1 hour: "X minutes"
+ * - from 1 to 2 hours: "an hour"
+ * - from 2 hours: "X hours"
+ */
+function formatRelativeToNow(date: Dayjs, now: Dayjs): string {
+  const diffInSeconds = date.diff(now, 'second');
+  const isFuture = diffInSeconds > 0;
+  const seconds = Math.abs(diffInSeconds);
+
+  let key: string;
+  let count: number;
+  if (seconds < 60) {
+    key = 's';
+    count = seconds;
+  } else if (seconds < 3600) {
+    count = Math.floor(seconds / 60);
+    key = count < 2 ? 'm' : 'mm';
+  } else {
+    count = Math.floor(seconds / 3600);
+    key = count < 2 ? 'h' : 'hh';
+  }
+
+  const strings = (dayjs.Ls[date.locale()] ?? dayjs.Ls.en)
+    .relativeTime as RelativeTimeStrings;
+  const unit = strings[key];
+  const label =
+    typeof unit === 'function'
+      ? unit(count, false, key, isFuture)
+      : (unit ?? '').replace('%d', String(count));
+
+  const suffix = strings[isFuture ? 'future' : 'past'];
+  return typeof suffix === 'function'
+    ? suffix(label)
+    : (suffix ?? '%s').replace('%s', label);
+}
+
 export type MongoDate = {
   $date: number | string;
 };
@@ -35,21 +85,37 @@ export type NumberDate = number;
 /** Date formats we are going to deal with. */
 export type CoreDate = IsoDate | MongoDate | NumberDate | Date;
 
+/** Variants of the calendar date format (see the date format spec). */
+export type CalendarDateVariant = 'full' | 'short' | 'abbr';
+
 /**
- * Custom React hook for date parsing, formatting, and localization.
+ * Maximum gap (in hours) for which friendly formats use a relative wording
+ * ("3 hours ago") on dates that are not today. Today's dates always use the
+ * relative wording, whatever the gap: the spec does not define another
+ * wording for them. Beyond, the day-based wording is used ("yesterday",
+ * weekday, date).
+ */
+const FRIENDLY_RELATIVE_MAX_HOURS = 3;
+
+/**
+ * Custom React hook for date parsing, formatting, localization and conversion.
  *
- * Provides utility functions to:
- * - Parse various date formats and timestamps into Dayjs objects, respecting the current language.
- * - Format dates in user-friendly ways, including "time ago", "yesterday", and localized date strings.
- * - Compute elapsed durations from a given date to now.
+ * It exposes one method per format of the Edifice date format spec
+ * (see https://edifice-community.atlassian.net/wiki/spaces/ODE/pages/4601610241).
  *
- * @returns An object containing:
- * - `fromNow(date: CoreDate | NumberDate): string` — Returns a human-readable elapsed duration from the given date to now.
- * - `formatDate(date: CoreDate, format?: 'short' | 'long' | 'abbr' | string): string` — Formats a date according to the specified format and current language.
- * - `formatTimeAgo(date: CoreDate | NumberDate): string` — Returns a localized string representing how long ago the date was, with special handling for today, yesterday, and recent dates.
+ * All formatting methods accept a {@link CoreDate} and are localized through
+ * the current language of the Edifice client. Wordings and format patterns
+ * come from i18n keys (`date.*`), so no label is hardcoded.
  *
- * @remarks
- * - Uses the current language from the Edifice client context for localization.
+ * Formats:
+ * - Friendly: {@link useDate.formatRelativeDateTime}, {@link useDate.formatRelativeDate}
+ * - Simple/textual: {@link useDate.formatLongDateTime}, {@link useDate.formatLongDate}
+ * - Raw: {@link useDate.formatRawDate}, {@link useDate.formatRawDateTime}
+ * - Calendar: {@link useDate.formatCalendarDate}
+ * - Week: {@link useDate.formatWeek}
+ *
+ * Conversions: {@link useDate.toJsDate}, {@link useDate.toTimestamp},
+ * {@link useDate.toIsoDate}, {@link useDate.toMongoDate}.
  */
 export default function useDate() {
   // Current language
@@ -59,7 +125,9 @@ export default function useDate() {
   /* Utility function */
   const parseDate = useCallback(
     (date: string, lang?: string): Dayjs => {
-      if (date.length < 11) return dayjs(date, ['YYYY-MM-DD'], lang);
+      if (date.length < 11) {
+        return dayjs(date, ['YYYY-MM-DD'], lang ?? (currentLanguage as string));
+      }
 
       // Check if the string is exclusively made of digits
       if (date.split('').findIndex((char) => '0' > char || char > '9') < 0) {
@@ -108,6 +176,265 @@ export default function useDate() {
     [currentLanguage, parseDate],
   );
 
+  /**
+   * Shared logic of the "friendly" formats: relative wording for recent dates
+   * (both past and future), then a day-based wording (yesterday/tomorrow,
+   * weekday, date with or without year).
+   *
+   * @param keyPrefix - i18n key prefix selecting the with/without time patterns.
+   */
+  const formatFriendly = useCallback(
+    (date: CoreDate, keyPrefix: 'datetime' | 'date'): string => {
+      const computedDate = toComputedDate(date);
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs();
+
+      // Recent dates (same day, or within a few hours): relative wording,
+      // past ("3 hours ago") or future ("in 3 hours").
+      if (
+        computedDate.isToday() ||
+        Math.abs(now.diff(computedDate, 'hour')) <= FRIENDLY_RELATIVE_MAX_HOURS
+      ) {
+        return formatRelativeToNow(computedDate, now);
+      }
+
+      let patternKey: string;
+      if (computedDate.isSame(now.subtract(1, 'day'), 'day')) {
+        patternKey = 'yesterday';
+      } else if (computedDate.isSame(now.add(1, 'day'), 'day')) {
+        patternKey = 'tomorrow';
+      } else if (Math.abs(now.diff(computedDate, 'day')) < 7) {
+        patternKey = 'weekday';
+      } else if (computedDate.isSame(now, 'year')) {
+        patternKey = 'currentYear';
+      } else {
+        patternKey = 'otherYear';
+      }
+
+      return computedDate.format(t(`date.friendly.${keyPrefix}.${patternKey}`));
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Friendly format **with time** (spec: "Format convivial - avec heure").
+   *
+   * @example "il y a 38 minutes", "hier à 16h22", "mercredi à 16h22",
+   * "le 21 septembre à 16h22", "le 25 novembre 2020 à 16h22".
+   */
+  const formatRelativeDateTime = useCallback(
+    (date: CoreDate): string => formatFriendly(date, 'datetime'),
+    [formatFriendly],
+  );
+
+  /**
+   * Friendly format **without time** (spec: "Format convivial - sans heure").
+   *
+   * @example "il y a 38 minutes", "hier", "mercredi", "21 sept.", "25 nov. 2020".
+   */
+  const formatRelativeDate = useCallback(
+    (date: CoreDate): string => formatFriendly(date, 'date'),
+    [formatFriendly],
+  );
+
+  /**
+   * Simple and textual format **with time**
+   * (spec: "Format simple et textuel - avec heure").
+   *
+   * @example "23 juillet 2021 à 17:46".
+   */
+  const formatLongDateTime = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid()
+        ? computedDate.format(t('date.long.datetime'))
+        : '';
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Simple and textual format **without time**
+   * (spec: "Format simple et textuel - sans heure").
+   *
+   * @example "23 juillet 2021".
+   */
+  const formatLongDate = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid()
+        ? computedDate.format(t('date.long.date'))
+        : '';
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Raw format **without time** (spec: "Format brut - sans heure").
+   *
+   * @example "28/02/2025".
+   */
+  const formatRawDate = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid()
+        ? computedDate.format(t('date.raw.date'))
+        : '';
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Raw format **with time** (spec: "Format brut - avec heure").
+   *
+   * @example "18/11/2019 15:36".
+   */
+  const formatRawDateTime = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid()
+        ? computedDate.format(t('date.raw.datetime'))
+        : '';
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Calendar date format, at the scale of a calendar day (spec: "Date calendrier").
+   * Yesterday/today/tomorrow are displayed as words for every variant.
+   *
+   * @param variant - 'full' ("vendredi 16 avril"), 'short' ("lundi 12 janv.")
+   * or 'abbr' ("16/04").
+   */
+  const formatCalendarDate = useCallback(
+    (date: CoreDate, variant: CalendarDateVariant = 'full'): string => {
+      const computedDate = toComputedDate(date);
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs();
+
+      if (computedDate.isToday()) return t('date.calendar.today');
+      if (computedDate.isSame(now.subtract(1, 'day'), 'day'))
+        return t('date.calendar.yesterday');
+      if (computedDate.isSame(now.add(1, 'day'), 'day'))
+        return t('date.calendar.tomorrow');
+
+      const period = computedDate.isSame(now, 'year')
+        ? 'currentYear'
+        : 'otherYear';
+
+      return computedDate.format(t(`date.calendar.${variant}.${period}`));
+    },
+    [toComputedDate, t],
+  );
+
+  /**
+   * Week format, when displaying things by week (spec: "Date semaine").
+   *
+   * @example "Cette semaine", "Semaine prochaine (du 30 janv. au 5 fév.)",
+   * "Semaine du 17 au 23 janvier".
+   */
+  const formatWeek = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      if (!computedDate?.isValid()) return '';
+
+      const now = dayjs().locale(currentLanguage as string);
+      const targetWeekStart = computedDate.startOf('week');
+      const weekDiff = targetWeekStart.diff(now.startOf('week'), 'week');
+
+      if (weekDiff === 0) return t('date.week.current');
+
+      const weekEnd = targetWeekStart.endOf('week');
+
+      // Last/next weeks use abbreviated, fully-qualified day+month bounds.
+      if (weekDiff === -1 || weekDiff === 1) {
+        return t(weekDiff === -1 ? 'date.week.last' : 'date.week.next', {
+          start: targetWeekStart.format(t('date.week.boundary.short')),
+          end: weekEnd.format(t('date.week.boundary.short')),
+        });
+      }
+
+      // Other weeks: "Semaine du <start day> au <end day month> [year]".
+      const sameYear = targetWeekStart.isSame(now, 'year');
+      return t(
+        sameYear ? 'date.week.other.currentYear' : 'date.week.other.otherYear',
+        {
+          start: targetWeekStart.format(t('date.week.boundary.day')),
+          end: weekEnd.format(t('date.week.boundary.dayMonth')),
+          year: targetWeekStart.format('YYYY'),
+        },
+      );
+    },
+    [currentLanguage, toComputedDate, t],
+  );
+
+  /** Converts a {@link CoreDate} to a native `Date`, or `undefined` if invalid. */
+  const toJsDate = useCallback(
+    (date: CoreDate): Date | undefined => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.toDate() : undefined;
+    },
+    [toComputedDate],
+  );
+
+  /**
+   * Converts a {@link CoreDate} to a timestamp (ms since epoch), or `undefined`
+   * if invalid.
+   */
+  const toTimestamp = useCallback(
+    (date: CoreDate): number | undefined => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.valueOf() : undefined;
+    },
+    [toComputedDate],
+  );
+
+  /**
+   * Converts a {@link CoreDate} to an ISO 8601 string, or `undefined` if
+   * invalid.
+   */
+  const toIsoDate = useCallback(
+    (date: CoreDate): IsoDate | undefined => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.toISOString() : undefined;
+    },
+    [toComputedDate],
+  );
+
+  /**
+   * Converts a {@link CoreDate} to a {@link MongoDate} (`{ $date: <ms> }`), or
+   * `undefined` if invalid.
+   */
+  const toMongoDate = useCallback(
+    (date: CoreDate): MongoDate | undefined => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid()
+        ? { $date: computedDate.valueOf() }
+        : undefined;
+    },
+    [toComputedDate],
+  );
+
+  /**
+   * @deprecated Use {@link formatRelativeDateTime} instead.
+   * Compute a user-friendly elapsed duration, between now and a date.
+   */
+  const fromNow = useCallback(
+    (date: CoreDate): string => {
+      const computedDate = toComputedDate(date);
+      return computedDate?.isValid() ? computedDate.fromNow() : '';
+    },
+    [toComputedDate],
+  );
+
+  /**
+   * @deprecated Use {@link formatRelativeDate} instead.
+   *
+   * Returns a localized string representing how long ago the date was, with
+   * special handling for today, yesterday, and recent dates.
+   */
   const formatTimeAgo = useCallback(
     (date: CoreDate): string => {
       const computedDate = toComputedDate(date);
@@ -138,19 +465,13 @@ export default function useDate() {
       // format D MMM YYYY
       return computedDate.format(t('date.format.previousYear'));
     },
-    [currentLanguage, parseDate],
-  );
-
-  /** Compute a user-friendly elapsed duration, between now and a date. */
-  const fromNow = useCallback(
-    (date: CoreDate): string => {
-      const computedDate = toComputedDate(date);
-      return computedDate?.isValid() ? computedDate.fromNow() : '';
-    },
-    [currentLanguage, parseDate],
+    [toComputedDate, t],
   );
 
   /**
+   * @deprecated Prefer the dedicated methods: {@link formatLongDate} ('long'),
+   * {@link formatRawDate} ('short') or {@link formatCalendarDate} ('abbr').
+   *
    * Formats a date according to the specified format and current language.
    *
    * @param date - The date to format (CoreDate).
@@ -181,7 +502,7 @@ export default function useDate() {
         ? computedDate.locale(currentLanguage as string).format(dayjsFormat)
         : '';
     },
-    [currentLanguage, parseDate],
+    [currentLanguage, toComputedDate],
   );
 
   /** Check if two dates are the same, according to the specified unit. See https://day.js.org/docs/en/query/is-same for more details.
@@ -196,7 +517,7 @@ export default function useDate() {
       const computedDate2 = toComputedDate(date2);
       return computedDate?.isSame(computedDate2, unit) ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   /** Check if a date is same or after another date. See https://day.js.org/docs/en/query/is-same-or-after for more details.
@@ -211,7 +532,7 @@ export default function useDate() {
       const computedDate2 = toComputedDate(date2);
       return computedDate?.isSameOrAfter(computedDate2, unit) ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   /** Check if a date is today. See https://day.js.org/docs/en/plugin/is-today for more details.
@@ -223,15 +544,34 @@ export default function useDate() {
       const computedDate = toComputedDate(date);
       return computedDate?.isToday() ?? false;
     },
-    [currentLanguage, parseDate],
+    [toComputedDate],
   );
 
   return {
-    fromNow,
-    formatDate,
-    formatTimeAgo,
+    // Friendly formats
+    formatRelativeDateTime,
+    formatRelativeDate,
+    // Simple/textual formats
+    formatLongDateTime,
+    formatLongDate,
+    // Raw formats
+    formatRawDate,
+    formatRawDateTime,
+    // Calendar & week
+    formatCalendarDate,
+    formatWeek,
+    // Conversions
+    toJsDate,
+    toTimestamp,
+    toIsoDate,
+    toMongoDate,
+    // Comparisons
     dateIsSame,
     dateIsSameOrAfter,
     dateIsToday,
+    // Deprecated
+    fromNow,
+    formatDate,
+    formatTimeAgo,
   };
 }
