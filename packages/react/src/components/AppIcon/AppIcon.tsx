@@ -1,4 +1,4 @@
-import { forwardRef, Ref, useEffect, useState } from 'react';
+import { CSSProperties, forwardRef, Ref, useEffect, useState } from 'react';
 
 import { IWebApp } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -8,7 +8,22 @@ import { Image } from '../Image';
 
 import * as IconSprites from '../../modules/icons/components/apps';
 
-export type AppIconSize = '24' | '32' | '40' | '48' | '80' | '160';
+/**
+ * Predefined icon sizes (in px). These keep their exact historical padding
+ * when `iconFit="ratio"`.
+ */
+export type PredefinedAppIconSize = '24' | '32' | '40' | '48' | '80' | '160';
+
+/**
+ * Icon size, in px, as a numeric string. Accepts the predefined sizes as well
+ * as any custom numeric value (e.g. `'16'`, `'20'`). In `iconFit="ratio"`
+ * mode, custom sizes get an automatically computed padding (no CSS override
+ * needed).
+ *
+ * Values with a unit (e.g. `'24px'`, `'2rem'`) are rejected: the component
+ * appends `px` itself.
+ */
+export type AppIconSize = PredefinedAppIconSize | `${number}`;
 
 export interface BaseProps {
   /**
@@ -156,12 +171,16 @@ const AppIcon = forwardRef(
       );
     }
 
+    // Expose the actual size (in px) as a CSS variable so the stylesheet can
+    // compute a padding that scales with any size in `iconFit="ratio"` mode.
+    const style = {
+      'width': size + 'px',
+      'height': size + 'px',
+      '--app-icon-size': size + 'px',
+    } as CSSProperties;
+
     return (
-      <div
-        ref={ref}
-        className={classes}
-        style={{ width: size + 'px', height: size + 'px' }}
-      >
+      <div ref={ref} className={classes} style={style}>
         {showLetterFallback ? (
           <span className="app-icon-letter" style={{ fontSize: size + 'px' }}>
             {displayName.charAt(0).toUpperCase()}
