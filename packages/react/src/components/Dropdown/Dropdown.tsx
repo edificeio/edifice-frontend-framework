@@ -247,6 +247,7 @@ Root.displayName = 'Dropdown';
 const Dropdown = Object.assign(Root, {
   Trigger: DropdownTrigger,
   Menu: DropdownMenu,
+  VirtualizedMenu: DropdownVirtualizedMenu,
   Item: DropdownItem,
   Separator: DropdownSeparator,
   CheckboxItem: DropdownCheckboxItem,
