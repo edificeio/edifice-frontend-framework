@@ -404,6 +404,54 @@ i18n.use(initReactI18next).init({
         //------------------------------------------------------
       },
     },
+    // French reference keys for the `date.*` namespace (useDate), so that the
+    // hook outputs can be checked against the French examples of the date
+    // format spec. Other keys fall back to `en`.
+    fr: {
+      translation: {
+        'date.format.yesterday': 'Hier',
+        'date.format.currentWeek': 'dddd',
+        'date.format.currentYear': 'D MMM',
+        'date.format.previousYear': 'D MMM YYYY',
+        // Friendly - with time
+        'date.friendly.datetime.yesterday': '[Hier à] HH[h]mm',
+        'date.friendly.datetime.tomorrow': '[Demain à] HH[h]mm',
+        'date.friendly.datetime.weekday': 'dddd [à] HH[h]mm',
+        'date.friendly.datetime.currentYear': '[le] D MMMM [à] HH[h]mm',
+        'date.friendly.datetime.otherYear': '[le] D MMMM YYYY [à] HH[h]mm',
+        // Friendly - without time
+        'date.friendly.date.yesterday': '[Hier]',
+        'date.friendly.date.tomorrow': '[Demain]',
+        'date.friendly.date.weekday': 'dddd',
+        'date.friendly.date.currentYear': 'D MMM',
+        'date.friendly.date.otherYear': 'D MMM YYYY',
+        // Simple & textual
+        'date.long.datetime': 'D MMMM YYYY [à] HH:mm',
+        'date.long.date': 'D MMMM YYYY',
+        // Raw
+        'date.raw.date': 'DD/MM/YYYY',
+        'date.raw.datetime': 'DD/MM/YYYY HH:mm',
+        // Calendar
+        'date.calendar.today': "Aujourd'hui",
+        'date.calendar.yesterday': 'Hier',
+        'date.calendar.tomorrow': 'Demain',
+        'date.calendar.full.currentYear': 'dddd D MMMM',
+        'date.calendar.full.otherYear': 'dddd D MMMM YYYY',
+        'date.calendar.short.currentYear': 'dddd D MMM',
+        'date.calendar.short.otherYear': 'dddd D MMM YYYY',
+        'date.calendar.abbr.currentYear': 'DD/MM',
+        'date.calendar.abbr.otherYear': 'DD/MM/YY',
+        // Week
+        'date.week.current': 'Cette semaine',
+        'date.week.last': 'Semaine dernière (du [[start]] au [[end]])',
+        'date.week.next': 'Semaine prochaine (du [[start]] au [[end]])',
+        'date.week.other.currentYear': 'Semaine du [[start]] au [[end]]',
+        'date.week.other.otherYear': 'Semaine du [[start]] au [[end]] [[year]]',
+        'date.week.boundary.short': 'D MMM',
+        'date.week.boundary.day': 'D',
+        'date.week.boundary.dayMonth': 'D MMMM',
+      },
+    },
   },
   fallbackLng: 'en',
   debug: false,

@@ -33,18 +33,21 @@ return (
 
 | Method                              | Spec format                              | Example (fr)                                   |
 | ----------------------------------- | ---------------------------------------- | ---------------------------------------------- |
-| `formatRelativeDateTime(date)`      | Friendly — with time                     | `hier à 16h22`, `le 21 septembre à 16h22`      |
-| `formatRelativeDate(date)`          | Friendly — without time                  | `il y a 38 minutes`, `hier`, `21 sept.`        |
+| `formatRelativeDateTime(date)`      | Friendly — with time                     | `Hier à 16h22`, `le 21 septembre à 16h22`      |
+| `formatRelativeDate(date)`          | Friendly — without time                  | `il y a 38 minutes`, `Hier`, `21 sept.`        |
 | `formatLongDateTime(date)`          | Simple & textual — with time             | `23 juillet 2021 à 17:46`                      |
 | `formatLongDate(date)`              | Simple & textual — without time          | `23 juillet 2021`                              |
 | `formatRawDate(date)`               | Raw — without time                       | `28/02/2025`                                   |
 | `formatRawDateTime(date)`           | Raw — with time                          | `18/11/2019 15:36`                             |
-| `formatCalendarDate(date, variant)` | Calendar (`'full' \| 'short' \| 'abbr'`) | `vendredi 16 avril`, `12 janv.`, `16/04`       |
+| `formatCalendarDate(date, variant)` | Calendar (`'full' \| 'short' \| 'abbr'`) | `jeudi 16 avril`, `jeudi 16 avr.`, `16/04`     |
 | `formatWeek(date)`                  | Week                                     | `Cette semaine`, `Semaine du 17 au 23 janvier` |
 
-The friendly formats use a relative wording for recent dates (a few hours, past
-or future) and a day-based wording beyond that. The calendar format always shows
-yesterday/today/tomorrow as words.
+The friendly formats use a relative wording (`il y a 38 minutes`) for today and
+for dates within 3 hours, past or future, and a day-based wording beyond that
+(yesterday, tomorrow, weekday within a week, then day and month, with the year
+when it is not the current one). The calendar format always shows
+yesterday/today/tomorrow as words; the `'full'`, `'short'` and `'abbr'` variants
+only differ for the other days (`jeudi 16 avril`, `jeudi 16 avr.`, `16/04`).
 
 ## Conversion helpers
 
