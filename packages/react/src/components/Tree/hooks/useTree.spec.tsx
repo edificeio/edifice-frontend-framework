@@ -18,8 +18,6 @@ type Callbacks = {
   onTreeItemClick: ReturnType<typeof vi.fn>;
 };
 
-// The data identity must stay stable across renders: the expand-all effect
-// depends on it, so a fresh array on every render would loop forever.
 function setup(
   props: Partial<Parameters<typeof useTree>[0]> = {},
 ): { result: { current: ReturnType<typeof useTree> } } & Callbacks {
@@ -142,6 +140,27 @@ describe('useTree', () => {
       );
 
       expect(Array.from(result.current.expandedNodes)).toEqual([]);
+    });
+
+    it('does not loop when the caller passes a fresh array reference with the same content on every render', () => {
+      let renderCount = 0;
+
+      const { result, rerender } = renderHook(() => {
+        renderCount++;
+        return useTree({ data: makeNodes(), shouldExpandAllNodes: true });
+      });
+
+      expect(expanded(result)).toEqual(['a', 'b']);
+      const renderCountAfterMount = renderCount;
+
+      rerender();
+      rerender();
+
+      expect(expanded(result)).toEqual(['a', 'b']);
+      // Two explicit rerenders should add at most two renders — a
+      // reintroduced effect-on-data-identity bug would instead keep
+      // re-triggering setExpandedNodes and blow this count up.
+      expect(renderCount).toBeLessThanOrEqual(renderCountAfterMount + 2);
     });
   });
 
