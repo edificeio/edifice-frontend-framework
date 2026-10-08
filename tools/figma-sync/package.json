@@ -1,0 +1,25 @@
+{
+  "name": "@edifice.io/figma-sync",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Synchronise les variables Figma (primitives + semantiques) vers packages/bootstrap/src/themes/configs/",
+  "license": "AGPL-3.0",
+  "author": "Edifice",
+  "type": "module",
+  "main": "src/cli.ts",
+  "types": "src/cli.ts",
+  "scripts": {
+    "sync": "tsx src/cli.ts",
+    "fix": "eslint --fix --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --check \"src/**/*.ts\"",
+    "format:write": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "tsx": "4.20.6",
+    "typescript": "catalog:",
+    "vitest": "3.2.4"
+  }
+}
