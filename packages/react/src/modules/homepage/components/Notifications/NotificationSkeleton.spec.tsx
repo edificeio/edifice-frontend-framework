@@ -17,9 +17,7 @@ describe('NotificationSkeleton', () => {
     render(<NotificationSkeleton />);
 
     expect(screen.getAllByRole('status')).toHaveLength(1);
-    expect(
-      screen.getByText('Chargement des notifications'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Loading notifications')).toBeInTheDocument();
   });
 
   it('reuses the layout classes of the loaded row', () => {
