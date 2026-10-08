@@ -33,7 +33,6 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
   //TODO to delete with "edifice in product" generalization #IMPULS-6352
   const isEdificeInProductHelp =
     useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
-  console.log('isEdificeInProductHelp:', isEdificeInProductHelp);
   const { theme } = useEdificeTheme();
 
   const isMobileView = window.innerWidth <= 768;
@@ -269,9 +268,9 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
               color: {
-                theme:
-                  zendeskGuideConfig.color ||
-                  (isEdificeInProductHelp ? '#3030D1' : '#ffc400'),
+                theme: isEdificeInProductHelp
+                  ? '#3030D1'
+                  : zendeskGuideConfig.color || '#3030D1',
               },
               zIndex: 3,
               launcher: {
