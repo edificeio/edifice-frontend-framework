@@ -106,12 +106,16 @@ export function Rss({
             data-testid={`rss-link-article-${index}`}
           >
             <span className="rss-widget__article-title">{article.title}</span>
-            <span className="rss-widget__article-date">
-              {formatDate(new Date(article.pubDate), 'dddd D MMMM YYYY')}
-            </span>
-            <span className="rss-widget__article-description">
-              {htmlToText(article.description)}
-            </span>
+            {article.pubDate && (
+              <span className="rss-widget__article-date">
+                {formatDate(new Date(article.pubDate), 'dddd D MMMM YYYY')}
+              </span>
+            )}
+            {article.description && (
+              <span className="rss-widget__article-description">
+                {htmlToText(article.description)}
+              </span>
+            )}
           </a>
         ))}
       </div>
