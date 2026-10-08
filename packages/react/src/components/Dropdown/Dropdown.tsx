@@ -23,6 +23,7 @@ import DropdownRadioItem from './DropdownRadioItem';
 import DropdownSearchInput from './DropdownSearchInput';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
+import { DropdownVirtualizedMenu } from './DropdownVirtualizedMenu';
 
 export interface DropdownApi {
   visible: boolean;
@@ -243,6 +244,7 @@ Root.displayName = 'Dropdown';
 const Dropdown = Object.assign(Root, {
   Trigger: DropdownTrigger,
   Menu: DropdownMenu,
+  VirtualizedMenu: DropdownVirtualizedMenu,
   Item: DropdownItem,
   Separator: DropdownSeparator,
   CheckboxItem: DropdownCheckboxItem,
