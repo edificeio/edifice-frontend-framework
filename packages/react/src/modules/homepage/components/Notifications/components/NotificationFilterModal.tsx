@@ -1,7 +1,12 @@
 import clsx from 'clsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppIcon, ButtonBeta, Flex, Modal } from '../../../../..';
+import {
+  AppIcon,
+  ButtonBeta as Button,
+  Flex,
+  ModalBeta as Modal,
+} from '../../../../..';
 import { IconCheck } from '../../../../icons/components';
 import { getAppCodeAndI18nKey } from './notificationAdapter';
 
@@ -69,17 +74,16 @@ const NotificationFilterModal = ({
   return (
     <Modal
       id="notification-filter-modal"
-      size="lg"
-      scrollable
+      size={'l'}
       isOpen={isOpen}
       onModalClose={onCancel}
     >
-      <Modal.Header onModalClose={onCancel}>
+      <Modal.Header
+        subtitle={t('homepage.notifications.filter-modal.subtitle')}
+        onModalClose={onCancel}
+      >
         {t('homepage.notifications.filter-modal.title')}
       </Modal.Header>
-      <Modal.Subtitle>
-        {t('homepage.notifications.filter-modal.subtitle')}
-      </Modal.Subtitle>
       <Modal.Body>
         <Flex align="center" gap="8" className="mb-24">
           <label className="notification-filter-select-all notification-filter-chip">
@@ -123,15 +127,15 @@ const NotificationFilterModal = ({
         </Flex>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonBeta
+        <Button
           color="tertiary"
           onClick={onCancel}
           type="button"
           variant="ghost"
         >
           {t('cancel')}
-        </ButtonBeta>
-        <ButtonBeta
+        </Button>
+        <Button
           color="default"
           onClick={() => onApply(selected)}
           type="button"
@@ -139,7 +143,7 @@ const NotificationFilterModal = ({
           rightIcon={<IconCheck />}
         >
           {t('homepage.notifications.filter-modal.confirm')}
-        </ButtonBeta>
+        </Button>
       </Modal.Footer>
     </Modal>
   );

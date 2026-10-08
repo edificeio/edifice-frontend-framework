@@ -17,15 +17,19 @@
   display: inline-flex;
   align-items: center;
   gap: var(--primitive-spacer-8);
-  border-radius: var(--border-radius-md, 8px);
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--color-primary-default);
   background: var(--color-primary-feather);
   accent-color: var(--color-primary-default);
 }
 
 .notification-filter-count {
+  color: var(--primitive-text-color-default);
+  font-family: var(--font-family-body);
   font-size: var(--primitive-font-size-small);
-  color: var(--primitive-text-color-subtext);
+  font-style: normal;
+  font-weight: var(--font-weight-bold);
+  line-height: var(--primitive-font-lineheight-2xs);
 }
 
 .notification-filter-chip {
@@ -44,6 +48,6 @@
 
   &.is-checked {
     border-color: var(--color-primary-default);
-    background-color: var(--color-primary-pale);
+    background-color: var(--color-primary-feather);
   }
 }
