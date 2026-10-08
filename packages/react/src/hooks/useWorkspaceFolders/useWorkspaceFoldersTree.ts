@@ -1,7 +1,6 @@
 import { WorkspaceElement } from '@edifice.io/client';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 
 interface FolderTreeNode {
   id: string;
@@ -14,7 +13,6 @@ export const WORKSPACE_SHARED_FOLDER_ID = 'workspace-shared-folder-id';
 
 function useWorkspaceFoldersTree(folders?: WorkspaceElement[]) {
   const { t } = useTranslation();
-  const { user } = useEdificeClient();
 
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -28,7 +26,7 @@ function useWorkspaceFoldersTree(folders?: WorkspaceElement[]) {
     );
 
     return searchQuery ? filterTree(foldersTree, searchQuery) : foldersTree;
-  }, [folders, searchQuery, user]);
+  }, [folders, searchQuery, t]);
 
   return {
     foldersTree: filtredFoldersTree,

@@ -25,7 +25,7 @@ describe('Subject', () => {
     let observedHttpError: IHttpErrorEvent | undefined = undefined;
 
     const subscription = subject.subscribe(LAYER_NAME.TRANSPORT, (message) => {
-      observedHttpError = message;
+      observedHttpError = message as IHttpErrorEvent;
     });
     subject.publish(LAYER_NAME.TRANSPORT, mockedHttpError);
 
