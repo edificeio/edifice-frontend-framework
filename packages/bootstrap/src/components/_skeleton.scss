@@ -5,11 +5,17 @@
 // `min-height` keeps an unsized block visible without introducing a pixel
 // value that would drift from the content it stands for, and `width` defaults
 // here rather than inline so an unsized block carries no style attribute.
+// `width` and `min-height` defaults sit in `:where()` so they carry no
+// specificity: a grid class (`col-5`) or a component class sizes the block
+// without having to win a cascade fight against the fallback.
+:where(.skeleton) {
+  width: 100%;
+  min-height: 1em;
+}
+
 .skeleton {
   display: block;
   flex-shrink: 0;
-  width: 100%;
-  min-height: 1em;
   background-color: var(--primitive-grey-300);
 
   &-strong {
@@ -110,6 +116,48 @@
   &-date {
     width: 6.3rem;
     height: var(--primitive-font-lineheight-3xs);
+  }
+}
+
+// Mirrors the buttons of the editor toolbar: the height of a `md` button, whose
+// width is given by the grid classes of the markup.
+.editor-skeleton-button {
+  height: 4rem;
+}
+
+// Stands for a line of text of the editor preview. The loaded content sits in a
+// line box (1.6 of the font size) taller than the glyphs, so the block reserves
+// the difference with transparent borders rather than margins: adjacent vertical
+// margins would collapse and the lines would pack closer than the real ones.
+.editor-preview-skeleton-line {
+  height: 1.6em;
+  border-block: 0.36em solid transparent;
+  border-block-end-width: 0.24em;
+  background-clip: padding-box;
+}
+
+// Mirrors the header of the Communities card: a `lg` text line and a `sm` button
+// whose width comes from its horizontal padding.
+.communities-skeleton {
+  &-title {
+    height: 1.2em;
+  }
+
+  &-button {
+    width: 5rem;
+    height: 4rem;
+  }
+
+  // A `sm` text line of the community name, centered under its picture. It sits
+  // in a line box of 1.6 of the font size in the loaded card, and the margins
+  // reserve what the 0.8 glyph box leaves of it, offset like the baseline. The
+  // `min-height` reset is needed because 0.8 is lower than the 1em floor of the
+  // primitive.
+  &-line {
+    align-self: center;
+    min-height: 0;
+    height: 0.8em;
+    margin-block: 0.46em 0.34em;
   }
 }
 
