@@ -47,12 +47,9 @@ export const createUsefulLinksService = (baseURL: string) => ({
    * Create a new useful link.
    */
   async createUsefulLink(payload: UsefulLinkPayload): Promise<UsefulLink> {
-    const { _id } = await odeServices
-      .http()
-      .postJson<
-        UsefulLinkPayload,
-        { _id: string }
-      >(`${baseURL}/bookmark/api/v2/bookmarks`, payload);
+    const { _id } = await odeServices.http().postJson<{
+      _id: string;
+    }>(`${baseURL}/bookmark/api/v2/bookmarks`, payload);
     return { id: _id, ...payload };
   },
 
@@ -63,12 +60,9 @@ export const createUsefulLinksService = (baseURL: string) => ({
     id: string,
     payload: UsefulLinkPayload,
   ): Promise<UsefulLink> {
-    await odeServices
-      .http()
-      .putJson<
-        UsefulLinkPayload,
-        { _id: string }
-      >(`${baseURL}/bookmark/api/v2/bookmarks/${id}`, payload);
+    await odeServices.http().putJson<{
+      _id: string;
+    }>(`${baseURL}/bookmark/api/v2/bookmarks/${id}`, payload);
     return { id, ...payload };
   },
 

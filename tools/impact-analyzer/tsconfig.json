@@ -17,5 +17,5 @@
     "types": ["node", "vitest/globals"]
   },
   "include": ["src", "test", "config", "apps.json"],
-  "exclude": ["node_modules", "data", "viewer"]
+  "exclude": ["node_modules", "data", "viewer", "test/fixtures"]
 }

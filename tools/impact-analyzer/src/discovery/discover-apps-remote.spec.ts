@@ -27,7 +27,8 @@ describe('discoverAppsRemote', () => {
 
   it('discovers an app via frontend/package.json and captures the branch head sha', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/develop-enabling'))
         return new Response(null, { status: 404 });
       if (url.includes('/branches/develop'))
@@ -61,7 +62,8 @@ describe('discoverAppsRemote', () => {
 
   it('falls back to the root package.json when frontend/package.json is missing', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha' } }));
       if (url.includes('/contents/frontend/package.json'))
@@ -89,7 +91,8 @@ describe('discoverAppsRemote', () => {
 
   it('silently skips one absent branch when at least one other branch of the app is found', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/develop-enabling'))
         return new Response(null, { status: 404 });
       if (url.includes('/branches/develop'))
@@ -129,7 +132,8 @@ describe('discoverAppsRemote', () => {
 
   it('never queries a branch that is not listed in app.branches', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/develop-enabling')) {
         throw new Error(
           'should never be called for an app without this branch',
@@ -156,7 +160,8 @@ describe('discoverAppsRemote', () => {
     // "develop"/"develop-enabling" list, silently dropping "dev" and making
     // the whole app vanish from discovery with 0 scanErrors.
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/dev'))
         return new Response(JSON.stringify({ commit: { sha: 'sha-dev' } }));
       if (url.includes('/contents/frontend/package.json'))
@@ -195,7 +200,8 @@ describe('discoverAppsRemote', () => {
 
   it('reports a scanError when neither package.json exists on a branch that does exist', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha' } }));
       return new Response(null, { status: 404 });
@@ -236,7 +242,8 @@ describe('discoverAppsRemote', () => {
 
   it('discovers a monorepo app (path) via the frontend/package.json.template fallback when the real package.json 404s', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha-conv' } }));
       // 'conversation/frontend/package.json' is a substring of
@@ -292,7 +299,8 @@ describe('discoverAppsRemote', () => {
 
   it('discovers a monorepo app (path) via a direct frontend/package.json hit (timeline case)', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha-tl' } }));
       if (url.includes('/contents/timeline/frontend/package.json')) {
@@ -329,7 +337,8 @@ describe('discoverAppsRemote', () => {
 
   it('reports a scanError listing the prefixed candidates when none of the 3 monorepo probes hit', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/branches/'))
         return new Response(JSON.stringify({ commit: { sha: 'sha' } }));
       return new Response(null, { status: 404 });
@@ -358,7 +367,8 @@ describe('discoverAppsRemote', () => {
 
   it('keeps processing other apps when one app fails', async () => {
     process.env.IMPACT_ANALYZER_GITHUB_TOKEN = 'tok';
-    const fetchImpl = vi.fn(async (url: string) => {
+    const fetchImpl = vi.fn(async (input: string | URL | Request) => {
+      const url = String(input);
       if (url.includes('/repos/edificeio/bad-app/'))
         return new Response('boom', { status: 500 });
       if (url.includes('/branches/'))

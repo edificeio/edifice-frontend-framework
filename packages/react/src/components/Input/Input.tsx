@@ -83,7 +83,7 @@ const Input = forwardRef(
   ) => {
     const { id, isRequired, isReadOnly, status } = useFormControl();
     const { t } = useTranslation();
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const [currentLength, setCurrentLength] = useState(
       restProps.defaultValue?.toString().length || 0,
     );

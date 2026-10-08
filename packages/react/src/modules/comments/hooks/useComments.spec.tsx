@@ -31,6 +31,9 @@ const options: CommentOptions = {
   additionalComments: 2,
   maxReplies: 2,
   additionalReplies: 2,
+  maxCommentLength: 200,
+  maxReplyLength: 200,
+  allowReplies: true,
 };
 
 function setup({
