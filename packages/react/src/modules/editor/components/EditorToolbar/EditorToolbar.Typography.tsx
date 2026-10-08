@@ -8,6 +8,7 @@ import {
   IconButtonProps,
   Tooltip,
 } from '../../../../components';
+import { useDropdownContext } from '../../../../components/Dropdown/DropdownContext';
 import { IconTextTypo } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
 import { useEditorState } from '../../hooks/useEditorState';
@@ -24,11 +25,11 @@ interface Props {
 export const EditorToolbarTypography = ({ triggerProps }: Props) => {
   const { t } = useTranslation();
   const { editor } = useEditorContext();
+  const { visible } = useDropdownContext();
 
   const [value, setValue] = useState<string>('sans-serif');
   // editor?.state alone doesn't trigger a re-render on a pure selection move
-  // (no content edit, e.g. clicking into differently-styled text) - this also
-  // backs the `editor?.isActive(...)` check in the JSX below.
+  // (no content edit, e.g. clicking into differently-styled text).
   const editorState = useEditorState(editor);
 
   useEffect(() => {
@@ -74,13 +75,7 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
           color="tertiary"
           icon={<IconTextTypo />}
           aria-label={t('tiptap.toolbar.typo.choice')}
-          className={
-            editor?.isActive('textStyle', {
-              color: /^#([0-9a-f]{3}){1,2}$/i,
-            })
-              ? 'selected'
-              : ''
-          }
+          className={visible ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>

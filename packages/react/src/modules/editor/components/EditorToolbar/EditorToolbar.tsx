@@ -96,7 +96,8 @@ export const EditorToolbar = ({
           'icon': <IconUndo />,
           'aria-label': t('editor.option.undo'),
           'onClick': () => editor?.chain().focus().undo().run(),
-          'disabled': !editor?.can().undo(),
+          'disabled':
+            !hasExtension('undoRedo', editor) || !editor?.can().undo(),
         },
         name: 'undo',
         tooltip: t('editor.option.undo'),
@@ -110,7 +111,8 @@ export const EditorToolbar = ({
           'icon': <IconRedo />,
           'aria-label': t('editor.option.redo'),
           'onClick': () => editor?.chain().focus().redo().run(),
-          'disabled': !editor?.can().redo(),
+          'disabled':
+            !hasExtension('undoRedo', editor) || !editor?.can().redo(),
         },
         name: 'redo',
         tooltip: t('editor.option.redo'),
@@ -438,6 +440,10 @@ export const EditorToolbar = ({
         visibility: showIf(hasExtension('textAlign', editor)),
       },
     ];
+    // `editorState` is an intentional cache-buster: the items read
+    // `editor.can()` / `editor.isActive()`, which depend on the editor state
+    // rather than on the editor instance (stable in Tiptap v3).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     alignmentOptions,
     canRecognizeSpeech,
