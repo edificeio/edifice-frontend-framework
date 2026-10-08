@@ -280,6 +280,7 @@ i18n.use(initReactI18next).init({
         'homepage.messageFlash.warning': 'Avertissement',
         //------------------ Notifications -------------------------
         'homepage.notifications-list.title': 'Notifications',
+        'homepage.notifications-list.loading': 'Loading notifications',
         'homepage.notifications-list.close': 'Close notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
@@ -425,6 +426,7 @@ i18n.use(initReactI18next).init({
     // format spec. Other keys fall back to `en`.
     fr: {
       translation: {
+        'homepage.notifications-list.loading': 'Chargement des notifications',
         'date.format.yesterday': 'Hier',
         'date.format.currentWeek': 'dddd',
         'date.format.currentYear': 'D MMM',
