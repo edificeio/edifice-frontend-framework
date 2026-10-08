@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { UserProfile, odeServices } from '@edifice.io/client';
 
-import { useIsAdml, useUiOverride, useUser } from '..';
+import { useIsAdml, useUser } from '..';
+import { useUiOverride } from '../useUiOverride';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { useHasWorkflow } from '../useHasWorkflow';
