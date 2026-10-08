@@ -1,5 +1,7 @@
 import { createRef, forwardRef } from 'react';
 
+import type { Mock } from 'vitest';
+
 import { act, render, screen } from '~/setup';
 import Editor, { EditorProps, EditorRef } from './Editor';
 
@@ -203,12 +205,12 @@ describe('Editor', () => {
   // explicitly by the `setFocus` imperative API test below. Stub them
   // locally to this spec (restored afterAll) rather than touching the
   // shared vitest setup.
-  let scrollIntoViewSpy: ReturnType<typeof vi.fn>;
+  let scrollIntoViewSpy: Mock<Element['scrollIntoView']>;
   const originalGetClientRects = Range.prototype.getClientRects;
   const originalGetBoundingClientRect = Range.prototype.getBoundingClientRect;
 
   beforeAll(() => {
-    scrollIntoViewSpy = vi.fn();
+    scrollIntoViewSpy = vi.fn<Element['scrollIntoView']>();
     Element.prototype.scrollIntoView = scrollIntoViewSpy;
     Range.prototype.getClientRects = () =>
       ({ length: 0, item: () => null }) as unknown as DOMRectList;

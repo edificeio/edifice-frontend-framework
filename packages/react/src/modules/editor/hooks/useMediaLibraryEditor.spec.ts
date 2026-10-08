@@ -1,5 +1,7 @@
 import { MutableRefObject } from 'react';
 
+import type { Mock } from 'vitest';
+
 import { Editor } from '@tiptap/react';
 import { WorkspaceElement } from '@edifice.io/client';
 import { act, renderHook } from '~/setup';
@@ -103,9 +105,9 @@ const buildEditor = () => {
 
 const buildRef = (
   type: MediaLibraryRef['type'],
-): MediaLibraryRef & { show: ReturnType<typeof vi.fn> } => ({
+): MediaLibraryRef & { show: Mock<MediaLibraryRef['show']> } => ({
   type,
-  show: vi.fn(),
+  show: vi.fn<MediaLibraryRef['show']>(),
   hide: vi.fn(),
   showLink: vi.fn(),
 });
