@@ -12,7 +12,7 @@ export type RewriteToEntryOptions = {
 /**
  * Dev-only middleware that rewrites requests for the given routes/prefixes to
  * a custom HTML entry point, for apps whose build has a non-`index.html`
- * entry (multi-page `rollupOptions.input`).
+ * entry (multi-page `rolldownOptions.input`).
  */
 export function rewriteToEntry({
   entry,
