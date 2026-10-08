@@ -160,6 +160,33 @@ describe('EditorToolbarTextSize', () => {
     expect(editor.getAttributes('textStyle').fontSize).toBe('18px');
   });
 
+  it('does not mark the trigger as selected on a fresh editor', () => {
+    editor = buildEditor(fullExtensions);
+
+    renderTextSize(editor);
+
+    expect(getTrigger()).not.toHaveClass('is-selected');
+  });
+
+  it('marks the trigger as selected once the menu is opened', async () => {
+    editor = buildEditor(fullExtensions);
+    const { user } = renderTextSize(editor);
+
+    await user.click(getTrigger());
+
+    expect(getTrigger()).toHaveClass('is-selected');
+  });
+
+  it('does not mark the trigger as selected when the menu is closed, even with a heading applied', async () => {
+    editor = buildEditor(fullExtensions);
+    const { user } = renderTextSize(editor);
+
+    await user.click(getTrigger());
+    await user.click(screen.getByText('Heading 1'));
+
+    expect(getTrigger()).not.toHaveClass('is-selected');
+  });
+
   it('renders no options and does not throw when the editor is null', async () => {
     const { user } = renderTextSize(null);
 

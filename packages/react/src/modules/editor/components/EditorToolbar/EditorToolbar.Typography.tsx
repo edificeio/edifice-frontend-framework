@@ -8,6 +8,7 @@ import {
   IconButtonProps,
   Tooltip,
 } from '../../../../components';
+import { useDropdownContext } from '../../../../components/Dropdown/DropdownContext';
 import { IconTextTypo } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
 
@@ -23,6 +24,7 @@ interface Props {
 export const EditorToolbarTypography = ({ triggerProps }: Props) => {
   const { t } = useTranslation();
   const { editor } = useEditorContext();
+  const { visible } = useDropdownContext();
 
   const [value, setValue] = useState<string>('sans-serif');
 
@@ -69,13 +71,7 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
           color="tertiary"
           icon={<IconTextTypo />}
           aria-label={t('tiptap.toolbar.typo.choice')}
-          className={
-            editor?.isActive('textStyle', {
-              color: /^#([0-9a-f]{3}){1,2}$/i,
-            })
-              ? 'selected'
-              : ''
-          }
+          className={visible ? 'is-selected' : ''}
         />
       </Tooltip>
       <Dropdown.Menu>
