@@ -134,7 +134,7 @@ const BubbleMenuEditInformationPane = ({
         type: 'button',
         name: 'delete',
         props: {
-          'size': 'lg',
+          'size': 'sm',
           'leftIcon': <IconDelete />,
           'aria-label': t('tiptap.bubblemenu.delete'),
           'children': t('tiptap.bubblemenu.delete'),
