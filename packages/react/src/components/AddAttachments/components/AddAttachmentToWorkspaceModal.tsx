@@ -1,4 +1,5 @@
-import { Button, Modal } from '../../..';
+import Button from '../../Button/Button';
+import Modal from '../../Modal/Modal';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { toast } from 'react-hot-toast';
