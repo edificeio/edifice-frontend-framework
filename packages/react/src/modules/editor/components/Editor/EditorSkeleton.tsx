@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ButtonSkeleton, TextSkeleton } from '../../../../components';
+import { Skeleton } from '../../../../components';
 
 export interface EditorSkeletonProps {
   /** Mode of the editor, either 'edit' or 'read' */
@@ -20,16 +20,16 @@ const EditorSkeleton = ({
     return (
       <div className={contentClass}>
         <div className="d-flex col-12 gap-8 py-8 px-16">
-          <ButtonSkeleton className="col-2 flex-shrink-1"></ButtonSkeleton>
-          <ButtonSkeleton className="col-4"></ButtonSkeleton>
-          <ButtonSkeleton className="col-4"></ButtonSkeleton>
-          <ButtonSkeleton className="col-2"></ButtonSkeleton>
+          <Skeleton className="editor-skeleton-button col-2 flex-shrink-1" />
+          <Skeleton className="editor-skeleton-button col-4" />
+          <Skeleton className="editor-skeleton-button col-4" />
+          <Skeleton className="editor-skeleton-button col-2" />
         </div>
         <div className="d-flex flex-column gap-8 px-16">
-          <TextSkeleton className="col-10"></TextSkeleton>
-          <TextSkeleton className="col-7"></TextSkeleton>
-          <TextSkeleton className="col-8"></TextSkeleton>
-          <TextSkeleton className="col-6"></TextSkeleton>
+          <Skeleton className="col-10" />
+          <Skeleton className="col-7" />
+          <Skeleton className="col-8" />
+          <Skeleton className="col-6" />
         </div>
       </div>
     );
@@ -37,9 +37,9 @@ const EditorSkeleton = ({
 
   return (
     <div className={contentClass}>
-      <TextSkeleton className="col-10"></TextSkeleton>
-      <TextSkeleton className="col-7"></TextSkeleton>
-      <TextSkeleton className="col-8"></TextSkeleton>
+      <Skeleton className="col-10" />
+      <Skeleton className="col-7" />
+      <Skeleton className="col-8" />
     </div>
   );
 };
