@@ -288,7 +288,9 @@ export function DropdownVirtualizedMenu<T>({
       {...restMenuProps}
       ref={menuRef}
       className={panelClassName}
-      style={style}
+      // The listbox scrolls on its own: the panel must not cap its height too,
+      // or both would show a scrollbar.
+      style={{ ...style, maxHeight: 'none', overflowY: 'visible' }}
     >
       {searchable && (
         <div className="pb-8">
