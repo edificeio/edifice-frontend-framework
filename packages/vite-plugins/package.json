@@ -42,7 +42,7 @@
     "test": "vitest"
   },
   "peerDependencies": {
-    "vite": "catalog:"
+    "vite": ">=5.0.0"
   },
   "devDependencies": {
     "@types/node": "catalog:",

@@ -25,6 +25,9 @@ export type ServeLocalI18nOptions = {
  * - a single hardcoded route with no `rootDir` param → one entry in `routes`.
  * - a single route with a `rootDir` param → one entry in `routes`, `rootDir` passed through.
  * - several routes sharing a `rootDir` → the native use case of this plugin.
+ *
+ * When a local file does not exist, the request falls through to the next
+ * middleware instead of failing.
  */
 export function serveLocalI18n({
   routes,
@@ -55,6 +58,12 @@ export function serveLocalI18n({
           res.setHeader('Content-Type', 'application/json; charset=utf-8');
           res.end(fileContents);
         } catch (err) {
+          // A missing file falls through to the next middleware (typically the
+          // dev proxy), so a fresh clone keeps working without local i18n.
+          if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+            next();
+            return;
+          }
           next(err as Error);
         }
       });

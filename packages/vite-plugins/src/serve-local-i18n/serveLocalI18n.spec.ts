@@ -70,8 +70,29 @@ describe('serveLocalI18n', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it('forwards read errors to next()', () => {
-    const error = new Error('ENOENT');
+  it('falls through to next() when the local file does not exist', () => {
+    vi.mocked(readFileSync).mockImplementation(() => {
+      throw Object.assign(new Error('ENOENT'), { code: 'ENOENT' });
+    });
+
+    const plugin = serveLocalI18n({
+      routes: [{ routePath: '/timeline/i18n', filePath: 'i18n/fr.json' }],
+      rootDir: '/app',
+    });
+
+    const { server, getMiddleware } = createServer();
+    callConfigureServer(plugin, server);
+
+    const next = vi.fn();
+    const res = { setHeader: vi.fn(), end: vi.fn() };
+    getMiddleware()({ url: '/timeline/i18n' }, res, next);
+
+    expect(next).toHaveBeenCalledWith();
+    expect(res.end).not.toHaveBeenCalled();
+  });
+
+  it('forwards other read errors to next()', () => {
+    const error = new Error('EACCES');
     vi.mocked(readFileSync).mockImplementation(() => {
       throw error;
     });
