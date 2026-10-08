@@ -1,6 +1,8 @@
 import {
   Children,
+  cloneElement,
   type ComponentPropsWithoutRef,
+  Fragment,
   isValidElement,
   type ReactNode,
   useMemo,
@@ -42,6 +44,24 @@ export interface PageLayoutProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 /**
+ * Children.toArray only flattens arrays, not fragments — a `<>...</>`
+ * wrapper stays a single element, so recurse into fragments explicitly.
+ * Each nested toArray restarts its keys at `.0`, so the fragment key is
+ * prefixed to the keys of its children to keep them unique among siblings.
+ */
+function flattenFragments(children: ReactNode, keyPrefix = ''): ReactNode[] {
+  return Children.toArray(children).flatMap((child) => {
+    if (!isValidElement(child)) return [child];
+
+    const key = `${keyPrefix}${child.key ?? ''}`;
+    if (child.type === Fragment) {
+      return flattenFragments(child.props.children, key);
+    }
+    return [keyPrefix ? cloneElement(child, { key }) : child];
+  });
+}
+
+/**
  * Detect which compound children are present.
  */
 function analyzeChildren(children: ReactNode) {
@@ -53,9 +73,7 @@ function analyzeChildren(children: ReactNode) {
   const headerChildren: ReactNode[] = [];
   const mainChildren: ReactNode[] = [];
 
-  // Children.toArray flattens React fragments so detection works
-  // even when sub-components are wrapped in <>...</>
-  Children.toArray(children).forEach((child) => {
+  flattenFragments(children).forEach((child) => {
     if (!isValidElement(child)) return;
 
     switch (child.type) {
