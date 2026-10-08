@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import {
-  ButtonBeta,
+  ButtonBeta as Button,
   FormControl,
   Input,
   Label,
@@ -108,7 +108,7 @@ export function RssFeedForm({
         </form>
       </ModalBeta.Body>
       <ModalBeta.Footer>
-        <ButtonBeta
+        <Button
           type="button"
           variant="ghost"
           color="tertiary"
@@ -116,8 +116,8 @@ export function RssFeedForm({
           onClick={onCancel}
         >
           {t('homepage.widget.rss.form.cancel')}
-        </ButtonBeta>
-        <ButtonBeta
+        </Button>
+        <Button
           form={formId}
           type="submit"
           isLoading={isSubmitting}
@@ -125,7 +125,7 @@ export function RssFeedForm({
           data-testid="rss-button-save"
         >
           {t('homepage.widget.rss.form.save')}
-        </ButtonBeta>
+        </Button>
       </ModalBeta.Footer>
     </ModalBeta>
   );
