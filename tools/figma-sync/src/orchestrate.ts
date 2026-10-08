@@ -14,7 +14,7 @@ import type {
   ThemeDotPathEntry,
 } from './types.js';
 
-/** dotPath/scssVar (cle du fichier plat) -> nom de fichier reel dans configs/. */
+/** dotPath/scssVar (flat file key) -> real file name in configs/. */
 export const FLAT_FILE_NAMES: Record<
   'primitives' | 'primitives-legacy',
   string
@@ -28,8 +28,8 @@ export const ALL_CONFIG_FILE_NAMES: string[] = [
   ...Object.values(THEME_MODE_TO_FILE),
 ];
 
-/** Une primitive resolue via le kebab-case generique, jamais confrontee a une
- *  convention verifiee -- a relire en priorite dans le rapport. */
+/** A primitive resolved via generic kebab-case, never checked against a
+ *  verified convention -- to review first in the report. */
 export interface GuessedName {
   bucket: string;
   figmaName: string;
@@ -64,11 +64,11 @@ function ensureTrailingNewline(text: string): string {
 }
 
 /**
- * Coeur pur de l'outil : prend les deux exports Figma et le texte actuel des 7
- * fichiers de configs, et produit (a) le texte patche de chacun, en memoire, et
- * (b) le rapport (changements/ajouts/tokens devines/warnings). N'ecrit rien sur
- * disque et ne lance ni sass ni prettier/stylelint -- cli.ts s'occupe de l'I/O
- * et de la validation reelle autour de cette fonction.
+ * Pure core of the tool: takes the two Figma exports and the current text of the 7
+ * config files, and produces (a) the patched text of each, in memory, and
+ * (b) the report (changes/additions/guessed tokens/warnings). Writes nothing to
+ * disk and runs neither sass nor prettier/stylelint -- cli.ts handles the I/O
+ * and the real validation around this function.
  */
 export function buildPatchPlan(
   primitivesData: PrimitivesExportData,

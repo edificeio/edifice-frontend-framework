@@ -13,10 +13,10 @@ export const primitiveKey = (bucket: string, figmaName: string): string =>
 const BUCKETS: PrimitiveBucket[] = ['primitives', 'primitivesLegacy', 'text'];
 
 /**
- * Construit le dictionnaire complet des primitives a partir des 3 collections
- * namespacees de l'export ({ primitives, primitivesLegacy, text }). Cle =
- * primitiveKey(bucket, figmaName) -- indispensable car un meme nom peut exister
- * dans deux collections differentes avec des valeurs differentes (ex: "danger/300").
+ * Builds the full dictionary of primitives from the 3 namespaced
+ * collections of the export ({ primitives, primitivesLegacy, text }). Key =
+ * primitiveKey(bucket, figmaName) -- essential because the same name can exist
+ * in two different collections with different values (e.g. "danger/300").
  */
 export function buildPrimitiveDictionary(
   data: PrimitivesExportData,
@@ -55,8 +55,8 @@ export function buildPrimitiveDictionary(
     if (entry.value !== undefined) {
       return formatScssLiteral(figmaName, entry.value);
     }
-    // Alias : aliasCollection indique dans quelle collection chercher la cible
-    // (peut differer de "bucket", ex: bucket "text" -> aliasCollection "primitives").
+    // Alias: aliasCollection says which collection to look the target up in
+    // (may differ from "bucket", e.g. bucket "text" -> aliasCollection "primitives").
     const aliasBucket = entry.aliasCollection as PrimitiveBucket | undefined;
     if (
       !aliasBucket ||

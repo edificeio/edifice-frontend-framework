@@ -1,19 +1,19 @@
 // Edifice Token Extractor
-// Tourne dans le sandbox du plugin Figma. Ne fait qu'une chose : lire les
-// variables locales du fichier ouvert et les sérialiser en JSON minimal,
-// en préservant les alias (référence vers une autre variable) plutôt que
-// de dupliquer une valeur résolue.
+// Runs in the Figma plugin sandbox. Does one thing only: read the local
+// variables of the open file and serialize them into minimal JSON,
+// preserving aliases (references to another variable) rather than
+// duplicating a resolved value.
 
 figma.showUI(__html__, { width: 480, height: 640 });
 
 /**
- * Résout la valeur d'une variable pour un mode donné.
- * - Si c'est un alias vers une autre variable (même dans une bibliothèque
- *   importée depuis un autre fichier), on renvoie { alias, aliasCollection }.
- *   aliasCollection est indispensable : deux variables de collections
- *   différentes (ex: "primitives" et "primitivesLegacy") peuvent porter
- *   exactement le même nom ("danger/300") avec des valeurs différentes.
- * - Sinon on renvoie la valeur brute (couleur convertie en hex, ou valeur telle quelle).
+ * Resolves a variable's value for a given mode.
+ * - If it is an alias to another variable (even in a library
+ *   imported from another file), returns { alias, aliasCollection }.
+ *   aliasCollection is essential: two variables from different
+ *   collections (e.g. "primitives" and "primitivesLegacy") can have
+ *   the exact same name ("danger/300") with different values.
+ * - Otherwise returns the raw value (color converted to hex, or value as is).
  */
 async function resolveValue(rawValue, depth) {
   if (depth > 10) {
@@ -49,16 +49,16 @@ function rgbaToHex(color) {
 }
 
 /**
- * Extrait toutes les collections/variables locales du fichier actuellement ouvert.
+ * Extracts all local collections/variables of the currently open file.
  *
- * Espace de noms du niveau racine :
- * - Collection à un seul mode (ex: "primitives", "primitivesLegacy") -> le nom
- *   de la COLLECTION, pas du mode (le mode s'appelle souvent juste "Value" et
- *   ne distingue rien).
- * - Collection à plusieurs modes (ex: les thèmes) -> le nom du MODE, qui porte
- *   l'information utile (one/neo/edifice2d...).
- * Sans ça, deux variables de même nom dans deux collections à un seul mode
- * s'écrasent silencieusement (c'est le bug corrigé ici).
+ * Root-level namespace:
+ * - Single-mode collection (e.g. "primitives", "primitivesLegacy") -> the name
+ *   of the COLLECTION, not of the mode (the mode is often just called "Value" and
+ *   distinguishes nothing).
+ * - Multi-mode collection (e.g. the themes) -> the name of the MODE, which carries
+ *   the useful information (one/neo/edifice2d...).
+ * Without this, two variables with the same name in two single-mode collections
+ * silently overwrite each other (this is the bug fixed here).
  */
 async function extractAll() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();

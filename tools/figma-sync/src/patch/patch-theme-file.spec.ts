@@ -103,7 +103,7 @@ describe('patchThemeFile', () => {
     );
     expect(result.unplaced).toHaveLength(1);
     expect(result.text).toContain(
-      '// Nouveaux tokens Figma sans section correspondante -- a integrer manuellement :',
+      '// New Figma tokens without a matching section -- to be integrated manually:',
     );
     expect(result.text).toContain('//   spacing.gutter.default: $spacer-24');
   });

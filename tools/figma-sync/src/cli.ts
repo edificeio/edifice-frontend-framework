@@ -1,26 +1,26 @@
 #!/usr/bin/env node
-// Synchronise les exports du plugin "Edifice Token Extractor" vers les 7 fichiers
-// SCSS de packages/bootstrap/src/themes/configs/.
+// Syncs the exports of the "Edifice Token Extractor" plugin to the 7 SCSS
+// files of packages/bootstrap/src/themes/configs/.
 //
-// Pipeline, dans cet ordre (aucune ecriture reelle avant l'etape 3) :
-//   1. Patch des 7 fichiers en memoire (voir orchestrate.ts).
-//   2. Verification d'equilibre des parentheses sur chaque texte patche.
-//   3. Compilation Sass reelle (le vrai binaire `sass` du projet) dans une copie
-//      temporaire de packages/bootstrap/src -- abandon sans rien ecrire si ca echoue.
-//   4. Ecriture des 7 vrais fichiers.
-//   5. prettier --write puis stylelint --fix (les vrais outils du projet) sur les
-//      fichiers modifies.
-//   6. Re-verification Sass finale, par securite, apres le formatage.
-//   7. Ecriture du rapport (report.json), avec la liste des noms devines a relire.
+// Pipeline, in this order (no real write before step 3):
+//   1. Patch the 7 files in memory (see orchestrate.ts).
+//   2. Check parenthesis balance on each patched text.
+//   3. Real Sass compilation (the project's actual `sass` binary) in a temporary
+//      copy of packages/bootstrap/src -- abort without writing anything if it fails.
+//   4. Write the 7 real files.
+//   5. prettier --write then stylelint --fix (the project's actual tools) on the
+//      modified files.
+//   6. Final Sass re-check, as a safety net, after formatting.
+//   7. Write the report (report.json), with the list of guessed names to review.
 //
-// Usage :
+// Usage:
 //   tsx src/cli.ts --primitives <primitives.json> --semantic <semantic.json> \
-//     [--repo-root <chemin, defaut: cwd>] [--report <chemin, defaut: report.json>] \
+//     [--repo-root <path, default: cwd>] [--report <path, default: report.json>] \
 //     [--skip-compile-check] [--skip-format]
 //
-// --skip-compile-check et --skip-format existent uniquement pour experimenter en
-// dehors du vrai repo (ex: sandbox sans `sass`/`prettier`/`stylelint` installes) --
-// ne jamais les utiliser sur /Volumes/Work/edifice-frontend-framework.
+// --skip-compile-check and --skip-format exist only for experimenting
+// outside the real repo (e.g. sandbox without `sass`/`prettier`/`stylelint` installed) --
+// never use them on /Volumes/Work/edifice-frontend-framework.
 
 import {
   cpSync,
@@ -90,10 +90,10 @@ function readConfigTexts(configsDir: string): Record<string, string> {
 }
 
 /**
- * Compile le SCSS patche dans une copie temporaire de packages/bootstrap/src
- * (node_modules symlinke, jamais copie) : c'est la seule verification qui
- * confirme que le patch produit du SCSS reellement valide, avant d'ecrire quoi
- * que ce soit dans le vrai repo.
+ * Compiles the patched SCSS in a temporary copy of packages/bootstrap/src
+ * (node_modules symlinked, never copied): this is the only check that
+ * confirms the patch produces truly valid SCSS, before writing anything
+ * to the real repo.
  */
 function runTempCompileCheck(
   bootstrapDir: string,
@@ -125,8 +125,8 @@ function runTempCompileCheck(
     );
     return runSassCheck(tempNodeModules, args);
   } finally {
-    // Best-effort : un echec de nettoyage du dossier temporaire ne doit jamais
-    // masquer le resultat (ok/echec) de la compilation qui vient de tourner.
+    // Best-effort: a failure to clean up the temporary folder must never
+    // hide the result (ok/failure) of the compilation that just ran.
     try {
       rmSync(tempDir, { recursive: true, force: true });
     } catch (cleanupErr) {
@@ -169,7 +169,7 @@ async function main(): Promise<void> {
     );
   }
 
-  // 1. Equilibre des parentheses, en memoire, avant toute ecriture.
+  // 1. Parenthesis balance, in memory, before any write.
   const balanceIssues: string[] = [];
   for (const fileName of ALL_CONFIG_FILE_NAMES) {
     const balance = checkBalancedParens(patchedText[fileName]);
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  // 2. Compilation Sass reelle, dans une copie temporaire.
+  // 2. Real Sass compilation, in a temporary copy.
   if (opts.skipCompileCheck) {
     console.warn(
       '--skip-compile-check : verification Sass ignoree (ne jamais utiliser sur le vrai repo).',
@@ -203,7 +203,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // 3. Ecriture des vrais fichiers, seulement maintenant que tout est valide.
+  // 3. Write the real files, only now that everything is valid.
   const writtenPaths: string[] = [];
   for (const fileName of ALL_CONFIG_FILE_NAMES) {
     const filePath = path.join(configsDir, fileName);
@@ -211,7 +211,7 @@ async function main(): Promise<void> {
     writtenPaths.push(filePath);
   }
 
-  // 4. Formatters/linters reels du projet sur les fichiers modifies.
+  // 4. The project's real formatters/linters on the modified files.
   if (opts.skipFormat) {
     console.warn(
       '--skip-format : prettier/stylelint non executes (ne jamais utiliser sur le vrai repo).',
@@ -232,7 +232,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // 5. Re-verification Sass finale, par securite, apres le formatage.
+  // 5. Final Sass re-check, as a safety net, after formatting.
   if (!opts.skipCompileCheck) {
     const outFile = path.join(bootstrapDir, '.figma-sync-check.css');
     const args = buildSassArgs(
@@ -241,16 +241,16 @@ async function main(): Promise<void> {
       outFile,
     );
     const finalCheck = runSassCheck(bootstrapNodeModules, args);
-    // `sass` ecrit aussi un ".map" a cote du CSS (comportement par defaut, pas
-    // desactive ici pour rester sur exactement les memes args que le vrai
-    // build) : les deux doivent disparaitre, pas seulement le ".css".
+    // `sass` also writes a ".map" next to the CSS (default behavior, not
+    // disabled here to stay on exactly the same args as the real
+    // build): both must disappear, not only the ".css".
     for (const f of [outFile, `${outFile}.map`]) {
       try {
         rmSync(f, { force: true });
       } catch (cleanupErr) {
-        // Un fichier temporaire non supprime n'est pas une raison de perdre le
-        // rapport (le vrai travail -- patch, validation, ecriture, formatage --
-        // est deja fait a ce stade) : on signale et on continue.
+        // A temporary file that was not deleted is no reason to lose the
+        // report (the real work -- patch, validation, write, formatting --
+        // is already done at this point): we warn and carry on.
         console.warn(
           `Impossible de supprimer le fichier temporaire "${f}" (sans consequence) :`,
           cleanupErr,

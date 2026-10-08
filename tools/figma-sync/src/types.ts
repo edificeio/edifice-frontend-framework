@@ -1,4 +1,4 @@
-/** Une entree brute de l'export du plugin "Edifice Token Extractor". */
+/** A raw entry of the "Edifice Token Extractor" plugin export. */
 export interface FigmaEntry {
   value?: string | number;
   alias?: string;
@@ -8,7 +8,7 @@ export interface FigmaEntry {
 
 export type FigmaTokenMap = Record<string, FigmaEntry>;
 
-/** Les trois collections Figma reelles exposees par l'export des primitives. */
+/** The three real Figma collections exposed by the primitives export. */
 export interface PrimitivesExportData {
   primitives: FigmaTokenMap;
   primitivesLegacy: FigmaTokenMap;
@@ -21,7 +21,7 @@ export interface PrimitivesExport {
   data: PrimitivesExportData;
 }
 
-/** Un mode (theme) de l'export semantique -> ses tokens. */
+/** A mode (theme) of the semantic export -> its tokens. */
 export type SemanticExportData = Record<string, FigmaTokenMap>;
 
 export interface SemanticExport {
@@ -34,9 +34,9 @@ export type PrimitiveBucket = 'primitives' | 'primitivesLegacy' | 'text';
 export type PrimitiveFile = 'primitives' | 'primitives-legacy';
 
 /**
- * "certain" = trouve via une table d'exceptions explicite (nom de variable
- * connu et verifie contre le repo). "guessed" = kebab-case generique, jamais
- * verifie contre une convention existante -- a relire en priorite.
+ * "certain" = found via an explicit exceptions table (variable name
+ * known and verified against the repo). "guessed" = generic kebab-case, never
+ * verified against an existing convention -- to review first.
  */
 export type NamingConfidence = 'certain' | 'guessed';
 

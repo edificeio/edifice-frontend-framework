@@ -8,12 +8,12 @@ export interface FormatToolResult {
 }
 
 /**
- * Applique les vrais formatters/linters du projet sur les fichiers modifies --
- * prettier (racine du repo) puis stylelint --fix (scope a packages/bootstrap),
- * exactement les outils que `pnpm format:write` / `pnpm --filter bootstrap fix`
- * lanceraient. Jamais une reimplementation maison des regles de style : le but
- * de ce point est justement que le SCSS genere respecte les memes regles que
- * le reste du repo.
+ * Applies the project's real formatters/linters to the modified files --
+ * prettier (repo root) then stylelint --fix (scoped to packages/bootstrap),
+ * exactly the tools that `pnpm format:write` / `pnpm --filter bootstrap fix`
+ * would run. Never a home-made reimplementation of the style rules: the goal
+ * of this step is precisely that the generated SCSS follows the same rules as
+ * the rest of the repo.
  */
 export function runFormatTools(
   repoRootNodeModules: string,

@@ -172,7 +172,7 @@ describe('resolveSemanticToken', () => {
         ctx,
         0,
       );
-      // "danger/200" en primitivesLegacy matche needsLegacyPrefix -> "legacy-danger-200".
+      // "danger/200" in primitivesLegacy matches needsLegacyPrefix -> "legacy-danger-200".
       expect(value).toBe('legacy.$legacy-danger-200');
     }
   });

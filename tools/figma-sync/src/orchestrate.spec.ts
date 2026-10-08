@@ -5,7 +5,7 @@ import type { PrimitivesExportData, SemanticExportData } from './types.js';
 const primitivesData: PrimitivesExportData = {
   primitives: {
     'danger/200': { value: '#ffebeb' },
-    // Pas d'override -> nom devine (confidence "guessed").
+    // No override -> guessed name (confidence "guessed").
     'weird/newThing': { value: '#123456' },
   },
   primitivesLegacy: {
@@ -20,7 +20,7 @@ const semanticData: SemanticExportData = {
       alias: 'danger/200',
       aliasCollection: 'primitives',
     },
-    // Hors one/neo et hors color/app/* -> doit generer un warning.
+    // Outside one/neo and outside color/app/* -> must generate a warning.
     'color/support/legacy200': {
       alias: 'danger/200',
       aliasCollection: 'primitivesLegacy',
@@ -32,7 +32,7 @@ const semanticData: SemanticExportData = {
       aliasCollection: 'primitivesLegacy',
     },
   },
-  // "one", "CRNA", "edifice1d" volontairement absents -> doivent finir dans skippedThemes.
+  // "one", "CRNA", "edifice1d" deliberately absent -> must end up in skippedThemes.
 };
 
 const BASE_FLAT = '$danger-200: #ffebeb;\n';
@@ -67,8 +67,8 @@ describe('buildPatchPlan', () => {
       semanticData,
       baseTexts(),
     );
-    // "primitives/danger/200" n'a pas d'override -> devine. "primitivesLegacy/danger/200"
-    // matche la regle verifiee "danger/*" -> prefixe legacy, donc "certain" (absent d'ici).
+    // "primitives/danger/200" has no override -> guessed. "primitivesLegacy/danger/200"
+    // matches the verified "danger/*" rule -> legacy prefix, hence "certain" (absent here).
     expect(report.guessedNames).toEqual([
       {
         bucket: 'primitives',

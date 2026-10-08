@@ -1,8 +1,8 @@
 /**
- * Normalise une couleur hex pour comparaison uniquement (#fff == #ffffff) : le
- * repo utilise parfois la forme courte (#000, #fff), Figma exporte toujours en
- * 6 chiffres. Sans ca, ces deux lignes seraient "changees" a chaque run alors
- * que la couleur est identique.
+ * Normalizes a hex color for comparison only (#fff == #ffffff): the
+ * repo sometimes uses the short form (#000, #fff), Figma always exports
+ * 6 digits. Without this, these two lines would be "changed" on every run even though
+ * the color is identical.
  */
 export function normalizeForCompare(value: string): string {
   const shortHex = value.match(/^#([0-9a-fA-F]{3})$/);

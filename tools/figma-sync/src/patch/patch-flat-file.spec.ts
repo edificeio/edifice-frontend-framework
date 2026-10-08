@@ -39,7 +39,7 @@ describe('patchFlatFile', () => {
       entry('spacer-128', '12.8rem'),
     ]);
     expect(result.added).toEqual([entry('spacer-128', '12.8rem')]);
-    expect(result.text).toContain('// Ajoute automatiquement depuis Figma le');
+    expect(result.text).toContain('// Added automatically from Figma on');
     expect(result.text).toContain('$spacer-128: 12.8rem;');
   });
 

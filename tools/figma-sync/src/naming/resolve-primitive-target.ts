@@ -4,16 +4,16 @@ import type {
   PrimitiveTarget,
 } from '../types.js';
 
-/** Bucket "text" (collection Figma "text") -> toujours _primitives.scss. */
+/** Bucket "text" (Figma collection "text") -> always _primitives.scss. */
 export const TEXT_OVERRIDES = new Map<string, string>([
   ['color/default', 'text-color-default'],
   ['color/subText', 'text-color-subtext'],
 ]);
 
-/** Bucket "primitives" -> toujours _primitives.scss. Exceptions au kebab-case generique. */
+/** "primitives" bucket -> always _primitives.scss. Exceptions to the generic kebab-case. */
 export const PRIMITIVES_OVERRIDES = new Map<string, string>([
   ['font/family/playpenSans', 'font-family-playpensans'],
-  // Le repo garde le "B" majuscule ici (pas de regle generale, juste cette variable).
+  // The repo keeps the uppercase "B" here (no general rule, just this variable).
   ['accessible/deepBlue', 'accessible-deepBlue'],
   ...(['xl', 'l', 'm', 's', 'xs', '2xs', '3xs'] as const).map(
     (size) => [`font/lineHeight/${size}`, `font-lineheight-${size}`] as const,
@@ -26,18 +26,18 @@ interface LegacyOverride {
 }
 
 /**
- * Bucket "primitivesLegacy" -> toujours _primitives-legacy.scss.
+ * Bucket "primitivesLegacy" -> always _primitives-legacy.scss.
  * Deux sous-cas :
- * - overrides explicites (nom ou valeur ne suivent aucune regle generique) ;
- * - le prefixe "legacy-" pour danger/success/warning/info/* et les familles de police,
- *   car _primitives-legacy.scss porte deja ces variables ainsi (verifie dans le repo) ;
- *   neo/*, one/* et nabook restent nus (pas de prefixe), egalement verifie dans le repo.
+ * - explicit overrides (name or value follow no generic rule);
+ * - the "legacy-" prefix for danger/success/warning/info/* and the font families,
+ *   because _primitives-legacy.scss already carries these variables that way (verified in the repo);
+ *   neo/*, one/* and nabook stay bare (no prefix), also verified in the repo.
  */
 export const LEGACY_OVERRIDES = new Map<string, LegacyOverride>([
   ['nabook/700', { scssVar: 'nabook' }],
-  // "KG June Bug" est le libelle d'affichage Figma, pas le nom CSS reel : le
-  // @font-face (tokens/_type.scss) declare `font-family: KGJune`, charge depuis
-  // KGJuneBug.ttf. On fige le nom ET la valeur, Figma ne doit jamais ecraser ca.
+  // "KG June Bug" is the Figma display label, not the real CSS name: the
+  // @font-face (tokens/_type.scss) declares `font-family: KGJune`, loaded from
+  // KGJuneBug.ttf. We pin both the name AND the value; Figma must never overwrite this.
   [
     'font/family/kgJuneBug',
     { scssVar: 'legacy-font-family-kgjunebug', pinnedValue: "'KGJune'" },
@@ -60,10 +60,10 @@ export function kebabCase(figmaName: string): string {
 }
 
 /**
- * Resout une entree de primitive vers son fichier et son nom de variable SCSS cibles.
- * `confidence: 'certain'` = trouve via une table d'exceptions explicite (verifiee
- * contre le repo) ; `'guessed'` = kebab-case generique, jamais confronte a une
- * convention existante -- a signaler pour relecture dans le rapport.
+ * Resolves a primitive entry to its target file and SCSS variable name.
+ * `confidence: 'certain'` = found via an explicit exceptions table (verified
+ * against the repo); `'guessed'` = generic kebab-case, never checked against an
+ * existing convention -- to be flagged for review in the report.
  */
 export function resolvePrimitiveTarget(
   bucket: PrimitiveBucket,
@@ -95,8 +95,8 @@ export function resolvePrimitiveTarget(
       return { file: 'primitives-legacy', confidence: 'certain', ...override };
     }
     if (needsLegacyPrefix(figmaName)) {
-      // Regle explicite verifiee contre le repo (danger/success/warning/info/*,
-      // familles de police) : "certain", pas un pari.
+      // Explicit rule verified against the repo (danger/success/warning/info/*,
+      // font families): "certain", not a guess.
       return {
         file: 'primitives-legacy',
         scssVar: `legacy-${kebabCase(figmaName)}`,
@@ -104,15 +104,15 @@ export function resolvePrimitiveTarget(
       };
     }
     if (figmaName.startsWith('neo/') || figmaName.startsWith('one/')) {
-      // Egalement verifie : ces namespaces sont toujours en kebab-case nu, sans prefixe.
+      // Also verified: these namespaces are always bare kebab-case, without prefix.
       return {
         file: 'primitives-legacy',
         scssVar: kebabCase(figmaName),
         confidence: 'certain',
       };
     }
-    // Categorie jamais rencontree dans ce bucket : aucune regle verifiee ne
-    // s'applique, le kebab-case generique est un pari a relire.
+    // Category never seen in this bucket: no verified rule
+    // applies, generic kebab-case is a guess to review.
     return {
       file: 'primitives-legacy',
       scssVar: kebabCase(figmaName),

@@ -3,7 +3,7 @@ import { normalizeForCompare } from './normalize-for-compare.js';
 
 const VAR_LINE_RE = /^(\$([a-zA-Z0-9-]+):\s*)(.+?)(;.*)$/;
 
-/** Patch des fichiers plats (_primitives.scss / _primitives-legacy.scss). */
+/** Patch of the flat files (_primitives.scss / _primitives-legacy.scss). */
 export function patchFlatFile(
   existingText: string,
   entriesForThisFile: DictionaryEntry[],
@@ -18,7 +18,7 @@ export function patchFlatFile(
     if (!m) return line;
     const [, prefix, varName, currentValue, suffix] = m;
     const entry = byScssVar.get(varName);
-    if (!entry) return line; // pas dans l'export Figma -> on laisse tel quel, signale ailleurs
+    if (!entry) return line; // not in the Figma export -> leave as is, flagged elsewhere
     matched.add(varName);
     const current = currentValue.trim();
     const next = entry.resolvedValue.trim();
@@ -32,14 +32,14 @@ export function patchFlatFile(
     if (patchedLines[patchedLines.length - 1] === '') patchedLines.pop();
     patchedLines.push(
       '',
-      `// Ajoute automatiquement depuis Figma le ${new Date().toISOString().slice(0, 10)}`,
+      `// Added automatically from Figma on ${new Date().toISOString().slice(0, 10)}`,
     );
     for (const e of newEntries) {
       patchedLines.push(`$${e.scssVar}: ${e.resolvedValue};`);
     }
   }
 
-  // Variables du fichier qui ne sont plus dans Figma : on les repere sans y toucher.
+  // Variables of the file that are no longer in Figma: we spot them without touching them.
   const removed: string[] = [];
   for (const line of lines) {
     const m = line.match(VAR_LINE_RE);

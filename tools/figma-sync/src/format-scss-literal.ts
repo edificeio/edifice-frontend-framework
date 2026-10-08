@@ -1,6 +1,6 @@
-// Figma stocke ces familles en pixels ; le repo les exprime en rem (base de
-// police 62.5% => 1rem = 10px, d'ou la division par 10). font/weight/* et les
-// autres nombres bruts (colonnes, largeurs d'ecran...) ne sont PAS concernes.
+// Figma stores these families in pixels; the repo expresses them in rem (font
+// base 62.5% => 1rem = 10px, hence the division by 10). font/weight/* and other
+// raw numbers (columns, screen widths...) are NOT concerned.
 export const REM_SCALE_PREFIXES = [
   'numbers/',
   'font/size/',
@@ -12,7 +12,7 @@ export function formatScssLiteral(
   value: string | number,
 ): string {
   if (typeof value === 'number') {
-    if (value === 0) return '0'; // le repo ecrit "0", jamais "0rem"
+    if (value === 0) return '0'; // the repo writes "0", never "0rem"
     if (REM_SCALE_PREFIXES.some((p) => figmaName.startsWith(p))) {
       const rem = Number((value / 10).toFixed(4));
       return `${rem}rem`;

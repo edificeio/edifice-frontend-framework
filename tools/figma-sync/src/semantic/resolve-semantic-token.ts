@@ -14,22 +14,22 @@ export const THEME_MODE_TO_FILE: Record<string, string> = {
   edifice2d: '_edifice2d.scss',
 };
 
-// Themes ou l'usage de la collection "primitivesLegacy" est legitime pour TOUS
-// les tokens (pas seulement danger/success/warning/info) : one et neo sont
-// litteralement construits sur cette collection. Ce sont aussi les seuls themes
-// qui importent primitives-legacy en global (`@use 'primitives-legacy' as *;`) --
-// tous les autres l'importent namespace (`@use 'primitives-legacy' as legacy;`),
-// donc doivent prefixer chaque reference avec "legacy." (cf. buildLegacyVarReference).
+// Themes where using the "primitivesLegacy" collection is legitimate for ALL
+// tokens (not only danger/success/warning/info): one and neo are
+// literally built on this collection. They are also the only themes
+// that import primitives-legacy globally (`@use 'primitives-legacy' as *;`) --
+// all the others import it namespaced (`@use 'primitives-legacy' as legacy;`),
+// so they must prefix every reference with "legacy." (see buildLegacyVarReference).
 export const THEMES_ALLOWED_LEGACY = new Set(['one', 'neo']);
 
-/** Namespace utilise par `@use 'primitives-legacy' as legacy;` dans les themes
- *  qui n'importent pas primitives-legacy en global (tous sauf one/neo). */
+/** Namespace used by `@use 'primitives-legacy' as legacy;` in the themes
+ *  that do not import primitives-legacy globally (all except one/neo). */
 export const LEGACY_NAMESPACE = 'legacy';
 
 /**
- * Construit la reference SCSS vers une primitive de la collection
- * "primitivesLegacy", selon que le theme cible l'importe en global (one/neo,
- * `as *` -> reference nue `$var`) ou namespace (les autres, `as legacy` ->
+ * Builds the SCSS reference to a primitive of the
+ * "primitivesLegacy" collection, depending on whether the target theme imports it globally (one/neo,
+ * `as *` -> bare `$var` reference) or namespaced (the others, `as legacy` ->
  * `legacy.$var`).
  */
 export function buildLegacyVarReference(mode: string, scssVar: string): string {
@@ -38,12 +38,12 @@ export function buildLegacyVarReference(mode: string, scssVar: string): string {
     : `${LEGACY_NAMESPACE}.$${scssVar}`;
 }
 
-// Tokens qui utilisent primitivesLegacy par conception pour TOUS les themes
-// (couleurs d'applications, reutilisent volontairement la palette one/neo).
-// Confirme par la donnee : color/app/* est en primitivesLegacy pour les 5 themes.
+// Tokens that use primitivesLegacy by design for ALL themes
+// (application colors, deliberately reuse the one/neo palette).
+// Confirmed by the data: color/app/* is in primitivesLegacy for all 5 themes.
 export const LEGACY_ALLOWED_PREFIXES = ['color/app/'];
 
-/** Segments non pertinents pour les 7 fichiers de config (bruit de l'export). */
+/** Segments not relevant to the 7 config files (export noise). */
 export function isIgnoredSemanticKey(figmaName: string): boolean {
   return (
     figmaName === 'theme' ||
@@ -53,8 +53,8 @@ export function isIgnoredSemanticKey(figmaName: string): boolean {
 }
 
 export function figmaPathToDotPath(figmaName: string): string {
-  // Le repo n'utilise jamais de camelCase dans les cles de map (ex: "lineheight",
-  // pas "lineHeight") : on aligne systematiquement en minuscules.
+  // The repo never uses camelCase in map keys (e.g. "lineheight",
+  // not "lineHeight"): we systematically align to lowercase.
   return figmaName
     .split('/')
     .map((seg) => seg.toLowerCase())
@@ -68,14 +68,14 @@ interface ResolveContext {
 }
 
 /**
- * Suit la chaine d'alias d'un token semantique jusqu'a une primitive, ou jusqu'a
- * une valeur litterale declaree directement dans le theme. Peut traverser :
- * - aliasCollection "theme" : la cible est un autre token du meme mode ;
- * - aliasCollection "primitives" / "primitivesLegacy" / "text" : la cible est
- *   une primitive, cherchee dans le dictionnaire namespace par collection.
+ * Follows the alias chain of a semantic token down to a primitive, or down to
+ * a literal value declared directly in the theme. Can traverse:
+ * - aliasCollection "theme": the target is another token of the same mode;
+ * - aliasCollection "primitives" / "primitivesLegacy" / "text": the target is
+ *   a primitive, looked up in the dictionary namespaced by collection.
  *
- * ctx accumule les warnings non bloquants (usage de primitivesLegacy en dehors
- * de one/neo, hors exceptions connues) dans ctx.warnings.
+ * ctx accumulates non-blocking warnings (use of primitivesLegacy outside
+ * one/neo, apart from known exceptions) in ctx.warnings.
  */
 export function resolveSemanticToken(
   figmaName: string,

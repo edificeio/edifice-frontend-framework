@@ -1,9 +1,9 @@
 /**
- * Construit les arguments de compilation Sass a l'identique du script `compile`
- * de packages/bootstrap/package.json (`sass --load-path=node_modules/ --style=compressed
- * --quiet-deps --silence-deprecation=import src/index.scss dist/index.css`), pour que
- * la verification utilise exactement la meme commande que le vrai build, jamais
- * une variante inventee.
+ * Builds the Sass compilation arguments identically to the `compile` script
+ * of packages/bootstrap/package.json (`sass --load-path=node_modules/ --style=compressed
+ * --quiet-deps --silence-deprecation=import src/index.scss dist/index.css`), so that
+ * the check uses exactly the same command as the real build, never
+ * an invented variant.
  */
 export function buildSassArgs(
   bootstrapNodeModules: string,

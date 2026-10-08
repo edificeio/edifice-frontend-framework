@@ -5,11 +5,11 @@ export interface BalanceResult {
 }
 
 /**
- * Verification rapide, en memoire, avant meme d'ecrire un fichier sur disque :
- * un patch qui desequilibre les parentheses d'une map SCSS est forcement un bug
- * du script, jamais une intention. Ne remplace pas une vraie compilation Sass
- * (voir cli.ts, qui compile via `sass` dans une copie temporaire avant d'ecrire
- * les vrais fichiers), mais coute quasiment rien et attrape l'erreur au plus tot.
+ * Quick in-memory check, before even writing a file to disk:
+ * a patch that unbalances the parentheses of an SCSS map is necessarily a bug
+ * in the script, never an intention. Does not replace a real Sass compilation
+ * (see cli.ts, which compiles via `sass` in a temporary copy before writing
+ * the real files), but costs almost nothing and catches the error as early as possible.
  */
 export function checkBalancedParens(text: string): BalanceResult {
   const openCount = (text.match(/\(/g) ?? []).length;

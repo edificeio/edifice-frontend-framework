@@ -17,11 +17,11 @@ const LEAF_RE = /^(\s*)([a-zA-Z0-9%]+):\s*(.+?)(,?)$/;
 const CLOSE_RE = /^(\s*)\),?$/;
 
 /**
- * Patch des fichiers de theme (maps SCSS imbriquees). Met a jour les feuilles
- * existantes en place, et cree recursivement les sous-maps manquantes pour les
- * tokens entierement nouveaux (ex: color.app.*) -- positionnees parmi leurs
- * soeurs deja presentes en respectant l'ordre d'apparition dans le JSON Figma
- * (jamais un ordre alphabetique, jamais "a la fin" par defaut).
+ * Patches the theme files (nested SCSS maps). Updates the existing leaves
+ * in place, and recursively creates the missing sub-maps for the
+ * entirely new tokens (e.g. color.app.*) -- positioned among their
+ * already-present siblings while respecting the order of appearance in the Figma JSON
+ * (never alphabetical order, never "at the end" by default).
  */
 export function patchThemeFile(
   existingText: string,
@@ -32,16 +32,16 @@ export function patchThemeFile(
   const matched = new Set<string>();
   const changes: ThemeFilePatchResult['changes'] = [];
 
-  // Index Figma (ordre d'apparition dans le JSON, preserve par Object.keys cote
-  // main()) : seule reference utilisee pour positionner une nouvelle section
-  // par rapport a ses futures soeurs -- jamais "a la fin" par defaut.
+  // Figma index (order of appearance in the JSON, preserved by Object.keys on the
+  // main() side): the only reference used to position a new section
+  // relative to its future siblings -- never "at the end" by default.
   const figmaIndex = new Map(dotPathEntries.map((e, i) => [e.dotPath, i]));
 
-  // Pile des cles ouvertes courantes, avec la ligne ou chaque map "key: (" a ete ouverte.
+  // Stack of the currently open keys, with the line where each "key: (" map was opened.
   const stack: string[] = [];
-  // pathString -> { openLine, closeLine, indent } pour savoir ou inserer les nouvelles cles.
+  // pathString -> { openLine, closeLine, indent } to know where to insert the new keys.
   const containers = new Map<string, Container>();
-  // dotPath (matched uniquement) -> ligne ou se trouve la feuille dans le fichier.
+  // dotPath (matched only) -> line where the leaf is located in the file.
   const leafLines = new Map<string, number>();
 
   const patchedLines = lines.map((line, idx) => {
@@ -77,9 +77,9 @@ export function patchThemeFile(
     return line;
   });
 
-  /** Index Figma minimal parmi les descendants deja presents d'un conteneur -- sert
-   *  a comparer une section existante a une nouvelle section pour savoir laquelle
-   *  vient en premier dans l'ordre Figma. */
+  /** Minimal Figma index among the already-present descendants of a container -- used
+   *  to compare an existing section with a new section to know which one
+   *  comes first in the Figma order. */
   function minFigmaIndexUnder(containerPath: string): number {
     let min = Infinity;
     const prefix = `${containerPath}.`;
@@ -93,10 +93,10 @@ export function patchThemeFile(
 
   const newEntries = dotPathEntries.filter((e) => !matched.has(e.dotPath));
 
-  // Regroupe chaque nouvelle entree sous le conteneur existant le plus profond
-  // qu'on puisse trouver en remontant son chemin (ex: "color.app.communicate"
-  // -> ancre "color", segments restants ["app", "communicate"] : "app" doit
-  // etre cree, "communicate" est sa feuille a l'interieur).
+  // Groups each new entry under the deepest existing container
+  // that can be found by walking up its path (e.g. "color.app.communicate"
+  // -> anchor "color", remaining segments ["app", "communicate"]: "app" must
+  // be created, "communicate" is its leaf inside).
   const byAnchor = new Map<string, NewEntry[]>();
   const unplaced: ThemeFilePatchResult['unplaced'] = [];
   for (const e of newEntries) {
@@ -110,8 +110,8 @@ export function patchThemeFile(
     }
     const anchorPath = segments.slice(0, anchorLen).join('.');
     if (!containers.has(anchorPath)) {
-      // Meme le conteneur racine attendu (color/font/radius) est absent du fichier :
-      // on ne l'invente pas, on le signale.
+      // Even the expected root container (color/font/radius) is missing from the file:
+      // we don't invent it, we flag it.
       unplaced.push({
         parent: segments.slice(0, -1).join('.'),
         leaves: [{ leaf: segments.at(-1)!, value: e.value }],
@@ -126,15 +126,15 @@ export function patchThemeFile(
     });
   }
 
-  /** Construit recursivement les lignes d'un bloc "name: ( ... ),", en respectant
-   *  l'ordre Figma d'apparition des feuilles/sous-blocs (pas d'ordre alphabetique). */
+  /** Recursively builds the lines of a "name: ( ... )," block, respecting
+   *  the Figma order of appearance of the leaves/sub-blocks (no alphabetical order). */
   function buildBlockLines(
     name: string,
     entries: NewEntry[],
     indent: string,
   ): string[] {
     const childIndent = `${indent}  `;
-    const nested = new Map<string, NewEntry[]>(); // premier segment -> sous-entrees, ordre = 1ere apparition
+    const nested = new Map<string, NewEntry[]>(); // first segment -> sub-entries, order = first appearance
     for (const e of entries) {
       if (e.segments.length === 1) continue;
       const key = e.segments[0];
@@ -158,15 +158,15 @@ export function patchThemeFile(
     return outLines;
   }
 
-  // Pour chaque ancre, decoupe les nouvelles entrees en sections de premier niveau
-  // (ex: "app", "background") et les positionne parmi les enfants deja presents de
-  // l'ancre en respectant l'ordre Figma (avant le premier enfant existant dont
-  // l'index Figma est superieur ; a la fin si aucun n'en a un superieur).
-  const insertions = new Map<number, string[]>(); // lineIndex -> lignes a inserer avant cette ligne
+  // For each anchor, splits the new entries into top-level sections
+  // (e.g. "app", "background") and positions them among the children already present in
+  // the anchor while respecting the Figma order (before the first existing child whose
+  // Figma index is greater; at the end if none has a greater one).
+  const insertions = new Map<number, string[]>(); // lineIndex -> lines to insert before this line
 
   for (const [anchorPath, entries] of byAnchor) {
     const anchor = containers.get(anchorPath)!;
-    const groups = new Map<string, NewEntry[]>(); // premier segment -> entries, ordre = 1ere apparition Figma
+    const groups = new Map<string, NewEntry[]>(); // first segment -> entries, order = first appearance in Figma
     for (const e of entries) {
       const key = e.segments[0];
       if (!groups.has(key)) groups.set(key, []);
@@ -202,8 +202,8 @@ export function patchThemeFile(
       const groupFigmaIdx = Math.min(
         ...groupEntries.map((e) => figmaIndex.get(e.dotPath)!),
       );
-      // Un groupe dont l'unique entree a deja atteint la feuille (segments.length === 1)
-      // est un simple "key: value," direct sous l'ancre -- pas une nouvelle sous-map.
+      // A group whose only entry has already reached the leaf (segments.length === 1)
+      // is a plain direct "key: value," under the anchor -- not a new sub-map.
       const blockLines =
         groupEntries.length === 1 && groupEntries[0].segments.length === 1
           ? [`${childIndent}${groupKey}: ${groupEntries[0].value},`]
@@ -234,11 +234,11 @@ export function patchThemeFile(
 
   if (unplaced.length > 0) {
     while (finalLines[finalLines.length - 1] === '') finalLines.pop();
-    // Meme le conteneur racine (color/font/radius) est absent : cas limite non gere
-    // automatiquement, signale en commentaire pour une insertion manuelle.
+    // Even the root container (color/font/radius) is missing: edge case not handled
+    // automatically, flagged in a comment for manual insertion.
     finalLines.push(
       '',
-      '// Nouveaux tokens Figma sans section correspondante -- a integrer manuellement :',
+      '// New Figma tokens without a matching section -- to be integrated manually:',
     );
     for (const { parent, leaves } of unplaced) {
       for (const l of leaves) {

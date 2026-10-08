@@ -7,11 +7,11 @@ export interface SassCheckResult {
 }
 
 /**
- * Lance le vrai binaire `sass` installe dans le node_modules du package
- * bootstrap (jamais un binaire global ni une reimplementation maison), avec
- * les arguments produits par `buildSassArgs`. C'est la seule verification qui
- * confirme que le SCSS patche compile reellement -- le controle de parentheses
- * (`checkBalancedParens`) est une aide rapide en amont, pas un substitut.
+ * Runs the real `sass` binary installed in the node_modules of the
+ * bootstrap package (never a global binary nor a home-made reimplementation), with
+ * the arguments produced by `buildSassArgs`. It is the only check that
+ * confirms the patched SCSS actually compiles -- the parenthesis check
+ * (`checkBalancedParens`) is a quick upstream aid, not a substitute.
  */
 export function runSassCheck(
   bootstrapNodeModules: string,
