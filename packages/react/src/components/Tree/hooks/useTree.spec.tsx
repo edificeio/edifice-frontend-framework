@@ -223,7 +223,9 @@ describe('useTree', () => {
       const { result, rerender } = renderHook(
         ({ externalSelectedNodeId }: { externalSelectedNodeId?: string }) =>
           useTree({ data, externalSelectedNodeId }),
-        { initialProps: { externalSelectedNodeId: 'a1' } },
+        {
+          initialProps: { externalSelectedNodeId: 'a1' as string | undefined },
+        },
       );
 
       expect(result.current.selectedNodeId).toBe('a1');

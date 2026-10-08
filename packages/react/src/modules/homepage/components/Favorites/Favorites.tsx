@@ -17,10 +17,13 @@ export function Favorites({
 }: FavoritesProps) {
   const { t } = useTranslation();
 
-  const getAppName = (app: IWebApp): string =>
-    app.prefix && app.prefix.length > 1
-      ? t(app.prefix.substring(1))
-      : t(app.displayName) || '';
+  const getAppName = useCallback(
+    (app: IWebApp): string =>
+      app.prefix && app.prefix.length > 1
+        ? t(app.prefix.substring(1))
+        : t(app.displayName) || '',
+    [t],
+  );
 
   const visibleApps = apps.filter((app) => app.display !== false);
 

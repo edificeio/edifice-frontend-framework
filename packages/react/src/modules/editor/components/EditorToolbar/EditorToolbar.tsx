@@ -447,6 +447,7 @@ export const EditorToolbar = ({
   }, [
     alignmentOptions,
     canRecognizeSpeech,
+    cantooEditor,
     editor,
     editorState,
     listOptions,

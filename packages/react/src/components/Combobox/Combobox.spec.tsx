@@ -204,6 +204,8 @@ describe('Combobox', () => {
     it('renders the extra input-group content and the selected items', () => {
       render(
         <Combobox
+          isLoading={false}
+          noResult={false}
           value=""
           options={[]}
           onSearchInputChange={vi.fn()}
@@ -219,6 +221,8 @@ describe('Combobox', () => {
     it('drops the input border in the ghost variant', () => {
       render(
         <Combobox
+          isLoading={false}
+          noResult={false}
           value=""
           options={[]}
           onSearchInputChange={vi.fn()}
@@ -235,6 +239,8 @@ describe('Combobox', () => {
       const onSearchInputKeyUp = vi.fn();
       const { user } = render(
         <Combobox
+          isLoading={false}
+          noResult={false}
           value=""
           options={[]}
           onSearchInputChange={vi.fn()}
@@ -249,7 +255,13 @@ describe('Combobox', () => {
 
     it('survives a key release without a handler', async () => {
       const { user } = render(
-        <Combobox value="" options={[]} onSearchInputChange={vi.fn()} />,
+        <Combobox
+          value=""
+          options={[]}
+          isLoading={false}
+          noResult={false}
+          onSearchInputChange={vi.fn()}
+        />,
       );
 
       await user.type(getInput(), 'a');
@@ -270,6 +282,8 @@ describe('Combobox', () => {
     it('opens on click when a default option is offered', async () => {
       const { user } = render(
         <Combobox
+          isLoading={false}
+          noResult={false}
           value=""
           options={allOptions}
           hasDefault
