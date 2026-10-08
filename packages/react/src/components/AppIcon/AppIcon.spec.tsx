@@ -1,7 +1,7 @@
 import { IWebApp } from '@edifice.io/client';
 
 import { fireEvent, render, screen } from '~/setup';
-import AppIcon from './AppIcon';
+import AppIcon, { AppIconSize } from './AppIcon';
 
 const baseApp: IWebApp = {
   address: '/blog',
@@ -106,11 +106,24 @@ describe('AppIcon sizing and variants', () => {
     ['48', 'icon-md'],
     ['80', 'icon-lg'],
     ['160', 'icon-xl'],
-  ])('maps predefined size "%s" to its legacy padding class', (size, klass) => {
-    const { container } = render(<AppIcon app="blog" size={size} />);
-    const icon = container.querySelector('.app-icon');
+  ] as const)(
+    'maps predefined size "%s" to its legacy padding class',
+    (size, klass) => {
+      const { container } = render(<AppIcon app="blog" size={size} />);
+      const icon = container.querySelector('.app-icon');
 
-    expect(icon).toHaveClass(klass);
+      expect(icon).toHaveClass(klass);
+    },
+  );
+
+  it('only accepts numeric string sizes at the type level', () => {
+    // The component appends `px` to the size, so a value carrying a unit
+    // would render an invalid CSS length (e.g. `24pxpx`).
+    // @ts-expect-error units are not accepted
+    const withUnit: AppIconSize = '24px';
+    const numeric: AppIconSize = '16';
+
+    expect([withUnit, numeric]).toHaveLength(2);
   });
 
   it('does not add a legacy padding class for size "32"', () => {

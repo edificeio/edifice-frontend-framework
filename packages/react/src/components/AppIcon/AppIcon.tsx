@@ -15,14 +15,15 @@ import * as IconSprites from '../../modules/icons/components/apps';
 export type PredefinedAppIconSize = '24' | '32' | '40' | '48' | '80' | '160';
 
 /**
- * Icon size, in px. Accepts the predefined sizes (with autocompletion) as well
- * as any custom value (e.g. `'16'`, `'20'`). In `iconFit="ratio"` mode, custom
- * sizes get an automatically computed padding (no CSS override needed).
+ * Icon size, in px, as a numeric string. Accepts the predefined sizes as well
+ * as any custom numeric value (e.g. `'16'`, `'20'`). In `iconFit="ratio"`
+ * mode, custom sizes get an automatically computed padding (no CSS override
+ * needed).
  *
- * The `(string & {})` part keeps autocompletion for the predefined sizes while
- * still allowing any string value.
+ * Values with a unit (e.g. `'24px'`, `'2rem'`) are rejected: the component
+ * appends `px` itself.
  */
-export type AppIconSize = PredefinedAppIconSize | (string & {});
+export type AppIconSize = PredefinedAppIconSize | `${number}`;
 
 export interface BaseProps {
   /**
