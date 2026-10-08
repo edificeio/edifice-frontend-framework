@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import illuEmptyArticles from '@edifice.io/bootstrap/dist/images/homepage/illu-rss-empty-articles.svg';
 import illuError from '@edifice.io/bootstrap/dist/images/homepage/illu-rss-error.svg';
 import illuEmptyFeeds from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-useful-links.png';
-import { ButtonBeta, Image, TextSkeleton } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Image,
+  TextSkeleton,
+} from '../../../../components';
 import { useDate } from '../../../../hooks';
 import { IconEdit, IconPlus } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
@@ -120,7 +124,7 @@ export function Rss({
         <h3 className="rss-widget__title">{t('homepage.widget.rss.title')}</h3>
         {!isLoading &&
           (hasFeeds ? (
-            <ButtonBeta
+            <Button
               type="button"
               variant="ghost"
               color="tertiary"
@@ -130,7 +134,7 @@ export function Rss({
               onClick={onEditClick}
             />
           ) : (
-            <ButtonBeta
+            <Button
               type="button"
               variant="ghost"
               color="tertiary"
@@ -140,7 +144,7 @@ export function Rss({
               onClick={onEditClick}
             >
               {t('homepage.widget.rss.add')}
-            </ButtonBeta>
+            </Button>
           ))}
       </div>
       <HomeCard.Content>

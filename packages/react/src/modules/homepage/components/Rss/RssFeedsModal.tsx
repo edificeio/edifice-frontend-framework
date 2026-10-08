@@ -1,7 +1,12 @@
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFeeds from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-useful-links.png';
-import { ButtonBeta, Image, ModalBeta, Table } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Image,
+  ModalBeta,
+  Table,
+} from '../../../../components';
 import { useBreakpoint } from '../../../../hooks';
 import { IconClose, IconEdit, IconPlus } from '../../../icons/components';
 import { RssFeed } from './types';
@@ -60,7 +65,7 @@ export function RssFeedsModal({
               <Table.Tr className="rss-widget-table__action-row">
                 <Table.Td colSpan={columnCount}>
                   <div className="rss-widget-table__toolbar">
-                    <ButtonBeta
+                    <Button
                       type="button"
                       variant="outline"
                       leftIcon={<IconPlus />}
@@ -69,7 +74,7 @@ export function RssFeedsModal({
                       data-testid="rss-button-add-feed"
                     >
                       {t('homepage.widget.rss.modal.add')}
-                    </ButtonBeta>
+                    </Button>
                   </div>
                 </Table.Td>
               </Table.Tr>
@@ -106,7 +111,7 @@ export function RssFeedsModal({
                     </Table.Td>
                     <Table.Td className="rss-widget-table__actions">
                       <div className="rss-widget-table__actions-buttons">
-                        <ButtonBeta
+                        <Button
                           type="button"
                           variant="ghost"
                           color="tertiary"
@@ -121,7 +126,7 @@ export function RssFeedsModal({
                           data-testid={`rss-button-edit-${index}`}
                           onClick={() => onEditFeed(index)}
                         />
-                        <ButtonBeta
+                        <Button
                           type="button"
                           variant="ghost"
                           color="tertiary"

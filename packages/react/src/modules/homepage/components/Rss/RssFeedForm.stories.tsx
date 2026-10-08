@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ButtonBeta } from '../../../../components';
+import { ButtonBeta as Button } from '../../../../components';
 import useToggle from '../../../../hooks/useToggle/useToggle';
 import { RssFeedForm } from './RssFeedForm';
 
@@ -41,9 +41,9 @@ export const Interactive: Story = {
 
     return (
       <>
-        <ButtonBeta type="button" onClick={() => toggle(true)}>
+        <Button type="button" onClick={() => toggle(true)}>
           Ouvrir le formulaire
-        </ButtonBeta>
+        </Button>
         {isOpen && (
           <RssFeedForm
             {...args}
