@@ -10,6 +10,7 @@ jobs:
     outputs:
       react: ${{ steps.filter.outputs.react }}
       client: ${{ steps.filter.outputs.client }}
+      vite-plugins: ${{ steps.filter.outputs.vite-plugins }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -21,6 +22,9 @@ jobs:
               - '.github/workflows/tests.yml'
             client:
               - 'packages/client/**'
+              - '.github/workflows/tests.yml'
+            vite-plugins:
+              - 'packages/vite-plugins/**'
               - '.github/workflows/tests.yml'
 
   test-react:
@@ -74,3 +78,21 @@ jobs:
           name: coverage-client
           path: packages/client/coverage/
           retention-days: 14
+
+  test-vite-plugins:
+    name: '@edifice.io/vite-plugins — lint, format, test'
+    needs: changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: pnpm/action-setup@v4
+      - name: Install, lint, format, test
+        if: needs.changes.outputs.vite-plugins == 'true'
+        run: |
+          pnpm install
+          pnpm --filter @edifice.io/vite-plugins lint
+          pnpm --filter @edifice.io/vite-plugins format
+          pnpm --filter @edifice.io/vite-plugins test
