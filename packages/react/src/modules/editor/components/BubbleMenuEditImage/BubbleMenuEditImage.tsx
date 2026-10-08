@@ -51,7 +51,7 @@ const BubbleMenuEditImage = ({
         type: 'button',
         name: 'edit',
         props: {
-          'size': 'lg',
+          'size': 'sm',
           'color': 'secondary',
           'leftIcon': <IconWand />,
           'aria-label': t('tiptap.tooltip.bubblemenu.image.edit'),

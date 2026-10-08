@@ -124,6 +124,23 @@ describe('BubbleMenuEditImage', () => {
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
+  it('renders the edit button in its small size', () => {
+    insertAndSelectImage(editor, { size: 'medium', width: 350 });
+
+    render(
+      <BubbleMenuEditImage
+        editor={editor}
+        onEditImage={vi.fn()}
+        openEditImage={false}
+        editable={true}
+      />,
+    );
+
+    const editButton = screen.getByRole('button', { name: 'edit' });
+    expect(editButton).toHaveClass('btn-sm');
+    expect(editButton).not.toHaveClass('btn-lg');
+  });
+
   it('marks the medium size button as selected and leaves the others unselected', () => {
     insertAndSelectImage(editor, { size: 'medium', width: 350 });
 
