@@ -57,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "8.53.1",
     "@typescript-eslint/parser": "8.53.1",
     "@vitest/browser": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "@vitest/ui": "catalog:",
     "playwright": "1.59.1",
