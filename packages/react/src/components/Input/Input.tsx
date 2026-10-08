@@ -96,7 +96,6 @@ const Input = forwardRef(
       if (inputRef.current) {
         setCurrentLength(inputRef.current.value.length);
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const setRefs = (node: HTMLInputElement | null) => {
