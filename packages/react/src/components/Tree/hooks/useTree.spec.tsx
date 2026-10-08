@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest';
+
 import { act, renderHook } from '~/setup';
 import { TreeItem } from '../types';
 import { useTree } from './useTree';
@@ -13,18 +15,18 @@ function makeNodes(): TreeItem[] {
 }
 
 type Callbacks = {
-  onTreeItemUnfold: ReturnType<typeof vi.fn>;
-  onTreeItemFold: ReturnType<typeof vi.fn>;
-  onTreeItemClick: ReturnType<typeof vi.fn>;
+  onTreeItemUnfold: Mock<(nodeId: string) => void>;
+  onTreeItemFold: Mock<(nodeId: string) => void>;
+  onTreeItemClick: Mock<(nodeId: string) => void>;
 };
 
 function setup(
   props: Partial<Parameters<typeof useTree>[0]> = {},
 ): { result: { current: ReturnType<typeof useTree> } } & Callbacks {
   const callbacks: Callbacks = {
-    onTreeItemUnfold: vi.fn(),
-    onTreeItemFold: vi.fn(),
-    onTreeItemClick: vi.fn(),
+    onTreeItemUnfold: vi.fn<(nodeId: string) => void>(),
+    onTreeItemFold: vi.fn<(nodeId: string) => void>(),
+    onTreeItemClick: vi.fn<(nodeId: string) => void>(),
   };
   const data = props.data ?? makeNodes();
 
