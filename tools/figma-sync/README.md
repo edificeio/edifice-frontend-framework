@@ -38,7 +38,7 @@ le navigateur (confirmé, y compris via la doc officielle Figma).
 ```bash
 cd tools/figma-sync
 pnpm install   # une seule fois
-pnpm sync -- --primitives <chemin/primitives.json> --semantic <chemin/semantic.json>
+pnpm sync --primitives <chemin/primitives.json> --semantic <chemin/semantic.json>
 ```
 
 Options (`tsx src/cli.ts --help` n'existe pas, mais voici les flags) :

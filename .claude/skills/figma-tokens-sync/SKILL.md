@@ -76,7 +76,7 @@ Deux façons de récupérer cet export selon le contexte d'exécution :
    ```
    cd <repo-root>/tools/figma-sync
    pnpm install   # seulement si node_modules est absent
-   pnpm sync -- --primitives <fichier-temp-primitives> --semantic <fichier-temp-semantique> \
+   pnpm sync --primitives <fichier-temp-primitives> --semantic <fichier-temp-semantique> \
      --repo-root <repo-root> --report <fichier-temp-report>.json
    ```
    Ne jamais passer `--skip-compile-check` ni `--skip-format` sur le vrai
