@@ -40,6 +40,10 @@ coverage
 
 pnpm-lock.yaml
 .pnpm-store
+
+# Only version .claude/skills, ignore the rest (settings.local.json, worktrees, etc.)
 .claude/*
 !.claude/skills
+
+# Playwright MCP screenshots
 .playwright-mcp

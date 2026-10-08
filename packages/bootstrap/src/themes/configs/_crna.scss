@@ -1,6 +1,7 @@
 // Configuration du thème crna.
 
 @use 'primitives' as *;
+@use 'primitives-legacy' as legacy;
 
 $crna: (
   name: 'crna',
@@ -66,6 +67,16 @@ $crna: (
       default: $clients-crna-500,
       dark: $clients-crna-700,
     ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: legacy.$neo-orange-500,
+      produce: legacy.$neo-blue-500,
+      organise: legacy.$neo-green-500,
+      admin: legacy.$neo-yellow-500,
+      special: legacy.$neo-purple-500,
+    ),
     themeSeparator: (
       minor: $clients-crna-500,
       major: $clients-crna-700,
@@ -103,6 +114,10 @@ $crna: (
         200: $warning-200,
       ),
     ),
+    themeseparator: (
+      minor: $clients-crna-500,
+      major: $clients-crna-700,
+    ),
   ),
   font: (
     family: (
@@ -126,5 +141,7 @@ $crna: (
   ),
   radius: (
     button: $border-radius-pill,
+    maincontainer: $border-radius-none,
+    searchbar: $border-radius-pill,
   ),
 );
