@@ -1,4 +1,8 @@
 // Geometric placeholder used by the `Skeleton` React primitive.
+// A skeleton only appears once `--skeleton-delay` (200 ms by default) has
+// elapsed, so a content that loads quickly never flashes a placeholder: the
+// zero-length `skeleton-appear` animation holds its hidden first keyframe
+// through the delay, thanks to a `backwards` fill.
 // Deliberately not built on top of `.placeholder`: that class forces an
 // animation and a 50% opacity that cannot be opted out of, which would defeat
 // both the `static` animation and the `prefers-reduced-motion` requirement.
@@ -17,6 +21,7 @@
   display: block;
   flex-shrink: 0;
   background-color: var(--primitive-grey-300);
+  animation: skeleton-appear 0s var(--skeleton-delay, 200ms) backwards;
 
   &-strong {
     background-color: var(--primitive-grey-500);
@@ -44,7 +49,9 @@
   }
 
   &-pulse {
-    animation: skeleton-pulse 1.6s ease-in-out infinite;
+    animation:
+      skeleton-appear 0s var(--skeleton-delay, 200ms) backwards,
+      skeleton-pulse 1.6s ease-in-out infinite;
   }
 
   // The highlight is a layer sweeping over the tone rather than a moving
@@ -250,8 +257,9 @@
 
 // Motion is opted out at the OS level and cannot be forced back on by a prop.
 @media (prefers-reduced-motion: reduce) {
+  // Only the pulse is dropped: the delay is not motion and stays.
   .skeleton-pulse {
-    animation: none;
+    animation: skeleton-appear 0s var(--skeleton-delay, 200ms) backwards;
   }
 
   // Dropping the highlight layer altogether leaves the flat tone, which is what

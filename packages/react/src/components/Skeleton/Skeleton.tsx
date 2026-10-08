@@ -23,8 +23,12 @@ export interface SkeletonProps extends Omit<
    */
   tone?: SkeletonTone;
   /**
-   * Loading animation. Always suppressed when the user asked for reduced
-   * motion, whatever the value passed here.
+   * Loading animation, `pulse` by default. Always suppressed when the user asked
+   * for reduced motion, whatever the value passed here.
+   *
+   * Whatever the animation, the block only shows up after a short delay
+   * (200 ms), so a fast load never flashes a skeleton. The delay can be changed
+   * through the `--skeleton-delay` custom property.
    */
   animation?: SkeletonAnimation;
   /**
@@ -66,7 +70,7 @@ const Skeleton = forwardRef(
     {
       variant = 'text',
       tone = 'default',
-      animation = 'static',
+      animation = 'pulse',
       width,
       height,
       className,

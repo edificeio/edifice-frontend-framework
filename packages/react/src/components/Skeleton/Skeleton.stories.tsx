@@ -26,7 +26,7 @@ const meta = {
   args: {
     variant: 'text',
     tone: 'default',
-    animation: 'static',
+    animation: 'pulse',
     height: 20,
   },
   parameters: {
@@ -103,8 +103,8 @@ const ANIMATIONS: SkeletonAnimation[] = ['static', 'pulse', 'shimmer'];
 const TONES: SkeletonTone[] = ['default', 'strong'];
 
 const CAPTIONS: Record<SkeletonAnimation, string> = {
-  static: 'flat grey, the default — matches the current mockups',
-  pulse: 'opacity 1 → 0.4, 1.6s',
+  static: 'flat grey, matches the current mockups',
+  pulse: 'opacity 1 → 0.4, 1.6s, the default',
   shimmer: 'white highlight swept left to right, 1.6s',
 };
 
@@ -155,7 +155,9 @@ export const AnimationsAndTones: Story = {
       <p className="skeleton-showcase-note">
         Whichever animation is chosen, it is suppressed entirely when the
         operating system reports <code>prefers-reduced-motion: reduce</code>.
-        Toggle it in the OS accessibility settings to check this page.
+        Toggle it in the OS accessibility settings to check this page. Blocks
+        also wait 200 ms before showing up, so a fast load never flashes a
+        skeleton.
       </p>
     </div>
   ),
@@ -163,7 +165,7 @@ export const AnimationsAndTones: Story = {
     docs: {
       description: {
         story:
-          'Side-by-side comparison of the three animations against the two tones. The semantics proposed for `tone` are media versus text: `strong` (grey/500) for avatars and thumbnails, `default` (grey/300) for text lines and chips. Both the animation and that semantic split are still open design questions.',
+          'Side-by-side comparison of the three animations against the two tones. The semantics proposed for `tone` are media versus text: `strong` (grey/500) for avatars and thumbnails, `default` (grey/300) for text lines and chips. That semantic split is validated with the design team, and `pulse` is the default animation.',
       },
     },
   },

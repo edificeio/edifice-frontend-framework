@@ -24,6 +24,15 @@
   }
 }
 
+// Keeps a skeleton hidden through the delay it is given, then lets it show.
+// Zero-length on purpose: it only exists to hold the first keyframe, via a
+// backwards fill, until the delay has elapsed.
+@keyframes skeleton-appear {
+  from {
+    visibility: hidden;
+  }
+}
+
 @keyframes skeleton-pulse {
   50% {
     opacity: 0.4;

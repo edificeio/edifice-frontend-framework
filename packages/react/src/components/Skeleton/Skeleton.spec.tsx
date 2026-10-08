@@ -63,6 +63,12 @@ describe('Skeleton', () => {
     expect((container.firstChild as HTMLElement).style.width).toBe('');
   });
 
+  it('pulses by default', () => {
+    const { container } = render(<Skeleton />);
+
+    expect(container.firstChild).toHaveClass('skeleton-pulse');
+  });
+
   it('applies no animation class when static', () => {
     const { container } = render(<Skeleton animation="static" />);
 
