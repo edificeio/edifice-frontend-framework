@@ -18,7 +18,7 @@ export default defineConfig({
       formats: ['es', 'cjs']
     },
     outDir: 'dist/node',
-    rollupOptions: {
+    rolldownOptions: {
       // no need to bundle deps for node usage
       external: ['@nestjs/swagger'],
       output: {

@@ -130,7 +130,7 @@
   },
   "dependencies": {
     "@edifice.io/utilities": "workspace:*",
-    "@tiptap/core": "2.11.0",
+    "@tiptap/core": "catalog:",
     "@tiptap/extension-bold": "2.11.0",
     "@tiptap/extension-document": "2.11.0",
     "@tiptap/extension-heading": "2.11.0",
