@@ -110,6 +110,10 @@ $one: (
         200: $legacy-warning-200,
       ),
     ),
+    themeseparator: (
+      minor: #fff,
+      major: #fff,
+    ),
   ),
   font: (
     family: (
@@ -134,5 +138,6 @@ $one: (
   radius: (
     button: $border-radius-lg,
     maincontainer: $border-radius-xl,
+    searchbar: $border-radius-lg,
   ),
 );

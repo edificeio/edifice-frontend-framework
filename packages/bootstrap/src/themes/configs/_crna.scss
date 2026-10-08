@@ -110,6 +110,10 @@ $crna: (
         200: $warning-200,
       ),
     ),
+    themeseparator: (
+      minor: $clients-crna-500,
+      major: $clients-crna-700,
+    ),
   ),
   font: (
     family: (
@@ -134,5 +138,6 @@ $crna: (
   radius: (
     button: $border-radius-pill,
     maincontainer: $border-radius-none,
+    searchbar: $border-radius-pill,
   ),
 );

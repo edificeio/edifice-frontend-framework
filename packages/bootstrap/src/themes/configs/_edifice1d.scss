@@ -110,6 +110,10 @@ $edifice1d: (
         200: $warning-200,
       ),
     ),
+    themeseparator: (
+      minor: $orange-400,
+      major: $orange-500,
+    ),
   ),
   font: (
     family: (
@@ -125,7 +129,7 @@ $edifice1d: (
       size: $font-size-default,
       lineheight: $font-lineheight-s,
       tertiary: (
-        family: $font-family-playpensans,
+        family: $font-family-arimo,
         size: $font-size-default,
         lineheight: $font-lineheight-s,
       ),
@@ -134,5 +138,6 @@ $edifice1d: (
   radius: (
     button: $border-radius-lg,
     maincontainer: $border-radius-xl,
+    searchbar: $border-radius-pill,
   ),
 );
