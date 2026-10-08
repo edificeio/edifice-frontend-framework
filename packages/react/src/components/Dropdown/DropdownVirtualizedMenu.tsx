@@ -12,6 +12,7 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import clsx from 'clsx';
 
+import { Checkbox } from '../Checkbox';
 import { SearchBar } from '../SearchBar';
 import { useDropdownContext } from './DropdownContext';
 
@@ -61,7 +62,30 @@ export interface DropdownVirtualizedMenuProps<T> {
   'noResultsLabel'?: string;
   /** Called whenever the search query changes. */
   'onSearch'?: (query: string) => void;
+
+  // --- Multi-select ---
+  /**
+   * Adds a "select all" row on top of the list, for multi-selects. It acts on
+   * the options currently listed: the filtered ones when a search is active.
+   * Reachable with the keyboard like any option (ArrowUp from the first one).
+   */
+  'selectAll'?: DropdownSelectAll<T>;
 }
+
+export interface DropdownSelectAll<T> {
+  /** Text of the row, e.g. "Select all". */
+  label: string;
+  /** Tells whether an item is currently selected (owned by the consumer). */
+  isSelected: (item: T) => boolean;
+  /**
+   * Called on click / Enter. `checked` is the state to apply to
+   * `visibleItems`: true unless every visible item is already selected.
+   */
+  onToggle: (checked: boolean, visibleItems: T[]) => void;
+}
+
+// Index of the "select all" row, placed before the first option.
+const SELECT_ALL_INDEX = -1;
 
 /**
  * Virtualized dropdown menu (opt-in, data-driven). Only the visible options
@@ -94,13 +118,19 @@ export function DropdownVirtualizedMenu<T>({
   searchPlaceholder = 'Rechercher...',
   noResultsLabel = 'Pas de résultat',
   onSearch,
+  selectAll,
 }: DropdownVirtualizedMenuProps<T>) {
   const { visible, menuProps, closeDropdown } = useDropdownContext();
 
   const baseId = useId();
   const listboxId = `${baseId}-listbox`;
-  const optionId = (index: number) => `${baseId}-option-${index}`;
+  const optionId = (index: number) =>
+    index === SELECT_ALL_INDEX
+      ? `${baseId}-select-all`
+      : `${baseId}-option-${index}`;
 
+  // The scrollable area, inside the listbox (which also holds the select all row).
+  const [scrollEl, setScrollEl] = useState<HTMLDivElement | null>(null);
   const [listboxEl, setListboxEl] = useState<HTMLDivElement | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [query, setQuery] = useState('');
@@ -113,9 +143,25 @@ export function DropdownVirtualizedMenu<T>({
     );
   }, [items, query, searchable, getItemText]);
 
+  // Nothing to select all of when the search yields no result.
+  const hasSelectAll = !!selectAll && filteredItems.length > 0;
+  const minIndex = hasSelectAll ? SELECT_ALL_INDEX : 0;
+
+  const allSelected = useMemo(
+    () =>
+      hasSelectAll &&
+      filteredItems.every((item) => selectAll!.isSelected(item)),
+    [hasSelectAll, filteredItems, selectAll],
+  );
+  const someSelected = useMemo(
+    () =>
+      hasSelectAll && filteredItems.some((item) => selectAll!.isSelected(item)),
+    [hasSelectAll, filteredItems, selectAll],
+  );
+
   const virtualizer = useVirtualizer({
     count: filteredItems.length,
-    getScrollElement: () => listboxEl,
+    getScrollElement: () => scrollEl,
     estimateSize: () => estimateItemHeight,
     overscan,
   });
@@ -128,14 +174,15 @@ export function DropdownVirtualizedMenu<T>({
     }
   }, [visible]);
 
-  // Reset / clamp the active option when the filtered list changes.
+  // Reset / clamp the active option when the filtered list changes, so it
+  // always designates an option that exists.
   useEffect(() => {
     setActiveIndex((index) =>
       filteredItems.length === 0
         ? 0
-        : Math.min(index, filteredItems.length - 1),
+        : Math.min(Math.max(index, minIndex), filteredItems.length - 1),
     );
-  }, [filteredItems.length]);
+  }, [filteredItems.length, minIndex]);
 
   // Move focus to the listbox when not searchable (the search field autofocuses
   // itself otherwise).
@@ -145,11 +192,19 @@ export function DropdownVirtualizedMenu<T>({
 
   // Scroll the active option into view as it moves.
   useEffect(() => {
-    if (visible && filteredItems.length > 0) {
+    if (!visible || filteredItems.length === 0) return;
+    if (activeIndex === SELECT_ALL_INDEX) {
+      if (scrollEl) scrollEl.scrollTop = 0;
+    } else {
       virtualizer.scrollToIndex(activeIndex, { align: 'auto' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeIndex, visible]);
+
+  const toggleAll = useCallback(() => {
+    if (!selectAll) return;
+    selectAll.onToggle(!allSelected, filteredItems);
+  }, [selectAll, allSelected, filteredItems]);
 
   const select = useCallback(
     (index: number) => {
@@ -165,32 +220,40 @@ export function DropdownVirtualizedMenu<T>({
     event: KeyboardEvent<HTMLInputElement | HTMLDivElement>,
   ) => {
     const lastIndex = filteredItems.length - 1;
+    // With no option listed there is nothing to move onto: navigation keys must
+    // not push the active index outside the list.
+    const hasOptions = lastIndex >= 0;
+    const activate = () =>
+      activeIndex === SELECT_ALL_INDEX ? toggleAll() : select(activeIndex);
+
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
-        setActiveIndex((index) => Math.min(index + 1, lastIndex));
+        if (hasOptions)
+          setActiveIndex((index) => Math.min(index + 1, lastIndex));
         break;
       case 'ArrowUp':
         event.preventDefault();
-        setActiveIndex((index) => Math.max(index - 1, 0));
+        if (hasOptions)
+          setActiveIndex((index) => Math.max(index - 1, minIndex));
         break;
       case 'Home':
         event.preventDefault();
-        setActiveIndex(0);
+        if (hasOptions) setActiveIndex(0);
         break;
       case 'End':
         event.preventDefault();
-        setActiveIndex(lastIndex);
+        if (hasOptions) setActiveIndex(lastIndex);
         break;
       case 'Enter':
         event.preventDefault();
-        select(activeIndex);
+        if (hasOptions) activate();
         break;
       case ' ':
         // In search mode, Space must type a space, not select.
         if (!searchable) {
           event.preventDefault();
-          select(activeIndex);
+          if (hasOptions) activate();
         }
         break;
       case 'Escape':
@@ -260,43 +323,70 @@ export function DropdownVirtualizedMenu<T>({
         role="listbox"
         tabIndex={searchable ? -1 : 0}
         aria-label={ariaLabel}
+        aria-multiselectable={selectAll ? true : undefined}
         aria-activedescendant={searchable ? undefined : activeDescendant}
         onKeyDown={searchable ? undefined : handleNavKeyDown}
-        style={{ maxHeight, minHeight: 0, overflowY: 'auto' }}
       >
+        {hasSelectAll && (
+          <div
+            id={optionId(SELECT_ALL_INDEX)}
+            role="option"
+            data-select-all
+            onClick={toggleAll}
+            onMouseEnter={() => setActiveIndex(SELECT_ALL_INDEX)}
+            className={clsx(
+              'dropdown-item d-flex align-items-center justify-content-between gap-8 border-bottom mb-4',
+              { focus: activeIndex === SELECT_ALL_INDEX },
+            )}
+          >
+            <span className="text-truncate fw-bold">{selectAll!.label}</span>
+            <Checkbox
+              checked={allSelected}
+              indeterminate={someSelected && !allSelected}
+              onChange={() => {}}
+              tabIndex={-1}
+              aria-hidden
+            />
+          </div>
+        )}
+
         <div
-          style={{
-            height: virtualizer.getTotalSize(),
-            width: '100%',
-            position: 'relative',
-          }}
+          ref={setScrollEl}
+          style={{ maxHeight, minHeight: 0, overflowY: 'auto' }}
         >
-          {virtualizer.getVirtualItems().map((virtualItem) => {
-            const index = virtualItem.index;
-            const item = filteredItems[index];
-            const active = index === activeIndex;
-            return (
-              <div
-                key={getItemKey ? getItemKey(item, index) : index}
-                id={optionId(index)}
-                role="option"
-                aria-selected={active}
-                data-index={index}
-                ref={virtualizer.measureElement}
-                onClick={() => select(index)}
-                onMouseEnter={() => setActiveIndex(index)}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  transform: `translateY(${virtualItem.start}px)`,
-                }}
-              >
-                {renderItem(item, { index, active })}
-              </div>
-            );
-          })}
+          <div
+            style={{
+              height: virtualizer.getTotalSize(),
+              width: '100%',
+              position: 'relative',
+            }}
+          >
+            {virtualizer.getVirtualItems().map((virtualItem) => {
+              const index = virtualItem.index;
+              const item = filteredItems[index];
+              const active = index === activeIndex;
+              return (
+                <div
+                  key={getItemKey ? getItemKey(item, index) : index}
+                  id={optionId(index)}
+                  role="option"
+                  data-index={index}
+                  ref={virtualizer.measureElement}
+                  onClick={() => select(index)}
+                  onMouseEnter={() => setActiveIndex(index)}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    transform: `translateY(${virtualItem.start}px)`,
+                  }}
+                >
+                  {renderItem(item, { index, active })}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

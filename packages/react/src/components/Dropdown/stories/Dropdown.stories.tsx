@@ -574,14 +574,27 @@ The example below is a single-select over ~6 800 options with integrated search.
 
 export const VirtualizedMultiSelect: Story = {
   render: () => {
+    // A few options ticked from the start, so the select all box shows its
+    // indeterminate state.
     const [selected, setSelected] = useState<Set<string>>(
-      () => new Set(cities.map((city) => city.id)),
+      () => new Set(cities.slice(0, 3).map((city) => city.id)),
     );
 
     const toggle = (id: string) =>
       setSelected((current) => {
         const next = new Set(current);
         next.has(id) ? next.delete(id) : next.add(id);
+        return next;
+      });
+
+    // Applies the "select all" state to the options currently listed: every
+    // option, or only the filtered ones while a search is active.
+    const toggleVisible = (checked: boolean, visibleItems: CityOption[]) =>
+      setSelected((current) => {
+        const next = new Set(current);
+        visibleItems.forEach((item) =>
+          checked ? next.add(item.id) : next.delete(item.id),
+        );
         return next;
       });
 
@@ -599,6 +612,11 @@ export const VirtualizedMultiSelect: Story = {
             getItemText={(item) => item.name}
             searchPlaceholder="Rechercher un établissement…"
             onSelect={(item) => toggle(item.id)}
+            selectAll={{
+              label: 'Tout sélectionner',
+              isSelected: (item) => selected.has(item.id),
+              onToggle: toggleVisible,
+            }}
             renderItem={(item, { active }) => (
               <div
                 className={`dropdown-item d-flex align-items-center justify-content-between gap-8 ${
@@ -623,6 +641,10 @@ export const VirtualizedMultiSelect: Story = {
 ### How selection works here
 
 \`VirtualizedMenu\` does **not** own the selection — you do. Keep a \`Set\` (or array) of selected ids in your component; \`onSelect(item)\` toggles it, \`renderItem\` reads it to show each \`Checkbox\` checked or not, and \`closeOnSelect={false}\` keeps the panel open so several options can be ticked in a row. You then exploit that set directly: count it for the trigger label (\`Établissements (\${selected.size})\`), use it to filter your data, or send it on submit.
+
+### Select all
+
+Pass \`selectAll\` to add a "select all" row on top of the list. It is driven like the rest of the selection: \`isSelected(item)\` tells the menu which options are ticked (so the box is checked, unchecked or indeterminate), and \`onToggle(checked, visibleItems)\` hands you the options currently listed with the state to apply. While a search is active, \`visibleItems\` holds only the filtered options, so "select all" ticks the matches rather than the whole list. The row is hidden when the search yields no result, and is reached with the keyboard by pressing ArrowUp from the first option.
 
 ### Why not \`Dropdown.CheckboxItem\`?
 
