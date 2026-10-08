@@ -12,7 +12,9 @@ const { useWidgetPreferences } = vi.hoisted(() => ({
 
 vi.mock('./useWidgetPreferences', () => ({ useWidgetPreferences }));
 
-function widget(partial: Partial<IWidget> & { name: string }): IWidget {
+function widget(
+  partial: Partial<IWidget> & { name: string; mandatory?: boolean },
+): IWidget {
   return { mandatory: false, ...partial } as unknown as IWidget;
 }
 

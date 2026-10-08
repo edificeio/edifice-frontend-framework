@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import clsx from 'clsx';
 
-export interface GridProps {
+export interface GridProps extends React.ComponentPropsWithoutRef<'div'> {
   /**
    * Content inside the Grid component. Usually GridCol components
    */
