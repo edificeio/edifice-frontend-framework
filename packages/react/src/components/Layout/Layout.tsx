@@ -52,6 +52,7 @@ export const Layout = ({
   // `global` platform override — rollout flag for the new in-product help
   // widget (`HelpZone`), replacing the legacy raw Zendesk widget launcher
   // until the platform opts in (see `useUiOverride`).
+  // TODO #IMPULS-6352 :  inverser le feature flag pour que par defaut il est ce look "edifice-in-product" mais que l’override { ‘layout.helpzone': 'hide-edifice-logo' } puisse etre possible
   const isEdificeInProductHelp =
     useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const {

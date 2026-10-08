@@ -268,7 +268,7 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
               color: {
-                //TODO to update with "edifice in product" generalization #IMPULS-6352
+                //TODO #IMPULS-6352 to update with "edifice in product" generalization #IMPULS-6352
                 // theme: : zendeskGuideConfig.color || '#3030D1',
                 theme: isEdificeInProductHelp
                   ? '#3030D1'
