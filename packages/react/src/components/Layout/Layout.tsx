@@ -28,12 +28,6 @@ const HeaderV2 = lazy(
   () => import('../../modules/homepage/components/Header/Header'),
 );
 
-function getHeaderColor() {
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue('--primitive-blue-400')
-    .trim();
-}
-
 export interface LayoutProps extends ComponentPropsWithoutRef<any> {
   /**  Main content of an application */
   children: ReactNode;
@@ -93,7 +87,7 @@ export const Layout = ({
     isOpen: isHelpZoneOpen,
     open: openHelpZone,
     close: closeHelpZone,
-  } = useZendeskGuide(isEdificeInProductHelp ? getHeaderColor() : undefined);
+  } = useZendeskGuide();
 
   useCantoo();
 
