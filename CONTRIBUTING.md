@@ -33,6 +33,20 @@ git commit -m "fix(icons): change correct name to AddUser icon"
 git commit -m "chore(dep): updating eslint configuration"
 ```
 
+## TODO / FIXME comments
+
+Every `TODO`/`FIXME` comment must reference an `ENABLING-XXXX` ticket, so tracked debt doesn't
+get lost:
+
+```ts
+// TODO(ENABLING-1234): handle the error case once the backend endpoint exists
+// FIXME(ENABLING-1234): this is a temporary workaround, see the ticket for context
+```
+
+This is enforced by ESLint (`todo-plz/ticket-ref`), currently at `warn` while the existing
+backlog gets resorbed. It will be raised to `error` once the codebase has zero orphan
+`TODO`/`FIXME` comments.
+
 ## Branches
 
 We already have a `develop` branch created to work on packages.
