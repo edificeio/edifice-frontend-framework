@@ -27,7 +27,7 @@ export interface UseZendeskGuideAPI {
 /**
  * Add Zendesk Guide
  *
- * @param headerColor Overrides the widget panel's theme color.
+ * @param headerColor Overrides the widget panel's header color.
  */
 export default function useZendeskGuide(
   headerColor?: string,
