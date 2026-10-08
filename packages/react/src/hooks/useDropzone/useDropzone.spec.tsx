@@ -10,8 +10,8 @@ const { isHeic, heicTo } = vi.hoisted(() => ({
 
 vi.mock('heic-to', () => ({ isHeic, heicTo }));
 
-function createFile(name: string, type = 'image/png') {
-  return new File(['content'], name, { type });
+function createFile(name: string, type = 'image/png', lastModified?: number) {
+  return new File(['content'], name, { type, lastModified });
 }
 
 function createDragEvent(files?: File[]) {
@@ -73,7 +73,10 @@ describe('useDropzone', () => {
     const { result } = renderHook(() => useDropzone());
 
     await act(async () => {
-      await result.current.addFiles([createFile('a.png'), createFile('b.png')]);
+      await result.current.addFiles([
+        createFile('a.png', 'image/png', 1),
+        createFile('b.png', 'image/png', 2),
+      ]);
     });
 
     const replacement = createFile('c.png');
@@ -175,9 +178,6 @@ describe('useDropzone', () => {
     expect(result.current.files).toEqual([]);
   });
 
-  // `addFiles` sanitises the names and converts HEIC images into `filesToAdd`,
-  // but the default branch stores the untouched `files` argument instead — so
-  // both only reach the list when `forceFilters` is on.
   it('strips the characters vertx chokes on when filters are forced', async () => {
     const { result } = renderHook(() => useDropzone({ forceFilters: true }));
 
@@ -188,17 +188,41 @@ describe('useDropzone', () => {
     expect(result.current.files[0].name).toBe('photo.png');
   });
 
-  it('keeps the raw file name without forced filters', async () => {
+  it('strips the characters vertx chokes on even without forced filters', async () => {
     const { result } = renderHook(() => useDropzone());
 
     await act(async () => {
       await result.current.addFile(createFile('photo!:,;="\'.png'));
     });
 
-    expect(result.current.files[0].name).toBe('photo!:,;="\'.png');
+    expect(result.current.files[0].name).toBe('photo.png');
+  });
+
+  it('keeps the original lastModified date when renaming', async () => {
+    const { result } = renderHook(() => useDropzone());
+
+    await act(async () => {
+      await result.current.addFile(createFile('photo!.png', 'image/png', 111));
+    });
+
+    expect(result.current.files[0].lastModified).toBe(111);
   });
 
   describe('HEIC images', () => {
+    it('keeps the original lastModified date after the conversion', async () => {
+      isHeic.mockReturnValue(true);
+      heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
+      const { result } = renderHook(() => useDropzone());
+
+      await act(async () => {
+        await result.current.addFile(
+          createFile('photo.heic', 'image/heic', 222),
+        );
+      });
+
+      expect(result.current.files[0].lastModified).toBe(222);
+    });
+
     it('converts a HEIC image to JPEG when filters are forced', async () => {
       isHeic.mockReturnValue(true);
       heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
@@ -213,9 +237,7 @@ describe('useDropzone', () => {
       expect(result.current.files[0].type).toBe('image/jpeg');
     });
 
-    // Same quirk as the name sanitising: the converted file never reaches the
-    // list unless the filters are forced.
-    it('stores the untouched HEIC file without forced filters', async () => {
+    it('converts a HEIC image to JPEG even without forced filters', async () => {
       isHeic.mockReturnValue(true);
       heicTo.mockResolvedValue(new Blob(['jpeg'], { type: 'image/jpeg' }));
       const { result } = renderHook(() => useDropzone());
@@ -225,7 +247,8 @@ describe('useDropzone', () => {
       });
 
       expect(heicTo).toHaveBeenCalled();
-      expect(result.current.files[0].type).toBe('image/heic');
+      expect(result.current.files[0].name).toBe('photo.jpeg');
+      expect(result.current.files[0].type).toBe('image/jpeg');
     });
 
     it('keeps the original file when the conversion fails', async () => {
