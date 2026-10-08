@@ -19,6 +19,7 @@
     "check:extensions": "package-check --cwd=packages/extensions",
     "check:react": "package-check --cwd=packages/react",
     "check:utilities": "package-check --cwd=packages/utilities",
+    "check:vite-plugins": "package-check --cwd=packages/vite-plugins",
     "clean": "rm -rf */**/node_modules && rm -rf node_modules && rm -f pnpm-lock.yaml && rm -rf */**/dist && rm -rf packages/**/.turbo",
     "clean:dist": "rm -rf */**/dist",
     "clean:lock": "rm -f pnpm-lock.yaml",
