@@ -100,7 +100,9 @@ $spacer-32: $numbers-32;
 $spacer-40: $numbers-40;
 $spacer-48: $numbers-48;
 $spacer-64: $numbers-64;
+$spacer-128: $numbers-128;
 
+$border-radius-none: $numbers-0;
 $border-radius-sm: $numbers-4;
 $border-radius-md: $numbers-8;
 $border-radius-lg: $numbers-12;
@@ -118,8 +120,21 @@ $gutters: $spacer-24;
 /** Client specifics **/
 $clients-crna-700: #b6002c;
 $clients-crna-500: #ed0039;
-$clients-crna-300: #f6b3c3;
+$clients-crna-300: #f7bfcd;
 $clients-crna-200: #ffdee6;
+$clients-crna-100: #fff0f3;
+
+$clients-ent77-700: #00346b;
+$clients-ent77-500: #004a97;
+$clients-ent77-300: #cae3fc;
+$clients-ent77-200: #e0efff;
+$clients-ent77-100: #e5f1ff;
+
+$clients-pcn-700: #ac0b4a;
+$clients-pcn-500: #e60f63;
+$clients-pcn-300: #fbc6db;
+$clients-pcn-200: #fde2ed;
+$clients-pcn-100: #fef1f6;
 
 /** Text variables **/
 $text-color-default: $grey-900;
@@ -129,6 +144,7 @@ $text-color-subtext: $grey-800;
 $font-family-urbanist: 'Urbanist';
 $font-family-playpensans: 'Playpen Sans';
 $font-family-arimo: 'Arimo';
+$font-family-open-dyslexic: 'OpenDyslexic';
 
 $font-size-xl: 3.2rem;
 $font-size-l: 2.6rem;
@@ -146,8 +162,8 @@ $font-lineheight-xl: 3.6rem;
 $font-lineheight-l: 3.2rem;
 $font-lineheight-m: 2.8rem;
 $font-lineheight-s: 2.6rem;
-$font-lineheight-xs: 2.2rem;
-$font-lineheight-2xs: 2rem;
+$font-lineheight-xs: 2.4rem;
+$font-lineheight-2xs: 2.2rem;
 $font-lineheight-3xs: 1.8rem;
 
 // Not in figma, but useful for consistency

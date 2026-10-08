@@ -65,6 +65,17 @@ $one: (
       light: $neo-blue-300,
       default: $neo-blue-500,
       dark: $neo-blue-700,
+      feather: $neo-blue-200,
+    ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: $one-orange-500,
+      produce: $one-blue-500,
+      organise: $one-green-500,
+      admin: $one-yellow-500,
+      special: $one-purple-500,
     ),
     profil: (
       guest: $one-red-500,
@@ -99,6 +110,10 @@ $one: (
         200: $legacy-warning-200,
       ),
     ),
+    themeseparator: (
+      minor: #fff,
+      major: #fff,
+    ),
   ),
   font: (
     family: (
@@ -106,7 +121,7 @@ $one: (
       body: $font-family-arimo,
     ),
     weight: (
-      bold: $font-weight-bold,
+      bold: $font-weight-medium,
       regular: $font-weight-regular,
     ),
     button: (
@@ -122,5 +137,7 @@ $one: (
   ),
   radius: (
     button: $border-radius-lg,
+    maincontainer: $border-radius-xl,
+    searchbar: $border-radius-lg,
   ),
 );
