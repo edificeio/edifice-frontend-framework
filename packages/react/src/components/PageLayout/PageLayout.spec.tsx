@@ -154,11 +154,7 @@ describe('PageLayout', () => {
       expect(mainArea()).toContainElement(screen.getByText('loose child'));
     });
 
-    // `Children.toArray` flattens nested arrays but keeps a fragment as a single
-    // child, so the compound parts inside it are never recognised — contrary to
-    // what the comment in PageLayout.tsx claims. A fragment-wrapped sidebar ends
-    // up rendered as a plain child, without its layout class.
-    it('does not detect compound children wrapped in a fragment', () => {
+    it('detects compound children wrapped in a fragment', () => {
       render(
         <PageLayout>
           <>
@@ -168,8 +164,34 @@ describe('PageLayout', () => {
         </PageLayout>,
       );
 
-      expect(mainArea()).not.toHaveClass('has-left-sidebar-only');
+      expect(mainArea()).toHaveClass('has-left-sidebar-only');
       expect(screen.getByText('left')).toBeInTheDocument();
+    });
+
+    it('keeps keys unique when a fragment sits next to other children', () => {
+      const consoleError = vi
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      render(
+        <PageLayout>
+          <>
+            <PageLayout.SidebarLeft>left</PageLayout.SidebarLeft>
+            <PageLayout.Content>content</PageLayout.Content>
+          </>
+          <div>loose child</div>
+        </PageLayout>,
+      );
+
+      expect(mainArea()).toHaveClass('has-left-sidebar-only');
+      expect(screen.getByText('left')).toBeInTheDocument();
+      expect(screen.getByText('content')).toBeInTheDocument();
+      expect(screen.getByText('loose child')).toBeInTheDocument();
+      expect(
+        consoleError.mock.calls.filter(([message]) =>
+          String(message).includes('same key'),
+        ),
+      ).toEqual([]);
     });
 
     it('detects compound children passed as an array', () => {
