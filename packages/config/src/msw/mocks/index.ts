@@ -4,6 +4,7 @@ export { handlers as embedHandlers } from './embed';
 export { handlers as blogHandlers } from './blog';
 export { handlers as commonHandlers } from './common';
 export { handlers as publicConfigHandlers } from './config';
+export { handlers as rssHandlers } from './rss';
 export { handlers as directoryHandlers } from './directory';
 export { handlers as shareHandlers } from './share';
 export { handlers as themeHandlers } from './theme';
