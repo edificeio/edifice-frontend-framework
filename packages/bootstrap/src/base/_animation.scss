@@ -23,3 +23,31 @@
     opacity: 0.3;
   }
 }
+
+// Keeps a skeleton hidden through the delay it is given, then lets it show.
+// Zero-length on purpose: it only exists to hold the first keyframe, via a
+// backwards fill, until the delay has elapsed.
+@keyframes skeleton-appear {
+  from {
+    visibility: hidden;
+  }
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+// Sweeps the highlight layer of `.skeleton-shimmer` across its block, from fully
+// off the left edge to fully off the right one, so every cycle starts and ends
+// with no highlight in view and the loop shows no jump.
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}

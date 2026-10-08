@@ -1,4 +1,4 @@
-import { ButtonSkeleton, Flex, TextSkeleton } from '../../../../components';
+import { Flex, Skeleton } from '../../../../components';
 import { HomeCard } from '../HomeCard';
 
 const primaryTitleWidths = ['80%', '64%', '88%', '72%'];
@@ -13,13 +13,8 @@ const CommunitiesSkeleton = () => {
         gap="8"
         className="home-card-header"
       >
-        <TextSkeleton size="lg" className="col-5" />
-        <ButtonSkeleton
-          aria-hidden="true"
-          size="sm"
-          className="px-24"
-          color="tertiary"
-        />
+        <Skeleton className="communities-skeleton-title col-5" />
+        <Skeleton variant="block" className="communities-skeleton-button" />
       </Flex>
       <HomeCard.Content>
         <Flex gap="16">
@@ -30,22 +25,21 @@ const CommunitiesSkeleton = () => {
               style={{ width: '25%' }}
               aria-hidden="true"
             >
-              <div
-                className="communities-item-image placeholder rounded"
-                style={{ display: 'block', aspectRatio: '1 / 1' }}
+              <Skeleton
+                variant="block"
+                tone="strong"
+                className="communities-item-image"
+                style={{ aspectRatio: '1 / 1' }}
               />
               <Flex direction="column" gap="4" className="mt-8">
-                <div style={{ width: primaryWidth, alignSelf: 'center' }}>
-                  <TextSkeleton className="col-12" size="sm" />
-                </div>
-                <div
-                  style={{
-                    width: secondaryTitleWidths[index],
-                    alignSelf: 'center',
-                  }}
-                >
-                  <TextSkeleton className="col-12" size="sm" />
-                </div>
+                <Skeleton
+                  className="communities-skeleton-line"
+                  width={primaryWidth}
+                />
+                <Skeleton
+                  className="communities-skeleton-line"
+                  width={secondaryTitleWidths[index]}
+                />
               </Flex>
             </div>
           ))}
