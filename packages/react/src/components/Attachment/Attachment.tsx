@@ -1,6 +1,6 @@
 import { ComponentPropsWithRef, forwardRef, ReactNode, Ref } from 'react';
 
-import { Tooltip } from '..';
+import Tooltip from '../Tooltip/Tooltip';
 import { IconPaperclip } from '../../modules/icons/components';
 
 export interface AttachmentProps extends ComponentPropsWithRef<'div'> {
