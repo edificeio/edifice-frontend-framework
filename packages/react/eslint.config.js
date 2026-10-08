@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import todoPlz from 'eslint-plugin-todo-plz';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -19,6 +20,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      'todo-plz': todoPlz,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -32,6 +34,10 @@ export default tseslint.config(
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/ban-types': 'off',
+      'todo-plz/ticket-ref': [
+        'warn',
+        { terms: ['TODO', 'FIXME'], pattern: 'ENABLING-\\d+' },
+      ],
     },
   },
 );

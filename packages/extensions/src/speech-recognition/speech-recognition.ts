@@ -92,7 +92,7 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
           };
 
           this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-            // TODO create a "feedback" tiptap extension, to display user friendly error messages ?
+            // TODO(ENABLING-1151): create a "feedback" tiptap extension, to display user friendly error messages ?
             console.log(
               `[@edifice.io/tiptap-extensions/speech-recognition][error][${event.error}]: ${event.message}`,
             );
