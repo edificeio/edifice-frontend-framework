@@ -38,12 +38,8 @@ const NotificationFilterMenu = ({
         size="md"
         leftIcon={<IconFilter />}
         rightIcon={<IconRafterDown />}
-        aria-label={t('homepage.notifications.filter-modal.trigger', {
-          defaultValue: 'Filtrer les notifications',
-        })}
-        title={t('homepage.notifications.filter-modal.trigger', {
-          defaultValue: 'Filtrer les notifications',
-        })}
+        aria-label={t('homepage.notifications.filter-modal.trigger')}
+        title={t('homepage.notifications.filter-modal.trigger')}
         onClick={() => setIsOpen(true)}
         data-testid="notification-filter-button"
       />
