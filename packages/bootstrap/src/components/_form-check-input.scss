@@ -1,26 +1,41 @@
-@use '../abstracts/' as *;
-
 .form-check {
+  --form-check-input-color-dark: var(--color-buttons-secondary-dark);
+  --form-check-input-color-default: var(--color-buttons-secondary-default);
+  --form-check-input-color-pale: var(--color-buttons-secondary-pale);
+  --form-check-input-min-size: 2rem;
+
   padding-left: 0;
   margin: 0;
   min-height: auto;
 
   .form-check-input {
-    --#{$prefix}border-width: 0.2rem;
+    --edifice-border-width: 0.2rem;
 
     margin-top: 0;
     margin-left: 0;
-    min-width: $form-check-input-width;
-    min-height: $form-check-input-width;
+    min-width: var(--form-check-input-min-size);
+    min-height: var(--form-check-input-min-size);
+    border-color: var(--primitive-text-color-subtext);
 
-    &:focus {
-      background-color: var(--edifice-secondary-200);
+    &:checked,
+    &[type='checkbox']:indeterminate {
+      background-color: var(--form-check-input-color-default);
+      border-color: var(--form-check-input-color-default);
     }
 
-    &:focus:checked {
-      background-color: var(--#{$prefix}secondary-800);
-      border-color: var(--#{$prefix}secondary-800);
-      color: var(--#{$prefix}secondary-800);
+    &:focus,
+    &:active {
+      filter: none;
+      background-color: var(--form-check-input-color-pale);
+      border-color: var(--form-check-input-color-dark);
+      box-shadow: 0 0 0 0.4rem var(--form-check-input-color-pale);
+    }
+
+    &:focus:checked,
+    &:active:checked {
+      background-color: var(--form-check-input-color-dark);
+      border-color: var(--form-check-input-color-dark);
+      color: var(--form-check-input-color-dark);
     }
 
     &[type='radio'] {
@@ -33,6 +48,31 @@
       &:checked {
         margin-bottom: 0;
       }
+    }
+  }
+
+  // Bootstrap's data-URI icons cannot read CSS variables:
+  // draw them with a mask instead so their color is themable.
+  &:not(.form-switch) .form-check-input[type='checkbox'] {
+    position: relative;
+
+    &:checked,
+    &:indeterminate {
+      --edifice-form-check-bg-image: none;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-color: var(--color-text-button-primary-filled-default);
+        mask: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.35' d='M3.9 7.7 7.4 12.1 13.3 3.9'/%3e%3c/svg%3e")
+          center / 100% no-repeat;
+        pointer-events: none;
+      }
+    }
+
+    &:indeterminate::after {
+      mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-width='2.5' d='M3.2 8h9.6'/%3e%3c/svg%3e");
     }
   }
 }
