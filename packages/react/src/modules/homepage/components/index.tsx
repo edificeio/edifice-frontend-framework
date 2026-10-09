@@ -1,3 +1,4 @@
+export * from './Agenda';
 export * from './AlloRegion';
 export * from './Communities';
 export * from './Favorites';
