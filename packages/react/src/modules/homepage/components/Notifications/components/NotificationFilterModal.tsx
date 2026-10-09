@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   AppIcon,
   ButtonBeta as Button,
+  Checkbox,
   Flex,
   ModalBeta as Modal,
 } from '../../../../..';
@@ -115,12 +116,7 @@ const NotificationFilterModal = ({
               >
                 <AppIcon app={appCode} size="24" iconFit="contain" />
                 <span>{label}</span>
-                <input
-                  type="checkbox"
-                  className="notification-filter-checkbox"
-                  checked={checked}
-                  onChange={() => toggleType(type)}
-                />
+                <Checkbox checked={checked} onChange={() => toggleType(type)} />
               </label>
             );
           })}

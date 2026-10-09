@@ -15,6 +15,7 @@
     margin-left: 0;
     min-width: var(--form-check-input-min-size);
     min-height: var(--form-check-input-min-size);
+    border-color: var(--primitive-text-color-subtext);
 
     &:checked,
     &[type='checkbox']:indeterminate {
@@ -22,13 +23,16 @@
       border-color: var(--form-check-input-color-default);
     }
 
-    &:focus {
+    &:focus,
+    &:active {
+      filter: none;
       background-color: var(--form-check-input-color-pale);
       border-color: var(--form-check-input-color-dark);
       box-shadow: 0 0 0 0.4rem var(--form-check-input-color-pale);
     }
 
-    &:focus:checked {
+    &:focus:checked,
+    &:active:checked {
       background-color: var(--form-check-input-color-dark);
       border-color: var(--form-check-input-color-dark);
       color: var(--form-check-input-color-dark);
