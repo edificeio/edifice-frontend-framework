@@ -28,12 +28,6 @@ const HeaderV2 = lazy(
   () => import('../../modules/homepage/components/Header/Header'),
 );
 
-function getHeaderColor() {
-  return getComputedStyle(document.documentElement)
-    .getPropertyValue('--primitive-blue-400')
-    .trim();
-}
-
 export interface LayoutProps extends ComponentPropsWithoutRef<any> {
   /**  Main content of an application */
   children: ReactNode;
@@ -58,6 +52,7 @@ export const Layout = ({
   // `global` platform override — rollout flag for the new in-product help
   // widget (`HelpZone`), replacing the legacy raw Zendesk widget launcher
   // until the platform opts in (see `useUiOverride`).
+  // TODO #IMPULS-6352 :  inverser le feature flag pour que par defaut il est ce look "edifice-in-product" mais que l’override { ‘layout.helpzone': 'hide-edifice-logo' } puisse etre possible
   const isEdificeInProductHelp =
     useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const {
@@ -93,7 +88,7 @@ export const Layout = ({
     isOpen: isHelpZoneOpen,
     open: openHelpZone,
     close: closeHelpZone,
-  } = useZendeskGuide(isEdificeInProductHelp ? getHeaderColor() : undefined);
+  } = useZendeskGuide();
 
   useCantoo();
 
