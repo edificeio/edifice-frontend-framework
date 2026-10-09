@@ -259,6 +259,12 @@ i18n.use(initReactI18next).init({
         'homepage.favorites.all': 'Mes applis',
         'homepage.favorites.empty':
           'Ajouter des applications à vos favoris pour les retrouver ici et y accéder rapidement !',
+        //----------------- Agenda -----------------
+        'homepage.agenda.title': 'Agenda',
+        'homepage.agenda.openAgenda': "Accéder à l'agenda",
+        'homepage.agenda.empty': 'Pas d’évènement à venir.',
+        'homepage.agenda.allDay': 'Journée entière',
+        'homepage.agenda.multiDayTime': '[[startTime]] - [[endDay]] à [[endTime]]',
         //----------------- Communities -----------------
         'homepage.communities.title': 'Communautés',
         'homepage.communities.actionLabel.seeMore': 'Voir plus',
