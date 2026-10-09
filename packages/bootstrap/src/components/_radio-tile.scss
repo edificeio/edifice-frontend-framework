@@ -123,11 +123,7 @@
   // ---------------------------------------------------------------------------
 
   &:hover {
-    --radio-tile-bg: color-mix(
-      in srgb,
-      var(--color-primary-pale) 50%,
-      var(--primitive-white)
-    );
+    --radio-tile-bg: var(--color-primary-feather);
     --radio-tile-stroke-color: var(--color-primary-light);
     --radio-tile-stroke-width: 2px;
   }

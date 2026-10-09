@@ -1,5 +1,6 @@
 // Configuration du thème edifice2d.
 
+@use 'sass:color';
 @use 'primitives' as *;
 
 $crna: (
@@ -60,6 +61,7 @@ $crna: (
       ),
     ),
     primary: (
+      feather: color.mix($clients-crna-200, $white, 50%),
       pale: $clients-crna-200,
       light: $clients-crna-300,
       default: $clients-crna-500,

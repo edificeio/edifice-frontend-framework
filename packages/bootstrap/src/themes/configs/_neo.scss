@@ -1,5 +1,6 @@
 // Configuration du thème neo.
 
+@use 'sass:color';
 @use 'primitives' as *;
 @use 'primitives-legacy' as *;
 
@@ -61,6 +62,7 @@ $neo: (
       ),
     ),
     primary: (
+      feather: color.mix($neo-orange-200, $white, 50%),
       pale: $neo-orange-200,
       light: $neo-orange-300,
       default: $neo-orange-500,
