@@ -1,7 +1,13 @@
 import clsx from 'clsx';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AppIcon, ButtonBeta, Flex, Modal } from '../../../../..';
+import {
+  AppIcon,
+  ButtonBeta as Button,
+  Checkbox,
+  Flex,
+  ModalBeta as Modal,
+} from '../../../../..';
 import { IconCheck } from '../../../../icons/components';
 import { getAppCodeAndI18nKey } from './notificationAdapter';
 
@@ -28,8 +34,6 @@ const NotificationFilterModal = ({
 }: NotificationFilterModalProps) => {
   const { t, i18n } = useTranslation();
   const [selected, setSelected] = useState<string[]>(appliedTypes);
-
-  const refSelectAllCheckbox = useRef<HTMLInputElement>(null);
 
   const allTypesSorted = useMemo(
     () =>
@@ -59,36 +63,29 @@ const NotificationFilterModal = ({
     setSelected(selected.length === allTypes.length ? [] : allTypes);
   };
 
-  useEffect(() => {
-    if (refSelectAllCheckbox.current) {
-      refSelectAllCheckbox.current!.indeterminate =
-        selected.length > 0 && selected.length < allTypes.length;
-    }
-  }, [selected.length, allTypes.length]);
-
   return (
     <Modal
       id="notification-filter-modal"
-      size="lg"
-      scrollable
+      size={'l'}
       isOpen={isOpen}
       onModalClose={onCancel}
     >
-      <Modal.Header onModalClose={onCancel}>
+      <Modal.Header
+        subtitle={t('homepage.notifications.filter-modal.subtitle')}
+        onModalClose={onCancel}
+      >
         {t('homepage.notifications.filter-modal.title')}
       </Modal.Header>
-      <Modal.Subtitle>
-        {t('homepage.notifications.filter-modal.subtitle')}
-      </Modal.Subtitle>
       <Modal.Body>
         <Flex align="center" gap="8" className="mb-24">
           <label className="notification-filter-select-all notification-filter-chip">
             <span>{t('homepage.notifications.filter-modal.select-all')}</span>
-            <input
-              type="checkbox"
-              ref={refSelectAllCheckbox}
+
+            <Checkbox
               checked={selected.length === allTypes.length}
-              className="notification-filter-checkbox"
+              indeterminate={
+                selected.length > 0 && selected.length < allTypes.length
+              }
               onChange={toggleAll}
             />
           </label>
@@ -111,27 +108,22 @@ const NotificationFilterModal = ({
               >
                 <AppIcon app={appCode} size="24" iconFit="contain" />
                 <span>{label}</span>
-                <input
-                  type="checkbox"
-                  className="notification-filter-checkbox"
-                  checked={checked}
-                  onChange={() => toggleType(type)}
-                />
+                <Checkbox checked={checked} onChange={() => toggleType(type)} />
               </label>
             );
           })}
         </Flex>
       </Modal.Body>
       <Modal.Footer>
-        <ButtonBeta
+        <Button
           color="tertiary"
           onClick={onCancel}
           type="button"
           variant="ghost"
         >
           {t('cancel')}
-        </ButtonBeta>
-        <ButtonBeta
+        </Button>
+        <Button
           color="default"
           onClick={() => onApply(selected)}
           type="button"
@@ -139,7 +131,7 @@ const NotificationFilterModal = ({
           rightIcon={<IconCheck />}
         >
           {t('homepage.notifications.filter-modal.confirm')}
-        </ButtonBeta>
+        </Button>
       </Modal.Footer>
     </Modal>
   );
