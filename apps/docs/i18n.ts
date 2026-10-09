@@ -207,6 +207,9 @@ i18n.use(initReactI18next).init({
         'bbm.linker.ext': 'External link',
         'cancel': 'Cancel',
         'close': 'Close',
+        'close.message': 'Fermer le message',
+        'conversation': 'Messagerie',
+        'show': 'Voir',
         'workspace.tree.owner': 'My folder',
         'workspace.tree.shared': 'Shared',
         'workspace.tree.protected': 'Private',
@@ -272,6 +275,9 @@ i18n.use(initReactI18next).init({
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',
         'homepage.last-infos-list.see.more': 'Voir plus',
         'homepage.last-infos-list.title': 'Dernières actualités',
+        //----------------- MessageFlashList -----------------
+        'homepage.messageFlash.information': 'Information',
+        'homepage.messageFlash.warning': 'Avertissement',
         //------------------ Notifications -------------------------
         'homepage.notifications-list.title': 'Notifications',
         'homepage.notifications-list.close': 'Close notifications',
@@ -311,6 +317,7 @@ i18n.use(initReactI18next).init({
           'Classes et groupes',
         'homepage.userspace.relative.link.classes':
           'La classe de [[childName]]',
+        'homepage.userSpace.customizeWidgets': 'Personnaliser mes widgets',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
         //------------------ UsefulLinks -------------------------
@@ -344,6 +351,15 @@ i18n.use(initReactI18next).init({
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
         'portal.header.navigation.classMembers': 'La classe',
         'portal.header.navigation.myapps': 'Mes applis',
+        'navbar.customize': 'Personnalisation',
+        'navbar.home': 'Accueil',
+        'navbar.applications': 'Mes applis',
+        'navbar.myaccount': 'Mon compte',
+        'navbar.community': 'Communauté',
+        'navbar.disconnect': 'Déconnexion',
+        'homepage.header.myapps.empty':
+          'Ajoutez et retrouvez ici vos apps favorites !',
+        'homepage.header.myapps.seeMore': 'Voir plus',
 
         //------------------------------------------------------
         //------------------ Help Zone -----------------
