@@ -6,7 +6,7 @@ import {
   FormControl,
   Image,
   Label,
-  Modal,
+  ModalBeta as Modal,
   Select,
   TextSkeleton,
 } from '../../../../components';
@@ -69,13 +69,7 @@ const CantineModal = ({
   ];
 
   return (
-    <Modal
-      id="cantine-modal"
-      size="lg"
-      scrollable
-      isOpen={isOpen}
-      onModalClose={onClose}
-    >
+    <Modal id="cantine-modal" size="l" isOpen={isOpen} onModalClose={onClose}>
       <Modal.Header onModalClose={onClose}>
         {t('homepage.widget.cantine.title')}
       </Modal.Header>
