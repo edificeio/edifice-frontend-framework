@@ -39,7 +39,7 @@ export type NotificationListProps = {
 const NotificationList = ({
   notifications,
   notificationTypes,
-  selectedTypes,
+  selectedTypes = [],
   onFilterChange,
   onCloseNotifications,
   onLoadNextPage,
@@ -51,6 +51,8 @@ const NotificationList = ({
   const loadNextRef = useInfiniteScroll({
     callback: () => onLoadNextPage?.(),
   });
+
+  const handleFilterChange = (types: string[]) => onFilterChange?.(types);
 
   const handleCloseClick = () => {
     if (onCloseNotifications) {
@@ -74,8 +76,8 @@ const NotificationList = ({
             {notificationTypes && notificationTypes.length > 0 && (
               <NotificationFilterMenu
                 notificationTypes={notificationTypes}
-                selectedTypes={selectedTypes ?? notificationTypes}
-                onFilterChange={(types) => onFilterChange?.(types)}
+                selectedTypes={selectedTypes}
+                onFilterChange={handleFilterChange}
               />
             )}
           </Flex>
@@ -91,7 +93,9 @@ const NotificationList = ({
             ></ButtonBeta>
           )}
         </Flex>
-        {notifications?.length === 0 ? (
+        {isLoading && !notifications?.length ? (
+          <NotificationListSkeleton />
+        ) : !notifications || notifications.length === 0 ? (
           <div className="mx-24">
             <EmptyScreen
               size={135}
@@ -103,7 +107,7 @@ const NotificationList = ({
         ) : (
           <>
             <ul>
-              {notifications?.map((notification, index) => (
+              {notifications.map((notification, index) => (
                 <li key={'notification-list-' + notification._id + '-' + index}>
                   <NotificationItem notification={notification} />
                   <Divider className="border-grey-300 my-0" />
