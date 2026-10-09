@@ -81,7 +81,9 @@
     text-overflow: ellipsis;
   }
 
-  &-due {
+  // Return date of a loan, or number of books borrowed by a child
+  &-due,
+  &-count {
     color: var(--primitive-text-color-subtext);
     font-size: var(--primitive-font-size-caption);
     line-height: var(--primitive-font-lineheight-3xs);

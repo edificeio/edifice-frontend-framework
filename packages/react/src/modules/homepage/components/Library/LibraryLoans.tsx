@@ -25,11 +25,12 @@ const LibraryLoans = ({ loans }: LibraryLoansProps) => {
   return (
     <section className="library-loans">
       <h4 className="library-loans-title">
-        {t('homepage.library.loans.title', 'Mes prêts')}
+        {t('homepage.library.loans.title')}
       </h4>
       <ul className="library-loans-list">
         {loans.map((loan) => {
-          const isOverdue = new Date(loan.dueDate).getTime() < now;
+          const isOverdue =
+            loan.overdue ?? new Date(loan.dueDate).getTime() < now;
 
           return (
             <li key={loan.id} className="library-loan">
@@ -58,7 +59,6 @@ const LibraryLoans = ({ loans }: LibraryLoansProps) => {
                   })}
                 >
                   {t('homepage.library.loans.due-date', {
-                    defaultValue: 'À rendre avant le [[date]]',
                     date: formatDate(loan.dueDate, 'DD/MM'),
                   })}
                 </span>

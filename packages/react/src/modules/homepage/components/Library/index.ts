@@ -2,6 +2,8 @@ export * from './Library';
 export * from './LibraryContainer';
 export { default as LibraryLoans } from './LibraryLoans';
 export * from './LibraryLoans';
+export { default as LibraryChildrenLoans } from './LibraryChildrenLoans';
+export * from './LibraryChildrenLoans';
 export { default as LibrarySelection } from './LibrarySelection';
 export * from './LibrarySelection';
 export { default as LibraryBookCard } from './LibraryBookCard';

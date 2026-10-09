@@ -1,6 +1,6 @@
 import { render, screen } from '~/setup';
 import { Library } from './Library';
-import { LibraryBook, LibraryLoan } from './models';
+import { LibraryBook, LibraryChildLoans, LibraryLoan } from './models';
 import { parseRssFeed } from './services/api';
 
 const books = [
@@ -97,11 +97,66 @@ describe('LibraryLoans', () => {
     );
   });
 
+  it('highlights a loan the library states as overdue', () => {
+    render(
+      <Library
+        loans={[
+          { id: 'loan-3', title: '1984', dueDate: '2099-01-15', overdue: true },
+        ]}
+        books={books}
+      />,
+    );
+
+    expect(screen.getByText('À rendre avant le 15/01')).toHaveClass(
+      'library-loan-due--overdue',
+    );
+  });
+
   it('hides the section when there is no loan', () => {
     render(<Library loans={[]} books={books} />);
 
     expect(
       screen.queryByRole('heading', { name: 'Mes prêts' }),
+    ).not.toBeInTheDocument();
+  });
+});
+
+describe('LibraryChildrenLoans', () => {
+  const childrenLoans = [
+    { id: 'child-1', firstName: 'Emma', loansCount: 2 },
+    { id: 'child-2', firstName: 'Louis', loansCount: 1 },
+    { id: 'child-3', firstName: 'Jade', loansCount: 0 },
+  ] satisfies Array<LibraryChildLoans>;
+
+  it('renders the number of books borrowed by each child', () => {
+    render(<Library loans={[]} childrenLoans={childrenLoans} books={books} />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Prêts de mes enfants' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Emma')).toBeInTheDocument();
+    expect(screen.getByText('2 livres empruntés')).toBeInTheDocument();
+    expect(screen.getByText('Louis')).toBeInTheDocument();
+    expect(screen.getByText('1 livre emprunté')).toBeInTheDocument();
+  });
+
+  it('does not list a child who borrowed no book', () => {
+    render(<Library loans={[]} childrenLoans={childrenLoans} books={books} />);
+
+    expect(screen.queryByText('Jade')).not.toBeInTheDocument();
+  });
+
+  it('hides the section when no child borrowed a book', () => {
+    render(
+      <Library
+        loans={[]}
+        childrenLoans={[{ id: 'child-3', firstName: 'Jade', loansCount: 0 }]}
+        books={books}
+      />,
+    );
+
+    expect(
+      screen.queryByRole('heading', { name: 'Prêts de mes enfants' }),
     ).not.toBeInTheDocument();
   });
 });

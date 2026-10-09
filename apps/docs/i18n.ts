@@ -251,6 +251,18 @@ i18n.use(initReactI18next).init({
         'homepage.last-infos-list.see.more': 'Voir plus',
         'homepage.last-infos-list.title': 'Dernières actualités',
         //------------------------------------------------------
+        //----------------- Library -----------------
+        'homepage.library.title': 'Bibliothèque',
+        'homepage.library.see.more': 'Voir plus',
+        'homepage.library.loans.title': 'Mes prêts',
+        'homepage.library.loans.due-date': 'À rendre avant le [[date]]',
+        'homepage.library.children.title': 'Prêts de mes enfants',
+        'homepage.library.children.loan': '[[number]] livre emprunté',
+        'homepage.library.children.loans': '[[number]] livres empruntés',
+        'homepage.library.selection.title': 'Sélection du moment',
+        'homepage.library.selection.previous': 'Précédent',
+        'homepage.library.selection.next': 'Suivant',
+        //------------------------------------------------------
 
         //----------------- useDate (formatTimeAgo) -----------------
         'date.format.yesterday': 'Yesterday',

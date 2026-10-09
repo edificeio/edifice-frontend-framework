@@ -1,6 +1,6 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 
-import { LibraryBook, LibraryLoan } from '../../models';
+import { LibraryBook, LibraryLoansResponse } from '../../models';
 import { libraryService } from '../api';
 
 export const libraryQueryKeys = {
@@ -23,7 +23,8 @@ export const libraryQueryOptions = {
   getLoans(loansUrl: string) {
     return queryOptions({
       queryKey: libraryQueryKeys.loans(loansUrl),
-      queryFn: (): Promise<LibraryLoan[]> => libraryService.getLoans(loansUrl),
+      queryFn: (): Promise<LibraryLoansResponse> =>
+        libraryService.getLoans(loansUrl),
     });
   },
 };

@@ -56,11 +56,11 @@ const LibrarySelection = ({ books }: LibrarySelectionProps) => {
         className="library-selection-header"
       >
         <h4 className="library-selection-title">
-          {t('homepage.library.selection.title', 'Sélection du moment')}
+          {t('homepage.library.selection.title')}
         </h4>
         <Flex align="center" gap="4">
           <IconButton
-            aria-label={t('homepage.library.selection.previous', 'Précédent')}
+            aria-label={t('homepage.library.selection.previous')}
             color="tertiary"
             variant="ghost"
             icon={<IconRafterLeft />}
@@ -68,7 +68,7 @@ const LibrarySelection = ({ books }: LibrarySelectionProps) => {
             onClick={() => handleScrollBy(-1)}
           />
           <IconButton
-            aria-label={t('homepage.library.selection.next', 'Suivant')}
+            aria-label={t('homepage.library.selection.next')}
             color="tertiary"
             variant="ghost"
             icon={<IconRafterRight />}

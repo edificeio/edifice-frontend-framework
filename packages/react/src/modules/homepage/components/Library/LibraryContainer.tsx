@@ -13,7 +13,7 @@ export interface LibraryContainerProps {
   rssFeedUrl: string;
   /**
    * URL of the endpoint returning the books borrowed by the user.
-   * i.e. "/mediacentre/library/loans"
+   * i.e. "/appregistry/esidoc/loans"
    */
   loansUrl: string;
   /** Handle a click on the "See more" button. When omitted, the button is hidden. */
@@ -30,12 +30,15 @@ export function LibraryContainer({
   onSeeMoreClick,
 }: LibraryContainerProps) {
   const { t } = useTranslation();
-  const { books, loans, isLoading } = useLibrary({ rssFeedUrl, loansUrl });
+  const { books, loans, childrenLoans, isLoading } = useLibrary({
+    rssFeedUrl,
+    loansUrl,
+  });
 
   if (isLoading) {
     return (
       <HomeCard variant="primary" className="library-card">
-        <HomeCard.Header title={t('homepage.library.title', 'Bibliothèque')} />
+        <HomeCard.Header title={t('homepage.library.title')} />
         <HomeCard.Content className="library-card-content">
           <TextSkeleton size="lg" />
           <TextSkeleton size="lg" />
@@ -45,13 +48,19 @@ export function LibraryContainer({
     );
   }
 
-  // Hide the widget when both sections are empty or failed to load
-  if (books.length === 0 && loans.length === 0) {
+  // Hide the widget when every section is empty or failed to load
+  const hasChildrenLoans = childrenLoans.some((child) => child.loansCount > 0);
+  if (books.length === 0 && loans.length === 0 && !hasChildrenLoans) {
     return null;
   }
 
   return (
-    <Library books={books} loans={loans} onSeeMoreClick={onSeeMoreClick} />
+    <Library
+      books={books}
+      loans={loans}
+      childrenLoans={childrenLoans}
+      onSeeMoreClick={onSeeMoreClick}
+    />
   );
 }
 

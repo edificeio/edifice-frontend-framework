@@ -158,6 +158,26 @@ export const OverdueLoan: Story = {
   },
 };
 
+export const ChildrenLoans: Story = {
+  args: {
+    loans: [],
+    childrenLoans: [
+      { id: 'child-1', firstName: 'Emma', loansCount: 2 },
+      { id: 'child-2', firstName: 'Louis', loansCount: 1 },
+    ],
+    books: mockBooks,
+    onSeeMoreClick: () => alert('Ouvrir la bibliothèque'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Vue parent — seul le nombre de livres empruntés par chaque enfant est affiché, jamais les titres.',
+      },
+    },
+  },
+};
+
 export const WithoutCovers: Story = {
   args: {
     loans: [

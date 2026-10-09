@@ -1,6 +1,6 @@
 import { odeServices } from '@edifice.io/client';
 
-import { LibraryBook, LibraryLoan } from '../../models';
+import { LibraryBook, LibraryLoansResponse } from '../../models';
 
 /**
  * Resolve the cover URL of an RSS `<item>`, looking successively at the
@@ -85,17 +85,21 @@ export const createLibraryService = () => ({
   },
 
   /**
-   * Get the books currently borrowed by the user.
+   * Get the books currently borrowed by the user or, for a relative, the
+   * number of books borrowed by each child.
    *
    * @param loansUrl URL of the endpoint returning the user's loans.
-   * @returns The user's loans.
+   * @returns The user's loans and the number of books borrowed by each child.
    */
-  async getLoans(loansUrl: string): Promise<LibraryLoan[]> {
+  async getLoans(loansUrl: string): Promise<LibraryLoansResponse> {
     const http = odeServices.http();
-    const loans = await http.get<LibraryLoan[]>(loansUrl);
+    const response = await http.get<Partial<LibraryLoansResponse>>(loansUrl);
     if (http.isResponseError()) {
       throw new Error(http.latestResponse.statusText);
     }
-    return loans;
+    return {
+      loans: response?.loans ?? [],
+      children: response?.children ?? [],
+    };
   },
 });

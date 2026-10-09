@@ -1,4 +1,4 @@
-import { LibraryBook, LibraryLoan } from '../models';
+import { LibraryBook, LibraryChildLoans, LibraryLoan } from '../models';
 import {
   useLibraryLoans,
   useLibrarySelection,
@@ -16,6 +16,8 @@ export interface UseLibraryReturn {
   books: LibraryBook[];
   /** Books currently borrowed by the user. */
   loans: LibraryLoan[];
+  /** Number of books borrowed by each child, when the user is a relative. */
+  childrenLoans: LibraryChildLoans[];
   /** Loading state of the selection and loans queries. */
   isLoading: boolean;
   /** Error state of the selection query. */
@@ -26,12 +28,13 @@ export interface UseLibraryReturn {
 
 /**
  * Custom hook providing the library widget data: the books selection coming
- * from an RSS feed and the user's current loans.
+ * from an RSS feed and the user's current loans. A relative gets the number of
+ * books borrowed by each child instead of loans.
  *
  * Each source is fetched independently so a failing one does not prevent the
  * other from being displayed.
  *
- * @returns Object containing books, loans, loading and error states.
+ * @returns Object containing books, loans, children loans, loading and error states.
  */
 export const useLibrary = ({
   rssFeedUrl,
@@ -42,7 +45,8 @@ export const useLibrary = ({
 
   return {
     books: selectionQuery.data ?? [],
-    loans: loansQuery.data ?? [],
+    loans: loansQuery.data?.loans ?? [],
+    childrenLoans: loansQuery.data?.children ?? [],
     isLoading: selectionQuery.isLoading || loansQuery.isLoading,
     selectionError: selectionQuery.error,
     loansError: loansQuery.error,
