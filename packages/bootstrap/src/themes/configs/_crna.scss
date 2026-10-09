@@ -1,4 +1,4 @@
-// Configuration du thème edifice2d.
+// Configuration du thème crna.
 
 @use 'primitives' as *;
 
@@ -60,6 +60,7 @@ $crna: (
       ),
     ),
     primary: (
+      feather: $clients-crna-200,
       pale: $clients-crna-200,
       light: $clients-crna-300,
       default: $clients-crna-500,
