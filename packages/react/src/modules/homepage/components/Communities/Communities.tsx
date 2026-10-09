@@ -61,31 +61,19 @@ const Communities = ({
                 {!canCreateCommunity ? (
                   <>
                     <p className="communities-empty-title">
-                      {t(
-                        'homepage.communities.subtitle.student',
-                        'Retrouvez toutes vos communautés ici ! ',
-                      )}
+                      {t('homepage.communities.subtitle.student')}
                     </p>
                     <p className="communities-empty-description">
-                      {t(
-                        'homepage.communities.description.student',
-                        `Consultez l'onglet "Nouveaux partages" pour découvrir si vous avez été ajouté à une nouvelle communauté.`,
-                      )}
+                      {t('homepage.communities.description.student')}
                     </p>
                   </>
                 ) : (
                   <>
                     <p className="communities-empty-title">
-                      {t(
-                        'homepage.communities.subtitle.teacher',
-                        'Réunissez vos élèves avec Communautés !',
-                      )}
+                      {t('homepage.communities.subtitle.teacher')}
                     </p>
                     <p className="communities-empty-description">
-                      {t(
-                        'homepage.communities.description.teacher',
-                        `Centralisez et organisez les documents et les ressources pour vos groupes d'élèves.`,
-                      )}
+                      {t('homepage.communities.description.teacher')}
                     </p>
                   </>
                 )}

@@ -1,4 +1,4 @@
-import { render, screen } from '~/setup';
+import { fireEvent, render, screen } from '~/setup';
 
 import Header from './Header';
 
@@ -11,12 +11,14 @@ vi.mock('../Notifications/hooks/useNotificationList', () => ({
 }));
 
 const {
+  useBreakpoint,
   useCarbonioUnread,
   useConversation,
   useUser,
   useHeader,
   useEdificeTheme,
 } = vi.hoisted(() => ({
+  useBreakpoint: vi.fn(),
   useCarbonioUnread: vi.fn(),
   useConversation: vi.fn(),
   useUser: vi.fn(),
@@ -29,6 +31,7 @@ vi.mock('../../../../hooks', async (importOriginal) => ({
   useCarbonioUnread,
   useConversation,
   useUser,
+  useBreakpoint,
 }));
 
 vi.mock('../../../../components/Layout/hooks/useHeader', () => ({
@@ -36,6 +39,22 @@ vi.mock('../../../../components/Layout/hooks/useHeader', () => ({
 }));
 
 vi.mock('../../../../providers/', () => ({ useEdificeTheme }));
+
+/**
+ * Tabs forward until `target` has focus (bounded, so an unreachable target
+ * fails fast instead of hanging). Avoids hard-coding how many nav items
+ * precede `target` — brittle, since a popover that opens on focus inserts
+ * its own content into the tab order too.
+ */
+async function tabUntilFocused(
+  user: ReturnType<typeof render>['user'],
+  target: HTMLElement,
+  maxTabs = 15,
+) {
+  for (let i = 0; i < maxTabs && document.activeElement !== target; i++) {
+    await user.tab();
+  }
+}
 
 function setup({
   messages = 0,
@@ -45,6 +64,8 @@ function setup({
   theme = { logoutCallback: '/portal' },
   dataProduct,
   onNotificationsClick,
+  bookmarkedApps = [],
+  isDesktop = true,
 }: {
   messages?: number;
   carbonio?: { hasCarbonioWorkflow: boolean; unreadCount: number };
@@ -53,6 +74,8 @@ function setup({
   theme?: { logoutCallback?: string };
   dataProduct?: string;
   onNotificationsClick?: () => void;
+  bookmarkedApps?: unknown[];
+  isDesktop?: boolean;
 } = {}) {
   useConversation.mockReturnValue({ messages });
   useUser.mockReturnValue({
@@ -61,11 +84,13 @@ function setup({
   });
   useCarbonioUnread.mockReturnValue(carbonio);
   useEdificeTheme.mockReturnValue({ theme });
+  useBreakpoint.mockReturnValue({ lg: isDesktop });
   useHeader.mockReturnValue({
     userAvatar: '/avatar.png',
     userName: 'Pascal',
     communitiesWorkflow,
     conversationWorflow,
+    bookmarkedApps,
   });
 
   return render(
@@ -93,7 +118,10 @@ describe('homepage Header', () => {
       'href',
       '/userbook/mon-compte',
     );
-    expect(screen.getByTestId('header-user-menu-button')).toBeInTheDocument();
+    expect(screen.getByTestId('header-user-profile-button')).toHaveAttribute(
+      'aria-haspopup',
+      'true',
+    );
   });
 
   it('points the logo at the theme assets', () => {
@@ -229,7 +257,7 @@ describe('homepage Header', () => {
     it('appends the theme callback to the logout link', async () => {
       const { user } = setup();
 
-      await user.hover(screen.getByTestId('header-user-menu-button'));
+      await user.hover(screen.getByTestId('header-user-profile-button'));
 
       expect(screen.getByTestId('header-logout-button')).toHaveAttribute(
         'href',
@@ -240,7 +268,7 @@ describe('homepage Header', () => {
     it('logs out without a callback when the theme has none', async () => {
       const { user } = setup({ theme: {} });
 
-      await user.hover(screen.getByTestId('header-user-menu-button'));
+      await user.hover(screen.getByTestId('header-user-profile-button'));
 
       expect(screen.getByTestId('header-logout-button')).toHaveAttribute(
         'href',
@@ -250,13 +278,88 @@ describe('homepage Header', () => {
 
     it('opens on hover', async () => {
       const { user } = setup();
-      const item = screen.getByTestId('header-user-menu-button');
+      const item = screen.getByTestId('header-user-profile-button');
 
       expect(item).toHaveAttribute('aria-expanded', 'false');
 
       await user.hover(item);
 
       expect(item).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('opens on keyboard focus', async () => {
+      const { user } = setup();
+      const item = screen.getByTestId('header-user-profile-button');
+
+      // floating-ui's useFocus only opens on a real `:focus-visible` match
+      // (keyboard navigation), not a bare `fireEvent.focus`.
+      await tabUntilFocused(user, item);
+
+      expect(item).toHaveFocus();
+      expect(item).toHaveAttribute('aria-expanded', 'true');
+    });
+  });
+
+  describe('my apps popover', () => {
+    it('opens when hovered on desktop', async () => {
+      const { user } = setup({ isDesktop: true });
+      const trigger = screen.getByTestId('header-my-apps-button');
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+      await user.hover(trigger);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('does not open on hover on mobile/tablet', async () => {
+      const { user } = setup({ isDesktop: false });
+      const trigger = screen.getByTestId('header-my-apps-button');
+
+      await user.hover(trigger);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('opens on keyboard focus', async () => {
+      const { user } = setup({ isDesktop: true });
+      const trigger = screen.getByTestId('header-my-apps-button');
+
+      // floating-ui's useFocus only opens on a real `:focus-visible` match
+      // (keyboard navigation), not a bare `fireEvent.focus`.
+      await tabUntilFocused(user, trigger);
+
+      expect(trigger).toHaveFocus();
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('opens on click on mobile/tablet, without navigating', () => {
+      setup({ isDesktop: false });
+      const link = screen.getByTestId('header-my-apps-button');
+
+      const dispatched = fireEvent.click(link);
+
+      expect(dispatched).toBe(false); // preventDefault() was called
+      expect(link).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('navigates on click on desktop', () => {
+      setup({ isDesktop: true });
+      const link = screen.getByTestId('header-my-apps-button');
+
+      const dispatched = fireEvent.click(link);
+
+      expect(dispatched).toBe(true); // preventDefault() was not called
+    });
+
+    it('closes when clicking outside, on mobile/tablet', async () => {
+      setup({ isDesktop: false });
+      const trigger = screen.getByTestId('header-my-apps-button');
+      fireEvent.click(trigger);
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+      fireEvent.pointerDown(document.body);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
   });
 });
