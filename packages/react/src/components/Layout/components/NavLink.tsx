@@ -1,9 +1,17 @@
-import { ReactNode } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ForwardedRef,
+  ReactNode,
+  forwardRef,
+} from 'react';
 
 import clsx from 'clsx';
 import { VisuallyHidden } from '../..';
 
-export interface NavLinkProps<T> {
+export interface NavLinkProps<T> extends Omit<
+  ComponentPropsWithoutRef<'a'>,
+  'className' | 'translate'
+> {
   /**
    * href link
    */
@@ -26,19 +34,22 @@ export interface NavLinkProps<T> {
   button?: boolean;
 }
 
-export function NavLink({
-  link,
-  className,
-  children,
-  translate,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  button,
-  ...restProps
-}: NavLinkProps<string>) {
+function NavLinkRender(
+  {
+    link,
+    className,
+    children,
+    translate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    button,
+    ...restProps
+  }: NavLinkProps<string>,
+  ref: ForwardedRef<HTMLAnchorElement>,
+) {
   const classes = clsx('nav-link', className);
 
   return (
-    <a href={link} className={classes} {...restProps}>
+    <a ref={ref} href={link} className={classes} {...restProps}>
       {children}
       {translate && (
         <VisuallyHidden>
@@ -48,3 +59,7 @@ export function NavLink({
     </a>
   );
 }
+
+export const NavLink = forwardRef(NavLinkRender);
+
+NavLink.displayName = 'NavLink';
