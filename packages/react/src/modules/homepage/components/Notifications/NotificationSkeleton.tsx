@@ -6,7 +6,7 @@ const NotificationSkeleton = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >((_props, ref) => {
   return (
-    <Flex direction="column" className="notification" gap="8" ref={ref}>
+    <Flex direction="column" className="notification-item" gap="8" ref={ref}>
       <Flex direction="row" gap="8">
         <div className="notification-item-picture">
           <Avatar
@@ -15,7 +15,7 @@ const NotificationSkeleton = React.forwardRef<
             className="notification-item-avatar"
           />
         </div>
-        <Flex direction="column" gap="8" className="notification-message">
+        <Flex direction="column" gap="8" className="notification-item-message">
           <TextSkeleton />
           <TextSkeleton />
           <div className="placeholder col-4" style={{ height: '2rem' }}></div>
