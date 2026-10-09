@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { RssContainer } from './RssContainer';
+import { RssContainer } from '../RssContainer';
 
 const meta: Meta<typeof RssContainer> = {
   title: 'Modules/Homepage/Rss/Container',
