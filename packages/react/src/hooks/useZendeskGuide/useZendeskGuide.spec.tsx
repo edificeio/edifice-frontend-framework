@@ -333,7 +333,7 @@ describe('useZendeskGuide', () => {
       await mountAndLoad({ response: config({ color: undefined }) });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#ffc400' } },
+        webWidget: { color: { theme: '#3030D1' } },
       });
     });
 
