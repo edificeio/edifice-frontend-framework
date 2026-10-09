@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ButtonBeta as Button } from '../../../../components';
-import useToggle from '../../../../hooks/useToggle/useToggle';
-import { RssFeedForm } from './RssFeedForm';
+import { ButtonBeta as Button } from '../../../../../components';
+import useToggle from '../../../../../hooks/useToggle/useToggle';
+import { RssFeedForm } from '../RssFeedForm';
 
 const meta: Meta<typeof RssFeedForm> = {
   title: 'Modules/Homepage/Rss/Form',
