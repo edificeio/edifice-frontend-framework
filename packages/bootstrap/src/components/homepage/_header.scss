@@ -16,7 +16,11 @@
   border-bottom: 2px solid;
   border-image-slice: 1;
   border-width: 2px;
-  border-image-source: linear-gradient(67.55deg, #ffc403, #fc94ff);
+  border-image-source: linear-gradient(
+    67.55deg,
+    var(--color-themeSeparator-minor),
+    var(--color-themeSeparator-major)
+  );
   box-shadow: #{$box-shadow};
 
   &-brand {
