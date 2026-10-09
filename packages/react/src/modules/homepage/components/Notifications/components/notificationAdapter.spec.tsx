@@ -79,7 +79,7 @@ describe('notificationAdapter', () => {
       });
       const { params } = notificationAdapter(notification);
       expect(params.appCode).toBe('rack');
-      expect(params.appI18nKey).toBe('collect');
+      expect(params.appI18nKey).toBe('homepage.notification.type.collect');
     });
 
     it('converts underscores to hyphens for unknown types', () => {

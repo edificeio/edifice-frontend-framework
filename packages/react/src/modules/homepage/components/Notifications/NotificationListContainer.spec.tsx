@@ -33,10 +33,10 @@ describe('NotificationListContainer', () => {
       within(modal).getByText('Blog').closest('label')!,
     ).getByRole('checkbox') as HTMLInputElement;
     const wikiCheckbox = within(
-      within(modal).getByText('Wiki').closest('label')!,
+      within(modal).getByText('Cours et Wiki').closest('label')!,
     ).getByRole('checkbox') as HTMLInputElement;
     const archiveCheckbox = within(
-      within(modal).getByText('archive').closest('label')!,
+      within(modal).getByText('Mes données').closest('label')!,
     ).getByRole('checkbox') as HTMLInputElement;
 
     expect(blogCheckbox.checked).toBe(true);
@@ -87,7 +87,7 @@ describe('NotificationListContainer', () => {
 
     const modal = await openFilterModal(user);
     const wikiCheckbox = within(
-      within(modal).getByText('Wiki').closest('label')!,
+      within(modal).getByText('Cours et Wiki').closest('label')!,
     ).getByRole('checkbox') as HTMLInputElement;
     expect(wikiCheckbox.checked).toBe(true);
 
@@ -105,7 +105,7 @@ describe('NotificationListContainer', () => {
     const { user: freshUser } = render(<NotificationListContainer />);
     const freshModal = await openFilterModal(freshUser);
     const freshWikiCheckbox = within(
-      within(freshModal).getByText('Wiki').closest('label')!,
+      within(freshModal).getByText('Cours et Wiki').closest('label')!,
     ).getByRole('checkbox') as HTMLInputElement;
     expect(freshWikiCheckbox.checked).toBe(false);
   });

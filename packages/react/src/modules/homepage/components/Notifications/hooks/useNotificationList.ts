@@ -54,12 +54,9 @@ export const useNotificationListContainer =
         isFetchedTypes &&
         isFetchedPreference
       ) {
-        const preferredTypes = preference?.type;
-        setSelectedTypesState(
-          preferredTypes && preferredTypes.length > 0
-            ? preferredTypes
-            : (notificationTypes ?? []),
-        );
+        // An empty saved filter means "no type selected" and must be kept:
+        // only a missing preference falls back to every type.
+        setSelectedTypesState(preference?.type ?? notificationTypes ?? []);
       }
     }, [
       selectedTypes,
@@ -74,25 +71,32 @@ export const useNotificationListContainer =
       saveTimelinePreference({ ...preference, type: types });
     };
 
+    // `lastNotifications` applies no filter when no type is given and returns
+    // every notification, so an empty selection must not reach the API.
+    const hasNoTypeSelected = selectedTypes?.length === 0;
+
     const {
-      data: notifications,
+      data,
       hasNextPage,
       isLoading: isLoadingNotifications,
       error: errorNotifications,
       fetchNextPage,
     } = useNotifications(
       selectedTypes ?? [],
-      isFetchedTypes && !!selectedTypes,
+      isFetchedTypes && !!selectedTypes && !hasNoTypeSelected,
     );
 
     return {
-      notifications,
+      notifications: hasNoTypeSelected ? [] : data,
       notificationTypes,
       selectedTypes,
       setSelectedTypes,
-      hasNextPage,
+      hasNextPage: hasNoTypeSelected ? false : hasNextPage,
       loadNextPage: () => fetchNextPage(),
-      isLoading: isLoadingTypes || isLoadingNotifications,
+      // The notification query stays disabled until the saved filter is
+      // read, so this wait must count as loading too.
+      isLoading:
+        isLoadingTypes || selectedTypes === undefined || isLoadingNotifications,
       error: errorTypes || errorNotifications,
     };
   };
@@ -104,8 +108,8 @@ export const useNotificationListContainer =
  */
 export const useHasNotificationToday = (): boolean => {
   const { dateIsToday } = useDate();
-  // `lastNotifications` returns no result when no `type` is given, so all
-  // known types must be fetched first and passed explicitly.
+  // All known types are fetched first and passed explicitly, so the query
+  // key matches the one used by the list when every type is selected.
   const { data: notificationTypes, isFetched: isFetchedTypes } =
     useNotificationTypes();
   const { data: notifications } = useNotifications(
