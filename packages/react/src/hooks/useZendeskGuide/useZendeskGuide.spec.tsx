@@ -84,12 +84,11 @@ function config(overrides: Record<string, unknown> = {}) {
 async function mountAndLoad({
   response = config(),
   pathname = '/',
-  headerColor,
-}: { response?: unknown; pathname?: string; headerColor?: string } = {}) {
+}: { response?: unknown; pathname?: string } = {}) {
   get.mockResolvedValue(response);
   window.history.pushState({}, '', pathname);
 
-  renderHook(() => useZendeskGuide(headerColor));
+  renderHook(() => useZendeskGuide());
 
   const script = await waitFor(() => {
     const element = snippet();
@@ -334,49 +333,7 @@ describe('useZendeskGuide', () => {
       await mountAndLoad({ response: config({ color: undefined }) });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#ffc400' } },
-      });
-    });
-
-    it('lets the caller override the theme color regardless of the configured one', async () => {
-      await mountAndLoad({ headerColor: '#3030d1' });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#3030d1' } },
-      });
-    });
-
-    it('re-applies a headerColor that arrives after the widget is already ready', async () => {
-      // Simulates the caller's headerColor resolving asynchronously (e.g.
-      // from platform config) *after* hasSupportWorkflow has already
-      // triggered the bootstrap effect — the race this hook must not lose.
-      get.mockResolvedValue(config());
-
-      const { rerender } = renderHook(
-        ({ headerColor }: { headerColor?: string }) =>
-          useZendeskGuide(headerColor),
-        { initialProps: { headerColor: undefined as string | undefined } },
-      );
-
-      const script = await waitFor(() => {
-        const element = snippet();
-        expect(element).not.toBeNull();
-        return element as HTMLScriptElement;
-      });
-
-      await act(async () => {
-        script.onload?.(new Event('load'));
-      });
-
-      expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#123456' } },
-      });
-      const before = settings().length;
-
-      rerender({ headerColor: '#3030d1' });
-
-      expect(settings()[before]).toMatchObject({
-        webWidget: { color: { theme: '#3030d1' } },
+        webWidget: { color: { theme: '#3030D1' } },
       });
     });
 

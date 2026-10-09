@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { UserProfile, odeServices } from '@edifice.io/client';
 
 import { useIsAdml, useUser } from '..';
+import { useUiOverride } from '../useUiOverride';
 import { useEdificeClient } from '../../providers/EdificeClientProvider/EdificeClientProvider.hook';
 import { useEdificeTheme } from '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook';
 import { useHasWorkflow } from '../useHasWorkflow';
@@ -24,20 +25,15 @@ export interface UseZendeskGuideAPI {
   close: () => void;
 }
 
-/**
- * Add Zendesk Guide
- *
- * @param headerColor Overrides the widget panel's theme color. Can change
- * across renders (e.g. once resolved from async platform config) — the
- * widget is updated in place, no need to keep it stable.
- */
-export default function useZendeskGuide(
-  headerColor?: string,
-): UseZendeskGuideAPI {
+/** Add Zendesk Guide */
+export default function useZendeskGuide(): UseZendeskGuideAPI {
   const { currentLanguage } = useEdificeClient();
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
 
+  //TODO to delete with "edifice in product" generalization #IMPULS-6352
+  const isEdificeInProductHelp =
+    useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const { theme } = useEdificeTheme();
 
   const isMobileView = window.innerWidth <= 768;
@@ -273,7 +269,11 @@ export default function useZendeskGuide(
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
               color: {
-                theme: headerColor || zendeskGuideConfig.color || '#ffc400',
+                //TODO #IMPULS-6352 to update with "edifice in product" generalization #IMPULS-6352
+                // theme: : zendeskGuideConfig.color || '#3030D1',
+                theme: isEdificeInProductHelp
+                  ? '#3030D1'
+                  : zendeskGuideConfig.color || '#3030D1',
               },
               zIndex: 3,
               launcher: {
@@ -316,23 +316,6 @@ export default function useZendeskGuide(
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSupportWorkflow]);
-
-  useEffect(() => {
-    // `headerColor` can legitimately change after mount (e.g. it depends on
-    // platform config that resolves asynchronously) — the bootstrap effect
-    // above only reacts to `hasSupportWorkflow` and closes over whatever
-    // `headerColor` was at that time, so a later value would otherwise
-    // never reach the widget. Re-applying it here (without touching the
-    // snippet) keeps the panel color in sync regardless of which async
-    // value resolves first.
-    if (!isReady || headerColor === undefined) {
-      return;
-    }
-
-    (window as any).zE('webWidget', 'updateSettings', {
-      webWidget: { color: { theme: headerColor } },
-    });
-  }, [headerColor, isReady]);
 
   return { isReady, isOpen, open, close };
 }
