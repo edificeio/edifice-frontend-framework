@@ -5,15 +5,15 @@
   gap: var(--primitive-spacer-8);
   width: 100%;
   padding: var(--primitive-spacer-8);
-  border: 1px solid var(--primitive-yellow-300);
+  border: 1px solid var(--color-primary-light);
   border-radius: var(--primitive-border-radius-lg);
-  background-color: var(--primitive-yellow-100);
+  background-color: var(--color-primary-feather);
   text-decoration: none;
   transition: background-color 300ms ease-in-out;
 
   &:hover,
   &:focus-visible {
-    background-color: var(--primitive-yellow-200);
+    background-color: var(--color-primary-pale);
   }
 
   &-icon {

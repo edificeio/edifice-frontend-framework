@@ -60,10 +60,15 @@ $edifice2d: (
       ),
     ),
     primary: (
+      feather: $yellow-100,
       pale: $yellow-200,
       light: $yellow-300,
       default: $yellow-400,
       dark: $yellow-500,
+    ),
+    themeSeparator: (
+      minor: $yellow-500,
+      major: $pink-500,
     ),
     profil: (
       guest: $yellow-700,

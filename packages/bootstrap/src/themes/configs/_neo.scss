@@ -61,10 +61,15 @@ $neo: (
       ),
     ),
     primary: (
+      feather: $neo-orange-200,
       pale: $neo-orange-200,
       light: $neo-orange-300,
       default: $neo-orange-500,
       dark: $neo-orange-700,
+    ),
+    themeSeparator: (
+      minor: #ffffff,
+      major: #ffffff,
     ),
     profil: (
       guest: $neo-pink-500,
