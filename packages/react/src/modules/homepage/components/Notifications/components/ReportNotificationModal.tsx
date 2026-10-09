@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Modal } from '../../../../..';
+import { ButtonBeta, ModalBeta as Modal } from '../../../../..';
 import { IconAlertTriangle } from '../../../../icons/components';
 
 export type ReportNotificationModalProps = {
@@ -21,22 +21,15 @@ const ReportNotificationModal = ({
   return (
     <Modal
       id="report-notification-modal"
-      size="sm"
+      size="m"
       isOpen={isOpen}
       onModalClose={onCancel}
     >
       <Modal.Header onModalClose={onCancel}>
-        {t('homepage.notifications.report-modal.title', {
-          defaultValue: 'Signaler une notification',
-        })}
+        {t('homepage.notifications.report-modal.title')}
       </Modal.Header>
       <Modal.Body>
-        <p>
-          {t('homepage.notifications.report-modal.body', {
-            defaultValue:
-              "Attention ! Vous souhaitez signaler une notification inappropriée ou qui ne respecte pas les conditions d'utilisation de ONE. L'heure et l'origine de ce signalement seront enregistrées et transmises à un administrateur pour traitement.",
-          })}
-        </p>
+        <p>{t('homepage.notifications.report-modal.body')}</p>
       </Modal.Body>
       <Modal.Footer>
         <ButtonBeta
@@ -54,9 +47,7 @@ const ReportNotificationModal = ({
           variant="filled"
           leftIcon={<IconAlertTriangle />}
         >
-          {t('homepage.notifications.report-modal.confirm', {
-            defaultValue: 'Signaler la notification',
-          })}
+          {t('homepage.notifications.report-modal.confirm')}
         </ButtonBeta>
       </Modal.Footer>
     </Modal>
