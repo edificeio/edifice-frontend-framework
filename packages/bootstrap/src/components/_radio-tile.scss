@@ -1,0 +1,175 @@
+// RadioTile – a radio input presented as a selectable tile.
+// States are driven by the native input (`:checked`, `:disabled`), so the tile
+// works both as a controlled and an uncontrolled input.
+// The stroke is drawn with an inset outline (like a Figma "inside" stroke) so
+// that its width can change between states without any layout shift.
+// Font family is intentionally inherited, so it can be overridden per instance
+// through `className` or `style`.
+
+.radio-tile {
+  --radio-tile-bg: var(--primitive-grey-100);
+  --radio-tile-stroke-color: var(--primitive-grey-200);
+  --radio-tile-stroke-width: 1px;
+  --radio-tile-color: var(--primitive-grey-900);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  background: var(--radio-tile-bg);
+  border-radius: var(--primitive-border-radius-lg);
+  outline: var(--radio-tile-stroke-width) solid var(--radio-tile-stroke-color);
+  outline-offset: calc(-1 * var(--radio-tile-stroke-width));
+  color: var(--radio-tile-color);
+  font-weight: var(--font-weight-regular);
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease-in-out,
+    outline-color 0.15s ease-in-out;
+
+  &__label {
+    color: inherit;
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  &__image {
+    display: block;
+    flex-shrink: 0;
+    overflow: hidden;
+
+    > * {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    > img {
+      object-fit: cover;
+    }
+  }
+
+  // Layouts
+  // ---------------------------------------------------------------------------
+
+  &--text {
+    justify-content: center;
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-24);
+
+    .radio-tile__label {
+      font-size: var(--primitive-font-size-default);
+      line-height: 2.4rem;
+      text-align: center;
+      white-space: nowrap;
+    }
+  }
+
+  &--horizontal {
+    gap: var(--primitive-spacer-8);
+    min-width: 160px;
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-16)
+      var(--primitive-spacer-8) var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+
+    .radio-tile__image {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--primitive-border-radius-lg);
+    }
+
+    .radio-tile__label {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  &--vertical {
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--primitive-spacer-8);
+    padding: var(--primitive-spacer-12);
+
+    .radio-tile__image {
+      width: 56px;
+      height: 36px;
+      border: 2px solid var(--primitive-white);
+      border-radius: var(--primitive-border-radius-md);
+    }
+
+    .radio-tile__label {
+      text-align: center;
+    }
+  }
+
+  &--image {
+    --radio-tile-bg: var(--primitive-white);
+
+    width: 90px;
+    height: 50px;
+    overflow: hidden;
+
+    .radio-tile__image {
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--primitive-white);
+      border-radius: calc(var(--primitive-border-radius-lg) - 2px);
+    }
+  }
+
+  // States
+  // ---------------------------------------------------------------------------
+
+  &:hover {
+    --radio-tile-bg: color-mix(
+      in srgb,
+      var(--color-primary-pale) 50%,
+      var(--primitive-white)
+    );
+    --radio-tile-stroke-color: var(--color-primary-light);
+    --radio-tile-stroke-width: 2px;
+  }
+
+  &:has(.radio-tile__input:checked) {
+    --radio-tile-bg: var(--color-primary-pale);
+    --radio-tile-stroke-color: var(--color-primary-default);
+    --radio-tile-stroke-width: 2px;
+
+    .radio-tile__label {
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  &:has(.radio-tile__input:focus-visible) {
+    box-shadow: 0 0 0 2px var(--color-primary-dark);
+  }
+
+  &:has(.radio-tile__input:disabled) {
+    --radio-tile-bg: var(--primitive-grey-200);
+    --radio-tile-stroke-color: var(--primitive-grey-100);
+    --radio-tile-stroke-width: 2px;
+    --radio-tile-color: var(--primitive-grey-700);
+
+    cursor: default;
+
+    .radio-tile__image {
+      opacity: 0.4;
+    }
+  }
+
+  &--image:hover,
+  &--image:has(.radio-tile__input:checked) {
+    --radio-tile-bg: var(--primitive-white);
+  }
+
+  &--image:has(.radio-tile__input:disabled) {
+    --radio-tile-bg: var(--primitive-white);
+    --radio-tile-stroke-color: var(--primitive-grey-200);
+
+    .radio-tile__image {
+      border-color: var(--primitive-grey-100);
+    }
+  }
+}
