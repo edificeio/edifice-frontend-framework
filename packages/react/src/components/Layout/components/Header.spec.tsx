@@ -167,16 +167,17 @@ describe('Layout Header', () => {
     it('links to the conversation when the workflow is granted', () => {
       setup({ state: { conversationWorflow: true } });
 
-      expect(
-        screen.getByRole('link', { name: 'conversation' }),
-      ).toHaveAttribute('href', '/conversation/conversation');
+      expect(screen.getByRole('link', { name: 'Messagerie' })).toHaveAttribute(
+        'href',
+        '/conversation/conversation',
+      );
     });
 
     it('hides the conversation without the workflow', () => {
       setup();
 
       expect(
-        screen.queryByRole('link', { name: 'conversation' }),
+        screen.queryByRole('link', { name: 'Messagerie' }),
       ).not.toBeInTheDocument();
     });
 
@@ -195,15 +196,16 @@ describe('Layout Header', () => {
     it('links to zimbra when that workflow is granted instead', () => {
       setup({ zimbraWorkflow: true });
 
-      expect(
-        screen.getByRole('link', { name: 'conversation' }),
-      ).toHaveAttribute('href', '/zimbra/zimbra');
+      expect(screen.getByRole('link', { name: 'Messagerie' })).toHaveAttribute(
+        'href',
+        '/zimbra/zimbra',
+      );
     });
 
     it('opens the carbonio preauth link in a new tab', () => {
       setup({ workflows: { [CARBONIO]: true } });
 
-      const link = screen.getByRole('link', { name: 'conversation' });
+      const link = screen.getByRole('link', { name: 'Messagerie' });
       expect(link).toHaveAttribute('href', '/auth/carbonio/preauth');
       expect(link).toHaveAttribute('target', '_blank');
     });
@@ -252,36 +254,41 @@ describe('Layout Header', () => {
     it('links to the applications and the user account', () => {
       setup();
 
-      expect(
-        screen.getByRole('link', { name: 'navbar.applications' }),
-      ).toHaveAttribute('href', '/welcome');
-      expect(
-        screen.getByRole('link', { name: /navbar.myaccount/ }),
-      ).toHaveAttribute('href', '/userbook/mon-compte');
+      expect(screen.getByTestId('header-my-apps-button')).toHaveAttribute(
+        'href',
+        '/welcome',
+      );
+      expect(screen.getByTestId('header-user-profile-button')).toHaveAttribute(
+        'href',
+        '/userbook/mon-compte',
+      );
     });
 
     it('appends the theme callback to the logout link', () => {
       setup();
 
-      expect(
-        screen.getByRole('link', { name: /navbar.disconnect/ }),
-      ).toHaveAttribute('href', '/auth/logout?callback=/portal');
+      expect(screen.getByTestId('header-logout-button')).toHaveAttribute(
+        'href',
+        '/auth/logout?callback=/portal',
+      );
     });
 
     it('logs out without a callback when the theme has none', () => {
       setup({ logoutCallback: undefined });
 
-      expect(
-        screen.getByRole('link', { name: /navbar.disconnect/ }),
-      ).toHaveAttribute('href', '/auth/logout?callback=');
+      expect(screen.getByTestId('header-logout-button')).toHaveAttribute(
+        'href',
+        '/auth/logout?callback=',
+      );
     });
 
     it('shows the communities entry when its workflow is granted', () => {
       setup({ state: { communitiesWorkflow: true } });
 
-      expect(
-        screen.getByRole('link', { name: 'navbar.community' }),
-      ).toHaveAttribute('href', '/communities');
+      expect(screen.getByTestId('header-community-button')).toHaveAttribute(
+        'href',
+        '/communities',
+      );
     });
 
     it('shows the search engine when its workflow is granted', () => {

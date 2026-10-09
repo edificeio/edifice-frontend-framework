@@ -136,14 +136,16 @@ describe('MessageFlash', () => {
     it('shows a warning icon on a red message', () => {
       render(<MessageFlash message={message({ color: 'red' })} />);
 
-      expect(screen.getByRole('img', { name: 'warning' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('img', { name: 'Avertissement' }),
+      ).toBeInTheDocument();
     });
 
     it('shows an information icon otherwise', () => {
       render(<MessageFlash message={message()} />);
 
       expect(
-        screen.getByRole('img', { name: 'information' }),
+        screen.getByRole('img', { name: 'Information' }),
       ).toBeInTheDocument();
     });
 

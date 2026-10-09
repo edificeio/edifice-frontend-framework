@@ -65,7 +65,32 @@
     }
 
     .popover {
+      // The React component sets `top-100`/`d-block` as Bootstrap utility
+      // classes, which carry `!important` — a plain `top`/`display` override
+      // here can never win against them regardless of specificity. `margin`
+      // isn't touched by either utility, so it's used instead. 2px = the
+      // navbar's own border-bottom width, so the popover lands flush right
+      // under it.
+      margin-top: 2px;
+      width: 247px;
+      padding: var(--primitive-spacer-8);
       box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .popover-body {
+      padding: 0;
+    }
+
+    .popover-footer {
+      // `PopoverFooter` hardcodes a `p-8` utility class (also `!important`) —
+      // cancel it with a negative margin rather than fight it, then re-apply
+      // just the intended 4px gap above the icon grid.
+      margin: calc(-1 * var(--primitive-spacer-8));
+      margin-top: calc(var(--primitive-spacer-4) - var(--primitive-spacer-8));
     }
 
     .popover .logout {

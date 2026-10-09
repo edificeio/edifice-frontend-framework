@@ -287,7 +287,11 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                 aria-haspopup="true"
                 aria-expanded={isAppsHovered}
               >
-                <NavLink link="/welcome" translate={t('navbar.applications')}>
+                <NavLink
+                  link="/welcome"
+                  translate={t('navbar.applications')}
+                  data-testid="header-my-apps-button"
+                >
                   <IconMyApps color="#fff" />
                 </NavLink>
                 <Popover
@@ -402,6 +406,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                         <a
                           href="/communities"
                           className="nav-link dropdown-item"
+                          data-testid="header-community-button"
                         >
                           <IconCommunities className="icon communities" />
                           <span className="nav-text">
@@ -415,6 +420,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                       <a
                         href="/userbook/mon-compte"
                         className="nav-link dropdown-item"
+                        data-testid="header-user-profile-button"
                       >
                         <Avatar
                           alt={userName}
@@ -440,6 +446,7 @@ const Header = ({ is1d = false, src = '' }: HeaderProps): JSX.Element => {
                           (theme?.logoutCallback ?? '')
                         }
                         className="nav-link dropdown-item"
+                        data-testid="header-logout-button"
                       >
                         <IconDisconnect className="icon logout" />
                         <span id="logout-label" className="nav-text">

@@ -73,10 +73,7 @@ export default function UserSpace({
             icon={<IconAddWidget />}
             variant="ghost"
             color="tertiary"
-            aria-label={t(
-              'homepage.userSpace.customizeWidgets',
-              'Personnaliser mes widgets',
-            )}
+            aria-label={t('homepage.userSpace.customizeWidgets')}
             onClick={onCustomizeWidgetsClick}
           />
         )}
