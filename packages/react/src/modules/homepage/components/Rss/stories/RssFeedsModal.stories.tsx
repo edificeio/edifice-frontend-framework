@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
-import { ButtonBeta as Button } from '../../../../components';
-import useToggle from '../../../../hooks/useToggle/useToggle';
-import { RssFeedsModal } from './RssFeedsModal';
-import { RssFeed } from './types';
+import { ButtonBeta as Button } from '../../../../../components';
+import useToggle from '../../../../../hooks/useToggle/useToggle';
+import { RssFeedsModal } from '../RssFeedsModal';
+import { RssFeed } from '../types';
 
 const meta: Meta<typeof RssFeedsModal> = {
   title: 'Modules/Homepage/Rss/Modal',

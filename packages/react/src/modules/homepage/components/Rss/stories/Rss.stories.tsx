@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Rss } from './Rss';
-import { RssArticle, RssFeed } from './types';
+import { Rss } from '../Rss';
+import { RssArticle, RssFeed } from '../types';
 
 const meta: Meta<typeof Rss> = {
   title: 'Modules/Homepage/Rss/Widget',
