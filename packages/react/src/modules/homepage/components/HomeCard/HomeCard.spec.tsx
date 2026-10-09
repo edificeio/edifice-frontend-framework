@@ -131,6 +131,25 @@ describe('HomeCard.Header', () => {
     expect(onActionClick).toHaveBeenCalledTimes(1);
   });
 
+  it('renders an icon-only action button when only an icon is provided', async () => {
+    const onActionClick = vi.fn();
+    const { user } = render(
+      <HomeCard.Header
+        title="Hello"
+        actionLeftIcon={<span>icon</span>}
+        onActionClick={onActionClick}
+        actionProps={{ 'aria-label': 'Open' }}
+      />,
+    );
+
+    const button = screen.getByTestId('home-card-header-action');
+    expect(button).toHaveClass('btn-beta--icon-only');
+    expect(button).toHaveAccessibleName('Open');
+
+    await user.click(button);
+    expect(onActionClick).toHaveBeenCalledTimes(1);
+  });
+
   it('renders the action button with the ghost ButtonBeta variant', () => {
     render(
       <HomeCard.Header

@@ -10,7 +10,11 @@ export interface HomeCardHeaderProps extends Omit<
 > {
   /** Title displayed on the left side of the header. */
   title: ReactNode;
-  /** Label of the action button displayed on the right side of the header. */
+  /**
+   * Label of the action button displayed on the right side of the header.
+   * Can be omitted for an icon-only button — pass `aria-label` via
+   * `actionProps` in that case.
+   */
   actionLabel?: ReactNode;
   /** Callback invoked when the action button is clicked. */
   onActionClick?: MouseEventHandler<HTMLButtonElement>;
@@ -43,7 +47,11 @@ const HomeCardHeader = ({
   className,
   ...rest
 }: HomeCardHeaderProps) => {
-  const hasAction = Boolean(actionLabel) && Boolean(onActionClick);
+  const hasAction =
+    Boolean(onActionClick) &&
+    (Boolean(actionLabel) ||
+      Boolean(actionLeftIcon) ||
+      Boolean(actionRightIcon));
 
   return (
     <Flex
