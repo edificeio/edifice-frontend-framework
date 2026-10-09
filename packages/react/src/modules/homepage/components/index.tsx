@@ -1,3 +1,4 @@
+export * from './Agenda';
 export * from './Communities';
 export * from './Favorites';
 export * from './Header';
