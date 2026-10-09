@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   AppIcon,
@@ -35,8 +35,6 @@ const NotificationFilterModal = ({
   const { t, i18n } = useTranslation();
   const [selected, setSelected] = useState<string[]>(appliedTypes);
 
-  const refSelectAllCheckbox = useRef<HTMLInputElement>(null);
-
   const allTypesSorted = useMemo(
     () =>
       allTypes
@@ -65,13 +63,6 @@ const NotificationFilterModal = ({
     setSelected(selected.length === allTypes.length ? [] : allTypes);
   };
 
-  useEffect(() => {
-    if (refSelectAllCheckbox.current) {
-      refSelectAllCheckbox.current!.indeterminate =
-        selected.length > 0 && selected.length < allTypes.length;
-    }
-  }, [selected.length, allTypes.length]);
-
   return (
     <Modal
       id="notification-filter-modal"
@@ -89,11 +80,12 @@ const NotificationFilterModal = ({
         <Flex align="center" gap="8" className="mb-24">
           <label className="notification-filter-select-all notification-filter-chip">
             <span>{t('homepage.notifications.filter-modal.select-all')}</span>
-            <input
-              type="checkbox"
-              ref={refSelectAllCheckbox}
+
+            <Checkbox
               checked={selected.length === allTypes.length}
-              className="notification-filter-checkbox"
+              indeterminate={
+                selected.length > 0 && selected.length < allTypes.length
+              }
               onChange={toggleAll}
             />
           </label>
