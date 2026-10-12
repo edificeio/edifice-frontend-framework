@@ -173,6 +173,8 @@ export interface MediaLibraryProps {
 
   /** Allow selecting / uploading multiple files at once ? */
   multiple?: boolean;
+  /** Restrict attachments to PDF files in Workspace and Upload. */
+  pdfOnly?: boolean;
   /**
    * Called when the user validates the modal (Add button).
    * @param result depends on which InnerTab is visible
@@ -200,6 +202,7 @@ const MediaLibrary = forwardRef(
       appCode,
       visibility,
       multiple,
+      pdfOnly,
       onSuccess,
       onCancel,
       onTabChange,
@@ -445,6 +448,7 @@ const MediaLibrary = forwardRef(
             appCode,
             visibility,
             multiple,
+            pdfOnly,
             type,
             setResultCounter,
             setResult,

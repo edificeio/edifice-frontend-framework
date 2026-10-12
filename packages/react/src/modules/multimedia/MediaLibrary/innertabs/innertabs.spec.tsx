@@ -119,10 +119,23 @@ describe('MediaLibrary innertabs', () => {
       ],
       ['embedder', []],
       ['hyperlink', []],
+      ['attachment', []],
     ] as const)('accepts the right file types for %s', (type, accepted) => {
       renderTab(<Upload />, { type });
 
       expect(childProps.Dropzone.accept).toEqual(accepted);
+    });
+
+    it('accepts only PDFs for attachments when pdfOnly is enabled', () => {
+      renderTab(<Upload />, { type: 'attachment', pdfOnly: true });
+
+      expect(childProps.Dropzone.accept).toEqual(['application/pdf']);
+    });
+
+    it('does not restrict other types when pdfOnly is enabled', () => {
+      renderTab(<Upload />, { type: 'image', pdfOnly: true });
+
+      expect(childProps.Dropzone.accept).toContain('image/png');
     });
 
     it('accepts nothing in particular when the type is unknown', () => {
@@ -303,6 +316,18 @@ describe('MediaLibrary innertabs', () => {
       renderTab(<Workspace />, { type: 'embedder' });
 
       expect(childProps.Workspace.roles).toBeNull();
+    });
+
+    it('keeps all attachments when pdfOnly is omitted', () => {
+      renderTab(<Workspace />, { type: 'attachment' });
+
+      expect(childProps.Workspace.roles).toBeNull();
+    });
+
+    it('shows only PDF attachments when pdfOnly is enabled', () => {
+      renderTab(<Workspace />, { type: 'attachment', pdfOnly: true });
+
+      expect(childProps.Workspace.roles).toBe('pdf');
     });
 
     it('opens on the folder matching the requested visibility', () => {
