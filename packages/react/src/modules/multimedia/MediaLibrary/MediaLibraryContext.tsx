@@ -18,6 +18,9 @@ export const MediaLibraryContext = createContext<{
   /** Allow selecting / uploading multiple files at once ? */
   multiple?: boolean;
 
+  /** Restrict attachments to PDF files in Workspace and Upload. */
+  pdfOnly?: boolean;
+
   /** Type of resource to search for. */
   type: MediaLibraryType | null;
 

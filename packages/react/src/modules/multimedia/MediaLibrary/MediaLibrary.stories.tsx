@@ -45,6 +45,7 @@ type Story = StoryObj<typeof MediaLibrary>;
 
 const code = (
   type: string,
+  pdfOnly = false,
 ) => `const mediaLibraryRef = useRef<MediaLibraryRef>(null);
 return (
   <>
@@ -58,7 +59,7 @@ return (
     <MediaLibrary
       {...args}
       ref={mediaLibraryRef} // pass the ref
-      onCancel={() => mediaLibraryRef.current?.hide()} // handle the cancel event
+${pdfOnly ? '      pdfOnly\n' : ''}      onCancel={() => mediaLibraryRef.current?.hide()} // handle the cancel event
       onSuccess={(result: MediaLibraryResult) => {}} // handle the result
     />
   </>
@@ -155,6 +156,21 @@ export const Attachment: Story = {
       },
       source: {
         code: code('attachment'),
+      },
+    },
+  },
+};
+
+export const PdfOnlyAttachment: Story = {
+  args: { pdfOnly: true },
+  render: (args) => renderMediaLibrary(args, 'attachment'),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Choose or upload only PDF attachments.',
+      },
+      source: {
+        code: code('attachment', true),
       },
     },
   },
