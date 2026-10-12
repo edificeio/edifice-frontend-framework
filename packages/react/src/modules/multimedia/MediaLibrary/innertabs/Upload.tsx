@@ -83,6 +83,7 @@ export const Upload = () => {
 
   const {
     type,
+    pdfOnly,
     visibility,
     multiple,
     setResult,
@@ -163,7 +164,14 @@ export const Upload = () => {
           />
         </Flex>
       )}
-      <Dropzone multiple={multiple} accept={acceptedTypes(type ?? 'embedder')}>
+      <Dropzone
+        multiple={multiple}
+        accept={
+          type === 'attachment' && pdfOnly
+            ? ['application/pdf']
+            : acceptedTypes(type ?? 'embedder')
+        }
+      >
         <UploadFiles
           onFilesChange={handleOnFilesChange}
           visibility={visibility}
