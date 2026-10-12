@@ -84,6 +84,7 @@ vi.mock('./innertabs', async () => {
 
     return (
       <div data-testid={`inner-${name}`}>
+        <span data-testid="pdf-only">{String(context.pdfOnly)}</span>
         <button
           onClick={() => {
             context?.setResult?.([{ _id: 'doc-1' } as WorkspaceElement]);
@@ -183,6 +184,7 @@ function setup({
         // ['protected', 'public'].includes(visibility) branch.
         visibility={visibility as WorkspaceVisibility}
         multiple
+        pdfOnly={pdfOnly}
         onSuccess={onSuccess}
         onCancel={onCancel}
         onTabChange={onTabChange}
@@ -212,6 +214,14 @@ describe('MediaLibrary', () => {
 
     expect(await screen.findByText('Add an image')).toBeInTheDocument();
     await waitFor(() => expect(ref.current?.type).toBe('image'));
+  });
+
+  it('passes the PDF-only option to attachment tabs', async () => {
+    const { ref } = setup({ pdfOnly: true });
+
+    await waitFor(() => ref.current?.show('attachment'));
+
+    expect(await screen.findByTestId('pdf-only')).toHaveTextContent('true');
   });
 
   it('closes on demand', async () => {
