@@ -1,6 +1,6 @@
 services:
   node:
-    image: opendigitaleducation/node:20-alpine-pnpm
+    image: opendigitaleducation/node:22-alpine-pnpm
     working_dir: /home/node/app
     environment:
       - NPM_TOKEN
