@@ -75,7 +75,11 @@ export default defineConfig(({ mode }) => {
 
       rollupOptions: {
         external: [
-          ...Object.keys(dependencies ?? {}),
+          // react-pdf / pdfjs-dist are bundled into the lib output so consuming
+          // apps don't need to install/duplicate them nor keep versions in sync.
+          ...Object.keys(dependencies ?? {}).filter(
+            (dep) => dep !== 'react-pdf' && dep !== 'pdfjs-dist',
+          ),
           ...Object.keys(peerDependencies ?? {}),
           'react/jsx-runtime',
           '@edifice.io/client',
