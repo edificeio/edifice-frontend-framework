@@ -2,36 +2,41 @@ import { getVisibleCount, getVisibleIndexes } from './visibleTabs';
 
 describe('getVisibleCount', () => {
   it('returns every tab when they all fit', () => {
-    // 3 * 100 + 2 * 10 = 320
-    expect(getVisibleCount([100, 100, 100], 0, 320, 10, 50, 0)).toBe(3);
+    // 3 * 100 = 300
+    expect(getVisibleCount([100, 100, 100], 0, 300, 10, 50, 0)).toBe(3);
+  });
+
+  it('does not count any gap between tabs', () => {
+    // A gap between tabs would make 300 + 2 * 10 = 320 overflow 300
+    expect(getVisibleCount([100, 100, 100], 0, 300, 10, 50, 0)).toBe(3);
   });
 
   it('keeps room for the overflow trigger when tabs do not fit', () => {
-    // budget = 300 - 50 - 10 = 240: 100 + 10 + 100 fits, a third does not
-    expect(getVisibleCount([100, 100, 100], 0, 300, 10, 50, 0)).toBe(2);
+    // budget = 290 - 10 - 50 = 230: 100 + 100 fits, a third does not
+    expect(getVisibleCount([100, 100, 100], 0, 290, 10, 50, 0)).toBe(2);
   });
 
   it('always counts the active tab first', () => {
-    // budget = 240: the wide active tab (200) leaves no room for another one
-    expect(getVisibleCount([100, 100, 200], 2, 300, 10, 50, 0)).toBe(1);
+    // budget = 230: the wide active tab (200) leaves no room for another one
+    expect(getVisibleCount([100, 100, 200], 2, 290, 10, 50, 0)).toBe(1);
   });
 
   it('stops at the first tab that does not fit', () => {
-    // budget = 240: 50 + 10 + 150 = 210, then 210 + 10 + 30 > 240
-    expect(getVisibleCount([50, 150, 30, 30], 0, 250, 10, 0, 0)).toBe(2);
+    // budget = 240 - 10 = 230: 50 + 150 = 200, then 200 + 40 > 230
+    expect(getVisibleCount([50, 150, 40, 30], 0, 240, 10, 0, 0)).toBe(2);
   });
 
   it('keeps room for the inverted corner of the last tab', () => {
-    // 300 + 2 * 10 + 16 (corner) = 336 no longer fits in 320
-    expect(getVisibleCount([100, 100, 100], 0, 320, 10, 0, 16)).toBe(2);
-    // budget = 290 - 16 - 10 - 50 = 214: 100 + 10 + 100 fits
-    expect(getVisibleCount([100, 100, 100], 0, 290, 10, 50, 16)).toBe(2);
-    // budget = 280 - 16 - 10 - 50 = 204: 100 + 10 + 100 does not fit
-    expect(getVisibleCount([100, 100, 100], 0, 280, 10, 50, 16)).toBe(1);
+    // 300 + 16 (corner) = 316 no longer fits in 310
+    expect(getVisibleCount([100, 100, 100], 0, 310, 10, 0, 16)).toBe(2);
+    // budget = 276 - 16 - 10 - 50 = 200: 100 + 100 fits
+    expect(getVisibleCount([100, 100, 100], 0, 276, 10, 50, 16)).toBe(2);
+    // budget = 275 - 16 - 10 - 50 = 199: 100 + 100 does not fit
+    expect(getVisibleCount([100, 100, 100], 0, 275, 10, 50, 16)).toBe(1);
   });
 
   it('pins the first tab when there is no active tab', () => {
-    expect(getVisibleCount([100, 100, 100], -1, 300, 10, 50, 0)).toBe(2);
+    expect(getVisibleCount([100, 100, 100], -1, 290, 10, 50, 0)).toBe(2);
   });
 
   it('never returns less than one', () => {

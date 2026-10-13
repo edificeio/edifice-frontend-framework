@@ -171,6 +171,20 @@ describe('TabsKids', () => {
       expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
       expect(screen.queryByText('Content')).not.toBeInTheDocument();
     });
+
+    it('renders a region named by the sole item instead of tabs', () => {
+      render(
+        <TabsKids items={[items[0]]} activeId="alice" onChange={vi.fn()}>
+          <div>Content</div>
+        </TabsKids>,
+      );
+
+      expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
+      expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
+      expect(
+        screen.getByRole('region', { name: 'Alice Martin' }),
+      ).toHaveTextContent('Content');
+    });
   });
 
   describe('keyboard navigation', () => {
