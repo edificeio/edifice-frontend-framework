@@ -172,9 +172,25 @@ describe('TabsKids', () => {
       expect(screen.queryByText('Content')).not.toBeInTheDocument();
     });
 
-    it('renders a region named by the sole item instead of tabs', () => {
+    it('displays the tab bar with a single item', () => {
       render(
         <TabsKids items={[items[0]]} activeId="alice" onChange={vi.fn()}>
+          <div>Content</div>
+        </TabsKids>,
+      );
+
+      expect(getTab('Alice Martin')).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByRole('tabpanel')).toHaveTextContent('Content');
+    });
+
+    it('renders a region named by the active item when the tab bar is hidden', () => {
+      render(
+        <TabsKids
+          items={items}
+          activeId="bob"
+          onChange={vi.fn()}
+          showTabBar={false}
+        >
           <div>Content</div>
         </TabsKids>,
       );
@@ -182,7 +198,7 @@ describe('TabsKids', () => {
       expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
       expect(screen.queryByRole('tabpanel')).not.toBeInTheDocument();
       expect(
-        screen.getByRole('region', { name: 'Alice Martin' }),
+        screen.getByRole('region', { name: 'Bob Durand' }),
       ).toHaveTextContent('Content');
     });
   });
