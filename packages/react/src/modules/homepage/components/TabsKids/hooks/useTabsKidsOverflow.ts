@@ -48,7 +48,9 @@ export const useTabsKidsOverflow = ({
     const trigger = measure.querySelector<HTMLElement>(
       '.tabs-kids-measure-trigger',
     );
-    const gap = parseFloat(getComputedStyle(measure).columnGap) || 0;
+    // Tabs have no gap between them: only the bar gap, between the tab list
+    // and the overflow trigger, counts.
+    const gap = parseFloat(barStyle.columnGap) || 0;
     // The inverted corner of the last tab sticks out of it: keep room for it,
     // before the trigger or the end of the bar.
     const corner = tabs[0]

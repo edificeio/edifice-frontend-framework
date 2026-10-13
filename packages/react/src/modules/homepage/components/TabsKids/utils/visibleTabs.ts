@@ -3,8 +3,9 @@
  * counted, then the other tabs are added from the start until one does not
  * fit. Never returns less than one.
  *
- * `corner` is the room needed after the last tab for its inverted corner,
- * `trigger` the width of the overflow dropdown trigger.
+ * Tabs are laid out without gap between them. `gap` is the space between the
+ * tab list and the overflow dropdown trigger, `trigger` the width of that
+ * trigger, `corner` the room needed after the last tab for its inverted corner.
  */
 export const getVisibleCount = (
   widths: number[],
@@ -14,8 +15,7 @@ export const getVisibleCount = (
   trigger: number,
   corner: number,
 ): number => {
-  const total =
-    widths.reduce((sum, w) => sum + w, 0) + gap * (widths.length - 1) + corner;
+  const total = widths.reduce((sum, w) => sum + w, 0) + corner;
   if (total <= available) return widths.length;
 
   // Not everything fits: keep room for the overflow dropdown trigger.
@@ -26,8 +26,8 @@ export const getVisibleCount = (
 
   for (let i = 0; i < widths.length; i++) {
     if (i === pinned) continue;
-    if (used + gap + widths[i] > budget) break;
-    used += gap + widths[i];
+    if (used + widths[i] > budget) break;
+    used += widths[i];
     count++;
   }
 

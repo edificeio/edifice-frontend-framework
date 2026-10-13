@@ -47,11 +47,12 @@ export const TabsKids = ({
   overflowLabel,
   className,
 }: TabsKidsProps) => {
-  const hasActiveItem = items.some((item) => item.id === activeId);
+  const hasTabs = items.length > 1;
+  const activeItem = items.find((item) => item.id === activeId);
 
   return (
     <div className={clsx('tabs-kids', className)}>
-      {items.length > 1 && (
+      {hasTabs && (
         <TabsKidsList
           items={items}
           activeId={activeId}
@@ -61,11 +62,12 @@ export const TabsKids = ({
           overflowLabel={overflowLabel}
         />
       )}
-      {hasActiveItem && (
+      {activeItem && (
         <div
-          id={`tabs-kids-panel-${activeId}`}
-          role="tabpanel"
-          aria-labelledby={`tabs-kids-${activeId}`}
+          id={hasTabs ? `tabs-kids-panel-${activeId}` : undefined}
+          role={hasTabs ? 'tabpanel' : 'region'}
+          aria-labelledby={hasTabs ? `tabs-kids-${activeId}` : undefined}
+          aria-label={hasTabs ? undefined : activeItem.label}
           className="tabs-kids-panel"
         >
           {children}
