@@ -102,19 +102,18 @@ app, et se propage seule aux 8 fronts consommateurs.
 
 | Package | Consommé par | Statut |
 | --- | --- | --- |
-| `ode-explorer` | **8 fronts** | ✅ **Fait** — ENABLING-1158, `2.6.12` sur `latest` et `develop` (vérifié le 01/10/2026) |
-| `@edifice.io/collect-frontend` | rack, communities | À faire |
-| `@edifice.io/wiki` | communities | À faire — prérequis `ode-explorer` satisfait |
+| `ode-explorer` | **8 fronts** | ✅ **Fait** — ENABLING-1158, peers corrigés en `"*"` dans `2.6.15` sur `latest` et `develop` (vérifié le 13/10/2026) |
+| `@edifice.io/collect-frontend` | rack, communities | ✅ **Fait** — PEDAGO-4386, peers en `"*"` (vérifié le 13/10/2026) |
+| `@edifice.io/wiki` | communities | ✅ **Fait** — PEDAGO-4387, peers en `"*"` (vérifié le 13/10/2026) |
 
-Valeurs de référence : celles publiées par `ode-explorer@2.6.12`. Les trois `@edifice.io/*` valent le **tag
-de la branche publiante** (`develop` sur `develop`, la version exacte du socle sur `main`, ex. `2.6.7`).
+Valeurs de référence : celles publiées par `ode-explorer@2.6.15`. Les trois `@edifice.io/*` valent **`"*"`**.
 
 ```json
 {
   "peerDependencies": {
-    "@edifice.io/bootstrap": "develop",
-    "@edifice.io/client": "develop",
-    "@edifice.io/react": "develop",
+    "@edifice.io/bootstrap": "*",
+    "@edifice.io/client": "*",
+    "@edifice.io/react": "*",
     "@tanstack/react-query": "^5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -127,6 +126,14 @@ de la branche publiante** (`develop` sur `develop`, la version exacte du socle s
   }
 }
 ```
+
+### Pourquoi `"*"` et pas un tag ou une version exacte
+
+Un peer en tag (`"develop"`) ou en version exacte (`"2.6.7"`) **impose une version attendue à l'app hôte**.
+Dès que l'app suit un autre tag (`develop-enabling`, `develop-pedago`…) ou une autre version, pnpm signale un
+peer non satisfait, et un gestionnaire strict peut refuser l'installation. C'est ce qu'avait produit la
+première version d'`ode-explorer` (`2.6.12`, peers en tag puis en version exacte sur `main`), corrigée en `"*"`
+dans `2.6.15`. `"*"` laisse l'app choisir ; le contrôle de version reste de son ressort.
 
 **Ajouter aussi `peerDependencies` à `rollupOptions.external` dans `vite.config.ts`.** Le build `lib` de
 `collect` et `wiki` ne marque comme `external` que les `dependencies` : sans cet ajout, le socle déplacé en
@@ -183,11 +190,11 @@ correction au build suivant (publié le 01/10/2026 ; à remesurer). **Aucune squ
 
 | Inconvénient | Détail |
 | --- | --- |
-| Le tag (`develop`) ou la version exacte en peer ne fait pas de contrôle de range : aucune incompatibilité n'est détectée par pnpm. | Un range strict (`">=2.6.0 <3"`) est inutilisable : une prerelease `2.6.0-develop.20260727123808` ne satisfait pas `>=2.6.0` en semver. Le contrôle de version reste du ressort de l'app. |
+| `"*"` ne fait aucun contrôle de range : aucune incompatibilité n'est détectée par pnpm. | Un range strict (`">=2.6.0 <3"`) est inutilisable : une prerelease `2.6.0-develop.20260727123808` ne satisfait pas `>=2.6.0` en semver. Le contrôle de version reste du ressort de l'app. |
 | **La copie privée du socle masque aujourd'hui les incompatibilités de version.** En passant au socle fourni par l'hôte, une incompatibilité réelle se manifestera par une erreur d'export manquant. | C'est le risque principal. Dérouler **un package à la fois, avec validation d'une app pilote** — jamais les trois d'un coup. |
 | Une app qui ne déclarerait pas le socle se le verrait installé par `auto-install-peers`, sans contrôle de version. | Sans danger côté duplication (mesuré), et les 13 apps le déclarent déjà. Couvert par N5. |
 
-**Impact** : 3 `package.json` (1 sur 3 fait) + une campagne de republication et de validation. Aucun `.npmrc` à modifier,
+**Impact** : 3 `package.json` (3 sur 3 faits) + une campagne de republication et de validation. Aucun `.npmrc` à modifier,
 aucune convergence de peers à négocier.
 
 ---
@@ -257,8 +264,16 @@ modification visible en PR.
 
 ## N2 — Un seul train (tag) par app
 
-**Importance : préventive.** Aucune occurrence sur les branches de référence ; le risque est mesuré
-(scénario D1 : 2 versions, 3 copies).
+**Importance : préventive, désormais avérée.** Aucune occurrence sur les branches de référence, mais le cas s'est
+produit sur une branche de squad : `blog@develop-enabling` épinglait des versions exactes (socle `2.6.3`,
+`ode-explorer 2.6.7`, ce dernier avec le socle encore en `dependencies`) → **2 copies** du socle et de
+`react-query`, et l'erreur `Cannot be used outside of EdificeClientProvider` en recette-ode3. Correction : retour
+aux tags `develop-enabling` sur `@edifice.io/*` et `ode-explorer` (1 copie, mesuré). Risque mesuré aussi par le
+scénario D1 (2 versions, 3 copies).
+
+**Une branche de squad peut accumuler du retard** : le tag `ode-explorer@develop-enabling` est resté sur une
+version aux peers périmés tant que sa branche n'était pas rebasée sur `develop`. Rebaser et republier les
+branches de squad après un changement de peers.
 
 Si une app est sur `develop-enabling`, alors tous les `@edifice.io/*` et `ode-explorer` sont sur
 `develop-enabling`, override inclus. Si un tag n'existe pas pour un package, le fallback sur `develop` doit

@@ -4,9 +4,10 @@
 
 Mesures du 28/07/2026. Méthode de mesure : [3 — Méthode](3-methode.md).
 
-> **Mise à jour du 01/10/2026** : `ode-explorer@2.6.12` (ENABLING-1158) est publié avec le socle en
-> `peerDependencies`, `package.json.template` supprimé et `resolve.dedupe` posé. Les sections ci-dessous
-> décrivent l'état **d'avant** cette publication ; les copies par front sont à remesurer.
+> **Mise à jour du 13/10/2026** : `ode-explorer@2.6.15` (ENABLING-1158) a le socle en `peerDependencies` (`"*"`),
+> le `package.json.template` supprimé et `resolve.dedupe` posé ; `collect`, `wiki`, `rack` et `communities` ont été
+> traités (PEDAGO-4386 à 4389). Les sections ci-dessous décrivent l'état **d'avant** ; les copies par front sont
+> à remesurer.
 
 ---
 

@@ -11,6 +11,10 @@ d'exécution recommandé.
 
 *2 copies du socle. Publie `@edifice.io/collect-frontend`, dont le manifeste est cassé et propage un `ode-explorer` inutilisé à `rack` et `communities`.*
 
+> ✅ **Traité sur `develop`** (PEDAGO-4386, vérifié le 13/10/2026) : `ode-explorer` retiré, `resolutions` supprimé,
+> `install:prod` simplifié, `pnpm publish`, peers en `"*"`, peers dans `external`, `dedupe` posé, manifeste publié
+> sans `workspace:`. Les étapes ci-dessous sont conservées comme référence.
+
 ### 1. `ode-explorer` n'est jamais importé : retirer la dépendance
 
 `frontend/package.json` — supprimer cette ligne des `dependencies` :
@@ -35,8 +39,8 @@ npm view @edifice.io/collect-frontend@develop dependencies --json | grep workspa
 
 ### 3. Un package publié ne doit pas embarquer sa copie du socle
 
-Convention identique à `ode-explorer@2.6.12` (ENABLING-1158, déjà publié). Les mêmes clés apparaissent
-dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
+Même motif que `ode-explorer@2.6.15`. Les mêmes clés apparaissent dans les deux blocs : le peer parle à
+l'app hôte, le dev au repo lui-même —
 [pourquoi](2-actions.md#pourquoi-les-mêmes-clés-dans-peerdependencies-et-devdependencies).
 
 `frontend/package.json` — retirer `@edifice.io/bootstrap|client|react`, `@tanstack/react-query`, `react`,
@@ -44,9 +48,9 @@ dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
 
 ```json
   "peerDependencies": {
-    "@edifice.io/bootstrap": "develop",
-    "@edifice.io/client": "develop",
-    "@edifice.io/react": "develop",
+    "@edifice.io/bootstrap": "*",
+    "@edifice.io/client": "*",
+    "@edifice.io/react": "*",
     "@tanstack/react-query": "^5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -54,8 +58,11 @@ dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
   },
 ```
 
-Les trois `@edifice.io/*` valent le **tag de la branche publiante** : `develop` sur `develop`, la version
-exacte du socle sur `main` (ex. `2.6.7` pour `ode-explorer@latest`). Pas de `"*"`.
+Les trois `@edifice.io/*` valent **`"*"`**, pas un tag ni une version exacte. Un peer en tag (`develop`) ou en
+version exacte impose une version attendue à l'app hôte : pnpm signale un peer non satisfait dès que l'app
+suit un autre tag ou une autre version (par exemple `develop-enabling`), et les gestionnaires stricts peuvent
+refuser l'installation. Le contrôle de version reste du ressort de l'app. Les peers en tag d'`ode-explorer` ont d'ailleurs
+été remplacés par `"*"` (`4f5beed`, publié en `2.6.15`).
 
 `frontend/package.json` — fusionner dans les `devDependencies` existantes, pour que le repo builde seul :
 
@@ -159,14 +166,16 @@ chmod +x scripts/check-singletons.sh
 
 # `explorer` → publie `ode-explorer`
 
-*✅ **Fait** — ENABLING-1158, publié en `2.6.12` sur `latest` et `develop` (vérifié sur npm le 01/10/2026).*
+*✅ **Fait** — ENABLING-1158, puis correctif des peers en `"*"` : `2.6.15` sur `latest` et `develop` (vérifié sur npm le 13/10/2026).*
 
 Ce qui a été appliqué, et qui sert de **référence** pour `collect` et `wiki` :
 
 - Le socle (`@edifice.io/bootstrap|client|react`), `@tanstack/react-query`, `react`, `react-dom` et
   `react-i18next` sont en `peerDependencies` **et** en `devDependencies`, plus en `dependencies`.
-- Les trois `@edifice.io/*` valent le tag de la branche publiante (`develop`) ou la version exacte du socle
-  sur `main` (`2.6.7`). `react-query` vaut `^5`, `react-i18next` `^14`, `react`/`react-dom` `18.3.1`.
+- Les peers valent `"*"` pour les trois `@edifice.io/*`, `^5` pour `react-query`, `^14` pour `react-i18next`
+  et `18.3.1` pour `react`/`react-dom`. La première version (`2.6.12`) mettait un tag (`develop`) ou la version
+  exacte du socle (`2.6.7` sur `main`) : cela imposait une version à l'app hôte et a été corrigé
+  (`4f5beed`, `2.6.15`).
 - `frontend/package.json.template` et `scripts/package.cjs` sont supprimés : `frontend/package.json` est la
   source de vérité (N10 réglé, plus d'artefact généré à ignorer).
 - `vite.config.ts` : `peerDependencies` ajoutés à `rollupOptions.external`, et `resolve.dedupe` posé (N4).
@@ -181,11 +190,15 @@ Ce qui a été appliqué, et qui sert de **référence** pour `collect` et `wiki
 
 *Embarqué par `communities`, où il introduit une troisième copie du socle. `ode-explorer` reste en `dependencies` : il est réellement importé, et il a déjà le socle en `peerDependencies`.*
 
+> ✅ **Traité sur `develop`** (PEDAGO-4387, vérifié le 13/10/2026) : peers en `"*"`, peers dans `external`, `dedupe`
+> posé. Le `resolutions` restant (`katex`) est légitime : `wiki` est un projet autonome. Les étapes ci-dessous
+> sont conservées comme référence.
+
 ### 1. Un package publié ne doit pas embarquer sa copie du socle
 
-Convention identique à `ode-explorer@2.6.12` (ENABLING-1158, déjà publié). **Prérequis satisfait** :
-`ode-explorer` a désormais le socle en `peerDependencies` et n'apporte plus sa propre copie à `wiki`.
-Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte, le dev au repo lui-même —
+Même motif que `ode-explorer@2.6.15`. `ode-explorer` a le socle en `peerDependencies` : il n'apporte plus sa
+propre copie à `wiki`. Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte, le dev au
+repo lui-même —
 [pourquoi](2-actions.md#pourquoi-les-mêmes-clés-dans-peerdependencies-et-devdependencies).
 
 `frontend/package.json` — retirer `@edifice.io/bootstrap|client|react`, `@tanstack/react-query`, `react`,
@@ -193,9 +206,9 @@ Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte
 
 ```json
   "peerDependencies": {
-    "@edifice.io/bootstrap": "develop",
-    "@edifice.io/client": "develop",
-    "@edifice.io/react": "develop",
+    "@edifice.io/bootstrap": "*",
+    "@edifice.io/client": "*",
+    "@edifice.io/react": "*",
     "@tanstack/react-query": "^5",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -203,8 +216,11 @@ Les mêmes clés apparaissent dans les deux blocs : le peer parle à l'app hôte
   },
 ```
 
-Les trois `@edifice.io/*` valent le **tag de la branche publiante** : `develop` sur `develop`, la version
-exacte du socle sur `main`. Pas de `"*"`.
+Les trois `@edifice.io/*` valent **`"*"`**, pas un tag ni une version exacte. Un peer en tag (`develop`) ou en
+version exacte impose une version attendue à l'app hôte : pnpm signale un peer non satisfait dès que l'app
+suit un autre tag ou une autre version (par exemple `develop-enabling`), et les gestionnaires stricts peuvent
+refuser l'installation. Le contrôle de version reste du ressort de l'app. Les peers en tag d'`ode-explorer` ont d'ailleurs
+été remplacés par `"*"` (`4f5beed`, publié en `2.6.15`).
 
 `frontend/package.json` — fusionner dans les `devDependencies` existantes :
 
@@ -292,6 +308,9 @@ chmod +x scripts/check-singletons.sh
 
 *2 copies du socle. Rien à publier — `@edifice.io/rack-frontend` est `private: true`. Les 2 copies subsistent jusqu'à la republication de `@edifice.io/collect-frontend`, qui apporte lui aussi `ode-explorer`.*
 
+> ✅ **Traité sur `dev`** (PEDAGO-4388, vérifié le 13/10/2026) : `ode-explorer`, `resolutions` et `sync:lockfile`
+> supprimés, `dedupe` posé. Les étapes ci-dessous sont conservées comme référence.
+
 ### 1. `ode-explorer` n'est jamais importé : retirer la dépendance
 
 `frontend/package.json` — supprimer cette ligne des `dependencies` :
@@ -378,6 +397,9 @@ chmod +x scripts/check-singletons.sh
 # `communities`
 
 *3 copies du socle, la plus dupliquée. Rien à publier. Corrigée par la republication de `@edifice.io/wiki` et `@edifice.io/collect-frontend`.*
+
+> ✅ **Traité sur `develop`** (PEDAGO-4389, vérifié le 13/10/2026) : `resolutions` et `sync:lockfile` supprimés,
+> `dedupe` posé. Les étapes ci-dessous sont conservées comme référence.
 
 ### 1. `resolutions` dans un membre de workspace est ignoré par pnpm
 
