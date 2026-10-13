@@ -25,6 +25,12 @@ export interface TabsKidsProps {
    */
   children?: ReactNode;
   /**
+   * Display the tab bar, even with a single item. When hidden, only the panel
+   * of the active item is rendered (e.g. for a student viewing their own data)
+   * @default true
+   */
+  showTabBar?: boolean;
+  /**
    * Accessible name of the tab list
    */
   ariaLabel?: string;
@@ -43,11 +49,12 @@ export const TabsKids = ({
   activeId,
   onChange,
   children,
+  showTabBar = true,
   ariaLabel,
   overflowLabel,
   className,
 }: TabsKidsProps) => {
-  const hasTabs = items.length > 1;
+  const hasTabs = showTabBar && items.length > 0;
   const activeItem = items.find((item) => item.id === activeId);
 
   return (
