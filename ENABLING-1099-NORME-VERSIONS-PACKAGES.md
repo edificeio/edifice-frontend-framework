@@ -5,9 +5,10 @@
 > **Périmètre** : 14 fronts React (13 apps + 1 lib partagée), dont **3 publiés sur npm**.
 > Un nom en texte simple désigne un **repo**, un nom en code un **package npm** — voir
 > [la correspondance](docs/enabling-1099/1-constats.md#repo-ou-package-npm).
-> **Statut** : analyse et norme. **Mise à jour du 01/10/2026** : N9, N10 et N4 sont appliqués sur `explorer`
-> (ENABLING-1158, `ode-explorer@2.6.12` publié sur `latest` et `develop`). Les mesures ci-dessous sont celles
-> **d'avant** cette publication : à remesurer.
+> **Statut** : analyse et norme. **Mise à jour du 13/10/2026** : N9, N10 et N4 sont appliqués sur `explorer`
+> (ENABLING-1158, peers en `"*"` dans `ode-explorer@2.6.15`), et les tickets PEDAGO-4386 à 4389 ont traité
+> `collect`, `wiki`, `rack` et `communities` sur leurs branches de référence. Les mesures ci-dessous sont celles
+> **d'avant** ces changements : à remesurer.
 
 | Document | Contenu |
 | --- | --- |
@@ -94,7 +95,7 @@ Une app doit garantir qu'il n'en existe qu'une copie physique.**
 | **N11** | Retirer les dépendances `ode-explorer` **inutilisées** — `rack`, `collect`, `boilerplate` ne l'importent jamais | 3 `package.json` | 3 lignes | **Élevée, coût nul** : mesuré, `collect` et `boilerplate` passent de 2 à 1 copie. |
 | **N6** | `pnpm publish`, jamais `npm publish`, dans un workspace | `collect/package.json:50` | 1 ligne | **Bloquant** : un package publié est ininstallable. Prérequis de N9 sur `collect`. |
 | **N5** | Check CI « une seule copie physique » des singletons, dans le pipeline qui livre | `@edifice.io/cli` + 10 Jenkinsfile | ~½ j | **Élevée** : c'est le seul garde-fou automatique, et il fournit la mesure avant/après N9. |
-| **N9** | `peerDependencies` au lieu de `dependencies` dans tout package publié qui consomme le socle — ✅ `explorer` fait, reste `collect` et `wiki` | 3 `package.json` + republication | ~2 j | **Élevée** : supprime la cause structurelle. Se propage seule aux 8 fronts consommateurs. |
+| **N9** | `peerDependencies` au lieu de `dependencies` dans tout package publié qui consomme le socle — ✅ `explorer`, `collect` et `wiki` faits, avec des peers en `"*"` | 3 `package.json` + republication | ~2 j | **Élevée** : supprime la cause structurelle. Se propage seule aux 8 fronts consommateurs. |
 | **N4** | `resolve.dedupe` dans chaque `vite.config` — ✅ `explorer` fait | 14 `vite.config.ts` | 7 lignes | Moyenne : filet bundler, défense en profondeur. |
 | **N3** | Supprimer les `resolutions` placés dans un membre de workspace — ignorés par pnpm | 3 `package.json` | 1 h | Moyenne : supprime une configuration trompeuse. |
 | **N10** | ~~Ne pas committer d'artefact de build généré~~ — ✅ **réglé** : le template d'`explorer` est supprimé | — | — | `frontend/package.json` est la source de vérité. |
@@ -162,7 +163,7 @@ consommées séparément : aucun scénario où l'une casse l'autre.
 | 1 | **N11** — retirer `ode-explorer` de `rack`, `collect` et `boilerplate` (+ du boilerplate lui-même, pour ne plus propager) | ~1 h |
 | 2 | **N6** sur `collect` + republication de `collect-frontend` — corrige aussi `rack` et `communities`, qui héritaient de son `ode-explorer` | ~1 h |
 | 3 | **N5** dans `@edifice.io/cli`, branché sur `collect` et `rack` — remesure après les étapes 1 et 2 | ~½ j |
-| 4 | ✅ **Fait** — N9 sur `ode-explorer` + N10 + N4 (ENABLING-1158, `2.6.12`). Reste la validation sur `wiki` ou `blog` | — |
+| 4 | ✅ **Fait** — N9 sur `ode-explorer` + N10 + N4 (ENABLING-1158, peers en `"*"` dans `2.6.15`) | — |
 | 5 | **N9 sur `@edifice.io/wiki`** puis **`@edifice.io/collect-frontend`**, un package à la fois | ~1 j |
 | 6 | **N4** généralisé | ~½ j |
 | 7 | **N3** — suppression des 3 blocs ignorés | ~1 h |
