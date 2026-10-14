@@ -25,6 +25,7 @@ import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.
 import { Button, Flex } from '../../../components';
 
 const ROOT_ID = 'root';
+const SHARED_ROOT_ID = 'shared';
 
 function compare(a?: string, b?: string) {
   if (a === b) return 0;
@@ -69,13 +70,25 @@ const GoogleDrive = ({
    * connection screen. `useGoogleDriveSearch` still exposes `needsAuth`,
    * `isCheckingAuth` and `isAuthError` for the day an OAuth2 flow is added.
    */
-  const { root, loadContent, loadError } = useGoogleDriveSearch(
+  const myDrive = useGoogleDriveSearch(
     ROOT_ID,
     t('google-drive.mydrive'),
     user?.userId,
   );
+  const sharedWithMe = useGoogleDriveSearch(
+    SHARED_ROOT_ID,
+    t('workspace.tree.shared'),
+    user?.userId,
+    'shared',
+  );
 
   const [currentNodeId, setCurrentNodeId] = useState<string>(ROOT_ID);
+
+  /** Each section browses its own tree: find the one holding a folder. */
+  const sectionOf = (nodeId: string) =>
+    findNodeById(sharedWithMe.root, nodeId) ? sharedWithMe : myDrive;
+
+  const { root, loadContent, loadError } = sectionOf(currentNodeId);
 
   const currentNode: GoogleDriveFolderNode =
     (findNodeById(root, currentNodeId) as GoogleDriveFolderNode) ?? root;
@@ -91,18 +104,16 @@ const GoogleDrive = ({
     GoogleDriveDocument[]
   >([]);
 
-  const handleTreeItemChange = useCallback(
-    (nodeId: string) => {
-      setCurrentNodeId(nodeId);
-      loadContent(nodeId);
-    },
-    [loadContent],
-  );
+  const handleTreeItemChange = (nodeId: string) => {
+    setCurrentNodeId(nodeId);
+    sectionOf(nodeId).loadContent(nodeId);
+  };
 
   /** Load root content on mount; it's selected by default via `currentNodeId`. */
+  const loadMyDrive = myDrive.loadContent;
   useEffect(() => {
-    loadContent(ROOT_ID);
-  }, [loadContent]);
+    loadMyDrive(ROOT_ID);
+  }, [loadMyDrive]);
 
   /** Derive documents from currentNode, searchTerm and sortOrder. */
   const documents = useMemo(() => {
@@ -193,7 +204,7 @@ const GoogleDrive = ({
       >
         <div style={{ position: 'sticky', top: 0, paddingTop: '1.2rem' }}>
           <Tree
-            nodes={root}
+            nodes={[myDrive.root, sharedWithMe.root]}
             selectedNodeId={currentNodeId}
             showIcon
             onTreeItemClick={handleTreeItemChange}
