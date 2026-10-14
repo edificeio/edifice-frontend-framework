@@ -1,0 +1,179 @@
+.screen-time {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+    padding-left: var(--primitive-spacer-8);
+    min-height: 36px;
+  }
+
+  &__title {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__wrapper {
+    background: var(--primitive-grey-100);
+    border-radius: var(--primitive-border-radius-xl);
+    display: flex;
+    flex-direction: column;
+    isolation: isolate;
+  }
+
+  &__tabs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+    overflow-x: auto;
+  }
+
+  &__tab {
+    border: 1px solid transparent;
+    border-bottom: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
+    border-radius: var(--primitive-border-radius-xl)
+      var(--primitive-border-radius-xl) 0 0;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  &__tab-active {
+    background: var(--primitive-yellow-200);
+    border-color: var(--primitive-yellow-300);
+    padding: var(--primitive-spacer-12) var(--primitive-spacer-24);
+
+    .screen-time__tab-avatar {
+      outline: 2px solid var(--primitive-yellow-500);
+      border-radius: var(--primitive-border-radius-pill);
+    }
+  }
+
+  &__tab-label {
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  &__tab-corner {
+    position: absolute;
+    bottom: 0;
+    width: 16.366px; // TODO: no Edifice token for 16.366px
+    height: 16px; // TODO: no Edifice token for 16px
+    pointer-events: none;
+  }
+
+  &__tab-corner-right {
+    left: 100%;
+  }
+
+  &__tab-corner-left {
+    right: 100%;
+    transform: scaleX(-1);
+  }
+
+  &__panel {
+    background: var(--primitive-yellow-200);
+    border: 1px solid var(--primitive-yellow-300);
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  &__panel-first-tab-active {
+    border-top-left-radius: 0;
+  }
+
+  &__card {
+    background: var(--primitive-white);
+    border: 1px solid var(--primitive-yellow-500);
+    border-radius: var(--primitive-border-radius-2xl);
+    padding: var(--primitive-spacer-16);
+    display: flex;
+    flex-direction: row;
+    gap: var(--primitive-spacer-32);
+  }
+
+  &__card-empty {
+    padding: var(--primitive-spacer-24) var(--primitive-spacer-16);
+    justify-content: center;
+  }
+
+  &__day {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-4);
+  }
+
+  &__day-label {
+    color: var(--primitive-grey-900);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
+    font-weight: var(--font-weight-regular);
+  }
+
+  &__day-value {
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-l);
+    line-height: var(--primitive-font-lineheight-l);
+    font-weight: var(--font-weight-bold);
+  }
+
+  &__day-skeleton {
+    width: 100%;
+  }
+
+  &__empty {
+    margin: 0;
+    text-align: center;
+    color: var(--primitive-grey-900);
+    font-size: var(--primitive-font-size-default);
+    line-height: 2.4rem; // TODO: no Edifice token for 24px
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--primitive-spacer-12);
+    gap: var(--primitive-spacer-16);
+  }
+}
+
+.screen-time-error {
+  &__illu {
+    width: 64px; // TODO: no Edifice token for 64px
+    height: 64px; // TODO: no Edifice token for 64px
+  }
+
+  &__message {
+    margin: 0;
+    text-align: center;
+    color: var(--primitive-grey-900);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+}
