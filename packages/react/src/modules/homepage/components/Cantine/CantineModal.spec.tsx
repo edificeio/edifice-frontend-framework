@@ -70,32 +70,22 @@ describe('CantineModal', () => {
   it('hides both selects when there is a single school and no dinner service', () => {
     renderModal();
 
-    expect(
-      screen.queryByText('homepage.widget.cantine.school'),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('homepage.widget.cantine.menu'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Établissement')).not.toBeInTheDocument();
+    expect(screen.queryByText('Menu')).not.toBeInTheDocument();
   });
 
   it('shows the school select only when the user belongs to several schools', () => {
     renderModal({ schools });
 
-    expect(
-      screen.getByText('homepage.widget.cantine.school'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Établissement')).toBeInTheDocument();
     expect(screen.getByText('École Jacques Prévert')).toBeInTheDocument();
   });
 
   it('shows the menu select only when a dinner menu is served', () => {
     renderModal({ hasDinner: true });
 
-    expect(
-      screen.getByText('homepage.widget.cantine.menu'),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('homepage.widget.cantine.lunch'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Menu')).toBeInTheDocument();
+    expect(screen.getByText('Déjeuner')).toBeInTheDocument();
   });
 
   it('renders the browsed day localized', () => {
@@ -109,12 +99,10 @@ describe('CantineModal', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'homepage.widget.cantine.previousDay',
+        name: 'Jour précédent',
       }),
     );
-    await user.click(
-      screen.getByRole('button', { name: 'homepage.widget.cantine.nextDay' }),
-    );
+    await user.click(screen.getByRole('button', { name: 'Jour suivant' }));
 
     expect(props.onPreviousDay).toHaveBeenCalledTimes(1);
     expect(props.onNextDay).toHaveBeenCalledTimes(1);
@@ -125,12 +113,10 @@ describe('CantineModal', () => {
 
     expect(
       screen.getByRole('button', {
-        name: 'homepage.widget.cantine.previousDay',
+        name: 'Jour précédent',
       }),
     ).toBeDisabled();
-    expect(
-      screen.getByRole('button', { name: 'homepage.widget.cantine.nextDay' }),
-    ).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Jour suivant' })).toBeDisabled();
   });
 
   it('renders every menu section with its dishes', () => {
@@ -146,7 +132,7 @@ describe('CantineModal', () => {
     renderModal({ status: 'empty', sections: [] });
 
     expect(
-      screen.getByText('homepage.widget.cantine.empty'),
+      screen.getByText('Le menu n’est pas disponible pour ce jour'),
     ).toBeInTheDocument();
     expect(screen.queryByText('Coleslaw')).not.toBeInTheDocument();
   });
@@ -155,7 +141,7 @@ describe('CantineModal', () => {
     renderModal({ status: 'error', sections: [] });
 
     expect(
-      screen.getByText('homepage.widget.cantine.empty'),
+      screen.getByText('Le menu n’est pas disponible pour ce jour'),
     ).toBeInTheDocument();
   });
 
@@ -168,9 +154,7 @@ describe('CantineModal', () => {
   it('always renders the legend', () => {
     renderModal();
 
-    expect(
-      screen.getByText('homepage.widget.cantine.legend.title'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Légende')).toBeInTheDocument();
     expect(screen.getByText('Végétarien')).toBeInTheDocument();
     expect(screen.getByText('Produit local')).toBeInTheDocument();
   });

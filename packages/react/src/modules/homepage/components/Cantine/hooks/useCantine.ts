@@ -1,4 +1,4 @@
-import { useUserSchools } from '../../SchoolSpace/useUserSchools';
+import { useUserSchools } from '../../../hooks/useUserSchools';
 import { useCantineMenu } from './useCantineMenu';
 import { useDate } from '../../../../../hooks';
 

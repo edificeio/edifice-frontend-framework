@@ -51,7 +51,7 @@ export default function Cantine({
           <div className="cantine__error">
             <Image
               src={illuCantineEmpty}
-              alt={t('homepage.widget.cantine.errorIllustration')}
+              alt={t('homepage.widget.cantine.emptyIllustration')}
               className="cantine__error-illu"
             />
             <p className="cantine__error-message">
