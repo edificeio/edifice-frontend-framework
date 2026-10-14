@@ -45,6 +45,7 @@ describe('GoogleDriveService', () => {
         contentType: 'application/pdf',
         size: 1024,
         isFolder: false,
+        canCopyToWorkspace: true,
         lastModified: '2026-01-15T10:30:00.000Z',
         shared: true,
         ownerDisplayName: 'Alex Martin',
@@ -72,6 +73,39 @@ describe('GoogleDriveService', () => {
       expect(folder.isFolder).toBe(true);
       // A native Google document is not a folder, despite its google-apps type.
       expect(nativeDoc.isFolder).toBe(false);
+    });
+
+    it('flags the Google-native documents Drive cannot export to the workspace', async () => {
+      const mimeTypes = {
+        pdf: 'application/pdf',
+        folder: 'application/vnd.google-apps.folder',
+        doc: 'application/vnd.google-apps.document',
+        sheet: 'application/vnd.google-apps.spreadsheet',
+        slides: 'application/vnd.google-apps.presentation',
+        form: 'application/vnd.google-apps.form',
+        vid: 'application/vnd.google-apps.vid',
+      };
+      httpMock.get.mockResolvedValue({
+        data: Object.entries(mimeTypes).map(([id, mimeType]) => ({
+          id,
+          name: id,
+          mimeType,
+        })),
+      });
+
+      const docs = await service.listDocuments(userId);
+
+      expect(
+        Object.fromEntries(docs.map((doc) => [doc.id, doc.canCopyToWorkspace])),
+      ).toEqual({
+        pdf: true,
+        folder: true,
+        doc: true,
+        sheet: true,
+        slides: true,
+        form: false,
+        vid: false,
+      });
     });
 
     it('sends the parent folder id as the `path` query param', async () => {
@@ -207,6 +241,7 @@ describe('GoogleDriveService', () => {
         id: 'doc/1',
         name: 'Rapport.pdf',
         isFolder: false,
+        canCopyToWorkspace: true,
       });
 
       expect(url).toBe(

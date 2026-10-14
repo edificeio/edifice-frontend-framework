@@ -119,6 +119,8 @@ const GoogleDrive = ({
     const normalizedSearchTerm = searchTerm?.toLowerCase();
     const list = currentNode.files.filter(
       (f) =>
+        // A document that can't leave Google Drive could never be added.
+        f.canCopyToWorkspace &&
         (!normalizedSearchTerm ||
           f.name.toLowerCase().includes(normalizedSearchTerm)) &&
         matchesRole(f),
