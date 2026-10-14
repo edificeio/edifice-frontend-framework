@@ -10,19 +10,24 @@ vi.mock('../Notifications/hooks/useNotificationList', () => ({
   useHasNotificationToday: useHasNotificationTodayMock,
 }));
 
-const { useConversation, useHasWorkflow, useUser, useHeader, useEdificeTheme } =
-  vi.hoisted(() => ({
-    useConversation: vi.fn(),
-    useHasWorkflow: vi.fn(),
-    useUser: vi.fn(),
-    useHeader: vi.fn(),
-    useEdificeTheme: vi.fn(),
-  }));
+const {
+  useCarbonioUnread,
+  useConversation,
+  useUser,
+  useHeader,
+  useEdificeTheme,
+} = vi.hoisted(() => ({
+  useCarbonioUnread: vi.fn(),
+  useConversation: vi.fn(),
+  useUser: vi.fn(),
+  useHeader: vi.fn(),
+  useEdificeTheme: vi.fn(),
+}));
 
 vi.mock('../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../hooks')>()),
+  useCarbonioUnread,
   useConversation,
-  useHasWorkflow,
   useUser,
 }));
 
@@ -32,12 +37,9 @@ vi.mock('../../../../components/Layout/hooks/useHeader', () => ({
 
 vi.mock('../../../../providers/', () => ({ useEdificeTheme }));
 
-const CARBONIO =
-  'org.entcore.auth.controllers.CarbonioPreauthController|preauth';
-
 function setup({
   messages = 0,
-  workflows = {},
+  carbonio = { hasCarbonioWorkflow: false, unreadCount: 0 },
   communitiesWorkflow = false,
   conversationWorflow = false,
   theme = { logoutCallback: '/portal' },
@@ -45,7 +47,7 @@ function setup({
   onNotificationsClick,
 }: {
   messages?: number;
-  workflows?: Record<string, boolean>;
+  carbonio?: { hasCarbonioWorkflow: boolean; unreadCount: number };
   communitiesWorkflow?: boolean;
   conversationWorflow?: boolean;
   theme?: { logoutCallback?: string };
@@ -57,7 +59,7 @@ function setup({
     user: { userId: 'user-1' },
     avatar: '/avatar.png',
   });
-  useHasWorkflow.mockImplementation((workflow: string) => workflows[workflow]);
+  useCarbonioUnread.mockReturnValue(carbonio);
   useEdificeTheme.mockReturnValue({ theme });
   useHeader.mockReturnValue({
     userAvatar: '/avatar.png',
@@ -173,11 +175,25 @@ describe('homepage Header', () => {
     });
 
     it('falls back to the carbonio preauth link in a new tab', () => {
-      setup({ workflows: { [CARBONIO]: true } });
+      setup({ carbonio: { hasCarbonioWorkflow: true, unreadCount: 0 } });
 
       const link = screen.getByTestId('header-messagerie-button');
       expect(link).toHaveAttribute('href', '/auth/carbonio/preauth');
       expect(link).toHaveAttribute('target', '_blank');
+    });
+
+    it('badges the unread carbonio messages', () => {
+      setup({ carbonio: { hasCarbonioWorkflow: true, unreadCount: 7 } });
+
+      expect(screen.getByTestId('header-messagerie-button')).toHaveTextContent(
+        '7',
+      );
+    });
+
+    it('shows no carbonio badge without any unread message', () => {
+      setup({ carbonio: { hasCarbonioWorkflow: true, unreadCount: 0 } });
+
+      expect(screen.queryByText('0')).not.toBeInTheDocument();
     });
 
     it('shows no messaging entry without any workflow', () => {

@@ -3,6 +3,7 @@ export * from './useBookmark';
 export * from './useBreakpoint';
 export * from './useBrowserInfo';
 export * from './useCantoo';
+export * from './useCarbonioUnread';
 export * from './useCheckable';
 export * from './useClickOutside';
 export * from './useConversation';

@@ -11,8 +11,8 @@ import {
   VisuallyHidden,
 } from '../../../../components';
 import {
+  useCarbonioUnread,
   useConversation,
-  useHasWorkflow,
   useHover,
   useUser,
 } from '../../../../hooks';
@@ -50,10 +50,8 @@ const Header = ({
   const { messages } = useConversation();
   const { user, avatar } = useUser();
 
-  const hasCarbonioPreauthWorkflow =
-    useHasWorkflow(
-      'org.entcore.auth.controllers.CarbonioPreauthController|preauth',
-    ) || false;
+  const { hasCarbonioWorkflow, unreadCount: carbonioUnreadCount } =
+    useCarbonioUnread();
 
   const classes = clsx('header-beta d-print-none no-2d no-1d');
 
@@ -123,7 +121,7 @@ const Header = ({
               </NavLink>
             </NavItem>
           )}
-          {hasCarbonioPreauthWorkflow && (
+          {hasCarbonioWorkflow && (
             <NavItem>
               <a
                 className="nav-link position-relative"
@@ -132,6 +130,14 @@ const Header = ({
                 data-testid="header-messagerie-button"
               >
                 <IconMessagesBeta />
+                {carbonioUnreadCount > 0 && (
+                  <Badge
+                    variant={{ type: 'notification', level: 'danger' }}
+                    className="position-absolute"
+                  >
+                    {carbonioUnreadCount}
+                  </Badge>
+                )}
                 <VisuallyHidden>{t('conversation')}</VisuallyHidden>
               </a>
             </NavItem>
