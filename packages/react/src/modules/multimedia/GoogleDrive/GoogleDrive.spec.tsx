@@ -53,8 +53,23 @@ function defaultSearch() {
   };
 }
 
-function mockSearch(overrides: Partial<ReturnType<typeof defaultSearch>> = {}) {
-  useGoogleDriveSearch.mockReturnValue({ ...defaultSearch(), ...overrides });
+type Search = ReturnType<typeof defaultSearch>;
+
+/** Mock both sections: "Mon Drive" and the documents shared with the user. */
+function mockSearch(
+  overrides: Partial<Search> = {},
+  sharedOverrides: Partial<Search> = {},
+) {
+  const myDrive = { ...defaultSearch(), ...overrides };
+  const shared = {
+    ...defaultSearch(),
+    root: { id: 'shared', name: 'Partagés avec moi', section: true },
+    loadContent: vi.fn(),
+    ...sharedOverrides,
+  };
+  useGoogleDriveSearch.mockImplementation((rootId: string) =>
+    rootId === 'shared' ? shared : myDrive,
+  );
 }
 
 describe('GoogleDrive', () => {
@@ -136,6 +151,29 @@ describe('GoogleDrive', () => {
 
     expect(screen.getByText('photo.png')).toBeInTheDocument();
     expect(screen.queryByText('budget.xlsx')).not.toBeInTheDocument();
+  });
+
+  it('browses the documents shared with the user in their own section', async () => {
+    const loadShared = vi.fn();
+    mockSearch(
+      {},
+      {
+        root: {
+          id: 'shared',
+          name: 'Partagés avec moi',
+          section: true,
+          files: [file({ id: 's1', name: 'Cours.pdf' })],
+        },
+        loadContent: loadShared,
+      },
+    );
+
+    const { user } = render(<GoogleDrive onSelect={vi.fn()} />);
+    await user.click(screen.getByText('Partagés avec moi'));
+
+    expect(loadShared).toHaveBeenCalledWith('shared');
+    expect(screen.getByText('Cours.pdf')).toBeInTheDocument();
+    expect(screen.queryByText('b.txt')).not.toBeInTheDocument();
   });
 
   it('hides the documents that cannot be copied to the workspace', () => {
