@@ -6,6 +6,7 @@ import {
   directoryHandlers,
   embedHandlers,
   publicConfigHandlers,
+  screenTimeHandlers,
   shareHandlers,
   themeHandlers,
   timelineHandlers,
@@ -28,4 +29,5 @@ export const handlers = [
   ...shareHandlers,
   ...actualitesHandlers,
   ...timelineHandlers,
+  ...screenTimeHandlers,
 ];
