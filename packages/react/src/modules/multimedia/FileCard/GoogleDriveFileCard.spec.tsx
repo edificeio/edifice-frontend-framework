@@ -23,6 +23,7 @@ function doc(partial: Partial<GoogleDriveDocument> = {}): GoogleDriveDocument {
     name: 'report.pdf',
     ownerDisplayName: 'Pascal Saussier',
     isFolder: false,
+    canCopyToWorkspace: true,
     ...partial,
   };
 }
