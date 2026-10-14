@@ -30,6 +30,7 @@ function file(partial: Partial<GoogleDriveDocument> = {}): GoogleDriveDocument {
     id: 'file-a',
     name: 'a.txt',
     isFolder: false,
+    canCopyToWorkspace: true,
     ...partial,
   };
 }
@@ -135,6 +136,25 @@ describe('GoogleDrive', () => {
 
     expect(screen.getByText('photo.png')).toBeInTheDocument();
     expect(screen.queryByText('budget.xlsx')).not.toBeInTheDocument();
+  });
+
+  it('hides the documents that cannot be copied to the workspace', () => {
+    mockSearch({
+      root: {
+        id: 'root',
+        name: 'Mon Drive',
+        section: true,
+        files: [
+          file({ id: '1', name: 'Notes' }),
+          file({ id: '2', name: 'Sondage', canCopyToWorkspace: false }),
+        ],
+      },
+    });
+
+    render(<GoogleDrive onSelect={vi.fn()} />);
+
+    expect(screen.getByText('Notes')).toBeInTheDocument();
+    expect(screen.queryByText('Sondage')).not.toBeInTheDocument();
   });
 
   describe('selection', () => {

@@ -41,6 +41,8 @@ const TREE: Record<string, GoogleDriveDocumentResponse[]> = {
       'Notes de réunion',
       'application/vnd.google-apps.document',
     ),
+    // A Google Form: Drive can't export it out of Google, so it isn't listed.
+    raw('file-sondage', 'Sondage', 'application/vnd.google-apps.form'),
   ],
   'folder-docs': [
     raw('file-rapport', 'rapport.pdf', 'application/pdf'),

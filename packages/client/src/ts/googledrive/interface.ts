@@ -11,6 +11,11 @@ export interface GoogleDriveDocument {
   contentType?: string;
   size?: number;
   isFolder: boolean;
+  /**
+   * Whether the document can be copied into the workspace. False for the
+   * Google-native types Drive can't export to a regular file (Forms, Vids…).
+   */
+  canCopyToWorkspace: boolean;
   lastModified?: string;
   shared?: boolean;
 }
