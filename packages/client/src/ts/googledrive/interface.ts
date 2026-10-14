@@ -13,7 +13,8 @@ export interface GoogleDriveDocument {
   isFolder: boolean;
   /**
    * Whether the document can be copied into the workspace. False for the
-   * Google-native types Drive can't export to a regular file (Forms, Vids…).
+   * Google-native types Drive can't export to a regular file (Forms, Vids…),
+   * and for documents shared with the user without edit rights.
    */
   canCopyToWorkspace: boolean;
   lastModified?: string;
@@ -29,6 +30,19 @@ export interface GoogleDriveDocumentResponse {
   modifiedTime?: string;
   shared?: boolean;
   ownerDisplayName?: string;
+}
+
+/**
+ * Raw DTO returned by the `/googledrive/files/user/:userId/shared` endpoint,
+ * which lists the documents and folders other users shared with this user.
+ */
+export interface GoogleDriveSharedDocumentResponse extends Omit<
+  GoogleDriveDocumentResponse,
+  'ownerDisplayName' | 'shared'
+> {
+  /** The user's permission on the document, null when Drive doesn't tell. */
+  role?: 'reader' | 'commenter' | 'writer' | null;
+  owners?: { displayName?: string }[];
 }
 
 /**

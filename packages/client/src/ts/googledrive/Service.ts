@@ -6,6 +6,7 @@ import {
   GoogleDriveCopyResult,
   GoogleDriveDocument,
   GoogleDriveDocumentResponse,
+  GoogleDriveSharedDocumentResponse,
 } from './interface';
 
 const GOOGLE_DRIVE_NATIVE_MIME_TYPE_PREFIX = 'application/vnd.google-apps.';
@@ -82,6 +83,32 @@ export class GoogleDriveService {
       { queryParams: parentId ? { path: parentId } : undefined },
     );
     return res.data.map(toGoogleDriveDocument);
+  }
+
+  /**
+   * List the documents and folders other users shared with a user. Browse the
+   * content of a shared folder with `listDocuments`, from the folder's id.
+   *
+   * As in the legacy workspace, only a document shared for editing can be
+   * copied to the workspace: an owner can forbid readers and commenters to
+   * download a file (copyRequiresWriterPermission), which fails the copy.
+   *
+   * @param userId - the id of the user the documents are shared with.
+   */
+  async listSharedDocuments(userId: string): Promise<GoogleDriveDocument[]> {
+    const res = await this.http.get<{
+      data: GoogleDriveSharedDocumentResponse[];
+    }>(`/googledrive/files/user/${userId}/shared`);
+    return res.data.map(({ owners, role, ...raw }) => {
+      const doc = toGoogleDriveDocument({
+        ...raw,
+        ownerDisplayName: owners?.[0]?.displayName,
+      });
+      return {
+        ...doc,
+        canCopyToWorkspace: doc.canCopyToWorkspace && role === 'writer',
+      };
+    });
   }
 
   /**

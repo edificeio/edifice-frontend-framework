@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-import { GoogleDriveDocumentResponse } from '@edifice.io/client';
+import {
+  GoogleDriveDocumentResponse,
+  GoogleDriveSharedDocumentResponse,
+} from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
@@ -56,7 +59,33 @@ const TREE: Record<string, GoogleDriveDocumentResponse[]> = {
     raw('file-plage', 'plage.jpg', 'image/jpeg'),
     raw('file-montagne', 'montagne.png', 'image/png'),
   ],
+  // Content of a shared folder, browsed like any other folder.
+  'folder-projet': [
+    raw('file-expose', 'expose.pptx', 'application/vnd.ms-powerpoint'),
+  ],
 };
+
+/** Build a raw DTO of a document another user shared with the user. */
+const shared = (
+  id: string,
+  name: string,
+  mimeType: string,
+  role: GoogleDriveSharedDocumentResponse['role'],
+): GoogleDriveSharedDocumentResponse => ({
+  id,
+  name,
+  mimeType,
+  role,
+  owners: [{ displayName: 'Marie Martin' }],
+  modifiedTime: '2026-08-21T10:00:00Z',
+});
+
+const SHARED: GoogleDriveSharedDocumentResponse[] = [
+  shared('folder-projet', 'Projet de classe', FOLDER_MIME, 'writer'),
+  shared('file-cours', 'cours.pdf', 'application/pdf', 'writer'),
+  // Shared read-only: its owner can forbid copying it, so it isn't listed.
+  shared('file-sujet', 'sujet.pdf', 'application/pdf', 'reader'),
+];
 
 /** A 1-file-wide placeholder, enough for `useThumbnail` to resolve. */
 const THUMBNAIL =
@@ -69,6 +98,9 @@ const handlers = [
     HttpResponse.text(THUMBNAIL, {
       headers: { 'Content-Type': 'image/svg+xml' },
     }),
+  ),
+  http.get('/googledrive/files/user/:userId/shared', () =>
+    HttpResponse.json({ data: SHARED }),
   ),
   http.get('/googledrive/files/user/:userId', ({ request }) => {
     // The query param is named `path` but carries the parent folder id.
@@ -86,7 +118,7 @@ const meta: Meta<typeof GoogleDrive> = {
     docs: {
       description: {
         component:
-          'The `GoogleDrive` component browses the files a user keeps on their Google Drive, and is mounted by the `MediaLibrary` as its Google Drive tab. Unlike the Nextcloud tab it needs no login step: the backend resolves the Drive credentials on its own, so the drive renders straight away as a folder tree plus a searchable, sortable file grid. Folders are fetched lazily as they are opened, and `roles` narrows the grid to a media type so the same component can serve an image picker as well as an attachment picker. Selection is reported through `onSelect`, which always receives the full list of selected documents. Google Drive addresses its entries by opaque id, so a selection is keyed by `id` rather than by path.',
+          'The `GoogleDrive` component browses the files a user keeps on their Google Drive, and is mounted by the `MediaLibrary` as its Google Drive tab. Unlike the Nextcloud tab it needs no login step: the backend resolves the Drive credentials on its own, so the drive renders straight away as a folder tree plus a searchable, sortable file grid. A second section of the tree lists the documents other users shared with the user; as in the workspace, only those shared for editing can be picked, since an owner can forbid readers to copy a file. Folders are fetched lazily as they are opened, and `roles` narrows the grid to a media type so the same component can serve an image picker as well as an attachment picker. Selection is reported through `onSelect`, which always receives the full list of selected documents. Google Drive addresses its entries by opaque id, so a selection is keyed by `id` rather than by path.',
       },
     },
   },

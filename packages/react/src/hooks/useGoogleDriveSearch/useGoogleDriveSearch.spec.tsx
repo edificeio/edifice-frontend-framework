@@ -3,12 +3,15 @@ import type { ReactNode } from 'react';
 import { act, renderHook, waitFor } from '~/setup';
 import useGoogleDriveSearch from './useGoogleDriveSearch';
 
-const { listDocuments } = vi.hoisted(() => ({
+const { listDocuments, listSharedDocuments } = vi.hoisted(() => ({
   listDocuments: vi.fn(),
+  listSharedDocuments: vi.fn(),
 }));
 
 vi.mock('@edifice.io/client', () => ({
-  odeServices: { googledrive: () => ({ listDocuments }) },
+  odeServices: {
+    googledrive: () => ({ listDocuments, listSharedDocuments }),
+  },
 }));
 
 const ROOT_ID = 'root';
@@ -37,6 +40,7 @@ function createWrapper() {
 describe('useGoogleDriveSearch', () => {
   beforeEach(() => {
     listDocuments.mockReset();
+    listSharedDocuments.mockReset();
   });
 
   it('never requires authentication', async () => {
@@ -175,6 +179,73 @@ describe('useGoogleDriveSearch', () => {
     });
 
     expect(listDocuments).toHaveBeenCalledTimes(1);
+  });
+
+  describe('shared filter', () => {
+    const SHARED_ID = 'shared';
+
+    function renderSharedSearch() {
+      return renderHook(
+        () => useGoogleDriveSearch(SHARED_ID, 'Partagés', 'user-1', 'shared'),
+        { wrapper: createWrapper() },
+      );
+    }
+
+    it('lists its root through the shared documents listing', async () => {
+      listSharedDocuments.mockResolvedValue([folder, file]);
+
+      const { result } = renderSharedSearch();
+      await act(async () => {
+        await result.current.loadContent(SHARED_ID);
+      });
+
+      expect(listSharedDocuments).toHaveBeenCalledWith('user-1');
+      expect(listDocuments).not.toHaveBeenCalled();
+      expect(result.current.root.children).toEqual([
+        { id: 'folder-1', name: 'Photos' },
+      ]);
+      expect(result.current.root.files).toEqual([file]);
+    });
+
+    it('browses a shared folder through the regular listing', async () => {
+      listSharedDocuments.mockResolvedValue([folder]);
+      listDocuments.mockResolvedValue([file]);
+
+      const { result } = renderSharedSearch();
+      await act(async () => {
+        await result.current.loadContent(SHARED_ID);
+      });
+      await act(async () => {
+        await result.current.loadContent('folder-1');
+      });
+
+      expect(listDocuments).toHaveBeenCalledWith('user-1', 'folder-1');
+    });
+
+    it('passes a folder copy restriction down to its whole content', async () => {
+      listSharedDocuments.mockResolvedValue([
+        { ...folder, canCopyToWorkspace: false },
+      ]);
+      listDocuments.mockResolvedValue([
+        { id: 'folder-2', name: 'Archives', isFolder: true },
+        { ...file, canCopyToWorkspace: true },
+      ]);
+
+      const { result } = renderSharedSearch();
+      await act(async () => {
+        await result.current.loadContent(SHARED_ID);
+      });
+      await act(async () => {
+        await result.current.loadContent('folder-1');
+      });
+
+      const child = result.current.root.children?.[0] as {
+        children?: { canCopyToWorkspace?: boolean }[];
+        files?: { canCopyToWorkspace?: boolean }[];
+      };
+      expect(child.children?.[0].canCopyToWorkspace).toBe(false);
+      expect(child.files?.[0].canCopyToWorkspace).toBe(false);
+    });
   });
 
   it('serves a revisited folder from cache without refetching', async () => {
