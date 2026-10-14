@@ -8,16 +8,34 @@ import {
   GoogleDriveDocumentResponse,
 } from './interface';
 
+const GOOGLE_DRIVE_NATIVE_MIME_TYPE_PREFIX = 'application/vnd.google-apps.';
+
+/**
+ * Google-native types the backend converts to an Office file when copying them
+ * to the workspace. Drive offers no such export for the other native types
+ * (Forms, Vids, Sites…): the backend fails to copy them.
+ */
+const GOOGLE_DRIVE_EXPORTABLE_MIME_TYPES = [
+  'application/vnd.google-apps.document',
+  'application/vnd.google-apps.spreadsheet',
+  'application/vnd.google-apps.presentation',
+];
+
 function toGoogleDriveDocument(
   raw: GoogleDriveDocumentResponse,
 ): GoogleDriveDocument {
+  const isFolder = raw.mimeType === GOOGLE_DRIVE_FOLDER_MIME_TYPE;
   return {
     id: raw.id,
     name: raw.name,
     ownerDisplayName: raw.ownerDisplayName,
     contentType: raw.mimeType,
     size: raw.size,
-    isFolder: raw.mimeType === GOOGLE_DRIVE_FOLDER_MIME_TYPE,
+    isFolder,
+    canCopyToWorkspace:
+      isFolder ||
+      !raw.mimeType.startsWith(GOOGLE_DRIVE_NATIVE_MIME_TYPE_PREFIX) ||
+      GOOGLE_DRIVE_EXPORTABLE_MIME_TYPES.includes(raw.mimeType),
     lastModified: raw.modifiedTime,
     shared: raw.shared,
   };
