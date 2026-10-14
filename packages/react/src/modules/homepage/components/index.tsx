@@ -13,6 +13,7 @@ export * from './Notifications';
 export * from './Qwant';
 export * from './Rss';
 export * from './SchoolSpace';
+export * from './ScreenTime';
 export * from './UsefulLinks';
 export * from './Universalis';
 export * from './UserSpace';

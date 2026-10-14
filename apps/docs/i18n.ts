@@ -436,6 +436,30 @@ i18n.use(initReactI18next).init({
         'homepage.widget.cantine.tag.faitmaison': 'Fait maison',
         'homepage.widget.cantine.tag.bio': 'Agriculture biologique',
         'homepage.widget.cantine.tag.local': 'Produit local',
+        //------------------ ScreenTime -------------------------
+        'homepage.widget.screenTime.title': "Temps d'écran",
+        'homepage.widget.screenTime.open': 'Ouvrir en plein écran',
+        'homepage.widget.screenTime.today': "Aujourd'hui",
+        'homepage.widget.screenTime.yesterday': 'Hier',
+        'homepage.widget.screenTime.empty': 'Aucune donnée trouvée.',
+        'homepage.widget.screenTime.error.connection':
+          'Problème de connexion avec le service.',
+        'homepage.widget.screenTime.error.contact':
+          "Si le problème persiste, contactez l'ATI de votre établissement.",
+        'homepage.widget.screenTime.modal.info':
+          "Affichage du temps que le collégien passe sur l'ordinateur portable prêté par le Département. Le calcul du temps d'écran nécessite que l'ordinateur portable ait un accès à Internet. La fonctionnalité n'enregistre aucune donnée personnelle d'utilisation ou de navigation internet.",
+        'homepage.widget.screenTime.modal.learnMore': 'En savoir plus',
+        'homepage.widget.screenTime.modal.student': 'Collégien :',
+        'homepage.widget.screenTime.modal.weekly': 'Vue hebdomadaire',
+        'homepage.widget.screenTime.modal.daily': 'Vue quotidienne',
+        'homepage.widget.screenTime.modal.previous': 'Période précédente',
+        'homepage.widget.screenTime.modal.next': 'Période suivante',
+        'homepage.widget.screenTime.modal.week':
+          'semaine du [[start]] au [[end]]',
+        'homepage.widget.screenTime.modal.day': 'le [[date]]',
+        'homepage.widget.screenTime.modal.hours': 'Heures',
+        'homepage.widget.screenTime.modal.minutes': 'Minutes',
+        'homepage.widget.screenTime.modal.noData': 'Pas de données',
         //------------------ WidgetsPersonalizationPanel ----------
         'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
