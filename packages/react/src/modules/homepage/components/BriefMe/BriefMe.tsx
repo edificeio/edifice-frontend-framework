@@ -57,7 +57,7 @@ export default function BriefMe({
       </div>
 
       <HomeCard.Content
-        className={clsx('briefme__body', `briefme__body-${status}`)}
+        className={clsx('briefme__body', `briefme__body--${status}`)}
       >
         {status !== 'error' && (
           <SegmentedControl

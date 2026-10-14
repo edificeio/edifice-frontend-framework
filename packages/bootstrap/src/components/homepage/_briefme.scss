@@ -26,16 +26,16 @@
     align-items: center;
     gap: var(--primitive-spacer-12);
     padding: 0 var(--primitive-spacer-8) var(--primitive-spacer-4);
-  }
 
-  &__body-empty {
-    gap: var(--primitive-spacer-16);
-    padding: 0 0 var(--primitive-spacer-8);
-  }
+    &--error {
+      gap: 0;
+      padding: 0;
+    }
 
-  &__body-error {
-    gap: 0;
-    padding: 0;
+    &--empty {
+      gap: var(--primitive-spacer-16);
+      padding: 0 0 var(--primitive-spacer-8);
+    }
   }
 
   &__loading {
