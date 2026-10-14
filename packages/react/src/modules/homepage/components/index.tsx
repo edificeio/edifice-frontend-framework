@@ -7,6 +7,7 @@ export * from './LastInfos';
 export * from './MessageFlashList';
 export * from './Notifications';
 export * from './SchoolSpace';
+export * from './ScreenTime';
 export * from './UsefulLinks';
 export * from './UserSpace';
 export * from './WidgetsPersonalizationPanel';
