@@ -40,6 +40,14 @@ describe('useBackground', () => {
     expect(result.current.background).toBe('yellow-200');
   });
 
+  it('uses a platform background set as theme default', () => {
+    uiOverrides.current['background.default'] = { variant: 'crna' };
+
+    const { result } = renderHook(() => useBackground());
+
+    expect(result.current.background).toBe('crna');
+  });
+
   it('falls back to the default background when no override is set', () => {
     const { result } = renderHook(() => useBackground());
 

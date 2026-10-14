@@ -30,3 +30,9 @@
 [data-background='yellow-200'] {
   --background-image-url: url('./images/backgrounds/yellow.png');
 }
+
+// Platform background, offered when the theme-conf sets it as
+// `background.default` (see useBackground).
+[data-background='crna'] {
+  --background-image-url: url('./images/backgrounds/crna.png');
+}
