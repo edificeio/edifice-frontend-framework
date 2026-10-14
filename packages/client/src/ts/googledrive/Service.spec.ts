@@ -131,6 +131,71 @@ describe('GoogleDriveService', () => {
     });
   });
 
+  describe('listSharedDocuments', () => {
+    it('lists the documents shared with the user, owned by their first owner', async () => {
+      httpMock.get.mockResolvedValue({
+        data: [
+          {
+            id: 'doc-1',
+            name: 'Cours.pdf',
+            mimeType: 'application/pdf',
+            modifiedTime: '2026-01-15T10:30:00.000Z',
+            role: 'writer',
+            owners: [{ displayName: 'Alex Martin' }],
+          },
+        ],
+      });
+
+      const [result] = await service.listSharedDocuments(userId);
+
+      expect(httpMock.get).toHaveBeenCalledWith(
+        `/googledrive/files/user/${userId}/shared`,
+      );
+      expect(result).toEqual({
+        id: 'doc-1',
+        name: 'Cours.pdf',
+        contentType: 'application/pdf',
+        isFolder: false,
+        canCopyToWorkspace: true,
+        lastModified: '2026-01-15T10:30:00.000Z',
+        ownerDisplayName: 'Alex Martin',
+      });
+    });
+
+    it('only lets a document shared for editing be copied to the workspace', async () => {
+      const shared = (id: string, role: string | null, mimeType: string) => ({
+        id,
+        name: id,
+        mimeType,
+        role,
+      });
+      httpMock.get.mockResolvedValue({
+        data: [
+          shared('writer', 'writer', 'application/pdf'),
+          shared('commenter', 'commenter', 'application/pdf'),
+          shared('reader', 'reader', 'application/pdf'),
+          shared('unknown', null, 'application/pdf'),
+          shared('folder', 'reader', 'application/vnd.google-apps.folder'),
+          // Edit rights don't make a Google Form exportable.
+          shared('form', 'writer', 'application/vnd.google-apps.form'),
+        ],
+      });
+
+      const docs = await service.listSharedDocuments(userId);
+
+      expect(
+        Object.fromEntries(docs.map((doc) => [doc.id, doc.canCopyToWorkspace])),
+      ).toEqual({
+        writer: true,
+        commenter: false,
+        reader: false,
+        unknown: false,
+        folder: false,
+        form: false,
+      });
+    });
+  });
+
   describe('copyDocumentToWorkspace', () => {
     it('repeats the bare `id` key once per document', async () => {
       httpMock.put.mockResolvedValue({
