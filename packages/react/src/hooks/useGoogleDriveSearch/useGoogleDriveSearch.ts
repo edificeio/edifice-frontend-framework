@@ -8,12 +8,21 @@ import { findNodeById, modifyNode } from '../../components/Tree/utilities/tree';
 
 export type GoogleDriveFolderNode = TreeItem & {
   files?: GoogleDriveDocument[];
+  /** False when the folder's content can't be copied to the workspace. */
+  canCopyToWorkspace?: boolean;
 };
+
+/**
+ * Which documents a search browses from its root: the user's own Drive, or
+ * the documents other users shared with them.
+ */
+export type GoogleDriveSearchFilter = 'mydrive' | 'shared';
 
 export default function useGoogleDriveSearch(
   rootId: string,
   rootName: string,
   userId?: string,
+  filter: GoogleDriveSearchFilter = 'mydrive',
 ) {
   /**
    * A Google Drive search maintains a tree of TreeNodes (rendered by `Tree`),
@@ -40,15 +49,24 @@ export default function useGoogleDriveSearch(
           | undefined;
         if (!node) return prev;
 
-        const children = subfolders.map((f) => {
-          const existing = node.children?.find((c) => c.id === f.id);
-          return existing
-            ? { ...existing, name: f.name }
-            : { id: f.id, name: f.name };
-        });
+        // A folder that can't be copied (e.g. shared without edit rights)
+        // passes that restriction down to its whole content, as the legacy
+        // workspace does with the share role.
+        const restrict = (doc: GoogleDriveDocument) =>
+          node.canCopyToWorkspace === false
+            ? { ...doc, canCopyToWorkspace: false }
+            : doc;
+
+        const children = subfolders.map(restrict).map((f) => ({
+          // Keep an already loaded subfolder's own content.
+          ...node.children?.find((c) => c.id === f.id),
+          id: f.id,
+          name: f.name,
+          canCopyToWorkspace: f.canCopyToWorkspace,
+        }));
 
         return modifyNode(prev, (n) =>
-          n.id === node.id ? { ...n, children, files } : n,
+          n.id === node.id ? { ...n, children, files: files.map(restrict) } : n,
         ) as GoogleDriveFolderNode;
       });
     },
@@ -63,14 +81,24 @@ export default function useGoogleDriveSearch(
     async (folderId?: ID) => {
       if (!userId) return;
       const parentId = folderId === rootId ? undefined : (folderId as string);
+      // Shared documents have no common parent: the root of a 'shared' search
+      // is a listing of its own, while its folders are browsed like any other.
+      const isSharedRoot = filter === 'shared' && !parentId;
       try {
         // Dedupe concurrent requests for the same folder (Tree can fire
         // onTreeItemClick and onTreeItemUnfold for the same node on one click)
         // and cache results so revisiting a folder doesn't reload/flicker.
         const payload = await queryClient.fetchQuery({
-          queryKey: ['googledrive', 'documents', userId, parentId ?? 'root'],
+          queryKey: [
+            'googledrive',
+            'documents',
+            userId,
+            isSharedRoot ? 'shared' : (parentId ?? 'root'),
+          ],
           queryFn: () =>
-            odeServices.googledrive().listDocuments(userId, parentId),
+            isSharedRoot
+              ? odeServices.googledrive().listSharedDocuments(userId)
+              : odeServices.googledrive().listDocuments(userId, parentId),
           staleTime: 60_000,
         });
 
@@ -93,7 +121,7 @@ export default function useGoogleDriveSearch(
         setLoadError(error);
       }
     },
-    [rootId, userId, queryClient, updateFolder],
+    [rootId, userId, filter, queryClient, updateFolder],
   );
 
   /**
