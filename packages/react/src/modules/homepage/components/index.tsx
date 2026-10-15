@@ -7,6 +7,7 @@ export * from './HomeCard';
 export * from './LastInfos';
 export * from './MessageFlashList';
 export * from './Notifications';
+export * from './Qwant';
 export * from './SchoolSpace';
 export * from './UsefulLinks';
 export * from './UserSpace';
