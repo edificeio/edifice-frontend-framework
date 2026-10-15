@@ -1,6 +1,7 @@
 export * from './Agenda';
 export * from './AlloRegion';
 export * from './Communities';
+export * from './BriefMe';
 export * from './Favorites';
 export * from './Header';
 export * from './HomeCard';
