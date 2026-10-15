@@ -2,6 +2,7 @@ export * from './Agenda';
 export * from './Communities';
 export * from './BriefMe';
 export * from './Favorites';
+export * from './GenerationHdf';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';
