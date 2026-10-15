@@ -1,11 +1,11 @@
-import { School, WIDGET_NAME } from '@edifice.io/client';
+import { School, WIDGET_NAME, WidgetName } from '@edifice.io/client';
 import { useEffect, useState } from 'react';
 import { useSession } from 'src/hooks/useSession';
-import useWidget from '../../hooks/useWidget';
+import useWidget from './useWidget';
 
-export function useUserSchools() {
+export function useUserSchools(widgetName: WidgetName = WIDGET_NAME.SCHOOL) {
   const { data: session } = useSession();
-  const { preference, savePreference } = useWidget(WIDGET_NAME.SCHOOL);
+  const { preference, savePreference } = useWidget(widgetName);
   const [selectedSchool, setSelectedSchool] = useState<School>();
   const [schools, setSchools] = useState(session?.userDescription?.schools);
 
