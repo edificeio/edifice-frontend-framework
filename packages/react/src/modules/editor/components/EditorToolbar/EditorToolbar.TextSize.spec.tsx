@@ -1,7 +1,7 @@
 import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
 import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
 import { Editor } from '@tiptap/core';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 import { render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';

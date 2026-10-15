@@ -31,24 +31,27 @@ describe('AudioRenderer', () => {
   });
 
   describe('alignContent', () => {
-    it('centers the wrapper (margin auto + fit-content width) for "center"', () => {
+    // jsdom's CSS engine (cssstyle) doesn't recognize `fit-content` as a valid
+    // `width` value: it drops it entirely, from both `element.style.width`
+    // and the serialized `style` attribute. Unrelated to this component or
+    // tiptap, and the value is hardcoded (not computed), so the margin
+    // assertions below already cover the only part with real regression risk.
+    it('centers the wrapper (margin auto) for "center"', () => {
       const node = makeNode({ src: '/a.mp3', textAlign: 'center' });
       const { container } = renderAudio(node);
 
       const wrapper = container.querySelector('.audio-wrapper') as HTMLElement;
       expect(wrapper.style.marginLeft).toBe('auto');
       expect(wrapper.style.marginRight).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
     });
 
-    it('centers the wrapper (margin auto + fit-content width) for "justify"', () => {
+    it('centers the wrapper (margin auto) for "justify"', () => {
       const node = makeNode({ src: '/a.mp3', textAlign: 'justify' });
       const { container } = renderAudio(node);
 
       const wrapper = container.querySelector('.audio-wrapper') as HTMLElement;
       expect(wrapper.style.marginLeft).toBe('auto');
       expect(wrapper.style.marginRight).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
     });
 
     it('applies a margin-right-only rule for "left"', () => {
@@ -57,7 +60,6 @@ describe('AudioRenderer', () => {
 
       const wrapper = container.querySelector('.audio-wrapper') as HTMLElement;
       expect(wrapper.style.marginRight).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
       expect(wrapper.style.marginLeft).toBe('');
     });
 
@@ -67,7 +69,6 @@ describe('AudioRenderer', () => {
 
       const wrapper = container.querySelector('.audio-wrapper') as HTMLElement;
       expect(wrapper.style.marginLeft).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
       expect(wrapper.style.marginRight).toBe('');
     });
 
@@ -78,7 +79,7 @@ describe('AudioRenderer', () => {
       const wrapper = container.querySelector('.audio-wrapper') as HTMLElement;
       expect(wrapper.style.marginLeft).toBe('');
       expect(wrapper.style.marginRight).toBe('');
-      expect(wrapper.style.width).toBe('');
+      expect(wrapper.getAttribute('style') ?? '').not.toContain('width');
     });
   });
 });

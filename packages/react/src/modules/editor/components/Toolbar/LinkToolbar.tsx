@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { Editor, FloatingMenu } from '@tiptap/react';
+import { Editor } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
+
+import { useEditorState } from '../../hooks/useEditorState';
 
 import { Toolbar, ToolbarItem } from '../../../../components/Toolbar';
 import {
@@ -9,7 +12,7 @@ import {
   IconExternalLink,
   IconUnlink,
 } from '../../../icons/components';
-import { tippyOptions } from './LinkToolbar.TippyOptions';
+import { floatingOptions } from './LinkToolbar.FloatingOptions';
 
 interface LinkToolbarProps {
   /**
@@ -31,6 +34,7 @@ const LinkToolbar = ({
   onUnlink,
 }: LinkToolbarProps) => {
   const { t } = useTranslation();
+  const editorState = useEditorState(editor);
 
   // Current Linker node (or Hyperlink mark) attributes
   const [linkAttrs, setLinkAttrs] = useState<Record<string, any> | undefined>();
@@ -86,8 +90,7 @@ const LinkToolbar = ({
     else if (editor?.isActive('hyperlink'))
       setLinkAttrs(editor.getAttributes('hyperlink'));
     else setLinkAttrs(undefined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editor?.state]);
+  }, [editor, editorState]);
 
   const handleShouldShow = () =>
     (editor?.isEditable &&
@@ -97,13 +100,17 @@ const LinkToolbar = ({
   return (
     <>
       {editor && (
-        <FloatingMenu
+        // BubbleMenu, not FloatingMenu: `shouldShow` below overrides visibility
+        // either way, this only changes the default position reference.
+        <BubbleMenu
           editor={editor}
-          tippyOptions={tippyOptions}
+          options={floatingOptions}
           shouldShow={handleShouldShow}
+          // v3's `options` has no `zIndex` field - set via style instead.
+          style={{ zIndex: 999 }}
         >
           <Toolbar className="p-4" items={LinkToolbarItems} />
-        </FloatingMenu>
+        </BubbleMenu>
       )}
     </>
   );

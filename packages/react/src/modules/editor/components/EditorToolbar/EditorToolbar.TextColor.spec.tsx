@@ -1,6 +1,6 @@
 import { Editor } from '@tiptap/core';
 import Color from '@tiptap/extension-color';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 import { render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';

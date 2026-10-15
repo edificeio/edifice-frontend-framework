@@ -10,18 +10,14 @@ import { SpeechSynthesis } from '@edifice.io/tiptap-extensions/speech-synthesis'
 import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
 import { Mathematics } from '@tiptap/extension-mathematics';
 import Color from '@tiptap/extension-color';
-import Focus from '@tiptap/extension-focus';
 import FontFamily from '@tiptap/extension-font-family';
-import Placeholder from '@tiptap/extension-placeholder';
+import { TextStyleKit } from '@tiptap/extension-text-style';
+import { Focus, Placeholder } from '@tiptap/extensions';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
+import { Table, TableHeader, TableRow } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
-import Underline from '@tiptap/extension-underline';
 import { Content, Extensions, FocusPosition, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -76,7 +72,14 @@ export const useTipTapEditor = (
     // It will then be set in the correct editable mode, by a useEffect below.
     editable: true,
     extensions: [
-      StarterKit,
+      // v3's StarterKit bundles its own heading/link nodes, which would compete with
+      // CustomHeading/Hyperlink below for the same HTML tags. Disabled.
+      // `underline` stays enabled (default) - same as the explicit Underline
+      // extension it replaces, no custom one added below.
+      StarterKit.configure({
+        heading: false,
+        link: false,
+      }),
       Focus.configure({
         className: 'has-focus',
         mode: 'all',
@@ -87,8 +90,13 @@ export const useTipTapEditor = (
       CustomHighlight.configure({
         multicolor: true,
       }),
-      Underline,
-      TextStyle,
+      // v3's TextStyleKit bundles its own color/fontFamily/fontSize, which would
+      // duplicate the Color/FontFamily/FontSize added below. Disabled.
+      TextStyleKit.configure({
+        color: false,
+        fontFamily: false,
+        fontSize: false,
+      }),
       Color,
       Subscript,
       Superscript,
@@ -140,7 +148,10 @@ export const useTipTapEditor = (
   }, [editor, editable]);
 
   useEffect(() => {
-    editor?.commands.setContent(content);
+    // v3's setContent emits the 'update' event by default (v2 didn't), which
+    // would call onContentChange for this programmatic sync, not just real
+    // user edits. Keep it silent, like setEditable above.
+    editor?.commands.setContent(content, { emitUpdate: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 

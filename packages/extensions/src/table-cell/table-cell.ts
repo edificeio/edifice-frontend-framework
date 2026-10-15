@@ -1,4 +1,4 @@
-import { TableCell as TipTapTableCell } from '@tiptap/extension-table-cell';
+import { TableCell as TipTapTableCell } from '@tiptap/extension-table';
 
 /**
  * This custom extension allows setting a background-color to table cells.

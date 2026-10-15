@@ -46,7 +46,7 @@ export const Linker = Node.create({
   allowGapCursor: false,
 
   priority: 1100,
-  keepOnSplit: false,
+  // No `keepOnSplit` here: only valid on Marks, was always a no-op on this Node.
 
   addOptions() {
     return {
