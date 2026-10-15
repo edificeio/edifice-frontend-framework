@@ -8,8 +8,6 @@ import { findNodeById, modifyNode } from '../../components/Tree/utilities/tree';
 
 export type GoogleDriveFolderNode = TreeItem & {
   files?: GoogleDriveDocument[];
-  /** False when the folder's content can't be copied to the workspace. */
-  canCopyToWorkspace?: boolean;
 };
 
 /**
@@ -49,24 +47,15 @@ export default function useGoogleDriveSearch(
           | undefined;
         if (!node) return prev;
 
-        // A folder that can't be copied (e.g. shared without edit rights)
-        // passes that restriction down to its whole content, as the legacy
-        // workspace does with the share role.
-        const restrict = (doc: GoogleDriveDocument) =>
-          node.canCopyToWorkspace === false
-            ? { ...doc, canCopyToWorkspace: false }
-            : doc;
-
-        const children = subfolders.map(restrict).map((f) => ({
-          // Keep an already loaded subfolder's own content.
-          ...node.children?.find((c) => c.id === f.id),
-          id: f.id,
-          name: f.name,
-          canCopyToWorkspace: f.canCopyToWorkspace,
-        }));
+        const children = subfolders.map((f) => {
+          const existing = node.children?.find((c) => c.id === f.id);
+          return existing
+            ? { ...existing, name: f.name }
+            : { id: f.id, name: f.name };
+        });
 
         return modifyNode(prev, (n) =>
-          n.id === node.id ? { ...n, children, files: files.map(restrict) } : n,
+          n.id === node.id ? { ...n, children, files } : n,
         ) as GoogleDriveFolderNode;
       });
     },
@@ -110,7 +99,9 @@ export default function useGoogleDriveSearch(
           .filter((doc) => doc.id !== parentId)
           .forEach((doc) => {
             if (doc.isFolder) {
-              subfolders.push(doc);
+              // A folder that can't be copied (shared without edit rights)
+              // holds nothing the user could add, so it isn't listed at all.
+              if (doc.canCopyToWorkspace) subfolders.push(doc);
             } else {
               files.push(doc);
             }

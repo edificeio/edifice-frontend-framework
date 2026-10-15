@@ -85,6 +85,8 @@ const SHARED: GoogleDriveSharedDocumentResponse[] = [
   shared('file-cours', 'cours.pdf', 'application/pdf', 'writer'),
   // Shared read-only: its owner can forbid copying it, so it isn't listed.
   shared('file-sujet', 'sujet.pdf', 'application/pdf', 'reader'),
+  // Likewise, a read-only folder holds nothing that could be added.
+  shared('folder-consignes', 'Consignes', FOLDER_MIME, 'reader'),
 ];
 
 /** A 1-file-wide placeholder, enough for `useThumbnail` to resolve. */
@@ -118,7 +120,7 @@ const meta: Meta<typeof GoogleDrive> = {
     docs: {
       description: {
         component:
-          'The `GoogleDrive` component browses the files a user keeps on their Google Drive, and is mounted by the `MediaLibrary` as its Google Drive tab. Unlike the Nextcloud tab it needs no login step: the backend resolves the Drive credentials on its own, so the drive renders straight away as a folder tree plus a searchable, sortable file grid. A second section of the tree lists the documents other users shared with the user; as in the workspace, only those shared for editing can be picked, since an owner can forbid readers to copy a file. Folders are fetched lazily as they are opened, and `roles` narrows the grid to a media type so the same component can serve an image picker as well as an attachment picker. Selection is reported through `onSelect`, which always receives the full list of selected documents. Google Drive addresses its entries by opaque id, so a selection is keyed by `id` rather than by path.',
+          'The `GoogleDrive` component browses the files a user keeps on their Google Drive, and is mounted by the `MediaLibrary` as its Google Drive tab. Unlike the Nextcloud tab it needs no login step: the backend resolves the Drive credentials on its own, so the drive renders straight away as a folder tree plus a searchable, sortable file grid. A second section of the tree lists the documents other users shared with the user; only the files and folders shared for editing are listed, since an owner can forbid readers to copy a file. Folders are fetched lazily as they are opened, and `roles` narrows the grid to a media type so the same component can serve an image picker as well as an attachment picker. Selection is reported through `onSelect`, which always receives the full list of selected documents. Google Drive addresses its entries by opaque id, so a selection is keyed by `id` rather than by path.',
       },
     },
   },
