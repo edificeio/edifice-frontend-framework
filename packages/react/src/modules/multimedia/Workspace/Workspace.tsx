@@ -390,11 +390,7 @@ const Workspace = ({
         <Grid className="flex-grow-1 gap-0">
           <Grid.Col sm="4" md="8" xl="12">
             <div className="workspace-search px-16 py-8 ">
-              <SearchBar
-                isVariant={true}
-                className="gap-16"
-                onChange={handleSearchChange}
-              />
+              <SearchBar isVariant={true} onChange={handleSearchChange} />
             </div>
             <div className="d-flex align-items-center justify-content-end px-8 py-4">
               <small className="text-muted">

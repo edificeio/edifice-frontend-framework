@@ -3,8 +3,9 @@ import { forwardRef, Ref } from 'react';
 import clsx from 'clsx';
 
 import { IconSearch } from '../../modules/icons/components';
+import { ButtonBeta } from '../ButtonBeta';
 import { ButtonRef } from './Button';
-import IconButton, { IconButtonProps } from './IconButton';
+import { IconButtonProps } from './IconButton';
 
 type PickedProps = 'type' | 'icon' | 'size';
 
@@ -24,27 +25,30 @@ export interface SearchButtonProps extends Pick<IconButtonProps, PickedProps> {
 }
 
 /**
- * SearchButton extends the IconButton component by omitting unnecessary props.
+ * Icon-only search button built on ButtonBeta.
  */
 const SearchButton = forwardRef(
   (
-    {
-      icon = <IconSearch />,
-      onClick,
-      className,
-      ...restProps
-    }: SearchButtonProps,
+    { icon = <IconSearch />, onClick, className, disabled }: SearchButtonProps,
     ref?: Ref<ButtonRef>,
   ) => {
     const classes = clsx('btn-search', className);
 
     return (
-      <IconButton
+      // <IconButton
+      //   ref={ref}
+      //   className={classes}
+      //   icon={icon}
+      //   onClick={onClick}
+      //   {...restProps}
+      // />
+      <ButtonBeta
         ref={ref}
         className={classes}
-        icon={icon}
+        leftIcon={icon}
+        size={'md'}
         onClick={onClick}
-        {...restProps}
+        disabled={disabled}
       />
     );
   },
