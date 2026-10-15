@@ -1,5 +1,5 @@
 import SchoolSpace from './SchoolSpace';
-import { useUserSchools } from './useUserSchools';
+import { useUserSchools } from '../../hooks/useUserSchools';
 
 export function SchoolSpaceContainer() {
   const { handleSelectedSchoolChange, ...otherProps } = useUserSchools();
