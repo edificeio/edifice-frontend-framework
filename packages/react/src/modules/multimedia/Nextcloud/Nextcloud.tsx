@@ -28,7 +28,7 @@ import {
 import { NextcloudFileCard } from '../FileCard';
 
 import illuError from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-error.svg';
-import illuNoContentInFolder from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-no-content-in-folder.svg';
+import illuConnectionLost from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-connection-lost.svg';
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 import { Button, Flex } from '../../../components';
 
@@ -248,13 +248,11 @@ const Nextcloud = ({
         justify="center"
         align="center"
       >
-        <Flex direction="column" gap="8" justify="center" align="center">
-          <EmptyScreen imageSrc={illuNoContentInFolder} />
-          <h2 className="h2 text-secondary mb-8">
-            {t('nextcloud.auth.title')}
-          </h2>
-          <div className="text">{t('nextcloud.auth.description')}</div>
-        </Flex>
+        <EmptyScreen
+          imageSrc={illuConnectionLost}
+          title={t('nextcloud.auth.title')}
+          text={t('nextcloud.auth.description')}
+        />
 
         <Button onClick={openLoginPopup}>{t('nextcloud.auth.connect')}</Button>
       </Flex>
