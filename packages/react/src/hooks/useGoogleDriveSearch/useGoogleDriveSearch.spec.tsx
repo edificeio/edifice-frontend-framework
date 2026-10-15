@@ -20,6 +20,7 @@ const folder = {
   id: 'folder-1',
   name: 'Photos',
   isFolder: true,
+  canCopyToWorkspace: true,
 };
 const file = {
   id: 'file-1',
@@ -113,7 +114,7 @@ describe('useGoogleDriveSearch', () => {
   it('skips the queried folder when the backend echoes it back', async () => {
     listDocuments.mockResolvedValueOnce([folder]);
     listDocuments.mockResolvedValueOnce([
-      { id: 'folder-1', name: 'Photos', isFolder: true },
+      folder,
       { id: 'file-2', name: 'Photo.png', isFolder: false },
     ]);
 
@@ -222,29 +223,25 @@ describe('useGoogleDriveSearch', () => {
       expect(listDocuments).toHaveBeenCalledWith('user-1', 'folder-1');
     });
 
-    it('passes a folder copy restriction down to its whole content', async () => {
+    it('hides a folder shared without edit rights', async () => {
       listSharedDocuments.mockResolvedValue([
-        { ...folder, canCopyToWorkspace: false },
-      ]);
-      listDocuments.mockResolvedValue([
-        { id: 'folder-2', name: 'Archives', isFolder: true },
-        { ...file, canCopyToWorkspace: true },
+        folder,
+        {
+          id: 'folder-2',
+          name: 'Consignes',
+          isFolder: true,
+          canCopyToWorkspace: false,
+        },
       ]);
 
       const { result } = renderSharedSearch();
       await act(async () => {
         await result.current.loadContent(SHARED_ID);
       });
-      await act(async () => {
-        await result.current.loadContent('folder-1');
-      });
 
-      const child = result.current.root.children?.[0] as {
-        children?: { canCopyToWorkspace?: boolean }[];
-        files?: { canCopyToWorkspace?: boolean }[];
-      };
-      expect(child.children?.[0].canCopyToWorkspace).toBe(false);
-      expect(child.files?.[0].canCopyToWorkspace).toBe(false);
+      expect(result.current.root.children).toEqual([
+        { id: 'folder-1', name: 'Photos' },
+      ]);
     });
   });
 
