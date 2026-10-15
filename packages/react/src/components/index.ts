@@ -55,6 +55,7 @@ export * from './Stepper';
 export * from './Switch';
 export * from './Table';
 export * from './Tabs';
+export * from '../modules/homepage/components/TabsKids';
 export * from './TextArea';
 export * from './Toolbar';
 export * from './Tooltip';

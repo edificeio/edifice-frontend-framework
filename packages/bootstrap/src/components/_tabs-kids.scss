@@ -1,0 +1,159 @@
+.tabs-kids {
+  display: flex;
+  flex-direction: column;
+  background: var(--primitive-grey-100);
+  border-radius: var(--primitive-border-radius-xl);
+
+  &-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-4);
+  }
+
+  &-list {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  &-overflow {
+    padding: 0 var(--spacer-8, 8px);
+  }
+
+  // The overflow dropdown trigger keeps its size, the tabs shrink instead.
+  &-bar > :not(.tabs-kids-list) {
+    flex-shrink: 0;
+  }
+
+  // Hidden copy of every tab, used to compute which tabs fit in the bar.
+  // Hidden by its empty clipping box, not `visibility: hidden`: icons share
+  // their SVG `clipPath` ids, and a hidden `clipPath` would also hide the
+  // visible icons referencing it.
+  &-measure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    &-content {
+      display: flex;
+      width: max-content;
+
+      .tabs-kids-item {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  &-item {
+    --tabs-kids-item-bg: transparent;
+    --tabs-kids-item-border: transparent;
+    --tabs-kids-item-corner: var(--primitive-border-radius-xl);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    min-width: 0;
+    padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
+    background-color: var(--tabs-kids-item-bg);
+    border: 1px solid var(--tabs-kids-item-border);
+    border-bottom: none;
+    border-radius: var(--primitive-border-radius-xl)
+      var(--primitive-border-radius-xl) 0 0;
+    cursor: pointer;
+
+    // Inverted radius at the bottom corners: the tab flares into the content
+    // below it. Each arc carries a side border down to the panel border.
+    &::before,
+    &::after {
+      --tabs-kids-item-corner-gradient:
+        transparent calc(var(--tabs-kids-item-corner) - 1px),
+        var(--tabs-kids-item-border) calc(var(--tabs-kids-item-corner) - 1px)
+          var(--tabs-kids-item-corner),
+        var(--tabs-kids-item-bg) var(--tabs-kids-item-corner);
+
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: var(--tabs-kids-item-corner);
+      height: var(--tabs-kids-item-corner);
+      pointer-events: none;
+    }
+
+    &::before {
+      right: 100%;
+      background: radial-gradient(
+        circle at 0 0,
+        var(--tabs-kids-item-corner-gradient)
+      );
+    }
+
+    &::after {
+      left: 100%;
+      background: radial-gradient(
+        circle at 100% 0,
+        var(--tabs-kids-item-corner-gradient)
+      );
+    }
+
+    &:first-child::before {
+      display: none;
+    }
+
+    &.compact {
+      flex-shrink: 0;
+    }
+
+    &.active {
+      --tabs-kids-item-bg: var(--color-primary-pale);
+      --tabs-kids-item-border: var(--color-primary-light);
+
+      z-index: 1;
+      margin-bottom: -1px;
+      padding-bottom: calc(var(--primitive-spacer-12) + 1px);
+
+      .tabs-kids-item-avatar .avatar {
+        outline: 2px solid var(--color-primary-default);
+        outline-offset: -2px;
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-default);
+      outline-offset: -2px;
+    }
+
+    &-avatar {
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+
+    &-label {
+      font-family: var(--font-family-body);
+      font-size: var(--primitive-font-size-small);
+      font-weight: var(--primitive-font-weight-bold);
+      color: var(--primitive-grey-900);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &-panel {
+    padding: var(--spacer-8, 8px);
+    background-color: var(--color-primary-pale);
+    border: 1px solid var(--color-primary-light);
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  // Square the panel top left corner so the first tab stays attached to it.
+  &:has(.tabs-kids-list > .tabs-kids-item:first-child.active) &-panel {
+    border-top-left-radius: 0;
+  }
+}
