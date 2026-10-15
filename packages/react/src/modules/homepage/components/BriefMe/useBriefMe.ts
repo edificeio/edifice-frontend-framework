@@ -2,7 +2,7 @@ import { School, odeServices } from '@edifice.io/client';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import useDate from '../../../../hooks/useDate/useDate';
-import { useUserSchools } from '../SchoolSpace/useUserSchools';
+import { useUserSchools } from '../../hooks/useUserSchools';
 import {
   BRIEFME_ENDPOINTS,
   BriefMeArticle,

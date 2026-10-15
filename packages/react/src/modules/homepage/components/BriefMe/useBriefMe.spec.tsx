@@ -21,7 +21,7 @@ vi.mock('@edifice.io/client', async (importOriginal) => ({
   },
 }));
 
-vi.mock('../SchoolSpace/useUserSchools', () => ({ useUserSchools }));
+vi.mock('../../hooks/useUserSchools', () => ({ useUserSchools }));
 
 const school = {
   id: 'school-1',
