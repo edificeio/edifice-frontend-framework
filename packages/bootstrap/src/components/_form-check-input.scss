@@ -16,6 +16,7 @@
     min-width: var(--form-check-input-min-size);
     min-height: var(--form-check-input-min-size);
     border-color: var(--primitive-text-color-subtext);
+    cursor: pointer;
 
     &:checked,
     &[type='checkbox']:indeterminate {
@@ -49,6 +50,11 @@
         margin-bottom: 0;
       }
     }
+  }
+
+  // A disabled input's label keeps Bootstrap's default cursor (more specific).
+  .form-check-label {
+    cursor: pointer;
   }
 
   // Bootstrap's data-URI icons cannot read CSS variables:

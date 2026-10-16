@@ -11,7 +11,7 @@ describe('Checkbox component', () => {
     expect(input).toBeInTheDocument();
     expect(input).not.toBeChecked();
     expect(input).toBeEnabled();
-    expect(input).toHaveClass('form-check-input', 'c-pointer');
+    expect(input).toHaveClass('form-check-input');
   });
 
   it('renders a label linked to the input when provided', () => {
@@ -55,7 +55,7 @@ describe('Checkbox component', () => {
     render(<Checkbox className="custom-class" readOnly />);
     const input = screen.getByRole('checkbox');
 
-    expect(input).toHaveClass('custom-class', 'form-check-input', 'c-pointer');
+    expect(input).toHaveClass('custom-class', 'form-check-input');
   });
 
   it('populates the forwarded ref once mounted', () => {
