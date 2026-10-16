@@ -1,6 +1,7 @@
 export * from './Agenda';
 export * from './Communities';
 export * from './BriefMe';
+export * from './Cantine';
 export * from './Favorites';
 export * from './GenerationHdf';
 export * from './Header';
