@@ -409,6 +409,33 @@ i18n.use(initReactI18next).init({
           "L'adresse doit être une URL valide (ex. https://exemple.fr)",
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
+        //------------------ Cantine -----------------------------
+        'homepage.widget.cantine.title': 'Menu de la cantine',
+        'homepage.widget.cantine.open': 'Ouvrir en plein écran',
+        'homepage.widget.cantine.error':
+          'Problème de connexion avec le service de cantine. Si le problème persiste, contactez votre établissement.',
+        'homepage.widget.cantine.empty':
+          'Le menu n’est pas disponible pour ce jour',
+        'homepage.widget.cantine.emptyIllustration': "Panneau barré",
+        'homepage.widget.cantine.seeMore': 'voir plus',
+        'homepage.widget.cantine.school': 'Établissement',
+        'homepage.widget.cantine.menu': 'Menu',
+        'homepage.widget.cantine.lunch': 'Déjeuner',
+        'homepage.widget.cantine.dinner': 'Dîner',
+        'homepage.widget.cantine.previousDay': 'Jour précédent',
+        'homepage.widget.cantine.nextDay': 'Jour suivant',
+        'homepage.widget.cantine.legend.title': 'Légende',
+        'homepage.widget.cantine.legend.notice':
+          'Les informations figurant dans ces menus peuvent être modifiées en fonction des approvisionnements ; les mises à jour seront effectuées en conséquence',
+        'homepage.widget.cantine.category.entree': 'Entrée',
+        'homepage.widget.cantine.category.plat': 'Plat',
+        'homepage.widget.cantine.category.accompagnement': 'Accompagnement',
+        'homepage.widget.cantine.category.laitage': 'Laitage',
+        'homepage.widget.cantine.category.dessert': 'Dessert',
+        'homepage.widget.cantine.tag.vegetarien': 'Végétarien',
+        'homepage.widget.cantine.tag.faitmaison': 'Fait maison',
+        'homepage.widget.cantine.tag.bio': 'Agriculture biologique',
+        'homepage.widget.cantine.tag.local': 'Produit local',
         //------------------ WidgetsPersonalizationPanel ----------
         'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
