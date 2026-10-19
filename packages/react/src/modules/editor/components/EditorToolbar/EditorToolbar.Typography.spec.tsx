@@ -56,7 +56,7 @@ describe('EditorToolbarTypography', () => {
       'Sans-serif',
       'Serif',
       'Monoscript',
-      'Cursive',
+      'Marelle',
       'OpenDyslexic',
     ];
     labels.forEach((label) => {
@@ -104,7 +104,7 @@ describe('EditorToolbarTypography', () => {
     const { user } = renderTypography(editor);
 
     await user.click(getTrigger());
-    await user.click(screen.getByRole('menuitemradio', { name: 'Cursive' }));
+    await user.click(screen.getByRole('menuitemradio', { name: 'Marelle' }));
     expect(editor.getAttributes('textStyle').fontFamily).toBe('Marelle');
 
     await user.click(screen.getByRole('menuitemradio', { name: 'Sans-serif' }));
