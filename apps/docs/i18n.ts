@@ -34,7 +34,7 @@ i18n.use(initReactI18next).init({
         'tiptap.toolbar.typo.sans': 'Sans-serif',
         'tiptap.toolbar.typo.serif': 'Serif',
         'tiptap.toolbar.typo.mono': 'Monoscript',
-        'tiptap.toolbar.typo.cursive': 'Cursive',
+        'tiptap.toolbar.typo.marelle': 'Marelle',
         'tiptap.toolbar.typo.dyslexic': 'OpenDyslexic',
         'tiptap.toolbar.typo.choice': 'Font',
         'tiptap.link.toolbar.edit': 'Edit',

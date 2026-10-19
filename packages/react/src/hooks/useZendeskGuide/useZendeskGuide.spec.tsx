@@ -338,11 +338,19 @@ describe('useZendeskGuide', () => {
       });
     });
 
-    it('lets the caller override the theme color regardless of the configured one', async () => {
+    it('applies the caller color to the widget header', async () => {
       await mountAndLoad({ headerColor: '#3030d1' });
 
       expect(settings()[0]).toMatchObject({
-        webWidget: { color: { theme: '#3030d1' } },
+        webWidget: { color: { header: '#3030d1' } },
+      });
+    });
+
+    it('keeps the configured theme color when the caller sets a header color', async () => {
+      await mountAndLoad({ headerColor: '#3030d1' });
+
+      expect(settings()[0]).toMatchObject({
+        webWidget: { color: { theme: '#123456' } },
       });
     });
 
