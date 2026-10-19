@@ -26,7 +26,7 @@ describe('ActionListPopover', () => {
       '/auth/logout?callback=/portal',
     );
     expect(screen.getByTestId('header-logout-button')).toHaveClass(
-      'action-item--danger',
+      'action-item--destructive',
     );
   });
 });

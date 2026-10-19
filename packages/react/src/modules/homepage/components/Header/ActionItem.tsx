@@ -24,9 +24,9 @@ export interface ActionItemProps extends ComponentPropsWithoutRef<'a'> {
    */
   children: ReactNode;
   /**
-   * `danger` for destructive actions (e.g. logout)
+   * `destructive` for destructive actions (e.g. logout)
    */
-  variant?: 'default' | 'danger';
+  variant?: 'default' | 'destructive';
 }
 
 export const ActionItem = ({
@@ -39,7 +39,7 @@ export const ActionItem = ({
 }: ActionItemProps) => {
   const classes = clsx(
     'action-item',
-    { 'action-item--danger': variant === 'danger' },
+    { 'action-item--destructive': variant === 'destructive' },
     className,
   );
 

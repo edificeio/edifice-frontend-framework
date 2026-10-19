@@ -12,20 +12,20 @@ describe('ActionItem', () => {
     const link = screen.getByRole('link', { name: 'Customize' });
     expect(link).toHaveAttribute('href', '/timeline/customize');
     expect(link).toHaveClass('action-item');
-    expect(link).not.toHaveClass('action-item--danger');
+    expect(link).not.toHaveClass('action-item--destructive');
     expect(screen.getByTestId('icon')).toBeInTheDocument();
   });
 
-  it('applies the danger modifier', () => {
+  it('applies the destructive modifier', () => {
     render(
-      <ActionItem href="/auth/logout" variant="danger">
+      <ActionItem href="/auth/logout" variant="destructive">
         Logout
       </ActionItem>,
     );
 
     expect(screen.getByRole('link', { name: 'Logout' })).toHaveClass(
       'action-item',
-      'action-item--danger',
+      'action-item--destructive',
     );
   });
 

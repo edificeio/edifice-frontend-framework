@@ -63,7 +63,7 @@ export const ActionListPopover = forwardRef<
             <ActionItem
               href={'/auth/logout?callback=' + (logoutCallback ?? '')}
               icon={<IconLogout />}
-              variant="danger"
+              variant="destructive"
               data-testid="header-logout-button"
             >
               {t('navbar.disconnect')}

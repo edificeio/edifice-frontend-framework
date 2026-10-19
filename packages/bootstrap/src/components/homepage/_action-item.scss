@@ -35,9 +35,9 @@
     background-color: var(--primitive-grey-200);
   }
 
-  &--danger,
-  &--danger:hover,
-  &--danger:focus-visible {
+  &--destructive,
+  &--destructive:hover,
+  &--destructive:focus-visible {
     color: var(--color-support-danger-700);
   }
 }
