@@ -1,0 +1,43 @@
+// Action row (icon + label) of the Header v2 account popover. Standalone on
+// purpose — it doesn't rely on `.dropdown-item` — so it can become the item
+// primitive of the redesigned Dropdown (ENABLING-882).
+.action-item {
+  display: flex;
+  gap: var(--primitive-spacer-8);
+  align-items: center;
+  padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  font-family: var(--font-family-body);
+  font-size: var(--primitive-font-size-default);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--primitive-font-lineheight-xs);
+  color: var(--primitive-text-color-default);
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: var(--primitive-border-radius-md);
+  transition: background-color 150ms ease-in-out;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--primitive-text-color-default);
+    background-color: var(--primitive-grey-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primitive-grey-500);
+    outline-offset: -2px;
+  }
+
+  &:active {
+    background-color: var(--primitive-grey-200);
+  }
+
+  &--danger,
+  &--danger:hover,
+  &--danger:focus-visible {
+    color: var(--color-support-danger-700);
+  }
+}
