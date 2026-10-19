@@ -19,14 +19,11 @@ const SKELETON_ARTICLES = [0, 1, 2];
 
 export interface RssProps {
   feeds: RssFeed[];
-  /** True while the user's feeds are being fetched. */
   isLoading?: boolean;
   selectedIndex: number;
   onSelectFeed: (index: number) => void;
-  /** Articles of the selected feed. */
   articles: RssArticle[];
   articlesStatus: RssArticlesStatus;
-  /** Opens the feeds management modal. */
   onEditClick: () => void;
 }
 
