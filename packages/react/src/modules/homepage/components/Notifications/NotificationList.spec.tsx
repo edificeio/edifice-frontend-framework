@@ -15,7 +15,8 @@ describe('NotificationList', () => {
     expect(
       screen.queryByText('homepage.notifications-list.empty.description'),
     ).not.toBeInTheDocument();
-    expect(screen.getAllByRole('listitem')).toHaveLength(3);
+    // Placeholders are hidden from assistive technologies.
+    expect(screen.getAllByRole('listitem', { hidden: true })).toHaveLength(8);
   });
 
   it('renders as many items as notifications passed', () => {

@@ -9,11 +9,11 @@ const NotificationSkeleton = React.forwardRef<
     <Flex direction="column" className="notification-item" gap="8" ref={ref}>
       <Flex direction="row" gap="8">
         <div className="notification-item-picture">
-          <Avatar
-            alt="Notification Picture"
-            variant="circle"
-            className="notification-item-avatar"
-          />
+          {/* to replace with new skeleton component*/}
+          <div
+            className="placeholder col-4"
+            style={{ height: '3.2rem', width: '3.2rem', borderRadius: '50%' }}
+          ></div>
         </div>
         <Flex direction="column" gap="8" className="notification-item-message">
           <TextSkeleton />
