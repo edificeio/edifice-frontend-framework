@@ -1,17 +1,21 @@
 import { render, screen } from '~/setup';
-import { ActionListPopover } from './ActionListPopover';
+import { AccountActionListPopover } from './AccountActionListPopover';
 
-describe('ActionListPopover', () => {
+describe('AccountActionListPopover', () => {
   it('does not render when hidden', () => {
-    render(<ActionListPopover id="menu" isVisible={false} />);
+    render(<AccountActionListPopover id="menu" isVisible={false} />);
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
   });
 
   it('lists the my account, customize and logout actions', () => {
-    render(<ActionListPopover id="menu" isVisible logoutCallback="/portal" />);
+    render(
+      <AccountActionListPopover id="menu" isVisible logoutCallback="/portal" />,
+    );
 
-    expect(screen.getByRole('tooltip')).toHaveClass('action-list-popover');
+    expect(screen.getByRole('tooltip')).toHaveClass(
+      'account-action-list-popover',
+    );
     expect(screen.getAllByRole('listitem')).toHaveLength(3);
     expect(screen.getByTestId('header-my-account-button')).toHaveAttribute(
       'href',

@@ -11,7 +11,10 @@ import {
 } from '../../../icons/components';
 import { ActionItem } from './ActionItem';
 
-export interface ActionListPopoverProps extends Omit<PopoverProps, 'children'> {
+export interface AccountActionListPopoverProps extends Omit<
+  PopoverProps,
+  'children'
+> {
   /**
    * Callback appended to the logout URL (from the theme configuration)
    */
@@ -22,20 +25,20 @@ export interface ActionListPopoverProps extends Omit<PopoverProps, 'children'> {
  * "Mon compte" popover of the Header v2: a white box listing the account
  * actions (my account, customize, logout).
  */
-export const ActionListPopover = forwardRef<
+export const AccountActionListPopover = forwardRef<
   HTMLDivElement,
-  ActionListPopoverProps
+  AccountActionListPopoverProps
 >(({ className, logoutCallback, ...restProps }, ref) => {
   const { t } = useTranslation();
 
   return (
     <Popover
       ref={ref}
-      className={clsx('action-list-popover', className)}
+      className={clsx('account-action-list-popover', className)}
       {...restProps}
     >
       <PopoverBody>
-        <ul className="action-list-popover__list">
+        <ul className="account-action-list-popover__list">
           <li>
             <ActionItem
               href="/userbook/mon-compte"
@@ -75,6 +78,6 @@ export const ActionListPopover = forwardRef<
   );
 });
 
-ActionListPopover.displayName = 'ActionListPopover';
+AccountActionListPopover.displayName = 'AccountActionListPopover';
 
-export default ActionListPopover;
+export default AccountActionListPopover;

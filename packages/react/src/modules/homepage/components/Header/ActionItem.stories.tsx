@@ -1,12 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import hillsBackground from '@edifice.io/bootstrap/dist/images/backgrounds/hills.svg';
-import {
-  IconEdit,
-  IconLogout,
-  IconSetBackground,
-  IconUser,
-} from '../../../icons/components';
+import { IconEdit, IconLogout, IconUser } from '../../../icons/components';
 import { ActionItem } from './ActionItem';
 
 const meta: Meta<typeof ActionItem> = {

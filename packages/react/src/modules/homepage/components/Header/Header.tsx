@@ -19,7 +19,7 @@ import {
 } from '../../../../hooks';
 
 import { useId, type MouseEvent } from 'react';
-import { ActionListPopover } from './ActionListPopover';
+import { AccountActionListPopover } from './AccountActionListPopover';
 import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
 import { useSafeHoverPopover } from './useSafeHoverPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
@@ -242,7 +242,7 @@ const Header = ({
                 height="32"
               />
             </NavLink>
-            <ActionListPopover
+            <AccountActionListPopover
               ref={userMenu.setFloating}
               align="end"
               id={popoverUserId}
