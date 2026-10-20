@@ -1,4 +1,9 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  ForwardedRef,
+  ReactNode,
+  forwardRef,
+} from 'react';
 
 import clsx from 'clsx';
 
@@ -9,11 +14,12 @@ import clsx from 'clsx';
  *
  * Context-free on purpose (no Dropdown context, no `.dropdown-item` styles):
  * it is meant to be reused as the item primitive when the Dropdown component
- * is redesigned (see ENABLING-882).
+ * is redesigned (see ENABLING-882). The ref is forwarded to the underlying
+ * element so a parent menu can manage focus.
  */
 interface ActionItemBaseProps {
   /**
-   * Icon displayed before the label
+   * Icon displayed before the label (hidden from assistive technologies)
    */
   icon?: ReactNode;
   /**
@@ -24,9 +30,6 @@ interface ActionItemBaseProps {
    * `destructive` for destructive actions (e.g. logout)
    */
   variant?: 'default' | 'destructive';
-  /**
-   * Optional class for styling purpose
-   */
   className?: string;
 }
 
@@ -45,49 +48,64 @@ type ActionItemButtonProps = ActionItemBaseProps &
 
 export type ActionItemProps = ActionItemLinkProps | ActionItemButtonProps;
 
-export const ActionItem = ({
-  icon,
-  children,
-  variant = 'default',
-  className,
-  ...restProps
-}: ActionItemProps) => {
-  const classes = clsx(
+const isLinkProps = (props: ActionItemProps): props is ActionItemLinkProps =>
+  props.href !== undefined;
+
+const getClasses = (
+  variant: NonNullable<ActionItemBaseProps['variant']>,
+  className?: string,
+) =>
+  clsx(
     'action-item',
     { 'action-item--destructive': variant === 'destructive' },
     className,
   );
 
-  const content = (
-    <>
-      {icon && (
-        <span className="action-item__icon" aria-hidden="true">
-          {icon}
-        </span>
-      )}
+const ActionItemContent = ({
+  icon,
+  children,
+}: Pick<ActionItemBaseProps, 'icon' | 'children'>) => (
+  <>
+    {icon && (
+      <span className="action-item__icon" aria-hidden="true">
+        {icon}
+      </span>
+    )}
+    <span className="action-item__label">{children}</span>
+  </>
+);
 
-      <span className="action-item__label">{children}</span>
-    </>
-  );
+export const ActionItem = forwardRef<
+  HTMLAnchorElement | HTMLButtonElement,
+  ActionItemProps
+>((props, ref) => {
+  if (isLinkProps(props)) {
+    const { icon, children, variant = 'default', className, ...rest } = props;
 
-  if (restProps.href !== undefined) {
     return (
-      <a className={classes} {...(restProps as ComponentPropsWithoutRef<'a'>)}>
-        {content}
+      <a
+        ref={ref as ForwardedRef<HTMLAnchorElement>}
+        className={getClasses(variant, className)}
+        {...rest}
+      >
+        <ActionItemContent icon={icon}>{children}</ActionItemContent>
       </a>
     );
   }
 
+  const { icon, children, variant = 'default', className, ...rest } = props;
+
   return (
     <button
+      ref={ref as ForwardedRef<HTMLButtonElement>}
       type="button"
-      className={classes}
-      {...(restProps as ComponentPropsWithoutRef<'button'>)}
+      className={getClasses(variant, className)}
+      {...rest}
     >
-      {content}
+      <ActionItemContent icon={icon}>{children}</ActionItemContent>
     </button>
   );
-};
+});
 
 ActionItem.displayName = 'ActionItem';
 
