@@ -19,6 +19,7 @@ import {
 } from '../../../../hooks';
 
 import { useId, type MouseEvent } from 'react';
+import { AccountActionListPopover } from './AccountActionListPopover';
 import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
 import { useSafeHoverPopover } from './useSafeHoverPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
@@ -26,10 +27,8 @@ import { NavItem } from '../../../../components/Layout/components/NavItem';
 import { NavLink } from '../../../../components/Layout/components/NavLink';
 import useHeader from '../../../../components/Layout/hooks/useHeader';
 import { useEdificeTheme } from '../../../../providers/';
-import { IconSetBackground } from '../../../icons/components';
 import {
   IconCommunitiesBeta,
-  IconDisconnect,
   IconHomeBeta,
   IconMessagesBeta,
   IconMyAppsBeta,
@@ -243,44 +242,14 @@ const Header = ({
                 height="32"
               />
             </NavLink>
-            <Popover
+            <AccountActionListPopover
               ref={userMenu.setFloating}
               align="end"
-              className="widget"
               id={popoverUserId}
               isVisible={userMenu.open}
+              logoutCallback={theme?.logoutCallback}
               {...userMenu.getFloatingProps()}
-            >
-              <PopoverBody>
-                <a
-                  href={
-                    '/timeline/customize?callback=' +
-                    encodeURIComponent(
-                      `${window.location.pathname}${window.location.search}`,
-                    )
-                  }
-                  className="nav-link customize d-flex align-items-center gap-8"
-                  data-testid="header-customize-button"
-                >
-                  <IconSetBackground className="icon" />
-                  <span id="cutomize-label" className="nav-text">
-                    {t('navbar.customize')}
-                  </span>
-                </a>
-                <a
-                  href={
-                    '/auth/logout?callback=' + (theme?.logoutCallback ?? '')
-                  }
-                  className="nav-link logout d-flex align-items-center gap-8"
-                  data-testid="header-logout-button"
-                >
-                  <IconDisconnect className="icon logout" />
-                  <span id="logout-label" className="nav-text">
-                    {t('navbar.disconnect')}
-                  </span>
-                </a>
-              </PopoverBody>
-            </Popover>
+            />
           </NavItem>
         </ul>
       </Navbar>
