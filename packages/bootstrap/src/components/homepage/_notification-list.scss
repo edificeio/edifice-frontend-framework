@@ -1,11 +1,26 @@
 .notification-list {
+  height: 100%;
+  background-color: var(--primitive-white);
+
   h4 {
     font-family: var(--font-family-title);
   }
+
   ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  background-color: var(--primitive-white);
+
+  &-body {
+    height: 100%;
+  }
+
+  // Placeholders fill the remaining height without adding their own:
+  // size containment ignores their content, the extra ones are clipped.
+  &-skeleton {
+    flex: 1;
+    overflow: hidden;
+    contain: size;
+  }
 }
