@@ -62,7 +62,7 @@ const NotificationList = ({
 
   return (
     <section role="region" className="notification-list">
-      <Flex direction="column">
+      <Flex direction="column" className="notification-list-body">
         <Flex
           justify="between"
           align="center"
@@ -115,7 +115,6 @@ const NotificationList = ({
               ))}
             </ul>
             {hasNextPage && <NotificationSkeleton ref={loadNextRef} />}
-            {isLoading && <NotificationListSkeleton />}
           </>
         )}
       </Flex>

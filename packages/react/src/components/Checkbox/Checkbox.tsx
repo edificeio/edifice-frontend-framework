@@ -58,7 +58,7 @@ const Checkbox = forwardRef(
       checked,
       disabled,
       ref: refCheckbox,
-      className: clsx(restProps.className, 'form-check-input c-pointer'),
+      className: clsx(restProps.className, 'form-check-input'),
       id,
     };
 
