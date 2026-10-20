@@ -38,4 +38,29 @@ describe('ActionItem', () => {
 
     expect(screen.getByTestId('action')).toHaveAttribute('target', '_blank');
   });
+
+  it('renders a button triggering onClick when no href is given', async () => {
+    const onClick = vi.fn();
+    const { user } = render(<ActionItem onClick={onClick}>Rename</ActionItem>);
+
+    const button = screen.getByRole('button', { name: 'Rename' });
+    expect(button).toHaveAttribute('type', 'button');
+    expect(button).toHaveClass('action-item');
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+
+    await user.click(button);
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not trigger onClick when the button is disabled', async () => {
+    const onClick = vi.fn();
+    const { user } = render(
+      <ActionItem onClick={onClick} disabled>
+        Rename
+      </ActionItem>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Rename' }));
+    expect(onClick).not.toHaveBeenCalled();
+  });
 });
