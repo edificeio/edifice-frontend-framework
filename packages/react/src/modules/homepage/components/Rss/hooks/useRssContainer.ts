@@ -30,8 +30,12 @@ export interface UseRssContainerReturn {
   /** The selected feed's latest articles, at most MAX_RSS_ARTICLES. */
   articles: RssArticle[];
   articlesStatus: RssArticlesStatus;
-  addFeed: (payload: RssFeedPayload) => Promise<string>;
-  updateFeed: (index: number, payload: RssFeedPayload) => Promise<string>;
+  addFeed: (payload: RssFeedPayload, onSuccess?: () => void) => void;
+  updateFeed: (
+    index: number,
+    payload: RssFeedPayload,
+    onSuccess?: () => void,
+  ) => void;
   deleteFeed: (index: number) => void;
   isSaving: boolean;
 }
@@ -54,19 +58,16 @@ export const useRssContainer = (): UseRssContainerReturn => {
   if (articlesQuery.isError) articlesStatus = 'error';
   else if (articlesQuery.isSuccess) articlesStatus = 'success';
 
-  const saveFeeds = (nextFeeds: RssFeed[]) =>
-    saveMutation.mutateAsync({
-      channelId: channel?.channelId,
-      feeds: nextFeeds,
-    });
+  const saveFeeds = (nextFeeds: RssFeed[], onSuccess?: () => void) =>
+    saveMutation.mutate(
+      { channelId: channel?.channelId, feeds: nextFeeds },
+      { onSuccess },
+    );
 
   const deleteFeed = (index: number) => {
     // Keep the same feed selected when a feed before it is removed.
     if (index < currentIndex) setSelectedIndex(currentIndex - 1);
-    saveMutation.mutate({
-      channelId: channel?.channelId,
-      feeds: feeds.filter((_, i) => i !== index),
-    });
+    saveFeeds(feeds.filter((_, i) => i !== index));
   };
 
   return {
@@ -77,11 +78,12 @@ export const useRssContainer = (): UseRssContainerReturn => {
     selectFeed: setSelectedIndex,
     articles: (articlesQuery.data ?? []).slice(0, MAX_RSS_ARTICLES),
     articlesStatus,
-    addFeed: (payload) =>
-      saveFeeds([...feeds, { ...payload, show: DEFAULT_FEED_SHOW }]),
-    updateFeed: (index, payload) =>
+    addFeed: (payload, onSuccess) =>
+      saveFeeds([...feeds, { ...payload, show: DEFAULT_FEED_SHOW }], onSuccess),
+    updateFeed: (index, payload, onSuccess) =>
       saveFeeds(
         feeds.map((feed, i) => (i === index ? { ...feed, ...payload } : feed)),
+        onSuccess,
       ),
     deleteFeed,
     isSaving: saveMutation.isPending,

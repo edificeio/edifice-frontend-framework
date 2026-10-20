@@ -31,17 +31,12 @@ export function RssContainer() {
   const closeAll = () => setView({ name: 'closed' });
   const backToManage = () => setView({ name: 'manage' });
 
-  const handleSubmit = async (payload: RssFeedPayload) => {
-    try {
-      if (view.name === 'edit') {
-        await updateFeed(view.index, payload);
-      } else {
-        await addFeed(payload);
-      }
-      backToManage();
-    } catch {
-      // The optimistic update is rolled back: keep the form open so the
-      // user doesn't lose their input.
+  // On failure the form stays open so the user doesn't lose their input.
+  const handleSubmit = (payload: RssFeedPayload) => {
+    if (view.name === 'edit') {
+      updateFeed(view.index, payload, backToManage);
+    } else {
+      addFeed(payload, backToManage);
     }
   };
 

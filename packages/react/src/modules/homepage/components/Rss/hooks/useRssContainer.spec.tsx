@@ -129,22 +129,24 @@ describe('useRssContainer', () => {
     const { result } = await renderContainerHook();
     expect(result.current.canAddFeed).toBe(true);
 
-    await act(async () => {
-      await result.current.addFeed({
+    act(() =>
+      result.current.addFeed({
         title: 'Le Monde',
         link: 'https://www.lemonde.fr/rss/une.xml',
-      });
-    });
+      }),
+    );
 
-    expect(postJson).toHaveBeenCalledWith('/rss/channel', {
-      feeds: [
-        {
-          title: 'Le Monde',
-          link: 'https://www.lemonde.fr/rss/une.xml',
-          show: 3,
-        },
-      ],
-    });
+    await waitFor(() =>
+      expect(postJson).toHaveBeenCalledWith('/rss/channel', {
+        feeds: [
+          {
+            title: 'Le Monde',
+            link: 'https://www.lemonde.fr/rss/une.xml',
+            show: 3,
+          },
+        ],
+      }),
+    );
     expect(putJson).not.toHaveBeenCalled();
   });
 
@@ -153,19 +155,21 @@ describe('useRssContainer', () => {
 
     const { result } = await renderContainerHook();
 
-    await act(async () => {
-      await result.current.addFeed({
+    act(() =>
+      result.current.addFeed({
         title: 'Nouveau',
         link: 'https://example.com/rss',
-      });
-    });
+      }),
+    );
 
-    expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
-      feeds: [
-        ...feeds,
-        { title: 'Nouveau', link: 'https://example.com/rss', show: 3 },
-      ],
-    });
+    await waitFor(() =>
+      expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
+        feeds: [
+          ...feeds,
+          { title: 'Nouveau', link: 'https://example.com/rss', show: 3 },
+        ],
+      }),
+    );
   });
 
   it('updates a feed in place, keeping its legacy settings', async () => {
@@ -173,24 +177,26 @@ describe('useRssContainer', () => {
 
     const { result } = await renderContainerHook();
 
-    await act(async () => {
-      await result.current.updateFeed(0, {
+    act(() =>
+      result.current.updateFeed(0, {
         title: 'Le Monde (Une)',
         link: 'https://www.lemonde.fr/rss/une.xml',
-      });
-    });
+      }),
+    );
 
-    expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
-      feeds: [
-        {
-          title: 'Le Monde (Une)',
-          link: 'https://www.lemonde.fr/rss/une.xml',
-          show: 5,
-        },
-        feeds[1],
-        feeds[2],
-      ],
-    });
+    await waitFor(() =>
+      expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
+        feeds: [
+          {
+            title: 'Le Monde (Une)',
+            link: 'https://www.lemonde.fr/rss/une.xml',
+            show: 5,
+          },
+          feeds[1],
+          feeds[2],
+        ],
+      }),
+    );
   });
 
   it('removes a feed and keeps the same feed selected', async () => {
