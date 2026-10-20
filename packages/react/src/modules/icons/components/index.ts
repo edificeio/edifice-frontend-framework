@@ -85,6 +85,7 @@ export { default as IconLink } from './IconLink';
 export { default as IconListOrder } from './IconListOrder';
 export { default as IconLoader } from './IconLoader';
 export { default as IconLock } from './IconLock';
+export { default as IconLogout } from './IconLogout';
 export { default as IconLsuArt } from './IconLsuArt';
 export { default as IconLsuCompetenceNumerique } from './IconLsuCompetenceNumerique';
 export { default as IconLsuEmc } from './IconLsuEmc';
