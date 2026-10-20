@@ -45,8 +45,13 @@ export const ActionItem = ({
 
   return (
     <a href={href} className={classes} {...restProps}>
-      {icon}
-      <span className="action-item-label">{children}</span>
+      {icon && (
+        <span className="action-item__icon" aria-hidden="true">
+          {icon}
+        </span>
+      )}
+
+      <span className="action-item__label">{children}</span>
     </a>
   );
 };

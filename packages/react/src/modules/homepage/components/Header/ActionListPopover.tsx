@@ -35,7 +35,7 @@ export const ActionListPopover = forwardRef<
       {...restProps}
     >
       <PopoverBody>
-        <ul className="action-list-popover-list">
+        <ul className="action-list-popover__list">
           <li>
             <ActionItem
               href="/userbook/mon-compte"
