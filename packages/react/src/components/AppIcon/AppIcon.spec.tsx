@@ -31,6 +31,17 @@ describe('AppIcon', () => {
     expect(container.querySelector('img')).not.toBeInTheDocument();
   });
 
+  it('renders the ELEA sprite for the elea app code', () => {
+    const { container } = render(<AppIcon app="elea" />);
+
+    // The ELEA logo, not the placeholder sprite
+    expect(container.querySelector('svg')).toHaveAttribute(
+      'viewBox',
+      '0 0 593 512',
+    );
+    expect(container.querySelector('.app-icon')).toHaveClass('color-app-elea');
+  });
+
   it('renders the image when the icon is a URL', () => {
     render(<AppIcon app={connectorApp} />);
 
