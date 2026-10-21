@@ -16,10 +16,21 @@
     padding: 0;
   }
 
-  // Toggled by the component while the field is focused or holds text
-  // (same rule as the submit button's enabled state).
+  // Toggled by the component while the field is focused or holds text.
   &--active {
     border-color: var(--color-buttons-primary-default);
+  }
+
+  // Idle (neither focused nor filled): the submit button looks and acts
+  // disabled without carrying the `disabled` attribute, so legacy themes
+  // can opt out in CSS (see themes/_legacy-search-bar.scss). `:where()`
+  // keeps this at `.searchbar .btn-search` specificity for those overrides.
+  &:where(:not(.searchbar--active)) .btn-search {
+    --btn-beta-bg: var(--btn-beta-bg-disabled);
+    --btn-beta-color: var(--btn-beta-color-disabled);
+    --btn-beta-border-color: var(--btn-beta-border-color-disabled);
+
+    pointer-events: none;
   }
 
   &:has(.input__field:disabled) {

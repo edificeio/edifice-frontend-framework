@@ -26,7 +26,7 @@ describe('SearchBar', () => {
       expect(onClick).toHaveBeenCalledTimes(1);
     });
 
-    it('enables the submit button only while focused or filled', async () => {
+    it('is active only while focused or filled', async () => {
       const onClick = vi.fn();
       const { user } = render(
         <SearchBar isVariant={false} clearable={false} onClick={onClick} />,
@@ -34,13 +34,13 @@ describe('SearchBar', () => {
       const searchbox = screen.getByRole('searchbox');
       const wrapper = searchbox.closest('.searchbar');
 
-      // Empty and unfocused: idle
-      expect(screen.getByRole('button')).toBeDisabled();
+      // Empty and unfocused: idle. Idle is a visual state handled in CSS
+      // (per theme), the button itself is never `disabled` for it.
       expect(wrapper).not.toHaveClass('searchbar--active');
+      expect(screen.getByRole('button')).toBeEnabled();
 
       // Focused while empty: active, and the click still lands
       await user.click(searchbox);
-      expect(screen.getByRole('button')).toBeEnabled();
       expect(wrapper).toHaveClass('searchbar--active');
       await user.click(screen.getByRole('button'));
       expect(onClick).toHaveBeenCalledTimes(1);
@@ -48,8 +48,8 @@ describe('SearchBar', () => {
       // Blurred while empty: idle again
       await user.tab();
       await user.tab();
-      expect(screen.getByRole('button')).toBeDisabled();
       expect(wrapper).not.toHaveClass('searchbar--active');
+      expect(screen.getByRole('button')).toBeEnabled();
     });
 
     it('stays active when filled even without focus', () => {
