@@ -1,0 +1,6 @@
+@use '../../legacy-search-bar' as legacy;
+
+[data-product='one'] {
+  // Same radius as one's filled `.btn` (see buttons/_component.scss)
+  @include legacy.searchbar-legacy($button-radius: 1.2rem);
+}

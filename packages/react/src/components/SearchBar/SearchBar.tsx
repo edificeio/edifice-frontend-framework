@@ -150,7 +150,9 @@ const SearchBar = ({
   };
 
   // Submit button and border are "active" while the field is focused or
-  // holds text; both go back to their idle state otherwise.
+  // holds text; both go back to their idle state otherwise. The idle state
+  // is purely visual (`searchbar--active`, see components/_search-bar.scss),
+  // not `disabled`, so legacy themes can keep the button clickable.
   const isActive = isFocused || hasText;
 
   // Compute wrapper classes
@@ -164,22 +166,6 @@ const SearchBar = ({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!isControlled) setHasUncontrolledText(Boolean(e.target.value));
     onChange?.(e);
-  };
-
-  // Clear the field the same way a user typing would, so it works for both
-  // controlled and uncontrolled usages: setting `.value` directly doesn't
-  // fire React's onChange, so go through the native setter and dispatch a
-  // real "input" event (same approach as Input's own clear button).
-  const handleClear = () => {
-    const node = inputRef.current;
-    if (!node) return;
-    const nativeSetter = Object.getOwnPropertyDescriptor(
-      window.HTMLInputElement.prototype,
-      'value',
-    )?.set;
-    nativeSetter?.call(node, '');
-    node.dispatchEvent(new Event('input', { bubbles: true }));
-    node.focus();
   };
 
   return (
@@ -202,26 +188,14 @@ const SearchBar = ({
         type="search"
         placeholder={t(placeholder)}
         size={size}
-        noValidationIcon
         className={input}
         onChange={handleChange}
         value={value}
         disabled={disabled}
         onKeyDown={handleKeyDown}
+        clearable={clearable}
         {...restProps}
       />
-
-      {/* Clear button when clearable is true and input has value */}
-      {clearable && hasText && !disabled && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="searchbar__clear"
-          aria-label={t('clear')}
-        >
-          <IconClose width={16} height={16} />
-        </button>
-      )}
 
       {/* Default submit button when not in variant mode */}
       {!isVariant && (
@@ -230,7 +204,7 @@ const SearchBar = ({
           aria-label={t('search')}
           icon={<IconSearch />}
           onClick={handleClick}
-          disabled={buttonDisabled || disabled || !isActive}
+          disabled={buttonDisabled || disabled}
         />
       )}
     </FormControl>
