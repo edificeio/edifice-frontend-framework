@@ -104,4 +104,63 @@ describe('notificationAdapter', () => {
       );
     });
   });
+
+  describe('external notifications', () => {
+    const eleaMessage =
+      '<a href="/userbook/annuaire#sender-id#">Jean Martin</a> <a href="https://elea.example/mod/assign/view.php?id=88">DM n°2</a>';
+
+    it('keeps the message links and has no uri without resourceUri', () => {
+      const result = notificationAdapter(
+        makeNotification({
+          type: 'ELEA',
+          sender: 'sender-id',
+          params: {
+            projectId: 'elea',
+            username: 'Jean Martin',
+            uri: '/userbook/annuaire#sender-id#',
+          },
+          message: eleaMessage,
+        }),
+      );
+      expect(result.message).toBe(eleaMessage);
+      expect(result.uri).toBeUndefined();
+    });
+
+    it('keeps the message links of a system external notification', () => {
+      const result = notificationAdapter(
+        makeNotification({
+          type: 'ELEA',
+          params: { projectId: 'elea' },
+          message: eleaMessage,
+        }),
+      );
+      expect(result.type).toBe('system');
+      expect(result.message).toBe(eleaMessage);
+      expect(result.uri).toBeUndefined();
+    });
+
+    it('strips the links and uses resourceUri when it is provided', () => {
+      const result = notificationAdapter(
+        makeNotification({
+          type: 'WORKSPACE',
+          params: {
+            projectId: 'workspace',
+            resourceUri: '/workspace/workspace#/shared',
+          },
+          message: '<a href="/workspace/workspace#/shared">fichier</a>',
+        }),
+      );
+      expect(result.message).toBe('<strong>fichier</strong>');
+      expect(result.uri).toBe('/workspace/workspace#/shared');
+    });
+
+    it('does not change native notifications without resourceUri', () => {
+      // userMoodNotificationLoison has no resourceUri and no projectId
+      const result = notificationAdapter(userMoodNotificationLoison);
+      expect(result.message).not.toContain('<a');
+      expect(result.uri).toBe(
+        '/directory/annuaire#b92e3d37-16b0-4ed9-b4c3-992091687132#Teacher',
+      );
+    });
+  });
 });

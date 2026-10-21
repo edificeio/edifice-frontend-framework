@@ -40,6 +40,7 @@ export { default as IconEducagri } from './IconEducagri';
 export { default as IconEdumedia } from './IconEdumedia';
 export { default as IconEdumoov } from './IconEdumoov';
 export { default as IconEdutheque } from './IconEdutheque';
+export { default as IconElea } from './IconElea';
 export { default as IconElectron } from './IconElectron';
 export { default as IconElyceepicardie } from './IconElyceepicardie';
 export { default as IconEsidoc } from './IconEsidoc';

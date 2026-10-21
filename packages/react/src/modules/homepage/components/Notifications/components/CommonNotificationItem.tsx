@@ -31,6 +31,19 @@ const CommonNotificationItem = ({
 }: NotificationItemProps) => {
   const { formatTimeAgo, formatDate } = useDate();
 
+  const content = (
+    <Flex direction="column" gap="8">
+      <div
+        className="notification-item-message"
+        dangerouslySetInnerHTML={{ __html: message }}
+      />
+      {children}
+      <p className="notification-item-date" title={formatDate(date, 'LLL')}>
+        {formatTimeAgo(date)}
+      </p>
+    </Flex>
+  );
+
   return (
     <Flex direction="column" className="notification-item" gap="8">
       <Flex direction="row" justify="between" wrap="nowrap" gap="8">
@@ -41,25 +54,23 @@ const CommonNotificationItem = ({
           className="notification-item-content-wrapper"
         >
           <div className="notification-item-picture">{picture}</div>
-          <a
-            href={uri}
-            className="notification-item-link"
-            data-testid="notification-item-content"
-          >
-            <Flex direction="column" gap="8">
-              <div
-                className="notification-item-message"
-                dangerouslySetInnerHTML={{ __html: message }}
-              />
-              {children}
-              <p
-                className="notification-item-date"
-                title={formatDate(date, 'LLL')}
-              >
-                {formatTimeAgo(date)}
-              </p>
-            </Flex>
-          </a>
+          {/* Without uri the message may hold its own links, which cannot be nested in another link */}
+          {uri ? (
+            <a
+              href={uri}
+              className="notification-item-link"
+              data-testid="notification-item-content"
+            >
+              {content}
+            </a>
+          ) : (
+            <div
+              className="notification-item-link"
+              data-testid="notification-item-content"
+            >
+              {content}
+            </div>
+          )}
         </Flex>
         {menu && <div className="notification-item-menu">{menu}</div>}
       </Flex>

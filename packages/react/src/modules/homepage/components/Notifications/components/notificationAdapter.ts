@@ -68,6 +68,13 @@ const parseNotificationMessage = (message: string): string => {
     .replace(/<a\b[^>]*>/gi, '<strong>');
 };
 
+/**
+ * External notifications (sent through `/timeline/external/...`, e.g. ELEA) carry a `projectId`.
+ * Without a `resourceUri`, their links only live in the message, so they must stay clickable.
+ */
+const keepsMessageLinks = (params: NotificationModel['params']): boolean =>
+  !!params.projectId && !params.resourceUri;
+
 export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
   appCode = appCode.toLowerCase();
   let appI18nKey: string = appCode;
@@ -118,21 +125,28 @@ export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
  * - Resolves the target URI from the model's `params` (handles both user and system naming conventions).
  * - Converts the MongoDB `$date` timestamp to a JS `Date`.
  * - Normalises the `type` field into a kebab-case `appCode` (e.g. `"BLOG_POST"` → `"blog-post"`).
- * - Strips anchor tags from the message, keeping only the inner text as `<strong>`.
+ * - Strips anchor tags from the message, keeping only the inner text as `<strong>`,
+ *   except for external notifications without `resourceUri` whose links are kept.
  */
 export const notificationAdapter = (
   notification: NotificationModel,
 ): WebNotification => {
   const type = notification.sender ? 'user' : 'system';
   const [appCode, appI18nKey] = getAppCodeAndI18nKey(notification.type);
-  const uri = resolveNotificationResourceUri(
-    notification.params,
-    type,
-    appCode,
-    notification['event-type'] || notification['eventType'],
-  );
+  const keepLinks = keepsMessageLinks(notification.params);
+  // The item itself is a link: it is dropped when the message keeps its own links, as anchors cannot be nested.
+  const uri = keepLinks
+    ? undefined
+    : resolveNotificationResourceUri(
+        notification.params,
+        type,
+        appCode,
+        notification['event-type'] || notification['eventType'],
+      );
   const date = new Date(notification.date.$date);
-  const message = parseNotificationMessage(notification.message);
+  const message = keepLinks
+    ? notification.message
+    : parseNotificationMessage(notification.message);
   const base = {
     id: notification._id,
     uri,
