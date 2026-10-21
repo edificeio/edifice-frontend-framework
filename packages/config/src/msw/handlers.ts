@@ -6,6 +6,7 @@ import {
   directoryHandlers,
   embedHandlers,
   publicConfigHandlers,
+  rssHandlers,
   shareHandlers,
   themeHandlers,
   timelineHandlers,
@@ -28,4 +29,5 @@ export const handlers = [
   ...shareHandlers,
   ...actualitesHandlers,
   ...timelineHandlers,
+  ...rssHandlers,
 ];
