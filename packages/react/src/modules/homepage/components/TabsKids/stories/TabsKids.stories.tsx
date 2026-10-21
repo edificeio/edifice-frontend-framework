@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { useArgs } from 'storybook/preview-api';
+import { useEffect, useState } from 'react';
 
-import TabsKids, { TabsKidsProps } from '../components/TabsKids';
+import TabsKids from '../components/TabsKids';
 
 const meta: Meta<typeof TabsKids> = {
   title: 'Modules/Homepage/TabsKids',
@@ -18,17 +18,24 @@ const meta: Meta<typeof TabsKids> = {
     onChange: { control: false },
     children: { control: false },
   },
-  // Storybook hooks must be called in the story function itself.
+  // Local state rather than `useArgs`: on the Docs page, `updateArgs` does
+  // not re-render the stories other than the primary one.
   render: function Render(args) {
-    const [, updateArgs] = useArgs<TabsKidsProps>();
-    const activeItem = args.items.find((item) => item.id === args.activeId);
+    const [activeId, setActiveId] = useState(args.activeId);
+    const activeItem = args.items.find((item) => item.id === activeId);
+
+    // Keep in sync with the `activeId` control.
+    useEffect(() => {
+      setActiveId(args.activeId);
+    }, [args.activeId]);
 
     return (
       <TabsKids
         {...args}
-        onChange={(activeId) => {
-          args.onChange?.(activeId);
-          updateArgs({ activeId });
+        activeId={activeId}
+        onChange={(id) => {
+          args.onChange?.(id);
+          setActiveId(id);
         }}
       >
         <div className="p-16 bg-white rounded-2">{activeItem?.label}</div>
