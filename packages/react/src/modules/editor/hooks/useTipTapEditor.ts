@@ -121,7 +121,14 @@ export const useTipTapEditor = (
       TextAlign.configure({
         types: ['heading', 'paragraph', 'video', 'audio', 'iframe'],
       }),
-      CustomHeading.configure({
+      // The published package names this node 'customHeading' (to avoid
+      // colliding with v3 StarterKit's now-bundled 'heading', disabled
+      // above). Pinned back to 'heading' to match what's already stored for
+      // existing content, and what edifice-tiptap-transformer's own Heading
+      // model does server-side - without this, loading any stored content
+      // with a heading throws "Unknown node type: heading" and the editor
+      // falls back to an empty document.
+      CustomHeading.extend({ name: 'heading' }).configure({
         levels: [1, 2],
       }),
       Typography,

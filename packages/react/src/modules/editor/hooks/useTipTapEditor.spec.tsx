@@ -37,20 +37,59 @@ describe('useTipTapEditor', () => {
 
     await waitFor(() => expect(result.current.editor).toBeTruthy());
 
-    const json = result.current.editor!.getJSON();
-    const types = JSON.stringify(json);
+    const editor = result.current.editor!;
 
     // StarterKit's bundled 'heading'/'link' must stay disabled, or they'd win the
     // parse instead of CustomHeading/Hyperlink below (see useTipTapEditor.ts).
-    expect(types).toContain('"customHeading"');
+    // CustomHeading is pinned back to the literal node name 'heading' (to match
+    // already-stored content), so StarterKit's own heading winning instead would
+    // look identical in the JSON - distinguish them by the custom command only
+    // our CustomHeading registers.
+    expect(typeof editor.commands.setCustomHeading).toBe('function');
+
+    const types = JSON.stringify(editor.getJSON());
     expect(types).toContain('"hyperlink"');
-    expect(types).not.toContain('"heading"');
     expect(types).not.toContain('"type":"link"');
 
     const duplicateWarning = warnSpy.mock.calls.find((args) =>
       String(args[0]).includes('Duplicate extension names'),
     );
     expect(duplicateWarning).toBeUndefined();
+
+    warnSpy.mockRestore();
+  });
+
+  it('loads existing stored content whose heading node is typed "heading" (not "customHeading")', async () => {
+    // Regression: the published package names this node 'customHeading', but
+    // edifice-tiptap-transformer's own Heading model pins it back to
+    // 'heading' for already-stored content (see its src/models/Heading.ts).
+    // Without the same pin here, loading any content with a heading throws
+    // "Unknown node type: heading" and the editor silently falls back to an
+    // empty document - exactly the "my content is empty" bug this guards.
+    const storedContent = {
+      type: 'doc',
+      content: [
+        {
+          type: 'heading',
+          attrs: { level: 1 },
+          content: [{ type: 'text', text: 'Title' }],
+        },
+        { type: 'paragraph', content: [{ type: 'text', text: 'Body' }] },
+      ],
+    };
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    const { result } = renderHook(() => useTipTapEditor(true, storedContent), {
+      wrapper,
+    });
+
+    await waitFor(() => expect(result.current.editor).toBeTruthy());
+
+    expect(result.current.editor!.getText()).toBe('Title\n\nBody');
+    const unknownNodeWarning = warnSpy.mock.calls.find((args) =>
+      String(args[0]).includes('Invalid content'),
+    );
+    expect(unknownNodeWarning).toBeUndefined();
 
     warnSpy.mockRestore();
   });
@@ -67,7 +106,9 @@ describe('useTipTapEditor', () => {
 
     const types = JSON.stringify(result.current.editor!.getJSON());
 
-    expect(types).toContain('"customHeading"');
+    // Pinned back to the literal node name 'heading' - see the dedicated test
+    // above for why (matches what's already stored for existing content).
+    expect(types).toContain('"type":"heading"');
     expect(types).toContain('"hyperlink"');
     expect(types).toContain('"customHighlight"');
     expect(types).toContain('"linker"');
