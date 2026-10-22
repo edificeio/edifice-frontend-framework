@@ -1,0 +1,45 @@
+.modal-beta-body .audio-recorder.captation-audio {
+  width: 100%;
+  max-width: 64.4rem;
+  min-height: auto;
+
+  .audio-recorder-controls {
+    align-items: center;
+    gap: var(--primitive-spacer-16);
+    padding: var(--primitive-spacer-24) 0;
+    border-radius: var(--primitive-border-radius-lg);
+    background-color: var(--primitive-yellow-200);
+  }
+
+  .audio-recorder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8rem;
+
+    svg {
+      width: 5.3rem;
+      height: 5.3rem;
+    }
+
+    svg:not(.text-danger, .text-success) {
+      color: var(--primitive-yellow-700);
+    }
+  }
+
+  .audio-recorder-time {
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--primitive-text-color-default);
+  }
+
+  .toolbar {
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+    background-color: var(--primitive-white);
+    box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
+  }
+}
