@@ -196,29 +196,18 @@ const Header = ({
               </PopoverFooter>
             </Popover>
           </NavItem>
-          <NavItem className="position-relative">
+          <NavItem className="position-relative navbar-nav-notification">
             <ButtonBeta
               leftIcon={<IconNotificationBeta />}
               variant="ghost"
+              data-testid="header-notifications-button"
+              aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
             />
             {hasNotificationToday && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: 15,
-                  height: 15,
-                  background: 'red',
-                  borderRadius: '50%',
-                  border: '2px solid white',
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                  display: 'block',
-                }}
-                aria-label={t('homepage.notifications.new-badge')}
-              />
+              <span className="navbar-nav-notification-badge">
+                <VisuallyHidden>{t('navbar.notifications.new')}</VisuallyHidden>
+              </span>
             )}
           </NavItem>
           <NavItem className="position-relative">

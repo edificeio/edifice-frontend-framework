@@ -365,23 +365,26 @@ describe('homepage Header', () => {
 });
 
 describe('Header notification badge', () => {
-  it('shows a badge on the notification bell when a notification is dated today', async () => {
+  it('announces new notifications when a notification is dated today', async () => {
     useHasNotificationTodayMock.mockReturnValue(true);
 
     setup();
 
     expect(
-      await screen.findByLabelText('Nouvelle notification'),
+      await screen.findByText("Nouvelles notifications aujourd'hui"),
     ).toBeInTheDocument();
   });
 
-  it('hides the badge when no notification is dated today', async () => {
+  it('does not announce new notifications when none is dated today', async () => {
     useHasNotificationTodayMock.mockReturnValue(false);
 
     setup();
 
     expect(
-      screen.queryByLabelText('Nouvelle notification'),
+      await screen.findByRole('button', { name: 'Notifications' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText("Nouvelles notifications aujourd'hui"),
     ).not.toBeInTheDocument();
   });
 });

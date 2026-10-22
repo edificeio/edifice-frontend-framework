@@ -13,25 +13,15 @@ const SvgIconMyAppsBeta = ({
     width="24"
     height="24"
     fill="none"
-    viewBox="0 0 32 32"
+    viewBox="0 0 24 24"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <g
-      stroke="#1C1C73"
-      strokeMiterlimit={10}
-      strokeWidth={2.667}
-      clipPath="url(#icon-my-apps-beta_svg__a)"
-    >
-      <path d="M31.117 1H19v12.117h12.117zM13.207 18.884H1.09V31h12.117zM1 1.084c6.688 0 12.117 5.43 12.117 12.117H1zM30.934 18.884H18.816V31h12.118z" />
+    <g fill="currentColor">
+      <path d="M23 1v10.182H12.818V1zm-8.182 8.182H21V3h-6.182zM23 12.818V23H12.818V12.818zM14.818 21H21v-6.182h-6.182zM11.182 12.818V23H1V12.818zM3 21h6.182v-6.182H3zM2.049 1l.141.003q.181.005.492.03c.41.034.98.108 1.63.26 1.287.301 2.963.931 4.304 2.272 1.341 1.342 1.972 3.018 2.274 4.304.152.65.224 1.22.26 1.631a9 9 0 0 1 .032.633v.061l-.013.988H1V1.014L1.986 1 2 2l-.014-1zM3 9.182h6.1a10 10 0 0 0-.158-.857c-.255-1.088-.76-2.366-1.74-3.346C6.223 4 4.945 3.495 3.856 3.24A10 10 0 0 0 3 3.081z" />
     </g>
-    <defs>
-      <clipPath id="icon-my-apps-beta_svg__a">
-        <path fill="#fff" d="M0 0h32v32H0z" />
-      </clipPath>
-    </defs>
   </svg>
 );
 export default SvgIconMyAppsBeta;
