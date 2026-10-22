@@ -1,9 +1,9 @@
 import { resolve } from "path";
 
-import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
+import { defineConfig } from "vitest/config";
 
-import { dependencies } from "./package.json";
+import { peerDependencies } from "./package.json";
 
 export default defineConfig({
   esbuild: {
@@ -34,7 +34,13 @@ export default defineConfig({
           },
         },
       ],
-      external: [...Object.keys(dependencies)],
+      // Rollup's `external` only matches an id exactly - subpath imports like
+      // `@tiptap/pm/state` wouldn't match a bare `@tiptap/pm` entry and would
+      // get bundled (pulling in prosemirror-* transitively). Match subpaths too.
+      external: (id) =>
+        Object.keys(peerDependencies).some(
+          (dep) => id === dep || id.startsWith(`${dep}/`),
+        ),
     },
   },
   plugins: [
@@ -42,4 +48,9 @@ export default defineConfig({
       tsconfigPath: "./tsconfig.json",
     }),
   ],
+  test: {
+    environment: "jsdom",
+    globals: true,
+    include: ["src/**/*.spec.ts"],
+  },
 });

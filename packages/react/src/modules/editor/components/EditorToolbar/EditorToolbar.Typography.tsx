@@ -10,6 +10,7 @@ import {
 } from '../../../../components';
 import { IconTextTypo } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
+import { useEditorState } from '../../hooks/useEditorState';
 
 interface Props {
   /**
@@ -25,12 +26,16 @@ export const EditorToolbarTypography = ({ triggerProps }: Props) => {
   const { editor } = useEditorContext();
 
   const [value, setValue] = useState<string>('sans-serif');
+  // editor?.state alone doesn't trigger a re-render on a pure selection move
+  // (no content edit, e.g. clicking into differently-styled text) - this also
+  // backs the `editor?.isActive(...)` check in the JSX below.
+  const editorState = useEditorState(editor);
 
   useEffect(() => {
     // When cursor moves in editor, update the actual text typo.
     const textStyle = editor?.getAttributes('textStyle');
     setValue(textStyle?.fontFamily ?? '');
-  }, [editor, editor?.state]);
+  }, [editor, editorState]);
 
   const options = [
     {

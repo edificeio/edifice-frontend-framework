@@ -19,6 +19,7 @@ import {
 } from '../../../../components';
 import { IconTextHighlight } from '../../../icons/components';
 import { useEditorContext } from '../../hooks/useEditorContext';
+import { useEditorState } from '../../hooks/useEditorState';
 
 interface Props {
   /**
@@ -42,14 +43,16 @@ export const EditorToolbarHighlightColor = ({
 
   // Manage text and background colors.
   const [color, setColor] = useState<string>('#4A4A4A');
+  // editor?.state alone doesn't trigger a re-render on a pure selection move
+  // (no content edit, e.g. clicking into differently-highlighted text).
+  const editorState = useEditorState(editor);
 
   const isActive = useMemo(
     () =>
       editor?.isActive('customHighlight', {
         color: /^#([0-9a-f]{3}){1,2}$/i,
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [editor, editor?.state],
+    [editor, editorState],
   );
 
   // Triggered when the user chooses a highlighting color.
@@ -70,7 +73,7 @@ export const EditorToolbarHighlightColor = ({
   // When cursor moves in table, update the current highlight color.
   useEffect(() => {
     setColor(editor?.getAttributes('customHighlight').color ?? '');
-  }, [editor, editor?.state]);
+  }, [editor, editorState]);
 
   // Palettes of available colors to choose from.
   const palettes: ColorPalette[] = [
