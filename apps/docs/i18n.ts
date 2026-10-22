@@ -304,7 +304,8 @@ i18n.use(initReactI18next).init({
         'homepage.agenda.openAgenda': "Accéder à l'agenda",
         'homepage.agenda.empty': 'Pas d’évènement à venir.',
         'homepage.agenda.allDay': 'Journée entière',
-        'homepage.agenda.multiDayTime': '[[startTime]] - [[endDay]] à [[endTime]]',
+        'homepage.agenda.multiDayTime':
+          '[[startTime]] - [[endDay]] à [[endTime]]',
         //----------------- Communities -----------------
         'homepage.communities.title': 'Communautés',
         'homepage.communities.actionLabel.seeMore': 'Voir plus',
@@ -326,7 +327,6 @@ i18n.use(initReactI18next).init({
         'homepage.notifications-list.close': 'Close notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
-        'homepage.notifications.new-badge': 'Nouvelle notification',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
         'homepage.notifications.options.label': 'Options de la notification',
@@ -416,7 +416,7 @@ i18n.use(initReactI18next).init({
           'Problème de connexion avec le service de cantine. Si le problème persiste, contactez votre établissement.',
         'homepage.widget.cantine.empty':
           'Le menu n’est pas disponible pour ce jour',
-        'homepage.widget.cantine.emptyIllustration': "Panneau barré",
+        'homepage.widget.cantine.emptyIllustration': 'Panneau barré',
         'homepage.widget.cantine.seeMore': 'voir plus',
         'homepage.widget.cantine.school': 'Établissement',
         'homepage.widget.cantine.menu': 'Menu',
@@ -496,6 +496,8 @@ i18n.use(initReactI18next).init({
         'navbar.myaccount': 'Mon compte',
         'navbar.community': 'Communauté',
         'navbar.disconnect': 'Déconnexion',
+        'navbar.notifications': 'Notifications',
+        'navbar.notifications.new': "Nouvelles notifications aujourd'hui",
         'homepage.header.myapps.empty':
           'Ajoutez et retrouvez ici vos apps favorites !',
         'homepage.header.myapps.seeMore': 'Voir plus',
