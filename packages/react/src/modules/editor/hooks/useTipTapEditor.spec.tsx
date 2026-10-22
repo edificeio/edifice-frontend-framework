@@ -94,6 +94,47 @@ describe('useTipTapEditor', () => {
     warnSpy.mockRestore();
   });
 
+  it('registers every node/mark shared with edifice-tiptap-transformer under the exact same name', async () => {
+    // Guard against the whole bug class behind the test above: this hook and
+    // edifice-tiptap-transformer's own extension list (src/controllers/
+    // transformation-controller.ts) each independently choose how to name
+    // every node/mark they both handle. The published package's *default*
+    // name isn't always what either side actually registers (see heading:
+    // renamed to 'customHeading' by the package, pinned back to 'heading' by
+    // both this hook and the transformer). If the two sides ever drift again,
+    // loading transformer-produced content throws "Unknown node/mark type"
+    // and silently empties the editor - this list is the contract between
+    // them. If a name below needs to change, change it on both sides first.
+    const { result } = renderHook(() => useTipTapEditor(true, '<p></p>'), {
+      wrapper,
+    });
+
+    await waitFor(() => expect(result.current.editor).toBeTruthy());
+
+    const names = result.current
+      .editor!.extensionManager.extensions.filter(
+        (e) => e.type === 'node' || e.type === 'mark',
+      )
+      .map((e) => e.name);
+
+    [
+      'heading',
+      'custom-image',
+      'linker',
+      'alert',
+      'video',
+      'audio',
+      'iframe',
+      'information-pane',
+      'tableCell',
+      'tableHeader',
+      'hyperlink',
+      'customHighlight',
+    ].forEach((name) => {
+      expect(names).toContain(name);
+    });
+  });
+
   it('wires every extension in the kitchen-sink content without errors or duplicate names', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

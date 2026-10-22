@@ -37,7 +37,11 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
           .scrollIntoView()
           .setCustomHeading({ level: 1 })
           .run(),
-      visibility: hasExtension('customHeading', editor),
+      // The extension's command is still `setCustomHeading`, but
+      // useTipTapEditor.ts pins the node's name back to 'heading' (to match
+      // already-stored content) - check for that name, not the published
+      // package's own 'customHeading' default.
+      visibility: hasExtension('heading', editor),
     },
     {
       id: 'title-2',
@@ -45,14 +49,13 @@ export const EditorToolbarTextSize = ({ triggerProps }: Props) => {
       className: 'fs-3 fw-bold text-secondary',
       action: () =>
         editor?.chain().focus().setCustomHeading({ level: 2 }).run(),
-      visibility: hasExtension('customHeading', editor),
+      visibility: hasExtension('heading', editor),
     },
     {
       id: 'divider',
       type: 'divider',
       visibility:
-        hasExtension('customHeading', editor) &&
-        hasExtension('fontSize', editor),
+        hasExtension('heading', editor) && hasExtension('fontSize', editor),
     },
     {
       id: 'big-text',
