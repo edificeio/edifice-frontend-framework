@@ -3,7 +3,7 @@ import { RefObject } from 'react';
 import { Editor } from '@tiptap/core';
 import Color from '@tiptap/extension-color';
 import FontFamily from '@tiptap/extension-font-family';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 import StarterKit from '@tiptap/starter-kit';
 
 import { CustomHighlight } from '@edifice.io/tiptap-extensions/highlight';
@@ -64,20 +64,27 @@ afterEach(() => {
 /** A editor built from only `StarterKit`, bypassing createTestEditor's
  * default extension set entirely - used to test visibility branches that
  * depend on an extension NOT being present (Underline, TextAlign, color,
- * highlight, fontFamily are all absent here). */
+ * highlight, fontFamily are all absent here). v3's StarterKit bundles its
+ * own `underline` by default (v2's didn't), so it must be disabled explicitly
+ * to keep this editor genuinely underline-less. */
 function makeBareEditor(content = '<p></p>') {
-  return track(new Editor({ extensions: [StarterKit], content }));
+  return track(
+    new Editor({
+      extensions: [StarterKit.configure({ underline: false })],
+      content,
+    }),
+  );
 }
 
 /** A `StarterKit`-only editor with history explicitly disabled - the
- * `history` extension always ships as part of `createTestEditor`'s default
+ * `undoRedo` extension always ships as part of `createTestEditor`'s default
  * set, so the only way to get an editor without it is to opt out at the
- * source (StarterKit bundles its own `history` sub-extension by name, and
- * `hasExtension` matches by name regardless of configuration). */
+ * source (v3's StarterKit bundles it under the name `undoRedo`, renamed from
+ * v2's `history` — `hasExtension` matches by name regardless of configuration). */
 function makeNoHistoryEditor(content = '<p></p>') {
   return track(
     new Editor({
-      extensions: [StarterKit.configure({ history: false })],
+      extensions: [StarterKit.configure({ undoRedo: false })],
       content,
     }),
   );
@@ -189,16 +196,16 @@ describe('EditorToolbar', () => {
       expect(editor.getText()).toContain('some text');
     });
 
-    it('crashes when the editor has no history extension, because `disabled` is computed unconditionally', () => {
+    it('crashes when the editor has no undoRedo extension, because `disabled` is computed unconditionally', () => {
       // NOTE: this documents an actual quirk of the source rather than an
       // aspirational behavior. `visibility` only controls whether the
       // Toolbar *renders* an item; the item's `props` (including
       // `disabled: !editor?.can().undo()`) are still built eagerly for
       // every item on every render, regardless of that item's visibility.
-      // When `history` is absent, tiptap's `can()` proxy has no `undo`/
+      // When `undoRedo` is absent, tiptap's `can()` proxy has no `undo`/
       // `redo` keys at all (they only exist once the extension registers
       // those commands), so `editor?.can().undo()` throws instead of
-      // evaluating to `false`. A real editor without `history` would hit
+      // evaluating to `false`. A real editor without `undoRedo` would hit
       // this same crash in production.
       const editor = makeNoHistoryEditor();
 

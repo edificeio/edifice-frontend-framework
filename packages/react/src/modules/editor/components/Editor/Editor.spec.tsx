@@ -381,12 +381,20 @@ describe('Editor', () => {
     });
 
     it('setFocus delegates to editor.commands.focus, calling native focus() on the editor DOM node', () => {
-      // tiptap's `focus` command calls `view.dom.focus()` synchronously (the
-      // rest of its work, e.g. scrollIntoView, is deferred to a rAF). Rather
-      // than asserting on `document.activeElement` — whose update depends on
-      // jsdom's own focus-tracking, which is not fully reliable for
+      // tiptap v3's `focus` command defers its `view.focus()` call (which
+      // itself calls the DOM node's native `focus()`) to a requestAnimationFrame,
+      // except on iOS/Android/Safari where it also calls it synchronously first.
+      // Stub rAF to run immediately so the assertion doesn't need a real frame.
+      // Rather than asserting on `document.activeElement` — whose update
+      // depends on jsdom's own focus-tracking, which is not fully reliable for
       // contenteditable nodes in this environment — spy on the native
       // `focus()` method to verify it was invoked on the editor's DOM node.
+      const rafSpy = vi
+        .spyOn(window, 'requestAnimationFrame')
+        .mockImplementation((cb: FrameRequestCallback) => {
+          cb(0);
+          return 0;
+        });
       const focusSpy = vi.spyOn(HTMLElement.prototype, 'focus');
       const ref = createRef<EditorRef>();
       const { container } = renderEditor(
@@ -408,6 +416,7 @@ describe('Editor', () => {
       expect(focusSpy.mock.instances).toContain(proseMirror);
 
       focusSpy.mockRestore();
+      rafSpy.mockRestore();
     });
 
     it('isSpeeching reflects the (mocked) speech synthetisis activated state', () => {

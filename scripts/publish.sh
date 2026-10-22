@@ -50,8 +50,8 @@ build () {
 
 publish () {
   echo "[publish] Publish packages..."
-  # Récupération de la branche locale
-  LOCAL_BRANCH=`echo $GIT_BRANCH | sed -e "s|origin/||g"`
+  # Récupération de la branche locale (les "/" sont invalides dans un tag npm
+  LOCAL_BRANCH=`echo $GIT_BRANCH | sed -e "s|origin/||g" | sed -e "s|/|-|g"`
   # Récupération de la date et du timestamp
   TIMESTAMP=`date +%Y%m%d%H%M%S`
   # Récupération du dernier tag stable
@@ -60,12 +60,15 @@ publish () {
   # impact-analyzer-viewer-v*.*.*) can never be picked as the nearest tag.
   LATEST_TAG=$(git describe --tags --abbrev=0 --match '[0-9]*.[0-9]*.[0-9]*' 2>/dev/null || echo "1.0.0")
 
-  # Définition du tag de la branche
-  if [ "$LOCAL_BRANCH" = "main" ]; then
+  # Définition du tag de la branche (surchargeable via la variable NPM_TAG)
+  if [ -n "$NPM_TAG" ]; then
+    TAG_BRANCH=$NPM_TAG
+  elif [ "$LOCAL_BRANCH" = "main" ]; then
     TAG_BRANCH="latest"
   else
     TAG_BRANCH=$LOCAL_BRANCH
   fi
+  echo "[publish] npm tag: $TAG_BRANCH"
 
 
   # Création de la nouvelle version

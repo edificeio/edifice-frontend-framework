@@ -156,6 +156,7 @@ const NEXTCLOUD_VIEW =
   'fr.openent.nextcloud.controller.NextcloudController|view';
 
 function setup({
+  pdfOnly,
   visibility = 'protected' as 'protected' | 'public' | 'external',
   workflows = { [WORKSPACE_CREATE]: true, [VIDEO_CAPTURE]: true },
   folderServices = [] as string[],
@@ -163,6 +164,7 @@ function setup({
   visibility?: 'protected' | 'public' | 'external';
   workflows?: Record<string, boolean>;
   folderServices?: string[];
+  pdfOnly?: boolean;
 } = {}) {
   useHasWorkflow.mockImplementation((workflow: string) => workflows[workflow]);
   usePublicConf.mockReturnValue({
