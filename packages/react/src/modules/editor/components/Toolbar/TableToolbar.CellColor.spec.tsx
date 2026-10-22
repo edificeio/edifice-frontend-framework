@@ -1,16 +1,20 @@
 import { Editor } from '@tiptap/core';
 import { TextSelection } from '@tiptap/pm/state';
-import { render, screen } from '~/setup';
+import { act, render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
 import { createTestEditor } from '../../test-utils/createTestEditor';
 import { TableToolbarCellColor } from './TableToolbar.CellColor';
 
-// Moves the text selection to the given document position.
+// Moves the text selection to the given document position. Wrapped in `act`
+// so the resulting transaction-driven re-render (see useEditorState) is
+// flushed before the next assertion, like a real user click would be.
 function moveSelectionTo(editor: Editor, pos: number) {
-  const tr = editor.state.tr.setSelection(
-    TextSelection.near(editor.state.doc.resolve(pos)),
-  );
-  editor.view.dispatch(tr);
+  act(() => {
+    const tr = editor.state.tr.setSelection(
+      TextSelection.near(editor.state.doc.resolve(pos)),
+    );
+    editor.view.dispatch(tr);
+  });
 }
 
 // Returns the doc position of the nth table cell/header node (0-indexed).
@@ -126,7 +130,13 @@ describe('TableToolbarCellColor', () => {
     expect(getSwatch()).toHaveStyle({ backgroundColor: 'rgb(0, 90, 138)' });
 
     moveSelectionTo(editor, nthCellPos(editor, 1) + 1);
-    editor.chain().focus().setCellAttribute('backgroundColor', '#9E0016').run();
+    act(() => {
+      editor
+        .chain()
+        .focus()
+        .setCellAttribute('backgroundColor', '#9E0016')
+        .run();
+    });
 
     // Force a re-render so the component's effect observes the new
     // `editor.state` and recomputes `color` from `getAttributes`.
@@ -137,5 +147,18 @@ describe('TableToolbarCellColor', () => {
     );
 
     expect(getSwatch()).toHaveStyle({ backgroundColor: 'rgb(158, 0, 22)' });
+  });
+
+  it('re-syncs on a pure selection move, with no content change and no manual re-render', () => {
+    editor.chain().focus().setCellAttribute('backgroundColor', '#005A8A').run();
+
+    renderCellColor();
+    expect(getSwatch()).toHaveStyle({ backgroundColor: 'rgb(0, 90, 138)' });
+
+    // Moving into a plain cell - no content edit, no re-render triggered from
+    // outside - must reset the swatch.
+    moveSelectionTo(editor, nthCellPos(editor, 1) + 1);
+
+    expect(getSwatch()).toBeNull();
   });
 });

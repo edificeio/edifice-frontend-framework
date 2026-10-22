@@ -2,7 +2,7 @@ import { WorkspaceElement } from '@edifice.io/client';
 import { ImageResizer } from '@edifice.io/utilities';
 import { mergeAttributes, nodeInputRule } from '@tiptap/core';
 import TiptapImage from '@tiptap/extension-image';
-import { Plugin } from 'prosemirror-state';
+import { Plugin } from '@tiptap/pm/state';
 
 export const IMAGE_INPUT_REGEX =
   /(?:^|\s)(!\[(.+|:?)]\((\S+)(?:(?:\s+)["'](\S+)["'])?\))$/;
@@ -13,16 +13,9 @@ export interface CustomImageOptions {
   uploadFile?: (file: File) => Promise<WorkspaceElement | null>;
 }
 
-interface AttributesProps {
-  width: number | string;
-  height: number | string;
-  size: string;
-}
-
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     customImage: {
-      setAttributes: (options: AttributesProps) => ReturnType;
       setNewImage: (options: {
         src: string;
         alt?: string;
@@ -196,29 +189,15 @@ export const Image = TiptapImage.extend<CustomImageOptions>({
 
   addCommands() {
     return {
+      // Inherit TiptapImage's own setImage (scoped to `this.name`, i.e.
+      // 'custom-image') - same bug class as heading.ts: without this spread,
+      // addCommands() replaces rather than extends the parent's commands.
+      ...this.parent?.(),
       setNewImage:
         (attrs) =>
         ({ tr, dispatch }) => {
           const { selection } = tr;
           const node = this.type.create(attrs);
-
-          if (dispatch) {
-            tr.replaceRangeWith(selection.from, selection.to, node);
-          }
-
-          return true;
-        },
-      setAttributes:
-        (attributes) =>
-        ({ tr, dispatch }) => {
-          const { selection } = tr;
-
-          const nodeAttrs = tr.doc.nodeAt(tr.selection.from);
-          const options = {
-            ...nodeAttrs.attrs,
-            ...attributes,
-          };
-          const node = this.type.create(options);
 
           if (dispatch) {
             tr.replaceRangeWith(selection.from, selection.to, node);

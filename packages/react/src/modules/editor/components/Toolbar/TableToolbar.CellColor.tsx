@@ -10,6 +10,7 @@ import {
   Dropdown,
   Tooltip,
 } from '../../../../components';
+import { useEditorState } from '../../hooks/useEditorState';
 
 interface Props {
   /**
@@ -27,6 +28,9 @@ export const TableToolbarCellColor = ({ editor, itemRefs }: Props) => {
 
   // Cell color, defaults to "transparent".
   const [color, setColor] = useState<string>('transparent');
+  // editor?.state alone doesn't trigger a re-render on a pure selection move
+  // (no content edit, e.g. clicking into a differently-colored cell).
+  const editorState = useEditorState(editor);
 
   // Triggered when the user chooses a color for cells background.
   const applyColor = useCallback(
@@ -50,7 +54,7 @@ export const TableToolbarCellColor = ({ editor, itemRefs }: Props) => {
     setColor(
       editor?.getAttributes('tableCell').backgroundColor ?? 'transparent',
     );
-  }, [editor, editor?.state]);
+  }, [editor, editorState]);
 
   // Palettes of available colors to choose from.
   const palettes: ColorPalette[] = [

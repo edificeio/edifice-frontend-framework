@@ -50,6 +50,11 @@ export const CustomHeading = Heading.extend<Options>({
 
   addCommands() {
     return {
+      // Inherit Heading's own setHeading/toggleHeading (scoped to `this.name`,
+      // i.e. 'customHeading') - without this, setCustomHeading below crashes
+      // calling commands.setHeading(), which only existed by accident while
+      // StarterKit's own (conflicting) heading was still enabled.
+      ...this.parent?.(),
       setCustomHeading:
         (attributes) =>
         ({ tr, dispatch, commands }) => {

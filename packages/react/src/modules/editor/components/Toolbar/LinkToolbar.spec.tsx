@@ -1,25 +1,37 @@
 import { Editor } from '@tiptap/core';
 import { NodeSelection } from '@tiptap/pm/state';
-import { render, screen } from '~/setup';
+import type { BubbleMenuProps } from '@tiptap/react/menus';
+import { act, render, screen } from '~/setup';
 import { createTestEditor } from '../../test-utils/createTestEditor';
 import LinkToolbar from './LinkToolbar';
 
-// `@tiptap/react`'s real FloatingMenu relies on tippy.js, whose CJS build
-// does not interop cleanly with Vitest's ESM loader in this monorepo (a
+// Captured from the mocked BubbleMenu below, to check what LinkToolbar
+// actually passes it (see the dedicated test further down).
+let capturedOptions: BubbleMenuProps['options'];
+let capturedStyle: BubbleMenuProps['style'];
+let capturedShouldShow: BubbleMenuProps['shouldShow'];
+
+// `@tiptap/react`'s real BubbleMenu relies on tippy.js/floating-ui, whose CJS
+// build does not interop cleanly with Vitest's ESM loader in this monorepo (a
 // default import of `tippy.js` resolves to the whole CJS module namespace
 // instead of the exported function), and it mounts its content by moving DOM
-// nodes around via tippy outside of React's control, which fights with
-// jsdom in ways unrelated to what LinkToolbar itself is responsible for.
-// Since the ticket only calls for exercising LinkToolbar's own logic (the
-// `linkAttrs` effect and `handleShouldShow`) - not floating-ui positioning -
-// replace FloatingMenu with a minimal component that renders its children
-// whenever `shouldShow` returns true, keeping everything in the normal React
-// tree.
-vi.mock('@tiptap/react', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@tiptap/react')>();
+// nodes around outside of React's control and computing real DOM geometry
+// jsdom doesn't support, both unrelated to what LinkToolbar itself is
+// responsible for. Since the ticket only calls for exercising LinkToolbar's
+// own logic (the `linkAttrs` effect and `handleShouldShow`) - not floating-ui
+// positioning - replace BubbleMenu with a minimal component that renders its
+// children whenever `shouldShow` returns true, keeping everything in the
+// normal React tree. v3 moved Floating/BubbleMenu out of `@tiptap/react` into
+// `@tiptap/react/menus` (see LinkToolbar.tsx's own import) - mock that
+// subpath instead.
+vi.mock('@tiptap/react/menus', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@tiptap/react/menus')>();
   return {
     ...actual,
-    FloatingMenu: ({ editor, shouldShow, children }: any) => {
+    BubbleMenu: ({ editor, shouldShow, children, options, style }: any) => {
+      capturedOptions = options;
+      capturedStyle = style;
+      capturedShouldShow = shouldShow;
       const visible = shouldShow
         ? shouldShow({ editor, view: editor?.view, state: editor?.state })
         : true;
@@ -139,6 +151,64 @@ describe('LinkToolbar', () => {
     );
 
     expect(screen.queryByRole('toolbar')).not.toBeInTheDocument();
+  });
+
+  it('configures a real offset middleware and a z-index, not a dead middleware array', () => {
+    insertAndSelectLinker(editor, {
+      'href': '/blog#/view/blog-id/post-id',
+      'target': '_blank',
+      'title': 'My post',
+      'data-id': 'post-id',
+      'data-app-prefix': 'blog',
+    });
+
+    render(
+      <LinkToolbar
+        editor={editor}
+        onEdit={vi.fn()}
+        onOpen={vi.fn()}
+        onUnlink={vi.fn()}
+      />,
+    );
+
+    // tiptap only reads a named `offset` field to build its middleware array -
+    // `middleware: [offset(...)]` is silently ignored (not this key).
+    expect(capturedOptions).toMatchObject({
+      offset: { mainAxis: 10, crossAxis: 0 },
+    });
+    expect(capturedOptions).not.toHaveProperty('middleware');
+    // v3's `options` has no `zIndex` field - must be set via `style` instead.
+    expect(capturedStyle).toMatchObject({ zIndex: 999 });
+  });
+
+  it('keeps shouldShow referentially stable across an unrelated transaction', () => {
+    // Regression: an unstable `shouldShow` makes v3's BubbleMenu re-run a
+    // `dispatch` effect on every render; combined with `useEditorState`
+    // (re-renders on every transaction), this looped forever and froze the
+    // whole page (even read-only) wherever a link toolbar could mount.
+    insertAndSelectLinker(editor, {
+      'href': '/blog#/view/blog-id/post-id',
+      'target': null,
+      'title': 'My post',
+      'data-id': 'post-id',
+      'data-app-prefix': 'blog',
+    });
+
+    render(
+      <LinkToolbar
+        editor={editor}
+        onEdit={vi.fn()}
+        onOpen={vi.fn()}
+        onUnlink={vi.fn()}
+      />,
+    );
+    const firstShouldShow = capturedShouldShow;
+
+    act(() => {
+      editor.view.dispatch(editor.state.tr);
+    });
+
+    expect(capturedShouldShow).toBe(firstShouldShow);
   });
 
   it('shows the toolbar with the linker node attrs when a linker is selected', async () => {

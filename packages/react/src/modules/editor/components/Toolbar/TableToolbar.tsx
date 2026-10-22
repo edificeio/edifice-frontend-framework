@@ -1,15 +1,22 @@
-import { RefAttributes, useEffect, useMemo, useState } from 'react';
-
 import {
-  Editor,
-  findParentNodeClosestToPos,
-  FloatingMenu,
-  FloatingMenuProps,
-} from '@tiptap/react';
+  RefAttributes,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import { Editor, findParentNodeClosestToPos } from '@tiptap/react';
+import { FloatingMenu } from '@tiptap/react/menus';
 import { useTranslation } from 'react-i18next';
 
 import { IconButtonProps, Toolbar } from '../../../../components';
 import { IconMergeCells, IconSplitCells } from '../../../icons/components';
+import { useEditorState } from '../../hooks/useEditorState';
+import {
+  FLOATING_MENU_Z_INDEX,
+  getFloatingMenuOptions,
+} from './FloatingMenuOptions';
 import { TableToolbarAddMenu } from './TableToolbar.AddMenu';
 import { TableToolbarCellColor } from './TableToolbar.CellColor';
 import { TableToolbarDelMenu } from './TableToolbar.DelMenu';
@@ -26,9 +33,13 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
 
   // Display the Split action when truthy, and Merge action when falsy.
   const [isSpan, setSpan] = useState<boolean | undefined>(undefined);
+  // isSpan depends on the selected cell's attrs, which can change on a pure
+  // selection move (no content edit, e.g. clicking into a different cell) -
+  // `editor?.state` alone doesn't trigger a re-render for that.
+  const editorState = useEditorState(editor);
 
   // Options need some computing
-  const tippyOptions: FloatingMenuProps['tippyOptions'] = useMemo(() => {
+  const floatingOptions = useMemo(() => {
     // Adjust a DOMRect to make it visible at a correct place.
     function adjustRect(rect: DOMRect) {
       let yOffset = 0;
@@ -43,11 +54,12 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
     }
 
     return {
-      placement: 'bottom',
-      offset: [0, 0],
-      zIndex: 999,
-      // popperOptions: {modifiers: [ /*see popper v2 modifiers*/ ]},
-      // Try to get the bounding rect of the table.
+      ...getFloatingMenuOptions({
+        placement: 'bottom',
+        offset: { mainAxis: 0, crossAxis: 0 },
+      }),
+      // Dead in v3: FloatingMenu has no reference-rect override (unlike
+      // BubbleMenu's getReferencedVirtualElement), so this never runs.
       getReferenceClientRect: () => {
         const parentDiv = editor?.isActive('table')
           ? findParentNodeClosestToPos(
@@ -88,18 +100,25 @@ const TableToolbar = ({ editor }: TableToolbarProps) => {
     } else {
       isSpan && setSpan(undefined);
     }
-  }, [editor, editor?.state, isSpan]);
+  }, [editor, editorState, isSpan]);
 
-  const handleShouldShow = () =>
-    (editor?.isEditable && editor.isActive('table')) || false;
+  // Memoized: an identity change here makes v3's FloatingMenu re-run a
+  // `dispatch` effect, which combined with `useEditorState` above (re-renders
+  // on every transaction) caused an infinite render loop.
+  const handleShouldShow = useCallback(
+    () => (editor?.isEditable && editor.isActive('table')) || false,
+    [editor],
+  );
 
   return (
     <>
       {editor && (
         <FloatingMenu
           editor={editor}
-          tippyOptions={tippyOptions}
+          options={floatingOptions}
           shouldShow={handleShouldShow}
+          // v3's `options` has no `zIndex` field - set via style instead.
+          style={{ zIndex: FLOATING_MENU_Z_INDEX }}
         >
           <Toolbar
             className="p-4"
