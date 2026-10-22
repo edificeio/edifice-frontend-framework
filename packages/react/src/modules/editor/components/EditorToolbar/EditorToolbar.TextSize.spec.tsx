@@ -2,6 +2,7 @@ import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
 import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
 import { Editor } from '@tiptap/core';
 import { TextStyle } from '@tiptap/extension-text-style';
+import StarterKit from '@tiptap/starter-kit';
 
 import { render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
@@ -63,8 +64,47 @@ describe('EditorToolbarTextSize', () => {
     expect(screen.getAllByRole('separator').length).toBeGreaterThan(0);
   });
 
+  it('shows the heading options when the node is pinned back to "heading" (production setup)', async () => {
+    // Regression: useTipTapEditor.ts pins CustomHeading's node name back to
+    // 'heading' (see its own comment), but this component used to check
+    // hasExtension('customHeading', ...) - the published package's default
+    // name, not what's actually registered in production - and hid the
+    // heading options entirely. StarterKit's heading is disabled here too,
+    // exactly like useTipTapEditor.ts, so 'heading' can only come from our
+    // own (renamed) extension, not a StarterKit default masking the bug.
+    editor = new Editor({
+      content: '<p>Hello</p>',
+      extensions: [
+        StarterKit.configure({ heading: false }),
+        TextStyle,
+        FontSize,
+        CustomHeading.extend({ name: 'heading' }).configure({
+          levels: [1, 2],
+        }),
+      ],
+    });
+    const { user } = renderTextSize(editor);
+
+    await user.click(getTrigger());
+
+    expect(screen.getByText('Heading 1')).toBeInTheDocument();
+    expect(screen.getByText('Heading 2')).toBeInTheDocument();
+    expect(screen.getAllByRole('separator').length).toBeGreaterThan(0);
+  });
+
   it('hides the heading options and the divider when customHeading is absent', async () => {
-    editor = buildEditor([TextStyle, FontSize]);
+    // Not buildEditor/createTestEditor: its default StarterKit leaves
+    // 'heading' enabled, which would satisfy hasExtension('heading', ...)
+    // even without CustomHeading - unlike production (useTipTapEditor.ts
+    // always disables it), so this test needs a truly heading-less schema.
+    editor = new Editor({
+      content: '<p>Hello</p>',
+      extensions: [
+        StarterKit.configure({ heading: false }),
+        TextStyle,
+        FontSize,
+      ],
+    });
     const { user } = renderTextSize(editor);
 
     await user.click(getTrigger());
