@@ -1,7 +1,7 @@
 import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
 import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
 import { Editor } from '@tiptap/core';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 import { render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
@@ -95,10 +95,10 @@ describe('EditorToolbarTextSize', () => {
     await user.click(getTrigger());
     await user.click(screen.getByText('Heading 1'));
 
-    // `setCustomHeading` delegates to the plain `setHeading` command (shared
-    // with StarterKit's own heading extension), so the resulting node type
-    // is "heading", not "customHeading".
-    expect(editor.isActive('heading', { level: 1 })).toBe(true);
+    // `setCustomHeading` delegates to the inherited `setHeading` command,
+    // which is scoped to `this.name` - i.e. "customHeading", not the plain
+    // "heading" type (see heading.ts).
+    expect(editor.isActive('customHeading', { level: 1 })).toBe(true);
   });
 
   it('clicking "Heading 2" turns the current block into a level-2 heading', async () => {
@@ -108,7 +108,7 @@ describe('EditorToolbarTextSize', () => {
     await user.click(getTrigger());
     await user.click(screen.getByText('Heading 2'));
 
-    expect(editor.isActive('heading', { level: 2 })).toBe(true);
+    expect(editor.isActive('customHeading', { level: 2 })).toBe(true);
   });
 
   it('clicking "Big text" sets the paragraph fontSize to 18px', async () => {
@@ -150,12 +150,12 @@ describe('EditorToolbarTextSize', () => {
 
     await user.click(getTrigger());
     await user.click(screen.getByText('Heading 1'));
-    expect(editor.isActive('heading', { level: 1 })).toBe(true);
+    expect(editor.isActive('customHeading', { level: 1 })).toBe(true);
 
     await user.click(getTrigger());
     await user.click(screen.getByText('Big text'));
 
-    expect(editor.isActive('heading')).toBe(false);
+    expect(editor.isActive('customHeading')).toBe(false);
     expect(editor.isActive('paragraph')).toBe(true);
     expect(editor.getAttributes('textStyle').fontSize).toBe('18px');
   });

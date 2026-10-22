@@ -156,7 +156,12 @@ describe('MediaRenderer', () => {
   });
 
   describe('alignContent', () => {
-    it('centers the wrapper (margin auto + fit-content width) for "center" and "justify"', () => {
+    // jsdom's CSS engine (cssstyle) doesn't recognize `fit-content` as a valid
+    // `width` value: it drops it entirely, from both `element.style.width`
+    // and the serialized `style` attribute. Unrelated to this component or
+    // tiptap, and the value is hardcoded (not computed), so the margin
+    // assertions below already cover the only part with real regression risk.
+    it('centers the wrapper (margin auto) for "center" and "justify"', () => {
       const centerNode = makeNode('custom-image', {
         src: '/a.png',
         alt: 'a',
@@ -168,7 +173,6 @@ describe('MediaRenderer', () => {
       ) as HTMLElement;
       expect(centerWrapper.style.marginLeft).toBe('auto');
       expect(centerWrapper.style.marginRight).toBe('auto');
-      expect(centerWrapper.style.width).toBe('fit-content');
       unmount();
 
       const justifyNode = makeNode('custom-image', {
@@ -182,7 +186,6 @@ describe('MediaRenderer', () => {
       ) as HTMLElement;
       expect(justifyWrapper.style.marginLeft).toBe('auto');
       expect(justifyWrapper.style.marginRight).toBe('auto');
-      expect(justifyWrapper.style.width).toBe('fit-content');
     });
 
     it('applies a margin-right-only rule for "left"', () => {
@@ -197,7 +200,6 @@ describe('MediaRenderer', () => {
       ) as HTMLElement;
 
       expect(wrapper.style.marginRight).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
       expect(wrapper.style.marginLeft).toBe('');
     });
 
@@ -213,7 +215,6 @@ describe('MediaRenderer', () => {
       ) as HTMLElement;
 
       expect(wrapper.style.marginLeft).toBe('auto');
-      expect(wrapper.style.width).toBe('fit-content');
       expect(wrapper.style.marginRight).toBe('');
     });
 

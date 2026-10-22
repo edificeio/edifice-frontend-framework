@@ -7,15 +7,18 @@ import { TableCell } from '@edifice.io/tiptap-extensions/table-cell';
 import { Editor, EditorOptions, Extensions } from '@tiptap/core';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
-import Table from '@tiptap/extension-table';
-import TableHeader from '@tiptap/extension-table-header';
-import TableRow from '@tiptap/extension-table-row';
+import { Table, TableHeader, TableRow } from '@tiptap/extension-table';
 import TextAlign from '@tiptap/extension-text-align';
 import Underline from '@tiptap/extension-underline';
 import StarterKit from '@tiptap/starter-kit';
 
 const defaultExtensions: Extensions = [
-  StarterKit,
+  // v3's StarterKit bundles its own underline/link, which would shadow the explicit
+  // Underline/Hyperlink/Linker below (same issue fixed in useTipTapEditor.ts).
+  StarterKit.configure({
+    underline: false,
+    link: false,
+  }),
   Table.configure({ resizable: true }),
   TableRow,
   TableHeader,

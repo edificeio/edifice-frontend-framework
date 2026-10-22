@@ -1,5 +1,5 @@
 import { Editor } from '@tiptap/core';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
 
 import { createTestEditor } from '../test-utils/createTestEditor';
 

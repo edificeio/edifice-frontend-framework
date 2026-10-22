@@ -3,6 +3,10 @@
 pipeline {
   agent any
 
+  parameters {
+    string(name: 'NPM_TAG', defaultValue: '', description: 'Override du tag npm (vide = latest sur main, nom de la branche sinon)')
+  }
+
   environment {
     NPM_TOKEN = credentials('npm-token')
   }

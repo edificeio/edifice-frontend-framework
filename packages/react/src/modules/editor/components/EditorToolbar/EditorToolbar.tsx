@@ -6,6 +6,7 @@ import {
   CantooEditor,
   useActionOptions,
   useEditorContext,
+  useEditorState,
   useSpeechRecognition,
 } from '../..';
 import { IconButtonProps, Toolbar, ToolbarItem } from '../../../../components';
@@ -55,6 +56,7 @@ export const EditorToolbar = ({
 }: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
+  const editorState = useEditorState(editor);
 
   const [plusOptions, listOptions, alignmentOptions] = useActionOptions(
     editor,
@@ -98,7 +100,8 @@ export const EditorToolbar = ({
         },
         name: 'undo',
         tooltip: t('editor.option.undo'),
-        visibility: showIf(hasExtension('history', editor)),
+        // v3's StarterKit renamed the undo/redo extension from 'history' to 'undoRedo'.
+        visibility: showIf(hasExtension('undoRedo', editor)),
       },
       //--------------- REDO ---------------//
       {
@@ -111,7 +114,7 @@ export const EditorToolbar = ({
         },
         name: 'redo',
         tooltip: t('editor.option.redo'),
-        visibility: showIf(hasExtension('history', editor)),
+        visibility: showIf(hasExtension('undoRedo', editor)),
       },
       //-------------------------------------//
       {
@@ -439,6 +442,7 @@ export const EditorToolbar = ({
     alignmentOptions,
     canRecognizeSpeech,
     editor,
+    editorState,
     listOptions,
     mediaLibraryRef,
     plusOptions,

@@ -1,8 +1,9 @@
 import { Editor } from '@tiptap/core';
 import Color from '@tiptap/extension-color';
-import TextStyle from '@tiptap/extension-text-style';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { TextSelection } from '@tiptap/pm/state';
 
-import { render, screen } from '~/setup';
+import { act, render, screen } from '~/setup';
 import { Dropdown } from '../../../../components';
 import { EditorContext } from '../../hooks/useEditorContext';
 import { createTestEditor } from '../../test-utils/createTestEditor';
@@ -37,6 +38,30 @@ function renderTextColor(editor: Editor | null) {
 
 function getTrigger() {
   return screen.getByRole('button', { name: 'Text color' });
+}
+
+// Returns the doc position of the start of the given text node (so
+// `[pos, pos + text.length]` is exactly that word's range).
+function posInText(editor: Editor, text: string) {
+  let pos: number | undefined;
+  editor.state.doc.descendants((node, nodePos) => {
+    if (node.isText && node.text === text) {
+      pos = nodePos;
+    }
+  });
+  return pos as number;
+}
+
+// Moves the text selection to the given position, wrapped in `act` so the
+// resulting transaction-driven re-render is flushed before the next
+// assertion, like a real user click would be.
+function moveSelectionTo(editor: Editor, pos: number) {
+  act(() => {
+    const tr = editor.state.tr.setSelection(
+      TextSelection.near(editor.state.doc.resolve(pos)),
+    );
+    editor.view.dispatch(tr);
+  });
 }
 
 describe('EditorToolbarTextColor', () => {
@@ -101,6 +126,27 @@ describe('EditorToolbarTextColor', () => {
 
     renderTextColor(editor);
 
+    expect(getTrigger()).toHaveClass('selected');
+  });
+
+  it('updates the selected state on a pure selection move, with no content change and no manual re-render', () => {
+    editor = buildEditor('<p>Blue</p><p>Default</p>');
+    const bluePos = posInText(editor, 'Blue');
+    const defaultPos = posInText(editor, 'Default');
+
+    editor.commands.setTextSelection({ from: bluePos, to: bluePos + 4 });
+    editor.chain().setColor('#005A8A').run();
+
+    renderTextColor(editor);
+
+    // Selection starts in the plain-colored paragraph: not selected.
+    // +2: firmly inside the word, not at the mark's boundary (ambiguous).
+    moveSelectionTo(editor, defaultPos + 2);
+    expect(getTrigger()).not.toHaveClass('selected');
+
+    // Moving into the colored text - no content edit, no re-render triggered
+    // from outside - must mark the trigger as selected.
+    moveSelectionTo(editor, bluePos + 2);
     expect(getTrigger()).toHaveClass('selected');
   });
 

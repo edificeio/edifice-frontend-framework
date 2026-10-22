@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { Hyperlink } from '@edifice.io/tiptap-extensions/hyperlink';
-import CharacterCount from '@tiptap/extension-character-count';
+import { CharacterCount } from '@tiptap/extensions';
 import { Content, HTMLContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -21,7 +21,11 @@ export const useCommentEditor = (
   const editor = useEditor({
     editable,
     extensions: [
-      StarterKit,
+      // v3's StarterKit bundles its own 'link' mark, which would compete with
+      // Hyperlink below for the same <a> tags. Disabled.
+      StarterKit.configure({
+        link: false,
+      }),
       Hyperlink,
       CharacterCount.configure({ limit: maxLength }),
     ],
