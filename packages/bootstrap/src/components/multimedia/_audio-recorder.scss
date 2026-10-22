@@ -1,6 +1,10 @@
 @use "../../abstracts/" as *;
 @use "../../vendors/bootstrap";
 
+.audio-recorder-time {
+  margin: $spacer-16 auto;
+}
+
 .modal-body {
   & .audio-recorder {
     min-height: 25rem;
