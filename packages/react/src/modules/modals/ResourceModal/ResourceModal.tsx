@@ -362,21 +362,21 @@ export const ResourceModal = ({
               </FormControl>
               {application === 'blog' &&
                 hasOptionalCommentRepliesWorkflow === true && (
-                  <FormControl
-                    id="allowReplies"
-                    className="d-flex gap-8 mt-16 mb-8"
-                  >
-                    <FormControl.Input
+                  <div className="form-check d-flex align-items-center gap-8 mt-16 mb-8">
+                    <input
+                      id="allowReplies"
                       type="checkbox"
+                      className="form-check-input mt-0"
                       defaultChecked={isUpdating ? resource.allowReplies : true}
                       {...register('allowReplies')}
-                      className="form-check-input mt-0"
-                      size="sm"
                     />
-                    <FormControl.Label className="form-check-label mb-0">
+                    <label
+                      htmlFor="allowReplies"
+                      className="form-check-label mb-0"
+                    >
                       {t('explorer.resource.editModal.comments.allowReplies')}
-                    </FormControl.Label>
-                  </FormControl>
+                    </label>
+                  </div>
                 )}
             </div>
           </div>
