@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ResourceModal } from './ResourceModal';
-import { Button, FormControl } from '../../../components';
+import { Button, Switch } from '../../../components';
 import { useToggle } from '../../../hooks';
 
 const meta: Meta<typeof ResourceModal> = {
@@ -122,18 +122,12 @@ export const CreateWithContribution: Story = {
     currentFolder: { id: 'default' },
     children: (
       <div className="border-top p-16 mt-16">
-        <FormControl id="contribution" className="form-switch d-flex gap-8">
-          <FormControl.Input
-            type="checkbox"
-            role="switch"
-            className="form-check-input mt-0"
-            size="md"
-            onChange={(e) => console.log('Contribution:', e.target.checked)}
-          />
-          <FormControl.Label className="form-check-label mb-0">
-            Allow contribution from community
-          </FormControl.Label>
-        </FormControl>
+        <Switch
+          id="contribution"
+          role="switch"
+          label="Allow contribution from community"
+          onChange={(e) => console.log('Contribution:', e.target.checked)}
+        />
       </div>
     ),
   },

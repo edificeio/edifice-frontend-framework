@@ -142,4 +142,25 @@ describe('BlogPublic', () => {
 
     expect(screen.getByRole('switch')).toBeDisabled();
   });
+
+  it('renders a plain switch and a bare hidden slug input, with no Input wrapper left visible', async () => {
+    const { user, container } = render(
+      <Wrapper
+        resource={buildResource({ public: false })}
+        isUpdating={false}
+      />,
+    );
+
+    await user.click(screen.getByRole('switch'));
+
+    await waitFor(() =>
+      expect(container.querySelector('input[name="formSlug"]')).toHaveAttribute(
+        'type',
+        'hidden',
+      ),
+    );
+    // Regression ENABLING-1352: `Input` renders a visible `.input` wrapper.
+    expect(container.querySelector('.input')).not.toBeInTheDocument();
+    expect(container.querySelector('.switch .slider')).toBeInTheDocument();
+  });
 });
