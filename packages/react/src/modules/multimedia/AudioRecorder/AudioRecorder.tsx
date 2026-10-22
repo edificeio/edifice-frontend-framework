@@ -1,10 +1,16 @@
-import { forwardRef, useImperativeHandle, useState } from 'react';
+import { ReactNode, forwardRef, useImperativeHandle, useState } from 'react';
 
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import { FormControl, Input, Toolbar } from '../../../components';
+import {
+  FormControl,
+  Input,
+  InputProps,
+  Toolbar,
+  ToolbarItem,
+} from '../../../components';
 import { IconMic } from '../../icons/components';
 import AudioRecorderTimer from './AudioRecorderTimer';
 import useAudioRecorder from './useAudioRecorder';
@@ -14,6 +20,16 @@ export interface AudioRecorderProps {
   onRecordUpdated?: (recordURL?: string) => void;
   hideSaveAction?: boolean;
   visibility?: WorkspaceVisibility;
+  /** Extra class names on the root element, to restyle the recorder. */
+  className?: string;
+  /** Optional label rendered above the record name input. */
+  nameLabel?: ReactNode;
+  /** Extra props forwarded to the record name input (override defaults). */
+  nameInputProps?: Omit<Partial<InputProps>, 'ref'>;
+  /** Class name of the record name FormControl (defaults to `mb-32`). */
+  nameFormControlClassName?: string;
+  /** Customizes the toolbar items computed by the recorder. */
+  customizeToolbarItems?: (items: ToolbarItem[]) => ToolbarItem[];
 }
 
 export interface AudioRecorderRef {
@@ -27,6 +43,11 @@ const AudioRecorder = forwardRef(
       onRecordUpdated,
       hideSaveAction = false,
       visibility = 'protected',
+      className,
+      nameLabel,
+      nameInputProps,
+      nameFormControlClassName = 'mb-32',
+      customizeToolbarItems,
     }: AudioRecorderProps,
     ref,
   ) => {
@@ -80,39 +101,52 @@ const AudioRecorder = forwardRef(
     };
 
     return (
-      <div className="audio-recorder m-auto d-flex flex-column">
+      <div
+        className={clsx('audio-recorder m-auto d-flex flex-column', className)}
+      >
         <FormControl
           id="recordName"
-          className="mb-32"
+          className={nameFormControlClassName}
           isRequired
           isReadOnly={recordState === 'SAVED' || recordState === 'SAVING'}
         >
+          {nameLabel}
           <Input
             type="text"
             size={'sm'}
             placeholder={t('bbm.audio.recorder.name')}
-            ref={audioNameRef}
             defaultValue={getDefaultDate()}
+            {...nameInputProps}
+            // Keep last: the hook reads the record name from this ref
+            ref={audioNameRef}
           />
         </FormControl>
-        <div className="audio-recorder-icon mx-auto">
-          <IconMic width={64} height={64} className={classColor} />
+        <div className="audio-recorder-controls d-flex flex-column">
+          <div className="audio-recorder-icon mx-auto">
+            <IconMic width={64} height={64} className={classColor} />
+          </div>
+          <AudioRecorderTimer
+            recordState={recordState}
+            playState={playState}
+            recordTime={recordTime}
+            audioTime={audioTime}
+            maxDuration={maxDuration}
+          ></AudioRecorderTimer>
+          <audio
+            ref={audioRef}
+            onEnded={handlePlayEnded}
+            onTimeUpdate={handleTimeUpdate}
+          >
+            <track default kind="captions" srcLang="fr" src=""></track>
+          </audio>
+          <Toolbar
+            items={
+              customizeToolbarItems
+                ? customizeToolbarItems(toolbarItems)
+                : toolbarItems
+            }
+          />
         </div>
-        <AudioRecorderTimer
-          recordState={recordState}
-          playState={playState}
-          recordTime={recordTime}
-          audioTime={audioTime}
-          maxDuration={maxDuration}
-        ></AudioRecorderTimer>
-        <audio
-          ref={audioRef}
-          onEnded={handlePlayEnded}
-          onTimeUpdate={handleTimeUpdate}
-        >
-          <track default kind="captions" srcLang="fr" src=""></track>
-        </audio>
-        <Toolbar items={toolbarItems} />
       </div>
     );
   },

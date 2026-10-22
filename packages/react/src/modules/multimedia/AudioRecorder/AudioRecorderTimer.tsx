@@ -18,7 +18,7 @@ const AudioRecorderTimer = ({
   maxDuration,
 }: AudioRecorderTimerProps) => {
   return (
-    <div className="audio-recorder-time my-16 mx-auto">
+    <div className="audio-recorder-time">
       {playState === 'IDLE' && (
         <div className="d-flex align-items-center">
           {recordState === 'PAUSED' ? (
