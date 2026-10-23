@@ -129,7 +129,7 @@ describe('homepage Header', () => {
 
     expect(document.querySelector('img')).toHaveAttribute(
       'src',
-      '/assets/img/illustrations/logo.png',
+      '/assets/img/illustrations/logo-v2.png',
     );
   });
 
