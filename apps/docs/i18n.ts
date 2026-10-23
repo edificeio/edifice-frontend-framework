@@ -291,7 +291,7 @@ i18n.use(initReactI18next).init({
         'homepage.notification.type.userbook_motto': 'Devises',
         'homepage.notification.type.userbook_discovervisiblegroups':
           'Explorer le réseau',
-        'homepage.notification.type.viescolaire': 'Vie scolaire',
+        'homepage.notification.type.viescolaire': 'Paramétrage vie scolaire',
         'homepage.notification.type.wiki': 'Cours et Wiki',
         'homepage.notification.type.workspace': 'Espace documentaire',
         //----------------- Favorites -----------------
@@ -304,7 +304,8 @@ i18n.use(initReactI18next).init({
         'homepage.agenda.openAgenda': "Accéder à l'agenda",
         'homepage.agenda.empty': 'Pas d’évènement à venir.',
         'homepage.agenda.allDay': 'Journée entière',
-        'homepage.agenda.multiDayTime': '[[startTime]] - [[endDay]] à [[endTime]]',
+        'homepage.agenda.multiDayTime':
+          '[[startTime]] - [[endDay]] à [[endTime]]',
         //----------------- Communities -----------------
         'homepage.communities.title': 'Communautés',
         'homepage.communities.actionLabel.seeMore': 'Voir plus',
@@ -416,7 +417,7 @@ i18n.use(initReactI18next).init({
           'Problème de connexion avec le service de cantine. Si le problème persiste, contactez votre établissement.',
         'homepage.widget.cantine.empty':
           'Le menu n’est pas disponible pour ce jour',
-        'homepage.widget.cantine.emptyIllustration': "Panneau barré",
+        'homepage.widget.cantine.emptyIllustration': 'Panneau barré',
         'homepage.widget.cantine.seeMore': 'voir plus',
         'homepage.widget.cantine.school': 'Établissement',
         'homepage.widget.cantine.menu': 'Menu',
