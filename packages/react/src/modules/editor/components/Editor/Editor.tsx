@@ -51,6 +51,12 @@ export interface EditorRef {
     as: 'html' | 'json' | 'plain',
   ) => undefined | string | JSONContent;
 
+  /**
+   * Whether the editor has no content (TipTap's `editor.isEmpty`).
+   * Evaluated on each access, so it always reflects the current document.
+   */
+  readonly isEmpty: boolean;
+
   /** Get speech synthetisis current state */
   isSpeeching: () => boolean;
   /** [De]activate speech synthetisis */
@@ -149,6 +155,9 @@ const Editor = forwardRef(
           default:
             throw `[Editor] Unknown content format ${as}`;
         }
+      },
+      get isEmpty() {
+        return editor?.isEmpty ?? true;
       },
       toogleSpeechSynthetisis: speechSynthetisis.toggle,
       isSpeeching: () => speechSynthetisis.isActivated,
