@@ -4,6 +4,7 @@ import { IFolder, IResource } from '@edifice.io/client';
 
 import { render, screen, waitFor } from '~/setup';
 import ImagePicker from '../../multimedia/ImagePicker/ImagePicker';
+import BlogPublic from './apps/BlogPublic';
 import { ResourceModal } from './ResourceModal';
 
 const {
@@ -689,6 +690,52 @@ describe('ResourceModal', () => {
       expect(onSuccess).toHaveBeenCalledWith(
         { entId: resource.assetId, thumbnail: resource.thumbnail },
         expect.objectContaining({ entId: resource.assetId }),
+      );
+    });
+
+    it('keeps a public blog public (and its slug) when saved without touching the switch', async () => {
+      sessionHasWorkflowRight.mockResolvedValue(true);
+      const resource = buildResource({ public: true, slug: 'abc-my-resource' });
+      searchResource.mockResolvedValue(resource);
+      updateResourceApi.mockResolvedValue({
+        entId: resource.assetId,
+        thumbnail: resource.thumbnail,
+      });
+
+      const { user } = render(
+        <ResourceModal
+          mode="update"
+          isOpen
+          appCode="blog"
+          resourceId="resource-1"
+          onCancel={noop}
+          onSuccess={noop}
+        >
+          {(res, isUpdating, watch, setValue, register) => (
+            <BlogPublic
+              appCode="blog"
+              isUpdating={isUpdating}
+              resource={res}
+              watch={watch}
+              setValue={setValue}
+              register={register}
+            />
+          )}
+        </ResourceModal>,
+      );
+
+      await waitFor(() =>
+        expect(screen.getByRole('dialog')).toBeInTheDocument(),
+      );
+      expect(screen.getByRole('switch')).toBeChecked();
+
+      const submitButton = await screen.findByRole('button', { name: 'save' });
+      await waitFor(() => expect(submitButton).toBeEnabled());
+      await user.click(submitButton);
+
+      await waitFor(() => expect(updateResourceApi).toHaveBeenCalled());
+      expect(updateResourceApi).toHaveBeenCalledWith(
+        expect.objectContaining({ public: true, slug: 'abc-my-resource' }),
       );
     });
 
