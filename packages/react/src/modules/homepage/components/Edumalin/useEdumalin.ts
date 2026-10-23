@@ -1,9 +1,12 @@
 import { odeServices } from '@edifice.io/client';
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import { useUserSchools } from '../../hooks/useUserSchools';
-import { buildGarLink } from './buildGarLink';
 import { EdumalinError, EdumalinItem, EdumalinStatus } from './types';
-import { EDUMALIN_UNAUTHORIZED, parseEdumalinError } from './utils';
+import {
+  buildGarLink,
+  EDUMALIN_UNAUTHORIZED,
+  parseEdumalinError,
+} from './utils';
 
 const EDUMALIN_MAX_ITEMS = 3;
 

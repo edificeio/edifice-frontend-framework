@@ -1,5 +1,5 @@
 import { School } from '@edifice.io/client';
-import { buildGarLink } from './buildGarLink';
+import { buildGarLink } from './utils';
 
 const school = {
   id: 'school-1',
