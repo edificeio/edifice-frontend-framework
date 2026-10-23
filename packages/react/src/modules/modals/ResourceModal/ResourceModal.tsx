@@ -179,12 +179,22 @@ export const ResourceModal = ({
   } = useForm<FormInputs>({
     mode: 'onChange',
     defaultValues: {
-      description: isUpdating ? resource?.description : '',
-      enablePublic: isUpdating ? resource?.public : false,
-      title: isUpdating ? resource?.name : '',
-      formSlug: isUpdating ? resource?.slug : '',
-      allowReplies: isUpdating ? resource?.allowReplies : true,
+      description: '',
+      enablePublic: false,
+      title: '',
+      formSlug: '',
+      allowReplies: true,
     },
+    values:
+      isUpdating && resource
+        ? {
+            description: resource.description ?? '',
+            enablePublic: resource.public ?? false,
+            title: resource.name ?? '',
+            formSlug: resource.slug ?? '',
+            allowReplies: resource.allowReplies ?? true,
+          }
+        : undefined,
   });
 
   const {
