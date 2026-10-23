@@ -485,6 +485,32 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
 
+        //------------------ Edumalin -------------------------
+        'homepage.widget.edumalin.title': 'Édumalin',
+        'homepage.widget.edumalin.open': 'Accéder à Édumalin',
+        'homepage.widget.edumalin.type.webinar': 'Webinaire',
+        'homepage.widget.edumalin.type.announcement': 'Annonce',
+        'homepage.widget.edumalin.type.news': 'Actualité',
+        'homepage.widget.edumalin.type.rdv': 'RDV',
+        'homepage.widget.edumalin.type.testimonial': 'Témoignage',
+        'homepage.widget.edumalin.type.replay': 'Replay',
+        'homepage.widget.edumalin.type.podcast': 'Podcast',
+        'homepage.widget.edumalin.type.tutorial': 'Tutoriel',
+        'homepage.widget.edumalin.type.other': 'Autre',
+        'homepage.widget.edumalin.error.connection':
+          'Impossible d’établir une connexion avec Édumalin.',
+        'homepage.widget.edumalin.error.load':
+          'Impossible de récupérer les informations Édumalin.',
+        'homepage.widget.edumalin.error.help':
+          'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
+        'homepage.widget.edumalin.error.code': 'Erreur [[code]] : [[message]]',
+        'homepage.widget.edumalin.empty':
+          'Il n’y a pas d’information à afficher.',
+        'homepage.widget.edumalin.modal.date': 'Date :',
+        'homepage.widget.edumalin.modal.duration': 'Durée :',
+        'homepage.widget.edumalin.modal.durationValue': '[[duration]]min',
+        'homepage.widget.edumalin.modal.place': 'Lieu :',
+
         //------------------------------------------------------
         //------------------ Header navigation -----------------
         'portal.header.navigation.whatsnew': 'Quoi de neuf ?',
