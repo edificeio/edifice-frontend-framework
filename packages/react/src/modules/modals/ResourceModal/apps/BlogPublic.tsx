@@ -43,6 +43,11 @@ const BlogPublic = ({
       selectedResource: isUpdating ? resource : undefined,
     });
 
+  // In update mode the form is created before the resource is fetched, so the
+  // watched title is still empty on first render. Without this fallback the
+  // switch gets registered as disabled and its value is lost on submit.
+  const hasTitle = !!resourceName || (isUpdating && !!resource?.name);
+
   return (
     <>
       <Heading headingStyle="h4" level="h3" className="mb-16">
@@ -61,7 +66,7 @@ const BlogPublic = ({
           role="switch"
           defaultChecked={isUpdating ? resource.public : false}
           {...register('enablePublic', {
-            disabled: !resourceName,
+            disabled: !hasTitle,
             onChange: (event) => {
               const checked = event.target.checked;
               onPublicChange(checked);
