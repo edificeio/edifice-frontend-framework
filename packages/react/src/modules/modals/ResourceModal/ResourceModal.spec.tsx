@@ -4,6 +4,7 @@ import { IFolder, IResource } from '@edifice.io/client';
 
 import { render, screen, waitFor } from '~/setup';
 import ImagePicker from '../../multimedia/ImagePicker/ImagePicker';
+import BlogPublic from './apps/BlogPublic';
 import { ResourceModal } from './ResourceModal';
 
 const {
@@ -637,6 +638,76 @@ describe('ResourceModal', () => {
   });
 
   describe('onSubmit — update path', () => {
+    it.each([
+      { initialPublic: true, togglePublic: false },
+      { initialPublic: false, togglePublic: false },
+      { initialPublic: true, togglePublic: true },
+      { initialPublic: false, togglePublic: true },
+    ])(
+      'submits loaded blog settings with public=$initialPublic and toggle=$togglePublic',
+      async ({ initialPublic, togglePublic }) => {
+        const resource = buildResource({
+          public: initialPublic,
+          slug: 'existing-blog-slug',
+          allowReplies: false,
+        });
+        searchResource.mockResolvedValue(resource);
+        updateResourceApi.mockResolvedValue({ entId: resource.assetId });
+        sessionHasWorkflowRight.mockResolvedValue(true);
+
+        const { user } = render(
+          <ResourceModal
+            mode="update"
+            appCode="blog"
+            isOpen
+            resourceId="resource-1"
+            onCancel={noop}
+            onSuccess={noop}
+          >
+            {(selectedResource, isUpdating, watch, setValue, register) => (
+              <BlogPublic
+                appCode="blog"
+                resource={selectedResource}
+                isUpdating={isUpdating}
+                watch={watch}
+                setValue={setValue}
+                register={register}
+              />
+            )}
+          </ResourceModal>,
+        );
+
+        const submitButton = await screen.findByRole('button', {
+          name: 'save',
+        });
+        await waitFor(() => expect(submitButton).toBeEnabled());
+        expect(screen.getByRole('switch')).toHaveProperty(
+          'checked',
+          initialPublic,
+        );
+
+        if (togglePublic) {
+          await user.type(screen.getByLabelText(/^title/), ' edited');
+          await user.click(screen.getByRole('switch'));
+        }
+
+        await user.click(submitButton);
+
+        const expectedPublic = togglePublic ? !initialPublic : initialPublic;
+        await waitFor(() =>
+          expect(updateResourceApi).toHaveBeenCalledWith(
+            expect.objectContaining({
+              name: togglePublic ? `${resource.name} edited` : resource.name,
+              description: resource.description,
+              public: expectedPublic,
+              slug: expectedPublic ? resource.slug : '',
+              allowReplies: false,
+            }),
+          ),
+        );
+      },
+    );
+
     const pokeTitleAndSubmit = async (
       user: ReturnType<typeof render>['user'],
     ) => {
