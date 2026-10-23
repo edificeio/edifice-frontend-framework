@@ -105,13 +105,14 @@ const Header = ({
   return (
     <header className={classes} data-product={dataProduct}>
       <Navbar className="px-24">
-        <LogoBeta src={`${src}/img/illustrations/logo.png`} />
+        <LogoBeta src={`${src}/img/illustrations/logo-v2.png`} />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
               link="/timeline/timeline"
               translate={t('navbar.home')}
               data-testid="header-home-button"
+              title={t('navbar.home')}
             >
               <IconHomeBeta />
             </NavLink>
@@ -122,6 +123,7 @@ const Header = ({
                 link="/communities"
                 translate={t('navbar.community')}
                 data-testid="header-community-button"
+                title={t('navbar.community')}
               >
                 <IconCommunitiesBeta className="icon community" />
               </NavLink>
@@ -133,6 +135,7 @@ const Header = ({
                 className="position-relative"
                 link="/conversation/conversation"
                 translate={t('conversation')}
+                title={t('conversation')}
                 data-testid="header-messagerie-button"
               >
                 <IconMessagesBeta />
@@ -154,6 +157,7 @@ const Header = ({
                 href="/auth/carbonio/preauth"
                 target="_blank"
                 data-testid="header-messagerie-button"
+                title={t('conversation')}
               >
                 <IconMessagesBeta />
                 {carbonioUnreadCount > 0 && (
@@ -172,6 +176,7 @@ const Header = ({
             <NavLink
               ref={myApps.setReference}
               link="/welcome"
+              title={t('navbar.applications')}
               translate={t('navbar.applications')}
               id={popoverAppsId}
               aria-haspopup="true"
@@ -196,29 +201,19 @@ const Header = ({
               </PopoverFooter>
             </Popover>
           </NavItem>
-          <NavItem className="position-relative">
+          <NavItem className="position-relative navbar-nav-notification">
             <ButtonBeta
               leftIcon={<IconNotificationBeta />}
               variant="ghost"
+              title={t('navbar.notifications')}
+              data-testid="header-notifications-button"
+              aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
             />
             {hasNotificationToday && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: 15,
-                  height: 15,
-                  background: 'red',
-                  borderRadius: '50%',
-                  border: '2px solid white',
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                  display: 'block',
-                }}
-                aria-label={t('homepage.notifications.new-badge')}
-              />
+              <span className="navbar-nav-notification-badge">
+                <VisuallyHidden>{t('navbar.notifications.new')}</VisuallyHidden>
+              </span>
             )}
           </NavItem>
           <NavItem className="position-relative">

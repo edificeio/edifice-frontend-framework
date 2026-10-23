@@ -12,6 +12,7 @@
   grid-template-columns: 1fr;
   grid-template-areas: 'links';
   width: 100%;
+  padding-block: var(--navbar-padding-y);
   background: var(--navbar-background);
   border-bottom: 2px solid;
   border-image-slice: 1;
@@ -45,8 +46,8 @@
   &-nav {
     --navbar-nav-gap: 0.8rem;
     --navbar-nav-link-icon-size: 2.4rem;
-    --nav-link-padding-y: 0.4rem;
-    --nav-link-padding-x: 0.4rem;
+    --navbar-nav-link-icon-color: var(--primitive-blue-900);
+    --navbar-nav-link-padding: var(--primitive-spacer-4);
 
     grid-area: links;
     display: flex;
@@ -62,6 +63,16 @@
     svg {
       width: var(--navbar-nav-link-icon-size);
       height: var(--navbar-nav-link-icon-size);
+    }
+
+    // Icons use `currentColor`: colour the nav links and the ghost button
+    // (through its own variable, so its disabled state keeps working) rather
+    // than every nested svg, which would also reach the popovers.
+    // Links and the notification button share the same padding, so every
+    // clickable area has the same size around its icon.
+    .nav-item > .nav-link {
+      padding: var(--navbar-nav-link-padding);
+      color: var(--navbar-nav-link-icon-color);
     }
 
     .popover svg {
@@ -87,6 +98,29 @@
 
     .popover-body {
       padding: 0;
+    }
+
+    &-notification {
+      display: flex;
+
+      button {
+        --btn-beta-color: var(--navbar-nav-link-icon-color);
+
+        padding: var(--navbar-nav-link-padding);
+      }
+
+      &-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        display: block;
+        width: 1.2rem;
+        height: 1.2rem;
+        background: var(--primitive-danger-700);
+        border-radius: 50%;
+        pointer-events: none;
+      }
     }
 
     .popover-footer {
