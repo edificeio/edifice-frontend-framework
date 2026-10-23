@@ -112,6 +112,7 @@ const Header = ({
               link="/timeline/timeline"
               translate={t('navbar.home')}
               data-testid="header-home-button"
+              title={t('navbar.home')}
             >
               <IconHomeBeta />
             </NavLink>
@@ -122,6 +123,7 @@ const Header = ({
                 link="/communities"
                 translate={t('navbar.community')}
                 data-testid="header-community-button"
+                title={t('navbar.community')}
               >
                 <IconCommunitiesBeta className="icon community" />
               </NavLink>
@@ -133,6 +135,7 @@ const Header = ({
                 className="position-relative"
                 link="/conversation/conversation"
                 translate={t('conversation')}
+                title={t('conversation')}
                 data-testid="header-messagerie-button"
               >
                 <IconMessagesBeta />
@@ -154,6 +157,7 @@ const Header = ({
                 href="/auth/carbonio/preauth"
                 target="_blank"
                 data-testid="header-messagerie-button"
+                title={t('conversation')}
               >
                 <IconMessagesBeta />
                 {carbonioUnreadCount > 0 && (
@@ -172,6 +176,7 @@ const Header = ({
             <NavLink
               ref={myApps.setReference}
               link="/welcome"
+              title={t('navbar.applications')}
               translate={t('navbar.applications')}
               id={popoverAppsId}
               aria-haspopup="true"
@@ -200,6 +205,7 @@ const Header = ({
             <ButtonBeta
               leftIcon={<IconNotificationBeta />}
               variant="ghost"
+              title={t('navbar.notifications')}
               data-testid="header-notifications-button"
               aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
