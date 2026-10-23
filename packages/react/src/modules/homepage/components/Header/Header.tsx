@@ -105,7 +105,7 @@ const Header = ({
   return (
     <header className={classes} data-product={dataProduct}>
       <Navbar className="px-24">
-        <LogoBeta src={`${src}/img/illustrations/logo.png`} />
+        <LogoBeta src={`${src}/img/illustrations/logo-v2.png`} />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
