@@ -380,6 +380,20 @@ describe('Editor', () => {
       ).toThrow();
     });
 
+    it('isEmpty is true when the editor has no content', () => {
+      const ref = createRef<EditorRef>();
+      renderEditor({ content: '' }, ref);
+
+      expect(ref.current?.isEmpty).toBe(true);
+    });
+
+    it('isEmpty is false when the editor has content', () => {
+      const ref = createRef<EditorRef>();
+      renderEditor({ content: '<p>Hello world</p>' }, ref);
+
+      expect(ref.current?.isEmpty).toBe(false);
+    });
+
     it('setFocus delegates to editor.commands.focus, calling native focus() on the editor DOM node', () => {
       // tiptap's `focus` command calls `view.dom.focus()` synchronously (the
       // rest of its work, e.g. scrollIntoView, is deferred to a rAF). Rather
