@@ -1,0 +1,5 @@
+@use '../../legacy-search-bar' as legacy;
+
+[data-product='neo'] {
+  @include legacy.searchbar-legacy;
+}

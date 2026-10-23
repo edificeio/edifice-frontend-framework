@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { IconClose, IconSearch } from '../../modules/icons/components';
@@ -104,23 +104,13 @@ const SearchBar = ({
   onChange,
   onClick,
   value,
-  clearable = false,
+  clearable = true,
   ...restProps
 }: SearchBarProps) => {
   const { t } = useTranslation();
 
-  // Compute wrapper classes
-  const searchbar = clsx(className, {
-    'input-group': !isVariant,
-    'position-relative': isVariant,
-  });
-
   // Compute input classes
-  const input = clsx({
-    'border-end-0': !isVariant,
-    'ps-48': isVariant,
-    'searchbar-hide-native-clear': isVariant && clearable,
-  });
+  const input = 'searchbar__input';
 
   // Handle click on SearchButton (default variant only)
   const handleClick = () => {
@@ -134,47 +124,78 @@ const SearchBar = ({
     }
   };
 
-  // Handle clear/reset of input value
-  const handleClear = () => {
-    const event = {
-      target: { value: '' },
-    } as ChangeEvent<HTMLInputElement>;
-    onChange?.(event);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Track whether the field holds text, whatever its source: `value`
+  // (controlled), `defaultValue` or user typing (uncontrolled).
+  const isControlled = value !== undefined;
+  const [hasUncontrolledText, setHasUncontrolledText] = useState(
+    Boolean(restProps.defaultValue?.toString()),
+  );
+  const hasText = isControlled ? Boolean(value) : hasUncontrolledText;
+
+  // Focus is tracked on the whole pill (input, clear and submit buttons), so
+  // moving between them doesn't count as leaving the field.
+  const [isFocused, setIsFocused] = useState(false);
+  const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+      setIsFocused(false);
+    }
+  };
+  // Keep focus in the input when pressing one of the pill's buttons:
+  // otherwise the input's blur would disable the submit button right
+  // before its click lands (Safari doesn't focus buttons on click).
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('button')) e.preventDefault();
+  };
+
+  // Submit button and border are "active" while the field is focused or
+  // holds text; both go back to their idle state otherwise. The idle state
+  // is purely visual (`searchbar--active`, see components/_search-bar.scss),
+  // not `disabled`, so legacy themes can keep the button clickable.
+  const isActive = isFocused || hasText;
+
+  // Compute wrapper classes
+  const searchbar = clsx(
+    'searchbar',
+    `searchbar--${size}`,
+    { 'searchbar--active': isActive },
+    className,
+  );
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!isControlled) setHasUncontrolledText(Boolean(e.target.value));
+    onChange?.(e);
   };
 
   return (
-    <FormControl id="search-bar" className={searchbar}>
+    <FormControl
+      id="search-bar"
+      className={searchbar}
+      onFocus={() => setIsFocused(true)}
+      onBlur={handleBlur}
+      onMouseDown={handleMouseDown}
+    >
       {/* Dynamic search icon on the left (only in dynamic variant) */}
       {isVariant && (
-        <div className="position-absolute z-1 top-50 start-0 translate-middle-y border-0 ps-12 bg-transparent">
-          <IconSearch />
+        <div className="searchbar__icon">
+          <IconSearch width={20} height={20} />
         </div>
       )}
 
       <FormControl.Input
+        ref={inputRef}
         type="search"
         placeholder={t(placeholder)}
         size={size}
-        noValidationIcon
         className={input}
-        onChange={onChange}
+        onChange={handleChange}
         value={value}
         disabled={disabled}
         onKeyDown={handleKeyDown}
+        clearable={clearable}
         {...restProps}
       />
-
-      {/* Clear button when clearable is true and input has value */}
-      {isVariant && clearable && value && onChange && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="position-absolute end-0 top-50 translate-middle-y pe-12 bg-transparent border-0"
-          aria-label={t('clear')}
-        >
-          <IconClose className="color-gray" style={{ width: 12, height: 12 }} />
-        </button>
-      )}
 
       {/* Default submit button when not in variant mode */}
       {!isVariant && (
@@ -182,9 +203,8 @@ const SearchBar = ({
           type="submit"
           aria-label={t('search')}
           icon={<IconSearch />}
-          className="border-start-0"
           onClick={handleClick}
-          disabled={buttonDisabled}
+          disabled={buttonDisabled || disabled}
         />
       )}
     </FormControl>
