@@ -92,6 +92,9 @@ export default function GenerationHdf({
               status={isError ? 'invalid' : undefined}
             >
               <Input
+                // Input's counter only tracks user typing: remount it when the
+                // value is set programmatically (stored card on load, reset).
+                key={isAccount ? 'account' : 'form'}
                 size="md"
                 type="text"
                 inputMode="numeric"
@@ -100,6 +103,7 @@ export default function GenerationHdf({
                 onChange={(event) => onCardNumberChange(event.target.value)}
                 disabled={isAccount}
                 maxLength={50}
+                showCounter
               />
               {isError && (
                 <FormControl.Text>

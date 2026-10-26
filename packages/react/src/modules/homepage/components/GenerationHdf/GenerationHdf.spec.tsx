@@ -77,6 +77,28 @@ describe('GenerationHdf', () => {
     expect(screen.getByText('Numéro de carte incorrect')).toBeInTheDocument();
   });
 
+  it('keeps the character counter in sync when the value is set programmatically', () => {
+    const props = {
+      handleActionClick: vi.fn(),
+      onCardNumberChange: vi.fn(),
+      onSubmit: vi.fn(),
+      onEdit: vi.fn(),
+      wallets: [],
+    };
+    const { rerender } = render(
+      <GenerationHdf {...props} status="loading" cardNumber="" />,
+    );
+    expect(screen.getByText('0 / 50')).toBeInTheDocument();
+
+    // Stored card number loaded on mount.
+    rerender(<GenerationHdf {...props} status="account" cardNumber="475948" />);
+    expect(screen.getByText('6 / 50')).toBeInTheDocument();
+
+    // "Modifier" clears the field.
+    rerender(<GenerationHdf {...props} status="idle" cardNumber="" />);
+    expect(screen.getByText('0 / 50')).toBeInTheDocument();
+  });
+
   it('renders the wallets and a "Modifier" button once the account is displayed', async () => {
     const onEdit = vi.fn();
     const { user } = render(
