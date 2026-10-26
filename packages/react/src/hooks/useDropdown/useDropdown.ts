@@ -227,7 +227,11 @@ const useDropdown = (
   };
 
   const onMenuItemKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLElement>, onSuccess?: () => void) => {
+    (
+      event: React.KeyboardEvent<HTMLElement>,
+      onSuccess?: () => void,
+      closeOnSuccess = true,
+    ) => {
       let flag = false;
 
       if (event.shiftKey) {
@@ -251,7 +255,7 @@ const useDropdown = (
               )[activeIndex] as HTMLElement;
               const role = currentItem.getAttribute('role');
 
-              if (role === 'menuitem') {
+              if (role === 'menuitem' && closeOnSuccess) {
                 if (triggerRef.current) {
                   triggerRef.current.focus();
                   setVisible(false);
