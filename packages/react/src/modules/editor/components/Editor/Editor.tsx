@@ -81,6 +81,13 @@ export interface EditorProps {
   mode?: 'edit' | 'read' /* | "preview" */;
   /** Toolbar to display in `edit` mode. */
   toolbar?: 'full' | 'none';
+  /**
+   * Let users insert multimedia content (images, videos, audio, attachments
+   * and embedded content), `true` by default. When `false`, the toolbar hides
+   * these tools and pasted or dropped images are not uploaded. Content that
+   * already holds media is still rendered.
+   */
+  multimedia?: boolean;
   /** Display with or without a border */
   variant?: 'outline' | 'ghost';
   /** Set focus position to the editor */
@@ -105,6 +112,7 @@ const Editor = forwardRef(
       content,
       mode = 'read',
       toolbar = 'full',
+      multimedia = true,
       variant = 'outline',
       focus = 'start',
       placeholder = '',
@@ -125,6 +133,7 @@ const Editor = forwardRef(
       onContentChange,
       visibility,
       extensions,
+      multimedia,
     );
     const { ref: mediaLibraryModalRef, ...mediaLibraryModalHandlers } =
       useMediaLibraryEditor(editor);
@@ -182,6 +191,7 @@ const Editor = forwardRef(
                 mediaLibraryRef: mediaLibraryModalRef,
                 toggleMathsModal: toggleMathsModal,
                 cantooEditor: contooEditor,
+                multimedia,
               }}
             />
           )}

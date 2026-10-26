@@ -18,6 +18,9 @@ const meta: Meta<typeof Editor> = {
         options: ['full', 'none'],
       },
     },
+    multimedia: {
+      control: 'boolean',
+    },
     variant: {
       control: {
         type: 'select',
@@ -121,6 +124,28 @@ export const EditModeWithoutToolbar: Story = {
           'Editor in `edit` mode without a toolbar. ' +
           'The toolbar is hidden when the `toolbar` prop is set to `none`.' +
           ' You can use tiptap shortcuts to format the text.',
+      },
+    },
+  },
+};
+
+export const EditModeWithoutMultimedia: Story = {
+  args: {
+    ...allArgs,
+    mode: 'edit',
+    toolbar: 'full',
+    multimedia: false,
+    variant: 'outline',
+    focus: 'start',
+  },
+  name: 'Edit Mode without Multimedia',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Editor in `edit` mode with `multimedia` set to `false`: the toolbar has no image, video, audio, attachment or embed tool, ' +
+          'and the images pasted or dropped in the editor are not uploaded. ' +
+          'Use it when the content must stay text only, for instance when it is sent outside the platform.',
       },
     },
   },

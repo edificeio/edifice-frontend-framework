@@ -65,6 +65,23 @@ describe('useActionOptions', () => {
     expect(() => nonDividerActions(alignmentOptions)[0].action()).not.toThrow();
   });
 
+  it('leaves out the embed option and its divider when multimedia is off', () => {
+    const mediaLibraryRef = {
+      current: { show: vi.fn() },
+    } as unknown as RefObject<MediaLibraryRef>;
+
+    const { result } = renderHook(() =>
+      useActionOptions(null, vi.fn(), mediaLibraryRef, false),
+    );
+
+    const [options] = result.current;
+
+    expect(options).toHaveLength(7);
+    expect(options[options.length - 1]).not.toEqual({ type: 'divider' });
+    nonDividerActions(options).forEach((option) => option.action());
+    expect(mediaLibraryRef.current?.show).not.toHaveBeenCalled();
+  });
+
   it('builds options wired to the editor chain, maths modal and media library', () => {
     const chainMock = createChainMock();
     const editor = {

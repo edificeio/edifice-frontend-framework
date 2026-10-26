@@ -121,6 +121,7 @@ function renderToolbar(
     mediaLibraryRef?: RefObject<MediaLibraryRef>;
     toggleMathsModal?: () => void;
     cantooEditor?: CantooEditor;
+    multimedia?: boolean;
   } = {},
 ) {
   const mediaLibraryRef = options.mediaLibraryRef ?? buildMediaLibraryRef();
@@ -135,6 +136,7 @@ function renderToolbar(
         mediaLibraryRef={mediaLibraryRef}
         toggleMathsModal={toggleMathsModal}
         cantooEditor={cantooEditor}
+        multimedia={options.multimedia}
       />
     </EditorContext.Provider>,
   );
@@ -298,7 +300,7 @@ describe('EditorToolbar', () => {
   });
 
   describe('media buttons (image / video / audio / attachment)', () => {
-    it('are always visible - no visibility gate in source', () => {
+    it('are visible by default', () => {
       const editor = makeBareEditor();
       renderToolbar(editor);
 
@@ -314,6 +316,21 @@ describe('EditorToolbar', () => {
       expect(
         screen.getByRole('button', { name: 'Add attachment' }),
       ).toBeInTheDocument();
+    });
+
+    it('are hidden, with their divider, when multimedia is off', () => {
+      const editor = track(createTestEditor());
+      const { container } = renderToolbar(editor, { multimedia: false });
+
+      ['Add image', 'Add video', 'Add audio', 'Add attachment'].forEach(
+        (name) => {
+          expect(
+            screen.queryByRole('button', { name }),
+          ).not.toBeInTheDocument();
+        },
+      );
+      // div-2 goes with them: 5 of the 6 unconditional dividers remain.
+      expect(container.querySelectorAll('.toolbar-divider')).toHaveLength(5);
     });
 
     it('call mediaLibraryRef.show with the matching type when clicked', async () => {

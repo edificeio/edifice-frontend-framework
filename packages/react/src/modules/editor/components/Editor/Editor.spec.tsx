@@ -54,9 +54,11 @@ vi.mock('../..', async (importOriginal) => {
       mediaLibraryRef?: unknown;
       toggleMathsModal?: () => void;
       cantooEditor?: unknown;
+      multimedia?: boolean;
     }) => (
       <div
         data-testid="mock-editor-toolbar"
+        data-multimedia={String(props.multimedia)}
         data-has-media-library-ref={String(!!props.mediaLibraryRef)}
         data-has-toggle-maths-modal={String(
           typeof props.toggleMathsModal === 'function',
@@ -273,6 +275,24 @@ describe('Editor', () => {
       expect(
         screen.queryByTestId('mock-editor-toolbar'),
       ).not.toBeInTheDocument();
+    });
+
+    it('lets the toolbar show the multimedia tools by default', () => {
+      renderEditor({ mode: 'edit' });
+
+      expect(screen.getByTestId('mock-editor-toolbar')).toHaveAttribute(
+        'data-multimedia',
+        'true',
+      );
+    });
+
+    it('passes multimedia={false} on to the toolbar', () => {
+      renderEditor({ mode: 'edit', multimedia: false });
+
+      expect(screen.getByTestId('mock-editor-toolbar')).toHaveAttribute(
+        'data-multimedia',
+        'false',
+      );
     });
 
     it('renders MediaLibrary only when editable', () => {

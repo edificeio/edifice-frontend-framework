@@ -55,6 +55,7 @@ import {
  * @param onContentChange callback to be called on content change
  * @param visibility workspace visibility
  * @param extensions extensions to add to the editor
+ * @param multimedia truthy to upload the images pasted or dropped in the editor
  * @returns the editor instance and the editable state
  */
 export const useTipTapEditor = (
@@ -65,6 +66,7 @@ export const useTipTapEditor = (
   onContentChange?: ({ editor }: { editor: any }) => void,
   visibility: WorkspaceVisibility = 'protected',
   extensions?: Extensions,
+  multimedia = true,
 ) => {
   const { currentLanguage } = useEdificeClient();
   const { t } = useTranslation();
@@ -121,7 +123,7 @@ export const useTipTapEditor = (
       VideoNodeView(MediaRenderer),
       AudioNodeView(AudioRenderer),
       LinkerNodeView(LinkerRenderer),
-      ImageNodeView(MediaRenderer, uploadFile),
+      ImageNodeView(MediaRenderer, multimedia ? uploadFile : undefined),
       AttachmentNodeView(AttachmentRenderer),
       InformationPaneNodeView(InformationPaneRenderer),
       ...(extensions || []),

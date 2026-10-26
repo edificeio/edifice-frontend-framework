@@ -46,12 +46,16 @@ interface Props {
 
   /** Ref to a Cantoo editor instance */
   cantooEditor: CantooEditor;
+
+  /** Show the tools inserting multimedia content, `true` by default. */
+  multimedia?: boolean;
 }
 
 export const EditorToolbar = ({
   mediaLibraryRef,
   toggleMathsModal,
   cantooEditor,
+  multimedia = true,
 }: Props) => {
   const { t } = useTranslation();
   const { id, editor } = useEditorContext();
@@ -60,6 +64,7 @@ export const EditorToolbar = ({
     editor,
     toggleMathsModal,
     mediaLibraryRef,
+    multimedia,
   );
 
   const {
@@ -129,6 +134,7 @@ export const EditorToolbar = ({
         },
         name: 'image',
         tooltip: t('tiptap.toolbar.picture'),
+        visibility: showIf(multimedia),
       },
       //--------------- VIDEO ---------------//
       {
@@ -141,6 +147,7 @@ export const EditorToolbar = ({
         },
         name: 'video',
         tooltip: t('tiptap.toolbar.video'),
+        visibility: showIf(multimedia),
       },
       //--------------- AUDIO ---------------//
       {
@@ -153,6 +160,7 @@ export const EditorToolbar = ({
         },
         name: 'audio',
         tooltip: t('tiptap.toolbar.audio'),
+        visibility: showIf(multimedia),
       },
       //--------------- ATTACHMENT ---------------//
       {
@@ -165,10 +173,12 @@ export const EditorToolbar = ({
         },
         name: 'attachment',
         tooltip: t('tiptap.toolbar.attachment'),
+        visibility: showIf(multimedia),
       },
       {
         type: 'divider',
         name: 'div-2',
+        visibility: showIf(multimedia),
       },
       //--------------- SPEECH TO TEXT ---------------//
       {
@@ -441,6 +451,7 @@ export const EditorToolbar = ({
     editor,
     listOptions,
     mediaLibraryRef,
+    multimedia,
     plusOptions,
     speechRecognition,
     t,

@@ -23,8 +23,21 @@ export const useActionOptions = (
   editor: Editor | null,
   toggleMathsModal: () => void,
   mediaLibraryRef: RefObject<MediaLibraryRef>,
+  multimedia = true,
 ) => {
   const { t } = useTranslation();
+  const embedOptions: DropdownMenuOptions[] = multimedia
+    ? [
+        {
+          type: 'divider',
+        },
+        {
+          icon: <IconCode />,
+          label: t('tiptap.toolbar.embed.iframe'),
+          action: () => mediaLibraryRef.current?.show('embedder'),
+        },
+      ]
+    : [];
   const options: DropdownMenuOptions[] = [
     {
       icon: <IconTextVanilla />,
@@ -64,14 +77,7 @@ export const useActionOptions = (
         toggleMathsModal();
       },
     },
-    {
-      type: 'divider',
-    },
-    {
-      icon: <IconCode />,
-      label: t('tiptap.toolbar.embed.iframe'),
-      action: () => mediaLibraryRef.current?.show('embedder'),
-    },
+    ...embedOptions,
   ];
   const listOptions: DropdownMenuOptions[] = [
     {
