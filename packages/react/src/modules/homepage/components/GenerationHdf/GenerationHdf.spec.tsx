@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { render, screen } from '~/setup';
 import GenerationHdf from './GenerationHdf';
 
@@ -97,6 +98,34 @@ describe('GenerationHdf', () => {
     // "Modifier" clears the field.
     rerender(<GenerationHdf {...props} status="idle" cardNumber="" />);
     expect(screen.getByText('0 / 50')).toBeInTheDocument();
+  });
+
+  it('only accepts digits in the card number field', async () => {
+    function StatefulGenerationHdf() {
+      const [cardNumber, setCardNumber] = useState('');
+      return (
+        <GenerationHdf
+          handleActionClick={vi.fn()}
+          status="idle"
+          cardNumber={cardNumber}
+          onCardNumberChange={setCardNumber}
+          onSubmit={vi.fn()}
+          onEdit={vi.fn()}
+          wallets={[]}
+        />
+      );
+    }
+    const { user } = render(<StatefulGenerationHdf />);
+    const input = screen.getByPlaceholderText('Numéro de carte');
+
+    await user.type(input, '12a 3-');
+    expect(input).toHaveValue('123');
+    expect(screen.getByText('3 / 50')).toBeInTheDocument();
+
+    await user.clear(input);
+    await user.paste('47 59-48');
+    expect(input).toHaveValue('475948');
+    expect(screen.getByText('6 / 50')).toBeInTheDocument();
   });
 
   it('renders the wallets and a "Modifier" button once the account is displayed', async () => {
