@@ -10,7 +10,7 @@ const EDUMALIN_GAR_URL =
 const EDUMALIN_PUBLIC_URL = 'https://edumalin.fr/';
 
 /**
- * app-registry wraps every failure in `{ error: <string> }`. That string is
+ * The backend wraps every failure in `{ error: <string> }`. That string is
  * either a plain message or a JSON payload (its own error code, or the error
  * Édumalin returned), in which case its `message`, then `error`, is shown.
  * Any other body (network failure, proxy error page…) shows the status text.

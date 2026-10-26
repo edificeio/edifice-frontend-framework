@@ -17,8 +17,6 @@ interface EdumalinFeed {
 export const edumalinQueryOptions = queryOptions<EdumalinItem[], EdumalinError>(
   {
     queryKey: ['edumalin'],
-    // Failures are deterministic (missing credentials, Édumalin down):
-    // retrying only delays the error state.
     retry: false,
     queryFn: async () => {
       const http = odeServices.http();
@@ -28,8 +26,6 @@ export const edumalinQueryOptions = queryOptions<EdumalinItem[], EdumalinError>(
         );
         return feed.data ?? [];
       } catch (body) {
-        // HttpService rejects with the response body; the status is only
-        // available on the latest response.
         throw parseEdumalinError(body, http.latestResponse);
       }
     },
