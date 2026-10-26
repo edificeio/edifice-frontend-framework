@@ -245,9 +245,10 @@ const useDropdown = (
           case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
-              const currentItem = Object.values(itemRefs.current)[
-                activeIndex
-              ] as HTMLElement;
+              // Skip null refs left by unmounted items, as navigation does.
+              const currentItem = Object.values(itemRefs.current).filter(
+                Boolean,
+              )[activeIndex] as HTMLElement;
               const role = currentItem.getAttribute('role');
 
               if (role === 'menuitem') {

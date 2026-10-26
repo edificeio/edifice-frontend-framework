@@ -76,6 +76,42 @@ describe('useDropdown', () => {
     expect(extraHandler).toHaveBeenCalledTimes(1);
   });
 
+  it('selects the focused item on Enter when unmounted items left null refs', () => {
+    const { result } = renderHook(() => useDropdown('bottom-start'));
+    act(() => result.current.openDropdown());
+    result.current.triggerRef.current = document.createElement('button');
+
+    // Unmounted items keep their key with a null ref, before the mounted ones.
+    const first = document.createElement('div');
+    first.setAttribute('role', 'menuitem');
+    first.id = 'first';
+    const second = document.createElement('div');
+    second.setAttribute('role', 'menuitem');
+    second.id = 'second';
+    result.current.itemRefs.current = {
+      stale1: null,
+      stale2: null,
+      first,
+      second,
+    };
+
+    act(() =>
+      result.current.itemProps.onMenuItemKeyDown(keyEvent(KEYS.ArrowDown)),
+    );
+    expect(result.current.isFocused).toBe('first');
+
+    const onSuccess = vi.fn();
+    act(() =>
+      result.current.itemProps.onMenuItemKeyDown(
+        keyEvent(KEYS.Enter),
+        onSuccess,
+      ),
+    );
+
+    expect(onSuccess).toHaveBeenCalledTimes(1);
+    expect(result.current.visible).toBe(false);
+  });
+
   it('exposes accessible attributes on the trigger and menu props', () => {
     const { result } = renderHook(() => useDropdown('bottom-start'));
 
