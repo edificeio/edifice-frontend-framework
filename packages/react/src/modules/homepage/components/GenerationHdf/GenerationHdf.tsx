@@ -110,7 +110,7 @@ export default function GenerationHdf({
                 }}
                 onChange={(event) => onCardNumberChange(event.target.value)}
                 disabled={isAccount}
-                maxLength={50}
+                maxLength={12}
                 showCounter
               />
               {isError && (
