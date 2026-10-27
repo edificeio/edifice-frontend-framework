@@ -45,11 +45,9 @@ export function CaptationAudio({
         onSaveSuccess?.(resource);
         onClose();
       }
-      toast.success(t('L’audio est disponible dans votre espace documentaire'));
+      toast.success(t('homepage.captationAudio.alert.sucess'));
     } catch (err) {
-      toast.error(
-        t('Une erreur est survenue lors de la sauvegarde de l’audio'),
-      );
+      toast.error(t('homepage.captationAudio.alert.error'));
       console.error(err);
     } finally {
       setIsSaving(false);
@@ -87,12 +85,14 @@ export function CaptationAudio({
           }}
           customizeToolbarItems={(items) =>
             toCaptationToolbarItems(items, {
-              record: t('Enregistrer'),
-              recordPause: t('Suspendre'),
-              play: t('Ecouter'),
-              playPause: t('Pause'),
-              stop: t('Début'),
-              reset: t('Reinitialisation'),
+              record: t('homepage.captationAudio.custom.toolbar.record'),
+              recordPause: t(
+                'homepage.captationAudio.custom.toolbar.recordPause',
+              ),
+              play: t('homepage.captationAudio.custom.toolbar.play'),
+              playPause: t('homepage.captationAudio.custom.toolbar.playPause'),
+              stop: t('homepage.captationAudio.custom.toolbar.stop'),
+              reset: t('homepage.captationAudio.custom.toolbar.reset'),
             })
           }
         />
