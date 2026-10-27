@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { ChangeEvent, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { IconClose, IconSearch } from '../../modules/icons/components';
+import { IconSearch } from '../../modules/icons/components';
 import { Size } from '../../types';
-import { SearchButton } from '../Button';
+import { ButtonBeta } from '../ButtonBeta';
 import FormControl from '../Form/FormControl';
 
 /**
@@ -109,10 +109,8 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const { t } = useTranslation();
 
-  // Compute input classes
   const input = 'searchbar__input';
 
-  // Handle click on SearchButton (default variant only)
   const handleClick = () => {
     onClick?.();
   };
@@ -134,25 +132,17 @@ const SearchBar = ({
   );
   const hasText = isControlled ? Boolean(value) : hasUncontrolledText;
 
-  // Focus is tracked on the whole pill (input, clear and submit buttons), so
-  // moving between them doesn't count as leaving the field.
   const [isFocused, setIsFocused] = useState(false);
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
       setIsFocused(false);
     }
   };
-  // Keep focus in the input when pressing one of the pill's buttons:
-  // otherwise the input's blur would disable the submit button right
-  // before its click lands (Safari doesn't focus buttons on click).
+
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest('button')) e.preventDefault();
   };
 
-  // Submit button and border are "active" while the field is focused or
-  // holds text; both go back to their idle state otherwise. The idle state
-  // is purely visual (`searchbar--active`, see components/_search-bar.scss),
-  // not `disabled`, so legacy themes can keep the button clickable.
   const isActive = isFocused || hasText;
 
   // Compute wrapper classes
@@ -176,7 +166,6 @@ const SearchBar = ({
       onBlur={handleBlur}
       onMouseDown={handleMouseDown}
     >
-      {/* Dynamic search icon on the left (only in dynamic variant) */}
       {isVariant && (
         <div className="searchbar__icon">
           <IconSearch width={20} height={20} />
@@ -193,16 +182,16 @@ const SearchBar = ({
         value={value}
         disabled={disabled}
         onKeyDown={handleKeyDown}
-        clearable={clearable}
+        clearable={clearable && !disabled}
         {...restProps}
       />
 
-      {/* Default submit button when not in variant mode */}
       {!isVariant && (
-        <SearchButton
+        <ButtonBeta
           type="submit"
+          className="btn-search"
           aria-label={t('search')}
-          icon={<IconSearch />}
+          leftIcon={<IconSearch />}
           onClick={handleClick}
           disabled={buttonDisabled || disabled}
         />
