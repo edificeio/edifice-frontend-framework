@@ -37,6 +37,8 @@ jobs:
         if: needs.changes.outputs.react == 'true'
         run: |
           pnpm install
+          which -a tsc
+          pnpm --filter @edifice.io/rest-client-base exec which tsc
           pnpm run build
           pnpm --filter @edifice.io/react lint
           pnpm --filter @edifice.io/react format
