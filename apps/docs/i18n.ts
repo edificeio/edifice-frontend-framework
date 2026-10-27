@@ -304,7 +304,8 @@ i18n.use(initReactI18next).init({
         'homepage.agenda.openAgenda': "Accéder à l'agenda",
         'homepage.agenda.empty': 'Pas d’évènement à venir.',
         'homepage.agenda.allDay': 'Journée entière',
-        'homepage.agenda.multiDayTime': '[[startTime]] - [[endDay]] à [[endTime]]',
+        'homepage.agenda.multiDayTime':
+          '[[startTime]] - [[endDay]] à [[endTime]]',
         //----------------- Communities -----------------
         'homepage.communities.title': 'Communautés',
         'homepage.communities.actionLabel.seeMore': 'Voir plus',
@@ -416,7 +417,7 @@ i18n.use(initReactI18next).init({
           'Problème de connexion avec le service de cantine. Si le problème persiste, contactez votre établissement.',
         'homepage.widget.cantine.empty':
           'Le menu n’est pas disponible pour ce jour',
-        'homepage.widget.cantine.emptyIllustration': "Panneau barré",
+        'homepage.widget.cantine.emptyIllustration': 'Panneau barré',
         'homepage.widget.cantine.seeMore': 'voir plus',
         'homepage.widget.cantine.school': 'Établissement',
         'homepage.widget.cantine.menu': 'Menu',
@@ -484,6 +485,22 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.link.placeholder': 'Ajouter l’URL',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
+
+        //------------------ Captation Audio -------------------------
+        'homepage.captationAudio.modal.title': 'Le studio audio',
+        'homepage.captationAudio.name.label': "Nom de l'audio",
+        'homepage.captationAudio.custom.toolbar.record': 'Enregistrer',
+        'homepage.captationAudio.custom.toolbar.recordPause': 'Suspendre',
+        'homepage.captationAudio.custom.toolbar.play': 'Ecouter',
+        'homepage.captationAudio.custom.toolbar.playPause': 'Pause',
+        'homepage.captationAudio.custom.toolbar.stop': 'Début',
+        'homepage.captationAudio.custom.toolbar.reset': 'Reinitialisation',
+        'homepage.captationAudio.cancel': 'Annuler',
+        'homepage.captationAudio.save': 'Sauvegrader',
+        'homepage.captationAudio.alert.sucess':
+          'L’audio est disponible dans votre espace documentaire',
+        'homepage.captationAudio.alert.error':
+          'Une erreur est survenue lors de la sauvegarde de l’audio',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

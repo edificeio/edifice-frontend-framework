@@ -1,0 +1,85 @@
+.modal-beta-body .audio-recorder.captation-audio {
+  width: 100%;
+  max-width: 64.4rem;
+  min-height: auto;
+
+  .audio-recorder-controls {
+    align-items: center;
+    gap: var(--primitive-spacer-16);
+    padding: var(--primitive-spacer-24) 0;
+    border-radius: var(--primitive-border-radius-lg);
+    background-color: var(--color-primary-pale);
+  }
+
+  .audio-recorder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8rem;
+
+    svg {
+      width: 5.3rem;
+      height: 5.3rem;
+    }
+
+    svg:not(.text-danger, .text-success) {
+      color: var(--primitive-yellow-700);
+    }
+  }
+
+  .audio-recorder-time {
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--primitive-text-color-default);
+  }
+
+  .toolbar {
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+    background-color: var(--primitive-white);
+    box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
+  }
+}
+
+// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
+// to the theme tokens (same as ButtonBeta ghost) for the edifice themes.
+[data-product='edifice1d'],
+[data-product='edifice2d'] {
+  .modal-beta-body .audio-recorder.captation-audio .toolbar {
+    .btn-ghost-tertiary,
+    .btn-ghost-danger {
+      --edifice-btn-bg: transparent;
+      --edifice-btn-border-color: transparent;
+      --edifice-btn-hover-bg: var(--primitive-grey-100);
+      --edifice-btn-hover-border-color: transparent;
+      --edifice-btn-active-bg: var(--primitive-grey-200);
+      --edifice-btn-active-border-color: transparent;
+      --edifice-btn-disabled-bg: transparent;
+      --edifice-btn-disabled-border-color: transparent;
+      --edifice-btn-disabled-opacity: 1;
+    }
+
+    .btn-ghost-tertiary {
+      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
+      --edifice-btn-hover-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-active-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-disabled-color: var(
+        --color-text-button-tertiary-other-disable
+      );
+    }
+
+    .btn-ghost-danger {
+      --edifice-btn-color: var(--color-support-danger-700);
+      --edifice-btn-hover-color: var(--color-support-danger-700);
+      --edifice-btn-active-color: var(--color-support-danger-700);
+      --edifice-btn-disabled-color: var(--color-support-danger-300);
+    }
+  }
+}
