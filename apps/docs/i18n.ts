@@ -513,6 +513,21 @@ i18n.use(initReactI18next).init({
         
         //------------------ TabsKids -------------------------
         'homepage.tabsKids.see.more': 'Voir plus',
+        //------------------ Captation Audio -------------------------
+        'homepage.captationAudio.modal.title': 'Le studio audio',
+        'homepage.captationAudio.name.label': "Nom de l'audio",
+        'homepage.captationAudio.custom.toolbar.record': 'Enregistrer',
+        'homepage.captationAudio.custom.toolbar.recordPause': 'Suspendre',
+        'homepage.captationAudio.custom.toolbar.play': 'Ecouter',
+        'homepage.captationAudio.custom.toolbar.playPause': 'Pause',
+        'homepage.captationAudio.custom.toolbar.stop': 'Début',
+        'homepage.captationAudio.custom.toolbar.reset': 'Reinitialisation',
+        'homepage.captationAudio.cancel': 'Annuler',
+        'homepage.captationAudio.save': 'Sauvegrader',
+        'homepage.captationAudio.alert.sucess':
+          'L’audio est disponible dans votre espace documentaire',
+        'homepage.captationAudio.alert.error':
+          'Une erreur est survenue lors de la sauvegarde de l’audio',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

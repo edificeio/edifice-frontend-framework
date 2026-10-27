@@ -8,7 +8,7 @@
     gap: var(--primitive-spacer-16);
     padding: var(--primitive-spacer-24) 0;
     border-radius: var(--primitive-border-radius-lg);
-    background-color: var(--primitive-yellow-200);
+    background-color: var(--color-primary-pale);
   }
 
   .audio-recorder-icon {
@@ -41,5 +41,45 @@
     border-radius: var(--primitive-border-radius-xl);
     background-color: var(--primitive-white);
     box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
+  }
+}
+
+// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
+// to the theme tokens (same as ButtonBeta ghost) for the edifice themes.
+[data-product='edifice1d'],
+[data-product='edifice2d'] {
+  .modal-beta-body .audio-recorder.captation-audio .toolbar {
+    .btn-ghost-tertiary,
+    .btn-ghost-danger {
+      --edifice-btn-bg: transparent;
+      --edifice-btn-border-color: transparent;
+      --edifice-btn-hover-bg: var(--primitive-grey-100);
+      --edifice-btn-hover-border-color: transparent;
+      --edifice-btn-active-bg: var(--primitive-grey-200);
+      --edifice-btn-active-border-color: transparent;
+      --edifice-btn-disabled-bg: transparent;
+      --edifice-btn-disabled-border-color: transparent;
+      --edifice-btn-disabled-opacity: 1;
+    }
+
+    .btn-ghost-tertiary {
+      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
+      --edifice-btn-hover-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-active-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-disabled-color: var(
+        --color-text-button-tertiary-other-disable
+      );
+    }
+
+    .btn-ghost-danger {
+      --edifice-btn-color: var(--color-support-danger-700);
+      --edifice-btn-hover-color: var(--color-support-danger-700);
+      --edifice-btn-active-color: var(--color-support-danger-700);
+      --edifice-btn-disabled-color: var(--color-support-danger-300);
+    }
   }
 }
