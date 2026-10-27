@@ -54,6 +54,7 @@
     "@edifice.io/client": "workspace:*",
     "@nestjs/swagger": "11.2.0",
     "path": "0.12.7",
+    "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:"
   }
