@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Badge,
-  ButtonBeta,
-  LogoBeta,
+  ButtonBeta as Button,
+  LogoBeta as Logo,
   Popover,
   PopoverBody,
   PopoverFooter,
@@ -28,11 +28,11 @@ import { NavLink } from '../../../../components/Layout/components/NavLink';
 import useHeader from '../../../../components/Layout/hooks/useHeader';
 import { useEdificeTheme } from '../../../../providers/';
 import {
-  IconCommunitiesBeta,
-  IconHomeBeta,
-  IconMessagesBeta,
-  IconMyAppsBeta,
-  IconNotificationBeta,
+  IconCommunitiesBeta as IconCommunities,
+  IconHomeBeta as IconHome,
+  IconMessagesBeta as IconMessages,
+  IconMyAppsBeta as IconMyApps,
+  IconNotificationBeta as IconNotification,
 } from '../../../icons/components/nav';
 import { useHasNotificationToday } from '../Notifications/hooks/useNotificationList';
 
@@ -105,15 +105,16 @@ const Header = ({
   return (
     <header className={classes} data-product={dataProduct}>
       <Navbar className="px-24">
-        <LogoBeta src={`${src}/img/illustrations/logo.png`} />
+        <Logo src={`${src}/img/illustrations/logo-v2.png`} />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
               link="/timeline/timeline"
               translate={t('navbar.home')}
               data-testid="header-home-button"
+              title={t('navbar.home')}
             >
-              <IconHomeBeta />
+              <IconHome />
             </NavLink>
           </NavItem>
           {communitiesWorkflow && (
@@ -122,8 +123,9 @@ const Header = ({
                 link="/communities"
                 translate={t('navbar.community')}
                 data-testid="header-community-button"
+                title={t('navbar.community')}
               >
-                <IconCommunitiesBeta className="icon community" />
+                <IconCommunities className="icon community" />
               </NavLink>
             </NavItem>
           )}
@@ -133,9 +135,10 @@ const Header = ({
                 className="position-relative"
                 link="/conversation/conversation"
                 translate={t('conversation')}
+                title={t('conversation')}
                 data-testid="header-messagerie-button"
               >
-                <IconMessagesBeta />
+                <IconMessages />
                 {hasMessages && (
                   <Badge
                     variant={{ type: 'notification', level: 'danger' }}
@@ -154,8 +157,9 @@ const Header = ({
                 href="/auth/carbonio/preauth"
                 target="_blank"
                 data-testid="header-messagerie-button"
+                title={t('conversation')}
               >
-                <IconMessagesBeta />
+                <IconMessages />
                 {carbonioUnreadCount > 0 && (
                   <Badge
                     variant={{ type: 'notification', level: 'danger' }}
@@ -172,6 +176,7 @@ const Header = ({
             <NavLink
               ref={myApps.setReference}
               link="/welcome"
+              title={t('navbar.applications')}
               translate={t('navbar.applications')}
               id={popoverAppsId}
               aria-haspopup="true"
@@ -179,7 +184,7 @@ const Header = ({
               data-testid="header-my-apps-button"
               {...myApps.getReferenceProps({ onClick: handleMyAppsClick })}
             >
-              <IconMyAppsBeta />
+              <IconMyApps />
             </NavLink>
             <Popover
               ref={myApps.setFloating}
@@ -196,29 +201,19 @@ const Header = ({
               </PopoverFooter>
             </Popover>
           </NavItem>
-          <NavItem className="position-relative">
-            <ButtonBeta
-              leftIcon={<IconNotificationBeta />}
+          <NavItem className="position-relative navbar-nav-notification">
+            <Button
+              leftIcon={<IconNotification />}
               variant="ghost"
+              title={t('navbar.notifications')}
+              data-testid="header-notifications-button"
+              aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
             />
             {hasNotificationToday && (
-              <span
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: 15,
-                  height: 15,
-                  background: 'red',
-                  borderRadius: '50%',
-                  border: '2px solid white',
-                  pointerEvents: 'none',
-                  zIndex: 1,
-                  display: 'block',
-                }}
-                aria-label={t('homepage.notifications.new-badge')}
-              />
+              <span className="navbar-nav-notification-badge">
+                <VisuallyHidden>{t('navbar.notifications.new')}</VisuallyHidden>
+              </span>
             )}
           </NavItem>
           <NavItem className="position-relative">
