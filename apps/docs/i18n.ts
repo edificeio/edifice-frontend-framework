@@ -327,7 +327,6 @@ i18n.use(initReactI18next).init({
         'homepage.notifications-list.close': 'Close notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
-        'homepage.notifications.new-badge': 'Nouvelle notification',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
         'homepage.notifications.app-icon.placeholder': "Icône de l'application",
         'homepage.notifications.options.label': 'Options de la notification',
@@ -523,6 +522,8 @@ i18n.use(initReactI18next).init({
         'navbar.myaccount': 'Mon compte',
         'navbar.community': 'Communauté',
         'navbar.disconnect': 'Déconnexion',
+        'navbar.notifications': 'Notifications',
+        'navbar.notifications.new': "Nouvelles notifications aujourd'hui",
         'homepage.header.myapps.empty':
           'Ajoutez et retrouvez ici vos apps favorites !',
         'homepage.header.myapps.seeMore': 'Voir plus',
