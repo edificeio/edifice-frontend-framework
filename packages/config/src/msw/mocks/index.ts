@@ -1,5 +1,6 @@
 export { handlers as actualitesHandlers } from './actualites';
 export { handlers as authHandlers } from './auth';
+export { handlers as edumalinHandlers } from './edumalin';
 export { handlers as embedHandlers } from './embed';
 export { handlers as blogHandlers } from './blog';
 export { handlers as calendarHandlers } from './calendar';

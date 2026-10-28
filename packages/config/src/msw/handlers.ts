@@ -4,6 +4,7 @@ import {
   blogHandlers,
   commonHandlers,
   directoryHandlers,
+  edumalinHandlers,
   embedHandlers,
   publicConfigHandlers,
   rssHandlers,
@@ -30,4 +31,5 @@ export const handlers = [
   ...actualitesHandlers,
   ...timelineHandlers,
   ...rssHandlers,
+  ...edumalinHandlers,
 ];

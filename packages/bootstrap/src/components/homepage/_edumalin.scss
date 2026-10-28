@@ -1,0 +1,278 @@
+.edumalin {
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    padding-left: var(--primitive-spacer-8);
+  }
+
+  &__title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    gap: var(--primitive-spacer-8);
+    min-height: 478px; // the card keeps its size while loading
+  }
+
+  &__loading-item {
+    display: block;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+    border-radius: var(--primitive-border-radius-lg);
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-16);
+    width: 100%;
+  }
+
+  &__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+    padding-bottom: var(--primitive-spacer-8);
+  }
+
+  &__illu {
+    width: 64px;
+    height: 64px;
+  }
+
+  &__message {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-2xs);
+    text-align: center;
+  }
+
+  &__message-line {
+    display: block;
+  }
+
+  &__error-code {
+    margin: 0;
+    color: var(--primitive-grey-800);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    font-style: italic;
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-2xs);
+    text-align: center;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+    border: 1px solid var(--color-primary-light);
+    border-radius: var(--primitive-border-radius-lg);
+    background-color: var(--color-primary-feather);
+    text-align: left;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--primitive-blue-700);
+      outline-offset: 2px;
+    }
+  }
+
+  &__item-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--primitive-spacer-4);
+    width: 100%;
+  }
+
+  &__item-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+  }
+
+  &__item-title,
+  &__item-description {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  &__item-title {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  &__item-description {
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+}
+
+.edumalin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--primitive-spacer-4);
+  font-family: var(--font-family-body);
+  font-size: var(--primitive-font-size-caption);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--primitive-font-lineheight-3xs);
+  white-space: nowrap;
+
+  &__icon {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+  }
+
+  &--webinar,
+  &--testimonial,
+  &--podcast {
+    color: var(--primitive-blue-700);
+  }
+
+  &--announcement,
+  &--news {
+    color: var(--primitive-orange-700);
+  }
+
+  &--rdv,
+  &--replay {
+    color: var(--primitive-green-700);
+  }
+
+  &--tutorial {
+    color: var(--primitive-yellow-700);
+  }
+
+  &--other {
+    color: var(--primitive-pink-700);
+  }
+}
+
+.edumalin-picture {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--primitive-border-radius-md);
+  background-color: var(--primitive-white);
+  object-fit: contain;
+}
+
+.edumalin-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-12);
+  padding: var(--primitive-spacer-16);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--primitive-border-radius-lg);
+  background-color: var(--color-primary-feather);
+
+  &__top,
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-12);
+  }
+
+  &__top {
+    align-items: flex-start;
+  }
+
+  &__heading {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    width: 100%;
+  }
+
+  &__title,
+  &__description,
+  &__info {
+    margin: 0;
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+  }
+
+  &__title {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  &__description {
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  &__infos {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--primitive-spacer-4);
+  }
+
+  &__info {
+    font-size: var(--primitive-font-size-small);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  &__link {
+    color: var(--color-text-button-primary-other-default);
+    text-decoration: underline;
+    word-break: break-all;
+  }
+}
