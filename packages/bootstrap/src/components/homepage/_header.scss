@@ -1,10 +1,9 @@
-@use '../../themes/configs/primitives' as *;
 @use '../../themes/configs/breakpoints' as medias;
 
 .header-beta .navbar {
-  --navbar-padding-y: #{$spacer-8};
-  --navbar-padding-x: #{$spacer-8};
-  --navbar-background: #{$white};
+  --navbar-padding-y: var(--primitive-spacer-8);
+  --navbar-padding-x: var(--primitive-spacer-8);
+  --navbar-background: var(--primitive-white);
   --navbar-badge-top: 0.8rem;
   --navbar-badge-right: -1.6rem;
 
@@ -22,7 +21,7 @@
     var(--color-themeSeparator-minor),
     var(--color-themeSeparator-major)
   );
-  box-shadow: #{$box-shadow};
+  box-shadow: var(--primitive-box-shadow);
 
   &-brand {
     --navbar-brand-padding-y: 0;

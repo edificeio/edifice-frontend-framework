@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Badge,
-  ButtonBeta,
-  LogoBeta,
+  ButtonBeta as Button,
+  LogoBeta as Logo,
   Popover,
   PopoverBody,
   PopoverFooter,
@@ -28,11 +28,11 @@ import { NavLink } from '../../../../components/Layout/components/NavLink';
 import useHeader from '../../../../components/Layout/hooks/useHeader';
 import { useEdificeTheme } from '../../../../providers/';
 import {
-  IconCommunitiesBeta,
-  IconHomeBeta,
-  IconMessagesBeta,
-  IconMyAppsBeta,
-  IconNotificationBeta,
+  IconCommunitiesBeta as IconCommunities,
+  IconHomeBeta as IconHome,
+  IconMessagesBeta as IconMessages,
+  IconMyAppsBeta as IconMyApps,
+  IconNotificationBeta as IconNotification,
 } from '../../../icons/components/nav';
 import { useHasNotificationToday } from '../Notifications/hooks/useNotificationList';
 
@@ -105,7 +105,7 @@ const Header = ({
   return (
     <header className={classes} data-product={dataProduct}>
       <Navbar className="px-24">
-        <LogoBeta src={`${src}/img/illustrations/logo-v2.png`} />
+        <Logo src={`${src}/img/illustrations/logo-v2.png`} />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
@@ -114,7 +114,7 @@ const Header = ({
               data-testid="header-home-button"
               title={t('navbar.home')}
             >
-              <IconHomeBeta />
+              <IconHome />
             </NavLink>
           </NavItem>
           {communitiesWorkflow && (
@@ -125,7 +125,7 @@ const Header = ({
                 data-testid="header-community-button"
                 title={t('navbar.community')}
               >
-                <IconCommunitiesBeta className="icon community" />
+                <IconCommunities className="icon community" />
               </NavLink>
             </NavItem>
           )}
@@ -138,7 +138,7 @@ const Header = ({
                 title={t('conversation')}
                 data-testid="header-messagerie-button"
               >
-                <IconMessagesBeta />
+                <IconMessages />
                 {hasMessages && (
                   <Badge
                     variant={{ type: 'notification', level: 'danger' }}
@@ -159,7 +159,7 @@ const Header = ({
                 data-testid="header-messagerie-button"
                 title={t('conversation')}
               >
-                <IconMessagesBeta />
+                <IconMessages />
                 {carbonioUnreadCount > 0 && (
                   <Badge
                     variant={{ type: 'notification', level: 'danger' }}
@@ -184,7 +184,7 @@ const Header = ({
               data-testid="header-my-apps-button"
               {...myApps.getReferenceProps({ onClick: handleMyAppsClick })}
             >
-              <IconMyAppsBeta />
+              <IconMyApps />
             </NavLink>
             <Popover
               ref={myApps.setFloating}
@@ -202,8 +202,8 @@ const Header = ({
             </Popover>
           </NavItem>
           <NavItem className="position-relative navbar-nav-notification">
-            <ButtonBeta
-              leftIcon={<IconNotificationBeta />}
+            <Button
+              leftIcon={<IconNotification />}
               variant="ghost"
               title={t('navbar.notifications')}
               data-testid="header-notifications-button"
