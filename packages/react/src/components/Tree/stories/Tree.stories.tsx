@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '../../Button';
 import Tree from '../components/Tree';
-import { TreeProps } from '../types';
+import { TreeHandlers, TreeProps } from '../types';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 const meta: Meta<typeof Tree> = {
@@ -93,6 +93,34 @@ export const SyncTreeView: Story = {
       description: {
         story:
           'If you need to open a specific node, you can do it with the `selectedNodeId` props. You will sync the treeview with an external source',
+      },
+    },
+  },
+};
+
+export const ExpandNodeByRef: Story = {
+  render: (args) => {
+    const treeRef = useRef<TreeHandlers>(null);
+
+    return (
+      <>
+        <div className="my-16">
+          <Button onClick={() => treeRef.current?.expandNode('7')}>
+            Expand node 7
+          </Button>
+          <Button onClick={() => treeRef.current?.expandNode('4')}>
+            Expand node 4
+          </Button>
+        </div>
+        <Tree {...args} ref={treeRef} />
+      </>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'If you need to expand a node without selecting it, for example while dragging an item over the tree, call `expandNode` on the Tree ref.',
       },
     },
   },

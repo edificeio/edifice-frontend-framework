@@ -1,6 +1,7 @@
-import { render, screen, within } from '~/setup';
+import { createRef } from 'react';
+import { act, render, screen, within } from '~/setup';
 import Tree from './components/Tree';
-import { TreeItem } from './types';
+import { TreeHandlers, TreeItem } from './types';
 
 const nodes: TreeItem[] = [
   {
@@ -115,5 +116,49 @@ describe('Tree', () => {
     expect(getNode('Root 2')).toHaveAttribute('aria-expanded', 'true');
     expect(screen.getByText('Child 1')).toBeInTheDocument();
     expect(screen.getByText('Child 3')).toBeInTheDocument();
+  });
+
+  describe('ref expandNode', () => {
+    it('expands a node and shows its children without selecting it', () => {
+      const ref = createRef<TreeHandlers>();
+      const onTreeItemClick = vi.fn();
+      render(
+        <Tree ref={ref} nodes={nodes} onTreeItemClick={onTreeItemClick} />,
+      );
+
+      act(() => ref.current!.expandNode('root1'));
+
+      expect(getNode('Root 1')).toHaveAttribute('aria-expanded', 'true');
+      expect(screen.getByText('Child 1')).toBeInTheDocument();
+      expect(getNode('Root 1')).not.toHaveAttribute('aria-selected', 'true');
+      expect(onTreeItemClick).not.toHaveBeenCalled();
+    });
+
+    it('keeps nodes unfolded by the user in between', async () => {
+      const ref = createRef<TreeHandlers>();
+      const { user } = render(
+        <Tree ref={ref} nodes={nodes} onTreeItemClick={vi.fn()} />,
+      );
+      // Kept before the user unfolds a node, like a handle used later from a timer
+      const handle = ref.current!;
+
+      await user.click(getArrowButton('Root 2'));
+      act(() => handle.expandNode('root1'));
+
+      expect(screen.getByText('Child 1')).toBeInTheDocument();
+      expect(screen.getByText('Child 3')).toBeInTheDocument();
+    });
+
+    it('lets a node expanded by ref be folded with its arrow', async () => {
+      const ref = createRef<TreeHandlers>();
+      const { user } = render(
+        <Tree ref={ref} nodes={nodes} onTreeItemClick={vi.fn()} />,
+      );
+
+      act(() => ref.current!.expandNode('root1'));
+      await user.click(getArrowButton('Root 1'));
+
+      expect(screen.queryByText('Child 1')).not.toBeInTheDocument();
+    });
   });
 });

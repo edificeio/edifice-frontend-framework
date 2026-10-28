@@ -175,6 +175,17 @@ export const useTree = ({
   const handleFoldUnfold = (nodeId: string) => handleToggleNode(nodeId);
 
   /**
+   * Expand a node and its ancestors from outside the tree, without selecting it
+   * Does nothing if the node is unknown or already expanded with all its ancestors
+   * @param nodeId
+   */
+  const expandNode = (nodeId: string) => {
+    const path = findPathById(data, nodeId);
+    if (path.length === 0 || path.every((id) => expandedNodes.has(id))) return;
+    handleExpandNode(nodeId);
+  };
+
+  /**
    * Find and expand node when dragging an item to open it in treeview
    * @param nodeId
    * @returns
@@ -192,5 +203,6 @@ export const useTree = ({
     handleItemClick,
     handleFoldUnfold,
     handleCollapseNode,
+    expandNode,
   };
 };
