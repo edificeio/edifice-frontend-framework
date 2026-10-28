@@ -13,36 +13,21 @@ const SvgIconMessagesBeta = ({
     width="24"
     height="24"
     fill="none"
-    viewBox="0 0 32 32"
+    viewBox="0 0 24 24"
     aria-hidden="true"
     aria-labelledby={titleId}
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <g clipPath="url(#icon-messages-beta_svg__a)">
-      <path
-        stroke="#E5A800"
-        strokeMiterlimit={10}
-        strokeWidth={2.667}
-        d="m5.93 10.246-4.8 3.088v12.267a5.335 5.335 0 0 0 5.334 5.333h24.534v-17.6l-4.689-3.013"
-      />
-      <path fill="#FCF3CF" d="M26.196 15.468v-14.4H5.93v14.4" />
-      <path
-        stroke="#FFC403"
-        strokeMiterlimit={10}
-        strokeWidth={2.667}
-        d="M26.196 15.468v-14.4H5.93v14.4"
-      />
-      <path
-        stroke="#E5A800"
-        strokeMiterlimit={10}
-        strokeWidth={2.667}
-        d="M9.13 5.334h13.867M10.197 9.6h11.734M1.13 13.334l14.934 8.533 14.933-8.533"
-      />
+    <g fill="currentColor" clipPath="url(#icon-messages-beta_svg__a)">
+      <path d="M23.401 9.243V23.4H4.821A4.824 4.824 0 0 1 0 18.578V9.243l3.898-2.508L4.98 8.417 2 10.334v8.244A2.824 2.824 0 0 0 4.821 21.4h16.58V10.334l-2.9-1.863.541-.841.54-.842z" />
+      <path d="M19.962 0v11.318h-2V2H5.439v9.318h-2V0z" />
+      <path d="M16.669 3.773v2H6.732v-2zM15.904 7.546v2H7.496v-2z" />
+      <path d="m22.898 10.657-10.702 6.114-.496.284-.496-.284-10.7-6.114.992-1.736L11.7 14.75l10.204-5.83z" />
     </g>
     <defs>
       <clipPath id="icon-messages-beta_svg__a">
-        <path fill="#fff" d="M0 0h32v32H0z" />
+        <path fill="#fff" d="M0 0h24v24H0z" />
       </clipPath>
     </defs>
   </svg>
