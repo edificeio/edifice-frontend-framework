@@ -482,6 +482,8 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.title.placeholder': 'Nom du flux RSS',
         'homepage.widget.rss.form.link': 'Lien',
         'homepage.widget.rss.form.link.placeholder': 'Ajouter l’URL',
+        'homepage.widget.rss.form.link.caption':
+          'L’URL doit renvoyer un flux au format XML',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
 
