@@ -3,6 +3,7 @@ export * from './AlloRegion';
 export * from './Communities';
 export * from './BriefMe';
 export * from './Cantine';
+export * from './Edumalin';
 export * from './Favorites';
 export * from './GenerationHdf';
 export * from './Header';
