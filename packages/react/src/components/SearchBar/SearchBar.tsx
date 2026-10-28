@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { IconSearch } from '../../modules/icons/components';
 import { Size } from '../../types';
-import { ButtonBeta } from '../ButtonBeta';
+import { ButtonBeta as Button } from '../ButtonBeta';
 import FormControl from '../Form/FormControl';
 
 /**
@@ -187,7 +187,7 @@ const SearchBar = ({
       />
 
       {!isVariant && (
-        <ButtonBeta
+        <Button
           type="submit"
           className="btn-search"
           aria-label={t('search')}

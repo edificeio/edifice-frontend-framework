@@ -8,7 +8,7 @@
   align-items: center;
   padding: var(--primitive-spacer-4);
   border: 1px solid var(--color-primary-light);
-  border-radius: calc(var(--radius-button) + 0.1rem);
+  border-radius: var(--radius-searchbar);
   background: var(--primitive-white);
   transition: border-color 150ms ease-in-out;
 
@@ -16,15 +16,10 @@
     padding: 0;
   }
 
-  // Toggled by the component while the field is focused or holds text.
   &--active {
     border-color: var(--color-buttons-primary-default);
   }
 
-  // Idle (neither focused nor filled): the submit button looks and acts
-  // disabled without carrying the `disabled` attribute, so legacy themes
-  // can opt out in CSS (see themes/_legacy-search-bar.scss). `:where()`
-  // keeps this at `.searchbar .btn-search` specificity for those overrides.
   &:where(:not(.searchbar--active)) .btn-search {
     --btn-beta-bg: var(--btn-beta-bg-disabled);
     --btn-beta-color: var(--btn-beta-color-disabled);
@@ -57,25 +52,7 @@
 
   &__icon {
     padding: var(--primitive-spacer-8);
-  }
-
-  &__icon {
     color: var(--color-text-button-primary-other-default);
     pointer-events: none;
-  }
-
-  &__clear {
-    display: flex;
-    flex: none;
-    padding: 0 var(--primitive-spacer-12) 0 0;
-    background: transparent;
-    border: none;
-    color: var(--gray-900);
-    visibility: hidden;
-  }
-
-  &:hover &__clear,
-  &:focus-within &__clear {
-    visibility: visible;
   }
 }

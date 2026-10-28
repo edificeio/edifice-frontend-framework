@@ -1,24 +1,6 @@
-@use '../abstracts/' as *;
-
-// Pre-PEDAGO-4183 SearchBar look, kept for the legacy `one` and `neo`
-// products (see one/overrides/_search-bar.scss and neo/overrides/_search-bar.scss).
-
-// The new design (components/_search-bar.scss) draws a single bordered pill
-// on `.searchbar`. The old one relied on Bootstrap utilities set in the markup
-// (`input-group`, `border-end-0`, `ps-48`, `position-absolute`…) plus the
-// legacy `.btn.btn-search` button. Those classes are gone from the DOM, so
-// their styles are reproduced here on top of the new BEM classes:
-// - default mode (`.searchbar` holding a `.btn-search`): Input glued to a
-//   square-ish search button, like `.input-group`;
-// - variant mode (`.searchbar` holding a `.searchbar__icon`): standalone
-//   Input with an absolute search icon on the left.
-
-// `$button-radius`: the product's filled `.btn` radius, which the old search
-// button inherited.
-@mixin searchbar-legacy($button-radius: $btn-border-radius) {
+[data-product='one'],
+[data-product='neo'] {
   .searchbar {
-    // `.input-group` layout
-
     position: relative;
     display: flex;
     flex-wrap: wrap;
@@ -30,8 +12,6 @@
     background: transparent;
     transition: none;
 
-    // Neutralize the new design's disabled pill (its `:has()` selector
-    // outranks a plain `.searchbar` override).
     &:has(.input__field:disabled) {
       border-color: transparent;
       background: transparent;
@@ -45,8 +25,6 @@
       }
     }
 
-    // Back to `Input`'s own look (see components/_input.scss), the new
-    // design strips it to let the pill carry the border.
     .searchbar__input {
       position: relative;
       flex: 1 1 auto;
@@ -76,19 +54,13 @@
       }
     }
 
-    // Default mode: Input + search button joined like `.input-group`
     &:has(> .btn-search) {
       .searchbar__input {
-        // Was `border-end-0` + Bootstrap's input-group radius reset
-
         border-right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
       }
 
-      // The old SearchBar never rendered a clear button in this mode, it
-      // only kept the browser's native one. Doubled class to outrank
-      // `.input:focus-within:has(…) .input__clear` (components/_input.scss).
       .searchbar__input.input .input__clear {
         display: none;
       }
@@ -98,7 +70,6 @@
         display: revert;
       }
 
-      // One halo around the whole joined group (see components/_input-group.scss)
       &:focus-within {
         border-radius: var(--primitive-border-radius-lg);
         box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
@@ -121,65 +92,50 @@
       }
     }
 
-    // Legacy `.btn.btn-search` look, rebuilt on top of `ButtonBeta`
     .btn-search {
-      --btn-beta-bg: var(--#{$prefix}secondary-200);
-      --btn-beta-bg-hover: var(--#{$prefix}secondary-200);
-      --btn-beta-bg-pressed: var(--#{$prefix}secondary-200);
-      --btn-beta-bg-disabled: var(--#{$prefix}gray-200);
-      --btn-beta-color: var(--#{$prefix}gray-800);
-      --btn-beta-color-disabled: var(--#{$prefix}gray-600);
+      --btn-beta-bg: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-hover: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-pressed: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-disabled: var(--primitive-legacy-grey-200);
+      --btn-beta-color: var(--primitive-legacy-grey-800);
+      --btn-beta-color-disabled: var(--primitive-legacy-grey-600);
       --btn-beta-border-color: transparent;
       --btn-beta-border-color-pressed: transparent;
       --btn-beta-border-color-disabled: transparent;
 
-      // The legacy button was never greyed out while idle (see the idle
-      // rule in components/_search-bar.scss); the variables above already
-      // replace its colors.
-
       pointer-events: auto;
-
-      // Bootstrap's `.input-group > :not(:first-child)` overlap
-
       margin-left: -1px;
-      padding: $spacer-8 $spacer-12;
-      border: 0.1rem solid var(--#{$prefix}gray-400);
-      // Was `border-start-0`
-
+      padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+      border: 0.1rem solid var(--primitive-legacy-grey-400);
       border-left: 0;
-      border-radius: 0 $button-radius $button-radius 0;
-      transition: all 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border-radius: 0 var(--radius-searchbar) var(--radius-searchbar) 0;
+      transition: all 250ms ease-in-out;
 
       svg {
-        width: $btn-search-icon-size;
-        min-width: $btn-search-icon-size;
-        height: $btn-search-icon-size;
+        width: 2.4rem;
+        min-width: 2.4rem;
+        height: 2.4rem;
       }
 
       &:active {
-        color: var(--#{$prefix}gray-900);
+        color: var(--primitive-black);
       }
 
       &:focus-visible {
-        // `--#{$prefix}btn-search-focus-border-color` only lives on `.btn`
-
-        border-color: var(--#{$prefix}secondary-300);
+        border-color: var(--color-buttons-secondary-light);
       }
 
       &:disabled {
-        border-color: var(--#{$prefix}gray-400);
+        border-color: var(--primitive-legacy-grey-400);
       }
     }
 
     .input--lg + .btn-search {
-      padding: $spacer-12;
+      padding: var(--primitive-spacer-12);
     }
 
-    // Variant mode: standalone Input with an absolute icon on the left
     &:has(> .searchbar__icon) {
       .searchbar__input {
-        // Was `ps-48`
-
         padding-left: 4.8rem;
 
         &:focus-within {
@@ -187,8 +143,6 @@
         }
       }
 
-      // The old clear button showed as soon as the field held text, focused
-      // or not.
       .searchbar__input:has(.input__field:not(:placeholder-shown))
         .input__clear {
         display: inline-flex;
@@ -202,13 +156,11 @@
     }
 
     .searchbar__icon {
-      // Was `position-absolute z-1 top-50 start-0 translate-middle-y ps-12`
-
       position: absolute;
       top: 50%;
       left: 0;
       z-index: 1;
-      padding: 0 0 0 $spacer-12;
+      padding: 0 0 0 var(--primitive-spacer-12);
       color: inherit;
       transform: translateY(-50%);
 
