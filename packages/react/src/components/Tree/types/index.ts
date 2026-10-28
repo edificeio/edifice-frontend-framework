@@ -20,7 +20,7 @@ export type Projected = {
 export interface TreeHandlers {
   /**
    * Expands a node and its ancestors, without selecting it.
-   * Does nothing if the node is unknown or already expanded.
+   * Does nothing if the node is unknown or already expanded with all its ancestors.
    */
   expandNode: (nodeId: string) => void;
 }

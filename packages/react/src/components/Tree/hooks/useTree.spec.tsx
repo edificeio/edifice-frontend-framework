@@ -304,6 +304,16 @@ describe('useTree', () => {
       expect(onTreeItemUnfold).not.toHaveBeenCalled();
     });
 
+    it('expands the folded ancestors of a sub-node still marked as expanded', () => {
+      const { result } = setup();
+      act(() => result.current.expandNode('a1'));
+      act(() => result.current.handleFoldUnfold('a'));
+
+      act(() => result.current.expandNode('a1'));
+
+      expect(result.current.expandedNodes.has('a')).toBe(true);
+    });
+
     it('does nothing for an unknown node', () => {
       const { result, onTreeItemUnfold } = setup();
       const expandedBefore = result.current.expandedNodes;

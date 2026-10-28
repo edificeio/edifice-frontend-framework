@@ -176,11 +176,12 @@ export const useTree = ({
 
   /**
    * Expand a node and its ancestors from outside the tree, without selecting it
-   * Does nothing if the node is unknown or already expanded
+   * Does nothing if the node is unknown or already expanded with all its ancestors
    * @param nodeId
    */
   const expandNode = (nodeId: string) => {
-    if (expandedNodes.has(nodeId) || !findNodeById(data, nodeId)) return;
+    const path = findPathById(data, nodeId);
+    if (path.length === 0 || path.every((id) => expandedNodes.has(id))) return;
     handleExpandNode(nodeId);
   };
 
