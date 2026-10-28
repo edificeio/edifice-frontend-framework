@@ -1,24 +1,33 @@
 import clsx from 'clsx';
-import { Ref, forwardRef } from 'react';
+import { Ref, forwardRef, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconFolder, IconRafterRight } from '../../../modules/icons/components';
 import { getRotateTransitionStyle } from '../../../utilities';
 import { useTree } from '../hooks/useTree';
-import { TreeNodeProps, TreeProps } from '../types';
+import { TreeHandlers, TreeNodeProps, TreeProps } from '../types';
 
-const Tree = ({
-  nodes,
-  selectedNodeId: externalSelectedNodeId,
-  showIcon = false,
-  shouldExpandAllNodes = false,
-  draggedNode,
-  renderNode,
-  onTreeItemFold,
-  onTreeItemUnfold,
-  onTreeItemClick,
-}: TreeProps) => {
-  const { selectedNodeId, expandedNodes, handleItemClick, handleFoldUnfold } =
-    useTree({
+const Tree = forwardRef(
+  (
+    {
+      nodes,
+      selectedNodeId: externalSelectedNodeId,
+      showIcon = false,
+      shouldExpandAllNodes = false,
+      draggedNode,
+      renderNode,
+      onTreeItemFold,
+      onTreeItemUnfold,
+      onTreeItemClick,
+    }: TreeProps,
+    ref: Ref<TreeHandlers>,
+  ) => {
+    const {
+      selectedNodeId,
+      expandedNodes,
+      handleItemClick,
+      handleFoldUnfold,
+      expandNode,
+    } = useTree({
       data: nodes,
       externalSelectedNodeId,
       draggedNode,
@@ -28,38 +37,49 @@ const Tree = ({
       onTreeItemUnfold,
     });
 
-  return (
-    <div className="treeview">
-      <ul role="tree" className="m-0 p-0">
-        {Array.isArray(nodes) ? (
-          nodes.map((node) => {
-            return (
-              <TreeNode
-                node={node}
-                key={node.id}
-                showIcon={showIcon}
-                selectedNodeId={selectedNodeId}
-                expandedNodes={expandedNodes}
-                onTreeItemClick={handleItemClick}
-                onToggleNode={handleFoldUnfold}
-                renderNode={renderNode}
-              />
-            );
-          })
-        ) : (
-          <TreeNode
-            node={nodes}
-            selectedNodeId={selectedNodeId}
-            expandedNodes={expandedNodes}
-            showIcon={showIcon}
-            onTreeItemClick={handleItemClick}
-            onToggleNode={handleFoldUnfold}
-          />
-        )}
-      </ul>
-    </div>
-  );
-};
+    // The handle stays stable and calls the latest expandNode,
+    // so a handle kept and called later (e.g. from a timer) never sees stale expanded nodes
+    const latestExpandNode = useRef(expandNode);
+    latestExpandNode.current = expandNode;
+    useImperativeHandle(
+      ref,
+      () => ({ expandNode: (nodeId) => latestExpandNode.current(nodeId) }),
+      [],
+    );
+
+    return (
+      <div className="treeview">
+        <ul role="tree" className="m-0 p-0">
+          {Array.isArray(nodes) ? (
+            nodes.map((node) => {
+              return (
+                <TreeNode
+                  node={node}
+                  key={node.id}
+                  showIcon={showIcon}
+                  selectedNodeId={selectedNodeId}
+                  expandedNodes={expandedNodes}
+                  onTreeItemClick={handleItemClick}
+                  onToggleNode={handleFoldUnfold}
+                  renderNode={renderNode}
+                />
+              );
+            })
+          ) : (
+            <TreeNode
+              node={nodes}
+              selectedNodeId={selectedNodeId}
+              expandedNodes={expandedNodes}
+              showIcon={showIcon}
+              onTreeItemClick={handleItemClick}
+              onToggleNode={handleFoldUnfold}
+            />
+          )}
+        </ul>
+      </div>
+    );
+  },
+);
 
 export const TreeNode = forwardRef(
   (
