@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import {
-  useRssArticles,
+  useRssFeedsArticles,
   useRssChannel,
   useSaveRssFeeds,
 } from '../services/queries/rss';
@@ -52,11 +52,13 @@ export const useRssContainer = (): UseRssContainerReturn => {
   const feeds = channel?.feeds ?? [];
   // A deletion can leave the selection past the end of the list.
   const currentIndex = Math.min(selectedIndex, Math.max(feeds.length - 1, 0));
-  const articlesQuery = useRssArticles(feeds[currentIndex]?.link);
+  // All feeds are loaded upfront so that switching feeds is instant.
+  const articlesQueries = useRssFeedsArticles(feeds.map((feed) => feed.link));
+  const articlesQuery = articlesQueries[currentIndex];
 
   let articlesStatus: RssArticlesStatus = 'loading';
-  if (articlesQuery.isError) articlesStatus = 'error';
-  else if (articlesQuery.isSuccess) articlesStatus = 'success';
+  if (articlesQuery?.isError) articlesStatus = 'error';
+  else if (articlesQuery?.isSuccess) articlesStatus = 'success';
 
   const saveFeeds = (nextFeeds: RssFeed[], onSuccess?: () => void) =>
     saveMutation.mutate(
@@ -76,7 +78,7 @@ export const useRssContainer = (): UseRssContainerReturn => {
     canAddFeed: feeds.length < MAX_RSS_FEEDS,
     selectedIndex: currentIndex,
     selectFeed: setSelectedIndex,
-    articles: (articlesQuery.data ?? []).slice(0, MAX_RSS_ARTICLES),
+    articles: (articlesQuery?.data ?? []).slice(0, MAX_RSS_ARTICLES),
     articlesStatus,
     addFeed: (payload, onSuccess) =>
       saveFeeds([...feeds, { ...payload, show: DEFAULT_FEED_SHOW }], onSuccess),

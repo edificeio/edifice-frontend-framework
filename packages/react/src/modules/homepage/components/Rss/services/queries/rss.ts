@@ -1,6 +1,7 @@
 import {
   queryOptions,
   useMutation,
+  useQueries,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
@@ -35,10 +36,14 @@ export const useRssChannel = () => {
   return useQuery(rssQueryOptions.getChannel());
 };
 
-export const useRssArticles = (url: string | undefined) => {
-  return useQuery({
-    ...rssQueryOptions.getArticles(url ?? ''),
-    enabled: !!url,
+/**
+ * Fetches every feed's articles in parallel, so that switching feeds doesn't
+ * show a loading state. Queries are independent: one failing feed doesn't
+ * prevent the others from loading.
+ */
+export const useRssFeedsArticles = (urls: string[]) => {
+  return useQueries({
+    queries: urls.map((url) => rssQueryOptions.getArticles(url)),
   });
 };
 
