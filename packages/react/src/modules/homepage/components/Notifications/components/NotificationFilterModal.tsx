@@ -106,7 +106,12 @@ const NotificationFilterModal = ({
                   'is-checked': checked,
                 })}
               >
-                <AppIcon app={appCode} size="24" iconFit="contain" />
+                <AppIcon
+                  app={appCode}
+                  size="24"
+                  iconFit="contain"
+                  aria-hidden="true"
+                />
                 <span>{label}</span>
                 <Checkbox checked={checked} onChange={() => toggleType(type)} />
               </label>
