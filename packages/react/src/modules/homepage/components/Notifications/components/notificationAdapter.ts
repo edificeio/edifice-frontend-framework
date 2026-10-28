@@ -99,7 +99,7 @@ export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
       appCode = 'userbook';
       break;
     case 'viescolaire':
-      appCode = 'vie-scolaire';
+      appCode = 'parametrage';
       break;
     default:
       appCode = appCode.replace(/_/g, '-');
