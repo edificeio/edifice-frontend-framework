@@ -272,4 +272,46 @@ describe('useTree', () => {
       expect(onTreeItemFold).toHaveBeenCalledWith('a');
     });
   });
+
+  describe('expandNode', () => {
+    it('expands a folded node without selecting it', () => {
+      const { result, onTreeItemClick } = setup();
+
+      act(() => result.current.expandNode('a'));
+
+      expect(expanded(result)).toEqual(['a']);
+      expect(result.current.selectedNodeId).toBeUndefined();
+      expect(onTreeItemClick).not.toHaveBeenCalled();
+    });
+
+    it('expands the ancestors of a sub-node', () => {
+      const { result } = setup();
+
+      act(() => result.current.expandNode('a1'));
+
+      expect(result.current.expandedNodes.has('a')).toBe(true);
+    });
+
+    it('does nothing for an already expanded node', () => {
+      const { result, onTreeItemUnfold } = setup();
+      act(() => result.current.expandNode('a'));
+      const expandedBefore = result.current.expandedNodes;
+      onTreeItemUnfold.mockClear();
+
+      act(() => result.current.expandNode('a'));
+
+      expect(result.current.expandedNodes).toBe(expandedBefore);
+      expect(onTreeItemUnfold).not.toHaveBeenCalled();
+    });
+
+    it('does nothing for an unknown node', () => {
+      const { result, onTreeItemUnfold } = setup();
+      const expandedBefore = result.current.expandedNodes;
+
+      act(() => result.current.expandNode('unknown'));
+
+      expect(result.current.expandedNodes).toBe(expandedBefore);
+      expect(onTreeItemUnfold).not.toHaveBeenCalled();
+    });
+  });
 });
