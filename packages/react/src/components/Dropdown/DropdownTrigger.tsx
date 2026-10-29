@@ -104,13 +104,17 @@ const DropdownTrigger = forwardRef(
     }: DropdownTriggerProps,
     forwardRef: Ref<HTMLButtonElement>,
   ) => {
-    const { triggerProps, block } = useDropdownContext();
+    const { triggerProps, block, visible, hasSearchInput } =
+      useDropdownContext();
 
     const className = clsx(
       'dropdown-toggle ',
       size,
       variant,
       { 'w-100': block },
+      // The open menu covers the trigger with its search input: hide the trigger
+      // without removing it, so it keeps its place and can take the focus back.
+      { 'opacity-0': visible && hasSearchInput },
       triggerProps.className,
       restProps.className,
       { 'rounded-pill': pill },
