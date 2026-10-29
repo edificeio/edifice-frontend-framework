@@ -124,6 +124,25 @@ describe('Combobox', () => {
     expect(onSearchResultsChange).toHaveBeenCalledWith(['first']);
   });
 
+  it('selects an option with Enter and keeps the search text', async () => {
+    const onSearchResultsChange = vi.fn();
+    const { user } = render(
+      <ControlledCombobox onSearchResultsChange={onSearchResultsChange} />,
+    );
+
+    const input = getInput();
+    await user.type(input, 'First');
+    await waitFor(() => {
+      expect(screen.getByText('First Item')).toBeInTheDocument();
+    });
+
+    await user.keyboard('{ArrowDown}{Enter}');
+
+    expect(onSearchResultsChange).toHaveBeenCalledWith(['first']);
+    expect(input).toHaveValue('First');
+    expect(screen.getByText('First Item')).toBeInTheDocument();
+  });
+
   it('clears the input value when the dropdown closes', async () => {
     const { user } = render(<ControlledCombobox />);
 
