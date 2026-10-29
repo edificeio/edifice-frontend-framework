@@ -184,6 +184,7 @@
     "react-i18next": "catalog:",
     "rollup-plugin-pure": "catalog:",
     "rollup-plugin-visualizer": "catalog:",
+    "typescript": "catalog:",
     "typescript-eslint": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:",
