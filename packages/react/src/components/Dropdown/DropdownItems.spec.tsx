@@ -62,6 +62,34 @@ describe('Dropdown.Item', () => {
     expect(item('Sort by name')).toBeInTheDocument();
   });
 
+  it('calls back on Enter and closes the menu for an action item', async () => {
+    const onClick = vi.fn();
+    const { user } = openMenu(
+      <Dropdown.Item onClick={onClick}>Delete</Dropdown.Item>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Actions' }));
+    await user.keyboard('{Enter}');
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+  });
+
+  it('keeps the menu open on Enter for a select item', async () => {
+    const onClick = vi.fn();
+    const { user } = openMenu(
+      <Dropdown.Item type="select" onClick={onClick}>
+        Sort by name
+      </Dropdown.Item>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Actions' }));
+    await user.keyboard('{Enter}');
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(item('Sort by name')).toBeInTheDocument();
+  });
+
   it('ignores a click on a disabled item', async () => {
     const onClick = vi.fn();
     const { user } = openMenu(
