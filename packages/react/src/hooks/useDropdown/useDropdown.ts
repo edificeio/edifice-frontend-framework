@@ -45,6 +45,11 @@ export interface UseDropdownProps {
   itemRefs: MutableRefObject<{ [key: string]: HTMLElement | null }>;
   triggerRef: MutableRefObject<HTMLButtonElement | null>;
   menuRef: MutableRefObject<HTMLUListElement | null>;
+  /**
+   * Search input displayed in place of the trigger while the menu is open, if any.
+   * When set, it gets the focus on open and is reachable from the items with the keyboard.
+   */
+  searchInputRef: MutableRefObject<HTMLInputElement | null>;
   triggerProps: Record<string, any>;
   menuProps: Record<string, any>;
   itemProps: Record<string, any>;
@@ -71,6 +76,8 @@ const useDropdown = (
   const [visible, setVisible] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isFocused, setIsFocused] = useState<string | null>(null);
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const { refs, floatingStyles, context } = useFloating({
     placement,
@@ -103,8 +110,17 @@ const useDropdown = (
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const itemRefs = useRef({});
 
+  const focusSearchInput = () => {
+    setActiveIndex(-1);
+    setIsFocused(null);
+    // The menu may not be positioned yet: focusing must not scroll the window.
+    searchInputRef.current?.focus({ preventScroll: true });
+  };
+
   useEffect(() => {
-    if (visible && menuRef.current && focusOnVisible) {
+    if (visible && searchInputRef.current && focusOnVisible) {
+      focusSearchInput();
+    } else if (visible && menuRef.current && focusOnVisible) {
       menuRef.current.focus();
       setActiveIndex(0);
     } else {
@@ -138,11 +154,18 @@ const useDropdown = (
 
   const nextItem = () => {
     const count = visibleItemCount();
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex + 1) % count);
   };
 
   const previousItem = () => {
+    // Going up from the first item brings the focus back to the search input.
+    if (activeIndex === 0 && searchInputRef.current) {
+      focusSearchInput();
+      return;
+    }
     const count = visibleItemCount();
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex - 1 + count) % count);
   };
 
@@ -245,9 +268,10 @@ const useDropdown = (
           case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
-              const currentItem = Object.values(itemRefs.current)[
-                activeIndex
-              ] as HTMLElement;
+              // Same list as the arrow navigation: items filtered out by the search are null.
+              const currentItem = Object.values(itemRefs.current).filter(
+                Boolean,
+              )[activeIndex] as HTMLElement;
               const role = currentItem.getAttribute('role');
 
               if (role === 'menuitem') {
@@ -307,6 +331,7 @@ const useDropdown = (
     itemRefs,
     triggerRef,
     menuRef,
+    searchInputRef,
     /* TriggerProps to spread to any Trigger component */
     triggerProps: {
       'ref': mergeRefs(triggerRef, refs.setReference),

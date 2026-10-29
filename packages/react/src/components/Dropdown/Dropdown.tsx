@@ -5,7 +5,6 @@ import {
   useEffect,
   useImperativeHandle,
   useMemo,
-  useRef,
   useState,
 } from 'react';
 
@@ -23,6 +22,7 @@ import DropdownRadioItem from './DropdownRadioItem';
 import DropdownSearchInput from './DropdownSearchInput';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
+import { useMatchRegistry } from './useMatchRegistry';
 
 export interface DropdownApi {
   visible: boolean;
@@ -125,22 +125,8 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
     refDropdown,
   ) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [hasMatches, setHasMatches] = useState(true);
-    const matchMapRef = useRef<Map<string, boolean>>(new Map());
-
-    const reportMatch = useCallback((id: string, isMatch: boolean) => {
-      matchMapRef.current.set(id, isMatch);
-      const next = [...matchMapRef.current.values()].some(Boolean);
-      setHasMatches((prev) => (prev !== next ? next : prev));
-    }, []);
-
-    const unregisterMatch = useCallback((id: string) => {
-      matchMapRef.current.delete(id);
-      const next =
-        matchMapRef.current.size === 0 ||
-        [...matchMapRef.current.values()].some(Boolean);
-      setHasMatches((prev) => (prev !== next ? next : prev));
-    }, []);
+    const [hasSearchInput, setHasSearchInput] = useState(false);
+    const { hasMatches, reportMatch, unregisterMatch } = useMatchRegistry();
 
     const {
       visible,
@@ -152,6 +138,7 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
       setVisible,
       menuRef,
       triggerRef,
+      searchInputRef,
       closeDropdown,
       openDropdown,
     } = useDropdown(
@@ -177,6 +164,16 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
       setVisible(false);
     });
 
+    /* Root element, also exposed to display the search input over the trigger */
+    const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
+    const rootRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        ref.current = node;
+        setRootElement(node);
+      },
+      [ref],
+    );
+
     const value = useMemo(
       () => ({
         visible,
@@ -185,12 +182,16 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
         menuProps,
         itemProps,
         itemRefs,
+        searchInputRef,
         block,
         setVisible,
         openDropdown,
         closeDropdown,
         searchQuery,
         setSearchQuery,
+        hasSearchInput,
+        setHasSearchInput,
+        rootElement,
         hasMatches,
         reportMatch,
         unregisterMatch,
@@ -202,11 +203,14 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
         menuProps,
         itemProps,
         itemRefs,
+        searchInputRef,
         block,
         setVisible,
         openDropdown,
         closeDropdown,
         searchQuery,
+        hasSearchInput,
+        rootElement,
         hasMatches,
         reportMatch,
         unregisterMatch,
@@ -217,6 +221,8 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
       'w-100': block,
       'dropdown-nowrap': noWrap,
       overflow,
+      // The search input is positioned over the trigger, within the root box.
+      'dropdown-searching': hasSearchInput,
     });
 
     useEffect(() => {
@@ -227,7 +233,7 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
 
     return (
       <DropdownContext.Provider value={value}>
-        <div ref={ref} className={dropdown}>
+        <div ref={rootRef} className={dropdown}>
           {typeof children === 'function'
             ? children(triggerProps, itemRefs, setVisible)
             : children}

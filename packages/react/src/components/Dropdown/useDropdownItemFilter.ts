@@ -2,6 +2,13 @@ import { useId, useLayoutEffect } from 'react';
 
 import { useDropdownContext } from './DropdownContext';
 
+// Case and accent insensitive: "de" matches "Développement".
+const normalize = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
 /**
  * Shared filtering logic for Dropdown item components.
  * Computes whether the item is hidden by the current search query,
@@ -17,7 +24,7 @@ export const useDropdownItemFilter = (searchValue: string | undefined) => {
   const isFiltered =
     searchValue !== undefined &&
     searchQuery !== '' &&
-    !searchValue.toLowerCase().includes(searchQuery.toLowerCase());
+    !normalize(searchValue).includes(normalize(searchQuery));
 
   useLayoutEffect(() => {
     if (searchValue === undefined) return;

@@ -206,6 +206,25 @@
     }
   }
 
+  // Search input displayed in place of the trigger while the menu is open:
+  // it takes the exact size of the trigger, whatever the trigger size.
+  &-search {
+    .input {
+      height: 100%;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  &-searching {
+    position: relative;
+
+    // The root is now the containing block of the menu: keep the menu at its natural width.
+    .dropdown-menu {
+      width: max-content;
+    }
+  }
+
   &.overflow {
     .dropdown-menu {
       max-height: 32rem;
