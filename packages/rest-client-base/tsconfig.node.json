@@ -6,5 +6,6 @@
         "./src/decorators/custom-type.decorator.node"
       ]
     }
-  }
+  },
+  "files": ["src/bin/cli.ts"]
 }
