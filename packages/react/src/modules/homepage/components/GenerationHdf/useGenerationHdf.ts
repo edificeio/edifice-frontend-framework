@@ -71,17 +71,18 @@ export function useGenerationHdf() {
   });
 
   useEffect(() => {
-    if (autoLoadTriggered.current || !preferenceQuery.data) return;
+    if (autoLoadTriggered.current || !preferenceQuery.isSuccess) return;
     autoLoadTriggered.current = true;
 
-    const storedCardNb = preferenceQuery.data.cardNb;
+    // The preference is null when the user never saved a card number.
+    const storedCardNb = preferenceQuery.data?.cardNb;
     if (storedCardNb) {
       setCardNumber(storedCardNb);
       salesMutation.mutate({ cardNb: storedCardNb, persist: false });
     }
-  }, [preferenceQuery.data, salesMutation]);
+  }, [preferenceQuery.isSuccess, preferenceQuery.data, salesMutation]);
 
-  const status: GenerationHdfStatus = !preferenceQuery.data
+  const status: GenerationHdfStatus = preferenceQuery.isPending
     ? 'loading'
     : salesMutation.isPending
       ? 'loading'
