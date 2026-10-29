@@ -1,12 +1,58 @@
-// `::-webkit-search-cancel-button` only applies to the actual
-// `input[type="search"]` element — `searchbar-hide-native-clear` itself
-// lands on `Input`'s wrapper `<div>` (see components/_input.scss), so the
-// selector has to reach through to `.input__field`.
-.searchbar-hide-native-clear .input__field::-webkit-search-cancel-button {
-  appearance: none !important;
-  display: none !important;
+.searchbar .input__field::-webkit-search-cancel-button {
+  appearance: none;
+  display: none;
 }
 
-.searchbar-hide-native-clear {
-  padding-right: 32px;
+.searchbar {
+  display: flex;
+  align-items: center;
+  padding: var(--primitive-spacer-4);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--radius-searchbar);
+  background: var(--primitive-white);
+  transition: border-color 150ms ease-in-out;
+
+  &--md {
+    padding: 0;
+  }
+
+  &--active {
+    border-color: var(--color-buttons-primary-default);
+  }
+
+  &:where(:not(.searchbar--active)) .btn-search {
+    --btn-beta-bg: var(--btn-beta-bg-disabled);
+    --btn-beta-color: var(--btn-beta-color-disabled);
+    --btn-beta-border-color: var(--btn-beta-border-color-disabled);
+
+    pointer-events: none;
+  }
+
+  &:has(.input__field:disabled) {
+    border-color: var(--primitive-grey-300);
+    background: var(--primitive-grey-200);
+
+    .input__field::placeholder {
+      color: var(--primitive-grey-700);
+    }
+
+    .searchbar__icon {
+      color: var(--color-text-button-primary-other-disable);
+    }
+  }
+
+  & &__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-12);
+    border: none;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  &__icon {
+    padding: var(--primitive-spacer-8);
+    color: var(--color-text-button-primary-other-default);
+    pointer-events: none;
+  }
 }
