@@ -183,7 +183,8 @@
     "@tiptap/starter-kit": "3.32.0",
     "@types/dom-speech-recognition": "0.0.1",
     "vite": "catalog:",
-    "vite-plugin-dts": "catalog:"
+    "vite-plugin-dts": "catalog:",
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public"

@@ -22,6 +22,7 @@
   "type": "module",
   "main": "src/index.ts",
   "devDependencies": {
+    "typescript": "catalog:",
     "vite": "catalog:",
     "vite-plugin-dts": "catalog:"
   }
