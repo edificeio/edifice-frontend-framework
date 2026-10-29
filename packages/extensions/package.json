@@ -162,7 +162,8 @@
   },
   "devDependencies": {
     "@edifice.io/client": "workspace:*",
-    "@types/dom-speech-recognition": "0.0.1"
+    "@types/dom-speech-recognition": "0.0.1",
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public"
