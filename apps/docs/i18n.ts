@@ -510,6 +510,9 @@ i18n.use(initReactI18next).init({
         'homepage.widget.edumalin.modal.duration': 'Durée :',
         'homepage.widget.edumalin.modal.durationValue': '[[duration]]min',
         'homepage.widget.edumalin.modal.place': 'Lieu :',
+        
+        //------------------ TabsKids -------------------------
+        'homepage.tabsKids.see.more': 'Voir plus',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------

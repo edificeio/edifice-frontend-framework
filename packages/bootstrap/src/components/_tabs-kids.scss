@@ -19,7 +19,7 @@
   }
 
   &-overflow {
-    padding: 0 var(--spacer-8);
+    padding: 0 var(--primitive-spacer-8);
   }
 
   // The overflow dropdown trigger keeps its size, the tabs shrink instead.
@@ -146,7 +146,7 @@
   }
 
   &-panel {
-    padding: var(--spacer-8);
+    padding: var(--primitive-spacer-8);
     background-color: var(--color-primary-pale);
     border: 1px solid var(--color-primary-light);
     border-radius: var(--primitive-border-radius-xl);

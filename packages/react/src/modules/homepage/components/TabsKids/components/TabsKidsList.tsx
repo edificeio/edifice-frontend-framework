@@ -2,7 +2,7 @@ import { KeyboardEvent, useRef } from 'react';
 
 import { IconUsers } from '../../../../icons/components';
 import {
-  ButtonBeta,
+  ButtonBeta as Button,
   ButtonBetaProps,
 } from '../../../../../components/ButtonBeta';
 import { Dropdown } from '../../../../../components/Dropdown';
@@ -83,11 +83,12 @@ const TabsKidsList = ({
           <Dropdown placement="bottom-end">
             {(triggerProps: ButtonBetaProps) => (
               <>
-                <ButtonBeta
+                <Button
                   {...triggerProps}
                   type="button"
                   aria-label={
-                    overflowLabel ?? t('tabsKids.see.more', 'Voir plus')
+                    overflowLabel ??
+                    t('homepage.tabsKids.see.more', 'Voir plus')
                   }
                   color="default"
                   variant="ghost"
@@ -123,7 +124,7 @@ const TabsKidsList = ({
             />
           ))}
           <div className="tabs-kids-overflow tabs-kids-measure-trigger">
-            <ButtonBeta
+            <Button
               tabIndex={-1}
               aria-label=""
               color="default"
