@@ -19,3 +19,4 @@ export * from './UserSpace';
 export * from './Communities';
 export * from './AlloRegion';
 export * from './WidgetsPersonalizationPanel';
+export * from './TabsKids';
