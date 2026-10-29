@@ -128,6 +128,37 @@ export const Disabled: Story = {
   },
 };
 
+export const Searchable: Story = {
+  render: () => {
+    const onChange = (option: OptionsType | string) => {
+      console.log(option);
+    };
+
+    return (
+      <div style={{ width: '320px' }}>
+        <Select
+          block
+          onValueChange={onChange}
+          options={subjectAreaOptions}
+          icon={<IconListOrder />}
+          placeholderOption="Choisir une matière"
+          searchable
+          searchPlaceholder="Rechercher une matière..."
+          noResultsLabel="Aucune matière"
+        />
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With `searchable`, the trigger turns into a search field when the menu opens, to filter the options (case and accent insensitive). `searchPlaceholder` and `noResultsLabel` customize the search input.',
+      },
+    },
+  },
+};
+
 export const Variant: Story = {
   render: () => {
     const onChange = (option: OptionsType | string) => {

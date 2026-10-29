@@ -45,6 +45,19 @@ export interface SelectProps
    * Default value
    */
   defaultValue?: string;
+  /**
+   * Filter the options with a search input:
+   * when the menu opens, the trigger turns into a search field.
+   */
+  searchable?: boolean;
+  /**
+   * Placeholder of the search input (with `searchable`)
+   */
+  searchPlaceholder?: string;
+  /**
+   * Label shown when no option matches the search (with `searchable`)
+   */
+  noResultsLabel?: string;
 }
 
 /**
@@ -64,6 +77,9 @@ const Select = ({
   placeholderOption,
   onValueChange,
   defaultValue,
+  searchable,
+  searchPlaceholder,
+  noResultsLabel,
 }: SelectProps) => {
   const [localValue, setLocalValue] = useState<OptionsType | string>();
 
@@ -114,6 +130,12 @@ const Select = ({
         disabled={disabled}
       />
       <Dropdown.Menu role="listbox">
+        {searchable && (
+          <Dropdown.SearchInput
+            placeholder={searchPlaceholder}
+            noResultsLabel={noResultsLabel}
+          />
+        )}
         {options?.map((option) => {
           const value = typeof option === 'object' ? option.value : option;
           const label = typeof option === 'object' ? option.label : option;
@@ -124,6 +146,7 @@ const Select = ({
               key={value}
               onClick={() => setLocalValue(option)}
               icon={icon}
+              searchValue={searchable ? label : undefined}
             >
               {label}
             </Dropdown.Item>

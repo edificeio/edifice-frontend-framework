@@ -150,4 +150,83 @@ describe('Select', () => {
       expect(getTrigger()).toHaveTextContent('Choisir…');
     });
   });
+
+  describe('searchable', () => {
+    it('shows no search input by default', async () => {
+      const { user } = render(
+        <Select options={options} placeholderOption="Choisir…" />,
+      );
+
+      await user.click(getTrigger());
+
+      expect(screen.queryByRole('searchbox')).not.toBeInTheDocument();
+    });
+
+    it('filters the options from the search input', async () => {
+      const { user } = render(
+        <Select
+          options={options}
+          placeholderOption="Choisir…"
+          searchable
+          searchPlaceholder="Rechercher une matière"
+        />,
+      );
+
+      await user.click(getTrigger());
+      await user.type(
+        screen.getByPlaceholderText('Rechercher une matière'),
+        'chi',
+      );
+
+      expect(
+        screen.getByRole('menuitem', { name: 'Chimie' }),
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole('menuitem', { name: 'Droit' }),
+      ).not.toBeInTheDocument();
+    });
+
+    it('shows the no results label when nothing matches', async () => {
+      const { user } = render(
+        <Select
+          options={options}
+          placeholderOption="Choisir…"
+          searchable
+          searchPlaceholder="Rechercher une matière"
+          noResultsLabel="Aucune matière"
+        />,
+      );
+
+      await user.click(getTrigger());
+      await user.type(
+        screen.getByPlaceholderText('Rechercher une matière'),
+        'zzz',
+      );
+
+      expect(screen.getByText('Aucune matière')).toBeInTheDocument();
+    });
+
+    it('selects a filtered option with the keyboard', async () => {
+      const onValueChange = vi.fn();
+      const { user } = render(
+        <Select
+          options={options}
+          placeholderOption="Choisir…"
+          onValueChange={onValueChange}
+          searchable
+          searchPlaceholder="Rechercher une matière"
+        />,
+      );
+
+      await user.click(getTrigger());
+      await user.type(
+        screen.getByPlaceholderText('Rechercher une matière'),
+        'dr',
+      );
+      await user.keyboard('{ArrowDown}{Enter}');
+
+      expect(onValueChange).toHaveBeenCalledWith('law');
+      expect(getTrigger()).toHaveTextContent('Droit');
+    });
+  });
 });
