@@ -1,0 +1,173 @@
+[data-product='one'],
+[data-product='neo'] {
+  .searchbar {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    transition: none;
+
+    &:has(.input__field:disabled) {
+      border-color: transparent;
+      background: transparent;
+
+      .input__field::placeholder {
+        color: var(--primitive-text-color-subtext);
+      }
+
+      .searchbar__icon {
+        color: inherit;
+      }
+    }
+
+    .searchbar__input {
+      position: relative;
+      flex: 1 1 auto;
+      width: 1%;
+      min-width: 0;
+      padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+      background-color: var(--primitive-white);
+      border: 1px solid var(--primitive-grey-300);
+      border-radius: var(--primitive-border-radius-lg);
+      box-shadow: none;
+
+      &:where(:has(.input__field:not(:placeholder-shown))) {
+        border-color: var(--primitive-grey-500);
+      }
+
+      &:where(:has(.input__field:disabled)) {
+        background-color: var(--primitive-grey-200);
+        border-color: var(--primitive-grey-500);
+      }
+
+      &:focus-within {
+        border-color: var(--color-buttons-primary-default);
+      }
+
+      &.input--lg {
+        padding: var(--primitive-spacer-12) var(--primitive-spacer-16);
+      }
+    }
+
+    &:has(> .btn-search) {
+      .searchbar__input {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      .searchbar__input.input .input__clear {
+        display: none;
+      }
+
+      .input__field::-webkit-search-cancel-button {
+        appearance: revert;
+        display: revert;
+      }
+
+      &:focus-within {
+        border-radius: var(--primitive-border-radius-lg);
+        box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+
+        .btn-search {
+          --btn-beta-bg: var(--color-buttons-primary-pale);
+          --btn-beta-bg-hover: var(--color-buttons-primary-pale);
+          --btn-beta-bg-pressed: var(--color-buttons-primary-pale);
+
+          border-color: var(--color-buttons-primary-default);
+        }
+      }
+
+      .searchbar__input:not(
+          :focus-within,
+          :has(.input__field:placeholder-shown)
+        )
+        + .btn-search {
+        border-color: var(--primitive-grey-500);
+      }
+    }
+
+    .btn-search {
+      --btn-beta-bg: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-hover: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-pressed: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-disabled: var(--primitive-legacy-grey-200);
+      --btn-beta-color: var(--primitive-legacy-grey-800);
+      --btn-beta-color-disabled: var(--primitive-legacy-grey-600);
+      --btn-beta-border-color: transparent;
+      --btn-beta-border-color-pressed: transparent;
+      --btn-beta-border-color-disabled: transparent;
+
+      pointer-events: auto;
+      margin-left: -1px;
+      padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+      border: 0.1rem solid var(--primitive-legacy-grey-400);
+      border-left: 0;
+      border-radius: 0 var(--radius-searchbar) var(--radius-searchbar) 0;
+      transition: all 250ms ease-in-out;
+
+      svg {
+        width: 2.4rem;
+        min-width: 2.4rem;
+        height: 2.4rem;
+      }
+
+      &:active {
+        color: var(--primitive-black);
+      }
+
+      &:focus-visible {
+        border-color: var(--color-buttons-secondary-light);
+      }
+
+      &:disabled {
+        border-color: var(--primitive-legacy-grey-400);
+      }
+    }
+
+    .input--lg + .btn-search {
+      padding: var(--primitive-spacer-12);
+    }
+
+    &:has(> .searchbar__icon) {
+      .searchbar__input {
+        padding-left: 4.8rem;
+
+        &:focus-within {
+          box-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+        }
+      }
+
+      .searchbar__input:has(.input__field:not(:placeholder-shown))
+        .input__clear {
+        display: inline-flex;
+      }
+
+      .input__clear {
+        width: 1.2rem;
+        height: 1.2rem;
+        color: inherit;
+      }
+    }
+
+    .searchbar__icon {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      z-index: 1;
+      padding: 0 0 0 var(--primitive-spacer-12);
+      color: inherit;
+      transform: translateY(-50%);
+
+      svg {
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+    }
+  }
+}
