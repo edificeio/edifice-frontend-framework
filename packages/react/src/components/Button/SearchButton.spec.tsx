@@ -28,4 +28,15 @@ describe('SearchButton', () => {
     const buttonElement = screen.getByRole('button');
     expect(buttonElement).toBeDisabled();
   });
+
+  it('forwards native button attributes', () => {
+    render(<SearchButton type="submit" aria-label="Search" />);
+    const buttonElement = screen.getByRole('button', { name: 'Search' });
+    expect(buttonElement).toHaveAttribute('type', 'submit');
+  });
+
+  it('applies the small size', () => {
+    render(<SearchButton size="sm" />);
+    expect(screen.getByRole('button')).toHaveClass('btn-sm');
+  });
 });
