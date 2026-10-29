@@ -107,7 +107,10 @@ const DropdownItem = ({
       aria-current={isFocused === id}
       onClick={handleOnClick}
       onMouseEnter={onMenuItemMouseEnter}
-      onKeyDown={(event) => onMenuItemKeyDown(event, onClick)}
+      // Like a click, Enter only closes the menu for an action item.
+      onKeyDown={(event) =>
+        onMenuItemKeyDown(event, onClick, type === 'action')
+      }
       {...restProps}
     >
       {content}

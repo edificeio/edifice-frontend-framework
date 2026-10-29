@@ -227,7 +227,11 @@ const useDropdown = (
   };
 
   const onMenuItemKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLElement>, onSuccess?: () => void) => {
+    (
+      event: React.KeyboardEvent<HTMLElement>,
+      onSuccess?: () => void,
+      closeOnSuccess = true,
+    ) => {
       let flag = false;
 
       if (event.shiftKey) {
@@ -245,12 +249,13 @@ const useDropdown = (
           case ' ':
           case KEYS.Enter:
             if (activeIndex !== -1) {
-              const currentItem = Object.values(itemRefs.current)[
-                activeIndex
-              ] as HTMLElement;
+              // Skip null refs left by unmounted items, as navigation does.
+              const currentItem = Object.values(itemRefs.current).filter(
+                Boolean,
+              )[activeIndex] as HTMLElement;
               const role = currentItem.getAttribute('role');
 
-              if (role === 'menuitem') {
+              if (role === 'menuitem' && closeOnSuccess) {
                 if (triggerRef.current) {
                   triggerRef.current.focus();
                   setVisible(false);
