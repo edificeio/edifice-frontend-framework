@@ -54,6 +54,32 @@ describe('useGenerationHdf', () => {
     expect(mocks.get).not.toHaveBeenCalled();
   });
 
+  it('starts idle when the preference has never been saved', async () => {
+    mocks.getPreference.mockResolvedValue(null);
+
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('idle');
+    });
+    expect(mocks.get).not.toHaveBeenCalled();
+  });
+
+  it('starts idle when the preference cannot be loaded', async () => {
+    mocks.getPreference.mockRejectedValue(new Error('Network error'));
+
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe('idle');
+    });
+    expect(mocks.get).not.toHaveBeenCalled();
+  });
+
   it('auto-connects with the stored card number on mount', async () => {
     mocks.getPreference.mockResolvedValue({ cardNb: '475948' });
     mocks.get.mockResolvedValue({

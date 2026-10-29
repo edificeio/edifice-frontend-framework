@@ -92,14 +92,26 @@ export default function GenerationHdf({
               status={isError ? 'invalid' : undefined}
             >
               <Input
+                // Input's counter only tracks user typing: remount it when the
+                // value is set programmatically (stored card on load, reset).
+                key={isAccount ? 'account' : 'form'}
                 size="md"
                 type="text"
                 inputMode="numeric"
                 placeholder={t('homepage.widget.generation-hdf.placeholder')}
                 value={cardNumber}
+                // Strip non-digits before Input's own onChange reads the
+                // value, so its character counter matches the field.
+                onChangeCapture={(event) => {
+                  event.currentTarget.value = event.currentTarget.value.replace(
+                    /\D/g,
+                    '',
+                  );
+                }}
                 onChange={(event) => onCardNumberChange(event.target.value)}
                 disabled={isAccount}
-                maxLength={50}
+                maxLength={12}
+                showCounter
               />
               {isError && (
                 <FormControl.Text>

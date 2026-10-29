@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { render, screen } from '~/setup';
 import GenerationHdf from './GenerationHdf';
 
@@ -75,6 +76,56 @@ describe('GenerationHdf', () => {
     );
 
     expect(screen.getByText('Numéro de carte incorrect')).toBeInTheDocument();
+  });
+
+  it('keeps the character counter in sync when the value is set programmatically', () => {
+    const props = {
+      handleActionClick: vi.fn(),
+      onCardNumberChange: vi.fn(),
+      onSubmit: vi.fn(),
+      onEdit: vi.fn(),
+      wallets: [],
+    };
+    const { rerender } = render(
+      <GenerationHdf {...props} status="loading" cardNumber="" />,
+    );
+    expect(screen.getByText('0 / 12')).toBeInTheDocument();
+
+    // Stored card number loaded on mount.
+    rerender(<GenerationHdf {...props} status="account" cardNumber="475948" />);
+    expect(screen.getByText('6 / 12')).toBeInTheDocument();
+
+    // "Modifier" clears the field.
+    rerender(<GenerationHdf {...props} status="idle" cardNumber="" />);
+    expect(screen.getByText('0 / 12')).toBeInTheDocument();
+  });
+
+  it('only accepts digits in the card number field', async () => {
+    function StatefulGenerationHdf() {
+      const [cardNumber, setCardNumber] = useState('');
+      return (
+        <GenerationHdf
+          handleActionClick={vi.fn()}
+          status="idle"
+          cardNumber={cardNumber}
+          onCardNumberChange={setCardNumber}
+          onSubmit={vi.fn()}
+          onEdit={vi.fn()}
+          wallets={[]}
+        />
+      );
+    }
+    const { user } = render(<StatefulGenerationHdf />);
+    const input = screen.getByPlaceholderText('Numéro de carte');
+
+    await user.type(input, '12a 3-');
+    expect(input).toHaveValue('123');
+    expect(screen.getByText('3 / 12')).toBeInTheDocument();
+
+    await user.clear(input);
+    await user.paste('47 59-48');
+    expect(input).toHaveValue('475948');
+    expect(screen.getByText('6 / 12')).toBeInTheDocument();
   });
 
   it('renders the wallets and a "Modifier" button once the account is displayed', async () => {
