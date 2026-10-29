@@ -18,3 +18,4 @@ export * from './UsefulLinks';
 export * from './Universalis';
 export * from './UserSpace';
 export * from './WidgetsPersonalizationPanel';
+export * from './TabsKids';
