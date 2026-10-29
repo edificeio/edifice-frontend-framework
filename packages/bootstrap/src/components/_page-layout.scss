@@ -194,6 +194,14 @@
   .pagelayout-sidebarleft,
   .pagelayout-content {
     overflow-y: auto;
+
+    // Scroll container: it must also be the containing block of absolutely
+    // positioned descendants (e.g. `.visually-hidden` labels). Otherwise they
+    // are placed against the viewport, escape the `overflow: hidden` of the
+    // layout and make the document taller than the viewport (blank strip when
+    // the page is scrolled).
+
+    position: relative;
   }
 
   // Reset fullpage animation overrides, allow independent scroll
