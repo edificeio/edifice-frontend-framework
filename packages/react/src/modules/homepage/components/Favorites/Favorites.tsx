@@ -1,5 +1,4 @@
 import { type IWebApp } from '@edifice.io/client';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite.svg';
@@ -23,17 +22,7 @@ export function Favorites({
       ? t(app.prefix.substring(1))
       : t(app.displayName) || '';
 
-  const visibleApps = useMemo(
-    () =>
-      apps
-        .filter((app) => app.display !== false)
-        .sort((a, b) =>
-          getAppName(a).localeCompare(getAppName(b), undefined, {
-            sensitivity: 'base',
-          }),
-        ),
-    [apps, t],
-  );
+  const visibleApps = apps.filter((app) => app.display !== false);
 
   return (
     <HomeCard variant="secondary">
