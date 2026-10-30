@@ -8,6 +8,7 @@ import {
   embedHandlers,
   publicConfigHandlers,
   rssHandlers,
+  screenTimeHandlers,
   shareHandlers,
   themeHandlers,
   timelineHandlers,
@@ -32,4 +33,5 @@ export const handlers = [
   ...timelineHandlers,
   ...rssHandlers,
   ...edumalinHandlers,
+  ...screenTimeHandlers,
 ];
