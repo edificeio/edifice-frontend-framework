@@ -35,7 +35,7 @@ describe('AgendaContainer', () => {
     expect(screen.getByText('Réunion')).toBeInTheDocument();
   });
 
-  it('opens the agenda module, focused on the clicked event, in the same tab', () => {
+  it('opens the agenda module root when an event is clicked, in the same tab', () => {
     useAgendaContainer.mockReturnValue({
       events: [event],
       isLoading: false,
@@ -47,9 +47,6 @@ describe('AgendaContainer', () => {
     render(<AgendaContainer />);
     fireEvent.click(screen.getByTestId('agenda-event-card'));
 
-    expect(open).toHaveBeenCalledWith(
-      '/calendar#/view/calendar-1/event/event-1',
-      '_self',
-    );
+    expect(open).toHaveBeenCalledWith('/calendar', '_self');
   });
 });
