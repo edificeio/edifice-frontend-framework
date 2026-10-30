@@ -459,7 +459,7 @@ i18n.use(initReactI18next).init({
           'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
 
         //------------------ Rss -------------------------
-        'homepage.widget.rss.title': 'RSS',
+        'homepage.widget.rss.title': 'Flux RSS',
         'homepage.widget.rss.add': 'Ajouter',
         'homepage.widget.rss.edit': 'Éditer',
         'homepage.widget.rss.feeds': 'Flux RSS',
@@ -482,6 +482,8 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.title.placeholder': 'Nom du flux RSS',
         'homepage.widget.rss.form.link': 'Lien',
         'homepage.widget.rss.form.link.placeholder': 'Ajouter l’URL',
+        'homepage.widget.rss.form.link.caption':
+          'L’URL doit renvoyer un flux au format XML',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
 

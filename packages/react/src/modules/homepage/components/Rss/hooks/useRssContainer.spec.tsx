@@ -111,6 +111,40 @@ describe('useRssContainer', () => {
     await waitFor(() => expect(result.current.articlesStatus).toBe('error'));
   });
 
+  it('loads every feed on mount, so switching feeds is instant', async () => {
+    mockBackend([{ _id: 'channel-1', feeds }]);
+
+    const { result } = await renderContainerHook();
+
+    await waitFor(() =>
+      feeds.forEach((feed) =>
+        expect(get).toHaveBeenCalledWith(
+          `/rss/feed/items?url=${encodeURIComponent(feed.link)}&force=0`,
+        ),
+      ),
+    );
+
+    act(() => result.current.selectFeed(2));
+    await waitFor(() => expect(result.current.articlesStatus).toBe('success'));
+  });
+
+  it('keeps loading the other feeds when one of them fails', async () => {
+    mockBackend([{ _id: 'channel-1', feeds }]);
+    const failingUrl = encodeURIComponent(feeds[0].link);
+    const defaultGet = get.getMockImplementation()!;
+    get.mockImplementation(async (url: string) =>
+      url.includes(failingUrl) ? { status: 500 } : defaultGet(url),
+    );
+
+    const { result } = await renderContainerHook();
+
+    await waitFor(() => expect(result.current.articlesStatus).toBe('error'));
+
+    act(() => result.current.selectFeed(1));
+    expect(result.current.articlesStatus).toBe('success');
+    expect(result.current.articles).toHaveLength(MAX_RSS_ARTICLES);
+  });
+
   it('disallows adding a feed once MAX_RSS_FEEDS is reached', async () => {
     const fullFeeds = Array.from({ length: MAX_RSS_FEEDS }, (_, i) => ({
       title: `Flux ${i}`,
