@@ -45,11 +45,6 @@ export function sumMinutes(entries: { durationMinutes: number }[]): number {
   return entries.reduce((total, entry) => total + entry.durationMinutes, 0);
 }
 
-export function getKidShortLabel(firstName: string): string {
-  const initial = firstName.trim().charAt(0).toUpperCase();
-  return `${initial}.`;
-}
-
 export function getToday(): string {
   return dayjs().format(DATE_FORMAT);
 }

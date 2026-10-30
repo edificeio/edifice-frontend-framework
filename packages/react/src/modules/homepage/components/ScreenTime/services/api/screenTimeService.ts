@@ -53,7 +53,7 @@ export const createScreenTimeService = (baseURL: string) => {
       date: string,
     ): Promise<ScreenTimeHourEntry[]> {
       const body = await get<DailyScreenTimeDTO>(
-        `${encodeURIComponent(kidId)}/daily?date=${date}&mock=true`,
+        `${encodeURIComponent(kidId)}/daily?date=${date}`,
       );
       return Array.isArray(body?.durations) ? body.durations : [];
     },
@@ -67,7 +67,7 @@ export const createScreenTimeService = (baseURL: string) => {
       endDate: string,
     ): Promise<ScreenTimeDayEntry[]> {
       const body = await get<WeeklyScreenTimeDTO>(
-        `${encodeURIComponent(kidId)}/weekly?startDate=${startDate}&endDate=${endDate}&mock=true`,
+        `${encodeURIComponent(kidId)}/weekly?startDate=${startDate}&endDate=${endDate}`,
       );
       return Array.isArray(body?.dailySummaries) ? body.dailySummaries : [];
     },

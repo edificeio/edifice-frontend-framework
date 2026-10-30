@@ -6,7 +6,6 @@ import {
   formatDuration,
   getAxisLabelStep,
   getAxisMax,
-  getKidShortLabel,
   getSchoolYearBounds,
   getWeekBounds,
   getNextPeriodDate,
@@ -37,12 +36,6 @@ describe('formatDuration', () => {
 
   it('rounds the total before splitting hours and minutes', () => {
     expect(formatDuration(59.6)).toBe('1h00min');
-  });
-});
-
-describe('getKidShortLabel', () => {
-  it('returns the uppercased first initial followed by a dot', () => {
-    expect(getKidShortLabel('marc')).toBe('M.');
   });
 });
 

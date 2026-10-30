@@ -442,6 +442,7 @@ i18n.use(initReactI18next).init({
         'homepage.widget.screenTime.today': "Aujourd'hui",
         'homepage.widget.screenTime.yesterday': 'Hier',
         'homepage.widget.screenTime.empty': 'Aucune donnée trouvée.',
+        'homepage.widget.screenTime.kids': 'Enfants',
         'homepage.widget.screenTime.error.connection':
           'Problème de connexion avec le service.',
         'homepage.widget.screenTime.error.contact':

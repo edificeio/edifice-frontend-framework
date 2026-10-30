@@ -11,15 +11,11 @@ import { useScreenTimeModal } from './useScreenTimeModal';
 // Requests are answered by the MSW screen-time mock, whose scenario depends
 // on the kid id (see mockScreenTimeKidIds).
 
-const { useUser, useDirectory } = vi.hoisted(() => ({
-  useUser: vi.fn(),
-  useDirectory: vi.fn(),
-}));
+const { useUser } = vi.hoisted(() => ({ useUser: vi.fn() }));
 
 vi.mock('../../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../../hooks')>()),
   useUser,
-  useDirectory,
 }));
 
 const parent = {
@@ -57,7 +53,6 @@ function renderModalHook(initialKidId = 'alice-id') {
 describe('useScreenTimeModal', () => {
   beforeEach(() => {
     useUser.mockReturnValue({ user: parent });
-    useDirectory.mockReturnValue({ getAvatarURL: vi.fn() });
   });
 
   afterEach(() => {

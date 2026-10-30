@@ -1,4 +1,6 @@
-import { useDirectory, useUser } from '../../../../../hooks';
+import { useMemo } from 'react';
+import { odeServices } from '@edifice.io/client';
+import { useUser } from '../../../../../hooks';
 import { ScreenTimeKid } from '../types';
 
 /**
@@ -7,21 +9,24 @@ import { ScreenTimeKid } from '../types';
  */
 export function useScreenTimeKids(): ScreenTimeKid[] {
   const { user } = useUser();
-  const { getAvatarURL } = useDirectory();
 
-  if (!user) return [];
+  // Memoized on the session user: a new array would make TabsKids measure
+  // its tabs again on every render.
+  return useMemo(() => {
+    if (!user) return [];
 
-  const children = user.children as
-    | Record<string, { firstName: string; lastName: string }>
-    | undefined;
-  const people = Object.entries(children ?? {});
-  if (people.length === 0) people.push([user.userId, user]);
+    const children = user.children as
+      | Record<string, { firstName: string; lastName: string }>
+      | undefined;
+    const people = Object.entries(children ?? {});
+    if (people.length === 0) people.push([user.userId, user]);
 
-  return people.map(([id, { firstName, lastName }]) => ({
-    id,
-    firstName,
-    lastName,
-    displayName: `${firstName} ${lastName}`,
-    avatarUrl: getAvatarURL(id, 'user'),
-  }));
+    return people.map(([id, { firstName, lastName }]) => ({
+      id,
+      firstName,
+      lastName,
+      displayName: `${firstName} ${lastName}`,
+      avatarUrl: odeServices.directory().getAvatarUrl(id, 'user'),
+    }));
+  }, [user]);
 }
