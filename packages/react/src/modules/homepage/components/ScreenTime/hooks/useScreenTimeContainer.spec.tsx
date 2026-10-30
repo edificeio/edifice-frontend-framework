@@ -11,16 +11,14 @@ import { useScreenTimeContainer } from './useScreenTimeContainer';
 // Requests are answered by the MSW screen-time mock, whose scenario depends
 // on the kid id (see mockScreenTimeKidIds).
 
-const { useUser, useDirectory, useEdificeClient } = vi.hoisted(() => ({
+const { useUser, useEdificeClient } = vi.hoisted(() => ({
   useUser: vi.fn(),
-  useDirectory: vi.fn(),
   useEdificeClient: vi.fn(),
 }));
 
 vi.mock('../../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../../hooks')>()),
   useUser,
-  useDirectory,
 }));
 
 vi.mock(
@@ -66,7 +64,6 @@ function wrapper({ children }: { children: ReactNode }) {
 
 describe('useScreenTimeContainer', () => {
   beforeEach(() => {
-    useDirectory.mockReturnValue({ getAvatarURL: vi.fn() });
     useEdificeClient.mockReturnValue({ sessionQuery: { isError: false } });
   });
 

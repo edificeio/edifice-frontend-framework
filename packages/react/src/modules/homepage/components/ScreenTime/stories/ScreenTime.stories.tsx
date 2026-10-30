@@ -16,7 +16,14 @@ const marc: ScreenTimeKid = {
   displayName: 'Marc Lindo',
 };
 
-const multiKids = [alice, marc];
+const ines: ScreenTimeKid = {
+  id: 'ines-id',
+  firstName: 'Inès',
+  lastName: 'Lindo',
+  displayName: 'Inès Lindo',
+};
+
+const multiKids = [alice, marc, ines];
 const singleKid = [alice];
 
 const meta: Meta<typeof ScreenTime> = {
@@ -25,6 +32,7 @@ const meta: Meta<typeof ScreenTime> = {
   decorators: [
     (Story) => (
       <div style={{ maxWidth: 397 }}>
+        <div id="portal" />
         <Story />
       </div>
     ),

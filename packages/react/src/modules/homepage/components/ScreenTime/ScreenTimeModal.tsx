@@ -115,7 +115,6 @@ export function ScreenTimeModal({
             <Button
               data-testid="screen-time-modal-button-learn-more"
               variant="ghost"
-              color="tertiary"
               onClick={() =>
                 window.open(
                   SCREEN_TIME_LEARN_MORE_URL,
@@ -183,7 +182,6 @@ export function ScreenTimeModal({
             aria-label={t('homepage.widget.screenTime.modal.previous')}
             leftIcon={<IconRafterLeft />}
             variant="ghost"
-            color="tertiary"
             disabled={!canGoPrevious}
             onClick={onPrevious}
           />
@@ -193,7 +191,6 @@ export function ScreenTimeModal({
             aria-label={t('homepage.widget.screenTime.modal.next')}
             leftIcon={<IconRafterRight />}
             variant="ghost"
-            color="tertiary"
             disabled={!canGoNext}
             onClick={onNext}
           />

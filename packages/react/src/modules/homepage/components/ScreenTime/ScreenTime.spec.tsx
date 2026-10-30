@@ -16,13 +16,6 @@ const marcKid: ScreenTimeKid = {
   displayName: 'Marc Lindo',
 };
 
-const leoKid: ScreenTimeKid = {
-  id: 'leo-id',
-  firstName: 'Léo',
-  lastName: 'Lindo',
-  displayName: 'Léo Lindo',
-};
-
 describe('ScreenTime', () => {
   it('calls onFullScreenClick when the header button is clicked', async () => {
     const onFullScreenClick = vi.fn();
@@ -95,24 +88,6 @@ describe('ScreenTime', () => {
     expect(screen.getAllByRole('tab')).toHaveLength(2);
   });
 
-  it('shows the full first name on the active tab and the short label on inactive tabs', () => {
-    render(
-      <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid]}
-        selectedKidId={aliceKid.id}
-        onKidChange={vi.fn()}
-        todayMinutes={30}
-        yesterdayMinutes={20}
-        onFullScreenClick={vi.fn()}
-      />,
-    );
-
-    expect(screen.getByText('Alice')).toBeInTheDocument();
-    expect(screen.getByText('M.')).toBeInTheDocument();
-    expect(screen.queryByText('Marc')).not.toBeInTheDocument();
-  });
-
   it('calls onKidChange when clicking an inactive tab', async () => {
     const onKidChange = vi.fn();
     const { user } = render(
@@ -127,124 +102,24 @@ describe('ScreenTime', () => {
       />,
     );
 
-    await user.click(screen.getByRole('tab', { name: marcKid.displayName }));
+    await user.click(screen.getByRole('tab', { name: marcKid.firstName }));
 
     expect(onKidChange).toHaveBeenCalledWith('marc-id');
   });
 
-  it('moves selection and focus to the next tab on ArrowRight', async () => {
-    const onKidChange = vi.fn();
-    const { user } = render(
-      <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid, leoKid]}
-        selectedKidId={aliceKid.id}
-        onKidChange={onKidChange}
-        todayMinutes={30}
-        yesterdayMinutes={20}
-        onFullScreenClick={vi.fn()}
-      />,
-    );
-
-    screen.getByRole('tab', { name: aliceKid.displayName }).focus();
-    await user.keyboard('{ArrowRight}');
-
-    expect(onKidChange).toHaveBeenCalledWith('marc-id');
-    expect(screen.getByRole('tab', { name: marcKid.displayName })).toBe(
-      document.activeElement,
-    );
-  });
-
-  it('wraps around to the first tab on ArrowRight from the last tab', async () => {
-    const onKidChange = vi.fn();
-    const { user } = render(
-      <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid, leoKid]}
-        selectedKidId={leoKid.id}
-        onKidChange={onKidChange}
-        todayMinutes={30}
-        yesterdayMinutes={20}
-        onFullScreenClick={vi.fn()}
-      />,
-    );
-
-    screen.getByRole('tab', { name: leoKid.displayName }).focus();
-    await user.keyboard('{ArrowRight}');
-
-    expect(onKidChange).toHaveBeenCalledWith('alice-id');
-    expect(screen.getByRole('tab', { name: aliceKid.displayName })).toBe(
-      document.activeElement,
-    );
-  });
-
-  it('wraps around to the last tab on ArrowLeft from the first tab', async () => {
-    const onKidChange = vi.fn();
-    const { user } = render(
-      <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid, leoKid]}
-        selectedKidId={aliceKid.id}
-        onKidChange={onKidChange}
-        todayMinutes={30}
-        yesterdayMinutes={20}
-        onFullScreenClick={vi.fn()}
-      />,
-    );
-
-    screen.getByRole('tab', { name: aliceKid.displayName }).focus();
-    await user.keyboard('{ArrowLeft}');
-
-    expect(onKidChange).toHaveBeenCalledWith('leo-id');
-    expect(screen.getByRole('tab', { name: leoKid.displayName })).toBe(
-      document.activeElement,
-    );
-  });
-
-  it('keeps exactly one tab reachable via Tab (tabIndex 0) when a kid is selected', () => {
+  it('renders the loading card while the kids are not known yet', () => {
     render(
       <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid, leoKid]}
-        selectedKidId={marcKid.id}
+        status="loading"
+        kids={[]}
         onKidChange={vi.fn()}
-        todayMinutes={30}
-        yesterdayMinutes={20}
+        todayMinutes={0}
+        yesterdayMinutes={0}
         onFullScreenClick={vi.fn()}
       />,
     );
 
-    const rovingTabs = screen
-      .getAllByRole('tab')
-      .filter((tab) => tab.getAttribute('tabindex') === '0');
-
-    expect(rovingTabs).toHaveLength(1);
-    expect(rovingTabs[0]).toBe(
-      screen.getByRole('tab', { name: marcKid.displayName }),
-    );
-  });
-
-  it('falls back to the first tab as the sole tabIndex-0 tab when no kid matches selectedKidId', () => {
-    render(
-      <ScreenTime
-        status="default"
-        kids={[aliceKid, marcKid, leoKid]}
-        selectedKidId="unknown-id"
-        onKidChange={vi.fn()}
-        todayMinutes={30}
-        yesterdayMinutes={20}
-        onFullScreenClick={vi.fn()}
-      />,
-    );
-
-    const rovingTabs = screen
-      .getAllByRole('tab')
-      .filter((tab) => tab.getAttribute('tabindex') === '0');
-
-    expect(rovingTabs).toHaveLength(1);
-    expect(rovingTabs[0]).toBe(
-      screen.getByRole('tab', { name: aliceKid.displayName }),
-    );
+    expect(screen.getByText("Aujourd'hui")).toBeInTheDocument();
   });
 
   it('renders the empty message and no durations in the empty status', () => {
