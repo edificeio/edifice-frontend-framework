@@ -7,10 +7,8 @@ export function AgendaContainer() {
   const { events } = useAgendaContainer();
 
   const handleEventClick = (event: CalendarEvent) => {
-    window.open(
-      `/calendar#/view/${event.calendarId}/event/${event.id}`,
-      '_self',
-    );
+    // The agenda app has no route for a single event: open the event's calendar.
+    window.open(`/calendar#/view/${event.calendarId}`, '_self');
   };
 
   return <Agenda events={events} onEventClick={handleEventClick} />;
