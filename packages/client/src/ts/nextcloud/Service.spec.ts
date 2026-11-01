@@ -6,6 +6,7 @@ describe('NextcloudService', () => {
 
   let httpMock: {
     get: ReturnType<typeof vi.fn>;
+    post: ReturnType<typeof vi.fn>;
     put: ReturnType<typeof vi.fn>;
   };
   let service: NextcloudService;
@@ -13,6 +14,7 @@ describe('NextcloudService', () => {
   beforeEach(() => {
     httpMock = {
       get: vi.fn(),
+      post: vi.fn(),
       put: vi.fn(),
     };
     const mockContext = {
@@ -158,6 +160,20 @@ describe('NextcloudService', () => {
       expect(httpMock.put).toHaveBeenCalledWith(expect.any(String), undefined, {
         queryParams: { parentId: 'folder-id' },
       });
+    });
+  });
+
+  describe('createFolder', () => {
+    it('sends the folder path as a query param', async () => {
+      httpMock.post.mockResolvedValue({ status: 'OK' });
+
+      await service.createFolder(userId, '/Documents/Casier/');
+
+      expect(httpMock.post).toHaveBeenCalledWith(
+        `/nextcloud/files/user/${userId}/create/folder`,
+        undefined,
+        { queryParams: { path: '/Documents/Casier/' } },
+      );
     });
   });
 

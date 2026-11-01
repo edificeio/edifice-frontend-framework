@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DocumentHelper, NextcloudDocument, Role } from '@edifice.io/client';
 import clsx from 'clsx';
@@ -18,7 +11,7 @@ import { LoadingScreen } from '../../../components/LoadingScreen';
 import { SearchBar } from '../../../components/SearchBar';
 import { Tree } from '../../../components/Tree';
 import { findNodeById } from '../../../components/Tree/utilities/tree';
-import { useNextcloudSearch, useToast, useUser } from '../../../hooks';
+import { useNextcloudSearch, useUser } from '../../../hooks';
 import { NextcloudFolderNode } from '../../../hooks/useNextcloudSearch/useNextcloudSearch';
 import {
   IconSortAscendingLetters,
@@ -26,9 +19,9 @@ import {
   IconSortTime,
 } from '../../icons/components';
 import { NextcloudFileCard } from '../FileCard';
+import NextcloudLogin from './NextcloudLogin';
 
 import illuError from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-error.svg';
-import illuConnectionLost from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-connection-lost.svg';
 import illuTrash from '@edifice.io/bootstrap/dist/images/emptyscreen/illu-trash.svg';
 import { Button, Flex } from '../../../components';
 
@@ -71,7 +64,6 @@ const Nextcloud = ({
 }: NextcloudProps) => {
   const { t } = useTranslation();
   const { user } = useUser();
-  const toast = useToast();
 
   const {
     root,
@@ -82,8 +74,6 @@ const Nextcloud = ({
     loadContent,
     loadError,
   } = useNextcloudSearch(ROOT_ID, t('nextcloud'), user?.userId);
-
-  const popupRef = useRef<Window | null>(null);
 
   const [currentNodeId, setCurrentNodeId] = useState<string>(ROOT_ID);
 
@@ -188,34 +178,6 @@ const Nextcloud = ({
 
   const nextcloud = clsx('workspace flex-grow-1 gap-0', className);
 
-  const openLoginPopup = () => {
-    popupRef.current = window.open(
-      `${window.location.origin}/nextcloud/user/oauth2/init`,
-      '',
-      'popup, height=600, width=400',
-    );
-    if (!popupRef.current) {
-      toast.error(t('nextcloud.auth.popupBlocked'));
-    }
-  };
-
-  useEffect(() => {
-    function handleMessage(event: MessageEvent) {
-      if (
-        event.origin !== window.location.origin ||
-        event.data?.type !== 'nextcloud-connected'
-      ) {
-        return;
-      }
-      if (popupRef.current && !popupRef.current.closed) {
-        popupRef.current.close();
-      }
-      refetchAuthStatus();
-    }
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [refetchAuthStatus]);
-
   if (isCheckingAuth) {
     return <LoadingScreen />;
   }
@@ -240,23 +202,7 @@ const Nextcloud = ({
   }
 
   if (needsAuth) {
-    return (
-      <Flex
-        direction="column"
-        gap="12"
-        className="h-full w-100"
-        justify="center"
-        align="center"
-      >
-        <EmptyScreen
-          imageSrc={illuConnectionLost}
-          title={t('nextcloud.auth.title')}
-          text={t('nextcloud.auth.description')}
-        />
-
-        <Button onClick={openLoginPopup}>{t('nextcloud.auth.connect')}</Button>
-      </Flex>
-    );
+    return <NextcloudLogin onConnected={refetchAuthStatus} />;
   }
 
   return (

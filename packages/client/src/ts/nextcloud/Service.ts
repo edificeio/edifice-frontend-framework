@@ -99,6 +99,19 @@ export class NextcloudService {
   }
 
   /**
+   * Create a folder in a user's Nextcloud.
+   * @param userId - the id of the user who owns the Nextcloud.
+   * @param path - path of the folder to create, relative to the user's Nextcloud root.
+   */
+  async createFolder(userId: string, path: string): Promise<void> {
+    await this.http.post(
+      `/nextcloud/files/user/${userId}/create/folder`,
+      undefined,
+      { queryParams: { path } },
+    );
+  }
+
+  /**
    * Check whether a user has an active Nextcloud OAuth2 connection.
    * @param userId - the id of the user to check.
    */
