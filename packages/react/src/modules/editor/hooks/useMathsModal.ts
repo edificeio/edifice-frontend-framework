@@ -18,11 +18,17 @@ export const useMathsModal = (editor: Editor | null) => {
     toggle();
   };
 
-  const onSuccess = (formulaEditor: string) => {
-    editor?.commands.insertContentAt(
-      editor.view.state.selection,
-      formulaEditor,
-    );
+  const onSuccess = (latex: string) => {
+    // A raw `$...$` string here would NOT become a math node: TipTap's input
+    // rules (which convert that syntax) only fire on live keystrokes, never
+    // on a programmatic content insertion like this one - insert the node
+    // directly instead.
+    if (latex) {
+      editor?.commands.insertContentAt(editor.view.state.selection, {
+        type: 'inlineMath',
+        attrs: { latex },
+      });
+    }
     editor?.commands.enter();
     toggle();
   };

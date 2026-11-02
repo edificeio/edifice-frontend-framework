@@ -1,22 +1,35 @@
 import { useEffect, useState } from 'react';
 
 import Mathematics from '@tiptap/extension-mathematics';
-import { Editor, EditorContent, useEditor } from '@tiptap/react';
+import { Editor, EditorContent, JSONContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal } from '../../../../components';
 
 interface ModalProps {
   isOpen: boolean;
-  onSuccess?: (formulaEditor: string) => void;
+  onSuccess?: (latex: string) => void;
   onCancel?: () => void;
+}
+
+// A single inlineMath node, wrapped in a minimal doc - what setContent/
+// insertContentAt need to actually create the node (a raw `$...$` string
+// only does that via input rules, which never fire outside live typing).
+function mathDoc(latex: string): JSONContent {
+  return {
+    type: 'doc',
+    content: [
+      {
+        type: 'paragraph',
+        content: [{ type: 'inlineMath', attrs: { latex } }],
+      },
+    ],
+  };
 }
 
 const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
   const FORMULA_PLACEHOLDER = '\\frac{-b + \\sqrt{b^2 - 4ac}}{2a}';
-  const [formulaEditor, setFormulaEditor] = useState<string>(
-    `$${FORMULA_PLACEHOLDER}$`,
-  );
+  const [latex, setLatex] = useState<string>(FORMULA_PLACEHOLDER);
 
   const { t } = useTranslation();
 
@@ -27,23 +40,14 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
   });
 
   useEffect(() => {
-    editor?.commands.setContent(formulaEditor);
+    editor?.commands.setContent(latex ? mathDoc(latex) : '');
     editor?.commands.enter();
     return;
-  }, [editor, formulaEditor]);
+  }, [editor, latex]);
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newFormulaTextarea: string = event.target.value;
-    const newFormulaEditor = newFormulaTextarea.replaceAll('\n', '$<br/>$');
-    // replace editor content
-    if (newFormulaEditor) {
-      editor?.commands.setContent(`$${newFormulaEditor}$`);
-      setFormulaEditor(`$${newFormulaEditor}$`);
-    } else {
-      editor?.commands.setContent('');
-      setFormulaEditor('');
-    }
-    editor?.commands.enter();
+    const newLatex = event.target.value;
+    setLatex(newLatex);
   };
 
   const handleOnCancel = () => {
@@ -92,7 +96,7 @@ const MathsModal = ({ isOpen, onSuccess, onCancel }: ModalProps) => {
         </Button>
         <Button
           color="primary"
-          onClick={() => onSuccess?.(formulaEditor)}
+          onClick={() => onSuccess?.(latex)}
           type="button"
           variant="filled"
         >

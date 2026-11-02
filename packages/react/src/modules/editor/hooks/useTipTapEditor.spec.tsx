@@ -22,6 +22,7 @@ const KITCHEN_SINK_HTML = `
   <iframe src="https://example.com/embed"></iframe>
   <div class="attachments"><a href="/workspace/document/3" data-content-type="application/pdf">file.pdf</a></div>
   <div data-information-pane data-type="warning"><p>Pane</p></div>
+  <p>Energy: <span data-type="inline-math" data-latex="E=mc^2"></span></p>
 `;
 
 describe('useTipTapEditor', () => {
@@ -130,6 +131,7 @@ describe('useTipTapEditor', () => {
       'tableHeader',
       'hyperlink',
       'customHighlight',
+      'inlineMath',
     ].forEach((name) => {
       expect(names).toContain(name);
     });
@@ -169,6 +171,8 @@ describe('useTipTapEditor', () => {
     expect(types).toContain('"iframe"');
     expect(types).toContain('"attachments"');
     expect(types).toContain('"information-pane"');
+    expect(types).toContain('"inlineMath"');
+    expect(types).toContain('"latex":"E=mc^2"');
 
     const duplicateWarning = warnSpy.mock.calls.find((args) =>
       String(args[0]).includes('Duplicate extension names'),
