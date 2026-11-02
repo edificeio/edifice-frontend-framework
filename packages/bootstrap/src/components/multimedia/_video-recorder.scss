@@ -1,45 +1,181 @@
-@use "../../abstracts/" as *;
-@use "../../vendors/bootstrap";
+.video-recorder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: 64.4rem;
+  margin: auto;
 
-.modal-body {
-  & .video-recorder {
-    &-caption {
-      margin: 0 $spacer-12 $spacer-12 $spacer-12;
+  .video-recorder-caption {
+    margin: 0;
+  }
+
+  .video-recorder-video-container {
+    container-type: inline-size;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--primitive-border-radius-xl);
+    background-color: var(--color-primary-pale);
+
+    video {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .video-recorder-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary-default);
+
+    svg {
+      width: 6rem;
+      height: auto;
+    }
+  }
+
+  .video-recorder-time {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-md);
+    background-color: rgb(0 0 0 / 40%);
+    color: var(--primitive-white);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  .video-recorder-time-recording {
+    color: var(--color-support-danger-500);
+  }
+
+  .toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+    background-color: var(--primitive-white);
+    box-shadow: 0 0.4rem 1rem 0 rgb(0 0 0 / 18%);
+    transform: translate(-50%, -0.8rem);
+
+    @container (max-width: 480px) {
+      .video-recorder-toolbar-label {
+        display: none;
+      }
+
+      .btn {
+        padding: var(--primitive-spacer-8);
+      }
+    }
+  }
+}
+
+.video-recorder-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: 64.4rem;
+  margin: auto;
+  padding: var(--primitive-spacer-32) 0;
+  border-radius: var(--primitive-border-radius-md);
+  background-color: var(--primitive-white);
+
+  .video-recorder-error-illustration {
+    width: 27.8rem;
+    max-width: 100%;
+    aspect-ratio: 278 / 234;
+    background: url('./images/emptyscreen/illu-videorecorder.svg') center /
+      contain no-repeat;
+
+    [data-product='neo'] &,
+    [data-product='one'] & {
+      aspect-ratio: 281 / 200;
+      background-image: url('./images/emptyscreen/illu-videorecorder-neo.svg');
+    }
+  }
+
+  .video-recorder-error-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    max-width: 100%;
+    color: var(--primitive-grey-900);
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .video-recorder-error-title,
+  .video-recorder-error-description {
+    margin: 0;
+  }
+
+  .video-recorder-error-title {
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  .video-recorder-error-description {
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+}
+
+// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
+// to the theme tokens (same as ButtonBeta ghost) for the edifice themes.
+[data-product='edifice1d'],
+[data-product='edifice2d'] {
+  .video-recorder .toolbar {
+    .btn-ghost-tertiary,
+    .btn-ghost-danger {
+      --edifice-btn-bg: transparent;
+      --edifice-btn-border-color: transparent;
+      --edifice-btn-hover-bg: var(--primitive-grey-100);
+      --edifice-btn-hover-border-color: transparent;
+      --edifice-btn-active-bg: var(--primitive-grey-200);
+      --edifice-btn-active-border-color: transparent;
+      --edifice-btn-disabled-bg: transparent;
+      --edifice-btn-disabled-border-color: transparent;
+      --edifice-btn-disabled-opacity: 1;
     }
 
-    &-video-container {
-      min-height: 200px;
-      height: 100%;
+    .btn-ghost-tertiary {
+      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
+      --edifice-btn-hover-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-active-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-disabled-color: var(
+        --color-text-button-tertiary-other-disable
+      );
+    }
 
-      & video {
-        height: 100%;
-        width: 100%;
-      }
-
-      & .toolbar {
-        padding: $spacer-4 $spacer-12;
-        transform: translate(-50%, -#{$spacer-8}) !important;
-
-        @include bootstrap.media-breakpoint-down(md) {
-          padding: $spacer-0 $spacer-8;
-          transform: translate(-50%, -#{$spacer-12}) !important;
-        }
-
-        @include bootstrap.media-breakpoint-down(sm) {
-          transform: translate(-50%, -#{$spacer-8}) !important;
-        }
-      }
-
-      & .video-recorder-time {
-        position: absolute;
-        top: $spacer-0;
-        padding: $spacer-2 $spacer-8;
-
-        @include bootstrap.media-breakpoint-down(sm) {
-          padding-block: $spacer-0;
-          top: $spacer-4 !important;
-        }
-      }
+    .btn-ghost-danger {
+      --edifice-btn-color: var(--color-support-danger-700);
+      --edifice-btn-hover-color: var(--color-support-danger-700);
+      --edifice-btn-active-color: var(--color-support-danger-700);
+      --edifice-btn-disabled-color: var(--color-support-danger-300);
     }
   }
 }

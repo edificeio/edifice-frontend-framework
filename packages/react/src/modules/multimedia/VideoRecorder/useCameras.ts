@@ -24,6 +24,9 @@ export function useCameras() {
   // Video stream from the default or prefered camera.
   const [stream, setStream] = useState<MediaStream>();
 
+  // Last failure to get a usable stream (no device, permission denied...).
+  const [streamError, setStreamError] = useState<unknown>();
+
   /** Detect available cameras. */
   async function getVideoInputDevices(): Promise<MediaDeviceInfo[]> {
     const devices = await navigator.mediaDevices.enumerateDevices();
@@ -40,10 +43,23 @@ export function useCameras() {
       const mediaStream: MediaStream =
         await navigator.mediaDevices.getUserMedia(constraints);
 
+      // Both a camera and a microphone are required.
+      const kinds = mediaStream.getTracks().map((track) => track.kind);
+      if (!kinds.includes('video') || !kinds.includes('audio')) {
+        throw new Error('Missing camera or microphone track');
+      }
+
+      // A device unplugged or a permission revoked ends its track.
+      mediaStream.getTracks().forEach((track) => {
+        track.onended = () => setStreamError(new Error('Track ended'));
+      });
+
       // Use it
       setStream(mediaStream);
+      setStreamError(undefined);
     } catch (err) {
       console.error(err);
+      setStreamError(err);
     }
   };
 
@@ -133,6 +149,8 @@ export function useCameras() {
     setPreferedDevice,
     /** The current video stream. */
     stream,
+    /** Why no usable stream could be acquired, if so. */
+    streamError,
     /** Start a video stream from the default or prefered device. */
     restartStream,
   };

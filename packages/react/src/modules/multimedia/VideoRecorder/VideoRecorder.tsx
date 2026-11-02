@@ -13,23 +13,30 @@ import { convertMsToMS, getBestSupportedMimeType } from '@edifice.io/utilities';
 import { useTranslation } from 'react-i18next';
 import {
   FormControl,
+  Input,
   Label,
   LoadingScreen,
   OptionsType,
   Select,
 } from '../../../components';
-import { useUpload } from '../../../hooks';
+import { useDate, useUpload } from '../../../hooks';
 import { IconRecord, IconRecordVideo } from '../../icons/components';
 import { useCameras } from './useCameras';
 import { VideoRecorderToolbar } from './VideoRecorderToolbar';
 
 export interface VideoRecorderProps {
   appCode: string;
+  /**
+   * @deprecated Not part of the recorder design anymore, will be removed in
+   * a future major version.
+   */
   caption?: string;
   onSuccess?: (res: WorkspaceElement[]) => void;
   onError: (error: string) => void;
   onRecordUpdated?: (recordURL?: string) => void;
   hideSaveAction?: boolean;
+  /** Called with the record name each time the user edits it. */
+  onNameChange?: (name: string) => void;
 }
 
 export interface VideoRecorderRef {
@@ -45,11 +52,17 @@ const VideoRecorder = forwardRef(
       onError,
       onRecordUpdated,
       hideSaveAction = false,
+      onNameChange,
     }: VideoRecorderProps,
     ref,
   ) => {
-    const { inputDevices, setPreferedDevice, restartStream, stream } =
-      useCameras();
+    const {
+      inputDevices,
+      setPreferedDevice,
+      restartStream,
+      stream,
+      streamError,
+    } = useCameras();
 
     const [maxDuration, setMaxDuration] = useState<number>(180000);
 
@@ -78,6 +91,16 @@ const VideoRecorder = forwardRef(
     }));
 
     const { t } = useTranslation();
+    const { formatDate } = useDate();
+
+    const [recordName, setRecordName] = useState<string>(() =>
+      `${t('bbm.video.recorder.defaultName')} ${formatDate(new Date(), 'YYYY/MM/DD HH[h]mm')}`.trim(),
+    );
+
+    const handleNameChange = (name: string) => {
+      setRecordName(name);
+      onNameChange?.(name);
+    };
 
     useEffect(() => {
       initMaxDuration();
@@ -241,25 +264,29 @@ const VideoRecorder = forwardRef(
     const handleSave = async () => {
       // WB-3012, stop any playing video before saving it.
       videoRef?.current?.pause();
-      setSaving(true);
       if (!recordedVideo) {
         console.error('Error while saving video: recorded video is undefined.');
         return;
       }
 
-      const resVideo = await uploadBlob(recordedVideo, {
-        duration: recordedTime,
-      });
+      setSaving(true);
+      try {
+        const resVideo = await uploadBlob(recordedVideo, {
+          filename: recordName.trim(),
+          duration: recordedTime,
+        });
 
-      if (resVideo != null) {
-        onSuccess?.([resVideo]);
-        setSaving(false);
-        setSaved(true);
-        return [resVideo];
-      } else {
+        if (resVideo != null) {
+          onSuccess?.([resVideo]);
+          setSaved(true);
+          return [resVideo];
+        }
         onError('Error while uploading video');
+      } catch (error) {
+        console.error(error);
+        onError('Error while uploading video');
+      } finally {
         setSaving(false);
-        setSaved(true);
       }
     };
 
@@ -293,17 +320,45 @@ const VideoRecorder = forwardRef(
       }
     }, [recordedTime, handleStop]);
 
-    return (
-      <div className="video-recorder d-flex flex-fill flex-column align-items-center pb-8">
-        <div className="video-recorder-caption d-none d-md-block">
-          {caption}
+    if (streamError) {
+      return (
+        <div className="video-recorder-error">
+          <div
+            className="video-recorder-error-illustration"
+            aria-hidden="true"
+          />
+          <div className="video-recorder-error-text">
+            <p className="video-recorder-error-title">
+              {t('bbm.video.recorder.device.error.title')}
+            </p>
+            <p className="video-recorder-error-description">
+              {t('bbm.video.recorder.device.error.text')}
+            </p>
+          </div>
         </div>
+      );
+    }
+
+    return (
+      <div className="video-recorder">
+        <FormControl id="recordName" isRequired isReadOnly={saving || saved}>
+          <Label leftIcon={<IconRecordVideo width={18} height={18} />}>
+            {t('bbm.video.recorder.name.label')}
+          </Label>
+          <Input
+            type="text"
+            size="lg"
+            maxLength={80}
+            showCounter
+            value={recordName}
+            placeholder={t('bbm.video.recorder.name')}
+            onChange={(event) => handleNameChange(event.target.value)}
+          />
+        </FormControl>
         {inputDevices.length > 1 && (
-          <div className="video-recorder-devices mb-12">
+          <div className="video-recorder-devices">
             <FormControl id="selectInputDevice">
-              <Label className="d-none d-md-block">
-                {t('bbm.video.record.select.devices.label')}
-              </Label>
+              <Label>{t('bbm.video.record.select.devices.label')}</Label>
               <Select
                 placeholderOption={t(
                   'bbm.video.record.select.devices.placeholder',
@@ -317,7 +372,10 @@ const VideoRecorder = forwardRef(
           </div>
         )}
 
-        <div className="video-recorder-video-container position-relative align-self-stretch">
+        <div className="video-recorder-video-container">
+          <div className="video-recorder-placeholder">
+            <IconRecordVideo width={60} height={60} />
+          </div>
           <video
             ref={videoRef}
             playsInline={true}
@@ -325,35 +383,39 @@ const VideoRecorder = forwardRef(
             controls={false}
             muted={true}
             onEnded={handleEnded}
-            className="rounded"
           >
             <track default kind="captions" srcLang="fr" src=""></track>
           </video>
-          {(recording || recorded) && (
-            <div className="video-recorder-time d-flex align-items-center font-monospace fs-6 text-bg-dark rounded">
-              {recording && (
-                <>
-                  <IconRecord
-                    width={12}
-                    height={12}
-                    color="red"
-                    className="me-4"
-                  />
-                  <span>
-                    {convertMsToMS(recordedTime)}/{convertMsToMS(maxDuration)}
-                  </span>
-                </>
-              )}
-              {recorded && (
-                <>
-                  <IconRecordVideo width={14} height={14} className="me-4" />
-                  <span>
-                    {convertMsToMS(playedTime)}/{convertMsToMS(recordedTime)}
-                  </span>
-                </>
-              )}
-            </div>
-          )}
+          <div className="video-recorder-time">
+            {!recording && !recorded && (
+              <>
+                <IconRecordVideo width={18} height={18} />
+                <span>
+                  {convertMsToMS(0)}/{convertMsToMS(maxDuration)}
+                </span>
+              </>
+            )}
+            {recording && (
+              <>
+                <IconRecord
+                  width={12}
+                  height={12}
+                  className="video-recorder-time-recording"
+                />
+                <span>
+                  {convertMsToMS(recordedTime)}/{convertMsToMS(maxDuration)}
+                </span>
+              </>
+            )}
+            {recorded && (
+              <>
+                <IconRecordVideo width={18} height={18} />
+                <span>
+                  {convertMsToMS(playedTime)}/{convertMsToMS(recordedTime)}
+                </span>
+              </>
+            )}
+          </div>
           {stream && (
             <VideoRecorderToolbar
               {...{
