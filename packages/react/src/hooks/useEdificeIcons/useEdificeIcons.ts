@@ -64,6 +64,10 @@ export default function useEdificeIcons() {
       case 'collaborativewall':
         appCode = 'collaborative-wall';
         break;
+      // Collect shares the Rack pictogram
+      case 'collect':
+        appCode = 'rack';
+        break;
       case 'communautés':
         appCode = 'community';
         break;

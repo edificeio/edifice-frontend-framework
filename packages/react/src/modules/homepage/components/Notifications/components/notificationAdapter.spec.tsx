@@ -71,6 +71,17 @@ describe('notificationAdapter', () => {
       },
     );
 
+    it('maps COLLECT to the rack app code but keeps the collect i18n key', () => {
+      const notification = makeNotification({
+        type: 'COLLECT',
+        sender: 'user-1',
+        params: { username: 'test' },
+      });
+      const { params } = notificationAdapter(notification);
+      expect(params.appCode).toBe('rack');
+      expect(params.appI18nKey).toBe('collect');
+    });
+
     it('converts underscores to hyphens for unknown types', () => {
       const notification = makeNotification({
         type: 'BLOG_POST',
