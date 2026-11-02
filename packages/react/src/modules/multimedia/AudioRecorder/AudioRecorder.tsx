@@ -1,16 +1,10 @@
-import { ReactNode, forwardRef, useImperativeHandle, useState } from 'react';
+import { forwardRef, useImperativeHandle, useState } from 'react';
 
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
-import {
-  FormControl,
-  Input,
-  InputProps,
-  Toolbar,
-  ToolbarItem,
-} from '../../../components';
+import { FormControl, Input, Label, Toolbar } from '../../../components';
 import { IconMic } from '../../icons/components';
 import AudioRecorderTimer from './AudioRecorderTimer';
 import useAudioRecorder from './useAudioRecorder';
@@ -20,16 +14,8 @@ export interface AudioRecorderProps {
   onRecordUpdated?: (recordURL?: string) => void;
   hideSaveAction?: boolean;
   visibility?: WorkspaceVisibility;
-  /** Extra class names on the root element, to restyle the recorder. */
-  className?: string;
-  /** Optional label rendered above the record name input. */
-  nameLabel?: ReactNode;
-  /** Extra props forwarded to the record name input (override defaults). */
-  nameInputProps?: Omit<Partial<InputProps>, 'ref'>;
-  /** Class name of the record name FormControl (defaults to `mb-32`). */
-  nameFormControlClassName?: string;
-  /** Customizes the toolbar items computed by the recorder. */
-  customizeToolbarItems?: (items: ToolbarItem[]) => ToolbarItem[];
+  /** Called with the record name each time the user edits it. */
+  onNameChange?: (name: string) => void;
 }
 
 export interface AudioRecorderRef {
@@ -43,11 +29,7 @@ const AudioRecorder = forwardRef(
       onRecordUpdated,
       hideSaveAction = false,
       visibility = 'protected',
-      className,
-      nameLabel,
-      nameInputProps,
-      nameFormControlClassName = 'mb-32',
-      customizeToolbarItems,
+      onNameChange,
     }: AudioRecorderProps,
     ref,
   ) => {
@@ -58,6 +40,7 @@ const AudioRecorder = forwardRef(
       audioRef,
       audioNameRef,
       toolbarItems,
+      micError,
       maxDuration,
       handlePlayEnded,
       handleSave,
@@ -91,39 +74,58 @@ const AudioRecorder = forwardRef(
 
     const [audioTime, setAudioTime] = useState<number>(0);
 
-    const classColor = clsx({
-      'text-danger': recordState === 'RECORDING',
-      'text-success': playState === 'PLAYING',
+    const iconClassName = clsx('audio-recorder-icon', {
+      'audio-recorder-icon--recording': recordState === 'RECORDING',
+      'audio-recorder-icon--playing': playState === 'PLAYING',
     });
 
     const handleTimeUpdate = (event: any) => {
       setAudioTime(event.target.currentTime);
     };
 
+    if (micError) {
+      return (
+        <div className="audio-recorder-error">
+          <div
+            className="audio-recorder-error-illustration"
+            aria-hidden="true"
+          />
+          <div className="audio-recorder-error-text">
+            <p className="audio-recorder-error-title">
+              {t('bbm.audio.recorder.device.error.title')}
+            </p>
+            <p className="audio-recorder-error-description">
+              {t('bbm.audio.recorder.device.error.text')}
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     return (
-      <div
-        className={clsx('audio-recorder m-auto d-flex flex-column', className)}
-      >
+      <div className="audio-recorder">
         <FormControl
           id="recordName"
-          className={nameFormControlClassName}
           isRequired
           isReadOnly={recordState === 'SAVED' || recordState === 'SAVING'}
         >
-          {nameLabel}
+          <Label leftIcon={<IconMic width={18} height={18} />}>
+            {t('bbm.audio.recorder.name.label')}
+          </Label>
           <Input
             type="text"
-            size={'sm'}
+            size="lg"
+            maxLength={80}
+            showCounter
             placeholder={t('bbm.audio.recorder.name')}
             defaultValue={getDefaultDate()}
-            {...nameInputProps}
-            // Keep last: the hook reads the record name from this ref
+            onChange={(event) => onNameChange?.(event.target.value)}
             ref={audioNameRef}
           />
         </FormControl>
-        <div className="audio-recorder-controls d-flex flex-column">
-          <div className="audio-recorder-icon mx-auto">
-            <IconMic width={64} height={64} className={classColor} />
+        <div className="audio-recorder-controls">
+          <div className={iconClassName}>
+            <IconMic width={64} height={64} />
           </div>
           <AudioRecorderTimer
             recordState={recordState}
@@ -139,13 +141,7 @@ const AudioRecorder = forwardRef(
           >
             <track default kind="captions" srcLang="fr" src=""></track>
           </audio>
-          <Toolbar
-            items={
-              customizeToolbarItems
-                ? customizeToolbarItems(toolbarItems)
-                : toolbarItems
-            }
-          />
+          <Toolbar items={toolbarItems} />
         </div>
       </div>
     );

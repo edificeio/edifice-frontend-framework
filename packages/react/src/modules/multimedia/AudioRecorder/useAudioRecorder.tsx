@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 
 import { WorkspaceElement, WorkspaceVisibility } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
@@ -89,6 +89,9 @@ export default function useAudioRecorder(
   const leftChannelRef = useRef<Float32Array[]>();
   const rightChannelRef = useRef<Float32Array[]>();
 
+  // Why the microphone cannot be used (no device, permission denied...).
+  const [micError, setMicError] = useState<unknown>();
+
   const { t } = useTranslation();
   const { create } = useWorkspaceFile();
 
@@ -112,6 +115,32 @@ export default function useAudioRecorder(
       encoderWorker.terminate();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Check the microphone access upfront, so the user knows before recording.
+  useEffect(() => {
+    let cancelled = false;
+
+    const checkMicrophone = async () => {
+      try {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error('Media devices are not available');
+        }
+        const probe = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        // Only a check: release the microphone right away.
+        probe.getTracks().forEach((track) => track.stop());
+      } catch (err) {
+        console.error(err);
+        if (!cancelled) setMicError(err);
+      }
+    };
+    checkMicrophone();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   /**
@@ -154,8 +183,18 @@ export default function useAudioRecorder(
 
   const initRecording = async () => {
     // Request access to the user's microphone
-    const micStream: MediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
+    let micStream: MediaStream;
+    try {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (err) {
+      console.error(err);
+      setMicError(err);
+      return;
+    }
+
+    // A device unplugged or a permission revoked ends its track.
+    micStream.getTracks().forEach((track) => {
+      track.onended = () => setMicError(new Error('Track ended'));
     });
 
     // Create the microphone stream
@@ -332,7 +371,8 @@ export default function useAudioRecorder(
             ]);
 
             encoderWorker.onmessage = async (event: MessageEvent) => {
-              if (event.data instanceof Blob) {
+              if (!(event.data instanceof Blob)) return;
+              try {
                 const file = new File([event.data], audioName!, {
                   type: 'audio/mp3',
                 });
@@ -352,8 +392,18 @@ export default function useAudioRecorder(
                 });
 
                 resolve(resourceAudio);
+              } catch (error) {
+                // Keep the record so the user can retry the save.
+                dispatch({
+                  type: 'update',
+                  updatedState: { recordState: 'RECORDED' },
+                });
+                console.error('Error while saving', error);
+                reject(error);
               }
             };
+          } else {
+            throw new Error('Audio encoder is not ready');
           }
         } catch (error) {
           dispatch({
@@ -415,36 +465,60 @@ export default function useAudioRecorder(
       ? t('bbm.audio.record.start')
       : t('bbm.audio.record.resume');
 
+  // Disabled buttons only show their icon, as in the design.
+  const renderLabel = (label: string, disabled: boolean) =>
+    disabled ? undefined : (
+      // Wrapped so the label can be hidden in narrow containers (see SCSS).
+      <span className="audio-recorder-toolbar-label">{label}</span>
+    );
+
+  const isRecordDisabled =
+    (recordState !== 'IDLE' && recordState !== 'PAUSED') ||
+    recordTime >= maxDuration;
+  const isRecordPauseDisabled = recordState !== 'RECORDING';
+  const isPlayDisabled =
+    recordState !== 'RECORDED' &&
+    recordState !== 'PAUSED' &&
+    recordState !== 'SAVED';
+  const isStopDisabled = playState !== 'PLAYING' && playState !== 'PAUSED';
+  const isResetDisabled =
+    recordState !== 'RECORDED' &&
+    recordState !== 'PAUSED' &&
+    playState !== 'PLAYING' &&
+    playState !== 'PAUSED';
+  const isSaveDisabled =
+    isResetDisabled || recordState === 'SAVED' || !audioNameRef.current?.value;
+
   const toolbarItems: ToolbarItem[] = [
     {
-      type: 'icon',
+      type: 'button',
       name: 'record',
       visibility: recordState === 'RECORDING' ? 'hide' : 'show',
       props: {
-        'icon': <IconRecord />,
-        'color': 'danger',
-        'disabled':
-          (recordState !== 'IDLE' && recordState !== 'PAUSED') ||
-          recordTime >= maxDuration,
-        'onClick': handleRecord,
-        'aria-label': recordText,
+        leftIcon: <IconRecord />,
+        color: 'danger',
+        disabled: isRecordDisabled,
+        onClick: handleRecord,
+        children: renderLabel(recordText, isRecordDisabled),
       },
       tooltip: recordText,
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'recordPause',
       visibility: recordState === 'RECORDING' ? 'show' : 'hide',
       props: {
-        'icon': <IconRecordPause />,
-        'color': 'danger',
-        'disabled': recordState !== 'RECORDING',
-        'onClick': handleRecordPause,
-        'aria-label': t('bbm.audio.record.pause'),
+        leftIcon: <IconRecordPause />,
+        color: 'danger',
+        disabled: isRecordPauseDisabled,
+        onClick: handleRecordPause,
+        children: renderLabel(
+          t('bbm.audio.record.pause'),
+          isRecordPauseDisabled,
+        ),
       },
       tooltip: t('bbm.audio.record.pause'),
     },
-    { type: 'divider' },
     {
       type: 'icon',
       name: 'encoding',
@@ -455,73 +529,60 @@ export default function useAudioRecorder(
       },
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'play',
       visibility: isEncoding || playState === 'PLAYING' ? 'hide' : 'show',
       props: {
-        'icon': <IconPlayFilled />,
-        'disabled':
-          recordState !== 'RECORDED' &&
-          recordState !== 'PAUSED' &&
-          recordState !== 'SAVED',
-        'onClick': handlePlay,
-        'aria-label': t('bbm.audio.play.start'),
+        leftIcon: <IconPlayFilled />,
+        disabled: isPlayDisabled,
+        onClick: handlePlay,
+        children: renderLabel(t('bbm.audio.play.start'), isPlayDisabled),
       },
       tooltip: t('bbm.audio.play.start'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'playPause',
       visibility: !isEncoding && playState === 'PLAYING' ? 'show' : 'hide',
       props: {
-        'icon': <IconPause />,
-        'onClick': handlePlayPause,
-        'aria-label': t('bbm.audio.play.pause'),
+        leftIcon: <IconPause />,
+        onClick: handlePlayPause,
+        children: renderLabel(t('bbm.audio.play.pause'), false),
       },
       tooltip: t('bbm.audio.play.pause'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'stop',
       props: {
-        'icon': <IconRestart />,
-        'disabled': playState !== 'PLAYING' && playState !== 'PAUSED',
-        'onClick': handlePlayStop,
-        'aria-label': t('bbm.audio.play.stop'),
+        leftIcon: <IconRestart />,
+        disabled: isStopDisabled,
+        onClick: handlePlayStop,
+        children: renderLabel(t('bbm.audio.play.stop'), isStopDisabled),
       },
       tooltip: t('bbm.audio.play.stop'),
     },
     { type: 'divider' },
     {
-      type: 'icon',
+      type: 'button',
       name: 'reset',
       props: {
-        'icon': <IconRefresh />,
-        'disabled':
-          recordState !== 'RECORDED' &&
-          recordState !== 'PAUSED' &&
-          playState !== 'PLAYING' &&
-          playState !== 'PAUSED',
-        'onClick': handleReset,
-        'aria-label': t('bbm.audio.record.reset'),
+        leftIcon: <IconRefresh />,
+        disabled: isResetDisabled,
+        onClick: handleReset,
+        children: renderLabel(t('bbm.audio.record.reset'), isResetDisabled),
       },
       tooltip: t('bbm.audio.record.reset'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'save',
       visibility: hideSaveAction ? 'hide' : 'show',
       props: {
-        'icon': <IconSave />,
-        'disabled':
-          (recordState !== 'RECORDED' &&
-            recordState !== 'PAUSED' &&
-            playState !== 'PLAYING' &&
-            playState !== 'PAUSED') ||
-          recordState === 'SAVED' ||
-          !audioNameRef.current?.value,
-        'onClick': handleSave,
-        'aria-label': t('bbm.audio.record.save'),
+        leftIcon: <IconSave />,
+        disabled: isSaveDisabled,
+        onClick: handleSave,
+        children: renderLabel(t('bbm.audio.record.save'), isSaveDisabled),
       },
       tooltip: t('bbm.audio.record.save'),
     },
@@ -536,6 +597,7 @@ export default function useAudioRecorder(
     audioRef,
     audioNameRef,
     toolbarItems,
+    micError,
     handlePlayEnded,
     handleSave,
   };

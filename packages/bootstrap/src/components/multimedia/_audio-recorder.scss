@@ -1,12 +1,176 @@
-@use "../../abstracts/" as *;
-@use "../../vendors/bootstrap";
-
-.audio-recorder-time {
-  margin: $spacer-16 auto;
-}
+@use 'sass:map';
+@use '../../abstracts/' as *;
 
 .modal-body {
   & .audio-recorder {
     min-height: 25rem;
+  }
+}
+
+.audio-recorder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: 64.4rem;
+  margin: auto;
+
+  .audio-recorder-controls {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-16);
+    padding: var(--primitive-spacer-24) 0;
+    border-radius: var(--primitive-border-radius-lg);
+    background-color: var(--color-primary-pale);
+  }
+
+  .audio-recorder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8rem;
+    color: var(--primitive-yellow-700);
+
+    svg {
+      width: 5.3rem;
+      height: 5.3rem;
+    }
+
+    &--recording {
+      color: var(--color-support-danger-500);
+    }
+
+    &--playing {
+      color: var(--color-support-success-500);
+    }
+  }
+
+  .audio-recorder-time {
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--primitive-text-color-default);
+  }
+
+  .toolbar {
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--primitive-border-radius-xl);
+    background-color: var(--primitive-white);
+    box-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
+
+    @container (max-width: 480px) {
+      .audio-recorder-toolbar-label {
+        display: none;
+      }
+
+      .btn {
+        padding: var(--primitive-spacer-8);
+      }
+    }
+  }
+}
+
+.audio-recorder-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: 64.4rem;
+  margin: auto;
+  padding: var(--primitive-spacer-32) 0;
+  border-radius: var(--primitive-border-radius-md);
+  background-color: var(--primitive-white);
+
+  .audio-recorder-error-illustration {
+    width: 27.8rem;
+    max-width: 100%;
+    aspect-ratio: 278 / 234;
+    background: url('./images/emptyscreen/illu-audiorecorder.svg') center /
+      contain no-repeat;
+
+    [data-product='neo'] &,
+    [data-product='one'] & {
+      aspect-ratio: 278 / 200;
+      background-image: url('./images/emptyscreen/illu-audiorecorder-neo.svg');
+    }
+  }
+
+  .audio-recorder-error-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    max-width: 100%;
+    color: var(--primitive-grey-900);
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .audio-recorder-error-title,
+  .audio-recorder-error-description {
+    margin: 0;
+  }
+
+  .audio-recorder-error-title {
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+
+    @media (min-width: map.get($grid-breakpoints, md)) {
+      white-space: nowrap;
+    }
+  }
+
+  .audio-recorder-error-description {
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+}
+
+// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
+// to the theme tokens (same as ButtonBeta ghost) for the edifice themes.
+[data-product='edifice1d'],
+[data-product='edifice2d'] {
+  .audio-recorder .toolbar {
+    .btn-ghost-tertiary,
+    .btn-ghost-danger {
+      --edifice-btn-bg: transparent;
+      --edifice-btn-border-color: transparent;
+      --edifice-btn-hover-bg: var(--primitive-grey-100);
+      --edifice-btn-hover-border-color: transparent;
+      --edifice-btn-active-bg: var(--primitive-grey-200);
+      --edifice-btn-active-border-color: transparent;
+      --edifice-btn-disabled-bg: transparent;
+      --edifice-btn-disabled-border-color: transparent;
+      --edifice-btn-disabled-opacity: 1;
+    }
+
+    .btn-ghost-tertiary {
+      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
+      --edifice-btn-hover-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-active-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-disabled-color: var(
+        --color-text-button-tertiary-other-disable
+      );
+    }
+
+    .btn-ghost-danger {
+      --edifice-btn-color: var(--color-support-danger-700);
+      --edifice-btn-hover-color: var(--color-support-danger-700);
+      --edifice-btn-active-color: var(--color-support-danger-700);
+      --edifice-btn-disabled-color: var(--color-support-danger-300);
+    }
   }
 }

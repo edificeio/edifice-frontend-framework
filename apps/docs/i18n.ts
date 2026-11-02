@@ -166,10 +166,19 @@ i18n.use(initReactI18next).init({
         'dropzone.drop': 'Move files here',
         'dropzone.add.more': 'Add more files',
         'bbm.audio.recorder.defaultName': 'Record ',
+        'bbm.audio.recorder.name.label': 'Audio name',
+        'bbm.audio.recorder.name': 'Name of your recording',
+        'bbm.audio.recorder.device.error.title':
+          'A problem occurred with your microphone.',
+        'bbm.audio.recorder.device.error.text':
+          'Check that your device has a microphone and that you have allowed your browser to access it.',
         'bbm.audio.record.start': 'Start',
+        'bbm.audio.record.resume': 'Resume',
+        'bbm.audio.record.pause': 'Pause',
         'bbm.audio.record.reset': 'Reset',
         'bbm.audio.record.save': 'Save',
         'bbm.audio.play.start': 'Play',
+        'bbm.audio.play.pause': 'Pause',
         'bbm.audio.play.stop': 'Stop',
         'bbm.embed.description':
           "To add external content, copy the 'embed' or 'iframe' sharing code and paste it below.",
@@ -515,13 +524,6 @@ i18n.use(initReactI18next).init({
         'homepage.tabsKids.see.more': 'Voir plus',
         //------------------ Captation Audio -------------------------
         'homepage.captationAudio.modal.title': 'Le studio audio',
-        'homepage.captationAudio.name.label': "Nom de l'audio",
-        'homepage.captationAudio.custom.toolbar.record': 'Enregistrer',
-        'homepage.captationAudio.custom.toolbar.recordPause': 'Suspendre',
-        'homepage.captationAudio.custom.toolbar.play': 'Ecouter',
-        'homepage.captationAudio.custom.toolbar.playPause': 'Pause',
-        'homepage.captationAudio.custom.toolbar.stop': 'Début',
-        'homepage.captationAudio.custom.toolbar.reset': 'Reinitialisation',
         'homepage.captationAudio.cancel': 'Annuler',
         'homepage.captationAudio.save': 'Sauvegrader',
         'homepage.captationAudio.alert.sucess':
