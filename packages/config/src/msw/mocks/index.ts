@@ -7,6 +7,7 @@ export { handlers as calendarHandlers } from './calendar';
 export { handlers as commonHandlers } from './common';
 export { handlers as publicConfigHandlers } from './config';
 export { handlers as rssHandlers } from './rss';
+export { handlers as screenTimeHandlers } from './screenTime';
 export { handlers as directoryHandlers } from './directory';
 export { handlers as shareHandlers } from './share';
 export { handlers as themeHandlers } from './theme';
