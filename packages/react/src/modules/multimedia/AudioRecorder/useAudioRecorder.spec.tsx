@@ -34,12 +34,15 @@ function setup({
   hideSaveAction = false,
   visibility = 'protected' as const,
   application = 'media-library',
+  micFailure,
 }: {
   hideSaveAction?: boolean;
   visibility?: 'public' | 'protected';
   application?: string;
+  micFailure?: unknown;
 } = {}) {
   const media = installMediaHarness();
+  if (micFailure) media.getUserMedia.mockRejectedValue(micFailure);
   const audio = installWebAudioHarness();
   const onSaveSuccess = vi.fn();
   const onUpdateRecord = vi.fn();
@@ -367,6 +370,57 @@ describe('useAudioRecorder', () => {
     });
   });
 
+  describe('microphone access', () => {
+    beforeEach(() => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    it('checks the microphone as soon as it mounts', async () => {
+      const harness = setup();
+
+      await waitFor(() =>
+        expect(harness.getUserMedia).toHaveBeenCalledWith({ audio: true }),
+      );
+      expect(harness.result.current.micError).toBeUndefined();
+    });
+
+    it('reports a microphone refused upfront', async () => {
+      const failure = new Error('NotAllowedError');
+      const harness = setup({ micFailure: failure });
+
+      await waitFor(() =>
+        expect(harness.result.current.micError).toBe(failure),
+      );
+    });
+
+    it('reports a microphone refused when recording', async () => {
+      const harness = setup();
+      await waitFor(() => expect(harness.getUserMedia).toHaveBeenCalled());
+      const failure = new Error('NotAllowedError');
+      harness.getUserMedia.mockRejectedValueOnce(failure);
+
+      await click(harness, 'record');
+
+      await waitFor(() =>
+        expect(harness.result.current.micError).toBe(failure),
+      );
+      expect(harness.result.current.recordState).toBe('IDLE');
+    });
+
+    it('reports a microphone lost while recording', async () => {
+      const harness = setup();
+      await startRecording(harness);
+
+      act(() => {
+        harness.stream.getTracks().forEach((track) => {
+          track.onended?.(new Event('ended'));
+        });
+      });
+
+      expect(harness.result.current.micError).toBeInstanceOf(Error);
+    });
+  });
+
   describe('saving', () => {
     const name = (harness: Harness, value: string) => {
       const input = document.createElement('input');
@@ -427,6 +481,28 @@ describe('useAudioRecorder', () => {
       expect(harness.onSaveSuccess).toHaveBeenCalledWith(resource);
       expect(saved).toBe(resource);
       expect(harness.result.current.recordState).toBe('SAVED');
+    });
+
+    it('rejects and keeps the record when the upload fails', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const failure = new Error('network');
+      create.mockRejectedValue(failure);
+      const harness = setup();
+      await recordAndPause(harness);
+      name(harness, 'my record');
+
+      let caught: unknown;
+      await act(async () => {
+        const pending = harness.result.current.handleSave();
+        harness.worker().emit(new Blob(['mp3'], { type: 'audio/mp3' }));
+        await pending.catch((error) => {
+          caught = error;
+        });
+      });
+
+      expect(caught).toBe(failure);
+      expect(harness.onSaveSuccess).not.toHaveBeenCalled();
+      expect(harness.result.current.recordState).toBe('RECORDED');
     });
 
     it('ignores a worker answer that is not a blob', async () => {
@@ -496,7 +572,7 @@ describe('useAudioRecorder', () => {
 
       expect(item(harness, 'record').visibility).toBe('show');
       expect(item(harness, 'recordPause').visibility).toBe('hide');
-      expect(item(harness, 'record').props['aria-label']).toBe('Start');
+      expect(item(harness, 'record').tooltip).toBe('Start');
     });
 
     it('swaps the two while recording', async () => {
@@ -512,9 +588,7 @@ describe('useAudioRecorder', () => {
       const harness = setup();
       await recordAndPause(harness);
 
-      expect(item(harness, 'record').props['aria-label']).toBe(
-        'bbm.audio.record.resume',
-      );
+      expect(item(harness, 'record').tooltip).toBe('Resume');
     });
 
     it('disables playback until something is recorded', () => {
