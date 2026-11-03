@@ -43,6 +43,8 @@ export default function ScreenTimeChart({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    // Chart.js render chart in a canvas, in order to get color values from theme variables
+    // we need to get the computed style of the canvas element and read the CSS variables from it.
     const style = getComputedStyle(canvas);
     const barColor = style.getPropertyValue('--primitive-blue-900').trim();
     const gridColor = style.getPropertyValue('--primitive-grey-300').trim();
