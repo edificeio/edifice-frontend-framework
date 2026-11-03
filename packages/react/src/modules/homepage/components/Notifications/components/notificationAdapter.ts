@@ -77,6 +77,10 @@ export const getAppCodeAndI18nKey = (appCode: string): [string, string] => {
     case 'collaborativewall':
       appCode = 'collaborative-wall';
       break;
+    // Collect shares the Rack pictogram and colors, but keeps its own label
+    case 'collect':
+      appCode = 'rack';
+      break;
     case 'formulaire':
       appI18nKey = 'formulaire';
       appCode = 'forms';

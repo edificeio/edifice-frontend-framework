@@ -34,6 +34,15 @@ describe('useEdificeIcons', () => {
 
       expect(result.current.getIconCode(input)).toBe(expected);
     });
+
+    it('maps the collect app to the rack pictogram', () => {
+      const { result } = renderHook(() => useEdificeIcons());
+
+      expect(result.current.getIconCode('collect')).toBe('rack');
+      expect(
+        result.current.getIconCode({ icon: 'collect-large' } as IWebApp),
+      ).toBe('rack');
+    });
   });
 
   describe('class helpers', () => {
