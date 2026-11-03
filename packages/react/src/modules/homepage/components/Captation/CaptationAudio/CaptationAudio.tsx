@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { WorkspaceElement } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
-import { ButtonBeta, ModalBeta } from '../../../../../components';
+import {
+  ButtonBeta as Button,
+  ModalBeta as Modal,
+} from '../../../../../components';
 import { AudioRecorder } from '../../../../multimedia';
 import { AudioRecorderRef } from '../../../../multimedia/AudioRecorder/AudioRecorder';
 import { useToast } from '../../../../../hooks';
@@ -50,25 +53,25 @@ export function CaptationAudio({
   };
 
   return (
-    <ModalBeta
+    <Modal
       id="captation-audio-modal"
       isOpen={isOpen}
       size="xl"
       onModalClose={onClose}
     >
-      <ModalBeta.Header onModalClose={onClose}>
+      <Modal.Header onModalClose={onClose}>
         {t('homepage.captationAudio.modal.title')}
-      </ModalBeta.Header>
-      <ModalBeta.Body>
+      </Modal.Header>
+      <Modal.Body>
         <AudioRecorder
           ref={recorderRef}
           hideSaveAction
           onRecordUpdated={setRecordURL}
           onNameChange={(name) => setHasName(!!name.trim())}
         />
-      </ModalBeta.Body>
-      <ModalBeta.Footer>
-        <ButtonBeta
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
           type="button"
           variant="ghost"
           color="tertiary"
@@ -76,8 +79,8 @@ export function CaptationAudio({
           onClick={onClose}
         >
           {t('homepage.captationAudio.cancel')}
-        </ButtonBeta>
-        <ButtonBeta
+        </Button>
+        <Button
           type="button"
           isLoading={isSaving}
           disabled={!recordURL || !hasName || isSaving}
@@ -85,8 +88,8 @@ export function CaptationAudio({
           onClick={handleSave}
         >
           {t('homepage.captationAudio.save')}
-        </ButtonBeta>
-      </ModalBeta.Footer>
-    </ModalBeta>
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
