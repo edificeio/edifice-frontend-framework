@@ -1,8 +1,143 @@
-@use "../../abstracts/" as *;
-@use "../../vendors/bootstrap";
+.audio-recorder {
+  --audio-recorder-max-width: 64.4rem;
+  --audio-recorder-min-height: auto;
+  --audio-recorder-gap: var(--primitive-spacer-16);
+  --audio-recorder-controls-bg: var(--color-primary-pale);
+  --audio-recorder-controls-radius: var(--primitive-border-radius-lg);
+  --audio-recorder-icon-height: 8rem;
+  --audio-recorder-icon-size: 5.3rem;
+  --audio-recorder-icon-color: var(--primitive-yellow-700);
+  --audio-recorder-time-color: var(--primitive-text-color-default);
+  --audio-recorder-toolbar-bg: var(--primitive-white);
+  --audio-recorder-toolbar-radius: var(--primitive-border-radius-xl);
+  --audio-recorder-toolbar-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
 
-.modal-body {
-  & .audio-recorder {
-    min-height: 25rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--audio-recorder-gap);
+  width: 100%;
+  max-width: var(--audio-recorder-max-width);
+  min-height: var(--audio-recorder-min-height);
+  margin: auto;
+
+  .modal-body & {
+    --audio-recorder-min-height: 25rem;
+  }
+
+  .audio-recorder-controls {
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--audio-recorder-gap);
+    padding: var(--primitive-spacer-24) 0;
+    border-radius: var(--audio-recorder-controls-radius);
+    background-color: var(--audio-recorder-controls-bg);
+  }
+
+  .audio-recorder-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--audio-recorder-icon-height);
+    color: var(--audio-recorder-icon-color);
+
+    svg {
+      width: var(--audio-recorder-icon-size);
+      height: var(--audio-recorder-icon-size);
+    }
+
+    &--recording {
+      --audio-recorder-icon-color: var(--color-support-danger-500);
+    }
+
+    &--playing {
+      --audio-recorder-icon-color: var(--color-support-success-500);
+    }
+  }
+
+  .audio-recorder-time {
+    margin: 0;
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+    color: var(--audio-recorder-time-color);
+  }
+
+  .toolbar {
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--audio-recorder-toolbar-radius);
+    background-color: var(--audio-recorder-toolbar-bg);
+    box-shadow: var(--audio-recorder-toolbar-shadow);
+
+    @container (max-width: 480px) {
+      .audio-recorder-toolbar-label {
+        display: none;
+      }
+
+      .btn {
+        padding: var(--primitive-spacer-8);
+      }
+    }
+  }
+}
+
+.audio-recorder-error {
+  --audio-recorder-error-max-width: 64.4rem;
+  --audio-recorder-error-bg: var(--primitive-white);
+  --audio-recorder-error-radius: var(--primitive-border-radius-md);
+  --audio-recorder-error-color: var(--primitive-grey-900);
+  --audio-recorder-error-illustration-width: 27.8rem;
+  --audio-recorder-error-illustration-ratio: 278 / 234;
+  --audio-recorder-error-illustration: url('./images/emptyscreen/illu-audiorecorder.svg');
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: var(--audio-recorder-error-max-width);
+  margin: auto;
+  padding: var(--primitive-spacer-32) 0;
+  border-radius: var(--audio-recorder-error-radius);
+  background-color: var(--audio-recorder-error-bg);
+
+  .audio-recorder-error-illustration {
+    width: var(--audio-recorder-error-illustration-width);
+    max-width: 100%;
+    aspect-ratio: var(--audio-recorder-error-illustration-ratio);
+    background: var(--audio-recorder-error-illustration) center / contain
+      no-repeat;
+  }
+
+  .audio-recorder-error-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    max-width: 100%;
+    color: var(--audio-recorder-error-color);
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .audio-recorder-error-title,
+  .audio-recorder-error-description {
+    margin: 0;
+  }
+
+  .audio-recorder-error-title {
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  .audio-recorder-error-description {
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
   }
 }
