@@ -166,10 +166,19 @@ i18n.use(initReactI18next).init({
         'dropzone.drop': 'Move files here',
         'dropzone.add.more': 'Add more files',
         'bbm.audio.recorder.defaultName': 'Record ',
+        'bbm.audio.recorder.name.label': 'Audio name',
+        'bbm.audio.recorder.name': 'Name of your recording',
+        'bbm.audio.recorder.device.error.title':
+          'A problem occurred with your microphone.',
+        'bbm.audio.recorder.device.error.text':
+          'Check that your device has a microphone and that you have allowed your browser to access it.',
         'bbm.audio.record.start': 'Start',
+        'bbm.audio.record.resume': 'Resume',
+        'bbm.audio.record.pause': 'Pause',
         'bbm.audio.record.reset': 'Reset',
         'bbm.audio.record.save': 'Save',
         'bbm.audio.play.start': 'Play',
+        'bbm.audio.play.pause': 'Pause',
         'bbm.audio.play.stop': 'Stop',
         'bbm.embed.description':
           "To add external content, copy the 'embed' or 'iframe' sharing code and paste it below.",
@@ -538,6 +547,14 @@ i18n.use(initReactI18next).init({
         
         //------------------ TabsKids -------------------------
         'homepage.tabsKids.see.more': 'Voir plus',
+        //------------------ Captation Audio -------------------------
+        'homepage.captationAudio.modal.title': 'Le studio audio',
+        'homepage.captationAudio.cancel': 'Annuler',
+        'homepage.captationAudio.save': 'Sauvegrader',
+        'homepage.captationAudio.alert.sucess':
+          'L’audio est disponible dans votre espace documentaire',
+        'homepage.captationAudio.alert.error':
+          'Une erreur est survenue lors de la sauvegarde de l’audio',
 
         //------------------------------------------------------
         //------------------ Header navigation -----------------
