@@ -133,6 +133,7 @@
     "@tiptap/starter-kit": "3.32.0",
     "@uidotdev/usehooks": "2.4.1",
     "antd": "5.29.1",
+    "chart.js": "4.5.1",
     "clsx": "catalog:",
     "dayjs": "1.11.19",
     "emoji-picker-react": "4.17.4",
