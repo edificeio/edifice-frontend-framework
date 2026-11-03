@@ -17,11 +17,19 @@ vi.mock('../../../hooks', async (importOriginal) => ({
   useWorkspaceFile: () => ({ create }),
 }));
 
-function setup({ hideSaveAction = false }: { hideSaveAction?: boolean } = {}) {
+function setup({
+  hideSaveAction = false,
+  micFailure,
+}: {
+  hideSaveAction?: boolean;
+  micFailure?: unknown;
+} = {}) {
   const media = installMediaHarness();
+  if (micFailure) media.getUserMedia.mockRejectedValue(micFailure);
   const audio = installWebAudioHarness();
   const onSaveSuccess = vi.fn();
   const onRecordUpdated = vi.fn();
+  const onNameChange = vi.fn();
   const ref = createRef<AudioRecorderRef>();
 
   const view = render(
@@ -29,28 +37,37 @@ function setup({ hideSaveAction = false }: { hideSaveAction?: boolean } = {}) {
       ref={ref}
       onSaveSuccess={onSaveSuccess}
       onRecordUpdated={onRecordUpdated}
+      onNameChange={onNameChange}
       hideSaveAction={hideSaveAction}
     />,
   );
 
-  return { ...view, ...media, ...audio, onSaveSuccess, onRecordUpdated, ref };
+  return {
+    ...view,
+    ...media,
+    ...audio,
+    onSaveSuccess,
+    onRecordUpdated,
+    onNameChange,
+    ref,
+  };
 }
 
 const nameInput = () =>
-  screen.getByPlaceholderText('bbm.audio.recorder.name') as HTMLInputElement;
+  screen.getByPlaceholderText('Name of your recording') as HTMLInputElement;
 const audioElement = () =>
   document.querySelector('audio') as HTMLAudioElement & {
     currentTime: number;
   };
-const micIcon = () => document.querySelector('.audio-recorder-icon svg');
+const micIcon = () => document.querySelector('.audio-recorder-icon');
 const readout = () => document.querySelector('.audio-recorder-time');
 
-const recordButton = () => screen.getByRole('button', { name: 'Start' });
+const recordButton = () => screen.getByRole('button', { name: 'record' });
 const recordPauseButton = () =>
-  screen.getByRole('button', { name: 'bbm.audio.record.pause' });
-const playButton = () => screen.getByRole('button', { name: 'Play' });
-const resetButton = () => screen.getByRole('button', { name: 'Reset' });
-const saveButton = () => screen.queryByRole('button', { name: 'Save' });
+  screen.getByRole('button', { name: 'recordPause' });
+const playButton = () => screen.getByRole('button', { name: 'play' });
+const resetButton = () => screen.getByRole('button', { name: 'reset' });
+const saveButton = () => screen.queryByRole('button', { name: 'save' });
 
 describe('AudioRecorder', () => {
   describe('naming the record', () => {
@@ -70,6 +87,38 @@ describe('AudioRecorder', () => {
 
       expect(nameInput().value).toBe('interview');
     });
+
+    it('reports each name change to the parent', async () => {
+      const { user, onNameChange } = setup();
+
+      await user.clear(nameInput());
+      expect(onNameChange).toHaveBeenLastCalledWith('');
+
+      await user.type(nameInput(), 'a');
+      expect(onNameChange).toHaveBeenLastCalledWith('a');
+    });
+  });
+
+  describe('microphone access', () => {
+    it('shows an empty screen instead of the recorder when refused', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      setup({ micFailure: new Error('NotAllowedError') });
+
+      expect(
+        await screen.findByText('A problem occurred with your microphone.'),
+      ).toBeInTheDocument();
+      expect(
+        document.querySelector('.audio-recorder-error-illustration'),
+      ).not.toBeNull();
+      expect(document.querySelector('.audio-recorder')).toBeNull();
+    });
+
+    it('keeps the recorder when the microphone is available', async () => {
+      const { getUserMedia } = setup();
+
+      await waitFor(() => expect(getUserMedia).toHaveBeenCalled());
+      expect(document.querySelector('.audio-recorder')).not.toBeNull();
+    });
   });
 
   describe('layout', () => {
@@ -86,21 +135,25 @@ describe('AudioRecorder', () => {
 
       await user.click(recordButton());
 
-      await waitFor(() => expect(micIcon()).toHaveClass('text-danger'));
+      await waitFor(() =>
+        expect(micIcon()).toHaveClass('audio-recorder-icon--recording'),
+      );
     });
 
     it('paints the microphone green while playing', async () => {
       const harness = setup();
 
       await harness.user.click(recordButton());
-      await waitFor(() => expect(micIcon()).toHaveClass('text-danger'));
+      await waitFor(() =>
+        expect(micIcon()).toHaveClass('audio-recorder-icon--recording'),
+      );
       await harness.user.click(recordPauseButton());
       await act(async () => {
         harness.worker().emit(new Blob(['wav'], { type: 'audio/wav' }));
       });
       await harness.user.click(playButton());
 
-      expect(micIcon()).toHaveClass('text-success');
+      expect(micIcon()).toHaveClass('audio-recorder-icon--playing');
     });
 
     it('hides the save action when the parent handles it', () => {
