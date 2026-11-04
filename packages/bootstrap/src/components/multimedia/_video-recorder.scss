@@ -1,9 +1,23 @@
 .video-recorder {
+  --video-recorder-max-width: 64.4rem;
+  --video-recorder-gap: var(--primitive-spacer-16);
+  --video-recorder-container-bg: var(--color-primary-pale);
+  --video-recorder-container-radius: var(--primitive-border-radius-xl);
+  --video-recorder-container-ratio: 16 / 10;
+  --video-recorder-placeholder-color: var(--color-primary-default);
+  --video-recorder-placeholder-size: 6rem;
+  --video-recorder-time-bg: rgb(0 0 0 / 40%);
+  --video-recorder-time-color: var(--primitive-white);
+  --video-recorder-time-radius: var(--primitive-border-radius-md);
+  --video-recorder-toolbar-bg: var(--primitive-white);
+  --video-recorder-toolbar-radius: var(--primitive-border-radius-xl);
+  --video-recorder-toolbar-shadow: 0 0.4rem 1rem 0 rgb(0 0 0 / 18%);
+
   display: flex;
   flex-direction: column;
-  gap: var(--primitive-spacer-16);
+  gap: var(--video-recorder-gap);
   width: 100%;
-  max-width: 64.4rem;
+  max-width: var(--video-recorder-max-width);
   margin: auto;
 
   .video-recorder-caption {
@@ -14,9 +28,9 @@
     container-type: inline-size;
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 10;
-    border-radius: var(--primitive-border-radius-xl);
-    background-color: var(--color-primary-pale);
+    aspect-ratio: var(--video-recorder-container-ratio);
+    border-radius: var(--video-recorder-container-radius);
+    background-color: var(--video-recorder-container-bg);
 
     video {
       position: relative;
@@ -33,10 +47,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-primary-default);
+    color: var(--video-recorder-placeholder-color);
 
     svg {
-      width: 6rem;
+      width: var(--video-recorder-placeholder-size);
       height: auto;
     }
   }
@@ -49,9 +63,9 @@
     align-items: center;
     gap: var(--primitive-spacer-8);
     padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
-    border-radius: var(--primitive-border-radius-md);
-    background-color: rgb(0 0 0 / 40%);
-    color: var(--primitive-white);
+    border-radius: var(--video-recorder-time-radius);
+    background-color: var(--video-recorder-time-bg);
+    color: var(--video-recorder-time-color);
     font-family: var(--font-family-body);
     font-size: var(--primitive-font-size-default);
     line-height: var(--primitive-font-lineheight-xs);
@@ -66,9 +80,9 @@
     bottom: 0;
     left: 50%;
     padding: var(--primitive-spacer-8);
-    border-radius: var(--primitive-border-radius-xl);
-    background-color: var(--primitive-white);
-    box-shadow: 0 0.4rem 1rem 0 rgb(0 0 0 / 18%);
+    border-radius: var(--video-recorder-toolbar-radius);
+    background-color: var(--video-recorder-toolbar-bg);
+    box-shadow: var(--video-recorder-toolbar-shadow);
     transform: translate(-50%, -0.8rem);
 
     @container (max-width: 480px) {
@@ -84,30 +98,32 @@
 }
 
 .video-recorder-error {
+  --video-recorder-error-max-width: 64.4rem;
+  --video-recorder-error-bg: var(--primitive-white);
+  --video-recorder-error-radius: var(--primitive-border-radius-md);
+  --video-recorder-error-color: var(--primitive-grey-900);
+  --video-recorder-error-illustration-width: 27.8rem;
+  --video-recorder-error-illustration-ratio: 278 / 234;
+  --video-recorder-error-illustration: url('./images/emptyscreen/illu-videorecorder.svg');
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: var(--primitive-spacer-16);
   width: 100%;
-  max-width: 64.4rem;
+  max-width: var(--video-recorder-error-max-width);
   margin: auto;
   padding: var(--primitive-spacer-32) 0;
-  border-radius: var(--primitive-border-radius-md);
-  background-color: var(--primitive-white);
+  border-radius: var(--video-recorder-error-radius);
+  background-color: var(--video-recorder-error-bg);
 
   .video-recorder-error-illustration {
-    width: 27.8rem;
+    width: var(--video-recorder-error-illustration-width);
     max-width: 100%;
-    aspect-ratio: 278 / 234;
-    background: url('./images/emptyscreen/illu-videorecorder.svg') center /
-      contain no-repeat;
-
-    [data-product='neo'] &,
-    [data-product='one'] & {
-      aspect-ratio: 281 / 200;
-      background-image: url('./images/emptyscreen/illu-videorecorder-neo.svg');
-    }
+    aspect-ratio: var(--video-recorder-error-illustration-ratio);
+    background: var(--video-recorder-error-illustration) center / contain
+      no-repeat;
   }
 
   .video-recorder-error-text {
@@ -116,7 +132,7 @@
     align-items: center;
     gap: var(--primitive-spacer-8);
     max-width: 100%;
-    color: var(--primitive-grey-900);
+    color: var(--video-recorder-error-color);
     text-align: center;
     word-break: break-word;
   }
@@ -137,45 +153,5 @@
     font-family: var(--font-family-body);
     font-size: var(--primitive-font-size-default);
     line-height: var(--primitive-font-lineheight-xs);
-  }
-}
-
-// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
-// to the theme tokens (same as ButtonBeta ghost) for the edifice themes.
-[data-product='edifice1d'],
-[data-product='edifice2d'] {
-  .video-recorder .toolbar {
-    .btn-ghost-tertiary,
-    .btn-ghost-danger {
-      --edifice-btn-bg: transparent;
-      --edifice-btn-border-color: transparent;
-      --edifice-btn-hover-bg: var(--primitive-grey-100);
-      --edifice-btn-hover-border-color: transparent;
-      --edifice-btn-active-bg: var(--primitive-grey-200);
-      --edifice-btn-active-border-color: transparent;
-      --edifice-btn-disabled-bg: transparent;
-      --edifice-btn-disabled-border-color: transparent;
-      --edifice-btn-disabled-opacity: 1;
-    }
-
-    .btn-ghost-tertiary {
-      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
-      --edifice-btn-hover-color: var(
-        --color-text-button-tertiary-other-default
-      );
-      --edifice-btn-active-color: var(
-        --color-text-button-tertiary-other-default
-      );
-      --edifice-btn-disabled-color: var(
-        --color-text-button-tertiary-other-disable
-      );
-    }
-
-    .btn-ghost-danger {
-      --edifice-btn-color: var(--color-support-danger-700);
-      --edifice-btn-hover-color: var(--color-support-danger-700);
-      --edifice-btn-active-color: var(--color-support-danger-700);
-      --edifice-btn-disabled-color: var(--color-support-danger-300);
-    }
   }
 }

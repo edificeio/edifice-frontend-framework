@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { WorkspaceElement } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
-import { ButtonBeta, ModalBeta } from '../../../../../components';
+import {
+  ButtonBeta as Button,
+  ModalBeta as Modal,
+} from '../../../../../components';
 import { useToast } from '../../../../../hooks';
 import { VideoRecorder } from '../../../../multimedia';
 import { VideoRecorderRef } from '../../../../multimedia/VideoRecorder/VideoRecorder';
@@ -55,16 +58,16 @@ export function CaptationVideo({
   };
 
   return (
-    <ModalBeta
+    <Modal
       id="captation-video-modal"
       isOpen={isOpen}
       size="xl"
       onModalClose={onClose}
     >
-      <ModalBeta.Header onModalClose={onClose}>
+      <Modal.Header onModalClose={onClose}>
         {t('homepage.captationVideo.modal.title')}
-      </ModalBeta.Header>
-      <ModalBeta.Body>
+      </Modal.Header>
+      <Modal.Body>
         <VideoRecorder
           ref={recorderRef}
           appCode={appCode}
@@ -74,9 +77,9 @@ export function CaptationVideo({
           onSuccess={handleSuccess}
           onError={handleError}
         />
-      </ModalBeta.Body>
-      <ModalBeta.Footer>
-        <ButtonBeta
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
           type="button"
           variant="ghost"
           color="tertiary"
@@ -84,8 +87,8 @@ export function CaptationVideo({
           onClick={onClose}
         >
           {t('homepage.captationVideo.cancel')}
-        </ButtonBeta>
-        <ButtonBeta
+        </Button>
+        <Button
           type="button"
           isLoading={isSaving}
           disabled={!recordURL || !hasName || isSaving}
@@ -93,8 +96,8 @@ export function CaptationVideo({
           onClick={handleSave}
         >
           {t('homepage.captationVideo.save')}
-        </ButtonBeta>
-      </ModalBeta.Footer>
-    </ModalBeta>
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
