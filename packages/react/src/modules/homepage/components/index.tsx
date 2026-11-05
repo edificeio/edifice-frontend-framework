@@ -9,6 +9,7 @@ export * from './GenerationHdf';
 export * from './Header';
 export * from './HomeCard';
 export * from './LastInfos';
+export * from './Mediacentre';
 export * from './MessageFlashList';
 export * from './Notifications';
 export * from './Qwant';

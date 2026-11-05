@@ -479,6 +479,15 @@ i18n.use(initReactI18next).init({
         'homepage.widget.screenTime.modal.hours': 'Heures',
         'homepage.widget.screenTime.modal.minutes': 'Minutes',
         'homepage.widget.screenTime.modal.noData': 'Pas de données',
+        //------------------ Mediacentre ----------
+        'homepage.widget.mediacentre.title': 'Médiacentre',
+        'homepage.widget.mediacentre.seeMore': 'Voir plus',
+        'homepage.widget.mediacentre.error':
+          "Impossible d'établir une connexion avec Médiacentre. Si le problème persiste, ouvrez une demande d'aide sur le module Assistance ENT.",
+        'homepage.widget.mediacentre.empty':
+          'Aucune ressource en favoris',
+        'homepage.widget.mediacentre.universalis.noUai': 'UAI non renseigné',
+        'homepage.widget.mediacentre.universalis.search': 'Rechercher',
         //------------------ WidgetsPersonalizationPanel ----------
         'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':
@@ -561,7 +570,7 @@ i18n.use(initReactI18next).init({
         'homepage.widget.edumalin.modal.duration': 'Durée :',
         'homepage.widget.edumalin.modal.durationValue': '[[duration]]min',
         'homepage.widget.edumalin.modal.place': 'Lieu :',
-        
+
         //------------------ TabsKids -------------------------
         'homepage.tabsKids.see.more': 'Voir plus',
         //------------------ Captation Audio -------------------------
