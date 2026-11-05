@@ -6,6 +6,7 @@ export * from './FileCard';
 export * from './Linker';
 export * from './MediaLibrary';
 export * from './Nextcloud';
+export * from './NextcloudFolders';
 export * from './UploadCard';
 export * from './VideoEmbed';
 export * from './VideoRecorder';

@@ -64,7 +64,7 @@ export default function useNextcloudSearch(
   const [loadError, setLoadError] = useState<unknown>(null);
 
   const loadContent = useCallback(
-    async (folderId?: ID) => {
+    async (folderId?: ID, force = false) => {
       if (!userId) return;
       const path = folderId === rootId ? undefined : (folderId as string);
       try {
@@ -74,7 +74,7 @@ export default function useNextcloudSearch(
         const payload = await queryClient.fetchQuery({
           queryKey: ['nextcloud', 'documents', userId, path ?? '/'],
           queryFn: () => odeServices.nextcloud().listDocuments(userId, path),
-          staleTime: 60_000,
+          staleTime: force ? 0 : 60_000,
         });
 
         const subfolders: NextcloudDocument[] = [];
@@ -114,7 +114,7 @@ export default function useNextcloudSearch(
     isCheckingAuth: boolean;
     isAuthError: boolean;
     refetchAuthStatus: () => void;
-    loadContent: (folderId?: ID) => void;
+    loadContent: (folderId?: ID, force?: boolean) => Promise<void>;
     loadError: unknown;
   };
 }

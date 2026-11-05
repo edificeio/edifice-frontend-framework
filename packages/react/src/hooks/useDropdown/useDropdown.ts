@@ -45,6 +45,7 @@ export interface UseDropdownProps {
   itemRefs: MutableRefObject<{ [key: string]: HTMLElement | null }>;
   triggerRef: MutableRefObject<HTMLButtonElement | null>;
   menuRef: MutableRefObject<HTMLUListElement | null>;
+  searchInputRef: MutableRefObject<HTMLInputElement | null>;
   triggerProps: Record<string, any>;
   menuProps: Record<string, any>;
   itemProps: Record<string, any>;
@@ -71,6 +72,8 @@ const useDropdown = (
   const [visible, setVisible] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isFocused, setIsFocused] = useState<string | null>(null);
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
   const { refs, floatingStyles, context } = useFloating({
     placement,
@@ -103,8 +106,17 @@ const useDropdown = (
   const triggerRef = useRef<HTMLButtonElement | null>(null);
   const itemRefs = useRef({});
 
+  const focusSearchInput = () => {
+    setActiveIndex(-1);
+    setIsFocused(null);
+    // The menu may not be positioned yet: focusing must not scroll the window.
+    searchInputRef.current?.focus({ preventScroll: true });
+  };
+
   useEffect(() => {
-    if (visible && menuRef.current && focusOnVisible) {
+    if (visible && searchInputRef.current && focusOnVisible) {
+      focusSearchInput();
+    } else if (visible && menuRef.current && focusOnVisible) {
       menuRef.current.focus();
       setActiveIndex(0);
     } else {
@@ -136,13 +148,38 @@ const useDropdown = (
   const visibleItemCount = () =>
     Object.values(itemRefs.current).filter(Boolean).length;
 
+  // The index may already be 0 (item focused before the search input took the
+  // focus back): focus the item directly, the effect only runs on index changes.
+  const focusFirstItem = () => {
+    const firstVisibleItem = Object.values(itemRefs.current).find(Boolean) as
+      | HTMLElement
+      | undefined;
+    if (!firstVisibleItem) return;
+    setActiveIndex(0);
+    setIsFocused(firstVisibleItem.getAttribute('id'));
+    firstVisibleItem.focus();
+  };
+
   const nextItem = () => {
+    if (
+      searchInputRef.current &&
+      document.activeElement === searchInputRef.current
+    ) {
+      focusFirstItem();
+      return;
+    }
     const count = visibleItemCount();
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex + 1) % count);
   };
 
   const previousItem = () => {
+    if (activeIndex === 0 && searchInputRef.current) {
+      focusSearchInput();
+      return;
+    }
     const count = visibleItemCount();
+    if (count === 0) return;
     setActiveIndex((prevIndex) => (prevIndex - 1 + count) % count);
   };
 
@@ -213,7 +250,11 @@ const useDropdown = (
   );
 
   const onMenuItemMouseEnter = (event: React.MouseEvent) => {
-    if (focusOnMouseEnter) {
+    const isTypingInSearchInput =
+      !!searchInputRef.current &&
+      document.activeElement === searchInputRef.current;
+
+    if (focusOnMouseEnter && !isTypingInSearchInput) {
       const items = Object.values(itemRefs.current).filter(
         (item): item is HTMLElement => !!item,
       );
@@ -312,6 +353,7 @@ const useDropdown = (
     itemRefs,
     triggerRef,
     menuRef,
+    searchInputRef,
     /* TriggerProps to spread to any Trigger component */
     triggerProps: {
       'ref': mergeRefs(triggerRef, refs.setReference),

@@ -29,7 +29,17 @@ describe('Favorites', () => {
 
     const links = screen.getAllByRole('link');
     expect(links).toHaveLength(3);
-    expect(links[0]).toHaveAttribute('href', '/blog');
-    expect(links[0]).toHaveAttribute('aria-label', 'Blog App');
+    expect(links[0]).toHaveAttribute('href', '/mindmap');
+    expect(links[0]).toHaveAttribute('aria-label', 'Mindmap App');
+  });
+
+  it('keeps the bookmarks order instead of sorting apps by name', () => {
+    const apps = [makeApp('Wiki'), makeApp('Blog'), makeApp('Mindmap')];
+    render(<Favorites apps={apps} />);
+
+    const hrefs = screen
+      .getAllByRole('link')
+      .map((link) => link.getAttribute('href'));
+    expect(hrefs).toEqual(['/wiki', '/blog', '/mindmap']);
   });
 });

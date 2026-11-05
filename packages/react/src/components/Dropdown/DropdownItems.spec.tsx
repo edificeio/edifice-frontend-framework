@@ -360,14 +360,221 @@ describe('Dropdown.SearchInput', () => {
     ).toBeInTheDocument();
   });
 
-  it('does not let the arrow keys leak to the menu navigation', async () => {
+  it('focuses the search input when the menu opens', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+
+    expect(screen.getByPlaceholderText('Search an app')).toHaveFocus();
+  });
+
+  it('moves from the search input to the first visible item on ArrowDown', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    await user.type(screen.getByPlaceholderText('Search an app'), 'wik');
+    await user.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('menuitem', { name: 'Wiki' })).toHaveFocus();
+  });
+
+  it('brings the focus back to the search input on ArrowUp from the first item', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{ArrowUp}');
+
+    expect(screen.getByPlaceholderText('Search an app')).toHaveFocus();
+  });
+
+  it('keeps the focus in the search input while the pointer is over the list', async () => {
     const { user } = render(<SearchableMenu />);
 
     await user.click(screen.getByRole('button', { name: 'Apps' }));
     const input = screen.getByPlaceholderText('Search an app');
-    input.focus();
+    await user.hover(screen.getByRole('menuitem', { name: 'Wiki' }));
+    await user.keyboard('wik');
+
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('wik');
+  });
+
+  it('stays in the search input on ArrowDown when nothing matches', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    const input = screen.getByPlaceholderText('Search an app');
+    await user.type(input, 'zzz');
     await user.keyboard('{ArrowDown}');
 
     expect(input).toHaveFocus();
+  });
+
+  it('ignores accents when filtering', async () => {
+    const { user } = render(
+      <Dropdown>
+        {(triggerProps) => (
+          <>
+            <Dropdown.Trigger label="Categories" {...triggerProps} />
+            <Dropdown.Menu>
+              <Dropdown.SearchInput placeholder="Search a category" />
+              <Dropdown.Item searchValue="Développement">
+                Développement
+              </Dropdown.Item>
+              <Dropdown.Item searchValue="Marketing">Marketing</Dropdown.Item>
+            </Dropdown.Menu>
+          </>
+        )}
+      </Dropdown>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Categories' }));
+    await user.type(screen.getByPlaceholderText('Search a category'), 'deve');
+
+    expect(
+      screen.getByRole('menuitem', { name: 'Développement' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('menuitem', { name: 'Marketing' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('selects the focused item on Enter once the list is filtered', async () => {
+    const onClick = vi.fn();
+    const { user } = render(
+      <Dropdown>
+        {(triggerProps) => (
+          <>
+            <Dropdown.Trigger label="Apps" {...triggerProps} />
+            <Dropdown.Menu>
+              <Dropdown.SearchInput placeholder="Search an app" />
+              <Dropdown.Item searchValue="Blog">Blog</Dropdown.Item>
+              <Dropdown.Item searchValue="Wiki" onClick={onClick}>
+                Wiki
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </>
+        )}
+      </Dropdown>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    await user.type(screen.getByPlaceholderText('Search an app'), 'wik');
+    await user.keyboard('{ArrowDown}{Enter}');
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('menuitem')).not.toBeInTheDocument();
+  });
+
+  it('displays the search input in place of the trigger, outside the list', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    const input = screen.getByPlaceholderText('Search an app');
+
+    expect(input.closest('.dropdown-search')).toBeInTheDocument();
+    expect(input.closest('.dropdown-menu')).not.toBeInTheDocument();
+  });
+
+  it('hides the trigger while the search input covers it', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    const trigger = screen.getByRole('button', { name: 'Apps' });
+    await user.click(trigger);
+
+    expect(trigger).toHaveClass('opacity-0');
+
+    await user.keyboard('{Escape}');
+
+    expect(trigger).not.toHaveClass('opacity-0');
+  });
+
+  it('hides a menu group when none of its items matches', async () => {
+    const { user } = render(
+      <Dropdown>
+        {(triggerProps) => (
+          <>
+            <Dropdown.Trigger label="Apps" {...triggerProps} />
+            <Dropdown.Menu>
+              <Dropdown.SearchInput placeholder="Search an app" />
+              <Dropdown.MenuGroup label="Communication">
+                <Dropdown.Item searchValue="Blog">Blog</Dropdown.Item>
+              </Dropdown.MenuGroup>
+              <Dropdown.MenuGroup label="Collaboration">
+                <Dropdown.Item searchValue="Wiki">Wiki</Dropdown.Item>
+              </Dropdown.MenuGroup>
+            </Dropdown.Menu>
+          </>
+        )}
+      </Dropdown>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    await user.type(screen.getByPlaceholderText('Search an app'), 'wik');
+
+    expect(screen.queryByText('Communication')).not.toBeVisible();
+    expect(screen.getByText('Collaboration')).toBeVisible();
+
+    await user.clear(screen.getByPlaceholderText('Search an app'));
+
+    expect(screen.getByText('Communication')).toBeVisible();
+  });
+
+  it('keeps a menu group holding an item without a search value', async () => {
+    const { user } = render(
+      <Dropdown>
+        {(triggerProps) => (
+          <>
+            <Dropdown.Trigger label="Apps" {...triggerProps} />
+            <Dropdown.Menu>
+              <Dropdown.SearchInput
+                placeholder="Search an app"
+                noResultsLabel="Nothing found"
+              />
+              <Dropdown.MenuGroup label="Communication">
+                <Dropdown.Item searchValue="Blog">Blog</Dropdown.Item>
+                <Dropdown.Item>Always there</Dropdown.Item>
+              </Dropdown.MenuGroup>
+            </Dropdown.Menu>
+          </>
+        )}
+      </Dropdown>,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    await user.type(screen.getByPlaceholderText('Search an app'), 'zzz');
+
+    expect(screen.getByText('Communication')).toBeVisible();
+    expect(
+      screen.getByRole('menuitem', { name: 'Always there' }),
+    ).toBeVisible();
+    expect(screen.getByText('Nothing found')).toBeInTheDocument();
+  });
+
+  it('goes back to the first item on ArrowDown once the search input has the focus again', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    await user.click(screen.getByRole('button', { name: 'Apps' }));
+    const input = screen.getByPlaceholderText('Search an app');
+    await user.type(input, 'wik');
+    await user.keyboard('{ArrowDown}');
+    await user.click(input);
+    await user.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('menuitem', { name: 'Wiki' })).toHaveFocus();
+  });
+
+  it('closes the menu and focuses the trigger on Escape from the search input', async () => {
+    const { user } = render(<SearchableMenu />);
+
+    const trigger = screen.getByRole('button', { name: 'Apps' });
+    await user.click(trigger);
+    await user.keyboard('{Escape}');
+
+    expect(
+      screen.queryByPlaceholderText('Search an app'),
+    ).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
   });
 });
