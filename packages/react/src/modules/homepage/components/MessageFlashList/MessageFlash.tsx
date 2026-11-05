@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta,
-  Card,
   Flex,
   IconButton,
   useBreakpoint,
@@ -140,7 +139,6 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
         )}
       </div>
       <Flex direction="column" className="w-100 message-flash-body">
-        <Card.Title>{message.title}</Card.Title>
         <div
           ref={contentRef}
           className={classesContent}
