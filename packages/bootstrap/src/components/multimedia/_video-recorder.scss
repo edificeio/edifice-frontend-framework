@@ -1,45 +1,157 @@
-@use "../../abstracts/" as *;
-@use "../../vendors/bootstrap";
+.video-recorder {
+  --video-recorder-max-width: 64.4rem;
+  --video-recorder-gap: var(--primitive-spacer-16);
+  --video-recorder-container-bg: var(--color-primary-pale);
+  --video-recorder-container-radius: var(--primitive-border-radius-xl);
+  --video-recorder-container-ratio: 16 / 10;
+  --video-recorder-placeholder-color: var(--color-primary-default);
+  --video-recorder-placeholder-size: 6rem;
+  --video-recorder-time-bg: rgb(0 0 0 / 40%);
+  --video-recorder-time-color: var(--primitive-white);
+  --video-recorder-time-radius: var(--primitive-border-radius-md);
+  --video-recorder-toolbar-bg: var(--primitive-white);
+  --video-recorder-toolbar-radius: var(--primitive-border-radius-xl);
+  --video-recorder-toolbar-shadow: 0 0.4rem 1rem 0 rgb(0 0 0 / 18%);
 
-.modal-body {
-  & .video-recorder {
-    &-caption {
-      margin: 0 $spacer-12 $spacer-12 $spacer-12;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: var(--video-recorder-gap);
+  width: 100%;
+  max-width: var(--video-recorder-max-width);
+  margin: auto;
 
-    &-video-container {
-      min-height: 200px;
+  .video-recorder-caption {
+    margin: 0;
+  }
+
+  .video-recorder-video-container {
+    container-type: inline-size;
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: var(--video-recorder-container-ratio);
+    border-radius: var(--video-recorder-container-radius);
+    background-color: var(--video-recorder-container-bg);
+
+    video {
+      position: relative;
+      display: block;
+      width: 100%;
       height: 100%;
+      object-fit: cover;
+    }
+  }
 
-      & video {
-        height: 100%;
-        width: 100%;
+  .video-recorder-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--video-recorder-placeholder-color);
+
+    svg {
+      width: var(--video-recorder-placeholder-size);
+      height: auto;
+    }
+  }
+
+  .video-recorder-time {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
+    border-radius: var(--video-recorder-time-radius);
+    background-color: var(--video-recorder-time-bg);
+    color: var(--video-recorder-time-color);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+  }
+
+  .video-recorder-time-recording {
+    color: var(--color-support-danger-500);
+  }
+
+  .toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    padding: var(--primitive-spacer-8);
+    border-radius: var(--video-recorder-toolbar-radius);
+    background-color: var(--video-recorder-toolbar-bg);
+    box-shadow: var(--video-recorder-toolbar-shadow);
+    transform: translate(-50%, -0.8rem);
+
+    @container (max-width: 480px) {
+      .video-recorder-toolbar-label {
+        display: none;
       }
 
-      & .toolbar {
-        padding: $spacer-4 $spacer-12;
-        transform: translate(-50%, -#{$spacer-8}) !important;
-
-        @include bootstrap.media-breakpoint-down(md) {
-          padding: $spacer-0 $spacer-8;
-          transform: translate(-50%, -#{$spacer-12}) !important;
-        }
-
-        @include bootstrap.media-breakpoint-down(sm) {
-          transform: translate(-50%, -#{$spacer-8}) !important;
-        }
-      }
-
-      & .video-recorder-time {
-        position: absolute;
-        top: $spacer-0;
-        padding: $spacer-2 $spacer-8;
-
-        @include bootstrap.media-breakpoint-down(sm) {
-          padding-block: $spacer-0;
-          top: $spacer-4 !important;
-        }
+      .btn {
+        padding: var(--primitive-spacer-8);
       }
     }
+  }
+}
+
+.video-recorder-error {
+  --video-recorder-error-max-width: 64.4rem;
+  --video-recorder-error-bg: var(--primitive-white);
+  --video-recorder-error-radius: var(--primitive-border-radius-md);
+  --video-recorder-error-color: var(--primitive-grey-900);
+  --video-recorder-error-illustration-width: 27.8rem;
+  --video-recorder-error-illustration-ratio: 278 / 234;
+  --video-recorder-error-illustration: url('./images/emptyscreen/illu-videorecorder.svg');
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--primitive-spacer-16);
+  width: 100%;
+  max-width: var(--video-recorder-error-max-width);
+  margin: auto;
+  padding: var(--primitive-spacer-32) 0;
+  border-radius: var(--video-recorder-error-radius);
+  background-color: var(--video-recorder-error-bg);
+
+  .video-recorder-error-illustration {
+    width: var(--video-recorder-error-illustration-width);
+    max-width: 100%;
+    aspect-ratio: var(--video-recorder-error-illustration-ratio);
+    background: var(--video-recorder-error-illustration) center / contain
+      no-repeat;
+  }
+
+  .video-recorder-error-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+    max-width: 100%;
+    color: var(--video-recorder-error-color);
+    text-align: center;
+    word-break: break-word;
+  }
+
+  .video-recorder-error-title,
+  .video-recorder-error-description {
+    margin: 0;
+  }
+
+  .video-recorder-error-title {
+    font-family: var(--font-family-title);
+    font-size: var(--primitive-font-size-s);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--primitive-font-lineheight-s);
+  }
+
+  .video-recorder-error-description {
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
   }
 }

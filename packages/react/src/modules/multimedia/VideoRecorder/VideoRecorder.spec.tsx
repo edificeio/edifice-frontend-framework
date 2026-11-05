@@ -41,24 +41,28 @@ vi.mock('./useCameras', () => ({ useCameras }));
 const video = () => document.querySelector('video') as HTMLVideoElement;
 const timer = () => document.querySelector('.video-recorder-time');
 
-const recordButton = () =>
-  screen.getByRole('button', { name: 'Start recording' });
-const stopButton = () => screen.getByRole('button', { name: 'Stop recording' });
-const playButton = () => screen.getByRole('button', { name: 'Play' });
-const pauseButton = () =>
-  screen.getByRole('button', { name: 'bbm.video.play.pause' });
-const resetButton = () => screen.getByRole('button', { name: 'Reset' });
-const saveButton = () => screen.getByRole('button', { name: 'Save' });
+const nameInput = () =>
+  screen.getByPlaceholderText('Name of your recording') as HTMLInputElement;
+
+const recordButton = () => screen.getByRole('button', { name: 'record' });
+const stopButton = () => screen.getByRole('button', { name: 'stop' });
+const playButton = () => screen.getByRole('button', { name: 'play' });
+const pauseButton = () => screen.getByRole('button', { name: 'pause' });
+const resetButton = () => screen.getByRole('button', { name: 'reset' });
+const saveButton = () => screen.getByRole('button', { name: 'save' });
 
 function setup({
   inputDevices = [videoInput('camera-1')],
   withStream = true,
+  streamError,
   ...props
 }: {
   inputDevices?: MediaDeviceInfo[];
   withStream?: boolean;
+  streamError?: unknown;
   caption?: string;
   hideSaveAction?: boolean;
+  onNameChange?: (name: string) => void;
 } = {}) {
   const harness = installMediaHarness();
   useCameras.mockReturnValue({
@@ -66,6 +70,7 @@ function setup({
     setPreferedDevice,
     restartStream,
     stream: withStream ? harness.stream : undefined,
+    streamError,
   });
 
   const onError = vi.fn();
@@ -104,10 +109,10 @@ describe('VideoRecorder', () => {
   });
 
   describe('layout', () => {
-    it('shows the caption it was given', () => {
+    it('no longer renders the deprecated caption', () => {
       setup({ caption: 'Record a video' });
 
-      expect(screen.getByText('Record a video')).toBeInTheDocument();
+      expect(screen.queryByText('Record a video')).toBeNull();
     });
 
     it('hides the device picker when there is nothing to pick', () => {
@@ -127,15 +132,53 @@ describe('VideoRecorder', () => {
     it('waits for a stream before showing the toolbar', () => {
       setup({ withStream: false });
 
-      expect(
-        screen.queryByRole('button', { name: 'Start recording' }),
-      ).toBeNull();
+      expect(screen.queryByRole('button', { name: 'record' })).toBeNull();
     });
 
-    it('shows no timer before anything is recorded', () => {
+    it('shows the maximum duration before anything is recorded', async () => {
       setup();
 
-      expect(timer()).toBeNull();
+      await waitFor(() => expect(timer()).toHaveTextContent('00:00/03:00'));
+    });
+  });
+
+  describe('naming the record', () => {
+    it('suggests a dated default name', () => {
+      setup();
+
+      expect(nameInput().value).toMatch(/^Video capture \d{4}\/\d{2}\/\d{2}/);
+    });
+
+    it('reports each name change to the parent', async () => {
+      const onNameChange = vi.fn();
+      const { user } = setup({ onNameChange });
+
+      await user.clear(nameInput());
+      expect(onNameChange).toHaveBeenLastCalledWith('');
+
+      await user.type(nameInput(), 'a');
+      expect(onNameChange).toHaveBeenLastCalledWith('a');
+    });
+  });
+
+  describe('camera or microphone access', () => {
+    it('shows an empty screen instead of the recorder when refused', () => {
+      setup({ withStream: false, streamError: new Error('NotAllowedError') });
+
+      expect(
+        screen.getByText('A problem occurred with your camera or microphone.'),
+      ).toBeInTheDocument();
+      expect(
+        document.querySelector('.video-recorder-error-illustration'),
+      ).not.toBeNull();
+      expect(document.querySelector('.video-recorder')).toBeNull();
+    });
+
+    it('keeps the recorder while the stream is healthy', () => {
+      setup();
+
+      expect(document.querySelector('.video-recorder-error')).toBeNull();
+      expect(document.querySelector('.video-recorder')).not.toBeNull();
     });
   });
 
@@ -405,7 +448,7 @@ describe('VideoRecorder', () => {
 
       expect(restartStream).toHaveBeenCalled();
       expect(harness.onRecordUpdated).toHaveBeenLastCalledWith();
-      expect(timer()).toBeNull();
+      expect(timer()).toHaveTextContent('00:00/');
     });
   });
 
@@ -419,6 +462,20 @@ describe('VideoRecorder', () => {
       expect(uploadBlob).toHaveBeenCalledWith(
         expect.any(Blob),
         expect.objectContaining({ duration: expect.any(Number) }),
+      );
+    });
+
+    it('uploads the recording under the trimmed name', async () => {
+      const harness = setup();
+      await harness.user.clear(nameInput());
+      await harness.user.type(nameInput(), '  my video  ');
+      await record(harness);
+
+      await harness.user.click(saveButton());
+
+      expect(uploadBlob).toHaveBeenCalledWith(
+        expect.any(Blob),
+        expect.objectContaining({ filename: 'my video' }),
       );
     });
 
@@ -454,6 +511,22 @@ describe('VideoRecorder', () => {
           'Error while uploading video',
         ),
       );
+    });
+
+    it('lets the user retry after a failed upload', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      uploadBlob.mockRejectedValue(new Error('network'));
+      const harness = setup();
+      await record(harness);
+
+      await harness.user.click(saveButton());
+
+      await waitFor(() =>
+        expect(harness.onError).toHaveBeenCalledWith(
+          'Error while uploading video',
+        ),
+      );
+      expect(saveButton()).toBeEnabled();
     });
 
     it('refuses to upload before anything is recorded', async () => {
@@ -499,7 +572,7 @@ describe('VideoRecorder', () => {
       const harness = setup({ hideSaveAction: true });
       await record(harness);
 
-      expect(screen.queryByRole('button', { name: 'Save' })).toBeNull();
+      expect(screen.queryByRole('button', { name: 'save' })).toBeNull();
     });
   });
 

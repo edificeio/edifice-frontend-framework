@@ -172,6 +172,13 @@ i18n.use(initReactI18next).init({
           'A problem occurred with your microphone.',
         'bbm.audio.recorder.device.error.text':
           'Check that your device has a microphone and that you have allowed your browser to access it.',
+        'bbm.video.recorder.defaultName': 'Video capture',
+        'bbm.video.recorder.name.label': 'Video name',
+        'bbm.video.recorder.name': 'Name of your recording',
+        'bbm.video.recorder.device.error.title':
+          'A problem occurred with your camera or microphone.',
+        'bbm.video.recorder.device.error.text':
+          'Check that your device has a camera and a microphone, and that you have allowed your browser to access them.',
         'bbm.audio.record.start': 'Start',
         'bbm.audio.record.resume': 'Resume',
         'bbm.audio.record.pause': 'Pause',
@@ -194,9 +201,10 @@ i18n.use(initReactI18next).init({
         'bbm.device': 'My device',
         'bbm.workspace': 'Workspace',
         'bbm.embed': 'External link',
-        'bbm.video.record.start': 'Start recording',
-        'bbm.video.record.stop': 'Stop recording',
+        'bbm.video.record.start': 'Start',
+        'bbm.video.record.stop': 'Stop',
         'bbm.video.play.start': 'Play',
+        'bbm.video.play.pause': 'Pause',
         'bbm.video.record.reset': 'Reset',
         'bbm.video.record.save': 'Save',
         'bbm.video.url.title': 'Video URL',
@@ -519,6 +527,14 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.link.placeholder': 'Ajouter l’URL',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
+        //----------------- Captation video -----------------
+        'homepage.captationVideo.modal.title': 'Le Studio vidéo',
+        'homepage.captationVideo.cancel': 'Annuler',
+        'homepage.captationVideo.save': 'Enregistrer',
+        'homepage.captationVideo.save.success':
+          'La vidéo est disponible dans votre espace documentaire',
+        'homepage.captationVideo.save.error':
+          'Une erreur est survenue lors de la sauvegarde de la vidéo',
 
         //------------------ Edumalin -------------------------
         'homepage.widget.edumalin.title': 'Édumalin',
