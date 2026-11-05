@@ -30,16 +30,13 @@ function setup(state: Partial<VideoRecorderToolbarProps> = {}) {
   return { ...view, ...spies };
 }
 
-// Icon items keep the aria-label given by the caller — unlike button items,
-// whose label <Toolbar> overwrites with the item name.
-const recordButton = () =>
-  screen.getByRole('button', { name: 'Start recording' });
-const stopButton = () => screen.getByRole('button', { name: 'Stop recording' });
-const playButton = () => screen.getByRole('button', { name: 'Play' });
-const pauseButton = () =>
-  screen.getByRole('button', { name: 'bbm.video.play.pause' });
-const resetButton = () => screen.getByRole('button', { name: 'Reset' });
-const saveButton = () => screen.queryByRole('button', { name: 'Save' });
+// Button items are labelled by <Toolbar> with their item name.
+const recordButton = () => screen.getByRole('button', { name: 'record' });
+const stopButton = () => screen.getByRole('button', { name: 'stop' });
+const playButton = () => screen.getByRole('button', { name: 'play' });
+const pauseButton = () => screen.getByRole('button', { name: 'pause' });
+const resetButton = () => screen.getByRole('button', { name: 'reset' });
+const saveButton = () => screen.queryByRole('button', { name: 'save' });
 
 describe('VideoRecorderToolbar', () => {
   describe('idle', () => {
@@ -131,7 +128,7 @@ describe('VideoRecorderToolbar', () => {
     it('shows a pause button instead of the play button', () => {
       setup({ recorded: true, playing: true });
 
-      expect(screen.queryByRole('button', { name: 'Play' })).toBeNull();
+      expect(screen.queryByRole('button', { name: 'play' })).toBeNull();
       expect(pauseButton()).toBeEnabled();
     });
 
@@ -163,6 +160,20 @@ describe('VideoRecorderToolbar', () => {
 
       expect(saveButton()).toBeDisabled();
       expect(resetButton()).toBeEnabled();
+    });
+  });
+
+  describe('labels', () => {
+    it('labels the enabled buttons', () => {
+      setup();
+
+      expect(recordButton()).toHaveTextContent('Start');
+    });
+
+    it('only shows the icon of a disabled button', () => {
+      setup();
+
+      expect(playButton()).toHaveTextContent('');
     });
   });
 

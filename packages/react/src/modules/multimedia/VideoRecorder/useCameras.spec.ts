@@ -4,6 +4,7 @@ import {
   FakeMediaStream,
   FakeMediaStreamInstance,
   audioInput,
+  fakeTrack,
   installMediaHarness,
   videoInput,
 } from '../testing/mediaHarness';
@@ -73,6 +74,50 @@ describe('useCameras', () => {
       });
 
       expect(error).toHaveBeenCalled();
+    });
+
+    it('exposes the refusal as a stream error', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const refusal = new Error('NotAllowedError');
+      const { result, getUserMedia } = setup();
+      getUserMedia.mockRejectedValue(refusal);
+
+      await act(async () => {
+        result.current.restartStream();
+      });
+
+      expect(result.current.streamError).toBe(refusal);
+    });
+
+    it('reports a stream without microphone as an error', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const { result, getUserMedia } = setup();
+      getUserMedia.mockResolvedValue(new FakeMediaStream([fakeTrack()]));
+
+      await act(async () => {
+        result.current.restartStream();
+      });
+
+      expect(result.current.streamError).toBeDefined();
+    });
+
+    it('reports a track ended by the system as an error', async () => {
+      const { result, stream } = setup();
+      await waitFor(() => expect(result.current.stream).toBe(stream));
+
+      act(() => {
+        const track = stream.getTracks()[0];
+        track.onended?.call(track, new Event('ended'));
+      });
+
+      expect(result.current.streamError).toBeDefined();
+    });
+
+    it('has no stream error once a stream is acquired', async () => {
+      const { result, stream } = setup();
+
+      await waitFor(() => expect(result.current.stream).toBe(stream));
+      expect(result.current.streamError).toBeUndefined();
     });
   });
 

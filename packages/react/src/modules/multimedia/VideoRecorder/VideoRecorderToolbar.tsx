@@ -6,7 +6,7 @@ import {
   IconPlayFilled,
   IconRecord,
   IconRecordStop,
-  IconRefresh,
+  IconReset,
   IconSave,
 } from '../../icons/components';
 
@@ -43,84 +43,89 @@ export const VideoRecorderToolbar = ({
 }: VideoRecorderToolbarProps) => {
   const { t } = useTranslation();
 
+  const renderLabel = (label: string, disabled: boolean) =>
+    disabled ? undefined : (
+      <span className="video-recorder-toolbar-label">{label}</span>
+    );
+
+  const isRecordDisabled = recording || recorded || saving;
+  const isStopDisabled = !recording || recorded || saving;
+  const isPlaybackDisabled = !recorded || saving;
+  const isSaveDisabled = !recorded || saving || saved;
+
   const toolbarItems: ToolbarItem[] = [
     {
-      type: 'icon',
+      type: 'button',
       name: 'record',
       props: {
-        'icon': <IconRecord color={recording || recorded ? '' : 'red'} />,
-        'color': 'danger',
-        'disabled': recording || recorded || saving,
-        'onClick': handleRecord,
-        'aria-label': t('bbm.video.record.start'),
+        leftIcon: <IconRecord />,
+        color: 'danger',
+        disabled: isRecordDisabled,
+        onClick: handleRecord,
+        children: renderLabel(t('bbm.video.record.start'), isRecordDisabled),
       },
       tooltip: t('bbm.video.record.start'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'stop',
       props: {
-        'icon': <IconRecordStop />,
-        'disabled': !recording || recorded || saving,
-        'onClick': handleStop,
-        'aria-label': t('bbm.video.record.stop'),
+        leftIcon: <IconRecordStop />,
+        disabled: isStopDisabled,
+        onClick: handleStop,
+        children: renderLabel(t('bbm.video.record.stop'), isStopDisabled),
       },
       tooltip: t('bbm.video.record.stop'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'play',
       visibility: !playing ? 'show' : 'hide',
       props: {
-        'icon': <IconPlayFilled />,
-        'disabled': !recorded || saving,
-        'onClick': handlePlayPause,
-        'aria-label': t('bbm.video.play.start'),
+        leftIcon: <IconPlayFilled />,
+        disabled: isPlaybackDisabled,
+        onClick: handlePlayPause,
+        children: renderLabel(t('bbm.video.play.start'), isPlaybackDisabled),
       },
       tooltip: t('bbm.video.play.start'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'pause',
       visibility: playing ? 'show' : 'hide',
       props: {
-        'icon': <IconPause />,
-        'disabled': !recorded || saving,
-        'onClick': handlePlayPause,
-        'aria-label': t('bbm.video.play.pause'),
+        leftIcon: <IconPause />,
+        disabled: isPlaybackDisabled,
+        onClick: handlePlayPause,
+        children: renderLabel(t('bbm.video.play.pause'), isPlaybackDisabled),
       },
       tooltip: t('bbm.video.play.pause'),
     },
     { type: 'divider' },
     {
-      type: 'icon',
+      type: 'button',
       name: 'reset',
       props: {
-        'icon': <IconRefresh />,
-        'disabled': !recorded || saving,
-        'onClick': handleReset,
-        'aria-label': t('bbm.video.record.reset'),
+        leftIcon: <IconReset />,
+        disabled: isPlaybackDisabled,
+        onClick: handleReset,
+        children: renderLabel(t('bbm.video.record.reset'), isPlaybackDisabled),
       },
       tooltip: t('bbm.video.record.reset'),
     },
     {
-      type: 'icon',
+      type: 'button',
       name: 'save',
       visibility: hideSaveAction ? 'hide' : 'show',
       props: {
-        'icon': <IconSave />,
-        'disabled': !recorded || saving || saved,
-        'onClick': handleSave,
-        'aria-label': t('bbm.video.record.save'),
+        leftIcon: <IconSave />,
+        disabled: isSaveDisabled,
+        onClick: handleSave,
+        children: renderLabel(t('bbm.video.record.save'), isSaveDisabled),
       },
       tooltip: t('bbm.video.record.save'),
     },
   ];
 
-  return (
-    <Toolbar
-      items={toolbarItems}
-      className="position-absolute bottom-0 start-50 bg-white"
-    />
-  );
+  return <Toolbar items={toolbarItems} />;
 };
