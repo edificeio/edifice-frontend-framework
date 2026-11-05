@@ -167,7 +167,7 @@ describe('VideoRecorderToolbar', () => {
     it('labels the enabled buttons', () => {
       setup();
 
-      expect(recordButton()).toHaveTextContent('Start recording');
+      expect(recordButton()).toHaveTextContent('Start');
     });
 
     it('only shows the icon of a disabled button', () => {

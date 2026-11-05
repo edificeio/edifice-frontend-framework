@@ -109,10 +109,10 @@ describe('VideoRecorder', () => {
   });
 
   describe('layout', () => {
-    it('shows the caption it was given', () => {
+    it('no longer renders the deprecated caption', () => {
       setup({ caption: 'Record a video' });
 
-      expect(screen.getByText('Record a video')).toBeInTheDocument();
+      expect(screen.queryByText('Record a video')).toBeNull();
     });
 
     it('hides the device picker when there is nothing to pick', () => {
