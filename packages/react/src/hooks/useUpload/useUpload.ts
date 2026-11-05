@@ -123,7 +123,7 @@ const useUpload = (
         browser: { name: browser.name, version: browser.version },
         url: window.location.hostname,
         file: blob,
-        filename: getDefaultDate() ?? 'filename',
+        filename: metadata?.filename || getDefaultDate() || 'filename',
         weight: blob.size,
       },
       appCode: application,

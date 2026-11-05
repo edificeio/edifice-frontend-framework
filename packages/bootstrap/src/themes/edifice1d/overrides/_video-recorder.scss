@@ -1,0 +1,39 @@
+// Legacy ghost buttons are only themed for neo/one: map the toolbar buttons
+// to the theme tokens (same as ButtonBeta ghost) for the edifice1d theme.
+// #PEDAGO-4485 remove comment with new toolbar component
+[data-product='edifice1d'] {
+  .video-recorder .toolbar {
+    .btn-ghost-tertiary,
+    .btn-ghost-danger {
+      --edifice-btn-bg: transparent;
+      --edifice-btn-border-color: transparent;
+      --edifice-btn-hover-bg: var(--primitive-grey-100);
+      --edifice-btn-hover-border-color: transparent;
+      --edifice-btn-active-bg: var(--primitive-grey-200);
+      --edifice-btn-active-border-color: transparent;
+      --edifice-btn-disabled-bg: transparent;
+      --edifice-btn-disabled-border-color: transparent;
+      --edifice-btn-disabled-opacity: 1;
+    }
+
+    .btn-ghost-tertiary {
+      --edifice-btn-color: var(--color-text-button-tertiary-other-default);
+      --edifice-btn-hover-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-active-color: var(
+        --color-text-button-tertiary-other-default
+      );
+      --edifice-btn-disabled-color: var(
+        --color-text-button-tertiary-other-disable
+      );
+    }
+
+    .btn-ghost-danger {
+      --edifice-btn-color: var(--color-support-danger-700);
+      --edifice-btn-hover-color: var(--color-support-danger-700);
+      --edifice-btn-active-color: var(--color-support-danger-700);
+      --edifice-btn-disabled-color: var(--color-support-danger-300);
+    }
+  }
+}
