@@ -149,10 +149,10 @@ describe('MessageFlash', () => {
       ).toBeInTheDocument();
     });
 
-    it('displays the title and the signature', () => {
+    it('displays the signature but not the title', () => {
       render(<MessageFlash message={message({ signature: 'La direction' })} />);
 
-      expect(screen.getByText('Message important')).toBeInTheDocument();
+      expect(screen.queryByText('Message important')).not.toBeInTheDocument();
       expect(screen.getByText('La direction')).toBeInTheDocument();
     });
 
@@ -180,9 +180,10 @@ describe('MessageFlash', () => {
     it('does not fail without a callback', async () => {
       const { user } = render(<MessageFlash message={message()} />);
 
-      await user.click(screen.getByTestId('message-flash-close-button'));
+      const closeButton = screen.getByTestId('message-flash-close-button');
+      await user.click(closeButton);
 
-      expect(screen.getByText('Message important')).toBeInTheDocument();
+      expect(closeButton).toBeInTheDocument();
     });
   });
 
