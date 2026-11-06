@@ -32,6 +32,9 @@ import {
   zendeskGuideHandlers,
 } from '@edifice.io/config';
 
+// Themes selectable in the toolbar, also rendered together in "side-by-side".
+const THEMES = ['one', 'neo', 'edifice2d', 'edifice1d', 'crna', 'ent77'];
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -63,7 +66,7 @@ const preview: Preview = {
       defaultValue: 'one',
       toolbar: {
         icon: 'switchalt',
-        items: ['one', 'neo', 'edifice2d', 'edifice1d', 'side-by-side'],
+        items: [...THEMES, 'side-by-side'],
       },
     },
     app: {
@@ -149,33 +152,12 @@ const preview: Preview = {
       };
 
       const renderStoryTheme = () => {
-        switch (theme) {
-          case 'side-by-side': {
-            return (
-              <>
-                <StoryTheme themePath="one" />
-                <StoryTheme themePath="neo" />
-                <StoryTheme themePath="edifice2d" />
-                <StoryTheme themePath="edifice1d" />
-              </>
-            );
-          }
-          case 'one': {
-            return <StoryTheme themePath="one" />;
-          }
-          case 'neo': {
-            return <StoryTheme themePath="neo" />;
-          }
-          case 'edifice2d': {
-            return <StoryTheme themePath="edifice2d" />;
-          }
-          case 'edifice1d': {
-            return <StoryTheme themePath="edifice1d" />;
-          }
-          case 'default': {
-            return <StoryTheme themePath={theme} />;
-          }
+        if (theme === 'side-by-side') {
+          return THEMES.map((themePath) => (
+            <StoryTheme key={themePath} themePath={themePath} />
+          ));
         }
+        return <StoryTheme themePath={theme} />;
       };
 
       return (
