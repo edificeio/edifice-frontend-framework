@@ -8,7 +8,8 @@ export type Background =
   | 'orange-200'
   | 'blue-200'
   | 'green-200'
-  | 'crna';
+  | 'crna'
+  | 'ent77';
 
 type BackgroundPreferences = {
   background: Background;
