@@ -1,6 +1,7 @@
 // Configuration du thème edifice2d.
 
 @use 'primitives' as *;
+@use 'primitives-legacy' as legacy;
 
 $edifice2d: (
   name: 'edifice2d',
@@ -66,9 +67,26 @@ $edifice2d: (
       default: $yellow-400,
       dark: $yellow-500,
     ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: legacy.$neo-orange-500,
+      produce: legacy.$neo-blue-500,
+      organise: legacy.$neo-green-500,
+      admin: legacy.$neo-yellow-500,
+      special: legacy.$neo-purple-500,
+    ),
     themeSeparator: (
       minor: $yellow-500,
       major: $pink-500,
+    ),
+    secondary: (
+      feather: $yellow-100,
+      pale: $yellow-200,
+      light: $yellow-300,
+      default: $yellow-400,
+      dark: $yellow-500,
     ),
     profil: (
       guest: $yellow-700,
@@ -126,6 +144,7 @@ $edifice2d: (
   ),
   radius: (
     button: $border-radius-pill,
+    maincontainer: $border-radius-none,
     searchbar: $border-radius-pill,
   ),
 );
