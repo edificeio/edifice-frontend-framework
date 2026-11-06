@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useUserSchools } from '../../hooks/useUserSchools';
 import Cantine from './Cantine';
 import { CantineModalContainer } from './CantineModalContainer';
 import { useCantine } from './hooks/useCantine';
 
 export function CantineContainer() {
-  const { sections, status } = useCantine();
+  const { schools, selectedSchool } = useUserSchools();
+  const { sections, status } = useCantine(selectedSchool);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -15,7 +17,11 @@ export function CantineContainer() {
         handleFullScreenClick={() => setIsModalOpen(true)}
       />
       {isModalOpen && (
-        <CantineModalContainer onClose={() => setIsModalOpen(false)} />
+        <CantineModalContainer
+          schools={schools}
+          defaultSchool={selectedSchool}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );
