@@ -25,6 +25,12 @@
       }
     ],
     "declaration-no-important": null,
+    "value-keyword-case": [
+      "lower",
+      {
+        "ignoreKeywords": ["themeSeparator"]
+      }
+    ],
     "selector-class-pattern": ["^([a-z][a-z0-9]*)(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$", { "message": "Expected BEM-compatible class name" }],
     "rule-empty-line-before": [
       "always-multi-line",

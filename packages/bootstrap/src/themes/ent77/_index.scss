@@ -1,0 +1,7 @@
+// ent77 theme, built on the theme API (theme-api.scss).
+// Theme-specific overrides live per component in the overrides/ folder.
+
+@use '../theme-api' as theme;
+@use '../configs/ent77' as *;
+@use 'overrides';
+@include theme.theme-vars('ent77', $ent77);
