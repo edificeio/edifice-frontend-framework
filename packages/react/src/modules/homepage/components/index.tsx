@@ -2,6 +2,7 @@ export * from './Agenda';
 export * from './Communities';
 export * from './BriefMe';
 export * from './Cantine';
+export * from './Captation';
 export * from './Edumalin';
 export * from './Favorites';
 export * from './GenerationHdf';
