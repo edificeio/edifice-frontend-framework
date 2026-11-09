@@ -3,7 +3,14 @@ import { renderHook } from '~/setup';
 import useBackground from './useBackground';
 
 const { preferences, uiOverrides } = vi.hoisted(() => ({
-  preferences: { current: undefined as { background?: string } | undefined },
+  preferences: {
+    current: undefined as
+      | {
+          background?: string;
+          homePage?: { betaEnabled?: boolean | null } | null;
+        }
+      | undefined,
+  },
   uiOverrides: {
     current: {} as Record<string, { variant: string; theme?: string }>,
   },
@@ -63,9 +70,33 @@ describe('useBackground', () => {
     const { result } = renderHook(() => useBackground());
 
     expect(result.current).toEqual({
+      betaEnabled: true,
       background: 'default',
       isBackgroundImageOverridden: true,
       productOverride: 'crna',
     });
+  });
+
+  // TODO #IMPULS-6352 Supprimer les références à betaEnabled
+  it.each([
+    ['no preferences', undefined],
+    ['no homePage preference', { homePage: null }],
+    ['an undefined betaEnabled', { homePage: {} }],
+    ['a null betaEnabled', { homePage: { betaEnabled: null } }],
+    ['betaEnabled set to true', { homePage: { betaEnabled: true } }],
+  ])('considers beta enabled with %s', (_, prefs) => {
+    preferences.current = prefs;
+
+    const { result } = renderHook(() => useBackground());
+
+    expect(result.current.betaEnabled).toBe(true);
+  });
+
+  it('considers beta disabled only when betaEnabled is explicitly false', () => {
+    preferences.current = { homePage: { betaEnabled: false } };
+
+    const { result } = renderHook(() => useBackground());
+
+    expect(result.current.betaEnabled).toBe(false);
   });
 });
