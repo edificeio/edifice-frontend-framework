@@ -1,6 +1,6 @@
+import type { School } from '@edifice.io/client';
 import { useMemo, useState } from 'react';
 import { useDate } from '../../../../../hooks';
-import { useUserSchools } from '../../../hooks/useUserSchools';
 import { useCantineMenu } from './useCantineMenu';
 import { CantineMenuType } from '../types';
 
@@ -21,10 +21,12 @@ const addDays = (date: Date, days: number) => {
  * The school picked here stays local to the modal on purpose: it must not
  * change the school shared with the other homepage widgets (see
  * `useUserSchools`), only the menu being read.
+ *
+ * `defaultSchool` must come from the widget card, already settled: a fresh
+ * `useUserSchools` here would still be switching schools when `Select` echoes
+ * its value back, making the two bounce forever.
  */
-export function useCantineModal() {
-  const { schools, selectedSchool: defaultSchool } = useUserSchools();
-
+export function useCantineModal(schools: School[], defaultSchool?: School) {
   const { formatDate } = useDate();
 
   const [schoolId, setSchoolId] = useState<string>();
