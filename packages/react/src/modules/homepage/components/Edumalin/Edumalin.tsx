@@ -70,7 +70,8 @@ export default function Edumalin({
           <p className="edumalin__error-code">
             {t('homepage.widget.edumalin.error.code', {
               code: error.code,
-              message: error.message,
+              message:
+                error.message || t('homepage.widget.edumalin.error.noResponse'),
             })}
           </p>
         )}
