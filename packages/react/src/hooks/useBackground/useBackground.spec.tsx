@@ -77,7 +77,7 @@ describe('useBackground', () => {
     });
   });
 
-  // TODO #IMPULS-6352 Supprimer les références à betaEnabled
+  // TODO(IMPULS-6352): remove the betaEnabled references.
   it.each([
     ['no preferences', undefined],
     ['no homePage preference', { homePage: null }],
