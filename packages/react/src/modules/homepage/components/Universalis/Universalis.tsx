@@ -2,41 +2,35 @@ import illuUniversalis from '@edifice.io/bootstrap/dist/images/homepage/illu-uni
 import { School } from '@edifice.io/client';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta as Button,
   Dropdown,
-  FormControl,
   Image,
-  Input,
+  SearchBar,
 } from '../../../../components';
-import { IconRafterDown, IconSearch } from '../../../icons/components';
+import { IconRafterDown } from '../../../icons/components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { HomeCard } from '../HomeCard';
 
-const UNIVERSALIS_ENGINE_PARAM = 'www';
-
 export interface UniversalisProps {
   handleActionClick: () => void;
+  onSearch?: (query: string) => void;
   selectedSchool?: School;
   onSelectedSchoolChange?: (school: School) => void;
   schools?: School[];
 }
 
-interface UniversalisFormValues {
-  q: string;
-}
-
 export default function Universalis({
   handleActionClick,
+  onSearch,
   selectedSchool,
   onSelectedSchoolChange,
   schools,
 }: UniversalisProps) {
   const { t } = useTranslation();
-  const { register } = useForm<UniversalisFormValues>();
+  const [query, setQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
 
   const hasManySchools = Boolean(schools && schools.length > 1);
@@ -44,6 +38,11 @@ export default function Universalis({
   const searchLabel = hasUai
     ? t('search')
     : t('homepage.widget.universalis.noUai');
+
+  const handleSearch = () => {
+    if (!query.trim()) return;
+    onSearch?.(query.trim());
+  };
 
   return (
     <HomeCard variant="primary">
@@ -112,39 +111,19 @@ export default function Universalis({
             </Dropdown>
           )}
 
-          <form
-            method="GET"
-            action="https://www.universalis-edu.com/nomade/precherche/"
-            target="_blank"
+          <SearchBar
+            isVariant={false}
+            id="universalis-search-input"
             className="universalis__search"
-          >
-            <FormControl
-              id="inputUniversalisQuery"
-              className="universalis__search-field"
-            >
-              <FormControl.Label className="visually-hidden">
-                {searchLabel}
-              </FormControl.Label>
-              <Input
-                placeholder={searchLabel}
-                size="md"
-                type="text"
-                maxLength={255}
-                disabled={!hasUai}
-                {...register('q')}
-              />
-              <input type="hidden" name="r" value={UNIVERSALIS_ENGINE_PARAM} />
-              <input type="hidden" name="uai" value={selectedSchool?.UAI} />
-              <Button
-                leftIcon={<IconSearch />}
-                type="submit"
-                aria-label={searchLabel}
-                variant="filled"
-                color="default"
-                disabled={!hasUai}
-              />
-            </FormControl>
-          </form>
+            placeholder={searchLabel}
+            aria-label={searchLabel}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onClick={handleSearch}
+            disabled={!hasUai}
+            maxLength={255}
+            data-testid="universalis-search-input"
+          />
         </div>
       </HomeCard.Content>
     </HomeCard>
