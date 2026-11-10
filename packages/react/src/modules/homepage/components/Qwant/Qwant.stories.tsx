@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
-import Qwant from './Qwant';
+import { fn } from 'storybook/test';
+import Qwant, { QwantProps } from './Qwant';
 
 const meta: Meta<typeof Qwant> = {
   title: 'Modules/Homepage/Qwant',
@@ -28,12 +29,15 @@ function openQwant() {
   window.open('https://www.qwant.com', '_blank', 'noopener,noreferrer');
 }
 
-const renderWithProps = (props: { handleActionClick: () => void }) => () => (
+const renderWithProps = (props: QwantProps) => () => (
   <div style={{ maxWidth: 397 }}>
     <Qwant {...props} />
   </div>
 );
 
 export const QwantStory: Story = {
-  render: renderWithProps({ handleActionClick: openQwant }),
+  render: renderWithProps({
+    handleActionClick: openQwant,
+    handleSearch: fn(),
+  }),
 };

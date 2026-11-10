@@ -1,9 +1,22 @@
 import Qwant from './Qwant';
 
+export const QWANT_URL = 'https://www.qwant.com';
+
 export function QwantContainer() {
   const handleActionClick = (): void => {
-    window.open('https://www.qwant.com', '_blank', 'noopener,noreferrer');
+    window.open(QWANT_URL, '_blank', 'noopener,noreferrer');
   };
 
-  return <Qwant handleActionClick={handleActionClick} />;
+  const handleSearch = (query: string): void => {
+    const params = new URLSearchParams({ q: query, l: 'fr' });
+    window.open(
+      `${QWANT_URL}/?${params.toString()}`,
+      '_blank',
+      'noopener,noreferrer',
+    );
+  };
+
+  return (
+    <Qwant handleActionClick={handleActionClick} handleSearch={handleSearch} />
+  );
 }

@@ -1,27 +1,23 @@
 import illuQwant from '@edifice.io/bootstrap/dist/images/homepage/illu-qwant.png';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ButtonBeta as Button,
-  FormControl,
-  Image,
-  Input,
-} from '../../../../components';
-import { IconSearch } from '../../../../modules/icons/components';
+import { ButtonBeta as Button, Image, SearchBar } from '../../../../components';
 import SvgIconExternalLink from '../../../../modules/icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
 
 export interface QwantProps {
   handleActionClick: () => void;
+  handleSearch: (query: string) => void;
 }
 
-interface QwantFormValues {
-  q: string;
-}
-
-export default function Qwant({ handleActionClick }: QwantProps) {
+export default function Qwant({ handleActionClick, handleSearch }: QwantProps) {
   const { t } = useTranslation();
-  const { register } = useForm<QwantFormValues>();
+  const [query, setQuery] = useState('');
+
+  const handleSubmit = () => {
+    const trimmedQuery = query.trim();
+    if (trimmedQuery) handleSearch(trimmedQuery);
+  };
 
   return (
     <HomeCard variant="primary">
@@ -46,34 +42,18 @@ export default function Qwant({ handleActionClick }: QwantProps) {
               {t('homepage.widget.qwant.description')}
             </p>
           </div>
-          <form
-            method="GET"
-            action="https://www.qwant.com"
-            target="_blank"
+          <SearchBar
+            isVariant={false}
+            id="qwant-search-input"
             className="qwant__search"
-          >
-            <FormControl id="inputQwantQuery" className="qwant__search-field">
-              <FormControl.Label className="visually-hidden">
-                {t('search')}
-              </FormControl.Label>
-              <Input
-                data-testid="qwant-search-input"
-                placeholder={t('search')}
-                size="md"
-                type="text"
-                maxLength={255}
-                {...register('q')}
-              />
-              <input type="hidden" name="l" value="fr" />
-              <Button
-                leftIcon={<IconSearch />}
-                type="submit"
-                aria-label={t('search')}
-                variant="filled"
-                color="default"
-              />
-            </FormControl>
-          </form>
+            placeholder="search"
+            aria-label={t('search')}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onClick={handleSubmit}
+            maxLength={255}
+            data-testid="qwant-search-input"
+          />
         </div>
       </HomeCard.Content>
     </HomeCard>
