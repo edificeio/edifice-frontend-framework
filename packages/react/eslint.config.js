@@ -6,7 +6,15 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist', '**/dist/**', 'node_modules', 'coverage', '**/*.stories.tsx'] },
+  {
+    ignores: [
+      'dist',
+      '**/dist/**',
+      'node_modules',
+      'coverage',
+      '**/*.stories.tsx',
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -36,7 +44,10 @@ export default tseslint.config(
       '@typescript-eslint/ban-types': 'off',
       'todo-plz/ticket-ref': [
         'warn',
-        { terms: ['TODO', 'FIXME'], pattern: 'ENABLING-\\d+' },
+        {
+          terms: ['TODO', 'FIXME'],
+          pattern: '(ENABLING|IMPULS|PEDAGO|INTEG|WB)-\\d+',
+        },
       ],
     },
   },

@@ -28,7 +28,10 @@ export default tseslint.config(
       '@typescript-eslint/no-unused-vars': 'off',
       'todo-plz/ticket-ref': [
         'warn',
-        { terms: ['TODO', 'FIXME'], pattern: 'ENABLING-\\d+' },
+        {
+          terms: ['TODO', 'FIXME'],
+          pattern: '(ENABLING|IMPULS|PEDAGO|INTEG|WB)-\\d+',
+        },
       ],
     },
   },
