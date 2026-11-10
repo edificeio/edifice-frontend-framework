@@ -488,6 +488,7 @@ i18n.use(initReactI18next).init({
           'Aucune ressource en favoris',
         'homepage.widget.mediacentre.universalis.noUai': 'UAI non renseigné',
         'homepage.widget.mediacentre.universalis.search': 'Rechercher',
+        //------------------ Carnet de bord ----------
         'homepage.widget.carnetDeBord.title': 'Carnet de bord',
         'homepage.widget.carnetDeBord.open': 'Voir plus',
         'homepage.widget.carnetDeBord.kids': 'Enfants',
