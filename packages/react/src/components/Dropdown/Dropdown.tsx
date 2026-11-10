@@ -22,6 +22,7 @@ import DropdownRadioItem from './DropdownRadioItem';
 import DropdownSearchInput from './DropdownSearchInput';
 import DropdownSeparator from './DropdownSeparator';
 import DropdownTrigger from './DropdownTrigger';
+import { DropdownVirtualizedMenu } from './DropdownVirtualizedMenu';
 import { useMatchRegistry } from './useMatchRegistry';
 
 export interface DropdownApi {

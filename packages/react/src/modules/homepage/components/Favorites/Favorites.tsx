@@ -1,4 +1,5 @@
 import { type IWebApp } from '@edifice.io/client';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite.svg';
