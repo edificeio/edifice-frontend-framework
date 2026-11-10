@@ -31,7 +31,7 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
   const { userDescription } = useUser();
   const { isAdml } = useIsAdml();
 
-  //TODO to delete with "edifice in product" generalization #IMPULS-6352
+  // TODO(IMPULS-6352): delete with the "edifice in product" generalization.
   const isEdificeInProductHelp =
     useUiOverride('layout.helpzone')?.variant === 'edifice-in-product';
   const { theme } = useEdificeTheme();
@@ -269,7 +269,7 @@ export default function useZendeskGuide(): UseZendeskGuideAPI {
           (window as any).zE('webWidget', 'updateSettings', {
             webWidget: {
               color: {
-                //TODO #IMPULS-6352 to update with "edifice in product" generalization #IMPULS-6352
+                // TODO(IMPULS-6352): update with the "edifice in product" generalization.
                 // theme: : zendeskGuideConfig.color || '#3030D1',
                 theme: isEdificeInProductHelp
                   ? '#3030D1'
