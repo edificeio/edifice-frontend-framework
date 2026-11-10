@@ -58,20 +58,37 @@ describe('Universalis', () => {
     ).toBeInTheDocument();
   });
 
-  it('sends the selected school UAI as a hidden field of the search form', () => {
-    render(
-      <Universalis handleActionClick={vi.fn()} selectedSchool={mockSchool1} />,
+  it('calls onSearch with the trimmed query when the button is clicked', async () => {
+    const onSearch = vi.fn();
+    const { user } = render(
+      <Universalis
+        handleActionClick={vi.fn()}
+        onSearch={onSearch}
+        selectedSchool={mockSchool1}
+      />,
     );
 
-    const form = screen.getByRole('textbox').closest('form');
-    expect(form).toHaveAttribute(
-      'action',
-      'https://www.universalis-edu.com/nomade/precherche/',
+    await user.type(screen.getByRole('searchbox'), '  volcan ');
+    await user.click(screen.getByRole('button', { name: 'Search' }));
+
+    expect(onSearch).toHaveBeenCalledWith('volcan');
+  });
+
+  it('calls onSearch when pressing Enter, but not for an empty query', async () => {
+    const onSearch = vi.fn();
+    const { user } = render(
+      <Universalis
+        handleActionClick={vi.fn()}
+        onSearch={onSearch}
+        selectedSchool={mockSchool1}
+      />,
     );
-    expect(form?.querySelector('input[name="uai"]')).toHaveValue(
-      mockSchool1.UAI,
-    );
-    expect(form?.querySelector('input[name="r"]')).toHaveValue('www');
+
+    await user.type(screen.getByRole('searchbox'), '   {Enter}');
+    expect(onSearch).not.toHaveBeenCalled();
+
+    await user.type(screen.getByRole('searchbox'), 'volcan{Enter}');
+    expect(onSearch).toHaveBeenCalledTimes(1);
   });
 
   it('disables the search field and button when the selected school has no UAI', () => {
@@ -84,10 +101,8 @@ describe('Universalis', () => {
       />,
     );
 
-    expect(screen.getByRole('textbox')).toBeDisabled();
-    expect(
-      screen.getByRole('button', { name: 'UAI non renseigné' }),
-    ).toBeDisabled();
+    expect(screen.getByRole('searchbox')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Search' })).toBeDisabled();
   });
 
   it('enables the search field and button when the selected school has an UAI', () => {
@@ -95,7 +110,7 @@ describe('Universalis', () => {
       <Universalis handleActionClick={vi.fn()} selectedSchool={mockSchool1} />,
     );
 
-    expect(screen.getByRole('textbox')).toBeEnabled();
+    expect(screen.getByRole('searchbox')).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Search' })).toBeEnabled();
   });
 });
