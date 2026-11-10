@@ -7,14 +7,11 @@ import { renderHook, waitFor } from '~/setup';
 import { useCantine } from './useCantine';
 import { CantineMenuItem } from '../types';
 
-const { get, isResponseError, latestResponse, useUserSchools } = vi.hoisted(
-  () => ({
-    get: vi.fn(),
-    isResponseError: vi.fn(),
-    latestResponse: { statusText: 'Internal Server Error' },
-    useUserSchools: vi.fn(),
-  }),
-);
+const { get, isResponseError, latestResponse } = vi.hoisted(() => ({
+  get: vi.fn(),
+  isResponseError: vi.fn(),
+  latestResponse: { statusText: 'Internal Server Error' },
+}));
 
 vi.mock('@edifice.io/client', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@edifice.io/client')>()),
@@ -22,8 +19,6 @@ vi.mock('@edifice.io/client', async (importOriginal) => ({
     http: () => ({ get, isResponseError, latestResponse }),
   },
 }));
-
-vi.mock('../../../hooks/useUserSchools', () => ({ useUserSchools }));
 
 const school = {
   id: 'school-1',
@@ -50,13 +45,12 @@ describe('useCantine', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     isResponseError.mockReturnValue(false);
-    useUserSchools.mockReturnValue({ selectedSchool: school });
   });
 
   it('exposes the loading status while the menu is pending', () => {
     get.mockReturnValue(new Promise(() => {}));
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     expect(result.current.status).toBe('loading');
   });
@@ -64,7 +58,7 @@ describe('useCantine', () => {
   it('queries the endpoint of the selected school for today', async () => {
     get.mockResolvedValue({ menu: [] });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('empty'));
 
@@ -76,7 +70,7 @@ describe('useCantine', () => {
   it('exposes the empty status when the Gerest date-limit envelope is returned as HTTP 200', async () => {
     get.mockResolvedValue({ error: '0', nbObjet: 0, contenu: [] });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('empty'));
     expect(result.current.sections).toEqual([]);
@@ -85,7 +79,7 @@ describe('useCantine', () => {
   it('exposes the empty status when the menu array is empty', async () => {
     get.mockResolvedValue({ menu: [] });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('empty'));
   });
@@ -94,7 +88,7 @@ describe('useCantine', () => {
     isResponseError.mockReturnValue(true);
     get.mockResolvedValue(undefined);
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('error'));
   });
@@ -108,7 +102,7 @@ describe('useCantine', () => {
     ];
     get.mockResolvedValue({ menu });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('default'));
 
@@ -129,7 +123,7 @@ describe('useCantine', () => {
     ];
     get.mockResolvedValue({ menu });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('default'));
 
@@ -152,7 +146,7 @@ describe('useCantine', () => {
     ];
     get.mockResolvedValue({ menu });
 
-    const { result } = renderHook(() => useCantine(), { wrapper });
+    const { result } = renderHook(() => useCantine(school), { wrapper });
 
     await waitFor(() => expect(result.current.status).toBe('default'));
 
