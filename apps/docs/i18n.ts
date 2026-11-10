@@ -564,6 +564,7 @@ i18n.use(initReactI18next).init({
         'homepage.widget.edumalin.error.help':
           'Si le problème persiste, ouvrez une demande d’aide sur le module Assistance ENT.',
         'homepage.widget.edumalin.error.code': 'Erreur [[code]] : [[message]]',
+        'homepage.widget.edumalin.error.noResponse': 'Pas de réponse',
         'homepage.widget.edumalin.empty':
           'Il n’y a pas d’information à afficher.',
         'homepage.widget.edumalin.modal.date': 'Date :',
