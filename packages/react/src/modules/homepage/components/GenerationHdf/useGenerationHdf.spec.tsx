@@ -169,6 +169,33 @@ describe('useGenerationHdf', () => {
     expect(mocks.savePreference).not.toHaveBeenCalled();
   });
 
+  it('clears the error status when the card number is edited', async () => {
+    mocks.isResponseError.mockReturnValue(true);
+    mocks.get.mockResolvedValue({ sales: [], wallets: [] });
+
+    const { result } = renderHook(() => useGenerationHdf(), {
+      wrapper: createWrapper(),
+    });
+    await waitFor(() => expect(result.current.status).toBe('idle'));
+
+    act(() => {
+      result.current.onCardNumberChange('000000');
+    });
+    act(() => {
+      result.current.onSubmit({
+        preventDefault: vi.fn(),
+      } as unknown as React.FormEvent<HTMLFormElement>);
+    });
+    await waitFor(() => expect(result.current.status).toBe('error'));
+
+    act(() => {
+      result.current.onCardNumberChange('0000001');
+    });
+
+    await waitFor(() => expect(result.current.status).toBe('idle'));
+    expect(result.current.cardNumber).toBe('0000001');
+  });
+
   it('ignores a new submit while a request is pending', async () => {
     mocks.get.mockReturnValue(new Promise(() => {}));
 

@@ -104,6 +104,11 @@ export function useGenerationHdf() {
     salesMutation.mutate({ cardNb: cardNumber, persist: true });
   };
 
+  const onCardNumberChange = (value: string) => {
+    setCardNumber(value);
+    if (salesMutation.isError) salesMutation.reset();
+  };
+
   const onEdit = () => {
     odeServices.conf().savePreference(USER_PREFS.CURSUS, {});
     setCardNumber('');
@@ -113,7 +118,7 @@ export function useGenerationHdf() {
   return {
     status,
     cardNumber,
-    onCardNumberChange: setCardNumber,
+    onCardNumberChange,
     onSubmit,
     onEdit,
     wallets,
