@@ -13,7 +13,7 @@ export type Background =
 type BackgroundPreferences = {
   background: Background;
 
-  homePage?: { betaEnabled: boolean } | null;
+  homePage?: { betaEnabled?: boolean | null } | null;
 };
 
 export default () => {
@@ -24,7 +24,8 @@ export default () => {
   const isBackgroundImageOverridden = backgroundOverride?.variant === 'image';
 
   return {
-    betaEnabled: preferences?.homePage?.betaEnabled,
+    /* Beta is enabled unless explicitly disabled (undefined or null means enabled) */
+    betaEnabled: preferences?.homePage?.betaEnabled !== false,
     /* Actual background is either : user's prefered value, theme-conf overriden value or 'default' */
     background:
       preferences?.background ??
