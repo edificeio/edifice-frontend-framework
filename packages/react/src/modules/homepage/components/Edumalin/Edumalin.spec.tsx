@@ -93,4 +93,13 @@ describe('Edumalin', () => {
       screen.getByText('Impossible de récupérer les informations Édumalin.'),
     ).toBeInTheDocument();
   });
+
+  it('shows "Pas de réponse" when the API error has no message', () => {
+    renderEdumalin({
+      status: 'loadError',
+      error: { code: 404, message: '' },
+    });
+
+    expect(screen.getByText('Erreur 404 : Pas de réponse')).toBeInTheDocument();
+  });
 });
