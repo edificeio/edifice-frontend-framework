@@ -488,6 +488,37 @@ i18n.use(initReactI18next).init({
           'Aucune ressource en favoris',
         'homepage.widget.mediacentre.universalis.noUai': 'UAI non renseigné',
         'homepage.widget.mediacentre.universalis.search': 'Rechercher',
+        'homepage.widget.carnetDeBord.title': 'Carnet de bord',
+        'homepage.widget.carnetDeBord.open': 'Voir plus',
+        'homepage.widget.carnetDeBord.kids': 'Enfants',
+        'homepage.widget.carnetDeBord.moreKids': "Plus d'enfants",
+        'homepage.widget.carnetDeBord.empty': 'Aucune donnée disponible',
+        'homepage.widget.carnetDeBord.error':
+          "Nous avons rencontré un problème avec le service Pronote. Si le problème persiste, demandez à l'administration de votre établissement de vérifier le paramétrage de Pronote.",
+        'homepage.widget.carnetDeBord.pronote': 'Voir sur Pronote',
+        'homepage.widget.carnetDeBord.modal.title':
+          'Carnet de bord de [[name]]',
+        'homepage.widget.carnetDeBord.modal.categories': 'Catégories',
+        'homepage.widget.carnetDeBord.absences.label':
+          'Retards et absences non justifiés',
+        'homepage.widget.carnetDeBord.absences.short': 'Retards et absences',
+        'homepage.widget.carnetDeBord.absences.empty':
+          'Pas de retards ou absences',
+        'homepage.widget.carnetDeBord.absences.absence': 'Absence',
+        'homepage.widget.carnetDeBord.absences.lateness': 'Retard',
+        'homepage.widget.carnetDeBord.grades.label': 'Notes',
+        'homepage.widget.carnetDeBord.grades.short': 'Notes',
+        'homepage.widget.carnetDeBord.grades.empty': 'Pas de notes',
+        'homepage.widget.carnetDeBord.diary.label': 'Cahier de textes',
+        'homepage.widget.carnetDeBord.diary.short': 'Cahier de textes',
+        'homepage.widget.carnetDeBord.diary.empty': 'Pas de devoirs',
+        'homepage.widget.carnetDeBord.diary.dueDate': 'Pour [[date]]',
+        'homepage.widget.carnetDeBord.diary.noDescription':
+          'Pas de description',
+        'homepage.widget.carnetDeBord.skills.label': 'Compétences acquises',
+        'homepage.widget.carnetDeBord.skills.short': 'Compétences',
+        'homepage.widget.carnetDeBord.skills.empty':
+          'Pas de compétences évaluées',
         //------------------ WidgetsPersonalizationPanel ----------
         'homepage.widgetsPersonalization.title': 'Personnalisation des widgets',
         'homepage.widgetsPersonalization.description':

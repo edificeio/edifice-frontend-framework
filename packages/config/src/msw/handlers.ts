@@ -2,6 +2,7 @@ import {
   actualitesHandlers,
   authHandlers,
   blogHandlers,
+  carnetDeBordHandlers,
   commonHandlers,
   directoryHandlers,
   edumalinHandlers,
@@ -34,4 +35,5 @@ export const handlers = [
   ...rssHandlers,
   ...edumalinHandlers,
   ...screenTimeHandlers,
+  ...carnetDeBordHandlers,
 ];
