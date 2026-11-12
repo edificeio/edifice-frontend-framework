@@ -270,6 +270,13 @@ i18n.use(initReactI18next).init({
           'Vous pouvez centraliser et organiser les documents et les ressources pour vos élèves.',
         'homepage.communities.subtitle':
           'Créez votre première communauté pour animez votre classe!',
+        //----------------- AlloRegion -----------------
+        'homepage.alloregion.title': 'Allô Région',
+        'homepage.alloregion.actionLabel': 'Mes signalements',
+        'homepage.alloregion.description':
+          'Bâtiments, équipements : un souci dans ton lycée ?',
+        'homepage.alloregion.callToAction': 'Fais-le remonter à la Région !',
+        'homepage.alloregion.newRequest': 'Faire un signalement',
         //----------------- LastInfosList -----------------
         'homepage.last-infos-list.empty':
           'Retrouvez bientôt les dernières actualités liées à votre établissement içi.',

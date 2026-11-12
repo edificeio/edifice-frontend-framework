@@ -1,0 +1,11 @@
+.allo-region {
+  &__content {
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__description {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
