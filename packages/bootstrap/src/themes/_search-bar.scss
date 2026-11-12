@@ -1,0 +1,117 @@
+@mixin searchbar-default {
+  --searchbar-width: auto;
+  --searchbar-align: center;
+  --searchbar-padding: var(--primitive-spacer-4);
+  --searchbar-border-width: 1px;
+  --searchbar-bg: var(--primitive-white);
+  --searchbar-bg-disabled: var(--primitive-grey-200);
+  --searchbar-placeholder-disabled: var(--primitive-grey-700);
+  --searchbar-focus-shadow: none;
+  --searchbar-icon-position: static;
+  --searchbar-icon-transform: none;
+  --searchbar-icon-padding: var(--primitive-spacer-8);
+  --searchbar-icon-size: 20px;
+  --searchbar-icon-color: var(--color-text-button-primary-other-default);
+  --searchbar-icon-color-disabled: var(
+    --color-text-button-primary-other-disable
+  );
+  --searchbar-input-padding: var(--primitive-spacer-4)
+    var(--primitive-spacer-12);
+  --searchbar-input-padding-lg: var(--primitive-spacer-4)
+    var(--primitive-spacer-12);
+  --searchbar-input-padding-start-with-icon: var(--primitive-spacer-12);
+  --searchbar-input-border-width: 0;
+  --searchbar-input-bg: transparent;
+  --searchbar-input-bg-disabled: transparent;
+  --searchbar-input-focus-shadow-with-icon: none;
+  --searchbar-clear-display-with-button: inline-flex;
+  --searchbar-clear-display-filled-with-icon: none;
+  --searchbar-clear-size-with-icon: 16px;
+  --searchbar-clear-color-with-icon: var(--primitive-text-color-subtext);
+  --searchbar-clear-native-display-with-button: none;
+  --searchbar-clear-native-appearance-with-button: none;
+  --searchbar-btn-bg: var(--color-buttons-primary-default);
+  --searchbar-btn-bg-hover: var(--color-buttons-primary-default);
+  --searchbar-btn-bg-pressed: var(--color-buttons-primary-dark);
+  --searchbar-btn-bg-disabled: var(--color-buttons-primary-light);
+  --searchbar-btn-color: var(--color-text-button-primary-filled-default);
+  --searchbar-btn-color-pressed: var(
+    --color-text-button-primary-filled-default
+  );
+  --searchbar-btn-color-disabled: var(
+    --color-text-button-primary-filled-disable
+  );
+  --searchbar-btn-idle-bg: var(--color-buttons-primary-light);
+  --searchbar-btn-idle-color: var(--color-text-button-primary-filled-disable);
+  --searchbar-btn-idle-pointer-events: none;
+  --searchbar-btn-focus-bg: var(--color-buttons-primary-default);
+  --searchbar-btn-focus-bg-hover: var(--color-buttons-primary-default);
+  --searchbar-btn-focus-bg-pressed: var(--color-buttons-primary-dark);
+  --searchbar-btn-margin-start: 0;
+  --searchbar-btn-padding: var(--primitive-spacer-8);
+  --searchbar-btn-padding-lg: var(--primitive-spacer-8);
+  --searchbar-btn-border-width: 0;
+  --searchbar-btn-radius: var(--radius-button);
+  --searchbar-btn-icon-size: 2rem;
+}
+
+@mixin searchbar-legacy {
+  --searchbar-width: 100%;
+  --searchbar-align: stretch;
+  --searchbar-padding: 0;
+  --searchbar-border-width: 0;
+  --searchbar-bg: transparent;
+  --searchbar-bg-disabled: transparent;
+  --searchbar-placeholder-disabled: var(--primitive-text-color-subtext);
+  --searchbar-focus-shadow: 0 0 0 2px var(--color-buttons-primary-pale);
+  --searchbar-icon-position: absolute;
+  --searchbar-icon-transform: translateY(-50%);
+  --searchbar-icon-padding: 0 0 0 var(--primitive-spacer-12);
+  --searchbar-icon-size: 2.4rem;
+  --searchbar-icon-color: currentcolor;
+  --searchbar-icon-color-disabled: currentcolor;
+  --searchbar-input-padding: var(--primitive-spacer-8)
+    var(--primitive-spacer-12);
+  --searchbar-input-padding-lg: var(--primitive-spacer-12)
+    var(--primitive-spacer-16);
+  --searchbar-input-padding-start-with-icon: 4.8rem;
+  --searchbar-input-border-width: 1px;
+  --searchbar-input-bg: var(--primitive-white);
+  --searchbar-input-bg-disabled: var(--primitive-grey-200);
+  --searchbar-input-focus-shadow-with-icon: 0 0 0 2px
+    var(--color-buttons-primary-pale);
+  --searchbar-clear-display-with-button: none;
+  --searchbar-clear-display-filled-with-icon: inline-flex;
+  --searchbar-clear-size-with-icon: 1.2rem;
+  --searchbar-clear-color-with-icon: currentcolor;
+  --searchbar-clear-native-display-with-button: block;
+  --searchbar-clear-native-appearance-with-button: auto;
+  --searchbar-btn-bg: var(--color-buttons-secondary-pale);
+  --searchbar-btn-bg-hover: var(--color-buttons-secondary-pale);
+  --searchbar-btn-bg-pressed: var(--color-buttons-secondary-pale);
+  --searchbar-btn-bg-disabled: var(--primitive-legacy-grey-200);
+  --searchbar-btn-color: var(--primitive-legacy-grey-800);
+  --searchbar-btn-color-pressed: var(--primitive-black);
+  --searchbar-btn-color-disabled: var(--primitive-legacy-grey-600);
+  --searchbar-btn-idle-bg: var(--color-buttons-secondary-pale);
+  --searchbar-btn-idle-color: var(--primitive-legacy-grey-800);
+  --searchbar-btn-idle-pointer-events: auto;
+  --searchbar-btn-focus-bg: var(--color-buttons-primary-pale);
+  --searchbar-btn-focus-bg-hover: var(--color-buttons-primary-pale);
+  --searchbar-btn-focus-bg-pressed: var(--color-buttons-primary-pale);
+  --searchbar-btn-margin-start: -1px;
+  --searchbar-btn-padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+  --searchbar-btn-padding-lg: var(--primitive-spacer-12);
+  --searchbar-btn-border-width: 0.1rem;
+  --searchbar-btn-radius: 0 var(--radius-searchbar) var(--radius-searchbar) 0;
+  --searchbar-btn-icon-size: 2.4rem;
+}
+
+[data-product] {
+  @include searchbar-default;
+}
+
+[data-product='neo'],
+[data-product='one'] {
+  @include searchbar-legacy;
+}
