@@ -23,9 +23,11 @@ describe('RssFeedForm', () => {
       'https://www.lemonde.fr/index.html',
     );
 
-    expect(
-      await screen.findByText(/ne semble pas être un flux RSS valide/),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText(/flux au format XML/)).toHaveClass(
+        'input-message--invalid',
+      ),
+    );
     expect(screen.getByTestId('rss-button-save')).toBeDisabled();
   });
 

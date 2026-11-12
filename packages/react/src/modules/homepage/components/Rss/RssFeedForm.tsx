@@ -99,11 +99,9 @@ export function RssFeedForm({
                 validate: isValidRssFeedUrl,
               })}
             />
-            {errors.link && (
-              <FormControl.Text>
-                {t('homepage.widget.rss.error')}
-              </FormControl.Text>
-            )}
+            <FormControl.Text>
+              {t('homepage.widget.rss.form.link.caption')}
+            </FormControl.Text>
           </FormControl>
         </form>
       </ModalBeta.Body>
