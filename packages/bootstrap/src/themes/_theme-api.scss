@@ -89,3 +89,20 @@
     @include _emit-vars($variant-config, (), $prefix);
   }
 }
+
+/// Génère les variables CSS d'un skin (choix d'affichage de l'utilisateur,
+/// ex. police dyslexique) pour une liste de produits.
+/// La config est une map partielle de même forme que celle d'un thème :
+/// seules les clés fournies sont surchargées.
+/// `data-skin` est posé sur <html> alors que `data-product` peut l'être sur
+/// <html> ou sur un descendant (ex. <body> de la homepage) : les deux cas
+/// sont couverts. La spécificité (0,2,0) l'emporte sur `theme-vars` (0,1,0) ;
+/// chargé après les thèmes, le skin l'emporte aussi sur `theme-variant`.
+@mixin theme-skin($skin, $skin-config, $products, $prefix: '') {
+  @each $product in $products {
+    [data-skin='#{$skin}'][data-product='#{$product}'],
+    [data-skin='#{$skin}'] [data-product='#{$product}'] {
+      @include _emit-vars($skin-config, (), $prefix);
+    }
+  }
+}

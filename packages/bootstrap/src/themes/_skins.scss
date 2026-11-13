@@ -1,5 +1,15 @@
 @use '../abstracts/' as *;
+@use 'theme-api' as theme;
+@use 'configs/skins' as skins;
 
+// Skins du nouveau design system (variables issues de l'API de thème).
+@include theme.theme-skin(
+  'dyslexic',
+  skins.$skin-dyslexic,
+  skins.$skin-products
+);
+
+// Skins legacy (abstracts / variables --bs-*), conservés pour les apps legacy.
 [data-product='neo'][data-skin='dyslexic'] {
   --#{$prefix}family-primary: 'OpenDyslexic';
   --#{$prefix}font-sans-serif: 'OpenDyslexic';
