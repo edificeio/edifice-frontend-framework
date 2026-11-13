@@ -21,3 +21,4 @@ export * from './Universalis';
 export * from './UserSpace';
 export * from './WidgetsPersonalizationPanel';
 export * from './TabsKids';
+export * from './Tools';

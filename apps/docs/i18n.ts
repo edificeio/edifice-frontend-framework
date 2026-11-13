@@ -316,6 +316,33 @@ i18n.use(initReactI18next).init({
         'homepage.favorites.all': 'Mes applis',
         'homepage.favorites.empty':
           'Ajouter des applications à vos favoris pour les retrouver ici et y accéder rapidement !',
+        //----------------- Tools -----------------
+        'homepage.tools.title': 'Créer un document',
+        'homepage.tools.word': 'Créer un document texte',
+        'homepage.tools.powerpoint': 'Créer une présentation',
+        'homepage.tools.excel': 'Créer un tableur',
+        'homepage.tools.video': 'Enregistrer une vidéo',
+        'homepage.tools.audio': 'Enregistrer un audio',
+        'homepage.tools.tooltip.word': 'Créer un fichier texte (Word)',
+        'homepage.tools.tooltip.powerpoint':
+          'Créer une présentation (PowerPoint)',
+        'homepage.tools.tooltip.excel': 'Créer un tableur (Excel)',
+        'homepage.tools.tooltip.video': 'Enregistrer une vidéo',
+        'homepage.tools.tooltip.audio': 'Enregistrer un audio',
+        'homepage.tools.modal.title': 'Créer un document',
+        'homepage.tools.modal.type.word': 'Document texte',
+        'homepage.tools.modal.type.powerpoint': 'Présentation',
+        'homepage.tools.modal.type.excel': 'Tableur',
+        'homepage.tools.modal.description.word':
+          'Créez et mettez en forme des documents texte avec mise en page avancée, tableaux et images',
+        'homepage.tools.modal.description.powerpoint':
+          'Concevez des présentations impactantes avec diapositives, animations et diagrammes',
+        'homepage.tools.modal.description.excel':
+          'Organisez et analysez vos données avec des feuilles de calcul, formules et graphiques',
+        'homepage.tools.modal.name': 'Nom du document',
+        'homepage.tools.modal.name.placeholder': 'Saisissez un nom…',
+        'homepage.tools.modal.cancel': 'Annuler',
+        'homepage.tools.modal.create': 'Créer',
         //----------------- Agenda -----------------
         'homepage.agenda.title': 'Agenda',
         'homepage.agenda.openAgenda': "Accéder à l'agenda",
@@ -484,8 +511,7 @@ i18n.use(initReactI18next).init({
         'homepage.widget.mediacentre.seeMore': 'Voir plus',
         'homepage.widget.mediacentre.error':
           "Impossible d'établir une connexion avec Médiacentre. Si le problème persiste, ouvrez une demande d'aide sur le module Assistance ENT.",
-        'homepage.widget.mediacentre.empty':
-          'Aucune ressource en favoris',
+        'homepage.widget.mediacentre.empty': 'Aucune ressource en favoris',
         'homepage.widget.mediacentre.universalis.noUai': 'UAI non renseigné',
         'homepage.widget.mediacentre.universalis.search': 'Rechercher',
         //------------------ WidgetsPersonalizationPanel ----------
