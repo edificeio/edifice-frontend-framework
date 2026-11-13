@@ -4,17 +4,23 @@ import clsx from 'clsx';
 
 export interface LogoBetaProps {
   src: string;
+  /**
+   * @deprecated No longer used: the logo image is decorative, the link
+   * carries the accessible name (`translate`).
+   */
   is1d?: boolean;
+  /**
+   * Accessible name of the home link
+   */
   translate?: string;
 }
 
 const LogoBeta = forwardRef(
   (
-    { src, is1d, translate = 'Retour accueil' }: LogoBetaProps,
+    { src, translate = 'Retour accueil' }: LogoBetaProps,
     ref: Ref<HTMLAnchorElement>,
   ) => {
     const classes = clsx('navbar-brand');
-    const logo = `logo ${is1d ? 'ONE' : 'NEO'}`;
     return (
       <a
         ref={ref}
@@ -22,7 +28,7 @@ const LogoBeta = forwardRef(
         href="/timeline/timeline"
         aria-label={translate}
       >
-        <img className="logo" src={src} alt={logo} width="300" height="52" />
+        <img className="logo" src={src} alt="" width="300" height="52" />
       </a>
     );
   },

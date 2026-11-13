@@ -153,11 +153,12 @@ describe('homepage Header', () => {
     );
   });
 
-  it('inherits the ambient theme by default', () => {
+  it('renders with its own edifice2d theme by default', () => {
     setup();
 
-    expect(document.querySelector('header')).not.toHaveAttribute(
+    expect(document.querySelector('header')).toHaveAttribute(
       'data-product',
+      'edifice2d',
     );
   });
 

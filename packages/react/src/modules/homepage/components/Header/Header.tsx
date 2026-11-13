@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import {
   Avatar,
-  Badge,
-  ButtonBeta as Button,
   LogoBeta as Logo,
   Popover,
   PopoverBody,
@@ -39,14 +37,20 @@ import { useHasNotificationToday } from '../Notifications/hooks/useNotificationL
 export interface HeaderProps {
   src: string | undefined;
   onNotificationsClick?: () => void;
-  /** Scope this header's CSS theme (`data-product`) to its own subtree, independently of the page's ambient theme. */
+  /**
+   * CSS theme (`data-product`) scoped to the header's own subtree,
+   * independently of the page's ambient theme. Defaults to `edifice2d`, the
+   * only theme the Header v2 is designed for, so it keeps its look inside
+   * legacy-themed apps (e.g. neo). A platform can still impose its own theme
+   * (e.g. `crna`) through the theme-conf `layout.header` override.
+   */
   dataProduct?: string;
 }
 
 const Header = ({
   src = '',
   onNotificationsClick,
-  dataProduct,
+  dataProduct = 'edifice2d',
 }: HeaderProps): JSX.Element => {
   const { t } = useTranslation();
   const { messages } = useConversation();
@@ -104,8 +108,11 @@ const Header = ({
 
   return (
     <header className={classes} data-product={dataProduct}>
-      <Navbar className="px-24">
-        <Logo src={`${src}/img/illustrations/logo-v2.png`} />
+      <Navbar>
+        <Logo
+          src={`${src}/img/illustrations/logo-v2.png`}
+          translate={t('navbar.home')}
+        />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
@@ -140,12 +147,7 @@ const Header = ({
               >
                 <IconMessages />
                 {hasMessages && (
-                  <Badge
-                    variant={{ type: 'notification', level: 'danger' }}
-                    className="position-absolute"
-                  >
-                    {messages}
-                  </Badge>
+                  <span className="navbar-nav-badge">{messages}</span>
                 )}
               </NavLink>
             </NavItem>
@@ -161,12 +163,9 @@ const Header = ({
               >
                 <IconMessages />
                 {carbonioUnreadCount > 0 && (
-                  <Badge
-                    variant={{ type: 'notification', level: 'danger' }}
-                    className="position-absolute"
-                  >
+                  <span className="navbar-nav-badge">
                     {carbonioUnreadCount}
-                  </Badge>
+                  </span>
                 )}
                 <VisuallyHidden>{t('conversation')}</VisuallyHidden>
               </a>
@@ -201,24 +200,31 @@ const Header = ({
               </PopoverFooter>
             </Popover>
           </NavItem>
-          <NavItem className="position-relative navbar-nav-notification">
-            <Button
-              leftIcon={<IconNotification />}
-              variant="ghost"
+          <NavItem>
+            {/* Styled as a nav link (not a ghost button) so every entry of
+                the navbar shares the same size, colour and hover state. */}
+            <button
+              type="button"
+              className="nav-link position-relative"
               title={t('navbar.notifications')}
               data-testid="header-notifications-button"
-              aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
-            />
-            {hasNotificationToday && (
-              <span className="navbar-nav-notification-badge">
-                <VisuallyHidden>{t('navbar.notifications.new')}</VisuallyHidden>
-              </span>
-            )}
+            >
+              <IconNotification />
+              <VisuallyHidden>{t('navbar.notifications')}</VisuallyHidden>
+              {hasNotificationToday && (
+                <span className="navbar-nav-dot">
+                  <VisuallyHidden>
+                    {t('navbar.notifications.new')}
+                  </VisuallyHidden>
+                </span>
+              )}
+            </button>
           </NavItem>
           <NavItem className="position-relative">
             <NavLink
               ref={userMenu.setReference}
+              className="navbar-nav-avatar"
               link="/userbook/mon-compte"
               translate={t('navbar.myaccount')}
               id={popoverUserId}
