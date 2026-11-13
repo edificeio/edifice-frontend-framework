@@ -1,6 +1,6 @@
 {
   "name": "@edifice.io/vite-plugins",
-  "version": "2.6.8",
+  "version": "2.6.14",
   "description": "Shared Vite plugins for Edifice frontend modules (dev proxy, local i18n serving, bootstrap cache-busting, dev entry rewriting)",
   "keywords": [
     "vite-plugin",
