@@ -1,0 +1,15 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="studio_cam" clip-path="url(#clip0_0_237)">
+<path id="Vector" d="M19.9983 40C31.044 40 39.9983 31.0457 39.9983 20C39.9983 8.95431 31.044 0 19.9983 0C8.9526 0 -0.00170898 8.95431 -0.00170898 20C-0.00170898 31.0457 8.9526 40 19.9983 40Z" fill="#FCF3CF"/>
+<path id="Vector_2" d="M19.9983 2.33333C29.7383 2.33333 37.665 10.26 37.665 20C37.665 29.74 29.7383 37.6667 19.9983 37.6667C10.2583 37.6667 2.33162 29.74 2.33162 20C2.33162 10.26 10.2583 2.33333 19.9983 2.33333ZM19.9983 0C8.95162 0 -0.00170898 8.95333 -0.00170898 20C-0.00170898 31.0467 8.95162 40 19.9983 40C31.045 40 39.9983 31.0467 39.9983 20C39.9983 8.95333 31.045 0 19.9983 0Z" fill="#E5A800"/>
+<g id="Group">
+<path id="Vector_3" d="M22.6937 18.6199L30.047 14.4332V26.0532L22.6937 21.9199" fill="white" stroke-width="1.86667" stroke-miterlimit="10" stroke="#E5A800"/>
+<path id="Vector_4" d="M22.6996 13.6259H9.94629V26.3792H22.6996V13.6259Z" fill="white" stroke-width="1.86667" stroke-miterlimit="10" stroke="#E5A800"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_237">
+<rect width="40" height="40" fill="white"/>
+</clipPath>
+</defs>
+</svg>
