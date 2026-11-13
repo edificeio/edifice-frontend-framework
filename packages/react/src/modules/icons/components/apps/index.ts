@@ -80,6 +80,7 @@ export { default as IconNextcloudDeck } from './IconNextcloudDeck';
 export { default as IconNextcloudFiles } from './IconNextcloudFiles';
 export { default as IconNextcloudForms } from './IconNextcloudForms';
 export { default as IconNextcloudNotes } from './IconNextcloudNotes';
+export { default as IconNextcloudPoll } from './IconNextcloudPoll';
 export { default as IconNextcloudTalk } from './IconNextcloudTalk';
 export { default as IconNote } from './IconNote';
 export { default as IconNotebook } from './IconNotebook';
