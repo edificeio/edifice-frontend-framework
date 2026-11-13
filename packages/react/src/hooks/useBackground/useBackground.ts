@@ -1,15 +1,19 @@
 import { useUiOverride } from '../useUiOverride';
 import useUserPreferences from '../useUserPreferences';
 
-export type Background =
+/** Generic backgrounds, offered to every platform. */
+export type BasicBackground =
   | 'default'
   | 'pink-200'
   | 'yellow-200'
   | 'orange-200'
   | 'blue-200'
-  | 'green-200'
-  | 'crna'
-  | 'ent77';
+  | 'green-200';
+
+/** Dedicated platform backgrounds (see `_backgrounds.scss`). */
+export type DedicatedBackground = 'crna' | 'ent77';
+
+export type Background = BasicBackground | DedicatedBackground;
 
 type BackgroundPreferences = {
   background: Background;
