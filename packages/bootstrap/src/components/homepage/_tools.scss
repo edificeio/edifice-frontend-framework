@@ -20,6 +20,12 @@
     }
   }
 
+  &-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-24);
+  }
+
   &-modal-types {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

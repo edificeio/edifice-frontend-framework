@@ -50,7 +50,7 @@ export function CreateDocumentModal({
       <Modal.Body>
         <form
           id="create-document-form"
-          className="d-flex flex-column gap-24"
+          className="tools-modal-form"
           onSubmit={handleSubmit}
         >
           <div className="tools-modal-types">
