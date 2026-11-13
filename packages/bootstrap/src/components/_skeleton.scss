@@ -168,6 +168,13 @@
   }
 }
 
+.carnet-de-bord-skeleton-subtext {
+  width: 75%;
+  height: var(--primitive-font-lineheight-xs);
+  border-block: var(--primitive-spacer-2) solid transparent;
+  background-clip: padding-box;
+}
+
 // Storybook scaffolding. Layout of the comparison stories, kept here so the
 // stories carry no inline style. Nothing below is used by a shipped component.
 .skeleton-showcase {
