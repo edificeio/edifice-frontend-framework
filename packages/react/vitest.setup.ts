@@ -17,6 +17,9 @@ import { MockedProvider } from './src/providers/MockedProvider/MockedProvider';
 vi.mock('react-pdf', () => ({
   Document: () => null,
   Page: () => null,
+  pdfjs: {
+    GlobalWorkerOptions: {},
+  },
 }));
 
 // jsdom doesn't implement window.matchMedia — needed by useBreakpoint
