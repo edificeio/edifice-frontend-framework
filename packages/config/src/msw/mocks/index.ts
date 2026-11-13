@@ -4,6 +4,7 @@ export { handlers as edumalinHandlers } from './edumalin';
 export { handlers as embedHandlers } from './embed';
 export { handlers as blogHandlers } from './blog';
 export { handlers as calendarHandlers } from './calendar';
+export { handlers as carnetDeBordHandlers } from './carnetDeBord';
 export { handlers as commonHandlers } from './common';
 export { handlers as publicConfigHandlers } from './config';
 export { handlers as rssHandlers } from './rss';
