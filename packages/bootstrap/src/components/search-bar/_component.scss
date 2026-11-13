@@ -1,3 +1,13 @@
+@use 'mixins';
+
+// The variables are declared on every product scope (not on `.searchbar`),
+// so the nearest `[data-product]` wins: a nested scope (e.g. the homepage
+// rendered as edifice2d inside a neo page) resets the values inherited from
+// an outer product. Product overrides live in themes/<product>/overrides.
+:where(:root, [data-product]) {
+  @include mixins.default-vars;
+}
+
 .searchbar .input__field::-webkit-search-cancel-button {
   appearance: none;
   display: none;

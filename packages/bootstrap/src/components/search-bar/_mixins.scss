@@ -1,4 +1,5 @@
-@mixin searchbar-default {
+// Default look of the search bar (new design).
+@mixin default-vars {
   --searchbar-width: auto;
   --searchbar-align: center;
   --searchbar-padding: var(--primitive-spacer-4);
@@ -55,7 +56,10 @@
   --searchbar-btn-icon-size: 2rem;
 }
 
-@mixin searchbar-legacy {
+// Legacy look of the search bar, shared by the "one" and "neo" products.
+// Include it from a product override, on the product scope itself
+// (`[data-product='…']`), never on a descendant `.searchbar`.
+@mixin legacy-vars {
   --searchbar-width: 100%;
   --searchbar-align: stretch;
   --searchbar-padding: 0;
@@ -105,13 +109,4 @@
   --searchbar-btn-border-width: 0.1rem;
   --searchbar-btn-radius: 0 var(--radius-searchbar) var(--radius-searchbar) 0;
   --searchbar-btn-icon-size: 2.4rem;
-}
-
-[data-product] {
-  @include searchbar-default;
-}
-
-[data-product='neo'],
-[data-product='one'] {
-  @include searchbar-legacy;
 }
