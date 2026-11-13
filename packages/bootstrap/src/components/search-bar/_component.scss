@@ -1,0 +1,195 @@
+@use 'mixins';
+
+// The variables are declared on every product scope (not on `.searchbar`),
+// so the nearest `[data-product]` wins: a nested scope (e.g. the homepage
+// rendered as edifice2d inside a neo page) resets the values inherited from
+// an outer product. Product overrides live in themes/<product>/overrides.
+:where(:root, [data-product]) {
+  @include mixins.default-vars;
+}
+
+.searchbar .input__field::-webkit-search-cancel-button {
+  appearance: none;
+  display: none;
+}
+
+.searchbar {
+  position: relative;
+  display: flex;
+  align-items: var(--searchbar-align);
+  width: var(--searchbar-width);
+  padding: var(--searchbar-padding);
+  border: var(--searchbar-border-width) solid var(--color-primary-light);
+  border-radius: var(--radius-searchbar);
+  background: var(--searchbar-bg);
+  transition: border-color 150ms ease-in-out;
+
+  &--md {
+    padding: 0;
+  }
+
+  &--active {
+    border-color: var(--color-buttons-primary-default);
+  }
+
+  &:has(.input__field:disabled) {
+    border-color: var(--primitive-grey-300);
+    background: var(--searchbar-bg-disabled);
+
+    .input__field::placeholder {
+      color: var(--searchbar-placeholder-disabled);
+    }
+
+    .searchbar__icon {
+      color: var(--searchbar-icon-color-disabled);
+    }
+  }
+
+  & &__input {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    padding: var(--searchbar-input-padding);
+    border: var(--searchbar-input-border-width) solid var(--primitive-grey-300);
+    border-radius: var(--primitive-border-radius-lg);
+    background-color: var(--searchbar-input-bg);
+    box-shadow: none;
+
+    &:where(:has(.input__field:not(:placeholder-shown))) {
+      border-color: var(--primitive-grey-500);
+    }
+
+    &:where(:has(.input__field:disabled)) {
+      background-color: var(--searchbar-input-bg-disabled);
+      border-color: var(--primitive-grey-500);
+    }
+
+    &:focus-within {
+      border-color: var(--color-buttons-primary-default);
+    }
+
+    &.input--lg {
+      padding: var(--searchbar-input-padding-lg);
+    }
+  }
+
+  &__icon {
+    position: var(--searchbar-icon-position);
+    top: 50%;
+    left: 0;
+    z-index: 1;
+    padding: var(--searchbar-icon-padding);
+    color: var(--searchbar-icon-color);
+    transform: var(--searchbar-icon-transform);
+    pointer-events: none;
+
+    svg {
+      width: var(--searchbar-icon-size);
+      height: var(--searchbar-icon-size);
+    }
+  }
+
+  .btn-search {
+    --btn-beta-bg: var(--searchbar-btn-bg);
+    --btn-beta-bg-hover: var(--searchbar-btn-bg-hover);
+    --btn-beta-bg-pressed: var(--searchbar-btn-bg-pressed);
+    --btn-beta-bg-disabled: var(--searchbar-btn-bg-disabled);
+    --btn-beta-color: var(--searchbar-btn-color);
+    --btn-beta-color-disabled: var(--searchbar-btn-color-disabled);
+
+    margin-left: var(--searchbar-btn-margin-start);
+    padding: var(--searchbar-btn-padding);
+    border: var(--searchbar-btn-border-width) solid
+      var(--primitive-legacy-grey-400);
+    border-left-width: 0;
+    border-radius: var(--searchbar-btn-radius);
+
+    svg {
+      width: var(--searchbar-btn-icon-size);
+      min-width: var(--searchbar-btn-icon-size);
+      height: var(--searchbar-btn-icon-size);
+    }
+
+    &:active {
+      color: var(--searchbar-btn-color-pressed);
+    }
+
+    &:focus-visible {
+      border-color: var(--color-buttons-secondary-light);
+    }
+
+    &:disabled {
+      border-color: var(--primitive-legacy-grey-400);
+    }
+  }
+
+  .input--lg + .btn-search {
+    padding: var(--searchbar-btn-padding-lg);
+  }
+
+  &:where(:not(.searchbar--active)) .btn-search {
+    --btn-beta-bg: var(--searchbar-btn-idle-bg);
+    --btn-beta-color: var(--searchbar-btn-idle-color);
+
+    pointer-events: var(--searchbar-btn-idle-pointer-events);
+  }
+
+  &:has(> .btn-search) {
+    .searchbar__input {
+      border-right-width: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    .searchbar__input:focus-within:has(.input__field:not(:placeholder-shown))
+      .input__clear {
+      display: var(--searchbar-clear-display-with-button);
+    }
+
+    .input__field::-webkit-search-cancel-button {
+      appearance: var(--searchbar-clear-native-appearance-with-button);
+      display: var(--searchbar-clear-native-display-with-button);
+    }
+
+    &:focus-within {
+      box-shadow: var(--searchbar-focus-shadow);
+
+      .btn-search {
+        --btn-beta-bg: var(--searchbar-btn-focus-bg);
+        --btn-beta-bg-hover: var(--searchbar-btn-focus-bg-hover);
+        --btn-beta-bg-pressed: var(--searchbar-btn-focus-bg-pressed);
+
+        border-color: var(--color-buttons-primary-default);
+      }
+    }
+
+    .searchbar__input:not(:focus-within, :has(.input__field:placeholder-shown))
+      + .btn-search {
+      border-color: var(--primitive-grey-500);
+    }
+  }
+
+  &:has(> .searchbar__icon) {
+    .searchbar__input {
+      padding-left: var(--searchbar-input-padding-start-with-icon);
+
+      &:focus-within {
+        box-shadow: var(--searchbar-input-focus-shadow-with-icon);
+      }
+    }
+
+    .searchbar__input:not(:focus-within):has(
+        .input__field:not(:placeholder-shown)
+      )
+      .input__clear {
+      display: var(--searchbar-clear-display-filled-with-icon);
+    }
+
+    .input__clear {
+      width: var(--searchbar-clear-size-with-icon);
+      height: var(--searchbar-clear-size-with-icon);
+      color: var(--searchbar-clear-color-with-icon);
+    }
+  }
+}

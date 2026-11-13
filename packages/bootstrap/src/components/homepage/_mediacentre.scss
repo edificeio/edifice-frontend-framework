@@ -73,7 +73,7 @@
   &__universalis-search.searchbar {
     flex: 1 0 0;
     min-width: 0;
-    padding: var(--primitive-spacer-4);
+    padding: var(--searchbar-padding);
 
     .searchbar__input {
       padding: var(--primitive-spacer-8) var(--primitive-spacer-12);

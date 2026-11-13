@@ -1,0 +1,7 @@
+@use '../../../components/search-bar/mixins' as searchbar;
+
+// Declared on the product scope (not on `.searchbar`) so that a nested
+// `[data-product]` (e.g. the edifice2d homepage) gets its own values back.
+[data-product='one'] {
+  @include searchbar.legacy-vars;
+}
