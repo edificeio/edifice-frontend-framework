@@ -78,8 +78,15 @@ $neo: (
       special: $neo-purple-500,
     ),
     themeSeparator: (
-      minor: $yellow-500,
-      major: $pink-500,
+      minor: #fff,
+      major: #fff,
+    ),
+    secondary: (
+      feather: $neo-blue-200,
+      pale: $neo-blue-200,
+      light: $neo-blue-300,
+      default: $neo-blue-500,
+      dark: $neo-blue-700,
     ),
     profil: (
       guest: $neo-pink-500,

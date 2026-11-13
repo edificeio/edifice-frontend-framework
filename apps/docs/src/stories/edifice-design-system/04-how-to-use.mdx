@@ -4,184 +4,204 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 # How to use
 
-Guide pratique pour utiliser le système de thèmes Edifice dans une application.
+Guide pratique : utiliser les variables dans un composant, adapter un composant à un thème, et ajouter un nouveau thème.
 
 ---
 
-## 1. Activer un thème
+## 1. Choisir la bonne variable
 
-Positionner l'attribut `data-product` sur le conteneur racine de l'application.
+| Besoin | Variable | Exemple |
+| --- | --- | --- |
+| Une valeur qui **dépend du thème** (couleur de marque, police, rayon de bouton…) | Variable de thème | `var(--color-primary-default)`, `var(--font-family-title)`, `var(--radius-button)` |
+| Une valeur **identique dans tous les thèmes** (gris, espacements, tailles de texte…) | Primitive | `var(--primitive-grey-300)`, `var(--primitive-spacer-16)`, `var(--primitive-font-size-small)` |
 
-```html
-<!-- Thème Neo -->
-<div data-product="neo">
-  ...
-</div>
+Règles :
 
-<!-- Thème One -->
-<div data-product="one">
-  ...
-</div>
-
-<!-- Thème Edifice2D -->
-<div data-product="edifice2d">
-  ...
-</div>
-```
-
-Toutes les CSS custom properties du thème sont automatiquement disponibles dans l'arbre DOM enfant.
-
----
-
-## 2. Utiliser les variables de thème
-
-Une fois le thème activé, utiliser les variables avec `var()` dans les styles.
-
-**En CSS :**
-
-```css
-.my-title {
-  color: var(--edifice-color-text-default);
-  font-family: var(--edifice-font-family-title);
-  font-size: var(--edifice-font-size-xl);
-}
-
-.my-button {
-  border-radius: var(--edifice-radius-button);
-  color: var(--edifice-color-text-button-primary-default);
-  background-color: var(--edifice-color-primary-default);
-}
-```
-
-**En React (style inline) :**
-
-```tsx
-<h1 style={{ color: "var(--edifice-color-text-default)" }}>
-  Titre
-</h1>
-```
-
-**En SCSS :**
+- Toujours passer par `var(--…)`, jamais par une valeur en dur ni par une variable Sass (`$grey-900`) : les variables Sass de `configs/` ne servent qu'à écrire les configurations de thème.
+- Ne pas utiliser les primitives legacy (`--primitive-neo-*`, `--primitive-one-*`, `--primitive-legacy-*`) dans un nouveau composant.
+- Ne jamais tester le nom du thème dans le code (`if (theme === '…')`) : si un composant doit changer d'apparence selon le thème, il lit une variable de thème, ou le thème lui applique un override (voir section 3).
 
 ```scss
-.my-component {
-  color: var(--edifice-color-text-default);
-  background: var(--edifice-color-primary-pale);
+.my-card {
+  padding: var(--primitive-spacer-16);
+  border: 1px solid var(--primitive-grey-300);
+  border-radius: var(--primitive-border-radius-md);
 
-  &:hover {
-    background: var(--edifice-color-primary-light);
+  &-title {
+    font-family: var(--font-family-title);
+    font-weight: var(--font-weight-bold);
+    font-size: var(--primitive-font-size-m);
+  }
+
+  &-action {
+    background: var(--color-buttons-primary-default);
+    color: var(--color-text-button-primary-filled-default);
+    border-radius: var(--radius-button);
   }
 }
 ```
 
+En React, les mêmes variables s'utilisent dans un style inline :
+
+```tsx
+<h2 style={{ fontFamily: 'var(--font-family-title)' }}>Titre</h2>
+```
+
+Références complètes : [Primitives](?path=/docs/edifice-design-system-primitives--docs) et [Themes](?path=/docs/edifice-design-system-themes--docs).
+
 ---
 
-## 3. Utiliser les primitives
+## 2. Responsive : les mixins de breakpoints
 
-Les primitives sont disponibles dans `:root`, sans avoir besoin d'activer un thème.
+Dans `@edifice.io/bootstrap`, utiliser les mixins de `configs/_breakpoints.scss` plutôt qu'une media query écrite à la main.
 
-```css
-.my-element {
-  padding: var(--edifice-numbers-16);         /* 16px */
-  border-radius: var(--edifice-border-radius-md); /* 8px */
-  color: var(--edifice-grey-900);
+| Nom | Largeur |
+| --- | --- |
+| `mobile` | 375px |
+| `mobile-large` | 430px |
+| `tablet` | 768px |
+| `desktop-small` | 1024px |
+| `desktop` | 1280px |
+| `desktop-large` | 1400px |
+
+```scss
+@use '../../themes/configs/breakpoints' as medias;
+
+.my-card {
+  @include medias.respond-below('tablet') {
+    // < 768px
+  }
+
+  @include medias.respond-from('desktop') {
+    // >= 1280px
+  }
+
+  @include medias.respond-between('tablet', 'desktop') {
+    // 768px – 1279px
+  }
 }
 ```
 
-Référence complète dans la page [Primitives](?path=/docs/edifice-design-system-primitives--docs).
+Ces valeurs doivent rester alignées avec le hook `useBreakpoint` de `@edifice.io/react`.
 
 ---
 
-## 4. Créer une variante
+## 3. Adapter un composant à un thème
 
-Une variante surcharge certaines variables d'un thème pour une déclinaison spécifique (collectivité, partenaire...).
+Quand les variables ne suffisent pas, le thème ajoute un override dans son dossier `themes/<thème>/overrides/`, un fichier par composant, chargé depuis `overrides/_index.scss` :
 
-**Côté HTML :** ajouter `data-theme` en plus de `data-product`.
-
-```html
-<div data-product="neo" data-theme="ma-variante">
-  ...
-</div>
+```scss
+// themes/edifice2d/overrides/_page-layout.scss
+[data-product='edifice2d'] .pagelayout {
+  --pagelayout-headerheight: 5.6rem;
+}
 ```
 
-**Côté SCSS :** appeler le mixin `theme-variant()` dans le fichier d'overrides du thème.
+Garder ces sélecteurs **ciblés** sur le composant visé : un thème peut être appliqué à une seule partie de la page (`data-product` posé sur un conteneur), et une règle trop large déborderait sur tout ce conteneur.
+
+### Variantes
+
+Pour ne changer que quelques variables d'un thème existant, déclarer une variante avec le mixin `theme-variant()`. Elle s'active en ajoutant `data-theme` à côté de `data-product`.
 
 ```scss
 @use '../../theme-api' as theme;
 @use '../../configs/primitives' as *;
 
-@include theme.theme-variant('neo', 'ma-variante', (
+@include theme.theme-variant('edifice2d', 'ma-variante', (
   color: (
     primary: (
-      default: $orange-400,
-      dark: $orange-500,
-      light: $orange-300,
-      pale: $orange-200,
-    )
-  )
+      default: $blue-500,
+      dark: $blue-700,
+    ),
+  ),
 ));
+```
+
+```html
+<div data-product="edifice2d" data-theme="ma-variante">…</div>
 ```
 
 ---
 
-## 5. Ajouter un nouveau thème
+## 4. Couleurs des applications
 
-Checklist pour créer un thème `mytheme` :
+Chaque application a une couleur d'icône, définie pour les nouveaux thèmes dans `configs/_icons.scss`. Une classe `.app-<code>` porte la couleur, des classes utilitaires l'appliquent :
 
-**1. Créer la config** dans `packages/bootstrap/src/themes/configs/_mytheme.scss` :
+```html
+<div class="app-icon color-app app-blog">…</div>
+<div class="bg-app-light app-blog">…</div>
+```
+
+| Classe | Effet |
+| --- | --- |
+| `.color-app` | Couleur du texte / de l'icône |
+| `.bg-app` | Fond |
+| `.bg-app-light` | Fond clair |
+| `.border-app` | Bordure |
+
+---
+
+## 5. Fond de page
+
+Le fond des pages est piloté par l'attribut `data-background`, posé par `Layout` et `PageLayout` (`@edifice.io/react`) à partir du hook `useBackground`. Chaque valeur correspond à une règle de `themes/_backgrounds.scss`, qui renseigne `--background-image-url`.
+
+La valeur retenue est, dans l'ordre :
+
+1. le fond choisi par l'utilisateur dans la page de personnalisation (préférence `background`) ;
+2. le fond par défaut de la plateforme, défini dans le `theme-conf` : `uiOverrides: { 'background.default': { variant: '<fond>' } }` ;
+3. `default`.
+
+Pour ajouter un fond : déposer l'image dans `assets/images/backgrounds/`, ajouter la règle `[data-background='<fond>']` dans `_backgrounds.scss` et ajouter la valeur au type `Background` de `useBackground`.
+
+---
+
+## 6. Ajouter un thème
+
+Exemple avec un thème `montheme`, dont le mode Figma s'appelle `MONTHEME`.
+
+**1. Dans Figma**, ajouter les primitives du thème dans **Edifice_UIKit** et un mode `MONTHEME` dans **EdificeLibrary_Web**, qui renseigne toutes les variables sémantiques.
+
+**2. Créer la configuration**, vide, dans `configs/_montheme.scss`. L'outil de synchronisation la remplira, mais il ne crée pas de fichier et n'ajoute pas les `@use` :
 
 ```scss
 @use 'primitives' as *;
+@use 'primitives-legacy' as legacy;
 
-$mytheme: (
-  name: 'mytheme',
+$montheme: (
+  name: 'montheme',
   color: (
-    text: (
-      default: $grey-900,
-      subText: $grey-800,
-      button: (
-        primary: ( default: $blue-900, disable: $white ),
-        other:   ( default: $blue-900, disable: $blue-300 )
-      )
-    ),
-    primary: (
-      pale: $green-200,
-      light: $green-300,
-      default: $green-500,
-      dark: $green-700,
-    )
   ),
   font: (
-    family: ( title: 'Arimo', body: 'Arimo' ),
-    weight: ( bold: 700, regular: 400 ),
-    size: (
-      xl: $numbers-32, l: $numbers-26, m: $numbers-22,
-      s: $numbers-18, default: $numbers-16, small: $numbers-14, caption: $numbers-12,
-    ),
-    lineHeight: (
-      xl: $numbers-36, l: $numbers-32, m: $numbers-28,
-      s: $numbers-26, xs: $numbers-22, 2xs: $numbers-20, 3xs: $numbers-18,
-    )
   ),
   radius: (
-    button: $border-radius-md
-  )
+  ),
 );
 ```
 
-**2. Créer l'index du thème** dans `packages/bootstrap/src/themes/mytheme/_index.scss` :
+**3. Déclarer le thème** dans `montheme/_index.scss`, avec un fichier `montheme/overrides/_index.scss` (vide au départ) :
 
 ```scss
 @use '../theme-api' as theme;
-@use '../configs/mytheme' as *;
-
-@include theme.theme-vars('mytheme', $mytheme);
+@use '../configs/montheme' as *;
+@use 'overrides';
+@include theme.theme-vars('montheme', $montheme);
 ```
 
-**3. Exposer dans l'index global** `packages/bootstrap/src/themes/_index.scss` :
+puis l'exposer dans `themes/_index.scss` :
 
 ```scss
-@forward 'mytheme';
+@forward 'montheme';
 ```
 
-**4. Tester** en posant `data-product="mytheme"` sur un conteneur et en vérifiant les variables dans les DevTools.
+**4. Déclarer le mode Figma** dans l'outil : ajouter `MONTHEME: '_montheme.scss'` à `THEME_MODE_TO_FILE` (`tools/figma-sync/src/semantic/resolve-semantic-token.ts`). Sans cette ligne, le mode est ignoré.
+
+**5. Synchroniser** avec le skill `figma-tokens-sync` (ou `pnpm sync` dans `tools/figma-sync`), puis relire le `git diff` de `configs/` :
+
+- les nouvelles primitives sont ajoutées en fin de fichier sous un commentaire `Added automatically from Figma` : les déplacer à côté de leurs voisines et retirer le commentaire ;
+- l'outil passe les clés en minuscules : vérifier que la clé du liseré s'écrit bien `themeSeparator`. Le CSS lit `--color-themeSeparator-*` et les variables CSS sont sensibles à la casse : en minuscules, le liseré disparaît.
+
+**6. Ajouter un fond** si la plateforme en a un (voir section 5).
+
+**7. Activer le thème** sur la plateforme, dans son `theme-conf` : soit sur toute la page (`bootstrapVersion` se terminant par `-montheme`), soit sur une partie seulement via les `uiOverrides` (par exemple `'layout.header': { variant: 'v2', theme: 'montheme' }`).
+
+**8. Vérifier** dans Storybook : ajouter `montheme` à la liste `THEMES` de `apps/docs/.storybook/preview.tsx`, rebuilder le CSS (`pnpm --filter @edifice.io/bootstrap build`) et choisir le thème dans la barre d'outils.
