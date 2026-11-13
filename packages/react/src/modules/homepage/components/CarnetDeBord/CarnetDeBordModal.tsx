@@ -2,7 +2,12 @@ import illuEmpty from '@edifice.io/bootstrap/dist/images/homepage/illu-carnet-de
 import clsx from 'clsx';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Image, ModalBeta, Select } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Image,
+  ModalBeta as Modal,
+  Select,
+} from '../../../../components';
 import { useBreakpoint } from '../../../../hooks';
 import { IconExternalLink } from '../../../icons/components';
 import { CarnetDeBordCategoryIcon } from './CarnetDeBordCategoryRow';
@@ -201,7 +206,7 @@ export function CarnetDeBordModal({
   }));
 
   const pronoteButton = address && (
-    <ButtonBeta
+    <Button
       data-testid="carnet-de-bord-modal-button-pronote"
       variant="ghost"
       color="tertiary"
@@ -211,23 +216,23 @@ export function CarnetDeBordModal({
       onClick={() => window.open(address, '_blank', 'noopener,noreferrer')}
     >
       {t('homepage.widget.carnetDeBord.pronote')}
-    </ButtonBeta>
+    </Button>
   );
 
   return (
-    <ModalBeta
+    <Modal
       id="carnet-de-bord-modal"
       size="l"
       isOpen={isOpen}
       onModalClose={onClose}
     >
-      <ModalBeta.Header onModalClose={onClose}>
+      <Modal.Header onModalClose={onClose}>
         {studentName
           ? t('homepage.widget.carnetDeBord.modal.title', { name: studentName })
           : t('homepage.widget.carnetDeBord.title')}
-      </ModalBeta.Header>
+      </Modal.Header>
 
-      <ModalBeta.Body>
+      <Modal.Body>
         <div
           className={clsx('carnet-de-bord-modal', {
             'carnet-de-bord-modal--mobile': !md,
@@ -308,7 +313,7 @@ export function CarnetDeBordModal({
             {pronoteButton}
           </div>
         </div>
-      </ModalBeta.Body>
-    </ModalBeta>
+      </Modal.Body>
+    </Modal>
   );
 }

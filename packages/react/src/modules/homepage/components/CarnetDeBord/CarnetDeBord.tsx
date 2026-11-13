@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TextSkeleton } from '../../../../components';
+import { Skeleton } from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import { TabsKids } from '../TabsKids';
@@ -72,7 +72,10 @@ export function CarnetDeBord({
               <CarnetDeBordCategoryIcon category={contentType.title} />
               <span className="carnet-de-bord__entry-text">
                 <span className="carnet-de-bord__entry-label">{label}</span>
-                <TextSkeleton size="sm" className="w-75" />
+                <Skeleton
+                  variant="text"
+                  className="carnet-de-bord-skeleton-subtext"
+                />
               </span>
             </div>
           );
