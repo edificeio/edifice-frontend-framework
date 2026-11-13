@@ -14,7 +14,7 @@ export const MyAppsPopoverFooter = () => {
   return (
     <a
       href="/welcome"
-      className="btn-beta btn-beta-tertiary btn-beta--ghost btn-beta--small"
+      className="btn-beta btn-beta-default btn-beta--ghost btn-beta--small"
       data-testid="header-my-apps-popover-more"
     >
       <span>{t('homepage.header.myapps.seeMore')}</span>

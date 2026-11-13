@@ -1,17 +1,14 @@
-// "Mon compte" popover on the Header v2 navbar: a white box (shadow comes from
-// `.header-beta .navbar-nav .popover` in _header.scss) listing `.action-item`s.
-// The full ancestor chain is repeated so this wins on specificity over the
-// fixed 247px width set by _header.scss: this popover fits its content.
+// "Mon compte" popover on the Header v2 navbar, listing `.action-item`s. Its
+// box (background, radius, padding, shadow) is shared with the other header
+// popovers in _header.scss. The full ancestor chain is repeated so this wins
+// on specificity over the fixed 247px width set there: this popover fits its
+// content.
 .header-beta .navbar-nav .popover.account-action-list-popover {
   width: max-content;
   min-width: 180px;
   max-width: none;
   max-height: 400px;
   overflow-y: auto;
-  padding: var(--primitive-spacer-8);
-  background-color: var(--primitive-white);
-  border: 0;
-  border-radius: var(--primitive-border-radius-xl);
 }
 
 .account-action-list-popover__list {
