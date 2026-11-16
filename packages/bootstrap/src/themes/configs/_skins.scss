@@ -1,0 +1,24 @@
+// Configuration des skins (choix d'affichage de l'utilisateur).
+// Chaque map est partielle et suit la forme des configs de thème :
+// seules les variables listées sont surchargées (voir `theme-skin`).
+
+@use 'primitives' as *;
+
+/// Produits basés sur l'API de thème auxquels les skins s'appliquent.
+$skin-products: (neo, one, edifice2d, crna, edifice1d);
+
+/// Skin « Dyslexique » : police OpenDyslexic partout (titres, corps, boutons).
+$skin-dyslexic: (
+  font: (
+    family: (
+      title: $font-family-open-dyslexic,
+      body: $font-family-open-dyslexic,
+    ),
+    button: (
+      family: $font-family-open-dyslexic,
+      tertiary: (
+        family: $font-family-open-dyslexic,
+      ),
+    ),
+  ),
+);
