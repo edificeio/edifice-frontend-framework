@@ -88,7 +88,7 @@ const Header = ({
    * while the pointer moves diagonally from the trigger towards the (wider)
    * popover instead of closing as soon as it leaves the trigger.
    */
-  const { lg: isDesktop } = useBreakpoint();
+  const { md: isTablet, lg: isDesktop } = useBreakpoint();
   const myApps = useSafeHoverPopover({
     hoverEnabled: isDesktop,
     clickEnabled: !isDesktop,
@@ -226,14 +226,13 @@ const Header = ({
               data-testid="header-user-profile-button"
               {...userMenu.getReferenceProps()}
             >
+              {/* 24px below the tablet breakpoint, 36px from it (mock-up) */}
               <Avatar
                 alt={userName}
-                size="sm"
+                size={isTablet ? 'sm' : 'xs'}
                 src={userAvatar}
                 variant="circle"
                 className="bg-white"
-                width="32"
-                height="32"
               />
             </NavLink>
             <AccountActionListPopover
