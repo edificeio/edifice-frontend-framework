@@ -78,8 +78,15 @@ $one: (
       special: $one-purple-500,
     ),
     themeSeparator: (
-      minor: #ffffff,
-      major: #ffffff,
+      minor: #fff,
+      major: #fff,
+    ),
+    secondary: (
+      feather: $neo-orange-200,
+      pale: $neo-orange-200,
+      light: $neo-orange-300,
+      default: $neo-orange-500,
+      dark: $neo-orange-700,
     ),
     profil: (
       guest: $one-red-500,
