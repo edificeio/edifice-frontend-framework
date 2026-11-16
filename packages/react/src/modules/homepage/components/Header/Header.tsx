@@ -154,12 +154,13 @@ const Header = ({
           )}
           {hasCarbonioWorkflow && (
             <NavItem>
-              <a
-                className="nav-link position-relative"
-                href="/auth/carbonio/preauth"
+              <NavLink
+                className="position-relative"
+                link="/auth/carbonio/preauth"
                 target="_blank"
-                data-testid="header-messagerie-button"
+                translate={t('conversation')}
                 title={t('conversation')}
+                data-testid="header-messagerie-button"
               >
                 <IconMessages />
                 {carbonioUnreadCount > 0 && (
@@ -167,8 +168,7 @@ const Header = ({
                     {carbonioUnreadCount}
                   </span>
                 )}
-                <VisuallyHidden>{t('conversation')}</VisuallyHidden>
-              </a>
+              </NavLink>
             </NavItem>
           )}
           <NavItem className="position-relative">
@@ -201,11 +201,11 @@ const Header = ({
             </Popover>
           </NavItem>
           <NavItem>
-            {/* Styled as a nav link (not a ghost button) so every entry of
-                the navbar shares the same size, colour and hover state. */}
-            <button
-              type="button"
-              className="nav-link position-relative"
+            {/* No `link`: NavLink renders a button that opens the panel. The
+                label is a child (not `translate`) so that it comes before the
+                "new" marker in the accessible name. */}
+            <NavLink
+              className="position-relative"
               title={t('navbar.notifications')}
               data-testid="header-notifications-button"
               onClick={handleNotificationsClick}
@@ -219,7 +219,7 @@ const Header = ({
                   </VisuallyHidden>
                 </span>
               )}
-            </button>
+            </NavLink>
           </NavItem>
           <NavItem className="position-relative">
             <NavLink
