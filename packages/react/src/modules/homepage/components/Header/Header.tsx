@@ -18,6 +18,7 @@ import {
 
 import { useId, type MouseEvent } from 'react';
 import { AccountActionListPopover } from './AccountActionListPopover';
+import { HeaderBadge } from './HeaderBadge';
 import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
 import { useSafeHoverPopover } from './useSafeHoverPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
@@ -146,9 +147,7 @@ const Header = ({
                 data-testid="header-messagerie-button"
               >
                 <IconMessages />
-                {hasMessages && (
-                  <span className="navbar-nav-badge">{messages}</span>
-                )}
+                {hasMessages && <HeaderBadge>{messages}</HeaderBadge>}
               </NavLink>
             </NavItem>
           )}
@@ -164,9 +163,7 @@ const Header = ({
               >
                 <IconMessages />
                 {carbonioUnreadCount > 0 && (
-                  <span className="navbar-nav-badge">
-                    {carbonioUnreadCount}
-                  </span>
+                  <HeaderBadge>{carbonioUnreadCount}</HeaderBadge>
                 )}
               </NavLink>
             </NavItem>
@@ -213,11 +210,7 @@ const Header = ({
               <IconNotification />
               <VisuallyHidden>{t('navbar.notifications')}</VisuallyHidden>
               {hasNotificationToday && (
-                <span className="navbar-nav-dot">
-                  <VisuallyHidden>
-                    {t('navbar.notifications.new')}
-                  </VisuallyHidden>
-                </span>
+                <HeaderBadge dot>{t('navbar.notifications.new')}</HeaderBadge>
               )}
             </NavLink>
           </NavItem>
