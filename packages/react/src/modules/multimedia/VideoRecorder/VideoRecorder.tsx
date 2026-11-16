@@ -79,6 +79,7 @@ const VideoRecorder = forwardRef(
     const [recordedTime, setRecordedTime] = useState<number>(0);
     const [playedTime, setPlayedTime] = useState<number>(0);
 
+    const previewRef = useRef<HTMLVideoElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
     const recorderRef = useRef<MediaRecorder | null>(null);
 
@@ -118,30 +119,29 @@ const VideoRecorder = forwardRef(
     }
 
     useEffect(() => {
+      const preview = previewRef.current;
+      if (!preview) return;
       try {
-        // Cleanup
-        if (videoRef.current) {
-          if (videoRef.current.src) {
-            window.URL.revokeObjectURL(videoRef.current.src);
-            videoRef.current.src = '';
-          }
-          if (videoRef.current.srcObject instanceof MediaStream) {
-            videoRef.current.srcObject = null;
-          }
-
-          if (stream) {
-            // Set this stream as the new source
-            videoRef.current.srcObject = stream;
-            videoRef.current.autoplay = true;
-            videoRef.current.volume = 1;
-            videoRef.current.muted = true;
-            videoRef.current.load();
-          }
+        preview.srcObject = stream ?? null;
+        if (stream) {
+          preview.autoplay = true;
+          preview.muted = true;
+          preview.load();
         }
       } catch (err) {
         console.error(err);
       }
     }, [stream]);
+
+    /** Stop the playback and release the recording it was showing. */
+    const clearPlayback = () => {
+      const video = videoRef.current;
+      if (!video?.src) return;
+      video.pause();
+      window.URL.revokeObjectURL(video.src);
+      video.removeAttribute('src');
+      video.load();
+    };
 
     /**
      * Get last updated recorded chunk and set the recorded video as source for user to watch it.
@@ -155,8 +155,9 @@ const VideoRecorder = forwardRef(
           const videoUrl = window.URL.createObjectURL(finalVideo);
           onRecordUpdated(videoUrl);
         }
-        videoRef.current.autoplay = false;
-        videoRef.current.srcObject = null;
+        if (videoRef.current.src) {
+          window.URL.revokeObjectURL(videoRef.current.src);
+        }
         videoRef.current.src = window.URL.createObjectURL(finalVideo);
       }
     }, [recording, recordedChunks]);
@@ -201,10 +202,6 @@ const VideoRecorder = forwardRef(
 
     const handleRecord = useCallback(() => {
       setRecording(true);
-
-      if (videoRef && videoRef.current) {
-        videoRef.current.muted = true;
-      }
 
       const mimeType = getBestSupportedMimeType();
       setMimeType(mimeType);
@@ -251,13 +248,20 @@ const VideoRecorder = forwardRef(
       setPlaying(false);
       setSaved(false);
       setRecordedTime(0);
+      setPlayedTime(0);
       setRecordedChunks([]);
       setRecordedVideo(undefined);
-      restartStream();
 
-      if (onRecordUpdated) {
-        onRecordUpdated();
+      clearPlayback();
+
+      const isStreamAlive =
+        !!stream &&
+        stream.getTracks().every((track) => track.readyState !== 'ended');
+      if (!isStreamAlive) {
+        restartStream();
       }
+
+      onRecordUpdated?.();
     };
 
     const handleSave = async () => {
@@ -376,9 +380,20 @@ const VideoRecorder = forwardRef(
             <IconRecordVideo width={60} height={60} />
           </div>
           <video
-            ref={videoRef}
+            ref={previewRef}
+            className="video-recorder-preview"
             playsInline={true}
             autoPlay={true}
+            controls={false}
+            muted={true}
+          >
+            <track default kind="captions" srcLang="fr" src=""></track>
+          </video>
+          <video
+            ref={videoRef}
+            className="video-recorder-playback"
+            hidden={!recorded}
+            playsInline={true}
             controls={false}
             muted={true}
             onEnded={handleEnded}
