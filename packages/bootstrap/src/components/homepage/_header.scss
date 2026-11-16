@@ -101,6 +101,9 @@
       border-radius: var(--primitive-border-radius-pill);
     }
 
+    // Badges rendered by the local `HeaderBadge` component (React), until the
+    // shared Badge component implements the design system "notifications
+    // badges" (ENABLING-1399, see the TODO in HeaderBadge.tsx).
     // Unread counter (messaging).
     .navbar-nav-badge {
       position: absolute;
