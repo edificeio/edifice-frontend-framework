@@ -1,0 +1,151 @@
+// ent77 theme configuration.
+// Values are synchronised from Figma (mode "ENT77") by tools/figma-sync.
+
+@use 'primitives' as *;
+@use 'primitives-legacy' as legacy;
+
+$ent77: (
+  name: 'ent77',
+  color: (
+    text: (
+      button: (
+        primary: (
+          filled: (
+            default: $white,
+            disable: $white,
+          ),
+          other: (
+            default: $clients-ent77-500,
+            disable: $clients-ent77-300,
+          ),
+        ),
+        secondary: (
+          filled: (
+            default: $white,
+            disable: $white,
+          ),
+          other: (
+            default: $clients-ent77-500,
+            disable: $clients-ent77-300,
+          ),
+        ),
+        tertiary: (
+          filled: (
+            default: $white,
+            disable: $white,
+          ),
+          other: (
+            default: $clients-ent77-500,
+            disable: $clients-ent77-300,
+          ),
+        ),
+      ),
+    ),
+    primary: (
+      pale: $clients-ent77-200,
+      light: $clients-ent77-300,
+      default: $clients-ent77-500,
+      dark: $clients-ent77-700,
+      feather: $clients-ent77-100,
+    ),
+    support: (
+      danger: (
+        200: $danger-200,
+        300: $danger-300,
+        500: $danger-500,
+        700: $danger-700,
+      ),
+      success: (
+        200: $success-200,
+        300: $success-300,
+        500: $success-500,
+        700: $success-700,
+      ),
+      info: (
+        200: $info-200,
+        300: $info-300,
+        500: $info-500,
+        700: $info-700,
+      ),
+      warning: (
+        200: $warning-200,
+        300: $warning-300,
+        500: $warning-500,
+        700: $warning-700,
+      ),
+    ),
+    buttons: (
+      primary: (
+        pale: $clients-ent77-200,
+        light: $clients-ent77-300,
+        default: $clients-ent77-500,
+        dark: $clients-ent77-700,
+      ),
+      secondary: (
+        pale: $clients-ent77-200,
+        light: $clients-ent77-300,
+        default: $clients-ent77-500,
+        dark: $clients-ent77-700,
+      ),
+      tertiary: (
+        pale: $clients-ent77-200,
+        light: $clients-ent77-300,
+        default: $clients-ent77-500,
+        dark: $clients-ent77-700,
+      ),
+    ),
+    background: (
+      default: $white,
+    ),
+    app: (
+      communicate: legacy.$one-orange-500,
+      produce: legacy.$one-blue-500,
+      organise: legacy.$one-green-500,
+      admin: legacy.$one-yellow-500,
+      special: legacy.$one-purple-500,
+    ),
+    profil: (
+      student: $orange-700,
+      teacher: $green-700,
+      guest: $yellow-700,
+      personnel: $pink-700,
+      relative: $blue-700,
+    ),
+    themeSeparator: (
+      minor: $clients-ent77-500,
+      major: $clients-ent77-700,
+    ),
+    secondary: (
+      feather: $clients-ent77-100,
+      pale: $clients-ent77-200,
+      light: $clients-ent77-300,
+      default: $clients-ent77-500,
+      dark: $clients-ent77-700,
+    ),
+  ),
+  font: (
+    family: (
+      title: $font-family-urbanist,
+      body: $font-family-arimo,
+    ),
+    weight: (
+      bold: $font-weight-bold,
+      regular: $font-weight-regular,
+    ),
+    button: (
+      family: $font-family-urbanist,
+      size: $font-size-default,
+      lineheight: $font-lineheight-s,
+      tertiary: (
+        family: $font-family-urbanist,
+        size: $font-size-default,
+        lineheight: $font-lineheight-s,
+      ),
+    ),
+  ),
+  radius: (
+    button: $border-radius-pill,
+    maincontainer: $border-radius-none,
+    searchbar: $border-radius-pill,
+  ),
+);
