@@ -9,7 +9,6 @@ import { Meta } from "@storybook/addon-docs/blocks";
       flex-direction: column;
       gap: 8px;
       margin: 24px 0;
-      font-family: monospace;
       font-size: 14px;
     }
     .arch-layer {
@@ -17,60 +16,98 @@ import { Meta } from "@storybook/addon-docs/blocks";
       border-radius: 8px;
       border: 1px solid #e4e4e4;
     }
-    .arch-layer.l1 { background: #F5F7FF; border-color: #C8D3FE; }
-    .arch-layer.l2 { background: #FEFAEC; border-color: #FFE5A3; }
-    .arch-layer.l3 { background: #F2FCF7; border-color: #BDF0D5; }
-    .arch-layer .title { font-weight: bold; margin-bottom: 4px; font-family: sans-serif; }
-    .arch-layer .selector { color: #5555F7; }
-    .arch-layer .desc { color: #696969; font-family: sans-serif; font-size: 13px; margin-top: 4px; }
-    .file-link { font-family: monospace; font-size: 13px; color: #5555F7; }
+    .arch-layer.l1 { background: #f5f7ff; border-color: #c8d3fe; }
+    .arch-layer.l2 { background: #fefaec; border-color: #ffe5a3; }
+    .arch-layer.l3 { background: #f2fcf7; border-color: #bdf0d5; }
+    .arch-layer.l4 { background: #f7f7f7; border-color: #e4e4e4; }
+    .arch-layer .title { font-weight: bold; margin-bottom: 4px; }
+    .arch-layer .selector { color: #3030d1; font-family: monospace; }
+    .arch-layer .desc { color: #696969; font-size: 13px; margin-top: 4px; }
   `}
 </style>
 
 # Edifice Design System
 
-Le système de thèmes d'Edifice repose sur une architecture en trois couches qui sépare clairement les valeurs primitives, les décisions de design par thème, et les surcharges par composant.
+Le design system Edifice est un ensemble de **CSS custom properties** générées par `@edifice.io/bootstrap`. Les valeurs viennent de **Figma**, sont recopiées dans des fichiers Sass par un outil de synchronisation, puis compilées en variables CSS.
+
+Changer de thème revient à changer un attribut HTML (`data-product`) : les valeurs changent à l'exécution, sans recompilation.
+
+---
 
 ## Architecture
 
 <div className="arch-diagram">
   <div className="arch-layer l1">
-    <div className="title">Couche 1 — Primitives</div>
-    <div className="selector"><code>:root {'{'} --edifice-grey-900, --edifice-numbers-8, --edifice-border-radius-md, ... {'}'}</code></div>
-    <div className="desc">Tokens de base communs à tous les thèmes. Générés une seule fois au niveau global.</div>
+    <div className="title">1 — Primitives</div>
+    <div className="selector">:root {'{'} --primitive-grey-900; --primitive-spacer-16; --primitive-border-radius-md; … {'}'}</div>
+    <div className="desc">Valeurs brutes (couleurs, espacements, rayons, typographie), communes à tous les thèmes. Émises une seule fois, au niveau global.</div>
   </div>
   <div className="arch-layer l2">
-    <div className="title">Couche 2 — Thème</div>
-    <div className="selector"><code>[data-product="neo"] {'{'} --edifice-color-text-default, --edifice-font-family-title, ... {'}'}</code></div>
-    <div className="desc">Variables sémantiques générées depuis la map de config de chaque thème (neo / one / edifice2d / edifice1d).</div>
+    <div className="title">2 — Thème</div>
+    <div className="selector">[data-product="edifice2d"] {'{'} --color-primary-default; --font-family-title; --radius-button; … {'}'}</div>
+    <div className="desc">Variables sémantiques : les décisions de design d'un thème. Chaque thème déclare les mêmes noms avec ses propres valeurs.</div>
   </div>
   <div className="arch-layer l3">
-    <div className="title">Couche 3 — Variante</div>
-    <div className="selector"><code>[data-product="neo"][data-theme="na"] {'{'} --edifice-color-primary-default, ... {'}'}</code></div>
-    <div className="desc">Surcharges spécifiques à une déclinaison du thème (collectivité, partenaire, etc.).</div>
+    <div className="title">3 — Overrides de composant (optionnel)</div>
+    <div className="selector">[data-product="edifice2d"] .pagelayout {'{'} … {'}'}</div>
+    <div className="desc">Ajustements propres à un thème sur un composant précis, quand les variables ne suffisent pas.</div>
+  </div>
+  <div className="arch-layer l4">
+    <div className="title">4 — Variante (optionnel)</div>
+    <div className="selector">[data-product="edifice2d"][data-theme="ma-variante"] {'{'} --color-primary-default; … {'}'}</div>
+    <div className="desc">Sous-thème qui ne surcharge que quelques variables d'un thème existant (mixin <code>theme-variant()</code>).</div>
   </div>
 </div>
 
+Les composants consomment les couches 1 et 2 via `var(--…)` : ils ne connaissent jamais le nom du thème actif.
+
+---
+
+## Les thèmes
+
+| Thème | Usage |
+| --- | --- |
+| `edifice2d` | Nouveau design system, second degré |
+| `edifice1d` | Nouveau design system, premier degré |
+| `neo` | Portage de l'ancien thème Neo dans le nouveau système (transitoire) |
+| `one` | Portage de l'ancien thème One dans le nouveau système (transitoire) |
+
+Tous les thèmes sont déclarés de la même manière : il n'y a pas de différence de nature entre un thème produit et un thème dédié à une plateforme. Voir [Themes](?path=/docs/edifice-design-system-themes--docs).
+
+---
+
+## De Figma au CSS
+
+1. **Figma** est la source de vérité :
+   - fichier **Edifice_UIKit** : les primitives (collections `primitives`, `primitivesLegacy`, `text`) ;
+   - fichier **EdificeLibrary_Web** : les variables sémantiques, avec **un mode par thème**.
+2. Le plugin Figma **Edifice Token Extractor** exporte ces variables en JSON.
+3. L'outil **`tools/figma-sync`** réécrit les fichiers Sass de `packages/bootstrap/src/themes/configs/` à partir de ces exports. Le skill Claude `figma-tokens-sync` le pilote.
+4. La compilation de `@edifice.io/bootstrap` génère les variables CSS.
+
+Les fichiers de `configs/` ne se modifient donc pas à la main : on modifie Figma, puis on relance la synchronisation.
+
+---
+
+## Comment le thème est activé
+
+- **Sur toute la page** : `EdificeThemeProvider` (`@edifice.io/react`) pose `data-product` sur `<html>`. La valeur est le dernier segment de `bootstrapVersion` dans le `theme-conf` de la plateforme. Il pose aussi `data-theme` (nom du thème de la plateforme) et `data-skin` (skin choisi par l'utilisateur).
+- **Sur une partie de la page** : un thème n'étant qu'un ensemble de variables, poser `data-product` sur un élément applique ce thème à ses seuls descendants. Les `uiOverrides` du `theme-conf` s'en servent, par exemple `'layout.header': { variant: 'v2', theme: '<thème>' }` pour donner au header un thème différent du reste de l'application (voir le hook `useUiOverride`).
+
+---
+
 ## Fichiers source
 
-<table>
-  <thead>
-    <tr><th>Rôle</th><th>Fichier</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>Tokens primitifs</td><td><code>packages/bootstrap/src/themes/configs/_primitives.scss</code></td></tr>
-    <tr><td>Tokens legacy (neo / one)</td><td><code>packages/bootstrap/src/themes/configs/_primitives-legacy.scss</code></td></tr>
-    <tr><td>Config thème Edifice2D</td><td><code>packages/bootstrap/src/themes/configs/_edifice2d.scss</code></td></tr>
-    <tr><td>Config thème Edifice1D</td><td><code>packages/bootstrap/src/themes/configs/_edifice1d.scss</code></td></tr>
-    <tr><td>Config thème Neo</td><td><code>packages/bootstrap/src/themes/configs/_neo.scss</code></td></tr>
-    <tr><td>Config thème One</td><td><code>packages/bootstrap/src/themes/configs/_one.scss</code></td></tr>
-    <tr><td>API (mixins)</td><td><code>packages/bootstrap/src/themes/_theme-api.scss</code></td></tr>
-    <tr><td>Point d'entrée</td><td><code>packages/bootstrap/src/themes/_index.scss</code></td></tr>
-  </tbody>
-</table>
+Tous les chemins sont relatifs à `packages/bootstrap/src/themes/`.
 
-## Pourquoi ce système ?
-
-L'ancienne approche déclarait les couleurs et la typographie directement en variables Sass Bootstrap (`$primary`, `$font-family-sans-serif`…). Ces variables étaient résolues à la compilation — impossible de changer de thème à l'exécution.
-
-Le nouveau système génère des **CSS custom properties** scoped par `data-product`. Changer de thème revient à changer un attribut HTML : les valeurs changent dynamiquement sans recompilation.
+| Rôle | Fichier |
+| --- | --- |
+| Primitives | `configs/_primitives.scss` |
+| Primitives legacy (neo / one) | `configs/_primitives-legacy.scss` |
+| Configuration d'un thème | `configs/_<thème>.scss` |
+| Couleurs des icônes d'applications | `configs/_icons.scss` |
+| Breakpoints et mixins de media queries | `configs/_breakpoints.scss` |
+| Génération des variables (mixins) | `_theme-api.scss` |
+| Déclaration d'un thème et ses overrides | `<thème>/_index.scss`, `<thème>/overrides/` |
+| Fonds de page | `_backgrounds.scss` |
+| Point d'entrée | `_index.scss` |
