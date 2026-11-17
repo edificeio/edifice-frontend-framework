@@ -1,46 +1,58 @@
-import { Flex, Skeleton } from '../../../../components';
+import { useTranslation } from 'react-i18next';
+import { Flex, Skeleton, VisuallyHidden } from '../../../../components';
 import { HomeCard } from '../HomeCard';
 
-const primaryTitleWidths = ['80%', '64%', '88%', '72%', '76%', '68%'];
-const secondaryTitleWidths = ['56%', '44%', '60%', '48%', '52%', '40%'];
+// Minimum column count of `.communities-list`: the grid only adds a column
+// when an item fills it, so more items than that would lay out wider grids
+// than a user with fewer communities gets once loaded.
+const SKELETON_ITEM_COUNT = 4;
 
+/**
+ * Loading placeholder for the Communities card.
+ *
+ * It reuses the wrappers and classes of `HomeCard.Header`, `Communities` and
+ * `CommunityItem`, and swaps each content slot for a `Skeleton` block. The
+ * title is static, so it is rendered as is.
+ */
 const CommunitiesSkeleton = () => {
+  const { t } = useTranslation();
+
   return (
-    <HomeCard variant="primary" data-testid="communities-skeleton">
+    <HomeCard
+      variant="primary"
+      role="status"
+      aria-busy="true"
+      data-testid="communities-skeleton"
+    >
+      <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
       <Flex
         align="center"
         justify="between"
         gap="8"
+        wrap="wrap"
         className="home-card-header"
       >
-        <Skeleton className="communities-skeleton-title col-5" />
-        <Skeleton variant="block" className="communities-skeleton-button" />
+        <h3 className="home-card-header-title">
+          {t('homepage.communities.title')}
+        </h3>
+        <Skeleton
+          variant="pill"
+          className="home-card-header-action communities__action-skeleton"
+        />
       </Flex>
       <HomeCard.Content className="communities-content">
         <Flex gap="16">
           <div className="communities-list">
-            {primaryTitleWidths.map((primaryWidth, index) => (
-              <div
-                key={primaryWidth}
-                className="communities-item"
-                aria-hidden="true"
-              >
+            {Array.from({ length: SKELETON_ITEM_COUNT }, (_, index) => (
+              <div key={index} className="communities-item">
                 <Skeleton
                   variant="block"
                   tone="strong"
                   className="communities-item-image"
-                  style={{ aspectRatio: '1 / 1' }}
                 />
-                <Flex direction="column" gap="4" className="mt-8">
-                  <Skeleton
-                    className="communities-skeleton-line"
-                    width={primaryWidth}
-                  />
-                  <Skeleton
-                    className="communities-skeleton-line"
-                    width={secondaryTitleWidths[index]}
-                  />
-                </Flex>
+                <p className="communities-item-title">
+                  <Skeleton className="communities__item-title-skeleton" />
+                </p>
               </div>
             ))}
           </div>
