@@ -1,4 +1,4 @@
-import { Node } from '@tiptap/core';
+import { Editor, Node } from '@tiptap/core';
 
 export interface SpeechRecognitionOptions {
   lang: string;
@@ -11,6 +11,11 @@ declare module '@tiptap/core' {
       stopSpeechRecognition: () => ReturnType;
       isSpeechRecognitionStarted: () => boolean;
     };
+  }
+
+  interface EditorEvents {
+    /** Emitted when a recognition session ends, whatever the reason. */
+    speechRecognitionEnd: { editor: Editor };
   }
 }
 
@@ -53,7 +58,8 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
         ({ commands }) => {
           const SpeechRecognition =
             window.SpeechRecognition || window.webkitSpeechRecognition;
-          this.recognition = new SpeechRecognition();
+          const recognition = new SpeechRecognition();
+          this.recognition = recognition;
 
           this.recognition.lang = this.options.lang;
           this.recognition.interimResults = true;
@@ -111,7 +117,10 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
           };
 
           this.recognition.onend = () => {
+            // Ignore the late end of a session already replaced by a new one.
+            if (this.recognition !== recognition) return;
             this.isStarted = false;
+            this.editor.emit('speechRecognitionEnd', { editor: this.editor });
           };
 
           return commands;

@@ -9,6 +9,7 @@ class FakeSpeechRecognition {
   static last: FakeSpeechRecognition | undefined;
   onerror: ((event: Partial<SpeechRecognitionErrorEvent>) => void) | null =
     null;
+  onend: (() => void) | null = null;
   start = vi.fn();
   stop = vi.fn();
   constructor() {
@@ -85,5 +86,41 @@ describe('SpeechRecognition error feedback', () => {
     editor = new Editor({ extensions: [StarterKit, SpeechRecognition] });
 
     expect(() => startWithError('network')).not.toThrow();
+  });
+});
+
+describe('SpeechRecognition end event', () => {
+  let editor: Editor;
+
+  beforeEach(() => {
+    vi.stubGlobal('SpeechRecognition', FakeSpeechRecognition);
+    editor = new Editor({ extensions: [StarterKit, SpeechRecognition] });
+  });
+
+  afterEach(() => {
+    editor.destroy();
+    vi.unstubAllGlobals();
+  });
+
+  it('emits "speechRecognitionEnd" when the session ends', () => {
+    const listener = vi.fn();
+    editor.on('speechRecognitionEnd', listener);
+
+    editor.commands.startSpeechRecognition();
+    FakeSpeechRecognition.last!.onend!();
+
+    expect(listener).toHaveBeenCalledWith({ editor });
+  });
+
+  it('ignores the late end of a session replaced by a new one', () => {
+    const listener = vi.fn();
+    editor.on('speechRecognitionEnd', listener);
+
+    editor.commands.startSpeechRecognition();
+    const previous = FakeSpeechRecognition.last!;
+    editor.commands.startSpeechRecognition();
+    previous.onend!();
+
+    expect(listener).not.toHaveBeenCalled();
   });
 });

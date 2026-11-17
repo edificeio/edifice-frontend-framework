@@ -1,27 +1,20 @@
 import { useEffect, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
-import type { EditorFeedback } from '@edifice.io/tiptap-extensions/feedback';
 import { Editor } from '@tiptap/react';
 
 export const useSpeechRecognition = (editor: Editor | null) => {
   const [isActive, setActive] = useState(false);
 
-  // A recognition error ends the recognition: reflect it in the UI state.
+  // A session can end on its own (error, silence...): reflect it in the UI.
   useEffect(() => {
     if (!editor) return;
 
-    const handleFeedback = ({ feedback }: { feedback: EditorFeedback }) => {
-      if (
-        feedback.source === 'speech-recognition' &&
-        feedback.level === 'error'
-      )
-        setActive(false);
-    };
+    const handleEnd = () => setActive(false);
 
-    editor.on('feedback', handleFeedback);
+    editor.on('speechRecognitionEnd', handleEnd);
     return () => {
-      editor.off('feedback', handleFeedback);
+      editor.off('speechRecognitionEnd', handleEnd);
     };
   }, [editor]);
 

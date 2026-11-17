@@ -76,7 +76,7 @@ dupliqué entre deux kits) qu'un test par extension isolée ne peut pas voir.
 | `conversation-history` | le plugin ProseMirror qui regroupe tout ce qui suit un `<hr>` (nécessite une vraie instance `Editor`/transaction, pas juste `generateJSON` — le `content` initial seul ne le déclenche pas) |
 | `conversation-history-body` | parse/rendu simple |
 | `feedback` | la commande `notifyFeedback` émet l'événement `feedback` de l'éditeur et appelle l'option `onFeedback` |
-| `speech-recognition` | `recognition.onerror` lève un feedback (`error`, ou `warning` pour `no-speech`), ignore `aborted`, et ne plante pas sans l'extension `feedback` |
+| `speech-recognition` | `recognition.onerror` lève un feedback (`error`, ou `warning` pour `no-speech`), ignore `aborted`, ne plante pas sans l'extension `feedback`, et émet `speechRecognitionEnd` à la fin de session (sauf session déjà remplacée) |
 | `font-size`, `line-height`, `table-cell` | comportement actuel, **y compris** le défaut préexistant `""` au lieu de `null` pour une valeur non définie (même cause racine que `StyleCompat.ts` côté backend, non introduite par cette migration, non corrigée ici — voir le commentaire de chaque spec) |
 
 `line-height` est exportée mais non branchée actuellement dans `useTipTapEditor.ts`.
