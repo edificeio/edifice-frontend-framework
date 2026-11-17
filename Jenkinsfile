@@ -8,7 +8,7 @@ pipeline {
   }
 
   environment {
-    NEXUS_USERNAME = credentials('nexus-ode-username')
+    NEXUS_USERNAME = 'admin'
     NEXUS_PASSWORD = credentials('nexus-ode-password')
   }
 
