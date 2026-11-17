@@ -75,11 +75,13 @@ dupliqué entre deux kits) qu'un test par extension isolée ne peut pas voir.
 | `attachment` | parse les `<a>` enfants en `links[]`, retombe sur le dernier segment du `href` pour l'identifiant du document |
 | `conversation-history` | le plugin ProseMirror qui regroupe tout ce qui suit un `<hr>` (nécessite une vraie instance `Editor`/transaction, pas juste `generateJSON` — le `content` initial seul ne le déclenche pas) |
 | `conversation-history-body` | parse/rendu simple |
+| `feedback` | la commande `notifyFeedback` émet l'événement `feedback` de l'éditeur et appelle l'option `onFeedback` |
+| `speech-recognition` | `recognition.onerror` lève un feedback (`error`, ou `warning` pour `no-speech`), ignore `aborted`, et ne plante pas sans l'extension `feedback` |
 | `font-size`, `line-height`, `table-cell` | comportement actuel, **y compris** le défaut préexistant `""` au lieu de `null` pour une valeur non définie (même cause racine que `StyleCompat.ts` côté backend, non introduite par cette migration, non corrigée ici — voir le commentaire de chaque spec) |
 
 `line-height` est exportée mais non branchée actuellement dans `useTipTapEditor.ts`.
 
-**Volontairement non couvertes** : `speech-recognition` et `speech-synthesis` n'ont aucune logique
+**Volontairement non couvertes** (hors remontée d'erreurs ci-dessus) : `speech-recognition` et `speech-synthesis` n'ont aucune logique
 `parseHTML`/`renderHTML` — elles ne font que piloter les API navigateur `SpeechRecognition`/
 `speechSynthesis` et n'ont aucun effet sur le contenu du document, donc hors du périmètre de cette suite
 de sérialisation de contenu. `attachment-transformer.ts` (`AttachmentTransformer`) est backend-only —

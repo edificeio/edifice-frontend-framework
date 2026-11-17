@@ -10,6 +10,20 @@ i18n.use(initReactI18next).init({
         'tiptap.toolbar.audio': 'Add audio',
         'tiptap.toolbar.attachment': 'Add attachment',
         'tiptap.toolbar.stt': 'Voice dictation',
+        'tiptap.feedback.speech-recognition.default':
+          'Voice dictation stopped because of an error.',
+        'tiptap.feedback.speech-recognition.no-speech':
+          'No speech was detected. Please try again.',
+        'tiptap.feedback.speech-recognition.audio-capture':
+          'No microphone was found. Please check your audio settings.',
+        'tiptap.feedback.speech-recognition.not-allowed':
+          'Microphone access was denied. Please allow it in your browser to use voice dictation.',
+        'tiptap.feedback.speech-recognition.service-not-allowed':
+          'Voice dictation is not available in this browser.',
+        'tiptap.feedback.speech-recognition.network':
+          'Voice dictation requires an internet connection.',
+        'tiptap.feedback.speech-recognition.language-not-supported':
+          'Voice dictation is not available for this language.',
         'tiptap.toolbar.tts': 'Read text',
         'tiptap.toolbar.bold': 'Bold',
         'tiptap.toolbar.italic': 'Italic',

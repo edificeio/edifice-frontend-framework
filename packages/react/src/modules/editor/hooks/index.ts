@@ -1,6 +1,7 @@
 export * from './useActionOptions';
 export * from './useCommentEditor';
 export * from './useEditorContext';
+export * from './useEditorFeedback';
 export * from './useEditorState';
 export * from './useImageModal';
 export * from './useImageSelection';
