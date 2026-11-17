@@ -8,7 +8,6 @@ pipeline {
   }
 
   environment {
-    NEXUS_USERNAME = 'admin'
     NEXUS_PASSWORD = credentials('nexus-ode-password')
   }
 
@@ -30,7 +29,7 @@ pipeline {
         configFileProvider([configFile(fileId: '.npmrc-infra-front-nexus', variable: 'NPMRC')]) {
           sh 'cp $NPMRC .npmrc'
           // Nexus uses basic auth: NPM_TOKEN carries base64(user:password) for _auth
-          sh 'export NPM_TOKEN=$(printf "%s:%s" "$NEXUS_USERNAME" "$NEXUS_PASSWORD" | base64 | tr -d "\\n") && ./scripts/publish.sh publish'
+          sh 'export NPM_TOKEN=$(printf "%s:%s" "$NEXUS_ODE_USERNAME" "$NEXUS_PASSWORD" | base64 | tr -d "\\n") && ./scripts/publish.sh publish'
         }
       }
     }
