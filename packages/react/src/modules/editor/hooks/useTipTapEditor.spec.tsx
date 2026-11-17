@@ -1,6 +1,28 @@
 import { waitFor } from '@testing-library/react';
+import { ReactNode, useContext } from 'react';
 import { renderHook, wrapper } from '~/setup';
+import { EdificeClientContext } from '../../../providers/EdificeClientProvider/EdificeClientProvider.context';
 import { useTipTapEditor } from './useTipTapEditor';
+
+/** Mocked providers, with the user's language overridden. */
+const wrapperWithLanguage =
+  (currentLanguage: string) =>
+  ({ children }: { children: ReactNode }) => {
+    const LanguageOverride = ({ children }: { children: ReactNode }) => {
+      const context = useContext(EdificeClientContext)!;
+      return (
+        <EdificeClientContext.Provider value={{ ...context, currentLanguage }}>
+          {children}
+        </EdificeClientContext.Provider>
+      );
+    };
+    const MockedProviders = wrapper;
+    return (
+      <MockedProviders>
+        <LanguageOverride>{children}</LanguageOverride>
+      </MockedProviders>
+    );
+  };
 
 // Combines one representative sample of every extension actually wired into the hook,
 // mirroring edifice-tiptap-transformer's "kitchen-sink" fixture: catches interactions
@@ -181,6 +203,31 @@ describe('useTipTapEditor', () => {
 
     warnSpy.mockRestore();
   });
+
+  it.each([
+    ['fr', 'fr-FR'],
+    ['en', 'en-GB'],
+  ])(
+    'configures speech synthesis and recognition with the BCP-47 locale of "%s"',
+    async (currentLanguage, expectedLocale) => {
+      const { result } = renderHook(() => useTipTapEditor(true, '<p></p>'), {
+        wrapper: wrapperWithLanguage(currentLanguage),
+      });
+
+      await waitFor(() => expect(result.current.editor).toBeTruthy());
+
+      const langOf = (name: string) =>
+        result.current.editor!.extensionManager.extensions.find(
+          (e) => e.name === name,
+        )?.options.lang;
+
+      // Regression (ENABLING-1152): recognition (dictation) had no lang and
+      // always ran in fr-FR, synthesis used a hard-coded `xx-XX` hack.
+      expect(langOf('speechSynthesis')).toBe(expectedLocale);
+      // The recognition extension is registered as 'SpeechRecognition'.
+      expect(langOf('SpeechRecognition')).toBe(expectedLocale);
+    },
+  );
 
   it('does not call onContentChange when the content prop changes programmatically', async () => {
     const onContentChange = vi.fn();
