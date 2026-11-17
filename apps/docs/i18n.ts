@@ -326,6 +326,8 @@ i18n.use(initReactI18next).init({
         'homepage.notifications-list.title': 'Notifications',
         'homepage.notifications-list.loading': 'Loading notifications',
         'homepage.notifications-list.close': 'Close notifications',
+        'homepage.notifications-list.error':
+          'Erreur lors du chargement des notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
         'homepage.notifications.avatar.placeholder': "Image de l'utilisateur",
@@ -539,7 +541,7 @@ i18n.use(initReactI18next).init({
         'homepage.widget.edumalin.modal.duration': 'Durée :',
         'homepage.widget.edumalin.modal.durationValue': '[[duration]]min',
         'homepage.widget.edumalin.modal.place': 'Lieu :',
-        
+
         //------------------ TabsKids -------------------------
         'homepage.tabsKids.see.more': 'Voir plus',
 

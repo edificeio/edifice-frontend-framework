@@ -43,14 +43,16 @@ describe('createNotificationService', () => {
       );
     });
 
-    it('returns an empty list when the platform reports an error', async () => {
+    it('rejects when the platform reports an error', async () => {
       get.mockResolvedValue({
         status: 'error',
         number: 1,
         results: [notification('n1')],
       });
 
-      await expect(service.getNotifications(['BLOG'], 0)).resolves.toEqual([]);
+      await expect(service.getNotifications(['BLOG'], 0)).rejects.toThrow(
+        'Failed to load notifications (status: error)',
+      );
     });
 
     it('returns an empty list when the response holds no result', async () => {
