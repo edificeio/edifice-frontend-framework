@@ -32,7 +32,7 @@ describe('Toolbar', () => {
     );
   });
 
-  it('renders an icon item, overridable color/variant', () => {
+  it('renders an icon item, overridable color/variant (legacy danger → destructive)', () => {
     // Unlike 'button' items, 'icon' items don't get an automatic aria-label
     // from `name` — it must be set explicitly via props.
     const items: ToolbarItem[] = [
@@ -42,7 +42,7 @@ describe('Toolbar', () => {
         props: {
           'icon': <span>icon</span>,
           'aria-label': 'delete',
-          'color': 'destructive',
+          'color': 'danger',
           'variant': 'outline',
         },
       },
@@ -223,6 +223,56 @@ describe('Toolbar', () => {
     );
   });
 
+  it.each([
+    ['primary', 'btn-beta-default'],
+    ['secondary', 'btn-beta-secondary'],
+    ['tertiary', 'btn-beta-tertiary'],
+    ['danger', 'btn-beta-destructive'],
+    ['black', 'btn-beta-tertiary'],
+  ] as const)(
+    'maps the legacy %s color to the %s ButtonBeta class',
+    (color, expectedClass) => {
+      const items: ToolbarItem[] = [
+        { type: 'button', name: 'save', props: { children: 'Save', color } },
+      ];
+      render(<Toolbar items={items} />);
+
+      expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+        expectedClass,
+      );
+    },
+  );
+
+  it('maps the legacy lg size to md', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
+    ];
+    render(<Toolbar items={items} />);
+
+    expect(screen.getByRole('button', { name: 'save' })).not.toHaveClass(
+      'btn-beta--small',
+    );
+  });
+
+  it('does not forward legacy-only props to the DOM', () => {
+    const items: ToolbarItem[] = [
+      {
+        type: 'button',
+        name: 'save',
+        props: {
+          children: 'Save',
+          loadingIcon: <span />,
+          loadingPosition: 'right',
+        },
+      },
+    ];
+    render(<Toolbar items={items} />);
+
+    const button = screen.getByRole('button', { name: 'save' });
+    expect(button).not.toHaveAttribute('loadingIcon');
+    expect(button).not.toHaveAttribute('loadingPosition');
+  });
+
   it('forwards ariaControls and a ref to the root element', () => {
     const ref = createRef<HTMLDivElement>();
     render(<Toolbar items={[]} ariaControls="editor-1" ref={ref} />);
@@ -352,6 +402,82 @@ describe('Toolbar', () => {
       render(<Toolbar items={items} />);
 
       expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument();
+    });
+  });
+
+  it('accepts the new ButtonBeta color values', () => {
+    const items: ToolbarItem[] = [
+      {
+        type: 'button',
+        name: 'save',
+        props: { children: 'Save', color: 'destructive' },
+      },
+    ];
+    render(<Toolbar items={items} />);
+
+    expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+      'btn-beta-destructive',
+    );
+  });
+
+  describe('deprecations', () => {
+    // The module keeps track of already reported deprecations: reload it to
+    // start each test from a clean state.
+    let FreshToolbar: typeof Toolbar;
+    let warn: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(async () => {
+      vi.resetModules();
+      ({ Toolbar: FreshToolbar } = await import('./Toolbar'));
+      warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warn.mockRestore();
+    });
+
+    it('warns once when a deprecated color is used', () => {
+      const items: ToolbarItem[] = [
+        { type: 'button', name: 'one', props: { color: 'danger' } },
+        { type: 'button', name: 'two', props: { color: 'danger' } },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] color "danger" is deprecated, use color "destructive" instead.',
+      );
+    });
+
+    it('warns when a deprecated size or legacy-only prop is used', () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'button',
+          name: 'save',
+          props: { size: 'lg', loadingPosition: 'right' },
+        },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] size "lg" is deprecated, use size "md" instead.',
+      );
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] loadingIcon/loadingPosition is deprecated, use nothing (no longer supported) instead.',
+      );
+    });
+
+    it('does not warn for new values', () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'button',
+          name: 'save',
+          props: { color: 'default', size: 'md' },
+        },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).not.toHaveBeenCalled();
     });
   });
 
