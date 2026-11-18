@@ -24,6 +24,7 @@ import {
   LinkToolbar,
   TableToolbar,
   useCantooEditor,
+  useEditorFeedback,
   useImageModal,
   useLinkToolbar,
   useMathsModal,
@@ -139,6 +140,7 @@ const Editor = forwardRef(
     const imageModal = useImageModal(editor, 'media-library', visibility);
     const linkToolbarHandlers = useLinkToolbar(editor, mediaLibraryModalRef);
     const speechSynthetisis = useSpeechSynthetisis(editor);
+    useEditorFeedback(editor);
 
     useMathsStyles();
 

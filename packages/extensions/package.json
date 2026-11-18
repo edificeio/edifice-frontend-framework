@@ -50,6 +50,10 @@
       "import": "./dist/conversation-history-body/conversation-history-body.js",
       "require": "./dist/conversation-history-body/conversation-history-body.cjs"
     },
+    "./feedback": {
+      "import": "./dist/feedback/feedback.js",
+      "require": "./dist/feedback/feedback.cjs"
+    },
     "./font-size": {
       "import": "./dist/font-size/font-size.js",
       "require": "./dist/font-size/font-size.cjs"
