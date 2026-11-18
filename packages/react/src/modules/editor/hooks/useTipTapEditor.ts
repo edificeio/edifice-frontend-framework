@@ -46,6 +46,7 @@ import {
   MediaRenderer,
   VideoNodeView,
 } from '../components';
+import { getSpeechLocale } from '../utilities/get-speech-locale';
 
 /**
  * Hook that creates a tiptap editor instance.
@@ -70,6 +71,7 @@ export const useTipTapEditor = (
 ) => {
   const { currentLanguage } = useEdificeClient();
   const { t } = useTranslation();
+  const speechLocale = getSpeechLocale(currentLanguage);
 
   const { uploadFile } = useUpload(visibility);
   const editor = useEditor({
@@ -133,12 +135,11 @@ export const useTipTapEditor = (
       }),
       Typography,
       FontSize,
-      SpeechRecognition,
+      SpeechRecognition.configure({
+        lang: speechLocale,
+      }),
       SpeechSynthesis.configure({
-        lang:
-          currentLanguage?.length === 2
-            ? `${currentLanguage}-${currentLanguage.toUpperCase()}` // FIXME(ENABLING-1152): very dirty hack for demo
-            : 'fr-FR',
+        lang: speechLocale,
       }),
       Hyperlink,
       FontFamily,
