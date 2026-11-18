@@ -1,56 +1,76 @@
-@use '../abstracts/' as *;
-@use '../vendors/bootstrap';
-
 .edifice.ant-segmented {
-  border-radius: var(--#{$prefix}border-radius-xl);
+  --ant-segmented-track-padding: var(--primitive-spacer-4);
+  --ant-segmented-track-bg: var(--primitive-white);
+  --ant-line-width: 0;
 
-  --ant-segmented-track-padding: var(--#{$prefix}spacer-4);
-  --ant-control-height: var(--#{$prefix}spacer-48);
-  --ant-control-padding-horizontal: var(--#{$prefix}spacer-8);
-  --ant-line-width: var(--#{$prefix}spacer-0);
-  --ant-segmented-track-bg: var(--#{$prefix}white);
-
-  border: 1px solid var(--#{$prefix}secondary-200);
+  padding: var(--primitive-spacer-4);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--primitive-border-radius-lg);
+  font-family: var(--font-family-body);
+  font-size: var(--primitive-font-size-small);
 
   &.ghost {
     border: 0;
   }
 
   .ant-segmented-group {
-    gap: var(--#{$prefix}spacer-4);
+    gap: var(--primitive-spacer-8);
   }
 
   .ant-segmented-item {
-    border-radius: var(--#{$prefix}border-radius-lg);
+    --ant-segmented-item-color: var(--primitive-grey-900);
+    --ant-segmented-item-hover-color: var(--primitive-grey-900);
+    --ant-segmented-item-hover-bg: var(--primitive-grey-200);
+    --ant-segmented-item-active-bg: var(--primitive-grey-200);
 
-    --ant-segmented-item-color: var(--#{$prefix}body-color);
+    border-radius: var(--primitive-border-radius-md);
+    font-weight: var(--font-weight-regular);
 
     &:hover {
-      --ant-segmented-item-hover-color: var(--#{$prefix}body-color);
-      // font-weight: 700; remove because of layout shift
-
-      --ant-segmented-item-hover-bg: var(--#{$prefix}gray-300);
-    }
-
-    &-selected {
-      --ant-segmented-item-selected-bg: var(--#{$prefix}secondary-200);
-      --ant-segmented-item-selected-color: var(--#{$prefix}body-color);
-      // font-weight: 700; remove because of layout shift
-
-      box-shadow: none;
+      font-weight: var(--font-weight-bold);
     }
   }
 
-  /* Animation */
+  .ant-segmented-item-label {
+    min-height: 0;
+    padding: var(--primitive-spacer-8);
+    line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  .ant-segmented-item-selected {
+    --ant-segmented-item-selected-bg: var(--color-primary-pale);
+    --ant-segmented-item-selected-color: var(--primitive-grey-900);
+
+    font-weight: var(--font-weight-bold);
+    box-shadow: none;
+  }
+
   .ant-segmented-thumb {
-    --ant-segmented-item-selected-bg: var(--#{$prefix}secondary-200);
+    --ant-segmented-item-selected-bg: var(--color-primary-pale);
 
     box-shadow: none;
-    border-radius: var(--#{$prefix}border-radius-lg);
+    border-radius: var(--primitive-border-radius-md);
   }
 
-  // // Uncomment to disable the animation
-  // .ant-segmented-thumb-motion-appear-active {
-  //   transition: none;
-  // }
+  .segmented-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--primitive-spacer-4);
+  }
+
+  .segmented-label-text {
+    display: inline-flex;
+    flex-direction: column;
+
+    &::after {
+      content: attr(data-text);
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+      font-weight: var(--font-weight-bold);
+      user-select: none;
+      pointer-events: none;
+    }
+  }
 }
