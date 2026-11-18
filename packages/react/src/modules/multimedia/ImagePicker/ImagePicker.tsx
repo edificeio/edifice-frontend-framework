@@ -22,7 +22,7 @@ export interface ImagePickerProps extends ComponentPropsWithRef<'input'> {
   /**
    * Pathe element select in WorkSpace
    */
-  libraryMedia: string;
+  libraryMedia?: string;
   /**
    * Element select in WorkSpace
    */
