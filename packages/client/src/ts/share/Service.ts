@@ -381,10 +381,15 @@ export class ShareService {
     const shares = [...rights];
     if (!currentUser) return shares;
 
+    // Match each segment exactly: a substring match would also pick up rights
+    // of another user whose id starts with the current user id.
     const myRights = resourceRights
-      .filter((right) => right.includes(`user:${currentUser.userId}`))
-      .map((right) => right.split(':')[2])
-      .filter((right) => !!right);
+      .map((right) => right.split(':'))
+      .filter(
+        ([type, id, action]) =>
+          type === 'user' && id === currentUser.userId && !!action,
+      )
+      .map(([, , action]) => action);
 
     if (myRights.length > 0) {
       const actions: ShareRightAction[] = myRights.map(

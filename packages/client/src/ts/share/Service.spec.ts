@@ -59,6 +59,26 @@ describe('ShareService', () => {
       expect(result).toEqual([otherRight]);
     });
 
+    it('does not pick up rights of a user whose id starts with the current user id', () => {
+      const result = service.addCurrentUserRights(
+        [otherRight],
+        [`user:${currentUser.userId}-suffix:manage`],
+        currentUser,
+      );
+
+      expect(result).toEqual([otherRight]);
+    });
+
+    it('does not pick up group rights sharing the current user id', () => {
+      const result = service.addCurrentUserRights(
+        [otherRight],
+        [`group:${currentUser.userId}:manage`],
+        currentUser,
+      );
+
+      expect(result).toEqual([otherRight]);
+    });
+
     it('returns the rights unchanged when the user has no own rights', () => {
       const result = service.addCurrentUserRights(
         [otherRight],
