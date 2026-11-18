@@ -362,6 +362,55 @@ export class ShareService {
     return payload;
   }
 
+  /**
+   * Append the current user's own rights to the list of rights to save.
+   * The "visible" API does not return the current user's rights, so they are
+   * rebuilt from the resource rights (format `user:<userId>:<action>`) to
+   * avoid losing them when saving.
+   *
+   * @param rights rights currently displayed in the share modal
+   * @param resourceRights raw rights of the resource (e.g. `user:123:read`)
+   * @param currentUser the connected user, if any
+   * @returns a new array with the current user's rights appended when found
+   */
+  addCurrentUserRights(
+    rights: ShareRight[],
+    resourceRights: string[],
+    currentUser?: { userId: string; username: string },
+  ): ShareRight[] {
+    const shares = [...rights];
+    if (!currentUser) return shares;
+
+    // Match each segment exactly: a substring match would also pick up rights
+    // of another user whose id starts with the current user id.
+    const myRights = resourceRights
+      .map((right) => right.split(':'))
+      .filter(
+        ([type, id, action]) =>
+          type === 'user' && id === currentUser.userId && !!action,
+      )
+      .map(([, , action]) => action);
+
+    if (myRights.length > 0) {
+      const actions: ShareRightAction[] = myRights.map(
+        (right) =>
+          ({
+            displayName: right,
+            id: right,
+          }) as ShareRightAction,
+      );
+      shares.push({
+        actions,
+        avatarUrl: '',
+        directoryUrl: '',
+        displayName: currentUser.username,
+        id: currentUser.userId,
+        type: 'user',
+      });
+    }
+    return shares;
+  }
+
   async saveRights(
     app: string,
     resourceId: string,
