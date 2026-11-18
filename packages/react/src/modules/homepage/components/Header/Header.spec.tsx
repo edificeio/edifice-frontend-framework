@@ -66,6 +66,7 @@ function setup({
   onNotificationsClick,
   bookmarkedApps = [],
   isDesktop = true,
+  isTablet = true,
 }: {
   messages?: number;
   carbonio?: { hasCarbonioWorkflow: boolean; unreadCount: number };
@@ -76,6 +77,7 @@ function setup({
   onNotificationsClick?: () => void;
   bookmarkedApps?: unknown[];
   isDesktop?: boolean;
+  isTablet?: boolean;
 } = {}) {
   useConversation.mockReturnValue({ messages });
   useUser.mockReturnValue({
@@ -84,7 +86,7 @@ function setup({
   });
   useCarbonioUnread.mockReturnValue(carbonio);
   useEdificeTheme.mockReturnValue({ theme });
-  useBreakpoint.mockReturnValue({ lg: isDesktop });
+  useBreakpoint.mockReturnValue({ md: isTablet, lg: isDesktop });
   useHeader.mockReturnValue({
     userAvatar: '/avatar.png',
     userName: 'Pascal',
@@ -153,11 +155,12 @@ describe('homepage Header', () => {
     );
   });
 
-  it('inherits the ambient theme by default', () => {
+  it('renders with its own edifice2d theme by default', () => {
     setup();
 
-    expect(document.querySelector('header')).not.toHaveAttribute(
+    expect(document.querySelector('header')).toHaveAttribute(
       'data-product',
+      'edifice2d',
     );
   });
 
@@ -249,6 +252,23 @@ describe('homepage Header', () => {
       await user.click(screen.getAllByRole('button')[0]);
 
       expect(screen.getByTestId('header-home-button')).toBeInTheDocument();
+    });
+  });
+
+  describe('user avatar', () => {
+    const getAvatar = () =>
+      screen.getByTestId('header-user-profile-button').querySelector('.avatar');
+
+    it('is the small avatar from the tablet breakpoint', () => {
+      setup({ isTablet: true });
+
+      expect(getAvatar()).toHaveClass('avatar-sm');
+    });
+
+    it('is the extra small avatar below the tablet breakpoint', () => {
+      setup({ isDesktop: false, isTablet: false });
+
+      expect(getAvatar()).toHaveClass('avatar-xs');
     });
   });
 
