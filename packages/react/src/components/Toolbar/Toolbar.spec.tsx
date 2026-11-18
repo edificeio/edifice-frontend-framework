@@ -25,7 +25,11 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-ghost-tertiary');
+    expect(button).toHaveClass(
+      'btn-beta',
+      'btn-beta--ghost',
+      'btn-beta-tertiary',
+    );
   });
 
   it('renders an icon item, overridable color/variant', () => {
@@ -38,7 +42,7 @@ describe('Toolbar', () => {
         props: {
           'icon': <span>icon</span>,
           'aria-label': 'delete',
-          'color': 'danger',
+          'color': 'destructive',
           'variant': 'outline',
         },
       },
@@ -46,11 +50,14 @@ describe('Toolbar', () => {
     render(<Toolbar items={items} />);
 
     expect(screen.getByRole('button', { name: 'delete' })).toHaveClass(
-      'btn-outline-danger',
+      'btn-beta',
+      'btn-beta--outline',
+      'btn-beta-destructive',
+      'btn-beta--icon-only',
     );
   });
 
-  it('renders a primary item as filled/primary, ignoring color/variant overrides', () => {
+  it('renders a primary item as filled/default, ignoring color/variant overrides', () => {
     const items: ToolbarItem[] = [
       {
         type: 'primary',
@@ -60,9 +67,9 @@ describe('Toolbar', () => {
     ];
     render(<Toolbar items={items} />);
 
-    expect(screen.getByRole('button', { name: 'Submit' })).toHaveClass(
-      'btn-filled btn-primary',
-    );
+    const button = screen.getByRole('button', { name: 'Submit' });
+    expect(button).toHaveClass('btn-beta', 'btn-beta-default');
+    expect(button).not.toHaveClass('btn-beta--outline', 'btn-beta-secondary');
   });
 
   it('skips rendering items with visibility "hide"', () => {
@@ -172,7 +179,7 @@ describe('Toolbar', () => {
     expect(button).not.toHaveClass('focus');
   });
 
-  it('hides the button label and forces size sm on mobile when shouldHideLabelsOnMobile is set', () => {
+  it('hides the button label on mobile and keeps size md when shouldHideLabelsOnMobile is set', () => {
     const items: ToolbarItem[] = [
       { type: 'button', name: 'save', props: { children: 'Save' } },
     ];
@@ -180,7 +187,7 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).not.toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-sm');
+    expect(button).not.toHaveClass('btn-beta--small');
   });
 
   it('shows the button label with size md when not hiding labels on mobile', () => {
@@ -191,29 +198,29 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-md');
+    expect(button).not.toHaveClass('btn-beta--small');
   });
 
   it('respects an explicit custom size', () => {
     const items: ToolbarItem[] = [
-      { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'sm' } },
     ];
     render(<Toolbar items={items} />);
 
-    const button = screen.getByRole('button', { name: 'save' });
-    expect(button).toHaveClass('btn-lg');
-    expect(button).not.toHaveClass('btn-sm');
+    expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+      'btn-beta--small',
+    );
   });
 
   it('lets an explicit custom size take precedence over hideLabel', () => {
     const items: ToolbarItem[] = [
-      { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'md' } },
     ];
     render(<Toolbar items={items} shouldHideLabelsOnMobile />);
 
-    const button = screen.getByRole('button', { name: 'save' });
-    expect(button).toHaveClass('btn-lg');
-    expect(button).not.toHaveClass('btn-sm');
+    expect(screen.getByRole('button', { name: 'save' })).not.toHaveClass(
+      'btn-beta--small',
+    );
   });
 
   it('forwards ariaControls and a ref to the root element', () => {

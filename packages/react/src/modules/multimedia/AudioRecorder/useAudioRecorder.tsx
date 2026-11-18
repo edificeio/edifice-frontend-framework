@@ -496,7 +496,7 @@ export default function useAudioRecorder(
       visibility: recordState === 'RECORDING' ? 'hide' : 'show',
       props: {
         leftIcon: <IconRecord />,
-        color: 'danger',
+        color: 'destructive',
         disabled: isRecordDisabled,
         onClick: handleRecord,
         children: renderLabel(recordText, isRecordDisabled),
@@ -509,7 +509,7 @@ export default function useAudioRecorder(
       visibility: recordState === 'RECORDING' ? 'show' : 'hide',
       props: {
         leftIcon: <IconRecordPause />,
-        color: 'danger',
+        color: 'destructive',
         disabled: isRecordPauseDisabled,
         onClick: handleRecordPause,
         children: renderLabel(

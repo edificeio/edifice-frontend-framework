@@ -12,9 +12,16 @@ import clsx from 'clsx';
 
 import { useBreakpoint } from '../../hooks';
 import { mergeRefs } from '../../utilities';
-import { Button, ButtonProps, IconButton, IconButtonProps } from '../Button';
+import { ButtonBeta as Button, ButtonBetaProps } from '../ButtonBeta';
 import { Dropdown, DropdownProps } from '../Dropdown';
 import { Placement, Tooltip } from '../Tooltip';
+
+export interface ToolbarIconButtonProps extends Omit<
+  ButtonBetaProps,
+  'children' | 'leftIcon' | 'rightIcon'
+> {
+  icon?: ReactNode;
+}
 
 export interface ToolbarCommonItem {
   /** Object type */
@@ -38,14 +45,14 @@ export interface ToolbarButtonItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'button';
   name: string;
-  props: ButtonProps;
+  props: ButtonBetaProps;
 }
 
 export interface ToolbarIconButtonItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'icon';
   name: string;
-  props: IconButtonProps;
+  props: ToolbarIconButtonProps;
 }
 
 export interface ToolbarDropdownItem extends ToolbarCommonItem {
@@ -57,7 +64,7 @@ export interface ToolbarDropdownItem extends ToolbarCommonItem {
 export interface ToolbarPrimaryItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'primary';
-  props: ButtonProps;
+  props: ButtonBetaProps;
 }
 
 export interface ToolbarDividerItem extends ToolbarCommonItem {
@@ -259,33 +266,35 @@ export const Toolbar = forwardRef(
                     {...item.props}
                     children={!hideLabel && item.props.children}
                     aria-label={item.name}
-                    key={item.name ?? index}
                     color={item.props.color || 'tertiary'}
                     variant="ghost"
-                    size={item.props.size || (hideLabel ? 'sm' : 'md')}
+                    size={item.props.size || 'md'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
                 </Tooltip>
               );
 
-            case 'icon':
+            case 'icon': {
+              const { icon, ...buttonProps } = item.props;
               return (
                 <Tooltip
                   key={item.name ?? index}
                   message={renderTooltipMessage(item)}
                   placement={renderTooltipPosition(item)}
                 >
-                  <IconButton
-                    {...item.props}
-                    key={item.name ?? index}
-                    color={item.props.color ? item.props.color : 'tertiary'}
-                    variant={item.props.variant ? item.props.variant : 'ghost'}
+                  <Button
+                    {...buttonProps}
+                    leftIcon={icon}
+                    color={buttonProps.color || 'tertiary'}
+                    variant={buttonProps.variant || 'ghost'}
+                    size={buttonProps.size || 'md'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
                 </Tooltip>
               );
+            }
 
             case 'dropdown':
               return (
@@ -309,7 +318,7 @@ export const Toolbar = forwardRef(
                   <Button
                     {...item.props}
                     variant="filled"
-                    color="primary"
+                    color="default"
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />

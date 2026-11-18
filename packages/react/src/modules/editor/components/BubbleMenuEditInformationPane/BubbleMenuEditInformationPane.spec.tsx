@@ -208,8 +208,7 @@ describe('BubbleMenuEditInformationPane', () => {
     render(<BubbleMenuEditInformationPane editor={editor} editable={true} />);
 
     const deleteButton = screen.getByRole('button', { name: 'delete' });
-    expect(deleteButton).toHaveClass('btn-sm');
-    expect(deleteButton).not.toHaveClass('btn-lg');
+    expect(deleteButton).toHaveClass('btn-beta--small');
   });
 
   it('removes the information-pane node when clicking delete', async () => {
