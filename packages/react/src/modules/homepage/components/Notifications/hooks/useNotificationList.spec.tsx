@@ -14,6 +14,12 @@ const {
   useSaveTimelinePreference: vi.fn(),
 }));
 
+const { toastError } = vi.hoisted(() => ({ toastError: vi.fn() }));
+
+vi.mock('../../../../../hooks/useToast', () => ({
+  useToast: () => ({ error: toastError }),
+}));
+
 vi.mock('../services/queries/notification', () => ({
   useNotifications,
   useNotificationTypes,
@@ -228,6 +234,38 @@ describe('useNotificationListContainer', () => {
       const { result } = setup({ types: ['BLOG'] });
 
       expect(result.current.error).toBeNull();
+    });
+  });
+
+  describe('error notification', () => {
+    beforeEach(() => toastError.mockClear());
+
+    it('notifies the user when the notifications fail to load', () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      setup({ types: ['BLOG'], notificationsError: new Error('boom') });
+
+      expect(toastError).toHaveBeenCalledTimes(1);
+      expect(toastError).toHaveBeenCalledWith(
+        'Erreur lors du chargement des notifications',
+      );
+    });
+
+    it('does not notify again when re-rendering with the same error', () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const { rerender } = setup({
+        types: ['BLOG'],
+        notificationsError: new Error('boom'),
+      });
+
+      rerender();
+
+      expect(toastError).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not notify without any error', () => {
+      setup({ types: ['BLOG'] });
+
+      expect(toastError).not.toHaveBeenCalled();
     });
   });
 });

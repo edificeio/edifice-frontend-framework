@@ -10,6 +10,8 @@ export const createNotificationService = (baseURL: string) => ({
   /**
    * Get notifications.
    * @returns list of notification objects
+   * @throws when the platform answers with a non-`ok` status, so that the
+   * query layer exposes the failure instead of an empty notification list.
    */
   getNotifications(types: string[], page: number) {
     const searchParams = new URLSearchParams({
@@ -29,8 +31,9 @@ export const createNotificationService = (baseURL: string) => ({
       }>(`${baseURL}/timeline/lastNotifications?${searchParams.toString()}`)
       .then((response): Array<NotificationModel> => {
         if (response.status !== 'ok') {
-          //TODO(ENABLING-1153): notify error
-          return [];
+          throw new Error(
+            `Failed to load notifications (status: ${response.status})`,
+          );
         }
 
         if (response.number && response.results) {
