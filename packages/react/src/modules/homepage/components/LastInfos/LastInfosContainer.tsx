@@ -1,4 +1,3 @@
-import { TextSkeleton } from '../../../../components';
 import { LastInfosProps } from './LastInfos';
 import { LastInfosList } from './LastInfosList';
 import { useLastInfos } from './useLastInfos';
@@ -7,11 +6,7 @@ export function LastInfosContainer() {
   const { infos, isLoading, error } = useLastInfos();
 
   return isLoading ? (
-    <>
-      <TextSkeleton size="lg" />
-      <TextSkeleton size="lg" />
-      <TextSkeleton size="lg" />
-    </>
+    <LastInfosList infos={[]} isLoading />
   ) : error ? (
     error.message
   ) : (
