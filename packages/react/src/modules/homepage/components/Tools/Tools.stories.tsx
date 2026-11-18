@@ -82,3 +82,53 @@ export const OfficeOnly: Story = {
     },
   },
 };
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "État de chargement : l'en-tête et les outils sont remplacés par des skeletons.",
+      },
+    },
+  },
+};
+
+export const SkeletonAboveTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack">
+      <Tools isLoading />
+      <Tools />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state stacked on top of the loaded card. Any difference in height between the two is the layout shift the user would see when the tools arrive.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay">
+      <Tools />
+      <div className="skeleton-overlay-top">
+        <Tools isLoading />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state superimposed on the loaded card, at partial opacity. Each grey circle should sit over the tool it replaces; the title width follows translated text and is representative.',
+      },
+    },
+  },
+};
