@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { render, screen } from '~/setup';
 import Tabs from './components/Tabs';
 import { TabsItemProps } from './components/TabsItem';
@@ -73,5 +74,71 @@ describe('Tabs', () => {
 
     await user.keyboard('{Home}');
     expect(getTab('One')).toHaveAttribute('aria-selected', 'true');
+  });
+
+  describe('driven by the parent (activeId)', () => {
+    it('displays the tab given by activeId over defaultId', () => {
+      render(<Tabs defaultId="one" activeId="three" items={items} />);
+
+      expect(getTab('Three')).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByText('Content three')).toBeInTheDocument();
+    });
+
+    it('switches tab when activeId changes and calls onChange', () => {
+      const onChange = vi.fn();
+      const { rerender } = render(
+        <Tabs defaultId="one" items={items} onChange={onChange} />,
+      );
+
+      rerender(
+        <Tabs
+          defaultId="one"
+          activeId="two"
+          items={items}
+          onChange={onChange}
+        />,
+      );
+
+      expect(getTab('Two')).toHaveAttribute('aria-selected', 'true');
+      expect(onChange).toHaveBeenLastCalledWith(
+        expect.objectContaining({ id: 'two' }),
+      );
+    });
+
+    it('ignores an activeId that matches no tab', () => {
+      const { rerender } = render(<Tabs defaultId="one" items={items} />);
+
+      rerender(<Tabs defaultId="one" activeId="ghost" items={items} />);
+
+      expect(getTab('One')).toHaveAttribute('aria-selected', 'true');
+      expect(screen.getByText('Content one')).toBeInTheDocument();
+    });
+
+    it('selects the same tab again after a user interaction, when kept in sync', async () => {
+      const Parent = () => {
+        const [activeId, setActiveId] = useState<string>();
+        return (
+          <>
+            <button onClick={() => setActiveId('three')}>drive-three</button>
+            <Tabs
+              defaultId="one"
+              activeId={activeId}
+              items={items}
+              onChange={(tab) => setActiveId(tab.id)}
+            />
+          </>
+        );
+      };
+      const { user } = render(<Parent />);
+
+      await user.click(screen.getByRole('button', { name: 'drive-three' }));
+      expect(getTab('Three')).toHaveAttribute('aria-selected', 'true');
+
+      await user.click(getTab('One'));
+      expect(getTab('One')).toHaveAttribute('aria-selected', 'true');
+
+      await user.click(screen.getByRole('button', { name: 'drive-three' }));
+      expect(getTab('Three')).toHaveAttribute('aria-selected', 'true');
+    });
   });
 });
