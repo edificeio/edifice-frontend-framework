@@ -21,4 +21,38 @@
       line-height: var(--primitive-font-lineheight-2xs);
     }
   }
+
+  // ---- Skeleton ----
+
+  &__header-skeleton {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__apps-skeleton {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--primitive-spacer-8);
+    column-gap: var(--primitive-spacer-16);
+  }
+
+  &__title-skeleton {
+    width: 10rem;
+    height: 1lh;
+  }
+
+  &__button-skeleton {
+    flex-shrink: 0;
+    width: 13rem;
+    height: calc(2 * var(--primitive-spacer-4) + var(--font-button-lineheight));
+  }
+
+  &-content &__app-skeleton {
+    width: var(--primitive-numbers-40);
+    height: var(--primitive-numbers-40);
+    border-radius: var(--primitive-border-radius-md);
+  }
 }
