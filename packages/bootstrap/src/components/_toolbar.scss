@@ -30,4 +30,13 @@
     outline: 2px solid var(--#{$prefix}secondary);
     outline-offset: -1px;
   }
+
+  // Active state of a toggle item (e.g. a text mark applied in the editor).
+  .btn-beta {
+    &[data-state='selected'],
+    &.is-selected {
+      --btn-beta-bg: var(--color-buttons-secondary-pale);
+      --btn-beta-bg-hover: var(--color-buttons-secondary-pale);
+    }
+  }
 }
