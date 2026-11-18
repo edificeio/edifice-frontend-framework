@@ -1,0 +1,124 @@
+@use '../../themes/configs/breakpoints' as medias;
+
+// Homepage card of the 3018 harassment helpline.
+.stop-3018 {
+  &__content {
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-16);
+    width: 100%;
+    padding: 0 var(--primitive-spacer-8) var(--primitive-spacer-16);
+  }
+
+  &__logo {
+    width: 100%;
+    aspect-ratio: 960 / 272;
+    object-fit: contain;
+  }
+
+  &__text {
+    width: 100%;
+    margin: 0;
+    color: var(--primitive-text-color-default);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+    text-align: center;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--primitive-spacer-8);
+  }
+}
+
+// Modal telling more about harassment and the 3018.
+.stop-3018-modal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--primitive-spacer-8);
+  padding: var(--primitive-spacer-8);
+
+  @include medias.respond-below('tablet') {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  &__message {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--primitive-spacer-24);
+    padding: var(--primitive-spacer-16);
+    color: var(--primitive-text-color-default);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    line-height: var(--primitive-font-lineheight-xs);
+    background: var(--primitive-yellow-100);
+    border: 1px solid var(--primitive-yellow-300);
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  &__text {
+    margin: 0;
+  }
+
+  &__call-to-action {
+    margin: 0;
+    color: var(--primitive-blue-900);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+  }
+
+  &__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--primitive-spacer-24);
+    padding: var(--primitive-spacer-16);
+  }
+
+  &__links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-12);
+    width: 100%;
+  }
+
+  &__app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--primitive-spacer-12);
+    color: var(--primitive-text-color-default);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-small);
+    line-height: var(--primitive-font-lineheight-2xs);
+    text-align: center;
+  }
+
+  &__app-images {
+    display: flex;
+    gap: var(--primitive-spacer-12);
+  }
+
+  &__app-link {
+    display: inline-flex;
+    border-radius: var(--primitive-border-radius-sm);
+  }
+
+  &__caption {
+    margin: 0;
+    color: var(--primitive-text-color-subtext);
+    font-size: var(--primitive-font-size-caption);
+    line-height: var(--primitive-font-lineheight-3xs);
+  }
+}
