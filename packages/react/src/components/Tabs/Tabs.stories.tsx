@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { IconLandscape } from '../../modules/icons/components';
 import { Badge } from '../Badge';
+import { Button } from '../Button';
 import Tabs from './components/Tabs';
 import TabsItem, { TabsItemProps } from './components/TabsItem';
 import TabsPanel from './components/TabsPanel';
@@ -79,6 +81,43 @@ export const Base: Story = {
   },
   args: {
     items: data,
+  },
+};
+
+export const DrivenByParent: Story = {
+  render: (args) => {
+    const [activeId, setActiveId] = useState<string>();
+    return (
+      <>
+        <div className="d-flex gap-8 mb-16">
+          {data.map((item) => (
+            <Button
+              key={item.id}
+              color="tertiary"
+              onClick={() => setActiveId(item.id)}
+            >
+              {`Show panel ${item.id}`}
+            </Button>
+          ))}
+        </div>
+        <Tabs
+          {...args}
+          activeId={activeId}
+          onChange={(tab) => setActiveId(tab.id)}
+        />
+      </>
+    );
+  },
+  args: {
+    items: data,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The displayed tab can be driven by the parent through `activeId`. Keep it in sync through `onChange` so that selecting the same tab again after a user interaction still takes effect.',
+      },
+    },
   },
 };
 

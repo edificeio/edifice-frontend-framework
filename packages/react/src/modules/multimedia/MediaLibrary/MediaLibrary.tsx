@@ -368,6 +368,9 @@ const MediaLibrary = forwardRef(
       return 0 > index || index >= tabs.length ? 0 : index;
     }, [tabs, defaultTabId]);
 
+    /* Id of the tab to display, when driven by this component (see setVisibleTab). */
+    const [activeTabId, setActiveTabId] = useState<string | undefined>();
+
     // Stateful contextual values
     const [resultCounter, setResultCounter] = useState<number | undefined>();
     const [result, setResult] = useState<MediaLibraryResult | undefined>();
@@ -379,29 +382,38 @@ const MediaLibrary = forwardRef(
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function setVisibleTab(tab: AvailableTab) {
-      const index = tabs.findIndex((t) => t.id === tab);
-      if (index < 0) throw 'tab.not.visible';
-      // TODO(ENABLING-1156): améliorer le composant Tabs pour pouvoir le piloter depuis le parent.
-      throw 'not.implemented.yet';
+      // Tab ids may differ from their key (e.g. "video-embedder" uses "iframe").
+      const tabId = availableTabs[tab]?.id;
+      if (!tabs.some((t) => t.id === tabId)) {
+        console.warn(
+          `[MediaLibrary] Tab "${tab}" is not available for type "${type}", ignored.`,
+        );
+        return;
+      }
+      setActiveTabId(tabId);
     }
 
     function switchType(type: MediaLibraryType) {
       linkTabProps.current = undefined;
       setDefaultTabId(undefined);
+      setActiveTabId(undefined);
       setType(type);
     }
 
     // --------------- Imperative functions
     const show = (type: MediaLibraryType) => {
+      setActiveTabId(undefined);
       setType(type);
     };
 
     const hide = () => {
+      setActiveTabId(undefined);
       setType(null);
     };
 
     const showLink = (props: InternalLinkTabProps | ExternalLinkTabProps) => {
       linkTabProps.current = props;
+      setActiveTabId(undefined);
 
       if (!('resourceId' in props || 'appPrefix' in props)) {
         setDefaultTabId('external-link');
@@ -428,6 +440,7 @@ const MediaLibrary = forwardRef(
       setResult(undefined);
       setResultCounter(undefined);
       setDefaultTabId(undefined);
+      setActiveTabId(undefined);
       setPreSuccess(undefined);
       setDeletionsOnCancel([]);
     };
@@ -435,6 +448,8 @@ const MediaLibrary = forwardRef(
     const handleTabChange = (tab: TabsItemProps) => {
       onTabChange?.(tab, deletionsOnCancel);
       resetState();
+      // Mirror the displayed tab, so that setVisibleTab always takes effect.
+      setActiveTabId(tab.id);
     };
 
     const handleOnSuccess = useCallback(() => {
@@ -511,6 +526,7 @@ const MediaLibrary = forwardRef(
             <Tabs
               items={tabs}
               defaultId={tabs[defaultTabIdx].id}
+              activeId={activeTabId}
               onChange={handleTabChange}
             >
               {(currentItem) => (

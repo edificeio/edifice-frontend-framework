@@ -3,12 +3,32 @@ import { TabsItemProps } from '../components/TabsItem';
 
 interface UseTabsProps {
   defaultId?: string;
+  activeId?: string;
   items: TabsItemProps[];
   onChange?: (tab: TabsItemProps) => void;
 }
 
-export const useTabs = ({ defaultId, items, onChange }: UseTabsProps) => {
-  const [activeTab, setActiveTab] = useState<string>(defaultId || '');
+export const useTabs = ({
+  defaultId,
+  activeId,
+  items,
+  onChange,
+}: UseTabsProps) => {
+  const isKnownTab = (id?: string): id is string =>
+    !!id && items.some((item) => item.id === id);
+
+  const [activeTab, setActiveTab] = useState<string>(
+    isKnownTab(activeId) ? activeId : defaultId || '',
+  );
+
+  // Follow the tab selected by the parent, whenever it changes.
+  // Adjusting state during render avoids painting the previous tab first.
+  // Unknown ids are ignored, so the current tab stays displayed.
+  const [prevActiveId, setPrevActiveId] = useState(activeId);
+  if (activeId !== prevActiveId) {
+    setPrevActiveId(activeId);
+    if (isKnownTab(activeId)) setActiveTab(activeId);
+  }
   const [tabUnderlineWidth, setTabUnderlineWidth] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
 
