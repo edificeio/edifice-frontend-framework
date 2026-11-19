@@ -27,22 +27,6 @@
     gap: var(--primitive-spacer-8);
   }
 
-  &__loading {
-    display: flex;
-    flex-direction: column;
-    align-self: stretch;
-    gap: var(--primitive-spacer-8);
-    min-height: 478px; // the card keeps its size while loading
-  }
-
-  &__loading-item {
-    display: block;
-    flex: 1 1 0;
-    min-height: 0;
-    width: 100%;
-    border-radius: var(--primitive-border-radius-lg);
-  }
-
   &__error {
     display: flex;
     flex-direction: column;
@@ -156,6 +140,39 @@
     font-size: var(--primitive-font-size-small);
     font-weight: var(--font-weight-regular);
     line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  // ---- Skeleton ----
+
+  &--skeleton {
+    --home-card-background: var(--primitive-grey-100);
+  }
+
+  &__header-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &--skeleton &__title-skeleton {
+    width: 16.6rem;
+    height: var(--primitive-font-lineheight-s);
+    border-radius: var(--primitive-border-radius-md);
+  }
+
+  &--skeleton &__button-skeleton {
+    width: calc(2rem + 2 * var(--primitive-spacer-8) + 2px);
+  }
+
+  &--skeleton &__content-skeleton {
+    height: 36.2rem;
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  & &__loading-skeleton {
+    height: 36.2rem;
+    border-radius: var(--primitive-border-radius-xl);
   }
 }
 
