@@ -119,7 +119,12 @@ describe('ScreenTime', () => {
       />,
     );
 
-    expect(screen.getByText("Aujourd'hui")).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBe(
+      screen.getByTestId('screen-time-loading'),
+    );
+    expect(
+      screen.getByTestId('screen-time-button-fullscreen'),
+    ).toBeInTheDocument();
   });
 
   it('renders the empty message and no durations in the empty status', () => {
@@ -154,5 +159,23 @@ describe('ScreenTime', () => {
 
     expect(screen.getByText('1h27min')).toBeInTheDocument();
     expect(screen.getByText('45min')).toBeInTheDocument();
+  });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <ScreenTime
+        status="default"
+        kids={[aliceKid]}
+        selectedKidId={aliceKid.id}
+        onKidChange={vi.fn()}
+        todayMinutes={30}
+        yesterdayMinutes={45}
+        onFullScreenClick={vi.fn()}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });
