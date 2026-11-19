@@ -35,4 +35,11 @@ describe('UsefulLinks', () => {
 
     expect(onEditClick).toHaveBeenCalledTimes(1);
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(<UsefulLinks links={links} onEditClick={vi.fn()} isLoading />);
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });
