@@ -52,12 +52,12 @@ const DropdownCheckboxItem = ({
     readOnly: true,
   };
 
-  const dropdownCheckboxItem = clsx('dropdown-item c-pointer', {
+  const dropdownCheckboxItem = clsx('dropdown-item', {
     focus: isFocused === id,
   });
 
   const content = (
-    <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
+    <div className="dropdown-item-content dropdown-item-content-control">
       {children}
       <Checkbox {...checkboxProps} />
     </div>

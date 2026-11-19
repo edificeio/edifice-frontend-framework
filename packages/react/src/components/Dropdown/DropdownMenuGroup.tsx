@@ -71,8 +71,13 @@ const DropdownMenuGroup = forwardRef(
     return (
       <DropdownContext.Provider value={groupContext}>
         {/* Items stay mounted when filtered out, so the group shows up again when the query changes. */}
-        <div ref={forwardRef} role="group" hidden={!hasMatches}>
-          <span className="small px-4">
+        <div
+          ref={forwardRef}
+          role="group"
+          hidden={!hasMatches}
+          data-testid="dropdown-menu-group"
+        >
+          <span className="dropdown-menu-group-label">
             <strong>{label}</strong>
           </span>
           {children}

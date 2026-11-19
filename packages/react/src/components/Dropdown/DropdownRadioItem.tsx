@@ -55,17 +55,14 @@ const DropdownRadioItem = ({
     readOnly: true,
   };
 
-  const dropdownRadioItem = clsx('dropdown-item c-pointer', {
+  const dropdownRadioItem = clsx('dropdown-item', {
     focus: isFocused === id,
   });
 
   const content = (
-    <div className="d-flex gap-8 align-items-center justify-content-between position-relative">
+    <div className="dropdown-item-content dropdown-item-content-control">
       {children}
-      <Radio
-        {...radioProps}
-        className="position-absolute start-0 end-0 top-0 bottom-0 opacity-0"
-      />
+      <Radio {...radioProps} className="dropdown-item-radio-input" />
     </div>
   );
 
