@@ -136,6 +136,22 @@ describe('Cantine', () => {
       />,
     );
 
-    expect(screen.getByTestId('cantine-loading')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBe(
+      screen.getByTestId('cantine-loading'),
+    );
+  });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <Cantine
+        status="default"
+        sections={sections}
+        handleFullScreenClick={vi.fn()}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

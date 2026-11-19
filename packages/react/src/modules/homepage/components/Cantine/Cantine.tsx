@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta as Button,
   Image,
-  TextSkeleton,
+  Skeleton,
+  VisuallyHidden,
 } from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
@@ -14,14 +15,38 @@ export interface CantineProps {
   status: CantineStatus;
   sections: CantineSection[];
   handleFullScreenClick: () => void;
+  isLoading?: boolean;
 }
 
 export default function Cantine({
   status,
   sections,
   handleFullScreenClick,
+  isLoading = false,
 }: CantineProps) {
   const { t } = useTranslation();
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="cantine cantine--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="cantine__header-skeleton">
+          <Skeleton className="cantine__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="cantine__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="cantine__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary" className="cantine">
@@ -40,10 +65,9 @@ export default function Cantine({
 
       <HomeCard.Content className="cantine__content">
         {status === 'loading' && (
-          <div className="cantine__loading" data-testid="cantine-loading">
-            <TextSkeleton size="lg" className="cantine__loading-item" />
-            <TextSkeleton size="lg" className="cantine__loading-item" />
-            <TextSkeleton size="lg" className="cantine__loading-item" />
+          <div role="status" aria-busy="true" data-testid="cantine-loading">
+            <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+            <Skeleton variant="block" className="cantine__loading-skeleton" />
           </div>
         )}
 

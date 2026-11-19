@@ -227,6 +227,54 @@ export const Chargement: Story = {
   },
 };
 
+const loadedProps: CantineProps = {
+  status: 'default',
+  sections: mockSections,
+  handleFullScreenClick: () => {},
+};
+
+const loadingProps: CantineProps = { ...loadedProps, isLoading: true };
+
+export const Skeleton: Story = {
+  render: () => <Cantine {...loadingProps} />,
+};
+
+export const SkeletonAboveTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack">
+      <Cantine {...loadingProps} />
+      <Cantine {...loadedProps} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card shown while the widget loads, stacked on top of the loaded card. Its content block is sized to this loaded card, so any difference in height is the layout shift the user would see.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay">
+      <Cantine {...loadedProps} />
+      <div className="skeleton-overlay-top">
+        <Cantine {...loadingProps} />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card superimposed on the loaded card, at partial opacity. The header and the content block should cover the loaded header and content exactly.',
+      },
+    },
+  },
+};
+
 export const Vide: Story = {
   render: (args) => <CantineWithModal {...args} />,
   args: {
