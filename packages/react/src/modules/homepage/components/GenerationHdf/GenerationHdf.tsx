@@ -1,7 +1,14 @@
 import illuGenerationHdf from '@edifice.io/bootstrap/dist/images/homepage/illu-generation-hdf.svg';
 import { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, FormControl, Image, Input } from '../../../../components';
+import {
+  ButtonBeta,
+  FormControl,
+  Image,
+  Input,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
 
@@ -20,6 +27,7 @@ export interface GenerationHdfProps {
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
   onEdit: () => void;
   wallets: GenerationHdfWallet[];
+  isLoading?: boolean;
 }
 
 export default function GenerationHdf({
@@ -30,11 +38,37 @@ export default function GenerationHdf({
   onSubmit,
   onEdit,
   wallets,
+  isLoading = false,
 }: GenerationHdfProps) {
   const { t } = useTranslation();
 
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="generation-hdf--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="generation-hdf__header-skeleton">
+          <Skeleton className="generation-hdf__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="generation-hdf__button-skeleton"
+          />
+        </div>
+        <Skeleton
+          variant="block"
+          className="generation-hdf__content-skeleton"
+        />
+      </HomeCard>
+    );
+  }
+
   const isAccount = status === 'account';
-  const isLoading = status === 'loading';
+  const isSubmitting = status === 'loading';
   const isError = status === 'error';
 
   return (
@@ -134,7 +168,7 @@ export default function GenerationHdf({
                 type="submit"
                 variant="outline"
                 color="default"
-                isLoading={isLoading}
+                isLoading={isSubmitting}
                 disabled={!cardNumber.trim()}
               >
                 {t('homepage.widget.generation-hdf.submit')}
