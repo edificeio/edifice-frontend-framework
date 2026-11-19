@@ -65,15 +65,6 @@ describe('Mediacentre', () => {
     expect(links[0]).toHaveAttribute('href', manyResources[0].href);
   });
 
-  it('renders the loading state', () => {
-    render(
-      <Mediacentre handleActionClick={vi.fn()} resources={[]} isLoading />,
-    );
-
-    expect(screen.getByTestId('mediacentre-loading')).toBeInTheDocument();
-    expect(screen.queryByTestId('mediacentre-empty')).not.toBeInTheDocument();
-  });
-
   it('renders the empty state when there is no favorite', () => {
     render(<Mediacentre handleActionClick={vi.fn()} resources={[]} />);
 
@@ -139,5 +130,18 @@ describe('Mediacentre', () => {
     expect(url.searchParams.get('q')).toBe('volcans');
     expect(url.searchParams.get('uai')).toBe('0012345A');
     expect(url.searchParams.get('r')).toBe('www');
+  });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <Mediacentre
+        handleActionClick={vi.fn()}
+        resources={mockResources}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });
