@@ -218,7 +218,7 @@ const Root = forwardRef<DropdownApi, DropdownProps>(
     );
 
     const dropdown = clsx('dropdown', {
-      'w-100': block,
+      'dropdown-block': block,
       'dropdown-nowrap': noWrap,
       overflow,
       'dropdown-searching': hasSearchInput,

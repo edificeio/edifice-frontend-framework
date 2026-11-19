@@ -48,12 +48,17 @@ const DropdownMenu = forwardRef(
     const { menuProps, visible } = useDropdownContext();
 
     const className = clsx(
-      { 'w-100': block, 'bg-white shadow rounded-4 p-8': !unstyled },
+      { 'dropdown-menu-block': block, 'dropdown-menu-panel': !unstyled },
       menuProps.className,
       restProps.className,
     );
 
-    const mergedProps = { ...menuProps, ...restProps, className };
+    const mergedProps = {
+      'data-testid': 'dropdown-menu',
+      ...menuProps,
+      ...restProps,
+      className,
+    };
 
     return visible ? (
       <div ref={forwardRef} {...mergedProps}>

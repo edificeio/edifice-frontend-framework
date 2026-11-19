@@ -1,15 +1,11 @@
-@use '../abstracts/' as *;
-
 .dropdown {
   width: min-content;
 
   &-item {
-    --#{$prefix}dropdown-item-border-radius: #{$border-radius};
-
     cursor: pointer;
     transition: all cubic-bezier(0.25, 0.46, 0.45, 0.94) 300ms;
-    border-radius: var(--#{$prefix}dropdown-item-border-radius);
-    padding: $spacer-8 $spacer-12;
+    border-radius: var(--primitive-border-radius-md);
+    padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
 
     svg {
       width: 2.2rem;
@@ -24,26 +20,59 @@
     &.focus,
     &:focus-visible {
       outline: none;
-      background-color: $gray-300;
+      background-color: var(--primitive-grey-200);
     }
 
     &.active,
     &:active {
-      color: $dropdown-link-active-color;
-      background-color: $dropdown-link-active-bg;
+      color: var(--primitive-grey-900);
+      background-color: var(--primitive-grey-200);
     }
 
     &[role='menuitemradio'] {
       cursor: pointer;
 
       &[aria-checked='true'] {
-        background-color: var(--#{$prefix}secondary-200);
+        background-color: var(--color-primary-pale);
 
-        &:hover {
-          box-shadow: inset 0 0 0 1px var(--edifice-secondary-300);
+        &:hover,
+        &.focus,
+        &:focus-visible {
+          background-color: var(--color-primary-pale);
+          box-shadow: inset 0 0 0 2px var(--color-primary-light);
+        }
+
+        &:active {
+          background-color: var(--color-primary-pale);
+          box-shadow: inset 0 0 0 2px var(--color-primary-default);
         }
       }
     }
+
+    &.dropdown-item-disabled {
+      color: var(--primitive-grey-700);
+    }
+
+    &-content {
+      display: flex;
+      align-items: center;
+      gap: var(--primitive-spacer-8);
+
+      &-control {
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .dropdown-item-radio-input {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+    }
+  }
+
+  &-block {
+    width: 100%;
   }
 
   &-nowrap {
@@ -56,28 +85,89 @@
     top: 100%;
     display: flex;
     flex-direction: column;
-    gap: $spacer-4;
+    gap: var(--primitive-spacer-4);
     list-style: none;
-    border-radius: $border-radius;
-    box-shadow: $box-shadow;
+    border-radius: var(--primitive-border-radius-md);
+    box-shadow: var(--primitive-box-shadow);
     z-index: 2000;
+
+    &-panel {
+      padding: var(--primitive-spacer-8);
+      background-color: var(--primitive-white);
+      border-radius: var(--primitive-border-radius-xl);
+      box-shadow: var(--primitive-box-shadow);
+    }
+
+    &-block {
+      width: 100%;
+    }
+
+    &-group-label {
+      padding: 0 var(--primitive-spacer-4);
+      font-size: var(--primitive-font-size-small);
+      line-height: 2.2rem;
+    }
+  }
+
+  &-separator {
+    padding: 0 var(--primitive-spacer-4);
+
+    hr {
+      margin: 0;
+    }
+  }
+
+  &-no-results {
+    margin: var(--primitive-spacer-8) 0;
+    color: var(--primitive-grey-700);
+    text-align: center;
+  }
+
+  &-virtualized-search {
+    padding-bottom: var(--primitive-spacer-8);
+
+    .dropdown-no-results {
+      margin: var(--primitive-spacer-8) 0 0;
+    }
+  }
+
+  &-select-all {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+    margin-bottom: var(--primitive-spacer-4);
+    border-bottom: 1px solid var(--primitive-grey-300);
+
+    &-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: var(--primitive-font-weight-bold);
+    }
   }
 
   &-toggle {
+    --dropdown-toggle-padding-y: calc(var(--primitive-spacer-12) - 1px);
+    --dropdown-toggle-padding-x: calc(var(--primitive-spacer-16) - 1px);
+
     white-space: nowrap;
     display: inline-flex;
-    gap: $spacer-8;
+    gap: var(--primitive-spacer-8);
     align-items: center;
-    padding: 12px 16px;
-    color: var(--#{$prefix}gray-800);
+    padding: var(--dropdown-toggle-padding-y) var(--dropdown-toggle-padding-x);
+    color: var(--primitive-grey-900);
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-xs);
     cursor: pointer;
-    background: transparent;
-    border: 1px solid var(--#{$prefix}gray-400);
-    border-radius: $border-radius;
-    line-height: 1.5;
-    transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-
-    @include background-color-to(var(--#{$prefix}gray-200));
+    background-color: transparent;
+    border: 1px solid var(--primitive-grey-300);
+    border-radius: var(--primitive-border-radius-lg);
+    transition:
+      background-color 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+      border-color 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     svg:not(.dropdown-toggle-caret) {
       width: 2.2rem;
@@ -94,119 +184,200 @@
 
     &-caret {
       margin-left: auto;
-      transition: transform 0.2s $default-easing;
+      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       transform: rotate(-180deg);
       width: 1.6rem;
       height: 1.6rem;
+    }
+
+    &:hover {
+      background-color: var(--primitive-grey-100);
     }
 
     &.focus,
     &:focus,
     &:focus-visible {
       outline: none;
-      border-color: var(--#{$prefix}secondary);
-    }
-
-    &.disabled,
-    &[disabled] {
-      color: var(--#{$prefix}gray-600);
-      background-color: var(--#{$prefix}gray-200);
-      border-color: var(--#{$prefix}gray-500);
+      border-color: var(--primitive-grey-700);
     }
 
     &.selected {
-      border-color: $dropdown-toggle-selected-border-color;
+      background-color: var(--color-primary-pale);
+      border-color: var(--color-primary-default);
 
       .dropdown-toggle-caret {
         transform: rotate(0);
       }
     }
 
-    &.ghost {
-      background-color: transparent;
-      border: 0;
+    &.disabled,
+    &[disabled] {
+      background-color: var(--primitive-grey-100);
+      border-color: var(--primitive-grey-300);
+      cursor: not-allowed;
 
-      &:hover {
-        background-color: $gray-300;
-      }
-
-      &.focus {
-        background-color: var(--#{$prefix}gray-200);
-        outline: 1px solid var(--#{$prefix}gray-400);
-        outline-offset: -1px;
-      }
-
-      &:focus-visible {
-        background-color: var(--#{$prefix}gray-200);
-        outline: 2px solid var(--#{$prefix}secondary);
-        outline-offset: -1px;
-      }
-
-      &.md {
-        line-height: 1.4;
-        padding: $spacer-8 $spacer-8;
-      }
-
-      &.selected {
-        background-color: $dropdown-toggle-selected-bg-color;
+      svg {
+        color: var(--primitive-grey-500);
       }
     }
 
-    @each $variant in $variants {
-      &.base-shade.#{$variant} {
-        color: var(--#{$prefix}#{$variant});
-        border-color: var(--#{$prefix}#{$variant});
+    &.ghost {
+      border-color: transparent;
+
+      &:hover {
+        background-color: var(--primitive-grey-200);
       }
 
-      &.#{$variant} {
-        background-color: var(--#{$prefix}white);
-        color: var(--#{$prefix}#{$variant}-800);
-        border-color: var(--#{$prefix}#{$variant}-800);
+      &.focus,
+      &:focus,
+      &:focus-visible {
+        background-color: var(--primitive-grey-100);
+        border-color: var(--primitive-grey-300);
+      }
 
-        &:hover,
-        &.selected {
-          background-color: var(--#{$prefix}#{$variant}-200);
-        }
+      &.selected {
+        background-color: var(--color-primary-pale);
+        border-color: transparent;
+      }
 
-        &.focus,
-        &:focus {
-          background-color: var(--#{$prefix}#{$variant}-200);
-          outline: none;
-        }
+      &.disabled,
+      &[disabled] {
+        background-color: transparent;
+        border-color: transparent;
+      }
+    }
 
-        &:focus-visible {
-          background-color: var(--#{$prefix}#{$variant}-200);
-          outline: 2px solid var(--#{$prefix}#{$variant});
-          outline-offset: 2px;
-        }
+    // Each variant only sets its colors: the rules below are shared.
+    &.primary {
+      --dropdown-variant: var(--color-primary-default);
+      --dropdown-variant-200: var(--color-primary-pale);
+      --dropdown-variant-800: var(--color-primary-dark);
+    }
+
+    &.secondary {
+      --dropdown-variant: var(--color-buttons-secondary-default);
+      --dropdown-variant-200: var(--color-buttons-secondary-pale);
+      --dropdown-variant-800: var(--color-buttons-secondary-dark);
+    }
+
+    &.success {
+      --dropdown-variant: var(--primitive-success-500);
+      --dropdown-variant-200: var(--primitive-success-200);
+      --dropdown-variant-800: var(--primitive-success-700);
+    }
+
+    &.danger {
+      --dropdown-variant: var(--primitive-danger-500);
+      --dropdown-variant-200: var(--primitive-danger-200);
+      --dropdown-variant-800: var(--primitive-danger-700);
+    }
+
+    &.warning {
+      --dropdown-variant: var(--primitive-warning-500);
+      --dropdown-variant-200: var(--primitive-warning-200);
+      --dropdown-variant-800: var(--primitive-warning-700);
+    }
+
+    &.info {
+      --dropdown-variant: var(--primitive-info-500);
+      --dropdown-variant-200: var(--primitive-info-200);
+      --dropdown-variant-800: var(--primitive-info-700);
+    }
+
+    &:is(.primary, .secondary, .success, .danger, .warning, .info) {
+      background-color: var(--primitive-white);
+      color: var(--dropdown-variant-800);
+      border-color: var(--dropdown-variant-800);
+
+      &.base-shade {
+        color: var(--dropdown-variant);
+        border-color: var(--dropdown-variant);
+      }
+
+      &:hover,
+      &.selected,
+      &.focus,
+      &:focus,
+      &:focus-visible {
+        background-color: var(--dropdown-variant-200);
+      }
+
+      &.focus,
+      &:focus {
+        outline: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--dropdown-variant);
+        outline-offset: 2px;
       }
     }
 
     &.sm {
-      padding: $spacer-4 $spacer-8;
-      font-size: 1.4rem;
-      border-radius: $input-border-radius-sm;
+      --dropdown-toggle-padding-y: calc(var(--primitive-spacer-4) - 1px);
+      --dropdown-toggle-padding-x: calc(var(--primitive-spacer-8) - 1px);
 
-      .dropdown-trigger-icon {
-        svg {
-          width: 16px;
-          height: 16px;
-        }
+      gap: var(--primitive-spacer-4);
+      font-size: var(--primitive-font-size-small);
+      line-height: var(--primitive-font-lineheight-2xs);
+
+      svg:not(.dropdown-toggle-caret) {
+        width: 2rem;
+        height: 2rem;
       }
     }
 
     &.md {
-      padding: $spacer-8 $spacer-12;
-      border-radius: $input-border-radius;
+      --dropdown-toggle-padding-y: calc(var(--primitive-spacer-8) - 1px);
+      --dropdown-toggle-padding-x: calc(var(--primitive-spacer-12) - 1px);
     }
 
     &.lg {
-      padding: $spacer-12 $spacer-16;
-      border-radius: $input-border-radius-lg;
+      --dropdown-toggle-padding-y: calc(var(--primitive-spacer-12) - 1px);
+      --dropdown-toggle-padding-x: calc(var(--primitive-spacer-16) - 1px);
+    }
+
+    &.ghost.md {
+      --dropdown-toggle-padding-x: calc(var(--primitive-spacer-8) - 1px);
+    }
+
+    &.dropdown-toggle-icon-only {
+      --dropdown-toggle-padding-x: var(--dropdown-toggle-padding-y);
+
+      gap: var(--primitive-spacer-4);
+    }
+
+    &.dropdown-toggle-pill {
+      border-radius: var(--primitive-border-radius-pill);
+    }
+
+    &.dropdown-toggle-block {
+      width: 100%;
+    }
+
+    // Covered by the search input while the menu is open: hidden but kept
+    // in the layout so it can take the focus back.
+    &.dropdown-toggle-hidden {
+      opacity: 0;
     }
   }
 
   &-search {
+    --dropdown-search-radius: var(--primitive-border-radius-lg);
+
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    .dropdown-search-bar {
+      height: 100%;
+      border-radius: var(--dropdown-search-radius);
+
+      .searchbar__input {
+        border-radius: var(--dropdown-search-radius);
+      }
+    }
+
     .input {
       height: 100%;
       padding-top: 0;
@@ -217,8 +388,12 @@
   &-searching {
     position: relative;
 
+    &:has(.dropdown-toggle-pill) .dropdown-search {
+      --dropdown-search-radius: var(--primitive-border-radius-pill);
+    }
+
     // The root is now the containing block of the menu: keep the menu at its natural width.
-    .dropdown-menu {
+    .dropdown-menu:not(.dropdown-menu-block) {
       width: max-content;
     }
   }
