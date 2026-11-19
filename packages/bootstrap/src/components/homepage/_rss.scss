@@ -122,14 +122,6 @@
     line-clamp: 3;
   }
 
-  &__skeleton-title {
-    width: 80%;
-  }
-
-  &__skeleton-date {
-    width: 40%;
-  }
-
   // ---- Empty, no articles and error states ----
   &__empty,
   &__state {
@@ -180,6 +172,39 @@
     font-size: var(--primitive-font-size-small);
     font-weight: var(--font-weight-regular);
     line-height: var(--primitive-font-lineheight-2xs);
+  }
+
+  // ---- Skeleton ----
+
+  &--skeleton {
+    --home-card-background: var(--primitive-grey-100);
+  }
+
+  &__header-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &--skeleton &__title-skeleton {
+    width: 16.6rem;
+    height: var(--primitive-font-lineheight-s);
+    border-radius: var(--primitive-border-radius-md);
+  }
+
+  &--skeleton &__button-skeleton {
+    width: calc(2rem + 2 * var(--primitive-spacer-8));
+  }
+
+  &--skeleton &__content-skeleton {
+    height: 53rem;
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  & &__loading-skeleton {
+    height: 49rem;
+    border-radius: var(--primitive-border-radius-xl);
   }
 }
 
