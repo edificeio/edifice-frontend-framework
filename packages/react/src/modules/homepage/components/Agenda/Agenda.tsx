@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyAgenda from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-agenda.svg';
-import { Flex } from '../../../../components';
+import { Flex, Skeleton, VisuallyHidden } from '../../../../components';
 import { useDate } from '../../../../hooks';
 import { IconExternalLink } from '../../../icons/components';
 import HomeCard from '../HomeCard/HomeCard';
@@ -13,6 +13,7 @@ export interface AgendaProps {
   events: CalendarEvent[];
   onEventClick?: (event: CalendarEvent) => void;
   onOpenAgendaClick?: () => void;
+  isLoading?: boolean;
 }
 
 interface AgendaDayGroup {
@@ -35,6 +36,7 @@ export const Agenda = ({
   events,
   onEventClick,
   onOpenAgendaClick = () => window.open('/calendar', '_self'),
+  isLoading = false,
 }: AgendaProps) => {
   const { t } = useTranslation();
   const { formatDate, dateIsSame } = useDate();
@@ -61,6 +63,28 @@ export const Agenda = ({
       return groups;
     }, []);
   }, [events, dateIsSame, formatDate]);
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="agenda agenda--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="agenda__header-skeleton">
+          <Skeleton className="agenda__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="agenda__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="agenda__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary">

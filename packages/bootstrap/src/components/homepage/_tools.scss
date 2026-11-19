@@ -20,6 +20,32 @@
     }
   }
 
+  // ---- Skeleton ----
+
+  &__header-skeleton {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__items-skeleton {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--primitive-spacer-12);
+  }
+
+  &__title-skeleton {
+    width: 10rem;
+    height: 1lh;
+  }
+
+  &-content &__item-skeleton {
+    display: inline-block;
+    width: var(--primitive-numbers-40);
+  }
+
   &-modal-form {
     display: flex;
     flex-direction: column;

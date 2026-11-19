@@ -1,18 +1,51 @@
 import illuQwant from '@edifice.io/bootstrap/dist/images/homepage/illu-qwant.png';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta as Button, Image, SearchBar } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Image,
+  SearchBar,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import SvgIconExternalLink from '../../../../modules/icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
 
 export interface QwantProps {
   handleActionClick: () => void;
   handleSearch: (query: string) => void;
+  isLoading?: boolean;
 }
 
-export default function Qwant({ handleActionClick, handleSearch }: QwantProps) {
+export default function Qwant({
+  handleActionClick,
+  handleSearch,
+  isLoading = false,
+}: QwantProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="qwant--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="qwant__header-skeleton">
+          <Skeleton className="qwant__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="qwant__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="qwant__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   const handleSubmit = () => {
     const trimmedQuery = query.trim();

@@ -94,3 +94,52 @@ export const MultiEtab: Story = {
     />
   ),
 };
+
+const loadedProps: UniversalisProps = {
+  handleActionClick: openUniversalis,
+  selectedSchool: mockSchools[0],
+};
+
+export const Skeleton: Story = {
+  render: () => (
+    <div style={{ maxWidth: 397 }}>
+      <Universalis {...loadedProps} isLoading />
+    </div>
+  ),
+};
+
+export const SkeletonAboveTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack" style={{ maxWidth: 397 }}>
+      <Universalis {...loadedProps} isLoading />
+      <Universalis {...loadedProps} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card shown while the widget loads, stacked on top of the loaded card. Its content block is sized to this loaded card, so any difference in height is the layout shift the user would see.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay" style={{ maxWidth: 397 }}>
+      <Universalis {...loadedProps} />
+      <div className="skeleton-overlay-top">
+        <Universalis {...loadedProps} isLoading />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card superimposed on the loaded card, at partial opacity. The header and the content block should cover the loaded header and content exactly.',
+      },
+    },
+  },
+};

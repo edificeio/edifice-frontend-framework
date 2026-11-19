@@ -36,4 +36,17 @@ describe('AlloRegion', () => {
     );
     expect(onNewRequestClick).toHaveBeenCalledOnce();
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <AlloRegion
+        onRequestsClick={vi.fn()}
+        onNewRequestClick={vi.fn()}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });

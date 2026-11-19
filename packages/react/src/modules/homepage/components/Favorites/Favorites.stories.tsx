@@ -166,3 +166,56 @@ export const Partial: Story = {
     },
   },
 };
+
+export const Loading: Story = {
+  args: {
+    apps: [],
+    isLoading: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "État de chargement : l'en-tête et les applications sont remplacés par des skeletons.",
+      },
+    },
+  },
+};
+
+const loadedApps = mockApps.slice(0, 6);
+
+export const SkeletonAboveTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack">
+      <Favorites apps={[]} isLoading />
+      <Favorites apps={loadedApps} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state stacked on top of the loaded card. Any difference in height between the two is the layout shift the user would see when the favorites arrive.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay">
+      <Favorites apps={loadedApps} />
+      <div className="skeleton-overlay-top">
+        <Favorites apps={[]} isLoading />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state superimposed on the loaded card, at partial opacity. Each grey block should sit over the content it replaces; the title and button widths follow translated text and are representative.',
+      },
+    },
+  },
+};

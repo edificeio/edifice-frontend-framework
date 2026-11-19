@@ -63,10 +63,6 @@
     font-weight: var(--font-weight-bold);
   }
 
-  &__day-skeleton {
-    width: 100%;
-  }
-
   &__empty {
     margin: 0;
     text-align: center;
@@ -81,6 +77,39 @@
     align-items: center;
     padding: var(--primitive-spacer-12);
     gap: var(--primitive-spacer-16);
+  }
+
+  // ---- Skeleton ----
+
+  &--skeleton {
+    --home-card-background: var(--primitive-grey-100);
+  }
+
+  &__header-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &--skeleton &__title-skeleton {
+    width: 16.6rem;
+    height: var(--primitive-font-lineheight-s);
+    border-radius: var(--primitive-border-radius-md);
+  }
+
+  &--skeleton &__button-skeleton {
+    width: calc(2rem + 2 * var(--primitive-spacer-8));
+  }
+
+  &--skeleton &__content-skeleton {
+    height: 15.9395rem;
+    border-radius: var(--primitive-border-radius-xl);
+  }
+
+  & &__loading-skeleton {
+    height: 9.4rem;
+    border-radius: var(--primitive-border-radius-xl);
   }
 }
 

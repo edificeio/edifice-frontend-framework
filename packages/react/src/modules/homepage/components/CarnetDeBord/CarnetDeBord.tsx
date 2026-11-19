@@ -1,13 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Skeleton } from '../../../../components';
+import { Skeleton, VisuallyHidden } from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import { TabsKids } from '../TabsKids';
-import {
-  CarnetDeBordCategoryIcon,
-  CarnetDeBordCategoryRow,
-} from './CarnetDeBordCategoryRow';
+import { CarnetDeBordCategoryRow } from './CarnetDeBordCategoryRow';
 import { CarnetDeBordError } from './CarnetDeBordError';
 import { CarnetDeBordModal } from './CarnetDeBordModal';
 import { getCategoryI18nKey } from './categoryConfig';
@@ -20,6 +17,7 @@ export interface CarnetDeBordProps {
   currentEleveIndex: number;
   onEleveChange: (index: number) => void;
   isRelative?: boolean;
+  isLoading?: boolean;
 }
 
 export function CarnetDeBord({
@@ -28,6 +26,7 @@ export function CarnetDeBord({
   currentEleveIndex,
   onEleveChange,
   isRelative = false,
+  isLoading = false,
 }: CarnetDeBordProps) {
   const { t } = useTranslation();
 
@@ -51,6 +50,31 @@ export function CarnetDeBord({
     [eleves],
   );
 
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="carnet-de-bord carnet-de-bord--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="carnet-de-bord__header-skeleton">
+          <Skeleton className="carnet-de-bord__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="carnet-de-bord__button-skeleton"
+          />
+        </div>
+        <Skeleton
+          variant="block"
+          className="carnet-de-bord__content-skeleton"
+        />
+      </HomeCard>
+    );
+  }
+
   const openModal = (title: ContentTitle) => {
     setActiveTab(title);
     setIsModalOpen(true);
@@ -65,21 +89,6 @@ export function CarnetDeBord({
     <div className="carnet-de-bord__categories">
       {contentTypes.map((contentType) => {
         const label = t(getCategoryI18nKey(contentType.title, 'label'));
-
-        if (!currentEleve) {
-          return (
-            <div key={contentType.title} className="carnet-de-bord__entry">
-              <CarnetDeBordCategoryIcon category={contentType.title} />
-              <span className="carnet-de-bord__entry-text">
-                <span className="carnet-de-bord__entry-label">{label}</span>
-                <Skeleton
-                  variant="text"
-                  className="carnet-de-bord-skeleton-subtext"
-                />
-              </span>
-            </div>
-          );
-        }
 
         const itemCount = getItemCount(contentType);
         const isEmpty = contentType.compact === false && itemCount === 0;
@@ -104,6 +113,21 @@ export function CarnetDeBord({
   );
 
   const renderContent = () => {
+    if (status === 'loading') {
+      return (
+        <div
+          role="status"
+          aria-busy="true"
+          data-testid="carnet-de-bord-loading"
+        >
+          <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+          <Skeleton
+            variant="block"
+            className="carnet-de-bord__loading-skeleton"
+          />
+        </div>
+      );
+    }
     if (status === 'error') return <CarnetDeBordError />;
     if (status === 'empty') {
       return (

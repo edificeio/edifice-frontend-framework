@@ -369,6 +369,7 @@ i18n.use(initReactI18next).init({
         //------------------ Notifications -------------------------
         'homepage.notifications-list.title': 'Notifications',
         'homepage.notifications-list.loading': 'Loading notifications',
+        'homepage.widget.loading': 'Loading',
         'homepage.notifications-list.close': 'Close notifications',
         'homepage.notifications-list.empty.description':
           'Suivez les nouveautés sur votre réseau social éducatif ici. Vous serez informé des nouveaux partages, des mises à jour de contenus, des nouveaux commentaires, et bien plus !',
@@ -725,6 +726,7 @@ i18n.use(initReactI18next).init({
     fr: {
       translation: {
         'homepage.notifications-list.loading': 'Chargement des notifications',
+        'homepage.widget.loading': 'Chargement en cours',
         'date.format.yesterday': 'Hier',
         'date.format.currentWeek': 'dddd',
         'date.format.currentYear': 'D MMM',

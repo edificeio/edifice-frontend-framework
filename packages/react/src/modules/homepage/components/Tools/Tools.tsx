@@ -8,7 +8,12 @@ import iconPowerpoint from '@edifice.io/bootstrap/dist/images/homepage/tools/pow
 import iconStudioAudio from '@edifice.io/bootstrap/dist/images/homepage/tools/studio-audio.svg';
 import iconStudioVideo from '@edifice.io/bootstrap/dist/images/homepage/tools/studio-video.svg';
 import iconWord from '@edifice.io/bootstrap/dist/images/homepage/tools/word.svg';
-import { Flex, Tooltip } from '../../../../components';
+import {
+  Flex,
+  Skeleton,
+  Tooltip,
+  VisuallyHidden,
+} from '../../../../components';
 import { CaptationAudio } from '../Captation/CaptationAudio/CaptationAudio';
 import { CaptationVideo } from '../Captation/CaptationVideo/CaptationVideo';
 import HomeCard from '../HomeCard/HomeCard';
@@ -49,12 +54,14 @@ export interface ToolsProps {
     tool: CaptationToolType,
     resource: WorkspaceElement,
   ) => void;
+  isLoading?: boolean;
 }
 
 export function Tools({
   tools = DEFAULT_TOOLS,
   onOfficeToolClick,
   onCaptationSaveSuccess,
+  isLoading = false,
 }: ToolsProps) {
   const { t } = useTranslation();
   const [openedCaptation, setOpenedCaptation] =
@@ -71,6 +78,33 @@ export function Tools({
   const handleCaptationClose = () => setOpenedCaptation(null);
 
   if (tools.length === 0) return null;
+
+  if (isLoading) {
+    return (
+      <HomeCard variant="secondary" role="status" aria-busy="true">
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="home-card-header tools__header-skeleton">
+          <div className="home-card-header-title">
+            <Skeleton className="tools__title-skeleton" />
+          </div>
+        </div>
+        <HomeCard.Content>
+          <div className="tools-content">
+            <div className="tools__items-skeleton">
+              {/* Each tool sits in the Tooltip's wrapper, whose line box adds
+                  room under the icon: an inline block in a plain div takes the
+                  same height. */}
+              {tools.map((tool) => (
+                <div key={tool}>
+                  <Skeleton variant="circle" className="tools__item-skeleton" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </HomeCard.Content>
+      </HomeCard>
+    );
+  }
 
   return (
     <>

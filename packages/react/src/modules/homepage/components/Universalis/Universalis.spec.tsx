@@ -113,4 +113,17 @@ describe('Universalis', () => {
     expect(screen.getByRole('searchbox')).toBeEnabled();
     expect(screen.getByRole('button', { name: 'Search' })).toBeEnabled();
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <Universalis
+        handleActionClick={vi.fn()}
+        selectedSchool={mockSchool1}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });

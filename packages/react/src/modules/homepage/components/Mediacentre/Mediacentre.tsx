@@ -1,7 +1,7 @@
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite-mediacentre.svg';
 import illuError from '@edifice.io/bootstrap/dist/images/homepage/illu-error-mediacentre.svg';
 import { useTranslation } from 'react-i18next';
-import { LinkPill, TextSkeleton } from '../../../../components';
+import { LinkPill, Skeleton, VisuallyHidden } from '../../../../components';
 import { IconExternalLink } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import { MediacentreUniversalisSearch } from './components/MediacentreUniversalisSearch';
@@ -29,17 +29,29 @@ export default function Mediacentre({
 }: MediacentreProps) {
   const { t } = useTranslation();
 
-  const renderResources = () => {
-    if (isLoading) {
-      return (
-        <div className="mediacentre__list" data-testid="mediacentre-loading">
-          <TextSkeleton size="lg" />
-          <TextSkeleton size="lg" />
-          <TextSkeleton size="lg" />
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="mediacentre mediacentre--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="mediacentre__header-skeleton">
+          <Skeleton className="mediacentre__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="mediacentre__button-skeleton"
+          />
         </div>
-      );
-    }
+        <Skeleton variant="block" className="mediacentre__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
+  const renderResources = () => {
     if (isError) {
       return (
         <div

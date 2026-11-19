@@ -59,4 +59,23 @@ describe('SchoolSpace', () => {
       '/userbook/annuaire#/search?structure=school-2',
     );
   });
+
+  describe('while loading', () => {
+    it('announces a single loading region, even without a selected school', () => {
+      render(<SchoolSpace selectedSchool={undefined} isLoading />);
+
+      const status = screen.getByRole('status');
+      expect(status).toHaveAttribute('aria-busy', 'true');
+      expect(status).toHaveTextContent('Loading');
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('reserves two lines for the school name', () => {
+      render(<SchoolSpace selectedSchool={undefined} isLoading />);
+
+      expect(
+        document.querySelectorAll('.school-space__line-skeleton'),
+      ).toHaveLength(2);
+    });
+  });
 });

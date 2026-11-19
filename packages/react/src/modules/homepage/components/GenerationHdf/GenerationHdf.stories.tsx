@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { FormEvent, useState } from 'react';
 import GenerationHdf, {
+  GenerationHdfProps,
   GenerationHdfStatus,
   GenerationHdfWallet,
 } from './GenerationHdf';
@@ -108,4 +109,58 @@ export const Compte: Story = {
       initialWallets={MOCK_WALLETS}
     />
   ),
+};
+
+const loadedProps: GenerationHdfProps = {
+  handleActionClick: () => {},
+  status: 'idle',
+  cardNumber: '',
+  onCardNumberChange: () => {},
+  onSubmit: () => {},
+  onEdit: () => {},
+  wallets: [],
+};
+
+export const Skeleton: Story = {
+  render: () => (
+    <div style={{ maxWidth: 397 }}>
+      <GenerationHdf {...loadedProps} isLoading />
+    </div>
+  ),
+};
+
+export const SkeletonAboveTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack" style={{ maxWidth: 397 }}>
+      <GenerationHdf {...loadedProps} isLoading />
+      <GenerationHdf {...loadedProps} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card shown while the widget loads, stacked on top of the loaded card. Its content block is sized to this loaded card, so any difference in height is the layout shift the user would see.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay" style={{ maxWidth: 397 }}>
+      <GenerationHdf {...loadedProps} />
+      <div className="skeleton-overlay-top">
+        <GenerationHdf {...loadedProps} isLoading />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card superimposed on the loaded card, at partial opacity. The header and the content block should cover the loaded header and content exactly.',
+      },
+    },
+  },
 };

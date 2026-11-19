@@ -2,17 +2,53 @@ import { UsefulLink } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyUsefulLinks from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-useful-links.png';
-import { Flex, Image, LinkPill } from '../../../../components';
+import {
+  Flex,
+  Image,
+  LinkPill,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import { IconEdit } from '../../../icons/components';
 import HomeCard from '../HomeCard/HomeCard';
 
 export interface UsefulLinksProps {
   links: UsefulLink[];
   onEditClick: () => void;
+  isLoading?: boolean;
 }
 
-export function UsefulLinks({ links, onEditClick }: UsefulLinksProps) {
+export function UsefulLinks({
+  links,
+  onEditClick,
+  isLoading = false,
+}: UsefulLinksProps) {
   const { t } = useTranslation();
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="useful-links-widget--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="useful-links-widget__header-skeleton">
+          <Skeleton className="useful-links-widget__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="useful-links-widget__button-skeleton"
+          />
+        </div>
+        <Skeleton
+          variant="block"
+          className="useful-links-widget__content-skeleton"
+        />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary">

@@ -1,8 +1,18 @@
 import { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Dropdown, Flex, IconButton, useToggle } from '../../../..';
+import {
+  ButtonBeta,
+  Dropdown,
+  Flex,
+  IconButton,
+  Skeleton,
+  useToggle,
+  VisuallyHidden,
+} from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { IconRafterUp, IconUserSearch } from '../../../icons/components';
+
+const SKELETON_NAME_LINES = 2;
 
 /**
  * SchoolSpace component displays the currently selected school and provides
@@ -12,15 +22,39 @@ export interface SchoolSpaceProps {
   selectedSchool: School | undefined;
   onSelectedSchoolChange?: (school: School) => void;
   schools?: School[];
+  isLoading?: boolean;
 }
 
 const SchoolSpace = ({
   schools,
   selectedSchool,
   onSelectedSchoolChange,
+  isLoading = false,
 }: SchoolSpaceProps) => {
   const [isExpanded, toggleExpanded] = useToggle(false);
   const { t } = useTranslation();
+
+  if (isLoading) {
+    return (
+      <div
+        className="school-space school-space--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="school-space-container school-space__name-skeleton">
+          {Array.from({ length: SKELETON_NAME_LINES }, (_, index) => (
+            <Skeleton key={index} className="school-space__line-skeleton" />
+          ))}
+        </div>
+        <Skeleton
+          variant="pill"
+          tone="strong"
+          className="school-space-directory-button school-space__button-skeleton"
+        />
+      </div>
+    );
+  }
 
   // Do not render anything if no school is selected
   if (!selectedSchool) return null;

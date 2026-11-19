@@ -131,3 +131,45 @@ export const LoadingError: Story = {
     },
   },
 };
+
+export const Skeleton: Story = {
+  args: { ...WithContent.args, isLoading: true },
+};
+
+export const SkeletonAboveTheLoadedCard: Story = {
+  args: WithContent.args,
+  render: (args) => (
+    <div className="skeleton-overlay-stack">
+      <Edumalin {...args} isLoading />
+      <Edumalin {...args} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card shown while the widget loads, stacked on top of the loaded card. Its content block is sized to this loaded card, so any difference in height is the layout shift the user would see.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedCard: Story = {
+  args: WithContent.args,
+  render: (args) => (
+    <div className="skeleton-overlay">
+      <Edumalin {...args} />
+      <div className="skeleton-overlay-top">
+        <Edumalin {...args} isLoading />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card superimposed on the loaded card, at partial opacity. The header and the content block should cover the loaded header and content exactly.',
+      },
+    },
+  },
+};

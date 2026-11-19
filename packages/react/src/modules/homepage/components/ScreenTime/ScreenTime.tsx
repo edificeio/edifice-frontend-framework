@@ -1,7 +1,11 @@
 import clsx from 'clsx';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta as Button, TextSkeleton } from '../../../../components';
+import {
+  ButtonBeta as Button,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import { TabsKids } from '../TabsKids';
@@ -17,6 +21,7 @@ export interface ScreenTimeProps {
   todayMinutes: number;
   yesterdayMinutes: number;
   onFullScreenClick: () => void;
+  isLoading?: boolean;
 }
 
 export function ScreenTime({
@@ -27,6 +32,7 @@ export function ScreenTime({
   todayMinutes,
   yesterdayMinutes,
   onFullScreenClick,
+  isLoading = false,
 }: ScreenTimeProps) {
   const { t } = useTranslation();
 
@@ -41,46 +47,66 @@ export function ScreenTime({
     [kids],
   );
 
-  const card = (
-    <div
-      className={clsx('screen-time__card', {
-        'screen-time__card--empty': status === 'empty',
-      })}
-    >
-      {status === 'empty' ? (
-        <p className="screen-time__empty">
-          {t('homepage.widget.screenTime.empty')}
-        </p>
-      ) : (
-        <>
-          <div className="screen-time__day">
-            <span className="screen-time__day-label">
-              {t('homepage.widget.screenTime.today')}
-            </span>
-            {status === 'loading' ? (
-              <TextSkeleton size="lg" className="screen-time__day-skeleton" />
-            ) : (
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="screen-time screen-time--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="screen-time__header-skeleton">
+          <Skeleton className="screen-time__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="screen-time__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="screen-time__content-skeleton" />
+      </HomeCard>
+    );
+  }
+
+  const card =
+    status === 'loading' ? (
+      <div role="status" aria-busy="true" data-testid="screen-time-loading">
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <Skeleton variant="block" className="screen-time__loading-skeleton" />
+      </div>
+    ) : (
+      <div
+        className={clsx('screen-time__card', {
+          'screen-time__card--empty': status === 'empty',
+        })}
+      >
+        {status === 'empty' ? (
+          <p className="screen-time__empty">
+            {t('homepage.widget.screenTime.empty')}
+          </p>
+        ) : (
+          <>
+            <div className="screen-time__day">
+              <span className="screen-time__day-label">
+                {t('homepage.widget.screenTime.today')}
+              </span>
               <span className="screen-time__day-value">
                 {formatDuration(todayMinutes)}
               </span>
-            )}
-          </div>
-          <div className="screen-time__day">
-            <span className="screen-time__day-label">
-              {t('homepage.widget.screenTime.yesterday')}
-            </span>
-            {status === 'loading' ? (
-              <TextSkeleton size="lg" className="screen-time__day-skeleton" />
-            ) : (
+            </div>
+            <div className="screen-time__day">
+              <span className="screen-time__day-label">
+                {t('homepage.widget.screenTime.yesterday')}
+              </span>
               <span className="screen-time__day-value">
                 {formatDuration(yesterdayMinutes)}
               </span>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
+            </div>
+          </>
+        )}
+      </div>
+    );
 
   // The kids are unknown while the session loads: show the card alone.
   const content =

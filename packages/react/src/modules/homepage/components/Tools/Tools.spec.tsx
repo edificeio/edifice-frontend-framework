@@ -84,4 +84,24 @@ describe('Tools', () => {
     fireEvent.click(screen.getByRole('button', { name: 'close' }));
     expect(screen.queryByTestId('captation-audio-stub')).toBeNull();
   });
+
+  describe('while loading', () => {
+    it('announces a single loading region instead of the tools', () => {
+      render(<Tools isLoading />);
+
+      const status = screen.getByRole('status');
+      expect(status).toHaveAttribute('aria-busy', 'true');
+      expect(status).toHaveTextContent('Loading');
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+    });
+
+    it('shows one placeholder per requested tool', () => {
+      render(<Tools tools={['word', 'video']} isLoading />);
+
+      expect(document.querySelectorAll('.tools__item-skeleton')).toHaveLength(
+        2,
+      );
+    });
+  });
 });
