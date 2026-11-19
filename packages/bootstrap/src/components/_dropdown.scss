@@ -363,12 +363,19 @@
   }
 
   &-search {
+    --dropdown-search-radius: var(--primitive-border-radius-lg);
+
     position: absolute;
     inset: 0;
     z-index: 1;
 
     .dropdown-search-bar {
       height: 100%;
+      border-radius: var(--dropdown-search-radius);
+
+      .searchbar__input {
+        border-radius: var(--dropdown-search-radius);
+      }
     }
 
     .input {
@@ -380,6 +387,10 @@
 
   &-searching {
     position: relative;
+
+    &:has(.dropdown-toggle-pill) .dropdown-search {
+      --dropdown-search-radius: var(--primitive-border-radius-pill);
+    }
 
     // The root is now the containing block of the menu: keep the menu at its natural width.
     .dropdown-menu:not(.dropdown-menu-block) {
