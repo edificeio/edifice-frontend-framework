@@ -147,4 +147,35 @@ describe('CarnetDeBord', () => {
     );
     expect(screen.getByText('Aucune donnée disponible')).toBeInTheDocument();
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <CarnetDeBord
+        status="default"
+        eleves={eleves}
+        currentEleveIndex={0}
+        onEleveChange={vi.fn()}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
+
+  it('keeps the header and shows a single loading region in the loading status', () => {
+    render(
+      <CarnetDeBord
+        status="loading"
+        eleves={[]}
+        currentEleveIndex={0}
+        onEleveChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole('status')).toBe(
+      screen.getByTestId('carnet-de-bord-loading'),
+    );
+    expect(screen.getByRole('heading')).toBeInTheDocument();
+  });
 });
