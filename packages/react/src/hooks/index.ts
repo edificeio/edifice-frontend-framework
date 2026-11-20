@@ -28,6 +28,8 @@ export * from './useNextcloudSearch';
 export * from './usePublicConf';
 export * from './useScreeb';
 export * from './useScrollToTop';
+export * from './useTimelineNotificationCount';
+export * from './useTimelineNotificationsSince';
 export * from './useTitle';
 export * from './useToast';
 export * from './useToggle';
