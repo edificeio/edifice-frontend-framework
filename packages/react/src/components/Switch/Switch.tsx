@@ -1,6 +1,8 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
 import clsx from 'clsx';
 
+export type SwitchLabelPosition = 'left' | 'right';
+
 export interface SwitchProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,
   'size'
@@ -10,6 +12,10 @@ export interface SwitchProps extends Omit<
    */
   label?: string;
   /**
+   * Side on which the label is displayed, relative to the toggle
+   */
+  labelPosition?: SwitchLabelPosition;
+  /**
    * The value of the switch
    */
   value?: string;
@@ -18,15 +24,19 @@ export interface SwitchProps extends Omit<
    */
   disabled?: boolean;
   /**
-   * Define switch size
-   */
-  size?: 'sm' | 'md';
-  /**
    * Additional class name for the label
    */
   labelClassName?: string;
   /**
-   * Switch color variant
+   * @deprecated The switch now comes in a single size, as defined by the
+   * design system — this prop has no effect and will be removed in a future
+   * major version.
+   */
+  size?: 'sm' | 'md';
+  /**
+   * @deprecated The switch now always uses the theme's primary color, as
+   * defined by the design system — this prop has no effect and will be
+   * removed in a future major version.
    */
   variant?:
     | 'default'
@@ -39,43 +49,51 @@ export interface SwitchProps extends Omit<
     | 'info';
 }
 
+/**
+ * A checkbox presented as an on/off toggle.
+ * Every visual state (checked, pressed, focused, disabled) is driven by the
+ * native input, so the switch works both as a controlled and an uncontrolled
+ * input (e.g. with react-hook-form's `register()`).
+ */
 const Switch = forwardRef<HTMLInputElement, SwitchProps>(
   (
     {
       className,
       label,
+      labelPosition = 'right',
       value,
       disabled,
-      size = 'md',
-      variant = 'default',
       labelClassName,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      size,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      variant,
       ...restProps
     },
     ref,
   ) => {
     const switchClass = clsx(
       'switch',
-      {
-        [`switch-${size}`]: size,
-        [`switch-${variant}`]: variant,
-        'switch-disabled': disabled,
-      },
+      { 'switch--label-left': labelPosition === 'left' },
       className,
     );
-
-    const labelClass = clsx('switch-label', labelClassName);
 
     return (
       <label className={switchClass}>
         <input
           type="checkbox"
           ref={ref}
+          className="switch__input"
           value={value}
           disabled={disabled}
           {...restProps}
         />
-        <span className="slider"></span>
-        {label && <span className={labelClass}>{label}</span>}
+        <span className="switch__track" aria-hidden="true">
+          <span className="switch__thumb" />
+        </span>
+        {label && (
+          <span className={clsx('switch__label', labelClassName)}>{label}</span>
+        )}
       </label>
     );
   },

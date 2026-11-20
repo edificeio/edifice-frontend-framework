@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Flex } from '../Flex';
 import Switch from './Switch';
 
 const meta = {
@@ -9,22 +10,28 @@ const meta = {
     docs: {
       description: {
         component:
-          'A Switch is a component that allows users to toggle between two states.',
+          'A Switch is a checkbox presented as an on/off toggle. It comes in a single size and always uses the primary color of the current theme. Its states (checked, pressed, focused, disabled) are driven by the native input, so it works both controlled and uncontrolled. The `size` and `variant` props are deprecated and have no effect.',
       },
     },
   },
   args: {
-    label: 'Switch label',
+    label: 'Label',
   },
   argTypes: {
-    size: {
-      description: 'Size of the switch',
-      control: 'select',
-      options: ['sm', 'md'],
+    labelPosition: {
+      description: 'Side on which the label is displayed',
+      control: 'inline-radio',
+      options: ['right', 'left'],
     },
     disabled: {
       description: 'Disabled state',
       control: 'boolean',
+    },
+    size: {
+      table: { disable: true },
+    },
+    variant: {
+      table: { disable: true },
     },
   },
 } satisfies Meta<typeof Switch>;
@@ -32,67 +39,64 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
-export const Base: Story = {
-  args: {
-    label: 'Base Switch',
-  },
-};
+export const Base: Story = {};
 
-export const Small: Story = {
+export const Checked: Story = {
   args: {
-    label: 'Small Switch',
-    size: 'sm',
+    defaultChecked: true,
   },
 };
 
 export const Disabled: Story = {
   args: {
-    label: 'Disabled Switch',
     disabled: true,
-  },
-};
-
-export const Checked: Story = {
-  args: {
-    label: 'Checked Switch',
-    defaultChecked: true,
   },
 };
 
 export const DisabledChecked: Story = {
   args: {
-    label: 'Disabled Checked Switch',
     disabled: true,
     defaultChecked: true,
   },
 };
 
+export const LabelLeft: Story = {
+  args: {
+    labelPosition: 'left',
+  },
+};
+
 export const WithoutLabel: Story = {
   args: {
+    'label': undefined,
     'aria-label': 'Switch without label',
   },
 };
 
-export const Group = {
-  render: () => {
-    return (
-      <div className="d-flex flex-column gap-8">
-        <Switch label="First Switch" />
-        <Switch label="Second Switch" defaultChecked />
-        <Switch label="Disabled Switch" disabled />
-        <Switch label="Disabled Checked Switch" disabled defaultChecked />
-      </div>
-    );
-  },
-};
-
-export const Sizes = {
-  render: () => {
-    return (
-      <div className="d-flex flex-column gap-8">
-        <Switch size="sm" label="Small Switch" />
-        <Switch size="md" label="Medium Switch" />
-      </div>
-    );
+export const States: Story = {
+  render: () => (
+    <Flex direction="column" gap="16">
+      {(['right', 'left'] as const).map((labelPosition) => (
+        <Flex key={labelPosition} gap="24">
+          <Switch label="Label" labelPosition={labelPosition} />
+          <Switch label="Label" labelPosition={labelPosition} defaultChecked />
+          <Switch label="Label" labelPosition={labelPosition} disabled />
+          <Switch
+            label="Label"
+            labelPosition={labelPosition}
+            disabled
+            defaultChecked
+          />
+        </Flex>
+      ))}
+    </Flex>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Off / on, enabled / disabled, with the label on the right (default) or on the left. The pressed state shows while the switch is clicked; the same ring is displayed on keyboard focus.',
+      },
+    },
   },
 };
