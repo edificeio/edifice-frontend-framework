@@ -111,3 +111,22 @@ export interface IFlashMessageModel {
   readonly signature?: string;
   readonly signatureColor?: string;
 }
+
+//-------------------------------------
+/**
+ * Lightweight notification returned by `GET /timeline/notifications/since`:
+ * only identifying fields, without message, params nor recipients.
+ */
+export type NotificationSummary = Pick<
+  NotificationModel,
+  '_id' | 'type' | 'event-type' | 'sub-resource' | 'date'
+> & {
+  resource?: string;
+};
+
+//-------------------------------------
+/** Raw payload of `GET /timeline/notifications/since`. */
+export interface NotificationsSinceResponse {
+  status: string;
+  results: Array<NotificationSummary>;
+}
