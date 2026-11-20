@@ -8,6 +8,7 @@ import { IDataService } from '../data/interface';
 import { DirectoryService } from '../directory/Service';
 import { EmbedderService } from '../embedder/Service';
 import { App, ResourceType } from '../globals';
+import { TimelineService } from '../apps/timeline/Service';
 import { IdiomService } from '../idiom/Service';
 import { INotifyFramework, NotifyFrameworkFactory } from '../notify/interfaces';
 import { NextcloudService } from '../nextcloud/Service';
@@ -45,6 +46,7 @@ export interface IOdeServices {
   rights(): RightService;
   session(): SessionService;
   share(): ShareService;
+  timeline(): TimelineService;
   video(): VideoService;
   widget(): WidgetService;
   workspace(): WorkspaceService;
@@ -64,6 +66,7 @@ export class OdeServices implements IOdeServices {
   private _rights: RightService;
   private _session: SessionService;
   private _share: ShareService;
+  private _timeline: TimelineService;
   private _video: VideoService;
   private _widget: WidgetService;
   private _workspace: WorkspaceService;
@@ -82,6 +85,7 @@ export class OdeServices implements IOdeServices {
     this._rights = new RightService(this);
     this._session = new SessionService(this);
     this._share = new ShareService(this);
+    this._timeline = new TimelineService(this);
     this._video = new VideoService(this);
     this._widget = new WidgetService(this);
     this._workspace = new WorkspaceService(this);
@@ -157,6 +161,10 @@ export class OdeServices implements IOdeServices {
 
   share() {
     return this._share;
+  }
+
+  timeline() {
+    return this._timeline;
   }
 
   video() {
