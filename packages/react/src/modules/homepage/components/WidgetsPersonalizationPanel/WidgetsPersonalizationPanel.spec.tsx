@@ -29,7 +29,7 @@ describe('WidgetsPersonalizationPanel', () => {
     expect(screen.getByText('Carnet de bord')).toBeInTheDocument();
     expect(
       screen.getByRole('switch', { name: 'Activer le widget Agenda' }),
-    ).toHaveAttribute('aria-checked', 'true');
+    ).toBeChecked();
   });
 
   it('renders a lock indicator instead of a toggle for a locked widget', () => {

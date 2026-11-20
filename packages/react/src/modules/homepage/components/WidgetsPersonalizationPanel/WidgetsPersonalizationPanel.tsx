@@ -3,9 +3,13 @@ import { useTranslation } from 'react-i18next';
 
 import clsx from 'clsx';
 
-import { Heading, IconButton, TextSkeleton } from '../../../../components';
+import {
+  Heading,
+  IconButton,
+  Switch,
+  TextSkeleton,
+} from '../../../../components';
 import { IconClose, IconLock } from '../../../icons/components';
-import { WidgetToggle } from './WidgetToggle';
 
 export interface WidgetPersonalizationItem {
   id: string;
@@ -110,7 +114,9 @@ export function WidgetsPersonalizationPanel({
                   <IconLock />
                 </span>
               ) : (
-                <WidgetToggle
+                <Switch
+                  role="switch"
+                  className="widgets-personalization-panel__item-switch"
                   checked={item.checked}
                   onChange={() => onToggle(item.id)}
                   aria-label={t('homepage.widgetsPersonalization.toggle', {
