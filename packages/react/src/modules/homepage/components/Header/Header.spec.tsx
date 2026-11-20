@@ -287,6 +287,49 @@ describe('homepage Header', () => {
       expect(item).toHaveAttribute('aria-expanded', 'true');
     });
 
+    it('does not open on hover on mobile/tablet', async () => {
+      const { user } = setup({ isDesktop: false });
+      const item = screen.getByTestId('header-user-profile-button');
+
+      await user.hover(item);
+
+      expect(item).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it.each([true, false])(
+      'opens on click without navigating (desktop: %s)',
+      (isDesktop) => {
+        setup({ isDesktop });
+        const link = screen.getByTestId('header-user-profile-button');
+
+        const dispatched = fireEvent.click(link);
+
+        expect(dispatched).toBe(false); // preventDefault() was called
+        expect(link).toHaveAttribute('aria-expanded', 'true');
+      },
+    );
+
+    it('stays open when clicked after a hover on desktop', async () => {
+      const { user } = setup({ isDesktop: true });
+      const item = screen.getByTestId('header-user-profile-button');
+
+      await user.hover(item);
+      await user.click(item);
+
+      expect(item).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('closes when clicking outside', () => {
+      setup({ isDesktop: false });
+      const trigger = screen.getByTestId('header-user-profile-button');
+      fireEvent.click(trigger);
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+      fireEvent.pointerDown(document.body);
+
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+
     it('opens on keyboard focus', async () => {
       const { user } = setup();
       const item = screen.getByTestId('header-user-profile-button');
