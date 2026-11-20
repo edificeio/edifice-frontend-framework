@@ -161,6 +161,8 @@ describe('BlogPublic', () => {
     );
     // Regression ENABLING-1352: `Input` renders a visible `.input` wrapper.
     expect(container.querySelector('.input')).not.toBeInTheDocument();
-    expect(container.querySelector('.switch .slider')).toBeInTheDocument();
+    expect(
+      container.querySelector('.switch .switch__track'),
+    ).toBeInTheDocument();
   });
 });
