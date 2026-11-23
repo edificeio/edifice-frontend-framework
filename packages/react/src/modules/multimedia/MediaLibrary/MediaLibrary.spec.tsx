@@ -34,17 +34,29 @@ vi.mock('../../../components', async (importOriginal) => {
   const Tabs = ({
     items,
     defaultId,
+    activeId,
     onChange,
     children,
   }: {
     items: { id: string; content: React.ReactNode }[];
     defaultId: string;
+    activeId?: string;
     onChange: (item: unknown) => void;
     children: (current: unknown) => React.ReactNode;
   }) => {
     const [current, setCurrent] = useState(
       items.find((item) => item.id === defaultId) ?? items[0],
     );
+    // Like the real Tabs, follow activeId changes and announce them.
+    const [prevActiveId, setPrevActiveId] = useState(activeId);
+    if (activeId !== prevActiveId) {
+      setPrevActiveId(activeId);
+      const next = items.find((item) => item.id === activeId);
+      if (next) {
+        setCurrent(next);
+        queueMicrotask(() => onChange(next));
+      }
+    }
 
     return (
       <div>
@@ -52,6 +64,7 @@ vi.mock('../../../components', async (importOriginal) => {
           {items.map((item) => item.id).join(',')}
         </span>
         <span data-testid="default-tab">{defaultId}</span>
+        <span data-testid="active-tab">{activeId ?? ''}</span>
         {items.map((item, index) => (
           <button
             key={`${item.id}-${index}`}
@@ -128,6 +141,15 @@ vi.mock('./innertabs', async () => {
         </button>
         <button onClick={() => context?.switchType?.('embedder')}>
           switch-type
+        </button>
+        <button onClick={() => context?.setVisibleTab?.('upload')}>
+          show-upload
+        </button>
+        <button onClick={() => context?.setVisibleTab?.('iframe')}>
+          show-iframe
+        </button>
+        <button onClick={() => context?.setVisibleTab?.('video-embedder')}>
+          show-video-embedder
         </button>
       </div>
     );
@@ -416,6 +438,63 @@ describe('MediaLibrary', () => {
           'internal-link',
         ),
       );
+    });
+  });
+
+  describe('setVisibleTab', () => {
+    it('displays the requested tab when it is available', async () => {
+      const { ref, user } = setup();
+      await waitFor(() => ref.current?.show('image'));
+
+      await user.click(screen.getByRole('button', { name: 'show-upload' }));
+
+      expect(screen.getByTestId('active-tab')).toHaveTextContent('upload');
+      expect(screen.getByTestId('inner-upload')).toBeInTheDocument();
+    });
+
+    // The "video-embedder" key carries the "iframe" id.
+    it('resolves a tab whose id differs from its key', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { ref, user } = setup();
+      await waitFor(() => ref.current?.show('video'));
+
+      await user.click(
+        screen.getByRole('button', { name: 'show-video-embedder' }),
+      );
+
+      expect(screen.getByTestId('active-tab')).toHaveTextContent('iframe');
+      expect(screen.getByTestId('inner-video-embedder')).toBeInTheDocument();
+      expect(warn).not.toHaveBeenCalled();
+      warn.mockRestore();
+    });
+
+    it('displays the requested tab again after the user switched away', async () => {
+      const { ref, user } = setup();
+      await waitFor(() => ref.current?.show('image'));
+
+      await user.click(screen.getByRole('button', { name: 'show-upload' }));
+      await user.click(
+        screen.getByRole('button', { name: /^goto-workspace-/ }),
+      );
+      expect(screen.getByTestId('active-tab')).toHaveTextContent('workspace');
+      expect(screen.getByTestId('inner-workspace')).toBeInTheDocument();
+
+      await user.click(screen.getByRole('button', { name: 'show-upload' }));
+      expect(screen.getByTestId('active-tab')).toHaveTextContent('upload');
+      expect(screen.getByTestId('inner-upload')).toBeInTheDocument();
+    });
+
+    it('warns and ignores a tab that is not available for the type', async () => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const { ref, user } = setup();
+      await waitFor(() => ref.current?.show('image'));
+      const before = screen.getByTestId('active-tab').textContent;
+
+      await user.click(screen.getByRole('button', { name: 'show-iframe' }));
+
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining('"iframe"'));
+      expect(screen.getByTestId('active-tab')).toHaveTextContent(before!);
+      warn.mockRestore();
     });
   });
 

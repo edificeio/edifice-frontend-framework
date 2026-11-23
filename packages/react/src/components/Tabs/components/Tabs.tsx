@@ -12,6 +12,16 @@ export interface TabsProps {
    */
   defaultId?: string;
   /**
+   * Selected tab, driven by the parent.
+   * Whenever this value changes, the matching tab is displayed.
+   * This prop is not fully controlled: user interactions still change the
+   * displayed tab, an unknown id is ignored, and `undefined` leaves the
+   * current tab unchanged.
+   * Keep it in sync through `onChange` so that selecting the same tab again
+   * after a user interaction still takes effect.
+   */
+  activeId?: string;
+  /**
    * Items to be displayed
    */
   items: TabsItemProps[];
@@ -54,6 +64,7 @@ export interface TabsProps {
  */
 export const Tabs = ({
   defaultId,
+  activeId,
   items,
   fullWidth = false,
   fullHeight = false,
@@ -71,7 +82,7 @@ export const Tabs = ({
     tabUnderlineLeft,
     tabUnderlineWidth,
     onKeyDown,
-  } = useTabs({ defaultId, items, onChange });
+  } = useTabs({ defaultId, activeId, items, onChange });
 
   const value = useMemo(
     () => ({
