@@ -62,7 +62,7 @@ export const DefaultUserSpace: Story = {
 
 export const WithCustomizeWidgetsButton: Story = {
   args: {
-    name: 'Marc',
+    name: 'NOMTRESLONGARALLONGE Jean-François',
     profile: 'Teacher',
     avatar: USER_AVATAR,
     onCustomizeWidgetsClick: () => alert('Ouvre le volet de personnalisation'),

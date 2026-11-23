@@ -1,7 +1,15 @@
 .user-space {
   color: var(--primitive-grey-900);
 
+  // Allow the identity block to shrink below its content width so a long name
+  // never pushes the customize button out of the card.
+  &--identity,
+  &--infos {
+    min-width: 0;
+  }
+
   &--name {
+    overflow-wrap: anywhere;
     font-family: var(--font-family-title);
     font-weight: var(--font-weight-bold);
     font-size: var(--primitive-font-size-s);
