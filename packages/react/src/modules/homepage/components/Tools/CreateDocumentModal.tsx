@@ -53,18 +53,21 @@ export function CreateDocumentModal({
           className="tools-modal-form"
           onSubmit={handleSubmit}
         >
-          <div className="tools-modal-types">
-            {OFFICE_TOOLS.map((tool) => (
-              <RadioCard
-                key={tool}
-                groupName="create-document-type"
-                value={tool}
-                label={t(`homepage.tools.modal.type.${tool}`)}
-                description={t(`homepage.tools.modal.description.${tool}`)}
-                selectedValue={type}
-                onChange={() => setType(tool)}
-              />
-            ))}
+          <div>
+            <p className="mb-12">{t('homepage.tools.modal.intro')}</p>
+            <div className="tools-modal-types">
+              {OFFICE_TOOLS.map((tool) => (
+                <RadioCard
+                  key={tool}
+                  groupName="create-document-type"
+                  value={tool}
+                  label={t(`homepage.tools.modal.type.${tool}`)}
+                  description={t(`homepage.tools.modal.description.${tool}`)}
+                  selectedValue={type}
+                  onChange={() => setType(tool)}
+                />
+              ))}
+            </div>
           </div>
 
           <FormControl id="create-document-name" isRequired>
