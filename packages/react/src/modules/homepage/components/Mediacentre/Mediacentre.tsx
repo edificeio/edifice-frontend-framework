@@ -107,7 +107,7 @@ export default function Mediacentre({
       />
       <HomeCard.Content className="mediacentre__content">
         {renderResources()}
-        <MediacentreUniversalisSearch uai={uai} />
+        {!isLoading && !isError && <MediacentreUniversalisSearch uai={uai} />}
       </HomeCard.Content>
     </HomeCard>
   );

@@ -80,7 +80,7 @@ describe('Mediacentre', () => {
     expect(screen.getByTestId('mediacentre-empty')).toBeInTheDocument();
   });
 
-  it('renders the error state and keeps the Universalis search', () => {
+  it('renders only the error state when the Médiacentre is unreachable', () => {
     render(
       <Mediacentre
         handleActionClick={vi.fn()}
@@ -92,14 +92,25 @@ describe('Mediacentre', () => {
 
     expect(screen.getByTestId('mediacentre-error')).toBeInTheDocument();
     expect(
-      screen.getByTestId('mediacentre-universalis-link'),
-    ).toBeInTheDocument();
+      screen.queryByTestId('mediacentre-universalis-link'),
+    ).not.toBeInTheDocument();
   });
 
-  it('always renders the Universalis search', () => {
+  it('hides the Universalis search while loading', () => {
     render(
-      <Mediacentre handleActionClick={vi.fn()} resources={mockResources} />,
+      <Mediacentre handleActionClick={vi.fn()} resources={[]} isLoading />,
     );
+
+    expect(
+      screen.queryByTestId('mediacentre-universalis-link'),
+    ).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['with favorites', mockResources],
+    ['without favorites', []],
+  ])('renders the Universalis search once connected (%s)', (_, resources) => {
+    render(<Mediacentre handleActionClick={vi.fn()} resources={resources} />);
 
     expect(
       screen.getByTestId('mediacentre-universalis-link'),
