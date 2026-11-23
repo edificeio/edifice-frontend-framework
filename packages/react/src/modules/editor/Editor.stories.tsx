@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { Content } from '@tiptap/react';
+import { Toaster } from 'react-hot-toast';
 import Editor from './components/Editor/Editor';
 
 const meta: Meta<typeof Editor> = {
@@ -72,6 +73,8 @@ export const EditMode: Story = {
   decorators: [
     (Story) => (
       <div style={{ height: '60rem' }}>
+        {/* Displays the editor feedbacks, e.g. speech recognition errors. */}
+        <Toaster containerClassName="toaster-container" />
         <Story />
       </div>
     ),

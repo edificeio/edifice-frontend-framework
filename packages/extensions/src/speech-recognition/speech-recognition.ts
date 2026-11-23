@@ -1,4 +1,4 @@
-import { Node } from '@tiptap/core';
+import { Editor, Node } from '@tiptap/core';
 
 export interface SpeechRecognitionOptions {
   lang: string;
@@ -11,6 +11,11 @@ declare module '@tiptap/core' {
       stopSpeechRecognition: () => ReturnType;
       isSpeechRecognitionStarted: () => boolean;
     };
+  }
+
+  interface EditorEvents {
+    /** Emitted when a recognition session ends, whatever the reason. */
+    speechRecognitionEnd: { editor: Editor };
   }
 }
 
@@ -53,7 +58,8 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
         ({ commands }) => {
           const SpeechRecognition =
             window.SpeechRecognition || window.webkitSpeechRecognition;
-          this.recognition = new SpeechRecognition();
+          const recognition = new SpeechRecognition();
+          this.recognition = recognition;
 
           this.recognition.lang = this.options.lang;
           this.recognition.interimResults = true;
@@ -92,10 +98,18 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
           };
 
           this.recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-            // TODO(ENABLING-1151): create a "feedback" tiptap extension, to display user friendly error messages ?
             console.log(
               `[@edifice.io/tiptap-extensions/speech-recognition][error][${event.error}]: ${event.message}`,
             );
+            // 'aborted' is raised when recognition is stopped on purpose.
+            if (event.error === 'aborted') return;
+            // Only available when the "feedback" extension is registered.
+            this.editor.commands.notifyFeedback?.({
+              source: 'speech-recognition',
+              code: event.error,
+              level: event.error === 'no-speech' ? 'warning' : 'error',
+              details: event.message,
+            });
           };
 
           this.recognition.onstart = () => {
@@ -103,7 +117,10 @@ export const SpeechRecognition = SR_Node.create<SpeechRecognitionOptions>({
           };
 
           this.recognition.onend = () => {
+            // Ignore the late end of a session already replaced by a new one.
+            if (this.recognition !== recognition) return;
             this.isStarted = false;
+            this.editor.emit('speechRecognitionEnd', { editor: this.editor });
           };
 
           return commands;

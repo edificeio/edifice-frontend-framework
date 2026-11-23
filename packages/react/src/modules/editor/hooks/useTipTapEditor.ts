@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { Alert } from '@edifice.io/tiptap-extensions/alert';
+import { Feedback } from '@edifice.io/tiptap-extensions/feedback';
 import { FontSize } from '@edifice.io/tiptap-extensions/font-size';
 import { CustomHeading } from '@edifice.io/tiptap-extensions/heading';
 import { CustomHighlight } from '@edifice.io/tiptap-extensions/highlight';
@@ -133,6 +134,7 @@ export const useTipTapEditor = (
       }),
       Typography,
       FontSize,
+      Feedback,
       SpeechRecognition,
       SpeechSynthesis.configure({
         lang:

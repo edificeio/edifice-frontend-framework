@@ -1,10 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { odeServices } from '@edifice.io/client';
 import { Editor } from '@tiptap/react';
 
 export const useSpeechRecognition = (editor: Editor | null) => {
   const [isActive, setActive] = useState(false);
+
+  // A session can end on its own (error, silence...): reflect it in the UI.
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleEnd = () => setActive(false);
+
+    editor.on('speechRecognitionEnd', handleEnd);
+    return () => {
+      editor.off('speechRecognitionEnd', handleEnd);
+    };
+  }, [editor]);
 
   const toggle = () => {
     if (isActive) {
