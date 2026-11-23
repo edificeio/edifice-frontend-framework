@@ -208,8 +208,7 @@ describe('BubbleMenuEditImage', () => {
     );
 
     const editButton = screen.getByRole('button', { name: 'edit' });
-    expect(editButton).toHaveClass('btn-sm');
-    expect(editButton).not.toHaveClass('btn-lg');
+    expect(editButton).toHaveClass('btn-beta--small');
   });
 
   it('marks the medium size button as selected and leaves the others unselected', () => {

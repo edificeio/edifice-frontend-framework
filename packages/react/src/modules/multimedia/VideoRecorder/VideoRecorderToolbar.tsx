@@ -59,7 +59,7 @@ export const VideoRecorderToolbar = ({
       name: 'record',
       props: {
         leftIcon: <IconRecord />,
-        color: 'danger',
+        color: 'destructive',
         disabled: isRecordDisabled,
         onClick: handleRecord,
         children: renderLabel(t('bbm.video.record.start'), isRecordDisabled),

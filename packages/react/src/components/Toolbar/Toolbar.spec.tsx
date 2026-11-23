@@ -25,10 +25,14 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-ghost-tertiary');
+    expect(button).toHaveClass(
+      'btn-beta',
+      'btn-beta--ghost',
+      'btn-beta-tertiary',
+    );
   });
 
-  it('renders an icon item, overridable color/variant', () => {
+  it('renders an icon item, overridable color/variant (legacy danger → destructive)', () => {
     // Unlike 'button' items, 'icon' items don't get an automatic aria-label
     // from `name` — it must be set explicitly via props.
     const items: ToolbarItem[] = [
@@ -46,11 +50,14 @@ describe('Toolbar', () => {
     render(<Toolbar items={items} />);
 
     expect(screen.getByRole('button', { name: 'delete' })).toHaveClass(
-      'btn-outline-danger',
+      'btn-beta',
+      'btn-beta--outline',
+      'btn-beta-destructive',
+      'btn-beta--icon-only',
     );
   });
 
-  it('renders a primary item as filled/primary, ignoring color/variant overrides', () => {
+  it('renders a primary item as filled/default, ignoring color/variant overrides', () => {
     const items: ToolbarItem[] = [
       {
         type: 'primary',
@@ -60,9 +67,9 @@ describe('Toolbar', () => {
     ];
     render(<Toolbar items={items} />);
 
-    expect(screen.getByRole('button', { name: 'Submit' })).toHaveClass(
-      'btn-filled btn-primary',
-    );
+    const button = screen.getByRole('button', { name: 'Submit' });
+    expect(button).toHaveClass('btn-beta', 'btn-beta-default');
+    expect(button).not.toHaveClass('btn-beta--outline', 'btn-beta-secondary');
   });
 
   it('skips rendering items with visibility "hide"', () => {
@@ -172,7 +179,7 @@ describe('Toolbar', () => {
     expect(button).not.toHaveClass('focus');
   });
 
-  it('hides the button label and forces size sm on mobile when shouldHideLabelsOnMobile is set', () => {
+  it('hides the button label on mobile and keeps size md when shouldHideLabelsOnMobile is set', () => {
     const items: ToolbarItem[] = [
       { type: 'button', name: 'save', props: { children: 'Save' } },
     ];
@@ -180,7 +187,7 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).not.toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-sm');
+    expect(button).not.toHaveClass('btn-beta--small');
   });
 
   it('shows the button label with size md when not hiding labels on mobile', () => {
@@ -191,29 +198,79 @@ describe('Toolbar', () => {
 
     const button = screen.getByRole('button', { name: 'save' });
     expect(button).toHaveTextContent('Save');
-    expect(button).toHaveClass('btn-md');
+    expect(button).not.toHaveClass('btn-beta--small');
   });
 
   it('respects an explicit custom size', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'sm' } },
+    ];
+    render(<Toolbar items={items} />);
+
+    expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+      'btn-beta--small',
+    );
+  });
+
+  it('lets an explicit custom size take precedence over hideLabel', () => {
+    const items: ToolbarItem[] = [
+      { type: 'button', name: 'save', props: { children: 'Save', size: 'md' } },
+    ];
+    render(<Toolbar items={items} shouldHideLabelsOnMobile />);
+
+    expect(screen.getByRole('button', { name: 'save' })).not.toHaveClass(
+      'btn-beta--small',
+    );
+  });
+
+  it.each([
+    ['primary', 'btn-beta-default'],
+    ['secondary', 'btn-beta-secondary'],
+    ['tertiary', 'btn-beta-tertiary'],
+    ['danger', 'btn-beta-destructive'],
+    ['black', 'btn-beta-tertiary'],
+  ] as const)(
+    'maps the legacy %s color to the %s ButtonBeta class',
+    (color, expectedClass) => {
+      const items: ToolbarItem[] = [
+        { type: 'button', name: 'save', props: { children: 'Save', color } },
+      ];
+      render(<Toolbar items={items} />);
+
+      expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+        expectedClass,
+      );
+    },
+  );
+
+  it('maps the legacy lg size to md', () => {
     const items: ToolbarItem[] = [
       { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
     ];
     render(<Toolbar items={items} />);
 
-    const button = screen.getByRole('button', { name: 'save' });
-    expect(button).toHaveClass('btn-lg');
-    expect(button).not.toHaveClass('btn-sm');
+    expect(screen.getByRole('button', { name: 'save' })).not.toHaveClass(
+      'btn-beta--small',
+    );
   });
 
-  it('lets an explicit custom size take precedence over hideLabel', () => {
+  it('does not forward legacy-only props to the DOM', () => {
     const items: ToolbarItem[] = [
-      { type: 'button', name: 'save', props: { children: 'Save', size: 'lg' } },
+      {
+        type: 'button',
+        name: 'save',
+        props: {
+          children: 'Save',
+          loadingIcon: <span />,
+          loadingPosition: 'right',
+        },
+      },
     ];
-    render(<Toolbar items={items} shouldHideLabelsOnMobile />);
+    render(<Toolbar items={items} />);
 
     const button = screen.getByRole('button', { name: 'save' });
-    expect(button).toHaveClass('btn-lg');
-    expect(button).not.toHaveClass('btn-sm');
+    expect(button).not.toHaveAttribute('loadingIcon');
+    expect(button).not.toHaveAttribute('loadingPosition');
   });
 
   it('forwards ariaControls and a ref to the root element', () => {
@@ -345,6 +402,82 @@ describe('Toolbar', () => {
       render(<Toolbar items={items} />);
 
       expect(screen.getByRole('button', { name: 'More' })).toBeInTheDocument();
+    });
+  });
+
+  it('accepts the new ButtonBeta color values', () => {
+    const items: ToolbarItem[] = [
+      {
+        type: 'button',
+        name: 'save',
+        props: { children: 'Save', color: 'destructive' },
+      },
+    ];
+    render(<Toolbar items={items} />);
+
+    expect(screen.getByRole('button', { name: 'save' })).toHaveClass(
+      'btn-beta-destructive',
+    );
+  });
+
+  describe('deprecations', () => {
+    // The module keeps track of already reported deprecations: reload it to
+    // start each test from a clean state.
+    let FreshToolbar: typeof Toolbar;
+    let warn: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(async () => {
+      vi.resetModules();
+      ({ Toolbar: FreshToolbar } = await import('./Toolbar'));
+      warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+      warn.mockRestore();
+    });
+
+    it('warns once when a deprecated color is used', () => {
+      const items: ToolbarItem[] = [
+        { type: 'button', name: 'one', props: { color: 'danger' } },
+        { type: 'button', name: 'two', props: { color: 'danger' } },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).toHaveBeenCalledTimes(1);
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] color "danger" is deprecated, use color "destructive" instead.',
+      );
+    });
+
+    it('warns when a deprecated size or legacy-only prop is used', () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'button',
+          name: 'save',
+          props: { size: 'lg', loadingPosition: 'right' },
+        },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] size "lg" is deprecated, use size "md" instead.',
+      );
+      expect(warn).toHaveBeenCalledWith(
+        '[Toolbar] loadingIcon/loadingPosition is deprecated, use nothing (no longer supported) instead.',
+      );
+    });
+
+    it('does not warn for new values', () => {
+      const items: ToolbarItem[] = [
+        {
+          type: 'button',
+          name: 'save',
+          props: { color: 'default', size: 'md' },
+        },
+      ];
+      render(<FreshToolbar items={items} />);
+
+      expect(warn).not.toHaveBeenCalled();
     });
   });
 

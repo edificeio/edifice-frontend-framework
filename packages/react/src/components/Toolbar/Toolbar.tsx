@@ -12,9 +12,115 @@ import clsx from 'clsx';
 
 import { useBreakpoint } from '../../hooks';
 import { mergeRefs } from '../../utilities';
-import { Button, ButtonProps, IconButton, IconButtonProps } from '../Button';
+import {
+  ButtonColors,
+  ButtonProps,
+  ButtonSizes,
+  IconButtonProps,
+} from '../Button';
+import {
+  ButtonBeta as Button,
+  ButtonBetaColor,
+  ButtonBetaProps,
+  ButtonBetaSizes,
+} from '../ButtonBeta';
 import { Dropdown, DropdownProps } from '../Dropdown';
 import { Placement, Tooltip } from '../Tooltip';
+
+type ToolbarButtonColor = ButtonColors | ButtonBetaColor;
+type ToolbarButtonSize = ButtonSizes | ButtonBetaSizes;
+
+/**
+ * Props of a toolbar button. Accepts both legacy `Button` values and the new
+ * `ButtonBeta` values; legacy-only values are deprecated.
+ */
+export interface ToolbarButtonProps extends Omit<
+  ButtonProps,
+  'color' | 'size' | 'loadingIcon' | 'loadingPosition'
+> {
+  /**
+   * `default`, `secondary`, `tertiary` or `destructive`.
+   *
+   * Deprecated values: `primary` (use `default`), `danger` (use
+   * `destructive`) and `black` (use `tertiary`).
+   */
+  color?: ToolbarButtonColor;
+  /**
+   * `sm` or `md`.
+   *
+   * Deprecated value: `lg` (use `md`).
+   */
+  size?: ToolbarButtonSize;
+  /** @deprecated Not supported by the new toolbar buttons, ignored. */
+  loadingIcon?: ButtonProps['loadingIcon'];
+  /** @deprecated Not supported by the new toolbar buttons, ignored. */
+  loadingPosition?: ButtonProps['loadingPosition'];
+}
+
+export interface ToolbarIconButtonProps extends Omit<
+  ToolbarButtonProps,
+  'children' | 'leftIcon' | 'rightIcon'
+> {
+  icon?: IconButtonProps['icon'];
+}
+
+const BUTTON_BETA_COLORS: Record<ToolbarButtonColor, ButtonBetaColor> = {
+  default: 'default',
+  secondary: 'secondary',
+  tertiary: 'tertiary',
+  destructive: 'destructive',
+  primary: 'default',
+  danger: 'destructive',
+  black: 'tertiary',
+};
+
+const BUTTON_BETA_SIZES: Record<ToolbarButtonSize, ButtonBetaSizes> = {
+  sm: 'sm',
+  md: 'md',
+  lg: 'md',
+};
+
+const DEPRECATED_COLORS: ReadonlyArray<ToolbarButtonColor> = [
+  'primary',
+  'danger',
+  'black',
+];
+const DEPRECATED_SIZES: ReadonlyArray<ToolbarButtonSize> = ['lg'];
+
+const warnedDeprecations = new Set<string>();
+
+const warnDeprecated = (usage: string, replacement: string) => {
+  if (process.env.NODE_ENV === 'production') return;
+  if (warnedDeprecations.has(usage)) return;
+  warnedDeprecations.add(usage);
+  console.warn(`[Toolbar] ${usage} is deprecated, use ${replacement} instead.`);
+};
+
+const toButtonBetaProps = ({
+  color,
+  size,
+  ...rest
+}: Omit<ToolbarButtonProps, 'ref'>): ButtonBetaProps => {
+  const betaColor = color && BUTTON_BETA_COLORS[color];
+  const betaSize = size && BUTTON_BETA_SIZES[size];
+
+  if (color && DEPRECATED_COLORS.includes(color)) {
+    warnDeprecated(`color "${color}"`, `color "${betaColor}"`);
+  }
+  if (size && DEPRECATED_SIZES.includes(size)) {
+    warnDeprecated(`size "${size}"`, `size "${betaSize}"`);
+  }
+  if (rest.loadingIcon !== undefined || rest.loadingPosition !== undefined) {
+    warnDeprecated(
+      'loadingIcon/loadingPosition',
+      'nothing (no longer supported)',
+    );
+  }
+
+  delete rest.loadingIcon;
+  delete rest.loadingPosition;
+  return { ...rest, color: betaColor, size: betaSize };
+};
 
 export interface ToolbarCommonItem {
   /** Object type */
@@ -38,14 +144,14 @@ export interface ToolbarButtonItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'button';
   name: string;
-  props: ButtonProps;
+  props: ToolbarButtonProps;
 }
 
 export interface ToolbarIconButtonItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'icon';
   name: string;
-  props: IconButtonProps;
+  props: ToolbarIconButtonProps;
 }
 
 export interface ToolbarDropdownItem extends ToolbarCommonItem {
@@ -57,7 +163,7 @@ export interface ToolbarDropdownItem extends ToolbarCommonItem {
 export interface ToolbarPrimaryItem
   extends ToolbarCommonItem, ToolbarTooltipProps {
   type: 'primary';
-  props: ButtonProps;
+  props: ToolbarButtonProps;
 }
 
 export interface ToolbarDividerItem extends ToolbarCommonItem {
@@ -248,7 +354,8 @@ export const Toolbar = forwardRef(
                 <div key={item.name ?? index} className="toolbar-divider"></div>
               );
 
-            case 'button':
+            case 'button': {
+              const buttonProps = toButtonBetaProps(item.props);
               return (
                 <Tooltip
                   key={item.name ?? index}
@@ -256,36 +363,40 @@ export const Toolbar = forwardRef(
                   placement={renderTooltipPosition(item)}
                 >
                   <Button
-                    {...item.props}
-                    children={!hideLabel && item.props.children}
+                    {...buttonProps}
+                    children={!hideLabel && buttonProps.children}
                     aria-label={item.name}
-                    key={item.name ?? index}
-                    color={item.props.color || 'tertiary'}
+                    color={buttonProps.color || 'tertiary'}
                     variant="ghost"
-                    size={item.props.size || (hideLabel ? 'sm' : 'md')}
+                    size={buttonProps.size || 'md'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
                 </Tooltip>
               );
+            }
 
-            case 'icon':
+            case 'icon': {
+              const { icon, ...iconProps } = item.props;
+              const buttonProps = toButtonBetaProps(iconProps);
               return (
                 <Tooltip
                   key={item.name ?? index}
                   message={renderTooltipMessage(item)}
                   placement={renderTooltipPosition(item)}
                 >
-                  <IconButton
-                    {...item.props}
-                    key={item.name ?? index}
-                    color={item.props.color ? item.props.color : 'tertiary'}
-                    variant={item.props.variant ? item.props.variant : 'ghost'}
+                  <Button
+                    {...buttonProps}
+                    leftIcon={icon}
+                    color={buttonProps.color || 'tertiary'}
+                    variant={buttonProps.variant || 'ghost'}
+                    size={buttonProps.size || 'md'}
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
                 </Tooltip>
               );
+            }
 
             case 'dropdown':
               return (
@@ -307,9 +418,9 @@ export const Toolbar = forwardRef(
                   placement={renderTooltipPosition(item)}
                 >
                   <Button
-                    {...item.props}
+                    {...toButtonBetaProps(item.props)}
                     variant="filled"
-                    color="primary"
+                    color="default"
                     tabIndex={index === firstFocusableItemIndex ? 0 : -1}
                     onKeyDown={handleKeyDown}
                   />
