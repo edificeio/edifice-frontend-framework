@@ -208,6 +208,11 @@
   .pagelayout-sidebarright {
     overflow: hidden auto;
     display: block;
+
+    // Scroll container too: same containing-block requirement as above (e.g.
+    // the `.visually-hidden` loader of the notifications list).
+
+    position: relative;
   }
 
   .pagelayout-sidebarright-inner {
