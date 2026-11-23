@@ -207,6 +207,49 @@ describe('useTipTapEditor', () => {
     expect(onContentChange).not.toHaveBeenCalled();
   });
 
+  it('does not throw when content changes after the editor instance has been destroyed', async () => {
+    // Regression: in production (React StrictMode double-mount racing a
+    // <Suspense> remount), an editor can be destroyed before this hook's own
+    // effects re-run against it. v3's destroy() nulls out the internal
+    // command manager, so without the isDestroyed guard below, this throws
+    // "Cannot read properties of null (reading 'commands')" instead of
+    // silently no-op'ing like v2 did.
+    const { result, rerender } = renderHook(
+      ({ content }) => useTipTapEditor(true, content),
+      { wrapper, initialProps: { content: '<p>Hello</p>' } },
+    );
+
+    await waitFor(() => expect(result.current.editor).toBeTruthy());
+    result.current.editor!.destroy();
+
+    expect(() => rerender({ content: '<p>Changed</p>' })).not.toThrow();
+  });
+
+  it('does not throw when editable changes after the editor instance has been destroyed', async () => {
+    const { result, rerender } = renderHook(
+      ({ editable }) => useTipTapEditor(editable, '<p>Hello</p>'),
+      { wrapper, initialProps: { editable: true } },
+    );
+
+    await waitFor(() => expect(result.current.editor).toBeTruthy());
+    result.current.editor!.destroy();
+
+    expect(() => rerender({ editable: false })).not.toThrow();
+  });
+
+  it('does not throw when focus changes after the editor instance has been destroyed', async () => {
+    const { result, rerender } = renderHook(
+      ({ focus }: { focus: 'start' | 'end' }) =>
+        useTipTapEditor(true, '<p>Hello</p>', focus),
+      { wrapper, initialProps: { focus: 'start' } },
+    );
+
+    await waitFor(() => expect(result.current.editor).toBeTruthy());
+    result.current.editor!.destroy();
+
+    expect(() => rerender({ focus: 'end' })).not.toThrow();
+  });
+
   it('still calls onContentChange for a real, user-driven edit', async () => {
     const onContentChange = vi.fn();
 
