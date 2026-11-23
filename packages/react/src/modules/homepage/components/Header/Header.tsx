@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 
 import {
   Avatar,
-  Badge,
-  ButtonBeta as Button,
   LogoBeta as Logo,
   Popover,
   PopoverBody,
@@ -20,6 +18,7 @@ import {
 
 import { useId, type MouseEvent } from 'react';
 import { AccountActionListPopover } from './AccountActionListPopover';
+import { HeaderBadge } from './HeaderBadge';
 import { MyAppsPopoverBody, MyAppsPopoverFooter } from './MyAppsPopover';
 import { useSafeHoverPopover } from './useSafeHoverPopover';
 import { Navbar } from '../../../../components/Layout/components/Navbar';
@@ -39,14 +38,20 @@ import { useHasNotificationToday } from '../Notifications/hooks/useNotificationL
 export interface HeaderProps {
   src: string | undefined;
   onNotificationsClick?: () => void;
-  /** Scope this header's CSS theme (`data-product`) to its own subtree, independently of the page's ambient theme. */
+  /**
+   * CSS theme (`data-product`) scoped to the header's own subtree,
+   * independently of the page's ambient theme. Defaults to `edifice2d`, the
+   * only theme the Header v2 is designed for, so it keeps its look inside
+   * legacy-themed apps (e.g. neo). A platform can still impose its own theme
+   * (e.g. `crna`) through the theme-conf `layout.header` override.
+   */
   dataProduct?: string;
 }
 
 const Header = ({
   src = '',
   onNotificationsClick,
-  dataProduct,
+  dataProduct = 'edifice2d',
 }: HeaderProps): JSX.Element => {
   const { t } = useTranslation();
   const { messages } = useConversation();
@@ -83,7 +88,7 @@ const Header = ({
    * while the pointer moves diagonally from the trigger towards the (wider)
    * popover instead of closing as soon as it leaves the trigger.
    */
-  const { lg: isDesktop } = useBreakpoint();
+  const { md: isTablet, lg: isDesktop } = useBreakpoint();
   const myApps = useSafeHoverPopover({
     hoverEnabled: isDesktop,
     clickEnabled: !isDesktop,
@@ -104,8 +109,11 @@ const Header = ({
 
   return (
     <header className={classes} data-product={dataProduct}>
-      <Navbar className="px-24">
-        <Logo src={`${src}/img/illustrations/logo-v2.png`} />
+      <Navbar>
+        <Logo
+          src={`${src}/img/illustrations/logo-v2.png`}
+          translate={t('navbar.home')}
+        />
         <ul className="navbar-nav">
           <NavItem>
             <NavLink
@@ -139,37 +147,25 @@ const Header = ({
                 data-testid="header-messagerie-button"
               >
                 <IconMessages />
-                {hasMessages && (
-                  <Badge
-                    variant={{ type: 'notification', level: 'danger' }}
-                    className="position-absolute"
-                  >
-                    {messages}
-                  </Badge>
-                )}
+                {hasMessages && <HeaderBadge>{messages}</HeaderBadge>}
               </NavLink>
             </NavItem>
           )}
           {hasCarbonioWorkflow && (
             <NavItem>
-              <a
-                className="nav-link position-relative"
-                href="/auth/carbonio/preauth"
+              <NavLink
+                className="position-relative"
+                link="/auth/carbonio/preauth"
                 target="_blank"
-                data-testid="header-messagerie-button"
+                translate={t('conversation')}
                 title={t('conversation')}
+                data-testid="header-messagerie-button"
               >
                 <IconMessages />
                 {carbonioUnreadCount > 0 && (
-                  <Badge
-                    variant={{ type: 'notification', level: 'danger' }}
-                    className="position-absolute"
-                  >
-                    {carbonioUnreadCount}
-                  </Badge>
+                  <HeaderBadge>{carbonioUnreadCount}</HeaderBadge>
                 )}
-                <VisuallyHidden>{t('conversation')}</VisuallyHidden>
-              </a>
+              </NavLink>
             </NavItem>
           )}
           <NavItem className="position-relative">
@@ -201,24 +197,27 @@ const Header = ({
               </PopoverFooter>
             </Popover>
           </NavItem>
-          <NavItem className="position-relative navbar-nav-notification">
-            <Button
-              leftIcon={<IconNotification />}
-              variant="ghost"
+          <NavItem>
+            {/* No `link`: NavLink renders a button that opens the panel. The
+                label is a child (not `translate`) so that it comes before the
+                "new" marker in the accessible name. */}
+            <NavLink
+              className="position-relative"
               title={t('navbar.notifications')}
               data-testid="header-notifications-button"
-              aria-label={t('navbar.notifications')}
               onClick={handleNotificationsClick}
-            />
-            {hasNotificationToday && (
-              <span className="navbar-nav-notification-badge">
-                <VisuallyHidden>{t('navbar.notifications.new')}</VisuallyHidden>
-              </span>
-            )}
+            >
+              <IconNotification />
+              <VisuallyHidden>{t('navbar.notifications')}</VisuallyHidden>
+              {hasNotificationToday && (
+                <HeaderBadge dot>{t('navbar.notifications.new')}</HeaderBadge>
+              )}
+            </NavLink>
           </NavItem>
           <NavItem className="position-relative">
             <NavLink
               ref={userMenu.setReference}
+              className="navbar-nav-avatar"
               link="/userbook/mon-compte"
               translate={t('navbar.myaccount')}
               id={popoverUserId}
@@ -227,14 +226,13 @@ const Header = ({
               data-testid="header-user-profile-button"
               {...userMenu.getReferenceProps()}
             >
+              {/* 24px below the tablet breakpoint, 36px from it (mock-up) */}
               <Avatar
                 alt={userName}
-                size="sm"
+                size={isTablet ? 'sm' : 'xs'}
                 src={userAvatar}
                 variant="circle"
                 className="bg-white"
-                width="32"
-                height="32"
               />
             </NavLink>
             <AccountActionListPopover

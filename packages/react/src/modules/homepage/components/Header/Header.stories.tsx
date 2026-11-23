@@ -1,9 +1,26 @@
 import { IWebApp } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { authHandlers, userbookHandlers, userInfo } from '@edifice.io/config';
-import { http, HttpResponse } from 'msw';
+import { bypass, http, HttpResponse } from 'msw';
 
 import Header from './Header';
+
+/**
+ * Test avatar taken from the Figma navBar mock-up, served from the docs
+ * static assets in place of the real `/userbook/avatar/:id` picture. It must
+ * come before the global `userbook` handlers, whose own avatar handler
+ * answers 404 to any request without a `thumbnail=100x100` query.
+ */
+const avatarHandlers = [
+  http.get('/userbook/avatar/:id', async () => {
+    const response = await fetch(
+      bypass('/assets/img/avatars/header-test-avatar.png'),
+    );
+    return HttpResponse.arrayBuffer(await response.arrayBuffer(), {
+      headers: { 'Content-Type': 'image/png' },
+    });
+  }),
+];
 
 /**
  * 10 bookmarked apps (2 full rows of 5) with distinct, real icon codes —
@@ -63,22 +80,21 @@ const meta: Meta<typeof Header> = {
     docs: {
       description: {
         component:
-          'Header is the main navigation header component for Edifice applications. It provides access to applications, messaging, search, user account, and other core platform features. The header adapts to different screen sizes and includes dropdown menus for mobile navigation. It integrates with user authentication, conversations, help systems, and theme management.',
+          'Header is the main navigation header component for Edifice applications. It provides access to applications, messaging, search, user account, and other core platform features. The header adapts to different screen sizes and includes dropdown menus for mobile navigation. It integrates with user authentication, conversations, help systems, and theme management. It always renders with its own `data-product` (`edifice2d` by default, overridable with `dataProduct`), so the theme toolbar does not change its look.',
+      },
+    },
+    msw: {
+      handlers: {
+        userbook: [...avatarHandlers, ...userbookHandlers],
       },
     },
   },
   decorators: [
+    // The header is not sticky: only keep room below it for its tallest
+    // popover ("Mes applis" empty state) and its shadow.
     (Story) => (
-      <div style={{ minHeight: '100vh' }}>
+      <div style={{ minHeight: 240 }}>
         <Story />
-        {/* Add some content below to see the header in context */}
-        <div style={{ padding: '2rem' }}>
-          <h1>Sample Page Content</h1>
-          <p>
-            This content shows how the header looks in a real application
-            context.
-          </p>
-        </div>
       </div>
     ),
   ],
@@ -182,9 +198,43 @@ export const WithBookmarkedApps: Story = {
               }),
             }),
           ),
+          ...avatarHandlers,
           ...userbookHandlers,
         ],
       },
     },
+  },
+};
+
+/**
+ * The Header inside an app still themed `neo`: it keeps its own
+ * `data-product="edifice2d"`, so neither the separator nor the colours follow
+ * the surrounding legacy theme.
+ */
+export const InsideNeoApp: Story = {
+  decorators: [
+    (Story) => (
+      <div data-product="neo">
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Rendered inside a `data-product="neo"` page: the header stays in edifice2d.',
+      },
+    },
+  },
+};
+
+/**
+ * A platform theme imposed through the theme-conf `layout.header` override
+ * (here `crna`): the header takes that theme instead of edifice2d.
+ */
+export const WithProductOverride: Story = {
+  args: {
+    dataProduct: 'crna',
   },
 };

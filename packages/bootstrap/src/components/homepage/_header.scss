@@ -1,27 +1,34 @@
 @use '../../themes/configs/breakpoints' as medias;
 
+// The Header v2 carries its own `data-product` (edifice2d by default), so the
+// theme variables below resolve against that theme, not the page's one.
+.header-beta {
+  font-family: var(--font-family-body);
+}
+
 .header-beta .navbar {
   --navbar-padding-y: var(--primitive-spacer-8);
-  --navbar-padding-x: var(--primitive-spacer-8);
-  --navbar-background: var(--primitive-white);
-  --navbar-badge-top: 0.8rem;
-  --navbar-badge-right: -1.6rem;
+  --navbar-padding-x: var(--primitive-spacer-16);
+  --navbar-border-width: 2px;
+  --navbar-background: var(--color-background-default);
+  --navbar-shadow: 0 4px 10px 0 rgb(0 0 0 / 6%);
 
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas: 'links';
   width: 100%;
   padding-block: var(--navbar-padding-y);
+  padding-inline: var(--navbar-padding-x);
   background: var(--navbar-background);
-  border-bottom: 2px solid;
+  border-bottom: var(--navbar-border-width) solid;
   border-image-slice: 1;
-  border-width: 2px;
+  border-width: var(--navbar-border-width);
   border-image-source: linear-gradient(
     67.55deg,
     var(--color-themeSeparator-minor),
     var(--color-themeSeparator-major)
   );
-  box-shadow: var(--primitive-box-shadow);
+  box-shadow: var(--navbar-shadow);
 
   &-brand {
     --navbar-brand-padding-y: 0;
@@ -47,6 +54,9 @@
     --navbar-nav-link-icon-size: 2.4rem;
     --navbar-nav-link-icon-color: var(--primitive-blue-900);
     --navbar-nav-link-padding: var(--primitive-spacer-4);
+    --navbar-nav-avatar-padding: var(--primitive-spacer-4);
+    --navbar-badge-top: 0;
+    --navbar-badge-left: 2.1rem;
 
     grid-area: links;
     display: flex;
@@ -55,23 +65,71 @@
     column-gap: var(--navbar-nav-gap);
     justify-content: space-between;
 
-    .avatar {
-      --edifice-avatar-size: 2.4rem;
-    }
-
     svg {
       width: var(--navbar-nav-link-icon-size);
       height: var(--navbar-nav-link-icon-size);
     }
 
-    // Icons use `currentColor`: colour the nav links and the ghost button
-    // (through its own variable, so its disabled state keeps working) rather
-    // than every nested svg, which would also reach the popovers.
-    // Links and the notification button share the same padding, so every
-    // clickable area has the same size around its icon.
+    // Icons use `currentColor`: colour the nav links rather than every nested
+    // svg, which would also reach the popovers. Links and the notification
+    // button share the same padding and states, so every clickable area has
+    // the same size and hover around its icon.
     .nav-item > .nav-link {
+      display: flex;
       padding: var(--navbar-nav-link-padding);
       color: var(--navbar-nav-link-icon-color);
+      border-radius: var(--primitive-border-radius-md);
+      transition: background-color 150ms ease-in-out;
+
+      &:hover,
+      &:focus-visible {
+        color: var(--navbar-nav-link-icon-color);
+        background-color: var(--primitive-grey-100);
+      }
+
+      &:active {
+        background-color: var(--primitive-grey-200);
+      }
+    }
+
+    // The avatar size comes from the React `Avatar` size prop (xs, then sm
+    // from the tablet breakpoint), not from an override of its variable.
+    .nav-item > .navbar-nav-avatar {
+      padding: var(--navbar-nav-avatar-padding);
+      border-radius: var(--primitive-border-radius-pill);
+    }
+
+    // Badges rendered by the local `HeaderBadge` component (React), until the
+    // shared Badge component implements the design system "notifications
+    // badges" (ENABLING-1399, see the TODO in HeaderBadge.tsx).
+    // Unread counter (messaging).
+    .navbar-nav-badge {
+      position: absolute;
+      top: var(--navbar-badge-top);
+      left: var(--navbar-badge-left);
+      min-width: 1.6rem;
+      padding: 0 var(--primitive-spacer-4);
+      font-size: var(--primitive-font-size-small);
+      font-weight: var(--font-weight-bold);
+      line-height: var(--primitive-font-lineheight-2xs);
+      color: var(--primitive-white);
+      text-align: center;
+      white-space: nowrap;
+      background-color: var(--color-support-danger-700);
+      border-radius: var(--primitive-border-radius-pill);
+      pointer-events: none;
+    }
+
+    // "New today" marker (notifications): no count available.
+    .navbar-nav-dot {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1.2rem;
+      height: 1.2rem;
+      background-color: var(--color-support-danger-700);
+      border-radius: 50%;
+      pointer-events: none;
     }
 
     .popover svg {
@@ -82,13 +140,19 @@
       // The React component sets `top-100`/`d-block` as Bootstrap utility
       // classes, which carry `!important` — a plain `top`/`display` override
       // here can never win against them regardless of specificity. `margin`
-      // isn't touched by either utility, so it's used instead. 2px = the
-      // navbar's own border-bottom width, so the popover lands flush right
-      // under it.
-      margin-top: 2px;
+      // isn't touched by either utility, so it's used instead: the nav item
+      // ends at the navbar's content box, so skip its bottom padding and
+      // border to land flush right under the separator.
+      // The background, border and radius reset the legacy Bootstrap popover
+      // look (body-coloured background, 1px border, 12px radius).
+
+      margin-top: calc(var(--navbar-padding-y) + var(--navbar-border-width));
       width: 247px;
       padding: var(--primitive-spacer-8);
-      box-shadow: 0 4px 10px 0 rgb(0 0 0 / 18%);
+      background-color: var(--color-background-default);
+      border: 0;
+      border-radius: var(--primitive-border-radius-xl);
+      box-shadow: var(--primitive-box-shadow);
 
       &::before {
         display: none;
@@ -99,56 +163,26 @@
       padding: 0;
     }
 
-    &-notification {
-      display: flex;
-
-      button {
-        --btn-beta-color: var(--navbar-nav-link-icon-color);
-
-        padding: var(--navbar-nav-link-padding);
-      }
-
-      &-badge {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 1;
-        display: block;
-        width: 1.2rem;
-        height: 1.2rem;
-        background: var(--primitive-danger-700);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-    }
-
     .popover-footer {
       // `PopoverFooter` hardcodes a `p-8` utility class (also `!important`) —
-      // cancel it with a negative margin rather than fight it, then re-apply
-      // just the intended 4px gap above the icon grid.
-      margin: calc(-1 * var(--primitive-spacer-8));
-      margin-top: calc(var(--primitive-spacer-4) - var(--primitive-spacer-8));
-    }
-  }
+      // cancel it with a negative margin rather than fight it, except on top
+      // where its padding is the intended 8px gap under the icon grid.
 
-  .badge {
-    top: var(--navbar-badge-top);
-    right: var(--navbar-badge-right);
+      margin: calc(-1 * var(--primitive-spacer-8));
+      margin-top: 0;
+    }
   }
 }
 
-@include medias.respond-from('tablet') {
+@include medias.respond-from('mobile-large') {
   .header-beta .navbar {
-    --navbar-badge-top: 0.8rem;
-    --navbar-badge-right: -1.2rem;
-
     grid-template-columns: 1fr auto;
     grid-template-areas: 'logo links';
   }
 
   .header-beta .navbar-brand {
-    --navbar-brand-logo-height: 32px;
-    --navbar-brand-logo-width: 240px;
+    display: flex;
+    align-items: center;
 
     .logo {
       display: inline-block;
@@ -156,9 +190,25 @@
   }
 
   .header-beta .navbar-nav {
-    --navbar-nav-gap: 2.4rem;
-
     justify-content: flex-end;
+  }
+}
+
+@include medias.respond-from('tablet') {
+  .header-beta .navbar {
+    --navbar-padding-x: var(--primitive-spacer-24);
+  }
+
+  .header-beta .navbar-brand {
+    --navbar-brand-logo-height: 32px;
+    --navbar-brand-logo-width: 240px;
+  }
+
+  .header-beta .navbar-nav {
+    --navbar-nav-gap: 2.4rem;
+    --navbar-nav-avatar-padding: var(--primitive-spacer-2);
+    --navbar-badge-top: -0.4rem;
+    --navbar-badge-left: 2.4rem;
 
     svg {
       --navbar-nav-link-icon-size: 3.2rem;
@@ -166,10 +216,6 @@
 
     .popover svg {
       --navbar-nav-link-icon-size: 2.2rem;
-    }
-
-    .avatar {
-      --edifice-avatar-size: 3.2rem;
     }
   }
 }
