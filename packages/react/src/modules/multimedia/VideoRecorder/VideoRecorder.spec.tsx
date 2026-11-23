@@ -38,7 +38,10 @@ vi.mock('../../../hooks', async (importOriginal) => ({
 // useCameras has its own spec; here it is the seam that hands over a stream.
 vi.mock('./useCameras', () => ({ useCameras }));
 
-const video = () => document.querySelector('video') as HTMLVideoElement;
+const preview = () =>
+  document.querySelector('.video-recorder-preview') as HTMLVideoElement;
+const playback = () =>
+  document.querySelector('.video-recorder-playback') as HTMLVideoElement;
 const timer = () => document.querySelector('.video-recorder-time');
 
 const nameInput = () =>
@@ -186,33 +189,33 @@ describe('VideoRecorder', () => {
     it('feeds the stream to the video element, muted', () => {
       const { stream } = setup();
 
-      expect(video().srcObject).toBe(stream);
-      expect(video().muted).toBe(true);
-      expect(video().autoplay).toBe(true);
-      expect(video().load).toHaveBeenCalled();
+      expect(preview().srcObject).toBe(stream);
+      expect(preview().muted).toBe(true);
+      expect(preview().autoplay).toBe(true);
+      expect(preview().load).toHaveBeenCalled();
     });
 
-    it('releases a previous blob URL before reattaching a stream', async () => {
+    it('feeds a new stream to the preview without touching the recording', async () => {
       const harness = setup();
       await record(harness);
-      await waitFor(() => expect(video().src).toContain('blob:'));
+      await waitFor(() => expect(playback().src).toContain('blob:'));
 
       // A brand new stream arrives, as after switching camera: the effect only
       // re-runs on a change of identity.
       const { FakeMediaStream } = await import('../testing/mediaHarness');
+      const newStream = new FakeMediaStream() as FakeMediaStreamInstance;
       useCameras.mockReturnValue({
         inputDevices: [videoInput('camera-1')],
         setPreferedDevice,
         restartStream,
-        stream: new FakeMediaStream() as FakeMediaStreamInstance,
+        stream: newStream,
       });
       harness.rerender(
         <VideoRecorder appCode="blog" onError={vi.fn()} onSuccess={vi.fn()} />,
       );
 
-      expect(harness.revokeObjectURL).toHaveBeenCalled();
-      // Cleared to '', which jsdom reflects back as the document URL.
-      expect(video().src).not.toContain('blob:');
+      expect(preview().srcObject).toBe(newStream);
+      expect(playback().src).toContain('blob:');
     });
   });
 
@@ -273,7 +276,7 @@ describe('VideoRecorder', () => {
 
       await harness.user.click(recordButton());
 
-      expect(video().muted).toBe(true);
+      expect(preview().muted).toBe(true);
     });
 
     it('ignores empty chunks', async () => {
@@ -338,15 +341,17 @@ describe('VideoRecorder', () => {
       );
     });
 
-    it('switches the video element from the stream to the recording', async () => {
+    it('shows the recording on top of the untouched live preview', async () => {
       const harness = setup();
+      expect(playback().hidden).toBe(true);
 
       await record(harness);
 
       await waitFor(() => {
-        expect(video().srcObject).toBeNull();
-        expect(video().src).toContain('blob:');
-        expect(video().autoplay).toBe(false);
+        expect(playback().src).toContain('blob:');
+        expect(playback().autoplay).toBe(false);
+        expect(playback().hidden).toBe(false);
+        expect(preview().srcObject).toBe(harness.stream);
       });
     });
 
@@ -411,8 +416,8 @@ describe('VideoRecorder', () => {
 
       await harness.user.click(playButton());
 
-      expect(video().muted).toBe(false);
-      expect(video().play).toHaveBeenCalled();
+      expect(playback().muted).toBe(false);
+      expect(playback().play).toHaveBeenCalled();
     });
 
     it('pauses on a second click', async () => {
@@ -422,7 +427,7 @@ describe('VideoRecorder', () => {
       await harness.user.click(playButton());
       await harness.user.click(pauseButton());
 
-      expect(video().pause).toHaveBeenCalled();
+      expect(playback().pause).toHaveBeenCalled();
     });
 
     it('rewinds when the recording ends', async () => {
@@ -431,24 +436,45 @@ describe('VideoRecorder', () => {
       await harness.user.click(playButton());
 
       act(() => {
-        video().dispatchEvent(new Event('ended'));
+        playback().dispatchEvent(new Event('ended'));
       });
 
-      expect(video().currentTime).toBe(0);
+      expect(playback().currentTime).toBe(0);
       expect(playButton()).toBeInTheDocument();
     });
   });
 
   describe('reset', () => {
-    it('drops the recording and restarts the camera', async () => {
+    it('drops the recording and reveals the live preview again', async () => {
       const harness = setup();
       await record(harness);
+      await waitFor(() => expect(playback().src).toContain('blob:'));
+
+      await harness.user.click(resetButton());
+
+      expect(restartStream).not.toHaveBeenCalled();
+      expect(harness.revokeObjectURL).toHaveBeenCalledWith(
+        expect.stringContaining('blob:'),
+      );
+      expect(playback().pause).toHaveBeenCalled();
+      expect(playback().getAttribute('src')).toBeNull();
+      expect(playback().hidden).toBe(true);
+      // The preview was never detached from the camera: no blank frame.
+      expect(preview().srcObject).toBe(harness.stream);
+      expect(harness.onRecordUpdated).toHaveBeenLastCalledWith();
+      expect(timer()).toHaveTextContent('00:00/');
+    });
+
+    it('restarts the camera when the stream has ended', async () => {
+      const harness = setup();
+      await record(harness);
+      harness.stream.getTracks().forEach((track) => {
+        Object.defineProperty(track, 'readyState', { value: 'ended' });
+      });
 
       await harness.user.click(resetButton());
 
       expect(restartStream).toHaveBeenCalled();
-      expect(harness.onRecordUpdated).toHaveBeenLastCalledWith();
-      expect(timer()).toHaveTextContent('00:00/');
     });
   });
 
@@ -485,7 +511,7 @@ describe('VideoRecorder', () => {
 
       await harness.user.click(saveButton());
 
-      expect(video().pause).toHaveBeenCalled();
+      expect(playback().pause).toHaveBeenCalled();
     });
 
     it('reports the uploaded document', async () => {
