@@ -90,10 +90,12 @@ const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(
         ...option,
         label: (
           <span
-            className="d-flex align-items-center gap-8"
+            className="segmented-option"
             data-testid={`segmented-option-${option.value}`}
           >
-            {option.label}
+            <span className="segmented-label-text" data-text={option.label}>
+              {option.label}
+            </span>
             {option.badge}
           </span>
         ),
