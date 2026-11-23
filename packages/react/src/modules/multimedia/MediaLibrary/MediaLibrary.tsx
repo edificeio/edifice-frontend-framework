@@ -39,6 +39,7 @@ import {
   IconRecordVideo,
   IconSmartphone,
 } from '../../icons/components';
+import { IExternalLink } from '../Linker/ExternalLinker/ExternalLinker';
 import { InnerTabs } from './innertabs';
 import { ExternalLinkTabProps } from './innertabs/ExternalLink';
 import {
@@ -162,12 +163,21 @@ const mediaLibraryTypes: { none: null } & {
  * The resulting type depends on the actual selected Tab when modal is closed.
  */
 export type MediaLibraryResult =
-  | WorkspaceElement[] // Workspace result
-  | WorkspaceElement // Workspace result
-  | NextcloudDocument[] // Nextcloud result
-  | InternalLinkTabResult // Linker result
-  | string
-  | /*TODO(ENABLING-1155): type des autres résultats ?*/ any;
+  /** Workspace, Upload or Nextcloud (once copied to the workspace) tabs. */
+  | WorkspaceElement[]
+  /** Audio or Video capture tabs, once the record is saved. */
+  | WorkspaceElement
+  /** Nextcloud tab, before the documents are copied to the workspace. */
+  | NextcloudDocument[]
+  /** Internal link tab. */
+  | InternalLinkTabResult
+  /** External link tab. */
+  | IExternalLink
+  /**
+   * Iframe and Video embedder tabs (HTML code to embed),
+   * or Audio / Video capture tabs (URL of the unsaved record).
+   */
+  | string;
 
 /**
  * MediaLibrary component properties
@@ -375,7 +385,7 @@ const MediaLibrary = forwardRef(
       WorkspaceElement[]
     >([]);
     const [onSuccessAction, setPreSuccess] =
-      useState<() => Promise<MediaLibraryResult>>();
+      useState<() => Promise<MediaLibraryResult | undefined>>();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function setVisibleTab(tab: AvailableTab) {
@@ -446,9 +456,15 @@ const MediaLibrary = forwardRef(
           result instanceof Array &&
           ['protected', 'public'].findIndex((v) => v === visibility) >= 0
         ) {
+          // Nextcloud documents are only a placeholder result: the Nextcloud tab
+          // always registers a pre-success action which returns WorkspaceElement[].
           result = await odeServices
             .workspace()
-            .transferDocuments(result, appCode ?? 'media-library', visibility);
+            .transferDocuments(
+              result as WorkspaceElement[],
+              appCode ?? 'media-library',
+              visibility,
+            );
         }
         onSuccess(result);
       };
@@ -459,6 +475,9 @@ const MediaLibrary = forwardRef(
           if (onSuccessAction) {
             // First execute the pre-success action, then trigger the onSuccess callback.
             const asyncResult = await onSuccessAction();
+            // Nothing to hand over (e.g. a record that failed to save):
+            // keep the current selection so the user can retry.
+            if (!asyncResult) return;
             await triggerSuccess(asyncResult);
           } else if (result) {
             await triggerSuccess(result);

@@ -72,7 +72,7 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
         case 'audio': {
           const sounds = Array.isArray(result)
             ? (result as WorkspaceElement[])
-            : [result];
+            : [result as WorkspaceElement];
           // The setAudio() command does not auto-select the inserted audio.
           // => reset the cursor position after inserting
           const { from } = editor.state.selection;
@@ -113,8 +113,9 @@ export const useMediaLibraryEditor = (editor: Editor | null) => {
 
         case 'attachment': {
           let innerHtml = '';
-          for (let i = 0; i < result.length; i++) {
-            const link = (result as WorkspaceElement[])[i];
+          const attachments = result as WorkspaceElement[];
+          for (let i = 0; i < attachments.length; i++) {
+            const link = attachments[i];
             innerHtml += `<a href="/workspace/${
               link.public ? 'pub/' : ''
             }document/${link._id}" data-content-type="${link.metadata?.['content-type']}">${link.name}
