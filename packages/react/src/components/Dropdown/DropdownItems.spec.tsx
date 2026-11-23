@@ -102,7 +102,7 @@ describe('Dropdown.Item', () => {
     await user.click(item('Delete'));
 
     expect(onClick).not.toHaveBeenCalled();
-    expect(item('Delete')).toHaveClass('text-gray-600');
+    expect(item('Delete')).toHaveClass('dropdown-item-disabled');
   });
 
   it('applies a minimum width and the custom classes', async () => {
@@ -483,11 +483,11 @@ describe('Dropdown.SearchInput', () => {
     const trigger = screen.getByRole('button', { name: 'Apps' });
     await user.click(trigger);
 
-    expect(trigger).toHaveClass('opacity-0');
+    expect(trigger).toHaveClass('dropdown-toggle-hidden');
 
     await user.keyboard('{Escape}');
 
-    expect(trigger).not.toHaveClass('opacity-0');
+    expect(trigger).not.toHaveClass('dropdown-toggle-hidden');
   });
 
   it('hides a menu group when none of its items matches', async () => {

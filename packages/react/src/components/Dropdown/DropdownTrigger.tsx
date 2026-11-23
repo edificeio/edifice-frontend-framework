@@ -111,13 +111,14 @@ const DropdownTrigger = forwardRef(
       'dropdown-toggle ',
       size,
       variant,
-      { 'w-100': block },
+      { 'dropdown-toggle-icon-only': !!icon && !label },
+      { 'dropdown-toggle-block': block },
       // The open menu covers the trigger with its search input: hide the trigger
       // without removing it, so it keeps its place and can take the focus back.
-      { 'opacity-0': visible && hasSearchInput },
+      { 'dropdown-toggle-hidden': visible && hasSearchInput },
       triggerProps.className,
       restProps.className,
-      { 'rounded-pill': pill },
+      { 'dropdown-toggle-pill': pill },
       { 'base-shade': baseShade },
     );
 
@@ -132,6 +133,7 @@ const DropdownTrigger = forwardRef(
     };
 
     const mergedProps = {
+      'data-testid': 'dropdown-trigger',
       ...triggerProps,
       ...restProps,
       className,

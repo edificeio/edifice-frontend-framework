@@ -77,7 +77,7 @@ const DropdownItem = ({
     {
       focus: isFocused === id,
     },
-    { 'text-gray-600': disabled },
+    { 'dropdown-item-disabled': disabled },
     className,
   );
 
@@ -86,7 +86,7 @@ const DropdownItem = ({
   };
 
   const content = (
-    <div className="d-flex gap-8 align-items-center">
+    <div className="dropdown-item-content">
       {icon}
       {children}
     </div>
@@ -100,6 +100,7 @@ const DropdownItem = ({
     <div
       id={id}
       role="menuitem"
+      data-testid="dropdown-item"
       style={style}
       ref={(el) => (itemRefs.current[id] = el)}
       tabIndex={isFocused === id ? 0 : -1}

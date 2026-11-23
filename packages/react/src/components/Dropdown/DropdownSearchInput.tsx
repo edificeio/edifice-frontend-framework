@@ -47,15 +47,13 @@ const DropdownSearchInput = ({
   // While the menu is open, the trigger turns into the search input:
   // it is displayed over the trigger, the list stays below.
   const searchInput = (
-    <div
-      ref={registerSearchInput}
-      className="dropdown-search position-absolute top-0 start-0 w-100 h-100 z-1"
-    >
+    <div ref={registerSearchInput} className="dropdown-search">
       <SearchBar
         isVariant
         clearable
         size="md"
-        className="h-100"
+        className="dropdown-search-bar"
+        data-testid="dropdown-search-input"
         placeholder={placeholder}
         value={searchQuery}
         onChange={(e) => {
@@ -82,7 +80,7 @@ const DropdownSearchInput = ({
     <>
       {rootElement && createPortal(searchInput, rootElement)}
       {searchQuery && !hasMatches && (
-        <p className="body-2 text-gray-700 text-center my-8">
+        <p className="dropdown-no-results" data-testid="dropdown-no-results">
           {noResultsLabel}
         </p>
       )}

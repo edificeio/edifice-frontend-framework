@@ -275,7 +275,7 @@ export function DropdownVirtualizedMenu<T>({
   } = menuProps;
 
   const panelClassName = clsx(
-    { 'w-100': block, 'bg-white shadow rounded-4 p-8': !unstyled },
+    { 'dropdown-menu-block': block, 'dropdown-menu-panel': !unstyled },
     menuClassName,
     className,
   );
@@ -285,6 +285,7 @@ export function DropdownVirtualizedMenu<T>({
 
   return (
     <div
+      data-testid="dropdown-virtualized-menu"
       {...restMenuProps}
       ref={menuRef}
       className={panelClassName}
@@ -293,12 +294,13 @@ export function DropdownVirtualizedMenu<T>({
       style={{ ...style, maxHeight: 'none', overflowY: 'visible' }}
     >
       {searchable && (
-        <div className="pb-8">
+        <div className="dropdown-virtualized-search">
           <SearchBar
             isVariant
             clearable
             size="md"
             placeholder={searchPlaceholder}
+            data-testid="dropdown-virtualized-search-input"
             value={query}
             autoFocus
             role="combobox"
@@ -312,7 +314,10 @@ export function DropdownVirtualizedMenu<T>({
             onKeyDown={handleNavKeyDown}
           />
           {query && filteredItems.length === 0 && (
-            <p className="body-2 text-gray-700 text-center mt-8 mb-0">
+            <p
+              className="dropdown-no-results"
+              data-testid="dropdown-virtualized-no-results"
+            >
               {noResultsLabel}
             </p>
           )}
@@ -323,6 +328,7 @@ export function DropdownVirtualizedMenu<T>({
         id={listboxId}
         ref={setListboxEl}
         role="listbox"
+        data-testid="dropdown-virtualized-listbox"
         tabIndex={searchable ? -1 : 0}
         aria-label={ariaLabel}
         aria-multiselectable={selectAll ? true : undefined}
@@ -334,14 +340,16 @@ export function DropdownVirtualizedMenu<T>({
             id={optionId(SELECT_ALL_INDEX)}
             role="option"
             data-select-all
+            data-testid="dropdown-virtualized-select-all"
             onClick={toggleAll}
             onMouseEnter={() => setActiveIndex(SELECT_ALL_INDEX)}
-            className={clsx(
-              'dropdown-item d-flex align-items-center justify-content-between gap-8 border-bottom mb-4',
-              { focus: activeIndex === SELECT_ALL_INDEX },
-            )}
+            className={clsx('dropdown-item dropdown-select-all', {
+              focus: activeIndex === SELECT_ALL_INDEX,
+            })}
           >
-            <span className="text-truncate fw-bold">{selectAll!.label}</span>
+            <span className="dropdown-select-all-label">
+              {selectAll!.label}
+            </span>
             <Checkbox
               checked={allSelected}
               indeterminate={someSelected && !allSelected}
@@ -373,6 +381,7 @@ export function DropdownVirtualizedMenu<T>({
                   id={optionId(index)}
                   role="option"
                   data-index={index}
+                  data-testid="dropdown-virtualized-option"
                   ref={virtualizer.measureElement}
                   onClick={() => select(index)}
                   onMouseEnter={() => setActiveIndex(index)}
