@@ -241,6 +241,16 @@
 // ==========================================================================
 
 @include medias.respond-below('tablet') {
+  // The desktop min-width (35rem) is wider than a phone viewport: stretch the
+  // confirm box between both viewport edges instead, so it never overflows
+  .alert.is-confirm {
+    left: var(--primitive-spacer-0);
+    right: var(--primitive-spacer-0);
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
   .alert.rgpd {
     margin: 0 !important;
   }
