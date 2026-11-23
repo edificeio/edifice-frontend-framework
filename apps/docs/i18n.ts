@@ -330,6 +330,8 @@ i18n.use(initReactI18next).init({
         'homepage.tools.tooltip.video': 'Enregistrer une vidéo',
         'homepage.tools.tooltip.audio': 'Enregistrer un audio',
         'homepage.tools.modal.title': 'Créer un document',
+        'homepage.tools.modal.intro':
+          'Avec OnlyOffice, vous pouvez créer différents types de fichiers :',
         'homepage.tools.modal.type.word': 'Document texte',
         'homepage.tools.modal.type.powerpoint': 'Présentation',
         'homepage.tools.modal.type.excel': 'Tableur',
