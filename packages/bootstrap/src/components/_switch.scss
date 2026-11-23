@@ -90,9 +90,10 @@
     --switch-thumb-stroke-color: var(--color-secondary-dark);
   }
 
-  // Same ring for keyboard focus as for the "pressed" state of the mock-ups.
+  // Keyboard focus is not in the mock-ups: a 2px ring in the dark shade, like
+  // RadioTile. The pale "pressed" ring is too light to show the focus.
   &__input:focus-visible + .switch__track {
-    box-shadow: 0 0 0 4px var(--color-secondary-pale);
+    box-shadow: 0 0 0 2px var(--color-secondary-dark);
   }
 
   &:active .switch__input:not(:checked, :disabled) + .switch__track {
@@ -111,7 +112,7 @@
   }
 
   &:has(.switch__input:disabled) {
-    cursor: default;
+    cursor: not-allowed;
   }
 
   &__input:disabled + .switch__track {
@@ -129,6 +130,36 @@
 
   &__input:disabled ~ .switch__label {
     color: var(--primitive-grey-500);
+  }
+
+  // Forced colors (e.g. Windows High Contrast) drop box-shadows and replace
+  // author colors, but keep system colors. Keep every state readable: an
+  // outline for the keyboard focus, a filled thumb when checked, and GrayText
+  // when disabled.
+  @media (forced-colors: active) {
+    &__input:checked + .switch__track {
+      --switch-thumb-bg: CanvasText;
+    }
+
+    &__input:disabled + .switch__track {
+      --switch-track-stroke-color: GrayText;
+      --switch-thumb-stroke-color: GrayText;
+    }
+
+    &__input:checked:disabled + .switch__track {
+      --switch-track-stroke-color: GrayText;
+      --switch-thumb-bg: GrayText;
+      --switch-thumb-stroke-color: GrayText;
+    }
+
+    &__input:disabled ~ .switch__label {
+      color: GrayText;
+    }
+
+    &__input:focus-visible + .switch__track {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
