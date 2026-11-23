@@ -26,6 +26,10 @@ export interface TabsItemProps {
    * Item content, to be displayed in the panel when selected.
    */
   content: ReactNode;
+  /**
+   * Test identifier set on the tab button
+   */
+  ['data-testid']?: string;
 }
 
 const TabsItem = ({
@@ -34,6 +38,7 @@ const TabsItem = ({
   label,
   id,
   order,
+  'data-testid': dataTestId,
 }: TabsItemProps & { order: number }) => {
   const { activeTab, setSelectedTab, onKeyDown, tabsRef } = useTabsContext();
   const { t } = useTranslation();
@@ -49,6 +54,7 @@ const TabsItem = ({
         ref={(el) => (tabsRef.current[order] = el)}
         type="button"
         id={`tab-${id}`}
+        data-testid={dataTestId}
         className={classes}
         onClick={() => setSelectedTab(id)}
         onKeyDown={(event) => onKeyDown(event)}

@@ -64,6 +64,18 @@ describe('Tabs', () => {
     expect(getTab('Two')).toHaveAttribute('aria-selected', 'true');
   });
 
+  it('sets the data-testid of an item on its tab button', () => {
+    render(
+      <Tabs
+        defaultId="one"
+        items={[{ ...items[0], 'data-testid': 'tab-one-testid' }, items[1]]}
+      />,
+    );
+
+    expect(screen.getByTestId('tab-one-testid')).toBe(getTab('One'));
+    expect(getTab('Two')).not.toHaveAttribute('data-testid');
+  });
+
   it('jumps to the first/last tab with Home/End', async () => {
     const { user } = render(<Tabs defaultId="two" items={items} />);
 
