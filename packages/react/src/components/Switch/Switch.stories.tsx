@@ -10,7 +10,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A Switch is a checkbox presented as an on/off toggle. It comes in a single size and always uses the primary color of the current theme. Its states (checked, pressed, focused, disabled) are driven by the native input, so it works both controlled and uncontrolled. The `size` and `variant` props are deprecated and have no effect.',
+          'A Switch is a checkbox presented as an on/off toggle. It comes in a single size and always uses the secondary color of the current theme. Its states (checked, pressed, focused, disabled) are driven by the native input, so it works both controlled and uncontrolled. The `size` and `variant` props are deprecated and have no effect.',
       },
     },
   },

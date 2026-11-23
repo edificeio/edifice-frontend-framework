@@ -80,19 +80,19 @@
   // ---------------------------------------------------------------------------
 
   &__input:checked + .switch__track {
-    --switch-track-bg: var(--color-primary-default);
-    --switch-track-stroke-color: var(--color-primary-default);
+    --switch-track-bg: var(--color-secondary-default);
+    --switch-track-stroke-color: var(--color-secondary-default);
     --switch-thumb-size: 18px;
     --switch-thumb-left: calc(
       100% - var(--switch-thumb-size) - var(--primitive-spacer-2)
     );
     --switch-thumb-bg: var(--primitive-white);
-    --switch-thumb-stroke-color: var(--color-primary-dark);
+    --switch-thumb-stroke-color: var(--color-secondary-dark);
   }
 
   // Same ring for keyboard focus as for the "pressed" state of the mock-ups.
   &__input:focus-visible + .switch__track {
-    box-shadow: 0 0 0 4px var(--color-primary-pale);
+    box-shadow: 0 0 0 4px var(--color-secondary-pale);
   }
 
   &:active .switch__input:not(:checked, :disabled) + .switch__track {
@@ -100,14 +100,14 @@
     --switch-thumb-bg: var(--primitive-grey-800);
     --switch-thumb-stroke-color: var(--primitive-grey-800);
 
-    box-shadow: 0 0 0 4px var(--color-primary-pale);
+    box-shadow: 0 0 0 4px var(--color-secondary-pale);
   }
 
   &:active .switch__input:checked:not(:disabled) + .switch__track {
-    --switch-track-bg: var(--color-primary-dark);
-    --switch-track-stroke-color: var(--color-primary-dark);
+    --switch-track-bg: var(--color-secondary-dark);
+    --switch-track-stroke-color: var(--color-secondary-dark);
 
-    box-shadow: 0 0 0 4px var(--color-primary-pale);
+    box-shadow: 0 0 0 4px var(--color-secondary-pale);
   }
 
   &:has(.switch__input:disabled) {
@@ -121,10 +121,10 @@
   }
 
   &__input:checked:disabled + .switch__track {
-    --switch-track-bg: var(--color-primary-light);
-    --switch-track-stroke-color: var(--color-primary-light);
+    --switch-track-bg: var(--color-secondary-light);
+    --switch-track-stroke-color: var(--color-secondary-light);
     --switch-thumb-bg: var(--primitive-white);
-    --switch-thumb-stroke-color: var(--color-primary-default);
+    --switch-thumb-stroke-color: var(--color-secondary-default);
   }
 
   &__input:disabled ~ .switch__label {

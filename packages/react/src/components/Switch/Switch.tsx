@@ -34,7 +34,7 @@ export interface SwitchProps extends Omit<
    */
   size?: 'sm' | 'md';
   /**
-   * @deprecated The switch now always uses the theme's primary color, as
+   * @deprecated The switch now always uses the theme's secondary color, as
    * defined by the design system — this prop has no effect and will be
    * removed in a future major version.
    */
