@@ -1,6 +1,7 @@
 import { NotificationModel } from '@edifice.io/client';
 import { useEffect, useState } from 'react';
-import { useDate } from '../../../../..';
+import { useTranslation } from 'react-i18next';
+import { useDate, useToast } from '../../../../..';
 import {
   useNotifications,
   useNotificationTypes,
@@ -85,6 +86,19 @@ export const useNotificationListContainer =
       selectedTypes ?? [],
       isFetchedTypes && !!selectedTypes && !hasNoTypeSelected,
     );
+
+    const { t } = useTranslation();
+    const toast = useToast();
+
+    // Notify the user once per failure: a new error object is only created
+    // when a fetch fails again, so re-renders do not stack toasts.
+    useEffect(() => {
+      if (errorNotifications) {
+        console.error('[Notifications]', errorNotifications);
+        toast.error(t('homepage.notifications-list.error'));
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [errorNotifications]);
 
     return {
       notifications: hasNoTypeSelected ? [] : data,
