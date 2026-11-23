@@ -146,7 +146,9 @@ describe('VideoRecorder', () => {
     it('suggests a dated default name', () => {
       setup();
 
-      expect(nameInput().value).toMatch(/^Video capture \d{4}\/\d{2}\/\d{2}/);
+      expect(nameInput().value).toMatch(
+        /^Enregistrement vidéo \d{4}-\d{2}-\d{2} \d{2}h\d{2}$/,
+      );
     });
 
     it('reports each name change to the parent', async () => {

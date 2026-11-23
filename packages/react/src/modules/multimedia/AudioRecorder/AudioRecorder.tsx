@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 
 import { FormControl, Input, Label, Toolbar } from '../../../components';
+import { useDate } from '../../../hooks';
+import { RECORD_NAME_DATE_FORMAT } from '../utils/recordName';
 import { IconMic } from '../../icons/components';
 import AudioRecorderTimer from './AudioRecorderTimer';
 import useAudioRecorder from './useAudioRecorder';
@@ -53,19 +55,11 @@ const AudioRecorder = forwardRef(
     );
     const { t } = useTranslation();
 
-    function getDefaultDate() {
-      const d = new Date();
-      return (
-        `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
-          2,
-          '0',
-        )}-${String(d.getDate()).padStart(2, '0')} ${String(
-          d.getHours(),
-        ).padStart(2, '0')}h${String(d.getMinutes()).padStart(2, '0')} ` +
-        ' ' +
-        t('bbm.audio.recorder.defaultName')
-      );
-    }
+    const { formatDate } = useDate();
+    // Computed once: the input is uncontrolled, so only its initial value matters.
+    const [defaultName] = useState(() =>
+      `${t('bbm.audio.recorder.defaultName')} ${formatDate(new Date(), RECORD_NAME_DATE_FORMAT)}`.trim(),
+    );
 
     // We add one methods to handle save action from parent component
     useImperativeHandle(ref, () => ({
@@ -118,7 +112,7 @@ const AudioRecorder = forwardRef(
             maxLength={80}
             showCounter
             placeholder={t('bbm.audio.recorder.name')}
-            defaultValue={getDefaultDate()}
+            defaultValue={defaultName}
             onChange={(event) => onNameChange?.(event.target.value)}
             ref={audioNameRef}
           />
