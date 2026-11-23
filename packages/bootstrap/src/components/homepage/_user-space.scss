@@ -1,7 +1,15 @@
 .user-space {
   color: var(--primitive-grey-900);
 
+  // Allow the identity block to shrink below its content width so a long name
+  // never pushes the customize button out of the card.
+  &--identity,
+  &--infos {
+    min-width: 0;
+  }
+
   &--name {
+    overflow-wrap: anywhere;
     font-family: var(--font-family-title);
     font-weight: var(--font-weight-bold);
     font-size: var(--primitive-font-size-s);
@@ -14,8 +22,15 @@
     line-height: var(--primitive-font-lineheight-2xs);
   }
 
-  &--avatar {
-    max-height: var(--primitive-spacer-48);
+  // Fixed square size: with `.avatar-auto`, the avatar width was derived from
+  // the row height (aspect-ratio + stretch), which depends on the name
+  // wrapping. Firefox resolves this cycle differently from Chrome and wrapped
+  // the name, clipping the profile line.
+  &--avatar.avatar {
+    flex-shrink: 0;
+    width: var(--primitive-spacer-48);
+    min-width: var(--primitive-spacer-48);
+    height: var(--primitive-spacer-48);
     margin-left: var(--primitive-spacer-8);
   }
 

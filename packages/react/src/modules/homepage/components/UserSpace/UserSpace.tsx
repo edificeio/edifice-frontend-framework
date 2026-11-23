@@ -47,7 +47,7 @@ export default function UserSpace({
       }
     >
       <Flex className={'user-space'} direction="row" justify="between" gap="8">
-        <Flex direction="row" gap="8">
+        <Flex className={'user-space--identity'} direction="row" gap="8">
           <Avatar
             className={'user-space--avatar'}
             size={'auto'}
@@ -55,7 +55,7 @@ export default function UserSpace({
             src={avatar}
             variant="circle"
           />
-          <Flex direction="column">
+          <Flex className={'user-space--infos'} direction="column">
             <div data-testid="user-space-name" className={'user-space--name'}>
               {name}
             </div>
