@@ -214,7 +214,8 @@ export const mockLastInfos = [
     thread: {
       id: 1,
       icon,
-      title: 'News collège A',
+      title:
+        'News collège A with very long title with no use other than testing !!',
     },
     title:
       'latest news with a very very VERY long title with no use other than testing !!',

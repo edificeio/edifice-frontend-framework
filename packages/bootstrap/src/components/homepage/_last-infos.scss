@@ -52,10 +52,13 @@
 
   &-thread {
     padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
+    // Allow the flex item to shrink below its content width
+    min-width: 0;
   }
 
   &-thread-icon {
     align-self: stretch;
+    flex-shrink: 0;
     border-radius: var(--primitive-border-radius-md);
   }
 
@@ -66,6 +69,7 @@
     color: var(--primitive-text-color-default);
     font-size: var(--primitive-font-size-small);
     line-height: var(--primitive-font-lineheight-2xs);
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
