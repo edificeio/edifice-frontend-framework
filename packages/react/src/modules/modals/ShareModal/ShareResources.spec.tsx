@@ -47,6 +47,12 @@ vi.mock('@edifice.io/client', async (importOriginal) => {
         getRightsForResource,
         saveRights,
         searchShareSubjects,
+        // Use the real implementation: pure logic, no HTTP call.
+        addCurrentUserRights: (
+          ...args: Parameters<
+            ReturnType<typeof actual.odeServices.share>['addCurrentUserRights']
+          >
+        ) => actual.odeServices.share().addCurrentUserRights(...args),
       }),
       cache: () => ({
         clearCache,

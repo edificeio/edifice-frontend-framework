@@ -241,31 +241,10 @@ export default function useShare({
     });
 
     try {
-      //TODO(ENABLING-1154): move this logic into services
       // add my rights if needed (because visible api does not return my rights)
-      const myRights = resourceRights
-        .filter((right) => user && right.includes(`user:${user.userId}`))
-        .map((right) => right.split(':')[2])
-        .filter((right) => !!right);
-
-      const shares = [...state.shareRights.rights];
-
-      if (myRights.length > 0) {
-        const actions: ShareRightAction[] = myRights.map((right) => {
-          return {
-            displayName: right,
-            id: right,
-          } as ShareRightAction;
-        });
-        shares.push({
-          actions,
-          avatarUrl: '',
-          directoryUrl: '',
-          displayName: user!.username,
-          id: user!.userId,
-          type: 'user',
-        });
-      }
+      const shares = odeServices
+        .share()
+        .addCurrentUserRights(state.shareRights.rights, resourceRights, user);
 
       // shared
       if (shareResource) {
