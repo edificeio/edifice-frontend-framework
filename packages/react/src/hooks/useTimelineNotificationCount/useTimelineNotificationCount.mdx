@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useTimelineNotificationCount" />
+
+# useTimelineNotificationCount
+
+Counts the timeline notifications received by the current user since a date, per resource id.
+
+## Usage
+
+```tsx
+import { useTimelineNotificationCount } from '@edifice.io/react';
+
+const { counts, isTruncated } = useTimelineNotificationCount({
+  since: lastVisitDate,
+  type: 'BLOG',
+  resourceIds: ['blog-id-1', 'blog-id-2'],
+});
+
+// counts: { 'blog-id-1': 3, 'blog-id-2': 0 }
+```
+
+## Parameters
+
+- `since` (`Date | undefined`): count notifications received since this date (inclusive). The query is skipped when `undefined`.
+- `type` (`string`): notification type, e.g. `'MESSAGERIE'`, `'BLOG'`. This is not always the application name.
+- `resourceIds` (`string[]`): ids to count notifications for.
+- `groupBy` (`'resource' | 'sub-resource'`, default `'resource'`): notification field the ids are matched against. For instance, a blog post notification has the blog id as `resource` and the post id as `sub-resource`.
+- `eventTypes` (`string[]`, optional): only count these event types (e.g. `'POST-PUBLISH'`).
+
+## Return Value
+
+- `counts`: a count for every requested id, `0` when it has no notification.
+- `isTruncated`: `true` when the backend cap (1000 notifications) was reached before covering `since`: counts are then partial.
+- `isLoading`, `isError`: query status. Errors are not notified to the user (no toast) and not retried.
+
+## Backend load
+
+The backend (`GET /timeline/notifications/since`) is queried from the **start of the day** of `since`, then results are narrowed to `since` client-side. All calls on the same day share a **single backend call**, whatever their exact time, type, ids or `groupBy`. Dates on different days make one call per day.
+
+The refresh policy is fixed and deliberately not configurable, to keep backend calls to a minimum: fetched data is considered fresh for **5 minutes** (no refetch on mount or window focus within that delay), and there is **no polling**.
+
+User preferences are not applied: notifications of types the user chose to hide in their timeline are counted too.
+
+## Lower-level hook
+
+`useTimelineNotificationsSince(since)` returns the notifications themselves (`data.notifications`, `data.isTruncated`), with the same caching. `countNotifications(notifications, params)` is the pure counting function used by `useTimelineNotificationCount`.
