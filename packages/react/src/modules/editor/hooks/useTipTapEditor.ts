@@ -163,19 +163,29 @@ export const useTipTapEditor = (
   });
 
   useEffect(() => {
-    editor?.setEditable(editable, false); // Don't emit the update event, since content did not change.
+    // v3's editor.destroy() nulls out its internal command manager, so a
+    // stale effect still holding a destroyed instance (e.g. one torn down by
+    // React StrictMode's double-mount, or by a remount under a <Suspense>
+    // boundary) throws "Cannot read properties of null (reading 'commands')"
+    // instead of silently no-op'ing like v2 did. Guard every call below.
+    if (!editor || editor.isDestroyed) return;
+    editor.setEditable(editable, false); // Don't emit the update event, since content did not change.
   }, [editor, editable]);
 
   useEffect(() => {
+    if (!editor || editor.isDestroyed) return;
     // v3's setContent emits the 'update' event by default (v2 didn't), which
     // would call onContentChange for this programmatic sync, not just real
     // user edits. Keep it silent, like setEditable above.
-    editor?.commands.setContent(content, { emitUpdate: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [content]);
+    editor.commands.setContent(content, { emitUpdate: false });
+    // `editor` is a dependency (not just `content`) so a freshly (re)created
+    // instance - e.g. after the destroyed-instance case above - still gets
+    // the current content pushed into it.
+  }, [editor, content]);
 
   useEffect(() => {
-    focus && editor?.commands.focus(focus);
+    if (!editor || editor.isDestroyed || !focus) return;
+    editor.commands.focus(focus);
   }, [editor, focus, editable]);
 
   return { editor, editable };
