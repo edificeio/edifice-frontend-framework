@@ -1,6 +1,12 @@
 import { IWebApp } from '@edifice.io/client';
 import { Meta, StoryObj } from '@storybook/react-vite';
-import { authHandlers, userbookHandlers, userInfo } from '@edifice.io/config';
+import {
+  authHandlers,
+  messageNotification,
+  mockNotificationTypes,
+  userbookHandlers,
+  userInfo,
+} from '@edifice.io/config';
 import { bypass, http, HttpResponse } from 'msw';
 
 import Header from './Header';
@@ -160,6 +166,42 @@ export const WithMessages: Story = {
         conversation: [
           http.get('/conversation/api/count/inbox', () =>
             HttpResponse.json({ count: 3 }),
+          ),
+        ],
+      },
+    },
+  },
+};
+
+/**
+ * Header with both badges: the unread messages counter and the "new today"
+ * notifications dot (a notification dated today). Both share the same anchor
+ * on their icon, so they line up across the navbar.
+ */
+export const WithMessagesAndNotifications: Story = {
+  parameters: {
+    msw: {
+      handlers: {
+        conversation: [
+          http.get('/conversation/api/count/inbox', () =>
+            HttpResponse.json({ count: 7 }),
+          ),
+        ],
+        timeline: [
+          http.get('/timeline/types', () =>
+            HttpResponse.json(mockNotificationTypes),
+          ),
+          http.get('/timeline/lastNotifications', () =>
+            HttpResponse.json({
+              number: 1,
+              results: [
+                {
+                  ...messageNotification,
+                  date: { $date: new Date().toISOString() },
+                },
+              ],
+              status: 'ok',
+            }),
           ),
         ],
       },

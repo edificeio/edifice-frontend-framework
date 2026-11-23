@@ -57,6 +57,8 @@
     --navbar-nav-avatar-padding: var(--primitive-spacer-4);
     --navbar-badge-top: 0;
     --navbar-badge-left: 2.1rem;
+    // The dot is as wide as the counter's minimum width.
+    --navbar-dot-size: 1.6rem;
 
     grid-area: links;
     display: flex;
@@ -107,7 +109,7 @@
       position: absolute;
       top: var(--navbar-badge-top);
       left: var(--navbar-badge-left);
-      min-width: 1.6rem;
+      min-width: var(--navbar-dot-size);
       padding: 0 var(--primitive-spacer-4);
       font-size: var(--primitive-font-size-small);
       font-weight: var(--font-weight-bold);
@@ -120,13 +122,15 @@
       pointer-events: none;
     }
 
-    // "New today" marker (notifications): no count available.
+    // "New today" marker (notifications): no count available. It shares the
+    // counter's anchor (same top and left edges) so both badges line up
+    // across the navbar, as in the Figma design.
     .navbar-nav-dot {
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 1.2rem;
-      height: 1.2rem;
+      top: var(--navbar-badge-top);
+      left: var(--navbar-badge-left);
+      width: var(--navbar-dot-size);
+      height: var(--navbar-dot-size);
       background-color: var(--color-support-danger-700);
       border-radius: 50%;
       pointer-events: none;
