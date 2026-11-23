@@ -165,14 +165,14 @@ i18n.use(initReactI18next).init({
         'dropzone.import': 'Add from computer',
         'dropzone.drop': 'Move files here',
         'dropzone.add.more': 'Add more files',
-        'bbm.audio.recorder.defaultName': 'Record ',
+        'bbm.audio.recorder.defaultName': 'Enregistrement audio',
         'bbm.audio.recorder.name.label': 'Audio name',
         'bbm.audio.recorder.name': 'Name of your recording',
         'bbm.audio.recorder.device.error.title':
           'A problem occurred with your microphone.',
         'bbm.audio.recorder.device.error.text':
           'Check that your device has a microphone and that you have allowed your browser to access it.',
-        'bbm.video.recorder.defaultName': 'Video capture',
+        'bbm.video.recorder.defaultName': 'Enregistrement vidéo',
         'bbm.video.recorder.name.label': 'Video name',
         'bbm.video.recorder.name': 'Name of your recording',
         'bbm.video.recorder.device.error.title':
