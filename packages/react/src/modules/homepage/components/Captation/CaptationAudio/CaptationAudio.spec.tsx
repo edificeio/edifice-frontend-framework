@@ -93,4 +93,62 @@ describe('CaptationAudio', () => {
     expect(onClose).not.toHaveBeenCalled();
     expect(saveButton()).toBeEnabled();
   });
+
+  describe('close confirmation', () => {
+    const confirmModal = () =>
+      screen.queryByTestId(
+        'captation-audio-close-confirm-modal-button-confirm',
+      );
+
+    it.each([
+      [
+        'the cancel button',
+        () =>
+          fireEvent.click(screen.getByTestId('captation-audio-button-cancel')),
+      ],
+      [
+        'the close button',
+        () => fireEvent.click(screen.getByRole('button', { name: /close/i })),
+      ],
+      ['a click outside', () => fireEvent.mouseDown(document.body)],
+      [
+        'the Escape key',
+        () => fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' }),
+      ],
+    ])('asks for confirmation before closing on %s', (_, close) => {
+      const { onClose } = setup();
+
+      close();
+
+      expect(confirmModal()).toBeInTheDocument();
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it('closes the modal once the user confirms', () => {
+      const { onClose } = setup();
+      fireEvent.click(screen.getByTestId('captation-audio-button-cancel'));
+
+      fireEvent.mouseDown(confirmModal()!);
+      fireEvent.click(confirmModal()!);
+
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+
+    it('keeps the modal open when the user goes back to it', () => {
+      const { onClose } = setup();
+      fireEvent.click(screen.getByTestId('captation-audio-button-cancel'));
+
+      const back = screen.getByTestId(
+        'captation-audio-close-confirm-modal-button-cancel',
+      );
+      fireEvent.mouseDown(back);
+      fireEvent.click(back);
+
+      expect(confirmModal()).not.toBeInTheDocument();
+      expect(onClose).not.toHaveBeenCalled();
+      expect(
+        screen.getByTestId('captation-audio-button-save'),
+      ).toBeInTheDocument();
+    });
+  });
 });

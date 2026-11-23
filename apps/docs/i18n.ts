@@ -596,6 +596,12 @@ i18n.use(initReactI18next).init({
           'L’URL doit renvoyer un flux au format XML',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
+        //----------------- Captation (audio & video) -----------------
+        'homepage.captation.closeConfirm.title': 'Quitter le studio ?',
+        'homepage.captation.closeConfirm.body':
+          'Votre enregistrement n’a pas été sauvegardé et sera perdu. Voulez-vous vraiment annuler ?',
+        'homepage.captation.closeConfirm.cancel': 'Continuer',
+        'homepage.captation.closeConfirm.confirm': 'Annuler',
         //----------------- Captation video -----------------
         'homepage.captationVideo.modal.title': 'Le Studio vidéo',
         'homepage.captationVideo.cancel': 'Annuler',

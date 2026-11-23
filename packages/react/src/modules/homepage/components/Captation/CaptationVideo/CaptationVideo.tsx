@@ -7,6 +7,7 @@ import {
   ButtonBeta as Button,
   ModalBeta as Modal,
 } from '../../../../../components';
+import { CaptationCloseConfirmModal } from '../CaptationCloseConfirmModal';
 import { useToast } from '../../../../../hooks';
 import { VideoRecorder } from '../../../../multimedia';
 import { VideoRecorderRef } from '../../../../multimedia/VideoRecorder/VideoRecorder';
@@ -30,12 +31,26 @@ export function CaptationVideo({
   const [recordURL, setRecordURL] = useState<string>();
   const [hasName, setHasName] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCloseConfirmOpen, setIsCloseConfirmOpen] = useState(false);
 
   const toast = useToast();
 
   useEffect(() => {
-    if (isOpen) setHasName(true);
+    if (isOpen) {
+      setHasName(true);
+      setIsCloseConfirmOpen(false);
+    }
   }, [isOpen]);
+
+  const handleRequestClose = () => {
+    if (isCloseConfirmOpen || isSaving) return;
+    setIsCloseConfirmOpen(true);
+  };
+
+  const handleConfirmClose = () => {
+    setIsCloseConfirmOpen(false);
+    onClose();
+  };
 
   const handleSuccess = (resources: WorkspaceElement[]) => {
     toast.success(t('homepage.captationVideo.save.success'));
@@ -58,46 +73,55 @@ export function CaptationVideo({
   };
 
   return (
-    <Modal
-      id="captation-video-modal"
-      isOpen={isOpen}
-      size="xl"
-      onModalClose={onClose}
-    >
-      <Modal.Header onModalClose={onClose}>
-        {t('homepage.captationVideo.modal.title')}
-      </Modal.Header>
-      <Modal.Body>
-        <VideoRecorder
-          ref={recorderRef}
-          appCode={appCode}
-          hideSaveAction
-          onRecordUpdated={setRecordURL}
-          onNameChange={(name) => setHasName(!!name.trim())}
-          onSuccess={handleSuccess}
-          onError={handleError}
+    <>
+      <Modal
+        id="captation-video-modal"
+        isOpen={isOpen}
+        size="xl"
+        onModalClose={handleRequestClose}
+      >
+        <Modal.Header onModalClose={handleRequestClose}>
+          {t('homepage.captationVideo.modal.title')}
+        </Modal.Header>
+        <Modal.Body>
+          <VideoRecorder
+            ref={recorderRef}
+            appCode={appCode}
+            hideSaveAction
+            onRecordUpdated={setRecordURL}
+            onNameChange={(name) => setHasName(!!name.trim())}
+            onSuccess={handleSuccess}
+            onError={handleError}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            type="button"
+            variant="ghost"
+            color="tertiary"
+            data-testid="captation-video-button-cancel"
+            onClick={handleRequestClose}
+          >
+            {t('homepage.captationVideo.cancel')}
+          </Button>
+          <Button
+            type="button"
+            isLoading={isSaving}
+            disabled={!recordURL || !hasName || isSaving}
+            data-testid="captation-video-button-save"
+            onClick={handleSave}
+          >
+            {t('homepage.captationVideo.save')}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {isCloseConfirmOpen && (
+        <CaptationCloseConfirmModal
+          id="captation-video-close-confirm-modal"
+          onConfirm={handleConfirmClose}
+          onCancel={() => setIsCloseConfirmOpen(false)}
         />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button
-          type="button"
-          variant="ghost"
-          color="tertiary"
-          data-testid="captation-video-button-cancel"
-          onClick={onClose}
-        >
-          {t('homepage.captationVideo.cancel')}
-        </Button>
-        <Button
-          type="button"
-          isLoading={isSaving}
-          disabled={!recordURL || !hasName || isSaving}
-          data-testid="captation-video-button-save"
-          onClick={handleSave}
-        >
-          {t('homepage.captationVideo.save')}
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      )}
+    </>
   );
 }
