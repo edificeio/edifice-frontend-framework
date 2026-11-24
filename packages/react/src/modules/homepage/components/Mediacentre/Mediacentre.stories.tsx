@@ -48,12 +48,17 @@ const renderWithProps = (props: Partial<MediacentreProps>) => () => (
 export const Default: Story = {
   render: renderWithProps({
     resources: mockResources,
+    hasUniversalis: true,
     uai: '0012345A',
   }),
 };
 
 export const UniversalisWithoutUai: Story = {
-  render: renderWithProps({ resources: mockResources }),
+  render: renderWithProps({ resources: mockResources, hasUniversalis: true }),
+};
+
+export const WithoutUniversalisAccess: Story = {
+  render: renderWithProps({ resources: mockResources, uai: '0012345A' }),
 };
 
 export const Loading: Story = {
@@ -61,9 +66,9 @@ export const Loading: Story = {
 };
 
 export const Empty: Story = {
-  render: renderWithProps({ uai: '0012345A' }),
+  render: renderWithProps({ hasUniversalis: true, uai: '0012345A' }),
 };
 
 export const Error: Story = {
-  render: renderWithProps({ isError: true }),
+  render: renderWithProps({ isError: true, hasUniversalis: true }),
 };

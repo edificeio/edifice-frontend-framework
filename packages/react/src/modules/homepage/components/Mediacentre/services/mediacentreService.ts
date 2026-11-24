@@ -35,6 +35,8 @@ function toResource(signet: MediacentreSignetDTO): MediacentreResource {
  * - `GET /mediacentre/favorites` returns `{ status, data }`. A user who never
  *   selected a favorite gets `data: {}` (state "initialization"), which is an
  *   empty list and not an error.
+ * - `GET /mediacentre/resource/universalis` returns the Universalis resource
+ *   when the user has access to it.
  *
  * @param baseURL The base URL for the mediacentre service API.
  */
@@ -51,6 +53,18 @@ export const createMediacentreService = (baseURL: string) => ({
       throw new Error('mediacentre.favorites.fetch.error');
     }
     return Array.isArray(body.data) ? body.data.map(toResource) : [];
+  },
+
+  /**
+   * Check whether the current user has access to the Universalis resource.
+   * Any failure is treated as "no access", so the search stays hidden.
+   */
+  async hasUniversalis(): Promise<boolean> {
+    const http = odeServices.http();
+    const body = await http.get<unknown>(
+      `${baseURL}/mediacentre/resource/universalis`,
+    );
+    return !http.isResponseError() && !!body;
   },
 });
 
