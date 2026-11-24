@@ -44,7 +44,7 @@ export function RssContainer() {
     <>
       <Rss
         feeds={feeds}
-        isLoading={isLoading}
+        isLoading={true}
         selectedIndex={selectedIndex}
         onSelectFeed={selectFeed}
         articles={articles}

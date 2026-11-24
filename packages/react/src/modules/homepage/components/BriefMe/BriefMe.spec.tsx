@@ -126,7 +126,9 @@ describe('BriefMe', () => {
       />,
     );
 
-    expect(screen.getByTestId('briefme-loading')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBe(
+      screen.getByTestId('briefme-loading'),
+    );
     expect(screen.getByTestId('segmented-option-briefme')).toBeInTheDocument();
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
@@ -159,5 +161,21 @@ describe('BriefMe', () => {
     expect(
       screen.getByText('Il n’y a pas d’articles à afficher.'),
     ).toBeInTheDocument();
+  });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <BriefMe
+        handleActionClick={vi.fn()}
+        status="default"
+        category="briefme"
+        onCategoryChange={vi.fn()}
+        articles={articles}
+        isLoading
+      />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

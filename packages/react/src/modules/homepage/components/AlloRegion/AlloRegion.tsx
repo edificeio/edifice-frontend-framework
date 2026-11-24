@@ -2,6 +2,8 @@ import illuAlloRegion from '@edifice.io/bootstrap/dist/images/homepage/illu-allo
 import { useTranslation } from 'react-i18next';
 import { ButtonBeta } from '../../../../components/ButtonBeta/index';
 import { Image } from '../../../../components/Image/index';
+import { Skeleton } from '../../../../components/Skeleton/index';
+import { VisuallyHidden } from '../../../../components/VisuallyHidden/index';
 import { IconArrowRight } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 
@@ -10,13 +12,37 @@ export interface AlloRegionProps {
   onRequestsClick: () => void;
   /** Opens the form to make a new request. */
   onNewRequestClick: () => void;
+  isLoading?: boolean;
 }
 
 const AlloRegion = ({
   onRequestsClick,
   onNewRequestClick,
+  isLoading = false,
 }: AlloRegionProps) => {
   const { t } = useTranslation();
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="allo-region allo-region--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="allo-region__header-skeleton">
+          <Skeleton className="allo-region__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="allo-region__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="allo-region__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary">

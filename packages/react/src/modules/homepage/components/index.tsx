@@ -9,6 +9,7 @@ export * from './Favorites';
 export * from './GenerationHdf';
 export * from './Header';
 export * from './HomeCard';
+export * from './HomepageSkeleton';
 export * from './LastInfos';
 export * from './Mediacentre';
 export * from './MessageFlashList';

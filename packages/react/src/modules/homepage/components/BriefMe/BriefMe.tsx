@@ -5,7 +5,8 @@ import {
   IconButton,
   Image,
   SegmentedControl,
-  TextSkeleton,
+  Skeleton,
+  VisuallyHidden,
 } from '../../../../components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
@@ -17,6 +18,7 @@ export interface BriefMeProps {
   category: string;
   onCategoryChange: (value: string) => void;
   articles: BriefMeArticle[];
+  isLoading?: boolean;
 }
 
 export default function BriefMe({
@@ -25,6 +27,7 @@ export default function BriefMe({
   category,
   onCategoryChange,
   articles,
+  isLoading = false,
 }: BriefMeProps) {
   const { t } = useTranslation();
 
@@ -42,6 +45,28 @@ export default function BriefMe({
       value: 'brief-science',
     },
   ];
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="briefme briefme--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="briefme__header-skeleton">
+          <Skeleton className="briefme__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="briefme__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="briefme__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary" className="briefme">
@@ -70,10 +95,9 @@ export default function BriefMe({
         )}
 
         {status === 'loading' && (
-          <div className="briefme__loading" data-testid="briefme-loading">
-            <TextSkeleton size="lg" className="briefme__loading-item" />
-            <TextSkeleton size="lg" className="briefme__loading-item" />
-            <TextSkeleton size="lg" className="briefme__loading-item" />
+          <div role="status" aria-busy="true" data-testid="briefme-loading">
+            <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+            <Skeleton variant="block" className="briefme__loading-skeleton" />
           </div>
         )}
 

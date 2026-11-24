@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import { Rss } from '../Rss';
+import { Rss, RssProps } from '../Rss';
 import { RssArticle, RssFeed } from '../types';
 
 const meta: Meta<typeof Rss> = {
@@ -141,5 +141,52 @@ export const LoadingFeeds: Story = {
     selectedIndex: 0,
     articles: [],
     articlesStatus: 'loading',
+  },
+};
+
+const loadedProps: RssProps = {
+  feeds: mockFeeds,
+  selectedIndex: 0,
+  onSelectFeed: () => {},
+  articles: mockArticles,
+  articlesStatus: 'success',
+  onEditClick: () => {},
+};
+
+const loadingProps: RssProps = { ...loadedProps, isLoading: true };
+
+export const SkeletonAboveTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack">
+      <Rss {...loadingProps} />
+      <Rss {...loadedProps} />
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card shown while the widget loads, stacked on top of the loaded card. Its content block is sized to this loaded card, so any difference in height is the layout shift the user would see.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedCard: Story = {
+  render: () => (
+    <div className="skeleton-overlay">
+      <Rss {...loadedProps} />
+      <div className="skeleton-overlay-top">
+        <Rss {...loadingProps} />
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The skeleton card superimposed on the loaded card, at partial opacity. The header and the content block should cover the loaded header and content exactly.',
+      },
+    },
   },
 };

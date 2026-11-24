@@ -101,6 +101,21 @@
     font-size: var(--primitive-font-size-small);
   }
 
+  // Small `ButtonBeta` of the header: block padding around one button line.
+  // Its width follows the translated label, so the value is representative.
+  &__action-skeleton {
+    width: 12rem;
+    height: calc(2 * var(--primitive-spacer-4) + var(--font-button-lineheight));
+  }
+
+  // One line box of the title. The title clamps to two lines, but the item
+  // has a fixed height, so the line count does not move anything. Its width
+  // follows the community name, so the value is representative.
+  &__item-title-skeleton {
+    width: 75%;
+    height: 1lh;
+  }
+
   &-item-badge {
     position: absolute;
     top: var(--primitive-spacer-12);

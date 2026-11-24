@@ -107,15 +107,14 @@ describe('Rss', () => {
   it('shows a skeleton while the articles are loading', () => {
     renderRss({ articlesStatus: 'loading' });
 
-    expect(screen.getByTestId('rss-skeleton')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBe(screen.getByTestId('rss-skeleton'));
     expect(screen.queryByTestId('rss-link-article-0')).not.toBeInTheDocument();
   });
 
-  it('shows only a skeleton, without actions, while the feeds are loading', () => {
+  it('shows only the skeleton card, without actions, while the feeds are loading', () => {
     renderRss({ feeds: [], isLoading: true });
 
-    expect(screen.getByTestId('rss-skeleton')).toBeInTheDocument();
-    expect(screen.queryByTestId('rss-button-add')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('rss-button-edit')).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 });

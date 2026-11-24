@@ -42,4 +42,25 @@ describe('Favorites', () => {
       .map((link) => link.getAttribute('href'));
     expect(hrefs).toEqual(['/wiki', '/blog', '/mindmap']);
   });
+
+  describe('while loading', () => {
+    it('announces a single loading region instead of the apps', () => {
+      render(<Favorites apps={[]} isLoading />);
+
+      const status = screen.getByRole('status');
+      expect(status).toHaveAttribute('aria-busy', 'true');
+      expect(status).toHaveTextContent('Loading');
+      expect(screen.queryByRole('link')).not.toBeInTheDocument();
+      expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    });
+
+    it('shows one row of six app placeholders', () => {
+      render(<Favorites apps={[]} isLoading />);
+
+      expect(
+        document.querySelectorAll('.favorites__app-skeleton'),
+      ).toHaveLength(6);
+    });
+  });
 });

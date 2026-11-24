@@ -46,4 +46,13 @@ describe('Qwant', () => {
 
     expect(handleSearch).not.toHaveBeenCalled();
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(
+      <Qwant handleActionClick={vi.fn()} handleSearch={vi.fn()} isLoading />,
+    );
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });

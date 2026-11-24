@@ -3,18 +3,27 @@ import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyFavorite from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-favorite.svg';
-import { AppIcon, Flex } from '../../../../components';
+import {
+  AppIcon,
+  Flex,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import { IconArrowRight } from '../../../icons/components';
 import HomeCard from '../HomeCard/HomeCard';
+
+const SKELETON_APP_COUNT = 6;
 
 export interface FavoritesProps {
   apps: IWebApp[];
   onSeeAllClick?: () => void;
+  isLoading?: boolean;
 }
 
 export function Favorites({
   apps,
   onSeeAllClick = () => window.open('/welcome', '_self'),
+  isLoading = false,
 }: FavoritesProps) {
   const { t } = useTranslation();
 
@@ -27,6 +36,37 @@ export function Favorites({
   );
 
   const visibleApps = apps.filter((app) => app.display !== false);
+
+  if (isLoading) {
+    return (
+      <HomeCard variant="secondary" role="status" aria-busy="true">
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="home-card-header favorites__header-skeleton">
+          <div className="home-card-header-title">
+            <Skeleton className="favorites__title-skeleton" />
+          </div>
+          <Skeleton
+            variant="pill"
+            tone="strong"
+            className="home-card-header-action favorites__button-skeleton"
+          />
+        </div>
+        <HomeCard.Content>
+          <div className="favorites-content">
+            <div className="favorites__apps-skeleton">
+              {Array.from({ length: SKELETON_APP_COUNT }, (_, index) => (
+                <Skeleton
+                  key={index}
+                  variant="block"
+                  className="favorites__app-skeleton"
+                />
+              ))}
+            </div>
+          </div>
+        </HomeCard.Content>
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="secondary">

@@ -34,5 +34,6 @@ export function useCommunities({ enabled = true }: { enabled?: boolean } = {}) {
     }),
   );
 
+  console.log('useCommunities', { data, isLoading, error });
   return { communities: data ?? [], isLoading, error };
 }

@@ -79,3 +79,77 @@ export const WithCustomizeWidgetsButton: Story = {
     },
   },
 };
+
+const loadingArgs = {
+  name: '',
+  profile: 'Student',
+  avatar: '',
+  isLoading: true,
+  onCustomizeWidgetsClick: () => {},
+} as const;
+
+const loadedArgs = {
+  ...loadingArgs,
+  name: 'Marc Dupont',
+  avatar: USER_AVATAR,
+  isLoading: false,
+};
+
+export const Loading: Story = {
+  args: loadingArgs,
+  render: (args) => (
+    <UserSpace {...args}>On peut insérer ici d'autres widgets.</UserSpace>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "État de chargement : l'avatar, le nom, le profil, le bouton de personnalisation et les liens du profil sont remplacés par des skeletons. Les widgets enfants gèrent leur propre état de chargement.",
+      },
+    },
+  },
+};
+
+export const SkeletonAboveTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay-stack">
+      <UserSpace {...loadingArgs}>
+        On peut insérer ici d'autres widgets.
+      </UserSpace>
+      <UserSpace {...loadedArgs}>
+        On peut insérer ici d'autres widgets.
+      </UserSpace>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state stacked on top of the loaded card. Any difference in height between the two is the layout shift the user would see when the user arrives.',
+      },
+    },
+  },
+};
+
+export const SkeletonSuperimposedOnTheLoadedList: Story = {
+  render: () => (
+    <div className="skeleton-overlay">
+      <UserSpace {...loadedArgs}>
+        On peut insérer ici d'autres widgets.
+      </UserSpace>
+      <div className="skeleton-overlay-top">
+        <UserSpace {...loadingArgs}>
+          On peut insérer ici d'autres widgets.
+        </UserSpace>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'The loading state superimposed on the loaded card, at partial opacity. Each grey block should sit over the content it replaces; the name, profile and link widths are representative.',
+      },
+    },
+  },
+};

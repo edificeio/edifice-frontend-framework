@@ -143,38 +143,6 @@
   background-clip: padding-box;
 }
 
-// Mirrors the header of the Communities card: a `lg` text line and a `sm` button
-// whose width comes from its horizontal padding.
-.communities-skeleton {
-  &-title {
-    height: 1.2em;
-  }
-
-  &-button {
-    width: 5rem;
-    height: 4rem;
-  }
-
-  // A `sm` text line of the community name, centered under its picture. It sits
-  // in a line box of 1.6 of the font size in the loaded card, and the margins
-  // reserve what the 0.8 glyph box leaves of it, offset like the baseline. The
-  // `min-height` reset is needed because 0.8 is lower than the 1em floor of the
-  // primitive.
-  &-line {
-    align-self: center;
-    min-height: 0;
-    height: 0.8em;
-    margin-block: 0.46em 0.34em;
-  }
-}
-
-.carnet-de-bord-skeleton-subtext {
-  width: 75%;
-  height: var(--primitive-font-lineheight-xs);
-  border-block: var(--primitive-spacer-2) solid transparent;
-  background-clip: padding-box;
-}
-
 // Storybook scaffolding. Layout of the comparison stories, kept here so the
 // stories carry no inline style. Nothing below is used by a shipped component.
 .skeleton-showcase {

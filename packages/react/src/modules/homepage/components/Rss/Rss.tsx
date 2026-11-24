@@ -7,15 +7,14 @@ import illuEmptyFeeds from '@edifice.io/bootstrap/dist/images/homepage/illu-empt
 import {
   ButtonBeta as Button,
   Image,
-  TextSkeleton,
+  Skeleton,
+  VisuallyHidden,
 } from '../../../../components';
 import { useDate } from '../../../../hooks';
 import { IconEdit, IconPlus } from '../../../icons/components';
 import { HomeCard } from '../HomeCard';
 import { RssArticle, RssArticlesStatus, RssFeed } from './types';
 import { htmlToText } from './utils';
-
-const SKELETON_ARTICLES = [0, 1, 2];
 
 export interface RssProps {
   feeds: RssFeed[];
@@ -41,23 +40,39 @@ export function Rss({
 
   const hasFeeds = feeds.length > 0;
 
-  const renderArticles = (status: RssArticlesStatus) => {
-    if (status === 'loading') {
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="rss-widget--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="rss-widget__header-skeleton">
+          <Skeleton className="rss-widget__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="rss-widget__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="rss-widget__content-skeleton" />
+      </HomeCard>
+    );
+  }
+
+  const renderArticles = () => {
+    if (articlesStatus === 'loading') {
       return (
-        <div className="rss-widget__articles" data-testid="rss-skeleton">
-          {SKELETON_ARTICLES.map((key) => (
-            <div key={key} className="rss-widget__article" aria-hidden="true">
-              <TextSkeleton className="rss-widget__skeleton-title" />
-              <TextSkeleton size="xs" className="rss-widget__skeleton-date" />
-              <TextSkeleton size="sm" />
-              <TextSkeleton size="sm" />
-            </div>
-          ))}
+        <div role="status" aria-busy="true" data-testid="rss-skeleton">
+          <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+          <Skeleton variant="block" className="rss-widget__loading-skeleton" />
         </div>
       );
     }
 
-    if (status === 'error') {
+    if (articlesStatus === 'error') {
       return (
         <div className="rss-widget__state">
           <div className="rss-widget__state-illustration">
@@ -123,34 +138,33 @@ export function Rss({
     <HomeCard variant="primary">
       <div className="rss-widget__header">
         <h3 className="rss-widget__title">{t('homepage.widget.rss.title')}</h3>
-        {!isLoading &&
-          (hasFeeds ? (
-            <Button
-              type="button"
-              variant="ghost"
-              color="tertiary"
-              leftIcon={<IconEdit />}
-              aria-label={t('homepage.widget.rss.edit')}
-              data-testid="rss-button-edit"
-              onClick={onEditClick}
-            />
-          ) : (
-            <Button
-              type="button"
-              variant="ghost"
-              color="tertiary"
-              size="sm"
-              rightIcon={<IconPlus />}
-              data-testid="rss-button-add"
-              onClick={onEditClick}
-            >
-              {t('homepage.widget.rss.add')}
-            </Button>
-          ))}
+        {hasFeeds ? (
+          <Button
+            type="button"
+            variant="ghost"
+            color="tertiary"
+            leftIcon={<IconEdit />}
+            aria-label={t('homepage.widget.rss.edit')}
+            data-testid="rss-button-edit"
+            onClick={onEditClick}
+          />
+        ) : (
+          <Button
+            type="button"
+            variant="ghost"
+            color="tertiary"
+            size="sm"
+            rightIcon={<IconPlus />}
+            data-testid="rss-button-add"
+            onClick={onEditClick}
+          >
+            {t('homepage.widget.rss.add')}
+          </Button>
+        )}
       </div>
       <HomeCard.Content>
         <div className="rss-widget">
-          {!isLoading && !hasFeeds && (
+          {!hasFeeds && (
             <div className="rss-widget__empty">
               <Image
                 src={illuEmptyFeeds}
@@ -164,7 +178,7 @@ export function Rss({
             </div>
           )}
 
-          {!isLoading && hasFeeds && (
+          {hasFeeds && (
             <div
               className="rss-widget__feeds"
               role="group"
@@ -187,8 +201,7 @@ export function Rss({
             </div>
           )}
 
-          {(isLoading || hasFeeds) &&
-            renderArticles(isLoading ? 'loading' : articlesStatus)}
+          {hasFeeds && renderArticles()}
         </div>
       </HomeCard.Content>
     </HomeCard>

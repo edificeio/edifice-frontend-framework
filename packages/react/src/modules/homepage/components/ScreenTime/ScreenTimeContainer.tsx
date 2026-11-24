@@ -18,6 +18,7 @@ export function ScreenTimeContainer() {
   return (
     <>
       <ScreenTime
+        isLoading
         status={status}
         kids={kids}
         selectedKidId={selectedKid?.id}

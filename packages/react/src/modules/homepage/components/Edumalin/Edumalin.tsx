@@ -1,6 +1,11 @@
 import illuEdumalinError from '@edifice.io/bootstrap/dist/images/homepage/illu-briefme-error.svg';
 import { useTranslation } from 'react-i18next';
-import { IconButton, Image, TextSkeleton } from '../../../../components';
+import {
+  IconButton,
+  Image,
+  Skeleton,
+  VisuallyHidden,
+} from '../../../../components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
 import { HomeCard } from '../HomeCard';
 import EdumalinBadge from './components/EdumalinBadge';
@@ -13,6 +18,7 @@ export interface EdumalinProps {
   error?: EdumalinError | null;
   onItemClick: (item: EdumalinItem) => void;
   onEdumalinClick: () => void;
+  isLoading?: boolean;
 }
 
 export default function Edumalin({
@@ -21,10 +27,33 @@ export default function Edumalin({
   error,
   onItemClick,
   onEdumalinClick,
+  isLoading = false,
 }: EdumalinProps) {
   const { t } = useTranslation();
 
   const isError = status === 'connectionError' || status === 'loadError';
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="edumalin edumalin--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="edumalin__header-skeleton">
+          <Skeleton className="edumalin__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="edumalin__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="edumalin__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   return (
     <HomeCard variant="primary" className="edumalin">
@@ -43,10 +72,9 @@ export default function Edumalin({
 
       <HomeCard.Content className="edumalin__body">
         {status === 'loading' && (
-          <div className="edumalin__loading" data-testid="edumalin-loading">
-            <TextSkeleton size="lg" className="edumalin__loading-item" />
-            <TextSkeleton size="lg" className="edumalin__loading-item" />
-            <TextSkeleton size="lg" className="edumalin__loading-item" />
+          <div role="status" aria-busy="true" data-testid="edumalin-loading">
+            <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+            <Skeleton variant="block" className="edumalin__loading-skeleton" />
           </div>
         )}
 

@@ -8,6 +8,8 @@ import {
   Dropdown,
   Image,
   SearchBar,
+  Skeleton,
+  VisuallyHidden,
 } from '../../../../components';
 import { IconRafterDown } from '../../../icons/components';
 import SvgIconExternalLink from '../../../icons/components/IconExternalLink';
@@ -20,6 +22,7 @@ export interface UniversalisProps {
   selectedSchool?: School;
   onSelectedSchoolChange?: (school: School) => void;
   schools?: School[];
+  isLoading?: boolean;
 }
 
 export default function Universalis({
@@ -28,10 +31,33 @@ export default function Universalis({
   selectedSchool,
   onSelectedSchoolChange,
   schools,
+  isLoading = false,
 }: UniversalisProps) {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+
+  if (isLoading) {
+    return (
+      <HomeCard
+        variant="primary"
+        className="universalis--skeleton"
+        role="status"
+        aria-busy="true"
+      >
+        <VisuallyHidden>{t('homepage.widget.loading')}</VisuallyHidden>
+        <div className="universalis__header-skeleton">
+          <Skeleton className="universalis__title-skeleton" />
+          <Skeleton
+            variant="circle"
+            tone="strong"
+            className="universalis__button-skeleton"
+          />
+        </div>
+        <Skeleton variant="block" className="universalis__content-skeleton" />
+      </HomeCard>
+    );
+  }
 
   const hasManySchools = Boolean(schools && schools.length > 1);
   const hasUai = Boolean(selectedSchool?.UAI);

@@ -61,4 +61,11 @@ describe('Agenda', () => {
 
     expect(onOpenAgendaClick).toHaveBeenCalledTimes(1);
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    render(<Agenda events={[event()]} isLoading />);
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });

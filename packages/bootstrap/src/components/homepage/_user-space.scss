@@ -37,4 +37,66 @@
   &--customize-widgets {
     flex-shrink: 0;
   }
+
+  // ---- Skeleton ----
+
+  &__header-skeleton {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__identity-skeleton {
+    display: flex;
+    flex: 1;
+    gap: var(--primitive-spacer-8);
+  }
+
+  &__infos-skeleton {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: var(--primitive-spacer-4);
+  }
+
+  &__name-skeleton {
+    width: 15rem;
+    height: calc(1lh - var(--primitive-spacer-4) / 2);
+  }
+
+  &__profile-skeleton {
+    width: 8.8rem;
+    height: calc(1lh - var(--primitive-spacer-4) / 2);
+  }
+
+  & &__avatar-skeleton {
+    width: var(--primitive-numbers-48);
+    height: var(--primitive-numbers-48);
+  }
+
+  &__settings-skeleton {
+    display: flex;
+    align-items: center;
+    gap: var(--primitive-spacer-8);
+  }
+
+  & &__button-skeleton {
+    width: calc(2rem + 2 * var(--primitive-spacer-8) + 2px);
+  }
+
+  & &__setting-skeleton {
+    width: 13.1rem;
+    height: calc(2rem + 2 * var(--primitive-spacer-8) + 2px);
+    border-radius: var(--primitive-border-radius-lg);
+  }
+
+  &__links-skeleton {
+    display: flex;
+    gap: var(--primitive-spacer-16);
+  }
+
+  &__link-skeleton {
+    width: 15.4rem;
+    height: calc(2 * var(--primitive-spacer-4) + var(--font-button-lineheight));
+  }
 }

@@ -102,4 +102,11 @@ describe('Edumalin', () => {
 
     expect(screen.getByText('Erreur 404 : Pas de réponse')).toBeInTheDocument();
   });
+
+  it('shows only the skeleton card, without actions, while loading', () => {
+    renderEdumalin({ isLoading: true });
+
+    expect(screen.getByRole('status')).toHaveAttribute('aria-busy', 'true');
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+  });
 });
