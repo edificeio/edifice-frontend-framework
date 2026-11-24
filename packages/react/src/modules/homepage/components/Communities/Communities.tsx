@@ -52,7 +52,7 @@ const Communities = ({
           ) : (
             <div className="communities-empty">
               <Image
-                src={illuCommunities}
+                src={illuCommunities + '?thumbnail=200x200'}
                 alt=""
                 aria-hidden="true"
                 style={{ width: 80, height: 80 }}
