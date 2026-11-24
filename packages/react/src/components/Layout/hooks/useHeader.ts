@@ -5,6 +5,7 @@ import { useHover } from '@uidotdev/usehooks';
 import { useTranslation } from 'react-i18next';
 import { useBookmark, useHasWorkflow } from '../../../hooks';
 import { useEdificeClient } from '../../../providers/EdificeClientProvider/EdificeClientProvider.hook';
+import { getHeaderAvatarUrl } from '../utils/getHeaderAvatarUrl';
 
 export default function useHeader({
   user,
@@ -40,7 +41,7 @@ export default function useHeader({
   /**
    * Get user info: avatar, username and welcome message
    */
-  const userAvatar = avatar;
+  const userAvatar = getHeaderAvatarUrl(avatar);
   const userName = user?.username;
 
   const welcomeUser = t('welcome', { username: user?.firstName });
