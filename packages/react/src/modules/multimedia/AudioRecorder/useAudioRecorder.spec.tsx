@@ -98,10 +98,24 @@ async function recordAndPause(harness: Harness) {
 
 describe('useAudioRecorder', () => {
   describe('mounting', () => {
-    it('spins up the encoder worker and initialises it', () => {
+    it('spins up the encoder worker and initialises it', async () => {
       const harness = setup();
 
-      expect(harness.worker().url).toBe('/infra/public/js/audioEncoder.js');
+      // Blob bootstrap, so the worker runs under the page CSP rather than
+      // the one served with the static encoder script.
+      const bootstrap = harness.createObjectURL.mock.calls[0][0] as Blob;
+      expect(harness.worker().url).toBe(
+        harness.createObjectURL.mock.results[0].value,
+      );
+      // jsdom's Blob has no text(): read it the way it supports.
+      const source = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsText(bootstrap);
+      });
+      expect(source).toBe(
+        `importScripts("${window.location.origin}/infra/public/js/audioEncoder.js");`,
+      );
       expect(harness.worker().postMessage).toHaveBeenCalledWith([
         'init',
         48000,
@@ -123,6 +137,9 @@ describe('useAudioRecorder', () => {
       harness.unmount();
 
       expect(harness.worker().terminate).toHaveBeenCalled();
+      expect(harness.revokeObjectURL).toHaveBeenCalledWith(
+        harness.worker().url,
+      );
     });
   });
 

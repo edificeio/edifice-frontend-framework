@@ -46,6 +46,26 @@ type AudioReducerState = {
   maxDuration: number;
 };
 
+const AUDIO_ENCODER_URL = '/infra/public/js/audioEncoder.js';
+
+/**
+ * Starts the encoder worker from a blob bootstrap instead of its URL.
+ *
+ * A worker loaded from a URL enforces the CSP of its own HTTP response, and
+ * some platforms serve static JS with `default-src 'none'`: the encoder then
+ * cannot load libmp3lame. A blob worker inherits the page's CSP instead.
+ * The returned URL must be revoked once the worker is terminated.
+ */
+function createEncoderWorker(): { worker: Worker; bootstrapUrl: string } {
+  const encoderUrl = new URL(AUDIO_ENCODER_URL, window.location.origin).href;
+  const bootstrapUrl = URL.createObjectURL(
+    new Blob([`importScripts(${JSON.stringify(encoderUrl)});`], {
+      type: 'text/javascript',
+    }),
+  );
+  return { worker: new Worker(bootstrapUrl), bootstrapUrl };
+}
+
 export default function useAudioRecorder(
   onSaveSuccess?: (resource: WorkspaceElement) => void,
   onUpdateRecord?: (audioUrl?: string) => void,
@@ -100,7 +120,7 @@ export default function useAudioRecorder(
 
   // Init Web Socket to send audio chunks to backend
   useEffect(() => {
-    const encoderWorker = new Worker('/infra/public/js/audioEncoder.js');
+    const { worker: encoderWorker, bootstrapUrl } = createEncoderWorker();
     dispatch({
       type: 'update',
       updatedState: { encoderWorker: encoderWorker },
@@ -113,6 +133,7 @@ export default function useAudioRecorder(
     return () => {
       closeAudioStream();
       encoderWorker.terminate();
+      URL.revokeObjectURL(bootstrapUrl);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
