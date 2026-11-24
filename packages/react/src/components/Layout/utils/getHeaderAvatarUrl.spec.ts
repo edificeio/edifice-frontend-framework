@@ -3,21 +3,21 @@ import { describe, expect, it } from 'vitest';
 import { getHeaderAvatarUrl } from './getHeaderAvatarUrl';
 
 describe('getHeaderAvatarUrl', () => {
-  it('appends the 48x48 thumbnail to a user avatar URL', () => {
+  it('appends the 100x100 thumbnail to a user avatar URL', () => {
     expect(getHeaderAvatarUrl('/userbook/avatar/123')).toBe(
-      '/userbook/avatar/123?thumbnail=48x48',
+      '/userbook/avatar/123?thumbnail=100x100',
     );
   });
 
   it('uses "&" when the URL already has query parameters', () => {
     expect(getHeaderAvatarUrl('/userbook/avatar/123?v=2')).toBe(
-      '/userbook/avatar/123?v=2&thumbnail=48x48',
+      '/userbook/avatar/123?v=2&thumbnail=100x100',
     );
   });
 
   it('keeps an existing thumbnail parameter', () => {
-    expect(getHeaderAvatarUrl('/userbook/avatar/123?thumbnail=100x100')).toBe(
-      '/userbook/avatar/123?thumbnail=100x100',
+    expect(getHeaderAvatarUrl('/userbook/avatar/123?thumbnail=48x48')).toBe(
+      '/userbook/avatar/123?thumbnail=48x48',
     );
   });
 
