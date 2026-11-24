@@ -3,6 +3,7 @@ export * from './AlloRegion';
 export * from './Communities';
 export * from './BriefMe';
 export * from './Cantine';
+export * from './Captation';
 export * from './CarnetDeBord';
 export * from './Edumalin';
 export * from './Favorites';
