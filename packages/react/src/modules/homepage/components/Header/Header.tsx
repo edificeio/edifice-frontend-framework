@@ -93,7 +93,15 @@ const Header = ({
     hoverEnabled: isDesktop,
     clickEnabled: !isDesktop,
   });
-  const userMenu = useSafeHoverPopover();
+  /**
+   * "Mon compte" popover: opens on click at every breakpoint (so it works the
+   * same on touch devices), plus on hover on desktop. The trigger never
+   * navigates — "Mon compte" is the first entry of the popover itself.
+   */
+  const userMenu = useSafeHoverPopover({
+    hoverEnabled: isDesktop,
+    clickEnabled: true,
+  });
 
   // On mobile/tablet, the trigger only opens the popover — it must not also
   // navigate to /welcome (desktop keeps navigating on click, as before).
@@ -101,6 +109,10 @@ const Header = ({
     if (!isDesktop) {
       event.preventDefault();
     }
+  };
+
+  const handleUserMenuClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
   };
 
   const handleNotificationsClick = () => {
@@ -224,7 +236,7 @@ const Header = ({
               aria-haspopup="true"
               aria-expanded={userMenu.open}
               data-testid="header-user-profile-button"
-              {...userMenu.getReferenceProps()}
+              {...userMenu.getReferenceProps({ onClick: handleUserMenuClick })}
             >
               {/* 24px below the tablet breakpoint, 36px from it (mock-up) */}
               <Avatar
