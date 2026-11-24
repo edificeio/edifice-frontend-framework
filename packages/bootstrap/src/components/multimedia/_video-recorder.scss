@@ -11,6 +11,7 @@
   --video-recorder-time-radius: var(--primitive-border-radius-md);
   --video-recorder-toolbar-bg: var(--primitive-white);
   --video-recorder-toolbar-radius: var(--primitive-border-radius-xl);
+  --video-recorder-toolbar-label-max-width: 12rem;
   --video-recorder-toolbar-shadow: 0 0.4rem 1rem 0 rgb(0 0 0 / 18%);
 
   display: flex;
@@ -83,6 +84,15 @@
     border-radius: var(--video-recorder-toolbar-radius);
     background-color: var(--video-recorder-toolbar-bg);
     box-shadow: var(--video-recorder-toolbar-shadow);
+
+    .video-recorder-toolbar-label {
+      display: inline-block;
+      max-width: var(--video-recorder-toolbar-label-max-width);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
     transform: translate(-50%, -0.8rem);
 
     @container (max-width: 480px) {
