@@ -1,6 +1,6 @@
 import { IFlashMessageModel } from '@edifice.io/client';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta,
@@ -43,6 +43,18 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
         .filter((cont) => cont !== null)[0];
     }
   }
+
+  // Open every link of the message in a new tab, without giving the opened
+  // page access to this one through window.opener.
+  const htmlContent = useMemo(() => {
+    if (!content) return content;
+    const doc = new DOMParser().parseFromString(content, 'text/html');
+    doc.querySelectorAll('a[href]').forEach((link) => {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    });
+    return doc.body.innerHTML;
+  }, [content]);
 
   // Check if content overflows beyond two lines
   useEffect(() => {
@@ -142,7 +154,7 @@ const MessageFlash = ({ message, onCloseMessage }: MessageFlashProps) => {
         <div
           ref={contentRef}
           className={classesContent}
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
         <Flex
           direction={lg ? 'row' : 'column'}
