@@ -1,6 +1,10 @@
 import { UsefulLink, UsefulLinkPayload } from '@edifice.io/client';
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
+import { useToast } from '../../../../hooks';
+
 import { useUsefulLinksContainer } from './hooks/useUsefulLinksContainer';
 import { LinkForm } from './LinkForm';
 import { UsefulLinks } from './UsefulLinks';
@@ -13,6 +17,8 @@ type View =
   | { name: 'edit'; link: UsefulLink };
 
 export function UsefulLinksContainer() {
+  const { t } = useTranslation();
+  const toast = useToast();
   const [view, setView] = useState<View>({ name: 'closed' });
   const {
     links,
@@ -30,6 +36,7 @@ export function UsefulLinksContainer() {
   const handleSubmit = async (payload: UsefulLinkPayload) => {
     if (view.name === 'edit') {
       await updateLink(view.link.id, payload);
+      toast.success(t('homepage.usefulLinks.form.edit.success'));
     } else {
       await createLink(payload);
     }

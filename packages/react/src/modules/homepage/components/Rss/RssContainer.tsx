@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
+import { useToast } from '../../../../hooks';
+
 import { useRssContainer } from './hooks/useRssContainer';
 import { Rss } from './Rss';
 import { RssFeedForm } from './RssFeedForm';
@@ -13,6 +17,8 @@ type View =
   | { name: 'edit'; index: number; feed: RssFeed };
 
 export function RssContainer() {
+  const { t } = useTranslation();
+  const toast = useToast();
   const [view, setView] = useState<View>({ name: 'closed' });
   const {
     feeds,
@@ -34,7 +40,10 @@ export function RssContainer() {
   // On failure the form stays open so the user doesn't lose their input.
   const handleSubmit = (payload: RssFeedPayload) => {
     if (view.name === 'edit') {
-      updateFeed(view.index, payload, backToManage);
+      updateFeed(view.index, payload, () => {
+        toast.success(t('homepage.widget.rss.form.edit.success'));
+        backToManage();
+      });
     } else {
       addFeed(payload, backToManage);
     }

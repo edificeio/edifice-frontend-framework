@@ -454,6 +454,7 @@ i18n.use(initReactI18next).init({
           "L'adresse doit être une URL valide (ex. https://exemple.fr)",
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
+        'homepage.usefulLinks.form.edit.success': 'Le lien a bien été modifié',
         //------------------ Cantine -----------------------------
         'homepage.widget.cantine.title': 'Menu de la cantine',
         'homepage.widget.cantine.open': 'Ouvrir en plein écran',
@@ -596,6 +597,8 @@ i18n.use(initReactI18next).init({
           'L’URL doit renvoyer un flux au format XML',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
+        'homepage.widget.rss.form.edit.success':
+          'Le flux RSS a bien été modifié',
         //----------------- Captation video -----------------
         'homepage.captationVideo.modal.title': 'Le Studio vidéo',
         'homepage.captationVideo.cancel': 'Annuler',
