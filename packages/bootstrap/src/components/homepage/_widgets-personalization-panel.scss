@@ -44,6 +44,7 @@
   }
 
   &__item {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--primitive-spacer-12);
@@ -83,6 +84,22 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  // BEM mix with the `switch` block: its label is stretched over the whole row,
+  // so that the row itself is the hit area of the switch.
+  // The overlay covers the whole row: any interactive element added to the row
+  // later (reorder handle, menu…) must be raised above it (`position: relative`
+  // and a `z-index`), otherwise it can't be clicked.
+  &__item-switch.switch {
+    position: static;
+    flex-shrink: 0;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
   }
 
   &__item-lock {
@@ -125,47 +142,5 @@
     font-weight: var(--font-weight-regular);
     line-height: var(--primitive-font-lineheight-xs);
     color: var(--primitive-grey-800);
-  }
-}
-
-.widget-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  width: 39px;
-  height: 22px;
-  padding: var(--primitive-spacer-2);
-  background: transparent;
-  border: 1px solid var(--color-primary-dark);
-  border-radius: var(--primitive-border-radius-pill);
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease;
-
-  &__knob {
-    width: 18px;
-    height: 18px;
-    background: var(--color-primary-dark);
-    border-radius: 50%;
-    transition:
-      transform 0.15s ease,
-      background-color 0.15s ease;
-  }
-
-  &--checked {
-    justify-content: flex-end;
-    background: var(--color-primary-default);
-    border-color: var(--color-primary-default);
-
-    .widget-toggle__knob {
-      background: var(--primitive-white);
-    }
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.6;
   }
 }

@@ -1,100 +1,173 @@
-@use '../abstracts' as *;
+// Switch – a checkbox presented as an on/off toggle.
+// States are driven by the native input (`:checked`, `:disabled`,
+// `:focus-visible`) and by the wrapping label (`:active`), so the switch works
+// both as a controlled and an uncontrolled input.
+// The track stroke is drawn with an inset outline (like a Figma "inside"
+// stroke) so that it never shifts the thumb. The thumb geometry is driven by
+// custom properties set on the track, which the thumb inherits.
 
 .switch {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: $spacer-8;
+  gap: var(--primitive-spacer-8);
+  margin: 0;
   cursor: pointer;
 
-  .slider {
-    position: relative;
-    display: inline-block;
-    width: 34px;
-    height: 20px;
-    background-color: var(--#{$prefix}gray-400);
-    transition: 0.4s;
-    border-radius: 20px;
-
-    &::before {
-      position: absolute;
-      content: '';
-      height: 16px;
-      width: 16px;
-      left: 2px;
-      bottom: 2px;
-      background-color: var(--#{$prefix}white);
-      transition: 0.4s;
-      border-radius: 50%;
-    }
+  &--label-left {
+    flex-direction: row-reverse;
   }
 
-  &-sm {
-    .slider {
-      width: 28px;
-      height: 16px;
-
-      &::before {
-        height: 12px;
-        width: 12px;
-      }
-    }
-
-    input:checked + .slider::before {
-      transform: translateX(12px);
-    }
-  }
-
-  input {
+  // Visually hidden but still focusable and announced: the wrapping label
+  // handles pointer interactions.
+  &__input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
     opacity: 0;
-    width: 0;
-    height: 0;
   }
 
-  input:checked + .slider {
-    background-color: var(--#{$prefix}primary);
+  &__track {
+    --switch-track-bg: transparent;
+    --switch-track-stroke-color: var(--primitive-grey-700);
+    --switch-thumb-size: 14px;
+    --switch-thumb-left: var(--primitive-spacer-4);
+    --switch-thumb-bg: var(--primitive-grey-700);
+    --switch-thumb-stroke-color: var(--primitive-grey-700);
 
-    &::before {
-      transform: translateX(14px);
-    }
+    position: relative;
+    flex-shrink: 0;
+    width: 39px;
+    height: 22px;
+    background: var(--switch-track-bg);
+    border-radius: var(--primitive-border-radius-3xl);
+    outline: 1px solid var(--switch-track-stroke-color);
+    outline-offset: -1px;
+    transition:
+      background-color 0.15s ease-in-out,
+      outline-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
   }
 
-  input:focus + .slider {
-    box-shadow: 0 0 1px var(--#{$prefix}primary);
+  &__thumb {
+    position: absolute;
+    top: 50%;
+    left: var(--switch-thumb-left);
+    width: var(--switch-thumb-size);
+    height: var(--switch-thumb-size);
+    background: var(--switch-thumb-bg);
+    border: 1px solid var(--switch-thumb-stroke-color);
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition:
+      left 0.15s ease-in-out,
+      width 0.15s ease-in-out,
+      height 0.15s ease-in-out,
+      background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
   }
 
-  input:disabled + .slider {
-    background-color: var(--#{$prefix}gray-200);
+  &__label {
+    font-family: var(--font-family-body);
+    font-size: var(--primitive-font-size-default);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--primitive-font-lineheight-xs);
+    color: var(--primitive-text-color-default);
+  }
+
+  // States
+  // ---------------------------------------------------------------------------
+
+  &__input:checked + .switch__track {
+    --switch-track-bg: var(--color-secondary-default);
+    --switch-track-stroke-color: var(--color-secondary-default);
+    --switch-thumb-size: 18px;
+    --switch-thumb-left: calc(
+      100% - var(--switch-thumb-size) - var(--primitive-spacer-2)
+    );
+    --switch-thumb-bg: var(--primitive-white);
+    --switch-thumb-stroke-color: var(--color-secondary-dark);
+  }
+
+  // Pressed and keyboard focus use the same darker shades. They only differ by
+  // their ring: a pale 4px halo when pressed, a 2px info ring on focus.
+  &:active .switch__input:not(:checked, :disabled) + .switch__track,
+  &__input:not(:checked):focus-visible + .switch__track {
+    --switch-track-stroke-color: var(--primitive-grey-800);
+    --switch-thumb-bg: var(--primitive-grey-800);
+    --switch-thumb-stroke-color: var(--primitive-grey-800);
+  }
+
+  &:active .switch__input:checked:not(:disabled) + .switch__track,
+  &__input:checked:focus-visible + .switch__track {
+    --switch-track-bg: var(--color-secondary-dark);
+    --switch-track-stroke-color: var(--color-secondary-dark);
+  }
+
+  &__input:focus-visible + .switch__track {
+    box-shadow: 0 0 0 2px var(--color-support-info-700);
+  }
+
+  &:active .switch__input:not(:disabled) + .switch__track {
+    box-shadow: 0 0 0 4px var(--color-secondary-pale);
+  }
+
+  &:has(.switch__input:disabled) {
     cursor: not-allowed;
+  }
 
-    &::before {
-      background-color: var(--#{$prefix}gray-300);
+  &__input:disabled + .switch__track {
+    --switch-track-stroke-color: var(--primitive-grey-300);
+    --switch-thumb-bg: var(--primitive-grey-300);
+    --switch-thumb-stroke-color: var(--primitive-grey-300);
+  }
+
+  &__input:checked:disabled + .switch__track {
+    --switch-track-bg: var(--color-secondary-light);
+    --switch-track-stroke-color: var(--color-secondary-light);
+    --switch-thumb-bg: var(--primitive-white);
+    --switch-thumb-stroke-color: var(--color-secondary-default);
+  }
+
+  &__input:disabled ~ .switch__label {
+    color: var(--primitive-grey-500);
+  }
+
+  // Forced colors (e.g. Windows High Contrast) drop box-shadows and replace
+  // author colors, but keep system colors. Keep every state readable: an
+  // outline for the keyboard focus, a filled thumb when checked, and GrayText
+  // when disabled.
+  @media (forced-colors: active) {
+    &__input:checked + .switch__track {
+      --switch-thumb-bg: CanvasText;
+    }
+
+    &__input:disabled + .switch__track {
+      --switch-track-stroke-color: GrayText;
+      --switch-thumb-stroke-color: GrayText;
+    }
+
+    &__input:checked:disabled + .switch__track {
+      --switch-track-stroke-color: GrayText;
+      --switch-thumb-bg: GrayText;
+      --switch-thumb-stroke-color: GrayText;
+    }
+
+    &__input:disabled ~ .switch__label {
+      color: GrayText;
+    }
+
+    &__input:focus-visible + .switch__track {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
     }
   }
 
-  @each $variant in $variants {
-    &.switch-#{$variant} {
-      input:checked + .slider {
-        background-color: var(--#{$prefix}#{$variant});
-      }
-
-      input:focus + .slider {
-        box-shadow: 0 0 1px var(--#{$prefix}#{$variant});
-      }
-    }
-  }
-
-  &-label {
-    font-size: $font-size-base;
-    line-height: $line-height-base;
-    color: var(--#{$prefix}gray-800);
-  }
-
-  &-disabled {
-    cursor: not-allowed;
-
-    .switch-label {
-      color: var(--#{$prefix}gray-500);
+  @media (prefers-reduced-motion: reduce) {
+    &__track,
+    &__thumb {
+      transition: none;
     }
   }
 }
