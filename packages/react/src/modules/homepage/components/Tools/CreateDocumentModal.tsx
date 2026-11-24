@@ -54,7 +54,9 @@ export function CreateDocumentModal({
           onSubmit={handleSubmit}
         >
           <div>
-            <p className="mb-12">{t('homepage.tools.modal.intro')}</p>
+            <p className="tools-modal-intro">
+              {t('homepage.tools.modal.intro')}
+            </p>
             <div className="tools-modal-types">
               {OFFICE_TOOLS.map((tool) => (
                 <RadioCard

@@ -28,13 +28,19 @@
     gap: var(--primitive-spacer-24);
   }
 
+  &-modal-intro {
+    margin-bottom: var(--primitive-spacer-12);
+  }
+
   &-modal-types {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--primitive-spacer-12);
+  }
+}
 
-    @include medias.respond-below('tablet') {
-      grid-template-columns: minmax(0, 1fr);
-    }
+@include medias.respond-below('tablet') {
+  .tools-modal-types {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
