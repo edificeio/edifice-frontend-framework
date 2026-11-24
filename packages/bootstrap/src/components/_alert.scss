@@ -226,6 +226,34 @@
     bottom: var(--primitive-spacer-0);
     right: var(--primitive-spacer-0);
   }
+
+  &:not(.is-toast, .is-confirm) {
+    container-type: inline-size;
+    flex-wrap: wrap;
+
+    @container (max-width: 480px) {
+      > svg {
+        align-self: flex-start;
+        margin-block: var(--primitive-spacer-4);
+      }
+
+      .alert-content,
+      .btn-close-container {
+        align-self: flex-start;
+      }
+
+      .btn-close-container {
+        order: 1;
+      }
+
+      .alert-actions {
+        order: 2;
+        flex-basis: 100%;
+        justify-content: flex-end;
+        margin-inline-start: var(--primitive-spacer-0);
+      }
+    }
+  }
 }
 
 @each $state in ('success', 'warning', 'info', 'danger') {
