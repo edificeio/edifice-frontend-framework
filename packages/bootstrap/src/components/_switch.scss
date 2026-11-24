@@ -90,24 +90,26 @@
     --switch-thumb-stroke-color: var(--color-secondary-dark);
   }
 
-  // Keyboard focus is not in the mock-ups: a 2px ring in the dark shade, like
-  // RadioTile. The pale "pressed" ring is too light to show the focus.
-  &__input:focus-visible + .switch__track {
-    box-shadow: 0 0 0 2px var(--color-secondary-dark);
-  }
-
-  &:active .switch__input:not(:checked, :disabled) + .switch__track {
+  // Pressed and keyboard focus use the same darker shades. They only differ by
+  // their ring: a pale 4px halo when pressed, a 2px info ring on focus.
+  &:active .switch__input:not(:checked, :disabled) + .switch__track,
+  &__input:not(:checked):focus-visible + .switch__track {
     --switch-track-stroke-color: var(--primitive-grey-800);
     --switch-thumb-bg: var(--primitive-grey-800);
     --switch-thumb-stroke-color: var(--primitive-grey-800);
-
-    box-shadow: 0 0 0 4px var(--color-secondary-pale);
   }
 
-  &:active .switch__input:checked:not(:disabled) + .switch__track {
+  &:active .switch__input:checked:not(:disabled) + .switch__track,
+  &__input:checked:focus-visible + .switch__track {
     --switch-track-bg: var(--color-secondary-dark);
     --switch-track-stroke-color: var(--color-secondary-dark);
+  }
 
+  &__input:focus-visible + .switch__track {
+    box-shadow: 0 0 0 2px var(--color-support-info-700);
+  }
+
+  &:active .switch__input:not(:disabled) + .switch__track {
     box-shadow: 0 0 0 4px var(--color-secondary-pale);
   }
 

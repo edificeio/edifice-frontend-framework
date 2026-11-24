@@ -95,7 +95,7 @@ export const States: Story = {
     docs: {
       description: {
         story:
-          'Off / on, enabled / disabled, with the label on the right (default) or on the left. The pressed state shows while the switch is clicked; the same ring is displayed on keyboard focus.',
+          'Off / on, enabled / disabled, with the label on the right (default) or on the left. The pressed state (darker shades and a pale halo) shows while the switch is clicked. Keyboard focus uses the same darker shades with a 2px info ring.',
       },
     },
   },
