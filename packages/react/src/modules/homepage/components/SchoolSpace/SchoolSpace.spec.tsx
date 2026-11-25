@@ -38,16 +38,31 @@ describe('SchoolSpace', () => {
     );
   });
 
-  it('opens the school list when the school name is clicked', async () => {
-    const { user } = render(
+  const renderWithSchools = () => {
+    const onSelectedSchoolChange = vi.fn();
+    const utils = render(
       <SchoolSpace
         selectedSchool={mockSchool1}
         schools={[mockSchool1, mockSchool2]}
+        onSelectedSchoolChange={onSelectedSchoolChange}
       />,
     );
+    const trigger = screen.getByRole('button', {
+      name: `${mockSchool1.name} Changer d’établissement`,
+    });
+    const chevron = screen.getByTestId('homepage-school-space-chevron');
+    return { ...utils, onSelectedSchoolChange, trigger, chevron };
+  };
 
-    const trigger = screen.getByRole('button', { name: mockSchool1.name });
+  it('exposes the school name and the action as the trigger name', () => {
+    const { trigger } = renderWithSchools();
+
+    expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('opens the school list when the school name is clicked', async () => {
+    const { user, trigger } = renderWithSchools();
 
     await user.click(screen.getByText(mockSchool1.name, { selector: 'b' }));
 
@@ -56,30 +71,59 @@ describe('SchoolSpace', () => {
   });
 
   it('opens the school list when the chevron is clicked and selects a school', async () => {
-    const onSelectedSchoolChange = vi.fn();
-    const { user, container } = render(
-      <SchoolSpace
-        selectedSchool={mockSchool1}
-        schools={[mockSchool1, mockSchool2]}
-        onSelectedSchoolChange={onSelectedSchoolChange}
-      />,
-    );
+    const { user, chevron, onSelectedSchoolChange } = renderWithSchools();
 
-    await user.click(
-      container.querySelector('.school-space-trigger-icon') as Element,
-    );
+    await user.click(chevron);
     await user.click(screen.getByText(mockSchool2.name));
 
     expect(onSelectedSchoolChange).toHaveBeenCalledWith(mockSchool2);
   });
 
-  it('does not render a trigger when there is a single school', () => {
-    render(
+  it('points the chevron down when closed and up when open', async () => {
+    const { user, trigger, chevron } = renderWithSchools();
+
+    expect(chevron.style.rotate).toBe('180deg');
+
+    await user.click(trigger);
+    expect(chevron.style.rotate).toBe('0deg');
+
+    await user.click(trigger);
+    expect(chevron.style.rotate).toBe('180deg');
+  });
+
+  it('opens with the keyboard and selects a school with Enter', async () => {
+    const { user, trigger, onSelectedSchoolChange } = renderWithSchools();
+
+    trigger.focus();
+    await user.keyboard('{Enter}');
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    await user.keyboard('{ArrowDown}');
+    await user.keyboard('{Enter}');
+
+    expect(onSelectedSchoolChange).toHaveBeenCalledWith(mockSchool2);
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('closes on Escape and gives the focus back to the trigger', async () => {
+    const { user, trigger } = renderWithSchools();
+
+    await user.click(trigger);
+    await user.keyboard('{Escape}');
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveFocus();
+  });
+
+  it('does not render a dropdown trigger when there is a single school', () => {
+    const { container } = render(
       <SchoolSpace selectedSchool={mockSchool1} schools={[mockSchool1]} />,
     );
 
+    expect(screen.getByText(mockSchool1.name)).toBeInTheDocument();
+    expect(container.querySelector('[aria-haspopup]')).toBeNull();
     expect(
-      screen.queryByRole('button', { name: mockSchool1.name }),
+      screen.queryByTestId('homepage-school-space-chevron'),
     ).not.toBeInTheDocument();
   });
 

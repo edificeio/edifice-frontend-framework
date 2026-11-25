@@ -2,6 +2,7 @@
   --border-color: var(--primitive-yellow-300);
   --background-color: var(--primitive-yellow-100);
   --border-radius: var(--primitive-border-radius-2xl);
+  --trigger-hover-background: var(--primitive-yellow-200);
 
   padding: var(--primitive-spacer-12);
   border: 1px solid var(--border-color);
@@ -40,9 +41,14 @@
     text-align: center;
     cursor: pointer;
 
+    b {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
     &:hover,
     &.selected {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: var(--trigger-hover-background);
     }
 
     &:focus-visible {
@@ -57,10 +63,15 @@
     }
   }
 
-  // Long names wrap: never wider than a readable width nor than the viewport
-  // (minus a small gutter).
+  // Long names wrap: never wider than a readable width nor than the viewport.
+  // `100vw` includes a classic scrollbar: the 2 × 12px gutter absorbs it, and
+  // the dropdown shift middleware keeps the menu within the visible area.
   &-menu {
-    max-width: min(48rem, calc(100vw - 2 * var(--primitive-spacer-8)));
+    max-width: min(48rem, calc(100vw - 2 * var(--primitive-spacer-12)));
+
+    p {
+      overflow-wrap: anywhere;
+    }
   }
 
   .school-space-directory-button {

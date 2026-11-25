@@ -1,7 +1,8 @@
 import { School } from '@edifice.io/client';
 import clsx from 'clsx';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Dropdown, Flex, useToggle } from '../../../..';
+import { ButtonBeta, Dropdown, Flex, VisuallyHidden } from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { IconRafterUp, IconUserSearch } from '../../../icons/components';
 
@@ -20,7 +21,9 @@ const SchoolSpace = ({
   selectedSchool,
   onSelectedSchoolChange,
 }: SchoolSpaceProps) => {
-  const [isExpanded, toggleExpanded] = useToggle(false);
+  // Mirror the dropdown `visible` state (not a toggle: `onToggle` is also
+  // called on mount and may be called twice in StrictMode).
+  const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
 
   // Do not render anything if no school is selected
@@ -42,7 +45,7 @@ const SchoolSpace = ({
         align="center"
       >
         {hasManySchools ? (
-          <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
+          <Dropdown placement={'bottom-end'} onToggle={setIsExpanded}>
             {(triggerProps: React.ComponentPropsWithRef<'button'>) => (
               <>
                 {/* The whole label (name + chevron) opens the school list. */}
@@ -55,10 +58,15 @@ const SchoolSpace = ({
                   )}
                 >
                   <b>{selectedSchool.name}</b>
+                  <VisuallyHidden>
+                    {t('homepage.school-space.change')}
+                  </VisuallyHidden>
                   <IconRafterUp
                     aria-hidden="true"
+                    data-testid="homepage-school-space-chevron"
                     className="school-space-trigger-icon"
-                    style={getRotateTransitionStyle(isExpanded, {
+                    // Points down when closed, up when open.
+                    style={getRotateTransitionStyle(!isExpanded, {
                       degrees: 180,
                     })}
                   />
