@@ -7,7 +7,8 @@ const STALE_TIME = 5 * 60 * 1000;
 export const mediacentreQueryKeys = {
   all: () => ['mediacentre'] as const,
   favorites: () => [...mediacentreQueryKeys.all(), 'favorites'] as const,
-  universalis: () => [...mediacentreQueryKeys.all(), 'universalis'] as const,
+  universalis: () =>
+    [...mediacentreQueryKeys.all(), 'resource', 'universalis'] as const,
 };
 
 export const mediacentreQueryOptions = {
