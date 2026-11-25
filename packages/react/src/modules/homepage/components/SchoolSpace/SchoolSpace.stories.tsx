@@ -61,6 +61,49 @@ Affiche une liste de plusieurs écoles avec sélection active.
   },
 };
 
+const longNameSchools: School[] = [
+  {
+    id: 'school-long-1',
+    name: 'Lycée polyvalent régional des métiers de l’hôtellerie, de la restauration et du tourisme Jean-Baptiste de La Salle',
+    UAI: '0011111A',
+    classes: [],
+    exports: [],
+  },
+  {
+    id: 'school-long-2',
+    name: 'Collège d’enseignement général et professionnel adapté Marie-Madeleine Fourcade de Saint-Germain-en-Laye',
+    UAI: '0022222B',
+    classes: [],
+    exports: [],
+  },
+  {
+    id: 'school-long-3',
+    name: 'École élémentaire publique d’application Jacques Prévert',
+    UAI: '0033333C',
+    classes: [],
+    exports: [],
+  },
+  ...schools,
+];
+
+export const LongSchoolNames: Story = {
+  render: renderWithProps({
+    schools: longNameSchools,
+    selectedSchool: longNameSchools[0],
+    onSelectedSchoolChange: (school: School) =>
+      alert(`School id=${school.id} UAI=${school.UAI} is selected.`),
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `
+Établissements aux noms très longs : le nom sélectionné passe à la ligne, la liste reste dans le viewport (y compris sur mobile ou dans une colonne étroite à gauche de l'écran).
+Un clic sur le nom ou sur le chevron ouvre la liste.`,
+      },
+    },
+  },
+};
+
 export const SingleSchool: Story = {
   render: renderWithProps({
     schools: [schools[0]],

@@ -16,6 +16,7 @@ import {
   flip,
   offset,
   safePolygon,
+  shift,
   size,
   useFloating,
   useHover,
@@ -88,6 +89,9 @@ const useDropdown = (
         },
       }),
       flip({ padding: 0 }),
+      // Keep the menu inside the viewport when it would overflow on the cross axis
+      // (e.g. a `bottom-end` menu wider than the space left of its trigger).
+      shift({ padding: 8 }),
     ],
   });
 

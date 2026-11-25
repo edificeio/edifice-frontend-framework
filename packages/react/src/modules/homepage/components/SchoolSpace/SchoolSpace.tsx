@@ -1,6 +1,7 @@
 import { School } from '@edifice.io/client';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Dropdown, Flex, IconButton, useToggle } from '../../../..';
+import { ButtonBeta, Dropdown, Flex, useToggle } from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { IconRafterUp, IconUserSearch } from '../../../icons/components';
 
@@ -40,26 +41,29 @@ const SchoolSpace = ({
         gap="4"
         align="center"
       >
-        <b>{selectedSchool.name}</b>
-        {hasManySchools && (
+        {hasManySchools ? (
           <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
-            {(triggerProps: React.ComponentPropsWithRef<typeof IconButton>) => (
+            {(triggerProps: React.ComponentPropsWithRef<'button'>) => (
               <>
-                <IconButton
+                {/* The whole label (name + chevron) opens the school list. */}
+                <button
                   {...triggerProps}
-                  aria-label={t('show')}
-                  color="tertiary"
-                  variant="ghost"
-                  icon={
-                    <IconRafterUp
-                      className="w-16 min-w-0"
-                      style={getRotateTransitionStyle(isExpanded, {
-                        degrees: 180,
-                      })}
-                    />
-                  }
-                />
-                <Dropdown.Menu>
+                  type="button"
+                  className={clsx(
+                    'school-space-trigger',
+                    triggerProps.className,
+                  )}
+                >
+                  <b>{selectedSchool.name}</b>
+                  <IconRafterUp
+                    aria-hidden="true"
+                    className="school-space-trigger-icon"
+                    style={getRotateTransitionStyle(isExpanded, {
+                      degrees: 180,
+                    })}
+                  />
+                </button>
+                <Dropdown.Menu className="school-space-menu">
                   {schools.map((school) => (
                     <Dropdown.Item
                       key={school.id}
@@ -74,6 +78,8 @@ const SchoolSpace = ({
               </>
             )}
           </Dropdown>
+        ) : (
+          <b>{selectedSchool.name}</b>
         )}
       </Flex>
       <ButtonBeta
