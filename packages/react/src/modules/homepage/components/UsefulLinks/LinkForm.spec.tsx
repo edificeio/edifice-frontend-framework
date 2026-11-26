@@ -63,7 +63,7 @@ describe('LinkForm', () => {
     expect(screen.getByTestId('usefullinks-button-save')).toBeDisabled();
   });
 
-  it.each(['https://lumni', 'http://x', 'https://lum ni.fr', 'https://'])(
+  it.each(['https:lumni.fr', 'https://lum ni.fr', 'https://', 'intranet'])(
     'rejects the malformed URL %s',
     async (url) => {
       const { user } = render(
@@ -108,6 +108,36 @@ describe('LinkForm', () => {
       ),
     ).not.toBeInTheDocument();
   });
+
+  it.each(['http://intranet', 'http://localhost:8090/ent'])(
+    'accepts the intranet URL %s',
+    async (url) => {
+      const { user } = render(
+        <LinkForm
+          mode="add"
+          isSubmitting={false}
+          onCancel={vi.fn()}
+          onClose={vi.fn()}
+          onSubmit={vi.fn()}
+        />,
+      );
+
+      await user.type(screen.getByTestId('usefullinks-input-name'), 'ENT');
+      await user.type(screen.getByTestId('usefullinks-input-url'), url);
+      await user.tab();
+
+      await waitFor(() =>
+        expect(
+          screen.getByTestId('usefullinks-button-save'),
+        ).not.toBeDisabled(),
+      );
+      expect(
+        screen.queryByText(
+          "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+        ),
+      ).not.toBeInTheDocument();
+    },
+  );
 
   it('accepts an http:// URL', async () => {
     const { user } = render(
@@ -154,7 +184,7 @@ describe('LinkForm', () => {
     render(
       <LinkForm
         mode="edit"
-        link={{ id: '1', name: 'Intranet', url: 'https://intranet' }}
+        link={{ id: '1', name: 'Lumni', url: 'lumni.fr' }}
         isSubmitting={false}
         onCancel={vi.fn()}
         onClose={vi.fn()}

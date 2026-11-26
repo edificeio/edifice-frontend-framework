@@ -101,7 +101,9 @@ export function LinkForm({
               aria-invalid={!!errors.url}
               {...register('url', {
                 required: true,
-                validate: isValidHttpUrl,
+                // Schools may link to their own intranet ("http://intranet").
+                validate: (value) =>
+                  isValidHttpUrl(value, { allowIntranetHost: true }),
               })}
             />
             {errors.url && (

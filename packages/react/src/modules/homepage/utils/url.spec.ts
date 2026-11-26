@@ -33,3 +33,29 @@ describe('isValidHttpUrl', () => {
     expect(isValidHttpUrl(url)).toBe(false);
   });
 });
+
+describe('isValidHttpUrl with allowIntranetHost', () => {
+  const options = { allowIntranetHost: true };
+
+  it.each([
+    'https://lumni.fr',
+    'http://intranet',
+    'http://intranet/page?x=1',
+    'http://localhost:8090/path',
+    'http://[::1]/',
+  ])('accepts %s', (url) => {
+    expect(isValidHttpUrl(url, options)).toBe(true);
+  });
+
+  it.each([
+    '',
+    'intranet',
+    'https://',
+    'https:intranet',
+    'https://intra net',
+    'https://intranet.',
+    'ftp://intranet',
+  ])('rejects %s', (url) => {
+    expect(isValidHttpUrl(url, options)).toBe(false);
+  });
+});
