@@ -85,4 +85,28 @@ describe('mediacentreService', () => {
       await expect(mediacentreService.getFavorites()).rejects.toThrow();
     });
   });
+
+  describe('hasUniversalis', () => {
+    it('returns true when the Universalis resource exists', async () => {
+      mocks.get.mockResolvedValue({ _id: 'universalis', title: 'Universalis' });
+
+      await expect(mediacentreService.hasUniversalis()).resolves.toBe(true);
+      expect(mocks.get).toHaveBeenCalledWith(
+        '/mediacentre/resource/universalis',
+      );
+    });
+
+    it('returns false when the resource is missing', async () => {
+      mocks.get.mockResolvedValue(null);
+
+      await expect(mediacentreService.hasUniversalis()).resolves.toBe(false);
+    });
+
+    it('returns false when the request fails', async () => {
+      mocks.get.mockResolvedValue(undefined);
+      mocks.isResponseError.mockReturnValue(true);
+
+      await expect(mediacentreService.hasUniversalis()).resolves.toBe(false);
+    });
+  });
 });

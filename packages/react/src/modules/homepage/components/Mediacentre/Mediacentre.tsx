@@ -16,6 +16,8 @@ export interface MediacentreProps {
   resources: MediacentreResource[];
   isLoading?: boolean;
   isError?: boolean;
+  /** Whether the user has access to Universalis; the search is hidden otherwise. */
+  hasUniversalis?: boolean;
   /** UAI code of the user's school, required by the Universalis search. */
   uai?: string;
 }
@@ -25,6 +27,7 @@ export default function Mediacentre({
   resources,
   isLoading = false,
   isError = false,
+  hasUniversalis = false,
   uai,
 }: MediacentreProps) {
   const { t } = useTranslation();
@@ -107,7 +110,7 @@ export default function Mediacentre({
       />
       <HomeCard.Content className="mediacentre__content">
         {renderResources()}
-        <MediacentreUniversalisSearch uai={uai} />
+        {hasUniversalis && <MediacentreUniversalisSearch uai={uai} />}
       </HomeCard.Content>
     </HomeCard>
   );

@@ -86,6 +86,7 @@ describe('Mediacentre', () => {
         handleActionClick={vi.fn()}
         resources={[]}
         isError
+        hasUniversalis
         uai="0012345A"
       />,
     );
@@ -96,9 +97,13 @@ describe('Mediacentre', () => {
     ).toBeInTheDocument();
   });
 
-  it('always renders the Universalis search', () => {
+  it('renders the Universalis search when the user has access to it', () => {
     render(
-      <Mediacentre handleActionClick={vi.fn()} resources={mockResources} />,
+      <Mediacentre
+        handleActionClick={vi.fn()}
+        resources={mockResources}
+        hasUniversalis
+      />,
     );
 
     expect(
@@ -106,9 +111,30 @@ describe('Mediacentre', () => {
     ).toBeInTheDocument();
   });
 
+  it('hides the Universalis search when the user has no access to it', () => {
+    render(
+      <Mediacentre
+        handleActionClick={vi.fn()}
+        resources={mockResources}
+        uai="0012345A"
+      />,
+    );
+
+    expect(
+      screen.queryByTestId('mediacentre-universalis-link'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('mediacentre-universalis-search-input'),
+    ).not.toBeInTheDocument();
+  });
+
   it('disables the Universalis search when the school has no UAI', () => {
     render(
-      <Mediacentre handleActionClick={vi.fn()} resources={mockResources} />,
+      <Mediacentre
+        handleActionClick={vi.fn()}
+        resources={mockResources}
+        hasUniversalis
+      />,
     );
 
     expect(
@@ -122,6 +148,7 @@ describe('Mediacentre', () => {
       <Mediacentre
         handleActionClick={vi.fn()}
         resources={mockResources}
+        hasUniversalis
         uai="0012345A"
       />,
     );
