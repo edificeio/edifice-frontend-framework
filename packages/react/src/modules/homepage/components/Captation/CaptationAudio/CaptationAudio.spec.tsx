@@ -6,8 +6,9 @@ import { fireEvent, render, screen, waitFor } from '~/setup';
 
 import { CaptationAudio } from './CaptationAudio';
 
-const { save, toastSuccess, toastError } = vi.hoisted(() => ({
+const { save, toastSuccess, toastError, httpErrorToast } = vi.hoisted(() => ({
   save: vi.fn(),
+  httpErrorToast: vi.fn(),
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
 }));
@@ -15,6 +16,7 @@ const { save, toastSuccess, toastError } = vi.hoisted(() => ({
 vi.mock('../../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../../hooks')>()),
   useToast: () => ({ success: toastSuccess, error: toastError }),
+  useHttpErrorToast: httpErrorToast,
 }));
 
 // The recorder needs real media devices: replace it by a stub that exposes
@@ -56,6 +58,14 @@ describe('CaptationAudio', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('listens to backend upload errors while open', () => {
+    setup();
+
+    expect(httpErrorToast).toHaveBeenCalledWith(
+      expect.objectContaining({ active: true }),
+    );
   });
 
   it('closes with a success toast once the record is saved', async () => {

@@ -9,7 +9,7 @@ import {
 } from '../../../../../components';
 import { AudioRecorder } from '../../../../multimedia';
 import { AudioRecorderRef } from '../../../../multimedia/AudioRecorder/AudioRecorder';
-import { useToast } from '../../../../../hooks';
+import { useHttpErrorToast, useToast } from '../../../../../hooks';
 
 export interface CaptationAudioProps {
   isOpen: boolean;
@@ -29,6 +29,12 @@ export function CaptationAudio({
   const [isSaving, setIsSaving] = useState(false);
 
   const toast = useToast();
+
+  useHttpErrorToast({
+    active: isOpen,
+    isDismissible: true,
+    duration: Infinity,
+  });
 
   useEffect(() => {
     if (isOpen) setHasName(true);

@@ -7,7 +7,7 @@ import {
   ButtonBeta as Button,
   ModalBeta as Modal,
 } from '../../../../../components';
-import { useToast } from '../../../../../hooks';
+import { useHttpErrorToast, useToast } from '../../../../../hooks';
 import { VideoRecorder } from '../../../../multimedia';
 import { VideoRecorderRef } from '../../../../multimedia/VideoRecorder/VideoRecorder';
 
@@ -32,6 +32,12 @@ export function CaptationVideo({
   const [isSaving, setIsSaving] = useState(false);
 
   const toast = useToast();
+
+  useHttpErrorToast({
+    active: isOpen,
+    isDismissible: true,
+    duration: Infinity,
+  });
 
   useEffect(() => {
     if (isOpen) setHasName(true);
