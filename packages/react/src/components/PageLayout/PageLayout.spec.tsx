@@ -2,9 +2,12 @@ import { act, render, screen } from '~/setup';
 import PageLayout from './PageLayout';
 import { useOverlayStore } from './store/overlayStore';
 
-const { HelpZoneContainer } = vi.hoisted(() => ({
+const { HelpZoneContainer, useCantoo } = vi.hoisted(() => ({
   HelpZoneContainer: vi.fn(() => null),
+  useCantoo: vi.fn(() => null),
 }));
+
+vi.mock('../../hooks/useCantoo', () => ({ useCantoo }));
 
 vi.mock(
   '../../providers/EdificeThemeProvider/EdificeThemeProvider.hook',
@@ -441,6 +444,16 @@ describe('PageLayout', () => {
 
       expect(onClose).not.toHaveBeenCalled();
     });
+  });
+
+  it('loads the Cantoo script like the legacy Layout', () => {
+    render(
+      <PageLayout>
+        <PageLayout.Content>content</PageLayout.Content>
+      </PageLayout>,
+    );
+
+    expect(useCantoo).toHaveBeenCalled();
   });
 
   it('exposes readable display names for the compound parts', () => {

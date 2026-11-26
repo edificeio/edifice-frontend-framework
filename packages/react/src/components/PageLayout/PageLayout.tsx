@@ -12,6 +12,7 @@ import clsx from 'clsx';
 
 import { useTranslation } from 'react-i18next';
 import { Alert } from '../../components/Alert';
+import { useCantoo } from '../../hooks/useCantoo';
 import { useCookiesConsent } from '../../hooks/useCookiesConsent';
 import { useToast } from '../../hooks/useToast';
 import { ButtonBeta as Button } from '../ButtonBeta';
@@ -132,6 +133,8 @@ const Root = ({
     handleConsultCookies,
     handleCloseCookiesConsent,
   } = useCookiesConsent();
+
+  useCantoo();
 
   const contextValue = useMemo(
     () => ({ variant, scrollMode, noPadding }),
