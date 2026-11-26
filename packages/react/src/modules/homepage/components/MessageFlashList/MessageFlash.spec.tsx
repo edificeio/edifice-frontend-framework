@@ -114,6 +114,25 @@ describe('MessageFlash', () => {
 
       expect(content()?.querySelector('strong')).toHaveTextContent('bold');
     });
+
+    it('opens every link of the content in a new tab', () => {
+      render(
+        <MessageFlash
+          message={message({
+            contents: {
+              en: '<a href="https://example.com">external</a> <a href="/blog" target="_self">internal</a>',
+            } as never,
+          })}
+        />,
+      );
+
+      const links = screen.getAllByRole('link');
+      expect(links).toHaveLength(2);
+      links.forEach((link) => {
+        expect(link).toHaveAttribute('target', '_blank');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      });
+    });
   });
 
   describe('appearance', () => {
