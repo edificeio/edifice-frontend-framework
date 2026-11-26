@@ -147,7 +147,7 @@ describe('VideoRecorder', () => {
       setup();
 
       expect(nameInput().value).toMatch(
-        /^Enregistrement vidéo \d{4}-\d{2}-\d{2} \d{2}h\d{2}$/,
+        /^Enregistrement vidéo \d{2}\/\d{2}\/\d{4} \d{2}:\d{2}$/,
       );
     });
 

@@ -20,7 +20,6 @@ import {
   Select,
 } from '../../../components';
 import { useDate, useUpload } from '../../../hooks';
-import { RECORD_NAME_DATE_FORMAT } from '../utils/recordName';
 import { IconRecord, IconRecordVideo } from '../../icons/components';
 import { useCameras } from './useCameras';
 import { VideoRecorderToolbar } from './VideoRecorderToolbar';
@@ -91,10 +90,10 @@ const VideoRecorder = forwardRef(
     }));
 
     const { t } = useTranslation();
-    const { formatDate } = useDate();
+    const { formatRawDateTime } = useDate();
 
     const [recordName, setRecordName] = useState<string>(() =>
-      `${t('bbm.video.recorder.defaultName')} ${formatDate(new Date(), RECORD_NAME_DATE_FORMAT)}`.trim(),
+      `${t('bbm.video.recorder.defaultName')} ${formatRawDateTime(new Date())}`.trim(),
     );
 
     const handleNameChange = (name: string) => {

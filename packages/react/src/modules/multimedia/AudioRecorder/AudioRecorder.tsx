@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 
 import { FormControl, Input, Label, Toolbar } from '../../../components';
 import { useDate } from '../../../hooks';
-import { RECORD_NAME_DATE_FORMAT } from '../utils/recordName';
 import { IconMic } from '../../icons/components';
 import AudioRecorderTimer from './AudioRecorderTimer';
 import useAudioRecorder from './useAudioRecorder';
@@ -55,10 +54,10 @@ const AudioRecorder = forwardRef(
     );
     const { t } = useTranslation();
 
-    const { formatDate } = useDate();
+    const { formatRawDateTime } = useDate();
     // Computed once: the input is uncontrolled, so only its initial value matters.
     const [defaultName] = useState(() =>
-      `${t('bbm.audio.recorder.defaultName')} ${formatDate(new Date(), RECORD_NAME_DATE_FORMAT)}`.trim(),
+      `${t('bbm.audio.recorder.defaultName')} ${formatRawDateTime(new Date())}`.trim(),
     );
 
     // We add one methods to handle save action from parent component
