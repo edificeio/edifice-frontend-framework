@@ -75,7 +75,7 @@ describe('AudioRecorder', () => {
       setup();
 
       expect(nameInput().value).toMatch(
-        /^Enregistrement audio \d{4}-\d{2}-\d{2} \d{2}h\d{2}$/,
+        /^Enregistrement audio \d{2}\/\d{2}\/\d{4} \d{2}:\d{2}$/,
       );
     });
 
