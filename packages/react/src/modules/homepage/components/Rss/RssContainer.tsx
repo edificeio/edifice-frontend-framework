@@ -45,7 +45,10 @@ export function RssContainer() {
         backToManage();
       });
     } else {
-      addFeed(payload, backToManage);
+      addFeed(payload, () => {
+        toast.success(t('homepage.widget.rss.form.add.success'));
+        backToManage();
+      });
     }
   };
 
@@ -70,7 +73,11 @@ export function RssContainer() {
         onEditFeed={(index) =>
           setView({ name: 'edit', index, feed: feeds[index] })
         }
-        onDeleteFeed={deleteFeed}
+        onDeleteFeed={(index) =>
+          deleteFeed(index, () =>
+            toast.success(t('homepage.widget.rss.modal.delete.success')),
+          )
+        }
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

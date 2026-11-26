@@ -55,7 +55,7 @@ describe('UsefulLinksContainer', () => {
     expect(
       within(reopenedManageModal).getByText('Nouveau lien E2E'),
     ).toBeInTheDocument();
-    expect(toastSuccess).not.toHaveBeenCalled();
+    expect(toastSuccess).toHaveBeenCalledWith('Le lien a bien été ajouté');
 
     await user.click(within(reopenedManageModal).getByLabelText('Close'));
     expect(await screen.findByText('Nouveau lien E2E')).toBeInTheDocument();
@@ -101,6 +101,9 @@ describe('UsefulLinksContainer', () => {
     );
 
     expect(within(manageModal).queryByText(targetName)).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(toastSuccess).toHaveBeenCalledWith('Le lien a bien été supprimé'),
+    );
   });
 
   it("annule le formulaire d'ajout sans enregistrer, retour à la modale de gestion", async () => {

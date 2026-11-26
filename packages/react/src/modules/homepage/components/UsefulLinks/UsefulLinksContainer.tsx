@@ -39,6 +39,7 @@ export function UsefulLinksContainer() {
       toast.success(t('homepage.usefulLinks.form.edit.success'));
     } else {
       await createLink(payload);
+      toast.success(t('homepage.usefulLinks.form.add.success'));
     }
     backToManage();
   };
@@ -57,7 +58,11 @@ export function UsefulLinksContainer() {
         onClose={closeAll}
         onAddClick={() => setView({ name: 'add' })}
         onEditLink={(link) => setView({ name: 'edit', link })}
-        onDeleteLink={deleteLink}
+        onDeleteLink={(id) =>
+          deleteLink(id, () =>
+            toast.success(t('homepage.usefulLinks.modal.delete.success')),
+          )
+        }
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

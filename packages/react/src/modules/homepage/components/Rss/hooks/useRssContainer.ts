@@ -36,7 +36,7 @@ export interface UseRssContainerReturn {
     payload: RssFeedPayload,
     onSuccess?: () => void,
   ) => void;
-  deleteFeed: (index: number) => void;
+  deleteFeed: (index: number, onSuccess?: () => void) => void;
   isSaving: boolean;
 }
 
@@ -66,10 +66,13 @@ export const useRssContainer = (): UseRssContainerReturn => {
       { onSuccess },
     );
 
-  const deleteFeed = (index: number) => {
+  const deleteFeed = (index: number, onSuccess?: () => void) => {
     // Keep the same feed selected when a feed before it is removed.
     if (index < currentIndex) setSelectedIndex(currentIndex - 1);
-    saveFeeds(feeds.filter((_, i) => i !== index));
+    saveFeeds(
+      feeds.filter((_, i) => i !== index),
+      onSuccess,
+    );
   };
 
   return {

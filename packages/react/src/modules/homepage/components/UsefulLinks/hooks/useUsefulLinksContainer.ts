@@ -19,7 +19,7 @@ export interface UseUsefulLinksContainerReturn {
   isCreating: boolean;
   updateLink: (id: string, payload: UsefulLinkPayload) => Promise<UsefulLink>;
   isUpdating: boolean;
-  deleteLink: (id: string) => void;
+  deleteLink: (id: string, onSuccess?: () => void) => void;
 }
 
 /**
@@ -40,6 +40,6 @@ export const useUsefulLinksContainer = (): UseUsefulLinksContainerReturn => {
     isCreating: createMutation.isPending,
     updateLink: (id, payload) => updateMutation.mutateAsync({ id, payload }),
     isUpdating: updateMutation.isPending,
-    deleteLink: (id) => deleteMutation.mutate(id),
+    deleteLink: (id, onSuccess) => deleteMutation.mutate(id, { onSuccess }),
   };
 };

@@ -94,7 +94,7 @@ describe('RssContainer', () => {
     expect(
       within(reopenedManageModal).getByText('Nouveau flux E2E'),
     ).toBeInTheDocument();
-    expect(toastSuccess).not.toHaveBeenCalled();
+    expect(toastSuccess).toHaveBeenCalledWith('Le flux RSS a bien été ajouté');
 
     await user.click(within(reopenedManageModal).getByLabelText('Close'));
     expect(
@@ -141,6 +141,11 @@ describe('RssContainer', () => {
     expect(
       within(manageModal).queryByText('Le Figaro'),
     ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(toastSuccess).toHaveBeenCalledWith(
+        'Le flux RSS a bien été supprimé',
+      ),
+    );
   });
 
   it("annule le formulaire d'ajout et revient à la modale de gestion", async () => {
