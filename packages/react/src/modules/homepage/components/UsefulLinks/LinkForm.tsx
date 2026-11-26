@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { UsefulLink, UsefulLinkPayload } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
@@ -9,9 +10,9 @@ import {
   Label,
   ModalBeta,
 } from '../../../../components';
+import { isValidHttpUrl } from '../../utils/url';
 
 const NAME_MAX_LENGTH = 80;
-const URL_PATTERN = /^https?:\/\/.+/i;
 
 export interface LinkFormProps {
   mode: 'add' | 'edit';
@@ -39,14 +40,22 @@ export function LinkForm({
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors, isDirty, isValid },
   } = useForm<UsefulLinkPayload>({
-    mode: 'onChange',
+    // Errors show once a field is left, then update as the user types.
+    mode: 'onTouched',
     defaultValues: {
       name: link?.name ?? '',
       url: link?.url ?? '',
     },
   });
+
+  // A stored URL may not match the current rules: flag it right away, so a
+  // disabled save button never comes without an explanation.
+  useEffect(() => {
+    if (mode === 'edit' && link?.url) trigger('url');
+  }, [mode, link?.url, trigger]);
 
   const title =
     mode === 'add'
@@ -89,9 +98,10 @@ export function LinkForm({
               size="md"
               data-testid="usefullinks-input-url"
               placeholder={t('homepage.usefulLinks.form.url.placeholder')}
+              aria-invalid={!!errors.url}
               {...register('url', {
                 required: true,
-                pattern: URL_PATTERN,
+                validate: isValidHttpUrl,
               })}
             />
             {errors.url && (

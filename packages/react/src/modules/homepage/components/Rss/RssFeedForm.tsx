@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -39,14 +40,22 @@ export function RssFeedForm({
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors, isDirty, isValid },
   } = useForm<RssFeedPayload>({
-    mode: 'onChange',
+    // Errors show once a field is left, then update as the user types.
+    mode: 'onTouched',
     defaultValues: {
       title: feed?.title ?? '',
       link: feed?.link ?? '',
     },
   });
+
+  // A stored URL may not match the current rules: flag it right away, so a
+  // disabled save button never comes without an explanation.
+  useEffect(() => {
+    if (mode === 'edit' && feed?.link) trigger('link');
+  }, [mode, feed?.link, trigger]);
 
   const modalTitle =
     mode === 'add'
@@ -94,13 +103,16 @@ export function RssFeedForm({
               size="md"
               data-testid="rss-input-link"
               placeholder={t('homepage.widget.rss.form.link.placeholder')}
+              aria-invalid={!!errors.link}
               {...register('link', {
                 required: true,
                 validate: isValidRssFeedUrl,
               })}
             />
             <FormControl.Text>
-              {t('homepage.widget.rss.form.link.caption')}
+              {errors.link
+                ? t('homepage.widget.rss.form.link.error')
+                : t('homepage.widget.rss.form.link.caption')}
             </FormControl.Text>
           </FormControl>
         </form>

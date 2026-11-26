@@ -53,6 +53,7 @@ describe('LinkForm', () => {
     const urlInput = screen.getByTestId('usefullinks-input-url');
     await user.clear(urlInput);
     await user.type(urlInput, 'lumni.fr');
+    await user.tab();
 
     expect(
       await screen.findByText(
@@ -60,6 +61,52 @@ describe('LinkForm', () => {
       ),
     ).toBeInTheDocument();
     expect(screen.getByTestId('usefullinks-button-save')).toBeDisabled();
+  });
+
+  it.each(['https://lumni', 'http://x', 'https://lum ni.fr', 'https://'])(
+    'rejects the malformed URL %s',
+    async (url) => {
+      const { user } = render(
+        <LinkForm
+          mode="add"
+          isSubmitting={false}
+          onCancel={vi.fn()}
+          onClose={vi.fn()}
+          onSubmit={vi.fn()}
+        />,
+      );
+
+      await user.type(screen.getByTestId('usefullinks-input-name'), 'Lumni');
+      await user.type(screen.getByTestId('usefullinks-input-url'), url);
+      await user.tab();
+
+      expect(
+        await screen.findByText(
+          "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+        ),
+      ).toBeInTheDocument();
+      expect(screen.getByTestId('usefullinks-button-save')).toBeDisabled();
+    },
+  );
+
+  it('waits for the URL field to be left before showing the error', async () => {
+    const { user } = render(
+      <LinkForm
+        mode="add"
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    await user.type(screen.getByTestId('usefullinks-input-url'), 'https://lu');
+
+    expect(
+      screen.queryByText(
+        "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+      ),
+    ).not.toBeInTheDocument();
   });
 
   it('accepts an http:// URL', async () => {
@@ -82,7 +129,52 @@ describe('LinkForm', () => {
     await waitFor(() => expect(save).not.toBeDisabled());
   });
 
-  it('prefills the fields with the link being edited', () => {
+  it('marks the URL input as invalid for assistive technologies', async () => {
+    const { user } = render(
+      <LinkForm
+        mode="add"
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+    const urlInput = screen.getByTestId('usefullinks-input-url');
+
+    expect(urlInput).toHaveAttribute('aria-invalid', 'false');
+    await user.type(urlInput, 'https:lumni.fr');
+    await user.tab();
+
+    await waitFor(() =>
+      expect(urlInput).toHaveAttribute('aria-invalid', 'true'),
+    );
+  });
+
+  it('flags a stored URL that is no longer valid when editing', async () => {
+    render(
+      <LinkForm
+        mode="edit"
+        link={{ id: '1', name: 'Intranet', url: 'https://intranet' }}
+        isSubmitting={false}
+        onCancel={vi.fn()}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+      />,
+    );
+
+    expect(
+      await screen.findByText(
+        "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('usefullinks-input-url')).toHaveAttribute(
+      'aria-invalid',
+      'true',
+    );
+    expect(screen.getByTestId('usefullinks-button-save')).toBeDisabled();
+  });
+
+  it('prefills the fields with the link being edited', async () => {
     render(
       <LinkForm
         mode="edit"
@@ -98,6 +190,17 @@ describe('LinkForm', () => {
     expect(screen.getByTestId('usefullinks-input-url')).toHaveValue(
       'https://lumni.fr',
     );
+    await waitFor(() =>
+      expect(screen.getByTestId('usefullinks-input-url')).toHaveAttribute(
+        'aria-invalid',
+        'false',
+      ),
+    );
+    expect(
+      screen.queryByText(
+        "L'adresse doit être une URL valide (ex. https://exemple.fr)",
+      ),
+    ).not.toBeInTheDocument();
   });
 
   it('disables save until the form is dirty and valid', async () => {
@@ -157,11 +260,9 @@ describe('LinkForm', () => {
 
     await user.type(screen.getByTestId('usefullinks-input-name'), '  Lumni  ');
     await user.clear(screen.getByTestId('usefullinks-input-url'));
-    // No leading whitespace here: the URL pattern requires the field to
-    // start with http(s):// to stay valid (and the save button enabled).
     await user.type(
       screen.getByTestId('usefullinks-input-url'),
-      'https://lumni.fr  ',
+      '  https://lumni.fr  ',
     );
 
     const save = screen.getByTestId('usefullinks-button-save');
