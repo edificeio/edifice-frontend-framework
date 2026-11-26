@@ -1,4 +1,4 @@
-import { render, screen } from '~/setup';
+import { fireEvent, render, screen } from '~/setup';
 import LastInfos, { LastInfosProps } from './LastInfos';
 
 function props(overrides: Partial<LastInfosProps> = {}): LastInfosProps {
@@ -44,6 +44,34 @@ describe('LastInfos', () => {
       expect(
         document.querySelector('svg.last-infos-card-thread-icon'),
       ).not.toBeNull();
+    });
+
+    it('falls back to the news icon when the thread icon fails to load', () => {
+      render(<LastInfos {...props()} />);
+
+      fireEvent.error(
+        document.querySelector('img.last-infos-card-thread-icon')!,
+      );
+
+      expect(
+        document.querySelector('img.last-infos-card-thread-icon'),
+      ).toBeNull();
+      expect(
+        document.querySelector('svg.last-infos-card-thread-icon'),
+      ).not.toBeNull();
+    });
+
+    it('retries a new thread icon after a previous one failed', () => {
+      const { rerender } = render(<LastInfos {...props()} />);
+
+      fireEvent.error(
+        document.querySelector('img.last-infos-card-thread-icon')!,
+      );
+      rerender(<LastInfos {...props({ icon: '/workspace/document/other' })} />);
+
+      expect(
+        document.querySelector('img.last-infos-card-thread-icon'),
+      ).toHaveAttribute('src', '/workspace/document/other');
     });
   });
 
