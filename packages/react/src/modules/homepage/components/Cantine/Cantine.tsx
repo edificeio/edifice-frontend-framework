@@ -1,8 +1,12 @@
 import illuCantineEmpty from '@edifice.io/bootstrap/dist/images/homepage/cantine/illu-cantine-empty.svg';
+import type { School } from '@edifice.io/client';
 import { useTranslation } from 'react-i18next';
 import {
   ButtonBeta as Button,
+  FormControl,
   Image,
+  Label,
+  Select,
   TextSkeleton,
 } from '../../../../components';
 import { IconFullScreen } from '../../../icons/components';
@@ -14,14 +18,22 @@ export interface CantineProps {
   status: CantineStatus;
   sections: CantineSection[];
   handleFullScreenClick: () => void;
+  schools?: School[];
+  selectedSchool?: School;
+  onSelectedSchoolChange?: (schoolId: string) => void;
 }
 
 export default function Cantine({
   status,
   sections,
   handleFullScreenClick,
+  schools = [],
+  selectedSchool,
+  onSelectedSchoolChange,
 }: CantineProps) {
   const { t } = useTranslation();
+
+  const hasSchoolSelect = schools.length > 1;
 
   return (
     <HomeCard variant="primary" className="cantine">
@@ -39,6 +51,33 @@ export default function Cantine({
       </div>
 
       <HomeCard.Content className="cantine__content">
+        {hasSchoolSelect && (
+          <FormControl id="cantine-school" className="cantine__school">
+            <Label>{t('homepage.widget.cantine.school')}</Label>
+            <Select
+              size="md"
+              key={selectedSchool?.id}
+              block
+              placeholderOption={t('homepage.widget.cantine.school')}
+              options={schools.map((school) => ({
+                value: school.id,
+                label: school.name,
+              }))}
+              selectedValue={
+                selectedSchool && {
+                  value: selectedSchool.id,
+                  label: selectedSchool.name,
+                }
+              }
+              onValueChange={(option) =>
+                onSelectedSchoolChange?.(
+                  typeof option === 'string' ? option : option.value,
+                )
+              }
+            />
+          </FormControl>
+        )}
+
         {status === 'loading' && (
           <div className="cantine__loading" data-testid="cantine-loading">
             <TextSkeleton size="lg" className="cantine__loading-item" />

@@ -20,7 +20,7 @@ const meta: Meta<typeof Cantine> = {
     docs: {
       description: {
         component:
-          'Menu de la cantine. Le bouton plein écran ouvre la modale de navigation par jour, avec sélection de l’établissement et du service.',
+          'Menu de la cantine. Avec plusieurs établissements, le widget propose de choisir l’établissement, synchronisé avec la modale. Le bouton plein écran ouvre la modale de navigation par jour, avec sélection de l’établissement et du service.',
       },
     },
   },
@@ -115,7 +115,7 @@ const mockSections: CantineSection[] = [
 
 interface CantineWithModalProps extends Omit<
   CantineProps,
-  'handleFullScreenClick'
+  'handleFullScreenClick' | 'selectedSchool' | 'onSelectedSchoolChange'
 > {
   schools: School[];
   hasDinner: boolean;
@@ -142,6 +142,9 @@ function CantineWithModal({
       <Cantine
         {...cantineProps}
         handleFullScreenClick={() => setIsOpen(true)}
+        schools={schools}
+        selectedSchool={selectedSchool}
+        onSelectedSchoolChange={setSchoolId}
       />
       <CantineModal
         isOpen={isOpen}
@@ -180,7 +183,7 @@ export const Default: Story = {
     docs: {
       description: {
         story:
-          'Plusieurs établissements et déjeuner + dîner : la modale affiche les deux sélections.',
+          'Plusieurs établissements et déjeuner + dîner : le widget affiche la sélection d’établissement, la modale affiche les deux sélections.',
       },
     },
   },
@@ -196,7 +199,7 @@ export const UnSeulEtablissement: Story = {
     docs: {
       description: {
         story:
-          'Un seul établissement : la modale n’affiche pas de sélection d’établissement.',
+          'Un seul établissement : ni le widget ni la modale n’affichent de sélection d’établissement.',
       },
     },
   },
