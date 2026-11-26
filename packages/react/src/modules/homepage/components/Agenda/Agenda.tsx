@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import illuEmptyAgenda from '@edifice.io/bootstrap/dist/images/homepage/illu-empty-agenda.svg';
-import { Flex } from '../../../../components';
+import { ButtonBeta, Flex } from '../../../../components';
 import { useDate } from '../../../../hooks';
 import { IconExternalLink } from '../../../icons/components';
 import HomeCard from '../HomeCard/HomeCard';
@@ -121,6 +121,17 @@ export const Agenda = ({
                 </Flex>
               </Flex>
             ))}
+            <Flex justify="center">
+              <ButtonBeta
+                variant="outline"
+                rightIcon={<IconExternalLink />}
+                onClick={onOpenAgendaClick}
+                aria-label={t('homepage.agenda.seeMoreLabel')}
+                data-testid="agenda-button-see-more"
+              >
+                {t('homepage.agenda.seeMore')}
+              </ButtonBeta>
+            </Flex>
           </Flex>
         )}
       </HomeCard.Content>
