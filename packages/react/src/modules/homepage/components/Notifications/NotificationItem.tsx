@@ -12,6 +12,8 @@ export type {
 
 export type NotificationProps = {
   notification: NotificationModel;
+  /** Shows the options menu to report or delete the notification (default: true) */
+  canManage?: boolean;
 };
 
 /**
@@ -24,9 +26,14 @@ export type NotificationProps = {
  * @example
  * <NotificationItem notification={notificationModel} />
  */
-const NotificationItem = ({ notification }: NotificationProps) => {
+const NotificationItem = ({
+  notification,
+  canManage = true,
+}: NotificationProps) => {
   const notif = notificationAdapter(notification);
-  const menu = <NotificationOptionsMenu notificationId={notification._id} />;
+  const menu = canManage ? (
+    <NotificationOptionsMenu notificationId={notification._id} />
+  ) : undefined;
   return (
     <>
       {notif.type === 'user' && (

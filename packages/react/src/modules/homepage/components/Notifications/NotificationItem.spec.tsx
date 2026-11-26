@@ -5,7 +5,7 @@ import {
   systemNotificationCollaborativeEditor,
   userNotificationCollaborativeWall,
 } from '@edifice.io/config';
-import { render } from '~/setup';
+import { render, screen } from '~/setup';
 import NotificationItem from './NotificationItem';
 
 describe('Notification Item', () => {
@@ -48,4 +48,22 @@ describe('Notification Item', () => {
       ).not.toBeInTheDocument();
     },
   );
+
+  it('shows the options menu by default', () => {
+    render(<NotificationItem notification={supportNotification} />);
+
+    expect(
+      screen.getByTestId('notification-item-options-button'),
+    ).toBeInTheDocument();
+  });
+
+  it('hides the options menu when the notification cannot be managed', () => {
+    render(
+      <NotificationItem notification={supportNotification} canManage={false} />,
+    );
+
+    expect(
+      screen.queryByTestId('notification-item-options-button'),
+    ).not.toBeInTheDocument();
+  });
 });

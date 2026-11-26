@@ -1,12 +1,25 @@
 import { NotificationModel } from '@edifice.io/client';
 import { useEffect, useState } from 'react';
 import { useDate } from '../../../../..';
+import { useUser } from '../../../../../hooks';
 import {
   useNotifications,
   useNotificationTypes,
   useSaveTimelinePreference,
   useTimelinePreference,
 } from '../services/queries/notification';
+
+/**
+ * Only notification types available to a user whose account is pending
+ * deletion, mirroring the legacy homepage behavior.
+ */
+export const DELETE_PENDING_NOTIFICATION_TYPES = ['ARCHIVE', 'NEWS'];
+
+/** Indicates whether the current user's account is pending deletion. */
+const useIsDeletePending = (): boolean => {
+  const { user } = useUser();
+  return !!user?.deletePending;
+};
 
 export interface UseNotificationListContainerReturn {
   /** Array of notifications */
@@ -25,6 +38,8 @@ export interface UseNotificationListContainerReturn {
   isLoading: boolean;
   /** Error state from fetching notifications */
   error: Error | null;
+  /** Indicates if the user can report or delete notifications */
+  canManageNotifications: boolean;
 }
 
 /**
@@ -33,12 +48,17 @@ export interface UseNotificationListContainerReturn {
  */
 export const useNotificationListContainer =
   (): UseNotificationListContainerReturn => {
-    const {
-      data: notificationTypes,
-      isLoading: isLoadingTypes,
-      isFetched: isFetchedTypes,
-      error: errorTypes,
-    } = useNotificationTypes();
+    const isDeletePending = useIsDeletePending();
+    const typesQuery = useNotificationTypes();
+
+    // A user pending deletion only sees a fixed set of types, whatever the
+    // platform types or their saved preference.
+    const notificationTypes = isDeletePending
+      ? DELETE_PENDING_NOTIFICATION_TYPES
+      : typesQuery.data;
+    const isLoadingTypes = !isDeletePending && typesQuery.isLoading;
+    const isFetchedTypes = isDeletePending || typesQuery.isFetched;
+    const errorTypes = isDeletePending ? null : typesQuery.error;
 
     const { data: preference, isFetched: isFetchedPreference } =
       useTimelinePreference();
@@ -49,17 +69,17 @@ export const useNotificationListContainer =
     // The user's saved type filter must be read before the first
     // `lastNotifications` call, so it only fetches the preferred types.
     useEffect(() => {
-      if (
-        selectedTypes === undefined &&
-        isFetchedTypes &&
-        isFetchedPreference
-      ) {
+      if (selectedTypes !== undefined || !isFetchedTypes) return;
+      if (isDeletePending) {
+        setSelectedTypesState(DELETE_PENDING_NOTIFICATION_TYPES);
+      } else if (isFetchedPreference) {
         // An empty saved filter means "no type selected" and must be kept:
         // only a missing preference falls back to every type.
         setSelectedTypesState(preference?.type ?? notificationTypes ?? []);
       }
     }, [
       selectedTypes,
+      isDeletePending,
       isFetchedTypes,
       isFetchedPreference,
       preference,
@@ -68,7 +88,10 @@ export const useNotificationListContainer =
 
     const setSelectedTypes = (types: string[]) => {
       setSelectedTypesState(types);
-      saveTimelinePreference({ ...preference, type: types });
+      // The forced selection of a user pending deletion is never saved.
+      if (!isDeletePending) {
+        saveTimelinePreference({ ...preference, type: types });
+      }
     };
 
     // `lastNotifications` applies no filter when no type is given and returns
@@ -98,6 +121,7 @@ export const useNotificationListContainer =
       isLoading:
         isLoadingTypes || selectedTypes === undefined || isLoadingNotifications,
       error: errorTypes || errorNotifications,
+      canManageNotifications: !isDeletePending,
     };
   };
 
@@ -108,13 +132,16 @@ export const useNotificationListContainer =
  */
 export const useHasNotificationToday = (): boolean => {
   const { dateIsToday } = useDate();
+  const isDeletePending = useIsDeletePending();
   // All known types are fetched first and passed explicitly, so the query
   // key matches the one used by the list when every type is selected.
   const { data: notificationTypes, isFetched: isFetchedTypes } =
     useNotificationTypes();
   const { data: notifications } = useNotifications(
-    notificationTypes ?? [],
-    isFetchedTypes,
+    isDeletePending
+      ? DELETE_PENDING_NOTIFICATION_TYPES
+      : (notificationTypes ?? []),
+    isDeletePending || isFetchedTypes,
   );
 
   return (

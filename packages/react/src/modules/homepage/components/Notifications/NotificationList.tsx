@@ -34,6 +34,9 @@ export type NotificationListProps = {
   hasNextPage?: boolean;
   /** Loading state for fetching notifications, used to prevent multiple simultaneous fetches */
   isLoading?: boolean;
+
+  /** Allows the user to report or delete notifications (default: true) */
+  canManageNotifications?: boolean;
 };
 
 const NotificationList = ({
@@ -45,6 +48,7 @@ const NotificationList = ({
   onLoadNextPage,
   hasNextPage,
   isLoading,
+  canManageNotifications = true,
 }: NotificationListProps) => {
   const { t } = useTranslation();
 
@@ -109,7 +113,10 @@ const NotificationList = ({
             <ul>
               {notifications.map((notification, index) => (
                 <li key={'notification-list-' + notification._id + '-' + index}>
-                  <NotificationItem notification={notification} />
+                  <NotificationItem
+                    notification={notification}
+                    canManage={canManageNotifications}
+                  />
                   <Divider className="border-grey-300 my-0" />
                 </li>
               ))}

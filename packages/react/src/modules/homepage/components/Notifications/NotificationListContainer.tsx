@@ -16,6 +16,7 @@ export const NotificationListContainer = ({
     hasNextPage,
     loadNextPage,
     isLoading,
+    canManageNotifications,
   } = useNotificationListContainer();
 
   const handleLoadNextPage = () => {
@@ -34,6 +35,7 @@ export const NotificationListContainer = ({
       onLoadNextPage={handleLoadNextPage}
       hasNextPage={hasNextPage}
       isLoading={isLoading}
+      canManageNotifications={canManageNotifications}
     />
   );
 };

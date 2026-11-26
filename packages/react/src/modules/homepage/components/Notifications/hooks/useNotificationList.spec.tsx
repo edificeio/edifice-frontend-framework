@@ -1,13 +1,19 @@
 import { NotificationModel } from '@edifice.io/client';
 import { act, renderHook } from '~/setup';
-import { useNotificationListContainer } from './useNotificationList';
+import {
+  DELETE_PENDING_NOTIFICATION_TYPES,
+  useHasNotificationToday,
+  useNotificationListContainer,
+} from './useNotificationList';
 
 const {
   useNotifications,
   useNotificationTypes,
   useTimelinePreference,
   useSaveTimelinePreference,
+  useUser,
 } = vi.hoisted(() => ({
+  useUser: vi.fn(),
   useNotifications: vi.fn(),
   useNotificationTypes: vi.fn(),
   useTimelinePreference: vi.fn(),
@@ -19,6 +25,12 @@ vi.mock('../services/queries/notification', () => ({
   useNotificationTypes,
   useTimelinePreference,
   useSaveTimelinePreference,
+}));
+
+vi.mock('../../../../../hooks', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../../../../hooks')>()),
+  useUser,
+  useDate: () => ({ dateIsToday: () => false }),
 }));
 
 const notification = (id: string) =>
@@ -34,6 +46,7 @@ function setup({
   notificationsError = null,
   hasNextPage = false,
   preferredTypes,
+  deletePending = false,
 }: {
   types?: string[];
   typesLoading?: boolean;
@@ -44,9 +57,12 @@ function setup({
   notificationsError?: Error | null;
   hasNextPage?: boolean;
   preferredTypes?: string[];
+  deletePending?: boolean;
 } = {}) {
   const fetchNextPage = vi.fn();
   const saveTimelinePreference = vi.fn();
+
+  useUser.mockReturnValue({ user: { deletePending } });
 
   // No saved preference by default — selectedTypes falls back to
   // notificationTypes.
@@ -75,6 +91,7 @@ function setup({
   return {
     ...renderHook(() => useNotificationListContainer()),
     fetchNextPage,
+    saveTimelinePreference,
   };
 }
 
@@ -177,6 +194,7 @@ describe('useNotificationListContainer', () => {
     });
 
     it('is true while the saved filter is not read yet', () => {
+      useUser.mockReturnValue({ user: { deletePending: false } });
       useTimelinePreference.mockReturnValue({
         data: undefined,
         isFetched: false,
@@ -229,5 +247,105 @@ describe('useNotificationListContainer', () => {
 
       expect(result.current.error).toBeNull();
     });
+  });
+
+  it('lets the user manage notifications', () => {
+    const { result } = setup({ types: ['BLOG'] });
+
+    expect(result.current.canManageNotifications).toBe(true);
+  });
+
+  it('saves the selected types as the user preference', () => {
+    const { result, saveTimelinePreference } = setup({
+      types: ['BLOG', 'NEWS'],
+    });
+
+    act(() => result.current.setSelectedTypes(['BLOG']));
+
+    expect(saveTimelinePreference).toHaveBeenCalledWith({ type: ['BLOG'] });
+  });
+
+  describe('when the user account is pending deletion', () => {
+    it('only exposes the ARCHIVE and NEWS types', () => {
+      const { result } = setup({
+        deletePending: true,
+        types: ['BLOG', 'NEWS', 'MESSAGERIE'],
+      });
+
+      expect(result.current.notificationTypes).toEqual(['ARCHIVE', 'NEWS']);
+    });
+
+    it('fetches both types, ignoring the saved preference', () => {
+      const { result } = setup({
+        deletePending: true,
+        types: ['BLOG', 'NEWS'],
+        preferredTypes: ['BLOG'],
+      });
+
+      expect(result.current.selectedTypes).toEqual(['ARCHIVE', 'NEWS']);
+      expect(useNotifications).toHaveBeenLastCalledWith(
+        ['ARCHIVE', 'NEWS'],
+        true,
+      );
+    });
+
+    it('does not wait for the platform types', () => {
+      const { result } = setup({
+        deletePending: true,
+        types: undefined,
+        typesLoading: true,
+        typesFetched: false,
+      });
+
+      expect(useNotifications).toHaveBeenLastCalledWith(
+        ['ARCHIVE', 'NEWS'],
+        true,
+      );
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    it('does not save the selected types as the user preference', () => {
+      const { result, saveTimelinePreference } = setup({
+        deletePending: true,
+      });
+
+      act(() => result.current.setSelectedTypes(['NEWS']));
+
+      expect(result.current.selectedTypes).toEqual(['NEWS']);
+      expect(saveTimelinePreference).not.toHaveBeenCalled();
+    });
+
+    it('prevents the user from managing notifications', () => {
+      const { result } = setup({ deletePending: true });
+
+      expect(result.current.canManageNotifications).toBe(false);
+    });
+  });
+});
+
+describe('useHasNotificationToday', () => {
+  function setupToday(deletePending: boolean) {
+    useUser.mockReturnValue({ user: { deletePending } });
+    useNotificationTypes.mockReturnValue({
+      data: ['BLOG', 'NEWS'],
+      isFetched: true,
+    });
+    useNotifications.mockReturnValue({ data: [] });
+    renderHook(() => useHasNotificationToday());
+  }
+
+  it('checks every platform type', () => {
+    setupToday(false);
+
+    expect(useNotifications).toHaveBeenLastCalledWith(['BLOG', 'NEWS'], true);
+  });
+
+  it('only checks the ARCHIVE and NEWS types for a user pending deletion', () => {
+    setupToday(true);
+
+    expect(useNotifications).toHaveBeenLastCalledWith(
+      DELETE_PENDING_NOTIFICATION_TYPES,
+      true,
+    );
   });
 });
