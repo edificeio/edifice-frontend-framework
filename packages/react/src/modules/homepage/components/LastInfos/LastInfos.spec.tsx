@@ -21,14 +21,18 @@ const medias = () => document.querySelectorAll('.last-infos-card-media');
 
 describe('LastInfos', () => {
   describe('header', () => {
-    it('shows the thread name and its icon', () => {
+    it('shows the thread name and its icon as a decorative image', () => {
       render(<LastInfos {...props()} />);
 
       expect(screen.getByText('Informations importantes')).toBeInTheDocument();
-      expect(screen.getByAltText('Informations importantes')).toHaveAttribute(
-        'src',
-        '/workspace/document/icon-id',
-      );
+      const icon = document.querySelector('.last-infos-card-thread-icon');
+      expect(icon).toHaveAttribute('src', '/workspace/document/icon-id');
+      // The thread name is already rendered next to the icon: an empty alt
+      // avoids screen readers announcing it twice.
+      expect(icon).toHaveAttribute('alt', '');
+      expect(
+        screen.queryByAltText('Informations importantes'),
+      ).not.toBeInTheDocument();
     });
 
     it('falls back to the news icon without a thread icon', () => {
