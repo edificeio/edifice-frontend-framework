@@ -10,6 +10,7 @@
   --audio-recorder-time-color: var(--primitive-text-color-default);
   --audio-recorder-toolbar-bg: var(--primitive-white);
   --audio-recorder-toolbar-radius: var(--primitive-border-radius-xl);
+  --audio-recorder-toolbar-label-max-width: 12rem;
   --audio-recorder-toolbar-shadow: 0 0.4rem 1rem 0 rgba(0, 0, 0, 0.18);
 
   display: flex;
@@ -70,6 +71,15 @@
     border-radius: var(--audio-recorder-toolbar-radius);
     background-color: var(--audio-recorder-toolbar-bg);
     box-shadow: var(--audio-recorder-toolbar-shadow);
+
+    .audio-recorder-toolbar-label {
+      display: inline-block;
+      max-width: var(--audio-recorder-toolbar-label-max-width);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      vertical-align: bottom;
+    }
 
     @container (max-width: 480px) {
       .audio-recorder-toolbar-label {
