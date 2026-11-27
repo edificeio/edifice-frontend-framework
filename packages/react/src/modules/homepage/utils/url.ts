@@ -2,6 +2,14 @@
 // but the raw value is what gets saved, so the "//" must be typed.
 const HTTP_PREFIX = /^https?:\/\//i;
 
+// Engines do not agree on invalid hosts: Chrome accepts "https://a b.fr"
+// (host "a%20b.fr") or "https://a!b.fr", where Node and jsdom throw. So the
+// host is checked here rather than trusting the URL parser.
+// A label is made of letters, digits, "-" and "_", and does not start or end
+// with "-". Internationalized domains are already punycoded ("xn--…").
+const HOST_LABEL = /^[a-z0-9_](?:[a-z0-9_-]*[a-z0-9_])?$/i;
+const IPV6_HOST = /^\[[0-9a-f:.]+\]$/i;
+
 export interface HttpUrlOptions {
   /**
    * Accept a host without any dot, such as an intranet name ("intranet") or
@@ -20,7 +28,8 @@ export function parseHttpUrl(
   { allowIntranetHost = false }: HttpUrlOptions = {},
 ): URL | null {
   const trimmed = value.trim();
-  if (!HTTP_PREFIX.test(trimmed)) return null;
+  // A typed URL never contains a raw space, in the host or anywhere else.
+  if (!HTTP_PREFIX.test(trimmed) || /\s/.test(trimmed)) return null;
 
   let url: URL;
   try {
@@ -31,9 +40,14 @@ export function parseHttpUrl(
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return null;
 
   const { hostname } = url;
+  if (IPV6_HOST.test(hostname)) return allowIntranetHost ? url : null;
+
   const labels = hostname.split('.');
   const minLabels = allowIntranetHost ? 1 : 2;
-  if (labels.length < minLabels || labels.some((label) => !label)) {
+  if (
+    labels.length < minLabels ||
+    labels.some((label) => !HOST_LABEL.test(label))
+  ) {
     return null;
   }
   return url;
