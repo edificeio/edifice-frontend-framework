@@ -1,6 +1,13 @@
 import { render, screen, waitFor, within } from '~/setup';
 import { UsefulLinksContainer } from './UsefulLinksContainer';
 
+const { toastSuccess } = vi.hoisted(() => ({ toastSuccess: vi.fn() }));
+
+vi.mock('../../../../hooks', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../../../hooks')>()),
+  useToast: () => ({ success: toastSuccess }),
+}));
+
 // The MSW mock for /directory/user/link (packages/config/src/msw/mocks/directory.ts)
 // seeds 3 links (Lumni, Ministère de l'Éducation Nationale, ONISEP) in an
 // in-memory store shared across tests in this file. Each test below claims a
@@ -13,6 +20,8 @@ const openManageModal = async (user: ReturnType<typeof render>['user']) => {
 };
 
 describe('UsefulLinksContainer', () => {
+  beforeEach(() => toastSuccess.mockClear());
+
   it("affiche les liens existants de l'utilisateur", async () => {
     render(<UsefulLinksContainer />);
 
@@ -46,6 +55,7 @@ describe('UsefulLinksContainer', () => {
     expect(
       within(reopenedManageModal).getByText('Nouveau lien E2E'),
     ).toBeInTheDocument();
+    expect(toastSuccess).toHaveBeenCalledWith('Le lien a bien été ajouté');
 
     await user.click(within(reopenedManageModal).getByLabelText('Close'));
     expect(await screen.findByText('Nouveau lien E2E')).toBeInTheDocument();
@@ -76,6 +86,7 @@ describe('UsefulLinksContainer', () => {
     expect(
       within(reopenedManageModal).getByText('ONISEP modifié'),
     ).toBeInTheDocument();
+    expect(toastSuccess).toHaveBeenCalledWith('Le lien a bien été modifié');
   });
 
   it('supprime un lien immédiatement, sans confirmation', async () => {
@@ -90,6 +101,9 @@ describe('UsefulLinksContainer', () => {
     );
 
     expect(within(manageModal).queryByText(targetName)).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(toastSuccess).toHaveBeenCalledWith('Le lien a bien été supprimé'),
+    );
   });
 
   it("annule le formulaire d'ajout sans enregistrer, retour à la modale de gestion", async () => {

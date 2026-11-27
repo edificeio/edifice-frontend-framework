@@ -457,6 +457,10 @@ i18n.use(initReactI18next).init({
           "L'adresse doit être une URL valide (ex. https://exemple.fr)",
         'homepage.usefulLinks.form.cancel': 'Annuler',
         'homepage.usefulLinks.form.save': 'Enregistrer',
+        'homepage.usefulLinks.form.add.success': 'Le lien a bien été ajouté',
+        'homepage.usefulLinks.form.edit.success': 'Le lien a bien été modifié',
+        'homepage.usefulLinks.modal.delete.success':
+          'Le lien a bien été supprimé',
         //------------------ Cantine -----------------------------
         'homepage.widget.cantine.title': 'Menu de la cantine',
         'homepage.widget.cantine.open': 'Ouvrir en plein écran',
@@ -601,6 +605,11 @@ i18n.use(initReactI18next).init({
           'L’adresse doit être l’URL d’un flux RSS (ex. https://exemple.fr/rss.xml)',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
+        'homepage.widget.rss.form.add.success': 'Le flux RSS a bien été ajouté',
+        'homepage.widget.rss.modal.delete.success':
+          'Le flux RSS a bien été supprimé',
+        'homepage.widget.rss.form.edit.success':
+          'Le flux RSS a bien été modifié',
         //----------------- Captation video -----------------
         'homepage.captationVideo.modal.title': 'Le Studio vidéo',
         'homepage.captationVideo.cancel': 'Annuler',

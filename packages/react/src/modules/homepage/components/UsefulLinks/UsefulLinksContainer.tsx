@@ -1,6 +1,10 @@
 import { UsefulLink, UsefulLinkPayload } from '@edifice.io/client';
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
+import { useToast } from '../../../../hooks';
+
 import { useUsefulLinksContainer } from './hooks/useUsefulLinksContainer';
 import { LinkForm } from './LinkForm';
 import { UsefulLinks } from './UsefulLinks';
@@ -13,6 +17,8 @@ type View =
   | { name: 'edit'; link: UsefulLink };
 
 export function UsefulLinksContainer() {
+  const { t } = useTranslation();
+  const toast = useToast();
   const [view, setView] = useState<View>({ name: 'closed' });
   const {
     links,
@@ -28,12 +34,27 @@ export function UsefulLinksContainer() {
   const backToManage = () => setView({ name: 'manage' });
 
   const handleSubmit = async (payload: UsefulLinkPayload) => {
-    if (view.name === 'edit') {
-      await updateLink(view.link.id, payload);
-    } else {
-      await createLink(payload);
+    try {
+      if (view.name === 'edit') {
+        await updateLink(view.link.id, payload);
+        toast.success(t('homepage.usefulLinks.form.edit.success'));
+      } else {
+        await createLink(payload);
+        toast.success(t('homepage.usefulLinks.form.add.success'));
+      }
+      backToManage();
+    } catch {
+      // On failure the form stays open so the user doesn't lose their input.
     }
-    backToManage();
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteLink(id);
+      toast.success(t('homepage.usefulLinks.modal.delete.success'));
+    } catch {
+      // On failure the mutation restores the previous links.
+    }
   };
 
   return (
@@ -50,7 +71,7 @@ export function UsefulLinksContainer() {
         onClose={closeAll}
         onAddClick={() => setView({ name: 'add' })}
         onEditLink={(link) => setView({ name: 'edit', link })}
-        onDeleteLink={deleteLink}
+        onDeleteLink={handleDelete}
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

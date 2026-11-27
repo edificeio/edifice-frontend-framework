@@ -143,8 +143,8 @@ describe('useUsefulLinksContainer', () => {
 
     await waitFor(() => expect(result.current.isLoading).toBe(false));
 
-    act(() => {
-      result.current.deleteLink('1');
+    await act(async () => {
+      await result.current.deleteLink('1');
     });
 
     await waitFor(() =>

@@ -163,12 +163,12 @@ describe('useRssContainer', () => {
     const { result } = await renderContainerHook();
     expect(result.current.canAddFeed).toBe(true);
 
-    act(() =>
-      result.current.addFeed({
+    await act(async () => {
+      await result.current.addFeed({
         title: 'Le Monde',
         link: 'https://www.lemonde.fr/rss/une.xml',
-      }),
-    );
+      });
+    });
 
     await waitFor(() =>
       expect(postJson).toHaveBeenCalledWith('/rss/channel', {
@@ -189,12 +189,12 @@ describe('useRssContainer', () => {
 
     const { result } = await renderContainerHook();
 
-    act(() =>
-      result.current.addFeed({
+    await act(async () => {
+      await result.current.addFeed({
         title: 'Nouveau',
         link: 'https://example.com/rss',
-      }),
-    );
+      });
+    });
 
     await waitFor(() =>
       expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
@@ -211,12 +211,12 @@ describe('useRssContainer', () => {
 
     const { result } = await renderContainerHook();
 
-    act(() =>
-      result.current.updateFeed(0, {
+    await act(async () => {
+      await result.current.updateFeed(0, {
         title: 'Le Monde (Une)',
         link: 'https://www.lemonde.fr/rss/une.xml',
-      }),
-    );
+      });
+    });
 
     await waitFor(() =>
       expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
@@ -239,7 +239,7 @@ describe('useRssContainer', () => {
     const { result } = await renderContainerHook();
 
     act(() => result.current.selectFeed(2));
-    act(() => result.current.deleteFeed(0));
+    await act(() => result.current.deleteFeed(0));
 
     await waitFor(() =>
       expect(putJson).toHaveBeenCalledWith('/rss/channel/channel-1', {
@@ -257,7 +257,7 @@ describe('useRssContainer', () => {
     const { result } = await renderContainerHook();
 
     act(() => result.current.selectFeed(2));
-    act(() => result.current.deleteFeed(2));
+    await act(() => result.current.deleteFeed(2));
 
     await waitFor(() => expect(result.current.feeds).toHaveLength(2));
     expect(result.current.selectedIndex).toBe(1);

@@ -1,5 +1,9 @@
 import { useState } from 'react';
 
+import { useTranslation } from 'react-i18next';
+
+import { useToast } from '../../../../hooks';
+
 import { useRssContainer } from './hooks/useRssContainer';
 import { Rss } from './Rss';
 import { RssFeedForm } from './RssFeedForm';
@@ -13,6 +17,8 @@ type View =
   | { name: 'edit'; index: number; feed: RssFeed };
 
 export function RssContainer() {
+  const { t } = useTranslation();
+  const toast = useToast();
   const [view, setView] = useState<View>({ name: 'closed' });
   const {
     feeds,
@@ -31,12 +37,27 @@ export function RssContainer() {
   const closeAll = () => setView({ name: 'closed' });
   const backToManage = () => setView({ name: 'manage' });
 
-  // On failure the form stays open so the user doesn't lose their input.
-  const handleSubmit = (payload: RssFeedPayload) => {
-    if (view.name === 'edit') {
-      updateFeed(view.index, payload, backToManage);
-    } else {
-      addFeed(payload, backToManage);
+  const handleSubmit = async (payload: RssFeedPayload) => {
+    try {
+      if (view.name === 'edit') {
+        await updateFeed(view.index, payload);
+        toast.success(t('homepage.widget.rss.form.edit.success'));
+      } else {
+        await addFeed(payload);
+        toast.success(t('homepage.widget.rss.form.add.success'));
+      }
+      backToManage();
+    } catch {
+      // On failure the form stays open so the user doesn't lose their input.
+    }
+  };
+
+  const handleDelete = async (index: number) => {
+    try {
+      await deleteFeed(index);
+      toast.success(t('homepage.widget.rss.modal.delete.success'));
+    } catch {
+      // On failure the mutation restores the previous feeds.
     }
   };
 
@@ -61,7 +82,7 @@ export function RssContainer() {
         onEditFeed={(index) =>
           setView({ name: 'edit', index, feed: feeds[index] })
         }
-        onDeleteFeed={deleteFeed}
+        onDeleteFeed={handleDelete}
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

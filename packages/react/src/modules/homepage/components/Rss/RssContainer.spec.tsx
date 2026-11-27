@@ -1,6 +1,13 @@
 import { render, screen, waitFor, within } from '~/setup';
 import { RssContainer } from './RssContainer';
 
+const { toastSuccess } = vi.hoisted(() => ({ toastSuccess: vi.fn() }));
+
+vi.mock('../../../../hooks', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../../../hooks')>()),
+  useToast: () => ({ success: toastSuccess }),
+}));
+
 // The MSW mock for /rss (packages/config/src/msw/mocks/rss.ts) seeds 6 feeds
 // (Le Monde, Le Parisien, Eduscol, Flux invalide, France Info, Le Figaro) in
 // an in-memory store shared across tests in this file. Each test below
@@ -12,6 +19,8 @@ const openManageModal = async (user: ReturnType<typeof render>['user']) => {
 };
 
 describe('RssContainer', () => {
+  beforeEach(() => toastSuccess.mockClear());
+
   it('affiche au plus 3 articles du premier flux', async () => {
     render(<RssContainer />);
 
@@ -85,6 +94,7 @@ describe('RssContainer', () => {
     expect(
       within(reopenedManageModal).getByText('Nouveau flux E2E'),
     ).toBeInTheDocument();
+    expect(toastSuccess).toHaveBeenCalledWith('Le flux RSS a bien été ajouté');
 
     await user.click(within(reopenedManageModal).getByLabelText('Close'));
     expect(
@@ -115,6 +125,7 @@ describe('RssContainer', () => {
     expect(
       within(reopenedManageModal).getByText('France Info modifié'),
     ).toBeInTheDocument();
+    expect(toastSuccess).toHaveBeenCalledWith('Le flux RSS a bien été modifié');
   });
 
   it('supprime un flux immédiatement, sans confirmation', async () => {
@@ -130,6 +141,11 @@ describe('RssContainer', () => {
     expect(
       within(manageModal).queryByText('Le Figaro'),
     ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(toastSuccess).toHaveBeenCalledWith(
+        'Le flux RSS a bien été supprimé',
+      ),
+    );
   });
 
   it("annule le formulaire d'ajout et revient à la modale de gestion", async () => {
