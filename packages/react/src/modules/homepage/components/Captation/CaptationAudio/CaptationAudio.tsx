@@ -9,7 +9,7 @@ import {
 } from '../../../../../components';
 import { AudioRecorder } from '../../../../multimedia';
 import { AudioRecorderRef } from '../../../../multimedia/AudioRecorder/AudioRecorder';
-import { useToast } from '../../../../../hooks';
+import { useHttpErrorToast, useToast } from '../../../../../hooks';
 
 export interface CaptationAudioProps {
   isOpen: boolean;
@@ -29,6 +29,14 @@ export function CaptationAudio({
   const [isSaving, setIsSaving] = useState(false);
 
   const toast = useToast();
+
+  // Only listen while uploading, so HTTP errors raised elsewhere on the page
+  // (other widgets) are not shown inside this modal.
+  useHttpErrorToast({
+    active: isOpen && isSaving,
+    isDismissible: true,
+    duration: Infinity,
+  });
 
   useEffect(() => {
     if (isOpen) setHasName(true);

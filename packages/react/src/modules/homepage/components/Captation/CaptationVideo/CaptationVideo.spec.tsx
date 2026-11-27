@@ -6,8 +6,9 @@ import { fireEvent, render, screen, waitFor } from '~/setup';
 
 import { CaptationVideo } from './CaptationVideo';
 
-const { save, toastSuccess, toastError } = vi.hoisted(() => ({
+const { save, toastSuccess, toastError, httpErrorToast } = vi.hoisted(() => ({
   save: vi.fn(),
+  httpErrorToast: vi.fn(),
   toastSuccess: vi.fn(),
   toastError: vi.fn(),
 }));
@@ -15,6 +16,7 @@ const { save, toastSuccess, toastError } = vi.hoisted(() => ({
 vi.mock('../../../../../hooks', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../../../../hooks')>()),
   useToast: () => ({ success: toastSuccess, error: toastError }),
+  useHttpErrorToast: httpErrorToast,
 }));
 
 type RecorderStubProps = {
@@ -66,6 +68,32 @@ describe('CaptationVideo', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('listens to backend upload errors only while saving', async () => {
+    let resolveSave: (value?: unknown) => void = () => {};
+    save.mockReturnValue(new Promise((resolve) => (resolveSave = resolve)));
+    setup();
+
+    expect(httpErrorToast).toHaveBeenLastCalledWith(
+      expect.objectContaining({ active: false }),
+    );
+
+    fireEvent.click(saveButton());
+
+    await waitFor(() =>
+      expect(httpErrorToast).toHaveBeenLastCalledWith(
+        expect.objectContaining({ active: true }),
+      ),
+    );
+
+    resolveSave();
+
+    await waitFor(() =>
+      expect(httpErrorToast).toHaveBeenLastCalledWith(
+        expect.objectContaining({ active: false }),
+      ),
+    );
   });
 
   it('closes with a success toast once the video is saved', async () => {

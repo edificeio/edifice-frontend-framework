@@ -7,7 +7,7 @@ import {
   ButtonBeta as Button,
   ModalBeta as Modal,
 } from '../../../../../components';
-import { useToast } from '../../../../../hooks';
+import { useHttpErrorToast, useToast } from '../../../../../hooks';
 import { VideoRecorder } from '../../../../multimedia';
 import { VideoRecorderRef } from '../../../../multimedia/VideoRecorder/VideoRecorder';
 
@@ -32,6 +32,14 @@ export function CaptationVideo({
   const [isSaving, setIsSaving] = useState(false);
 
   const toast = useToast();
+
+  // Only listen while uploading, so HTTP errors raised elsewhere on the page
+  // (other widgets) are not shown inside this modal.
+  useHttpErrorToast({
+    active: isOpen && isSaving,
+    isDismissible: true,
+    duration: Infinity,
+  });
 
   useEffect(() => {
     if (isOpen) setHasName(true);
