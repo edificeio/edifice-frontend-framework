@@ -60,11 +60,29 @@ describe('CaptationAudio', () => {
     vi.clearAllMocks();
   });
 
-  it('listens to backend upload errors while open', () => {
+  it('listens to backend upload errors only while saving', async () => {
+    let resolveSave: (value?: unknown) => void = () => {};
+    save.mockReturnValue(new Promise((resolve) => (resolveSave = resolve)));
     setup();
 
-    expect(httpErrorToast).toHaveBeenCalledWith(
-      expect.objectContaining({ active: true }),
+    expect(httpErrorToast).toHaveBeenLastCalledWith(
+      expect.objectContaining({ active: false }),
+    );
+
+    fireEvent.click(saveButton());
+
+    await waitFor(() =>
+      expect(httpErrorToast).toHaveBeenLastCalledWith(
+        expect.objectContaining({ active: true }),
+      ),
+    );
+
+    resolveSave();
+
+    await waitFor(() =>
+      expect(httpErrorToast).toHaveBeenLastCalledWith(
+        expect.objectContaining({ active: false }),
+      ),
     );
   });
 

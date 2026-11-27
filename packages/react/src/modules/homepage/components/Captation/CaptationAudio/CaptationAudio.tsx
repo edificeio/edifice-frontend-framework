@@ -30,8 +30,10 @@ export function CaptationAudio({
 
   const toast = useToast();
 
+  // Only listen while uploading, so HTTP errors raised elsewhere on the page
+  // (other widgets) are not shown inside this modal.
   useHttpErrorToast({
-    active: isOpen,
+    active: isOpen && isSaving,
     isDismissible: true,
     duration: Infinity,
   });
