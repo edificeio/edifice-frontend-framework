@@ -26,4 +26,27 @@ describe('NotificationList', () => {
 
     expect(screen.getAllByRole('listitem')).toHaveLength(notifications.length);
   });
+
+  it('shows the options menu of each notification by default', () => {
+    const notifications = mockNotifications.slice(0, 3);
+
+    render(<NotificationList notifications={notifications} />);
+
+    expect(
+      screen.getAllByTestId('notification-item-options-button'),
+    ).toHaveLength(notifications.length);
+  });
+
+  it('hides the options menu when notifications cannot be managed', () => {
+    render(
+      <NotificationList
+        notifications={mockNotifications.slice(0, 3)}
+        canManageNotifications={false}
+      />,
+    );
+
+    expect(
+      screen.queryByTestId('notification-item-options-button'),
+    ).not.toBeInTheDocument();
+  });
 });
