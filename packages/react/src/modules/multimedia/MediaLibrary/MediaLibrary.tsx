@@ -290,7 +290,6 @@ const MediaLibrary = forwardRef(
       },
       'google-drive': {
         id: 'google-drive',
-        // FIXME No Google Drive icon in the pack yet; reusing the generic one.
         icon: <IconGlobe2 />,
         label: t('bbm.google-drive'),
         content: <InnerTabs.GoogleDrive />,
