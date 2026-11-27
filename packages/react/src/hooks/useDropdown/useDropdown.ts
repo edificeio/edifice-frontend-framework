@@ -149,7 +149,7 @@ const useDropdown = (
     if (visible && searchInputRef.current && focusOnVisible) {
       focusSearchInput();
     } else if (visible && menuRef.current && focusOnVisible) {
-      menuRef.current.focus();
+      menuRef.current.focus({ preventScroll: true });
       setActiveIndex(0);
     } else {
       setActiveIndex(-1);
