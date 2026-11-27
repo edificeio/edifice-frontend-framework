@@ -37,18 +37,27 @@ export function RssContainer() {
   const closeAll = () => setView({ name: 'closed' });
   const backToManage = () => setView({ name: 'manage' });
 
-  // On failure the form stays open so the user doesn't lose their input.
-  const handleSubmit = (payload: RssFeedPayload) => {
-    if (view.name === 'edit') {
-      updateFeed(view.index, payload, () => {
+  const handleSubmit = async (payload: RssFeedPayload) => {
+    try {
+      if (view.name === 'edit') {
+        await updateFeed(view.index, payload);
         toast.success(t('homepage.widget.rss.form.edit.success'));
-        backToManage();
-      });
-    } else {
-      addFeed(payload, () => {
+      } else {
+        await addFeed(payload);
         toast.success(t('homepage.widget.rss.form.add.success'));
-        backToManage();
-      });
+      }
+      backToManage();
+    } catch {
+      // On failure the form stays open so the user doesn't lose their input.
+    }
+  };
+
+  const handleDelete = async (index: number) => {
+    try {
+      await deleteFeed(index);
+      toast.success(t('homepage.widget.rss.modal.delete.success'));
+    } catch {
+      // On failure the mutation restores the previous feeds.
     }
   };
 
@@ -73,11 +82,7 @@ export function RssContainer() {
         onEditFeed={(index) =>
           setView({ name: 'edit', index, feed: feeds[index] })
         }
-        onDeleteFeed={(index) =>
-          deleteFeed(index, () =>
-            toast.success(t('homepage.widget.rss.modal.delete.success')),
-          )
-        }
+        onDeleteFeed={handleDelete}
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

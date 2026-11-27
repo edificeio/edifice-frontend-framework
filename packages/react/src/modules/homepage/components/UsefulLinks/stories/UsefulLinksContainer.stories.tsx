@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { Toaster } from 'react-hot-toast';
 
 import { UsefulLinksContainer } from '../UsefulLinksContainer';
 
@@ -6,7 +7,13 @@ const meta: Meta<typeof UsefulLinksContainer> = {
   title: 'Modules/Homepage/UsefulLinks/Container',
   component: UsefulLinksContainer,
   decorators: [
-    (Story) => <div style={{ maxWidth: 400, width: '100%' }}>{Story()}</div>,
+    // The success toasts need a Toaster, rendered by PageLayout in the apps.
+    (Story) => (
+      <div style={{ maxWidth: 400, width: '100%' }}>
+        {Story()}
+        <Toaster />
+      </div>
+    ),
   ],
   parameters: {
     docs: {

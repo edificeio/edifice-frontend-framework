@@ -34,14 +34,27 @@ export function UsefulLinksContainer() {
   const backToManage = () => setView({ name: 'manage' });
 
   const handleSubmit = async (payload: UsefulLinkPayload) => {
-    if (view.name === 'edit') {
-      await updateLink(view.link.id, payload);
-      toast.success(t('homepage.usefulLinks.form.edit.success'));
-    } else {
-      await createLink(payload);
-      toast.success(t('homepage.usefulLinks.form.add.success'));
+    try {
+      if (view.name === 'edit') {
+        await updateLink(view.link.id, payload);
+        toast.success(t('homepage.usefulLinks.form.edit.success'));
+      } else {
+        await createLink(payload);
+        toast.success(t('homepage.usefulLinks.form.add.success'));
+      }
+      backToManage();
+    } catch {
+      // On failure the form stays open so the user doesn't lose their input.
     }
-    backToManage();
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteLink(id);
+      toast.success(t('homepage.usefulLinks.modal.delete.success'));
+    } catch {
+      // On failure the mutation restores the previous links.
+    }
   };
 
   return (
@@ -58,11 +71,7 @@ export function UsefulLinksContainer() {
         onClose={closeAll}
         onAddClick={() => setView({ name: 'add' })}
         onEditLink={(link) => setView({ name: 'edit', link })}
-        onDeleteLink={(id) =>
-          deleteLink(id, () =>
-            toast.success(t('homepage.usefulLinks.modal.delete.success')),
-          )
-        }
+        onDeleteLink={handleDelete}
       />
 
       {(view.name === 'add' || view.name === 'edit') && (

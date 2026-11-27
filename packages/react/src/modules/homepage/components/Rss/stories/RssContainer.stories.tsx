@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react-vite';
+import { Toaster } from 'react-hot-toast';
 
 import { RssContainer } from '../RssContainer';
 
@@ -6,7 +7,13 @@ const meta: Meta<typeof RssContainer> = {
   title: 'Modules/Homepage/Rss/Container',
   component: RssContainer,
   decorators: [
-    (Story) => <div style={{ maxWidth: 400, width: '100%' }}>{Story()}</div>,
+    // The success toasts need a Toaster, rendered by PageLayout in the apps.
+    (Story) => (
+      <div style={{ maxWidth: 400, width: '100%' }}>
+        {Story()}
+        <Toaster />
+      </div>
+    ),
   ],
   parameters: {
     docs: {
