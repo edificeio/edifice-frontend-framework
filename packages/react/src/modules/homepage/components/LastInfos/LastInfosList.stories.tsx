@@ -93,6 +93,52 @@ export const Default: Story = {
   },
 };
 
+const threadIconInfo = mockLastInfos[0];
+const threadIconBaseProps = {
+  content: threadIconInfo.content,
+  username: threadIconInfo.username,
+  threadId: threadIconInfo.thread.id,
+  publicationDate: threadIconInfo.modifiedDate,
+  isHeadline: false,
+} satisfies Partial<LastInfosProps>;
+
+export const ThreadIcon: Story = {
+  render: renderWithProps({
+    infos: [
+      {
+        ...threadIconBaseProps,
+        id: 'thread-icon-ok',
+        icon: threadIconInfo.thread.icon || '',
+        threadName: 'Fil avec un picto',
+        title: 'Le picto du fil est affiché',
+      },
+      {
+        ...threadIconBaseProps,
+        id: 'thread-icon-missing',
+        icon: '',
+        threadName: 'Fil sans picto',
+        title: 'Aucun picto : icône Actualités par défaut',
+      },
+      {
+        ...threadIconBaseProps,
+        id: 'thread-icon-broken',
+        // This URL is not mocked and returns a 404.
+        icon: '/thread-icon-not-found.png',
+        threadName:
+          'Parcours égalité filles-garçons et lutte contre les discriminations',
+        title: 'Picto en erreur (404) : icône Actualités par défaut',
+      },
+    ],
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story: `Le picto du fil est purement décoratif (<code>alt=""</code>) : le nom du fil est déjà affiché juste à côté. Si le fil n'a pas de picto, ou si son chargement échoue (404…), l'icône Actualités est affichée à la place.`,
+      },
+    },
+  },
+};
+
 export const Empty: Story = {
   render: renderWithProps({ infos: [] }),
   parameters: {

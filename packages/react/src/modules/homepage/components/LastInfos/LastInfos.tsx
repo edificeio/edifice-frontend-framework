@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 
@@ -92,6 +92,10 @@ const LastInfos = ({
 
   const actionLabel = `${threadName} - ${title}`;
 
+  // Remember which icon URL failed to load, so that a new icon URL is retried.
+  const [failedIcon, setFailedIcon] = useState<string | null>(null);
+  const showThreadIcon = Boolean(icon) && failedIcon !== icon;
+
   return (
     <article
       className={clsx('last-infos-card', {
@@ -115,14 +119,15 @@ const LastInfos = ({
           justify="start"
           className="last-infos-card-thread"
         >
-          {icon ? (
+          {showThreadIcon ? (
             <img
               src={icon}
-              alt={threadName}
+              alt=""
               width={24}
               height={24}
               loading="lazy"
               className="last-infos-card-thread-icon"
+              onError={() => setFailedIcon(icon)}
             />
           ) : (
             <IconActualites

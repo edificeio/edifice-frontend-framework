@@ -1,4 +1,4 @@
-import { render, screen } from '~/setup';
+import { fireEvent, render, screen } from '~/setup';
 import LastInfos, { LastInfosProps } from './LastInfos';
 
 function props(overrides: Partial<LastInfosProps> = {}): LastInfosProps {
@@ -21,14 +21,18 @@ const medias = () => document.querySelectorAll('.last-infos-card-media');
 
 describe('LastInfos', () => {
   describe('header', () => {
-    it('shows the thread name and its icon', () => {
+    it('shows the thread name and its icon as a decorative image', () => {
       render(<LastInfos {...props()} />);
 
       expect(screen.getByText('Informations importantes')).toBeInTheDocument();
-      expect(screen.getByAltText('Informations importantes')).toHaveAttribute(
-        'src',
-        '/workspace/document/icon-id',
-      );
+      const icon = document.querySelector('.last-infos-card-thread-icon');
+      expect(icon).toHaveAttribute('src', '/workspace/document/icon-id');
+      // The thread name is already rendered next to the icon: an empty alt
+      // avoids screen readers announcing it twice.
+      expect(icon).toHaveAttribute('alt', '');
+      expect(
+        screen.queryByAltText('Informations importantes'),
+      ).not.toBeInTheDocument();
     });
 
     it('falls back to the news icon without a thread icon', () => {
@@ -40,6 +44,34 @@ describe('LastInfos', () => {
       expect(
         document.querySelector('svg.last-infos-card-thread-icon'),
       ).not.toBeNull();
+    });
+
+    it('falls back to the news icon when the thread icon fails to load', () => {
+      render(<LastInfos {...props()} />);
+
+      fireEvent.error(
+        document.querySelector('img.last-infos-card-thread-icon')!,
+      );
+
+      expect(
+        document.querySelector('img.last-infos-card-thread-icon'),
+      ).toBeNull();
+      expect(
+        document.querySelector('svg.last-infos-card-thread-icon'),
+      ).not.toBeNull();
+    });
+
+    it('retries a new thread icon after a previous one failed', () => {
+      const { rerender } = render(<LastInfos {...props()} />);
+
+      fireEvent.error(
+        document.querySelector('img.last-infos-card-thread-icon')!,
+      );
+      rerender(<LastInfos {...props({ icon: '/workspace/document/other' })} />);
+
+      expect(
+        document.querySelector('img.last-infos-card-thread-icon'),
+      ).toHaveAttribute('src', '/workspace/document/other');
     });
   });
 
