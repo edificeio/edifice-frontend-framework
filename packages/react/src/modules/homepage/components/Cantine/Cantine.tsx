@@ -54,6 +54,10 @@ export default function Cantine({
         {hasSchoolSelect && (
           <FormControl id="cantine-school" className="cantine__school">
             <Label>{t('homepage.widget.cantine.school')}</Label>
+            {/* The key remounts Select on each school change. Without it,
+                Select calls onValueChange again with the old school after
+                the new one is saved, and overwrites it. The cost is that
+                the keyboard focus leaves the trigger after a pick. */}
             <Select
               size="md"
               key={selectedSchool?.id}
