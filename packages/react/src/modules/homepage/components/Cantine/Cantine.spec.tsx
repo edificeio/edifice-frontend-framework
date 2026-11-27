@@ -1,3 +1,4 @@
+import type { School } from '@edifice.io/client';
 import { render, screen } from '~/setup';
 import Cantine from './Cantine';
 import { CantineDish, CantineSection } from './types';
@@ -17,6 +18,15 @@ function makeDish(overrides: Partial<CantineDish> = {}): CantineDish {
 
 const sections: CantineSection[] = [
   { category: 'entree', items: [makeDish()] },
+];
+
+function makeSchool(id: string, name: string): School {
+  return { id, name, UAI: `UAI-${id}`, exports: [], classes: [] } as School;
+}
+
+const schools = [
+  makeSchool('school-1', 'École Jacques Prévert'),
+  makeSchool('school-2', 'École Victor Hugo'),
 ];
 
 describe('Cantine', () => {
@@ -137,5 +147,51 @@ describe('Cantine', () => {
     );
 
     expect(screen.getByTestId('cantine-loading')).toBeInTheDocument();
+  });
+
+  it('shows the school select on the selected school when the user belongs to several schools', () => {
+    render(
+      <Cantine
+        status="default"
+        sections={sections}
+        handleFullScreenClick={vi.fn()}
+        schools={schools}
+        selectedSchool={schools[1]}
+        onSelectedSchoolChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Établissement')).toBeInTheDocument();
+    expect(screen.getByText('École Victor Hugo')).toBeInTheDocument();
+  });
+
+  it('hides the school select when the user belongs to a single school', () => {
+    render(
+      <Cantine
+        status="default"
+        sections={sections}
+        handleFullScreenClick={vi.fn()}
+        schools={[schools[0]]}
+        selectedSchool={schools[0]}
+        onSelectedSchoolChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByText('Établissement')).not.toBeInTheDocument();
+  });
+
+  it('keeps the school select in the error status to switch to another school', () => {
+    render(
+      <Cantine
+        status="error"
+        sections={[]}
+        handleFullScreenClick={vi.fn()}
+        schools={schools}
+        selectedSchool={schools[0]}
+        onSelectedSchoolChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('Établissement')).toBeInTheDocument();
   });
 });

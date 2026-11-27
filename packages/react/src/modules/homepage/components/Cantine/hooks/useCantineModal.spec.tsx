@@ -54,9 +54,10 @@ describe('useCantineModal', () => {
   it('starts on today, on the school selected in the homepage', async () => {
     get.mockResolvedValue({ menu: lunch });
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], vi.fn()),
+      { wrapper },
+    );
 
     await waitFor(() => expect(result.current.status).toBe('default'));
 
@@ -66,15 +67,30 @@ describe('useCantineModal', () => {
     );
   });
 
-  it('queries the school picked in the modal', async () => {
+  it('reports the school picked in the modal to its owner', () => {
     get.mockResolvedValue({ menu: lunch });
+    const onSelectedSchoolChange = vi.fn();
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
-    await waitFor(() => expect(result.current.status).toBe('default'));
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], onSelectedSchoolChange),
+      { wrapper },
+    );
 
     act(() => result.current.onSchoolChange('school-2'));
+
+    expect(onSelectedSchoolChange).toHaveBeenCalledWith('school-2');
+  });
+
+  it('queries the school given by its owner', async () => {
+    get.mockResolvedValue({ menu: lunch });
+
+    const { result, rerender } = renderHook(
+      ({ school }) => useCantineModal(schools, school, vi.fn()),
+      { wrapper, initialProps: { school: schools[0] } },
+    );
+    await waitFor(() => expect(result.current.status).toBe('default'));
+
+    rerender({ school: schools[1] });
 
     expect(result.current.selectedSchool).toBe(schools[1]);
     await waitFor(() =>
@@ -88,9 +104,10 @@ describe('useCantineModal', () => {
     isResponseError.mockReturnValue(true);
     get.mockResolvedValue(undefined);
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], vi.fn()),
+      { wrapper },
+    );
 
     await waitFor(() => expect(result.current.status).toBe('error'));
   });
@@ -102,9 +119,10 @@ describe('useCantineModal', () => {
       dinnerMenu: dinner,
     });
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], vi.fn()),
+      { wrapper },
+    );
     await waitFor(() => expect(result.current.hasDinner).toBe(true));
 
     expect(result.current.sections[0].items[0].label).toBe('Coleslaw');
@@ -118,9 +136,10 @@ describe('useCantineModal', () => {
   it('falls back on lunch when the day has no dinner service', async () => {
     get.mockResolvedValue({ menu: lunch, dinnerAvailable: false });
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], vi.fn()),
+      { wrapper },
+    );
     await waitFor(() => expect(result.current.status).toBe('default'));
 
     act(() => result.current.onMenuTypeChange('dinner'));
@@ -132,9 +151,10 @@ describe('useCantineModal', () => {
   it('browses days within 40 days around today', async () => {
     get.mockResolvedValue({ menu: lunch });
 
-    const { result } = renderHook(() => useCantineModal(schools, schools[0]), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useCantineModal(schools, schools[0], vi.fn()),
+      { wrapper },
+    );
     await waitFor(() => expect(result.current.status).toBe('default'));
 
     expect(result.current.canGoPrevious).toBe(true);

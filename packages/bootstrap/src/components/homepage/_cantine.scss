@@ -33,9 +33,27 @@ $cantine-category-colors: (
     display: flex;
     flex: 1;
     flex-direction: column;
+    gap: var(--primitive-spacer-8);
     min-height: 278px;
-    padding-top: var(--primitive-spacer-16);
+    padding-top: var(--primitive-spacer-8);
     overflow: hidden;
+  }
+
+  &__school {
+    display: flex;
+    flex-direction: column;
+    gap: var(--primitive-spacer-4);
+
+    .input-label {
+      margin: 0;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .dropdown-toggle {
+      padding: var(--primitive-spacer-8) var(--primitive-spacer-12);
+      border-color: var(--primitive-grey-300);
+      border-radius: var(--primitive-border-radius-lg);
+    }
   }
 
   &__menu {
@@ -117,7 +135,8 @@ $cantine-category-colors: (
     display: flex;
     flex-direction: column;
     margin-left: var(--primitive-spacer-16);
-    padding: var(--primitive-spacer-2) 0 var(--primitive-spacer-12) var(--primitive-spacer-16);
+    padding: var(--primitive-spacer-2) 0 var(--primitive-spacer-12)
+      var(--primitive-spacer-16);
     border-left: 2px solid transparent;
     list-style: none;
   }
@@ -147,7 +166,7 @@ $cantine-category-colors: (
       text-transform: lowercase;
 
       &::first-letter {
-          text-transform: uppercase;
+        text-transform: uppercase;
       }
     }
 

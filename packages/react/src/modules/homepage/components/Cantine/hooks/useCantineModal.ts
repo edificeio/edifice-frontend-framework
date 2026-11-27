@@ -18,18 +18,16 @@ const addDays = (date: Date, days: number) => {
 /**
  * Browsing state of the full-screen canteen modal: day, school and service.
  *
- * The school picked here stays local to the modal on purpose: it must not
- * change the school shared with the other homepage widgets (see
- * `useUserSchools`), only the menu being read.
- *
- * `defaultSchool` must come from the widget card, already settled: a fresh
- * `useUserSchools` here would still be switching schools when `Select` echoes
- * its value back, making the two bounce forever.
+ * The school is owned by the widget card (see `CantineContainer`): picking one
+ * here switches the card too and saves it as the user's preference.
  */
-export function useCantineModal(schools: School[], defaultSchool?: School) {
+export function useCantineModal(
+  schools: School[],
+  selectedSchool: School | undefined,
+  onSelectedSchoolChange: (schoolId: string) => void,
+) {
   const { formatDate } = useDate();
 
-  const [schoolId, setSchoolId] = useState<string>();
   const [menuType, setMenuType] = useState<CantineMenuType>('lunch');
   const [date, setDate] = useState(() => formatDate(new Date(), DATE_FORMAT));
 
@@ -41,9 +39,6 @@ export function useCantineModal(schools: School[], defaultSchool?: School) {
     };
   }, [formatDate]);
 
-  const selectedSchool =
-    schools.find((school) => school.id === schoolId) ?? defaultSchool;
-
   const menu = useCantineMenu(selectedSchool?.UAI ?? '', date, menuType);
 
   const shiftDate = (days: number) =>
@@ -54,7 +49,7 @@ export function useCantineModal(schools: School[], defaultSchool?: School) {
   return {
     schools,
     selectedSchool,
-    onSchoolChange: setSchoolId,
+    onSchoolChange: onSelectedSchoolChange,
     hasDinner: menu.dinnerAvailable,
     menuType: menu.menuType,
     onMenuTypeChange: setMenuType,
