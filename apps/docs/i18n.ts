@@ -408,6 +408,7 @@ i18n.use(initReactI18next).init({
         'homepage.userSpace.customizeWidgets': 'Personnaliser mes widgets',
         //------------------ SchoolSpace -------------------------
         'homepage.school-space.directory': 'Annuaire',
+        'homepage.school-space.change': 'Changer d’établissement',
         //------------------ Qwant -------------------------
         'homepage.widget.qwant.title': 'Qwant',
         'homepage.widget.qwant.open': 'Ouvrir',

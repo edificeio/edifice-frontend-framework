@@ -11,11 +11,14 @@ import {
 } from 'react';
 
 import {
+  Middleware,
   Placement,
   autoUpdate,
+  detectOverflow,
   flip,
   offset,
   safePolygon,
+  shift,
   size,
   useFloating,
   useHover,
@@ -55,6 +58,34 @@ export interface UseDropdownProps {
   closeDropdown: () => void;
 }
 
+/** Preferred gap (px) between a shifted menu and the edge of its clipping area. */
+const SHIFT_GUTTER = 8;
+
+/**
+ * Keep the menu inside its clipping area (viewport, scrollable modal body…)
+ * when it would overflow on the cross axis, e.g. a `bottom-end` menu wider
+ * than the space left of its trigger.
+ *
+ * The gutter shrinks to the free space actually available, so a menu as wide
+ * as its clipping area (e.g. a `block` menu filling a padding-less container)
+ * is not pushed by the gutter and stays aligned with its trigger.
+ */
+export const shiftIntoView = (gutter: number): Middleware => ({
+  name: 'shift',
+  async fn(state) {
+    const overflow = await detectOverflow(state);
+    const isVertical = ['top', 'bottom'].includes(
+      state.placement.split('-')[0],
+    );
+    // Size of the clipping area minus the size of the menu, on the cross axis.
+    const freeSpace = isVertical
+      ? -(overflow.left + overflow.right)
+      : -(overflow.top + overflow.bottom);
+    const padding = Math.max(0, Math.min(gutter, freeSpace / 2));
+    return shift({ padding }).fn(state);
+  },
+});
+
 const useDropdown = (
   placement: Placement | undefined,
   extraTriggerKeyDownHandler?: (
@@ -88,6 +119,7 @@ const useDropdown = (
         },
       }),
       flip({ padding: 0 }),
+      shiftIntoView(SHIFT_GUTTER),
     ],
   });
 

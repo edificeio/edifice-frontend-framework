@@ -1,6 +1,8 @@
 import { School } from '@edifice.io/client';
+import clsx from 'clsx';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonBeta, Dropdown, Flex, IconButton, useToggle } from '../../../..';
+import { ButtonBeta, Dropdown, Flex, VisuallyHidden } from '../../../..';
 import { getRotateTransitionStyle } from '../../../../utilities';
 import { IconRafterUp, IconUserSearch } from '../../../icons/components';
 
@@ -19,7 +21,9 @@ const SchoolSpace = ({
   selectedSchool,
   onSelectedSchoolChange,
 }: SchoolSpaceProps) => {
-  const [isExpanded, toggleExpanded] = useToggle(false);
+  // Mirror the dropdown `visible` state (not a toggle: `onToggle` is also
+  // called on mount and may be called twice in StrictMode).
+  const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
 
   // Do not render anything if no school is selected
@@ -40,26 +44,34 @@ const SchoolSpace = ({
         gap="4"
         align="center"
       >
-        <b>{selectedSchool.name}</b>
-        {hasManySchools && (
-          <Dropdown placement={'bottom-end'} onToggle={toggleExpanded}>
-            {(triggerProps: React.ComponentPropsWithRef<typeof IconButton>) => (
+        {hasManySchools ? (
+          <Dropdown placement={'bottom-end'} onToggle={setIsExpanded}>
+            {(triggerProps: React.ComponentPropsWithRef<'button'>) => (
               <>
-                <IconButton
+                {/* The whole label (name + chevron) opens the school list. */}
+                <button
                   {...triggerProps}
-                  aria-label={t('show')}
-                  color="tertiary"
-                  variant="ghost"
-                  icon={
-                    <IconRafterUp
-                      className="w-16 min-w-0"
-                      style={getRotateTransitionStyle(isExpanded, {
-                        degrees: 180,
-                      })}
-                    />
-                  }
-                />
-                <Dropdown.Menu>
+                  type="button"
+                  className={clsx(
+                    'school-space-trigger',
+                    triggerProps.className,
+                  )}
+                >
+                  <b>{selectedSchool.name}</b>
+                  <VisuallyHidden>
+                    {t('homepage.school-space.change')}
+                  </VisuallyHidden>
+                  <IconRafterUp
+                    aria-hidden="true"
+                    data-testid="homepage-school-space-chevron"
+                    className="school-space-trigger-icon"
+                    // Points down when closed, up when open.
+                    style={getRotateTransitionStyle(!isExpanded, {
+                      degrees: 180,
+                    })}
+                  />
+                </button>
+                <Dropdown.Menu className="school-space-menu">
                   {schools.map((school) => (
                     <Dropdown.Item
                       key={school.id}
@@ -74,6 +86,8 @@ const SchoolSpace = ({
               </>
             )}
           </Dropdown>
+        ) : (
+          <b>{selectedSchool.name}</b>
         )}
       </Flex>
       <ButtonBeta

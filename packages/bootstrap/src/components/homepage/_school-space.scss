@@ -2,6 +2,7 @@
   --border-color: var(--primitive-yellow-300);
   --background-color: var(--primitive-yellow-100);
   --border-radius: var(--primitive-border-radius-2xl);
+  --trigger-hover-background: var(--primitive-yellow-200);
 
   padding: var(--primitive-spacer-12);
   border: 1px solid var(--border-color);
@@ -15,6 +16,62 @@
     padding: var(--primitive-spacer-8);
     line-height: var(--primitive-font-lineheight-xs);
     color: var(--primitive-text-color-default);
+
+    // The generic `.dropdown` is `min-content` wide: let it take the whole
+    // line so long school names do not wrap on every word.
+    .dropdown {
+      width: auto;
+      max-width: 100%;
+    }
+  }
+
+  // Name + chevron form a single trigger for the school list.
+  &-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--primitive-spacer-4);
+    max-width: 100%;
+    margin: 0;
+    padding: var(--primitive-spacer-4) var(--primitive-spacer-8);
+    border: 0;
+    border-radius: var(--primitive-border-radius-lg);
+    background: transparent;
+    color: inherit;
+    line-height: inherit;
+    text-align: center;
+    cursor: pointer;
+
+    b {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    &:hover,
+    &.selected {
+      background-color: var(--trigger-hover-background);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary-default);
+      outline-offset: 2px;
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
+  // Long names wrap: never wider than a readable width nor than the viewport.
+  // `100vw` includes a classic scrollbar: the 2 × 12px gutter absorbs it, and
+  // the dropdown shift middleware keeps the menu within the visible area.
+  &-menu {
+    max-width: min(48rem, calc(100vw - 2 * var(--primitive-spacer-12)));
+
+    p {
+      overflow-wrap: anywhere;
+    }
   }
 
   .school-space-directory-button {
