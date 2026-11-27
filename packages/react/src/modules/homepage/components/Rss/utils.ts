@@ -1,17 +1,15 @@
+import { parseHttpUrl } from '../../utils/url';
+
 const FEED_EXTENSIONS = ['.rss', '.xml', '.rdf', '.atom', '.feed'];
 
 /**
- * Same rule as the legacy RSS widget: an http(s) URL whose last path
- * segment either has a feed extension or no extension at all.
+ * Same rule as the legacy RSS widget: a valid http(s) URL whose last path
+ * segment either has a feed extension or no extension at all. The feed
+ * content itself can only be checked by the backend.
  */
 export function isValidRssFeedUrl(value: string): boolean {
-  let url: URL;
-  try {
-    url = new URL(value.trim());
-  } catch {
-    return false;
-  }
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') return false;
+  const url = parseHttpUrl(value);
+  if (!url) return false;
 
   const pathname = url.pathname.toLowerCase();
   const lastSegment = pathname.split('/').pop() ?? '';

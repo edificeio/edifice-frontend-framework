@@ -595,6 +595,8 @@ i18n.use(initReactI18next).init({
         'homepage.widget.rss.form.link.placeholder': 'Ajouter l’URL',
         'homepage.widget.rss.form.link.caption':
           'L’URL doit renvoyer un flux au format XML',
+        'homepage.widget.rss.form.link.error':
+          'L’adresse doit être l’URL d’un flux RSS (ex. https://exemple.fr/rss.xml)',
         'homepage.widget.rss.form.cancel': 'Annuler',
         'homepage.widget.rss.form.save': 'Enregistrer',
         //----------------- Captation video -----------------
