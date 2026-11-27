@@ -348,6 +348,8 @@ i18n.use(initReactI18next).init({
         'homepage.agenda.openAgenda': "Accéder à l'agenda",
         'homepage.agenda.empty': 'Pas d’évènement à venir.',
         'homepage.agenda.allDay': 'Journée entière',
+        'homepage.agenda.seeMore': 'Voir plus',
+        'homepage.agenda.seeMoreLabel': "Voir plus d'évènements de l'agenda",
         'homepage.agenda.multiDayTime':
           '[[startTime]] - [[endDay]] à [[endTime]]',
         //----------------- Communities -----------------

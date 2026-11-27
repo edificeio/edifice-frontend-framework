@@ -53,6 +53,24 @@ describe('Agenda', () => {
     );
   });
 
+  it('hides the see more button when there is no event', () => {
+    render(<Agenda events={[]} />);
+
+    expect(
+      screen.queryByTestId('agenda-button-see-more'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('calls onOpenAgendaClick when the see more button is clicked', () => {
+    const onOpenAgendaClick = vi.fn();
+    render(<Agenda events={[event()]} onOpenAgendaClick={onOpenAgendaClick} />);
+
+    fireEvent.click(screen.getByTestId('agenda-button-see-more'));
+
+    expect(screen.getByText('Voir plus')).toBeInTheDocument();
+    expect(onOpenAgendaClick).toHaveBeenCalledTimes(1);
+  });
+
   it('calls onOpenAgendaClick when the header button is clicked', () => {
     const onOpenAgendaClick = vi.fn();
     render(<Agenda events={[]} onOpenAgendaClick={onOpenAgendaClick} />);

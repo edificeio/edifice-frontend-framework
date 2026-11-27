@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 import { useCalendars, useEvents } from '../services/queries/agenda';
 
 /** Number of upcoming events shown by the widget. */
-export const MAX_VISIBLE_EVENTS = 3;
+export const MAX_VISIBLE_EVENTS = 4;
 
 export interface UseAgendaContainerReturn {
   events: CalendarEvent[];
